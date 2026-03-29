@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.env
+data/
+logo/tulsa_skyline_source.jpg

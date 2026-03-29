@@ -1,0 +1,510 @@
+/* ── Tulsa Gays Blog — Art Deco Design ──────────────────────────────── */
+
+/* ── CSS Variables ───────────────────────────────────────────────────── */
+:root {
+    --bg: #0a0a0a;
+    --bg-secondary: #111111;
+    --bg-card: #161616;
+    --bg-card-hover: #1c1c1c;
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #999999;
+    --dark-gray: #555555;
+
+    /* Tulsa Gays palette */
+    --gold: #9B1E5F;
+    --gold-light: #9B1E5F;
+    --peacock: #9B1E5F;
+    --burnt-orange: #9B1E5F;
+    --hunter-green: #9B1E5F;
+    --cream: #FFFFFF;
+
+    /* Day accent colors */
+    --day-mon: #8BA888;
+    --day-tue: #9B8EC4;
+    --day-wed: #B8860B;
+    --day-thu: #C4848B;
+    --day-fri: #9B1E5F;
+    --day-sat: #9B8EC4;
+    --day-sun: #64B5F6;
+
+    /* Pride (used sparingly) */
+    --pride-red: #E40303;
+    --pride-orange: #FF8C00;
+    --pride-yellow: #FFED00;
+    --pride-green: #008026;
+    --pride-blue: #004DFF;
+    --pride-purple: #750787;
+
+    /* Layout */
+    --max-width: 900px;
+    --spacing: 1.5rem;
+}
+
+/* ── Reset & Base ────────────────────────────────────────────────────── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+a {
+    color: var(--peacock);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+a:hover { color: var(--gold-light); }
+
+/* ── Deco Elements ───────────────────────────────────────────────────── */
+.deco-line {
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+}
+.deco-double {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.deco-double span {
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+}
+.diamond-sep {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 16px 0;
+}
+.diamond-sep::before, .diamond-sep::after {
+    content: '';
+    width: 80px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+}
+.diamond-sep .diamond {
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+}
+.rainbow-gradient {
+    background: linear-gradient(90deg,
+        var(--pride-red), var(--pride-orange), var(--pride-yellow),
+        var(--pride-green), var(--pride-blue), var(--pride-purple));
+}
+
+/* ── Header ──────────────────────────────────────────────────────────── */
+.site-header {
+    background: var(--bg);
+    border-top: 3px solid #9B1E5F;
+    border-bottom: 1px solid rgba(255,20,147,0.2);
+}
+
+.header-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 1.25rem var(--spacing);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+}
+.logo-area img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+.logo-text {
+    font-family: 'Poiret One', 'Segoe UI', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    -webkit-text-stroke: 0.5px;
+}
+.logo-text .tulsa { color: #FFFFFF; -webkit-text-stroke-color: #FFFFFF; }
+.logo-text .gays { color: #9B1E5F; -webkit-text-stroke-color: #9B1E5F; }
+.logo-tagline {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+nav a {
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    transition: color 0.2s ease;
+}
+nav a:hover, nav a.active { color: var(--cream); }
+
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* ── Main Content ────────────────────────────────────────────────────── */
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 2rem var(--spacing);
+}
+
+/* ── Week Header ─────────────────────────────────────────────────────── */
+.week-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+.week-header h1 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 4px;
+    margin-bottom: 0.25rem;
+}
+.week-header h1 .this-week { color: var(--burnt-orange); font-size: 1.4rem; display: block; margin-bottom: 4px; }
+.week-header h1 .tulsa { color: var(--gold); }
+.week-header h1 .gays { color: var(--peacock); }
+.week-header .date-range {
+    color: var(--cream);
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+.week-header .tagline {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-top: 8px;
+}
+.rainbow-bar {
+    height: 3px;
+    margin: 1.5rem auto 0;
+    max-width: 200px;
+}
+
+/* ── Day Sections ────────────────────────────────────────────────────── */
+.day-section {
+    margin-bottom: 2.5rem;
+}
+.day-title {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 300;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+.day-date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+.day-divider {
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.3;
+    margin-bottom: 16px;
+    border: none;
+}
+
+/* ── Event Cards ─────────────────────────────────────────────────────── */
+.events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.event-card {
+    background: var(--bg-card);
+    border: 1px solid #1e1e1e;
+    padding: 20px 24px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+.event-card:hover {
+    background: var(--bg-card-hover);
+    border-color: #2a2a2a;
+}
+.event-card.featured {
+    border-color: var(--gold);
+    background: rgba(139,114,52,0.06);
+}
+.event-card.featured:hover {
+    background: rgba(139,114,52,0.1);
+}
+
+.event-time-col {
+    min-width: 70px;
+    text-align: right;
+    flex-shrink: 0;
+}
+.event-time {
+    font-weight: 700;
+    font-size: 1.3rem;
+    line-height: 1;
+}
+.event-ampm {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 3px;
+}
+
+.event-details { flex: 1; }
+.event-name {
+    font-weight: 700;
+    font-size: 1.15rem;
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+.event-venue {
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+}
+.event-description {
+    font-size: 0.85rem;
+    color: var(--dark-gray);
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+.event-link {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--peacock);
+    border: 1px solid var(--peacock);
+    padding: 4px 14px;
+    transition: all 0.2s;
+}
+.event-link:hover {
+    background: var(--peacock);
+    color: var(--bg);
+}
+
+/* ── Featured Event Banner ───────────────────────────────────────────── */
+.featured-banner {
+    text-align: center;
+    padding: 40px 24px;
+    margin-bottom: 3rem;
+    border: 1px solid var(--gold);
+    background: rgba(139,114,52,0.05);
+}
+.featured-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--peacock);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+.featured-name {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+}
+.featured-name .gold { color: var(--gold); }
+.featured-name .peacock { color: var(--peacock); }
+.featured-when {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+.featured-where {
+    font-size: 0.95rem;
+    color: var(--gold-light);
+    margin-bottom: 12px;
+}
+.featured-desc {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+.featured-link {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 24px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+}
+.featured-link:hover {
+    background: var(--gold);
+    color: var(--bg);
+}
+
+/* ── About Page ──────────────────────────────────────────────────────── */
+.about-content {
+    max-width: 650px;
+    margin: 0 auto;
+}
+.about-content h2 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 1.8rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+}
+.about-content p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+.about-content ul {
+    list-style: none;
+    margin: 1rem 0 2rem;
+}
+.about-content ul li {
+    padding: 0.5rem 0;
+    color: var(--text-secondary);
+    border-bottom: 1px solid #1a1a1a;
+}
+.about-content ul li::before {
+    content: "\25C6";
+    color: var(--gold);
+    margin-right: 0.5rem;
+    font-size: 0.7rem;
+}
+
+/* ── Archive Page ────────────────────────────────────────────────────── */
+.archive-list { max-width: 650px; margin: 0 auto; }
+.archive-list h2 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 1.8rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+}
+.archive-week {
+    display: block;
+    padding: 1rem 1.25rem;
+    background: var(--bg-card);
+    border: 1px solid #1e1e1e;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+}
+.archive-week:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--gold);
+    color: var(--text-primary);
+}
+.archive-week .week-label { font-weight: 600; }
+.archive-week .week-date { color: var(--text-muted); font-size: 0.9rem; }
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+.site-footer {
+    background: var(--bg);
+    border-top: 1px solid rgba(139,114,52,0.3);
+    border-bottom: 4px solid var(--hunter-green);
+    padding: 2rem var(--spacing);
+    text-align: center;
+    margin-top: 4rem;
+}
+.footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+.footer-inner p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+}
+.footer-inner a {
+    color: var(--peacock);
+    font-weight: 600;
+}
+.footer-inner a:hover { color: var(--gold-light); }
+
+/* ── Venue Directory ─────────────────────────────────────────────────── */
+.venue-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+.venue-card {
+    background: var(--bg-card);
+    border: 1px solid #1e1e1e;
+    padding: 16px 20px;
+    transition: border-color 0.2s;
+}
+.venue-card:hover { border-color: var(--gold); }
+.venue-name {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+.venue-address {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+.venue-hours {
+    font-size: 0.8rem;
+    color: var(--dark-gray);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .header-inner { flex-wrap: wrap; }
+    .nav-toggle { display: block; }
+    nav {
+        width: 100%;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.3s ease;
+    }
+    nav.open { max-height: 300px; }
+    nav ul { flex-direction: column; padding-top: 1rem; gap: 0.75rem; }
+    .logo-text { font-size: 1.3rem; }
+    .week-header h1 { font-size: 2rem; }
+    .featured-name { font-size: 2rem; }
+    .event-card { flex-direction: column; gap: 8px; }
+    .event-time-col { text-align: left; }
+}
+
+@media (max-width: 480px) {
+    .container { padding: 1rem; }
+    .event-card { padding: 16px; }
+    .venue-grid { grid-template-columns: 1fr; }
+}
