@@ -12,7 +12,7 @@ from typing import List, Dict
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
 
-from scraper import homo_hotel, okeq, twisted_arts, churches, bars, eventbrite_meetup, facebook_scraper, tulsa_arts_district
+from scraper import homo_hotel, okeq, twisted_arts, churches, bars, eventbrite_meetup, facebook_scraper, tulsa_arts_district, qlist, community_groups
 
 logger = logging.getLogger(__name__)
 
@@ -230,6 +230,8 @@ def run_all_scrapers() -> List[Dict]:
         ("eventbrite_meetup", eventbrite_meetup.scrape),
         ("facebook_scraper", facebook_scraper.scrape),
         ("tulsa_arts_district", tulsa_arts_district.scrape),
+        ("qlist", qlist.scrape),
+        ("community_groups", community_groups.scrape),
     ]
 
     for name, scrape_fn in scrapers:
