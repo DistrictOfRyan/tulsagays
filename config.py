@@ -160,34 +160,47 @@ SOURCES = {
         "type": "arts",
         "description": "Monthly drag brunch (2nd Saturday), all ages, two seatings",
     },
-    "hope_unitarian": {
-        "name": "Hope Unitarian Church",
-        "url": "https://www.hopeuu.org/",
-        "priority": 2,
-        "type": "church",
-        "description": "UUA Welcoming Congregation with community events",
-    },
-    "fellowship_ucc": {
-        "name": "Fellowship Congregational UCC",
-        "url": "https://www.ucctulsa.org/",
-        "priority": 2,
-        "type": "church",
-        "description": "Open and Affirming UCC congregation",
-    },
-    "house_church": {
-        "name": "House Church Tulsa",
-        "url": "https://housechurchtulsa.com/",
-        "priority": 2,
-        "type": "church",
-        "description": "Fully affirming faith community",
-    },
-    "st_dunstans": {
-        "name": "Saint Dunstan's Episcopal",
-        "url": "http://www.stduntulsa.org/",
-        "priority": 2,
-        "type": "church",
-        "description": "Inclusive Episcopal congregation with LGBTQ involvement",
-    },
+    # ── Affirming Churches (33 total) ────────────────────────────────────
+    # UCC
+    "fellowship_ucc": {"name": "Fellowship Congregational UCC", "url": "https://ucctulsa.org/", "priority": 2, "type": "church", "description": "Open and Affirming, 2900 S Harvard Ave"},
+    "community_hope_ucc": {"name": "Community of Hope UCC", "url": "", "priority": 3, "type": "church", "description": "UCC congregation, social justice focused, 2545 S Yale Ave"},
+    # Unitarian
+    "all_souls_uu": {"name": "All Souls Unitarian Church", "url": "https://allsoulschurch.org/", "priority": 2, "type": "church", "description": "Largest UU in US, Welcoming Congregation, 2952 S Peoria Ave"},
+    "hope_unitarian": {"name": "Hope Unitarian Church", "url": "https://www.hopeuu.org/", "priority": 2, "type": "church", "description": "UUA Welcoming Congregation, 8432 S Sheridan Ave"},
+    "church_restoration": {"name": "Church of the Restoration UU", "url": "", "priority": 3, "type": "church", "description": "UU, racial justice focus, 1314 N Greenwood Ave"},
+    # Episcopal
+    "trinity_episcopal": {"name": "Trinity Episcopal Church", "url": "https://www.trinitytulsa.org/", "priority": 2, "type": "church", "description": "Affirming, 501 S Cincinnati Ave"},
+    "st_aidans": {"name": "St. Aidan's Episcopal Church", "url": "https://www.staidanstulsa.org/", "priority": 2, "type": "church", "description": "Inclusive and affirming, 4045 N Cincinnati Ave"},
+    "st_dunstans": {"name": "Saint Dunstan's Episcopal", "url": "http://www.stduntulsa.org/", "priority": 2, "type": "church", "description": "Open and affirming, marches in Pride, 5635 E 71st St"},
+    "christ_church_episcopal": {"name": "Christ Church Episcopal", "url": "https://www.christchurchtulsa.org/", "priority": 3, "type": "church", "description": "Affirming (ChurchClarity), 10901 S Yale Ave"},
+    "st_patricks_ba": {"name": "St. Patrick's Episcopal", "url": "https://www.saint-patricks.com/", "priority": 3, "type": "church", "description": "OkEq listed, Broken Arrow"},
+    # Methodist
+    "boston_ave_umc": {"name": "Boston Avenue United Methodist", "url": "https://www.bostonavenue.org/", "priority": 2, "type": "church", "description": "Affirming, hosts Pride Parade start, 1301 S Boston Ave"},
+    "st_pauls_umc": {"name": "St. Paul's United Methodist", "url": "https://stpaulstulsa.com/", "priority": 2, "type": "church", "description": "Reconciling Congregation, 1442 S Quaker Ave"},
+    "university_umc": {"name": "University United Methodist", "url": "", "priority": 3, "type": "church", "description": "OkEq listed, 500 S College Ave"},
+    # Presbyterian
+    "southminster_pcusa": {"name": "Southminster Presbyterian", "url": "https://www.southminstertulsa.org/", "priority": 2, "type": "church", "description": "More Light Presbyterian, full LGBTQ inclusion, 3500 S Peoria Ave"},
+    # Lutheran
+    "first_lutheran_elca": {"name": "First Evangelical Lutheran", "url": "https://www.felctulsa.org/", "priority": 2, "type": "church", "description": "Reconciling in Christ (2023), 1244 S Utica Ave"},
+    # Independent/Non-denom
+    "house_church": {"name": "House Church Tulsa", "url": "https://housechurchtulsa.com/", "priority": 2, "type": "church", "description": "Fully affirming, LGBTQ lead pastor, 1244 S Utica Ave"},
+    # Ecumenical/Old Catholic
+    "st_jerome_ecc": {"name": "Parish Church of St. Jerome", "url": "https://www.saintjerometulsa.org/", "priority": 2, "type": "church", "description": "Ecumenical Catholic, founded 1995 for full inclusion, 205 W King St"},
+    "all_saints_catholic": {"name": "All Saints / Todos los Santos", "url": "https://www.allsaintstulsa.org/", "priority": 2, "type": "church", "description": "Old Catholic, bilingual, DignityUSA partner"},
+    # MCC
+    "mcc_tulsa": {"name": "Metropolitan Community Church", "url": "", "priority": 2, "type": "church", "description": "LGBTQ-founded denomination, 1623 N Maplewood Ave (verify)"},
+    # Disciples of Christ
+    "bethany_christian": {"name": "Bethany Christian Church", "url": "https://bethanybelieves.com/", "priority": 3, "type": "church", "description": "Open and Affirming DOC, 6730 S Sheridan Rd"},
+    # Quaker
+    "green_country_friends": {"name": "Green Country Friends Meeting", "url": "http://www.scym.org/greencountry/", "priority": 3, "type": "church", "description": "FGC Quakers, LGBTQ affirming"},
+    # Unity
+    "unity_center": {"name": "Unity Center of Tulsa", "url": "https://unitytulsa.org/", "priority": 3, "type": "church", "description": "All welcome, 1830 S Boston Ave"},
+    "unity_midtown": {"name": "Unity of Tulsa-Midtown", "url": "https://tulsaunity.org/", "priority": 3, "type": "church", "description": "Inclusive spiritual community, 3355 S Jamestown Ave"},
+    # Jewish
+    "bnai_emunah": {"name": "Congregation B'nai Emunah", "url": "https://tulsagogue.com/", "priority": 2, "type": "church", "description": "Open and affirming Conservative synagogue, 1719 S Owasso Ave"},
+    "temple_israel": {"name": "Temple Israel", "url": "https://templetulsa.com/", "priority": 2, "type": "church", "description": "Reform Judaism, welcomes LGBTQ Jews, 2004 E 22nd Pl"},
+    # Muslim
+    "muslims4mercy": {"name": "Muslims4Mercy", "url": "", "priority": 3, "type": "church", "description": "LGBTQ-affirming Muslim community, OkEq listed"},
     "qlist_tulsa": {
         "name": "QLIST Tulsa",
         "url": "https://qlist.app/cities/Oklahoma/Tulsa/163",
