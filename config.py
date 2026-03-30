@@ -223,6 +223,151 @@ SOURCES = {
         "type": "arts",
         "description": "Queer art exhibitions, fashion shows, film screenings",
     },
+    # ── Bars & Nightlife (expanded) ────────────────────────────────────
+    "st_vitus": {
+        "name": "St. Vitus",
+        "url": "https://www.stvitustulsa.com",
+        "priority": 3,
+        "type": "bar",
+        "description": "Late-night electronic/techno club, queer-friendly, craft cocktails",
+    },
+    "473_bar": {
+        "name": "(473)",
+        "url": "",
+        "priority": 3,
+        "type": "bar",
+        "description": "Queer-friendly bar in Kendall-Whittier, local beer, live music",
+    },
+    "broadway_clubhouse": {
+        "name": "The Broadway Clubhouse",
+        "url": "",
+        "priority": 3,
+        "type": "bar",
+        "description": "Theater community bar, proceeds support OkEq",
+    },
+    # ── Drag (expanded) ───────────────────────────────────────────────
+    "diva_royale": {
+        "name": "Diva Royale Tulsa",
+        "url": "https://www.divaroyale.com/dragquenshow-locations.html",
+        "priority": 2,
+        "type": "arts",
+        "description": "Fri/Sat evening 7pm, Sat/Sun brunch, celebrity drag impersonations",
+    },
+    "tulsa_house_of_drag": {
+        "name": "Tulsa House of Drag",
+        "url": "https://www.tulsahouseofdrag.com/",
+        "priority": 2,
+        "type": "arts",
+        "description": "Tulsa drag scene platform, show listings, performer directory",
+    },
+    "dragnificent_majestic": {
+        "name": "DRAGNIFICENT! at Club Majestic",
+        "url": "https://downtowntulsa.com/do/dragnificent-at-club-majestic-1",
+        "priority": 2,
+        "type": "arts",
+        "description": "Every Thursday drag show hosted by Shanel Sterling",
+    },
+    # ── Sports (expanded) ─────────────────────────────────────────────
+    "pride_sports_kickball": {
+        "name": "Pride Sports Tulsa / Gay Kickball",
+        "url": "https://pridesportstulsa.leagueapps.com/leagues",
+        "priority": 2,
+        "type": "sports",
+        "description": "LGBTQ+ kickball leagues",
+    },
+    "tulsa_metro_softball": {
+        "name": "Tulsa Metro Softball League",
+        "url": "",
+        "priority": 2,
+        "type": "sports",
+        "description": "LGBTQ+ softball league",
+    },
+    # ── Two-Spirit & Native LGBTQ+ ────────────────────────────────────
+    "antss": {
+        "name": "All Nations Two-Spirit Society",
+        "url": "https://www.facebook.com/allnations2S/",
+        "priority": 1,
+        "type": "priority",
+        "description": "Indigenous Two-Spirit advocacy, annual festival, community events",
+    },
+    # ── Trans Support ─────────────────────────────────────────────────
+    "taco_ok": {
+        "name": "Trans Advocacy Coalition of Oklahoma (TACO)",
+        "url": "https://transadvocacyok.org/events",
+        "priority": 2,
+        "type": "community",
+        "description": "Weekly meetings, advocacy, Trans Day of Remembrance, youth programs",
+    },
+    "okeq_gender_support": {
+        "name": "OkEq Gender Outreach Support Group",
+        "url": "https://okeq.org/transgender-support/",
+        "priority": 2,
+        "type": "community",
+        "description": "Every Wednesday 7-9pm at Equality Center for trans/intersex 18+",
+    },
+    # ── Professional ──────────────────────────────────────────────────
+    "equality_business_alliance": {
+        "name": "Equality Business Alliance",
+        "url": "https://okeq.org/eba/",
+        "priority": 2,
+        "type": "community",
+        "description": "LGBTQ+ business networking, last Thursday monthly 6-7:30pm",
+    },
+    # ── Youth ─────────────────────────────────────────────────────────
+    "okeq_youth": {
+        "name": "OkEq Youth Programs",
+        "url": "https://okeq.org/youth/",
+        "priority": 2,
+        "type": "community",
+        "description": "2SLGBTQIA+ youth resources and programming",
+    },
+    # ── Book Clubs ────────────────────────────────────────────────────
+    "queerlit_collective": {
+        "name": "QueerLit Collective",
+        "url": "https://www.facebook.com/queerlitcollective",
+        "priority": 2,
+        "type": "arts",
+        "description": "Library openings, banned book events, queer literature access",
+    },
+    # ── Queer-friendly Businesses ─────────────────────────────────────
+    "fulton_street_books": {
+        "name": "Fulton Street Books & Coffee",
+        "url": "",
+        "priority": 3,
+        "type": "community",
+        "description": "Community bookstore, BIPOC and marginalized authors, inclusive space",
+    },
+    "magic_city_books": {
+        "name": "Magic City Books",
+        "url": "",
+        "priority": 3,
+        "type": "community",
+        "description": "Independent bookstore in Arts District, hosts queer author events",
+    },
+    # ── Theater & Film ────────────────────────────────────────────────
+    "tulsa_fringe": {
+        "name": "Tulsa Fringe Festival",
+        "url": "https://okeq.org/fringe/",
+        "priority": 1,
+        "type": "arts",
+        "description": "OkEq-produced boundary-pushing theater, comedy, dance, music",
+    },
+    # ── Outdoor / Camping ─────────────────────────────────────────────
+    "camp_willowswish": {
+        "name": "Camp Willowswish",
+        "url": "https://willowswish.org/",
+        "priority": 2,
+        "type": "community",
+        "description": "Annual September LGBTQ camping event at Lake Murray, since 1969",
+    },
+    # ── Additional Aggregators ────────────────────────────────────────
+    "gayout_tulsa": {
+        "name": "GayOut Tulsa",
+        "url": "https://www.gayout.com/tulsa-ok-gay-events-hotspots-the-ultimate-guide",
+        "priority": 3,
+        "type": "aggregator",
+        "description": "Events and hotspots guide",
+    },
 }
 
 # ── Posting Schedule ─────────────────────────────────────────────────────

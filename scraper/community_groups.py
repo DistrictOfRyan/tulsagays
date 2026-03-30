@@ -29,7 +29,13 @@ class CommunityGroupsScraper(BaseScraper):
         "elote_events": "https://www.elotetulsa.com/events",
         "green_country_bears": "https://greencountrybears.com/",
         "pflag_tulsa": "https://tulsapflag.org/",
-        "council_oak_chorus": "https://www.counciloakchorus.org/",
+        "council_oak_chorus": "https://www.counciloak.org/concerts",
+        "taco_ok": "https://transadvocacyok.org/events",
+        "hotmess_sports": "https://www.hotmesssports.com/tulsa",
+        "pride_sports": "https://pridesportstulsa.leagueapps.com/leagues",
+        "tulsa_house_of_drag": "https://www.tulsahouseofdrag.com/",
+        "diva_royale": "https://www.divaroyale.com/dragquenshow-locations.html",
+        "queerlit_collective": "https://www.facebook.com/queerlitcollective",
     }
 
     def scrape(self) -> List[Dict]:
@@ -172,6 +178,48 @@ class CommunityGroupsScraper(BaseScraper):
                     description="Monthly drag brunch with themed shows. All ages. Two seatings. Delicious food and fierce performances.",
                     url="https://www.elotetulsa.com/events",
                     priority=2,
+                ))
+
+            # Equality Business Alliance: last Thursday, 6-7:30pm
+            # Find last Thursday of the month
+            import calendar
+            last_day = calendar.monthrange(d.year, d.month)[1]
+            last_date = datetime(d.year, d.month, last_day)
+            while last_date.weekday() != 3:  # Thursday
+                last_date -= timedelta(days=1)
+            if d.date() == last_date.date():
+                events.append(self.make_event(
+                    name="Equality Business Alliance Networking Mixer",
+                    date=date_str,
+                    time="6:00 PM - 7:30 PM",
+                    venue="Dennis R. Neill Equality Center, 621 E 4th St",
+                    description="Monthly LGBTQ+ business networking mixer. Make connections, build community, grow your business.",
+                    url="https://okeq.org/eba/",
+                    priority=2,
+                ))
+
+            # OkEq Gender Outreach Support: every Wednesday, 7-9pm
+            if day_of_week == 2:
+                events.append(self.make_event(
+                    name="Gender Outreach Support Group",
+                    date=date_str,
+                    time="7:00 PM - 9:00 PM",
+                    venue="Dennis R. Neill Equality Center, 621 E 4th St",
+                    description="Weekly support group for trans, intersex, and gender-diverse adults 18+. Safe space, real talk.",
+                    url="https://okeq.org/transgender-support/",
+                    priority=2,
+                ))
+
+            # DRAGNIFICENT: every Thursday at Club Majestic
+            if day_of_week == 3:
+                events.append(self.make_event(
+                    name="DRAGNIFICENT! Drag Show",
+                    date=date_str,
+                    time="10:00 PM",
+                    venue="Club Majestic",
+                    description="Weekly Thursday drag show hosted by the legendary Shanel Sterling. High energy, great performances.",
+                    url="https://downtowntulsa.com/do/dragnificent-at-club-majestic-1",
+                    priority=3,
                 ))
 
         return events
