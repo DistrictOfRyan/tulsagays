@@ -136,13 +136,20 @@ a:hover { color: var(--gold-light); }
     border-radius: 50%;
 }
 .logo-text {
-    font-family: 'Poiret One', 'Segoe UI', sans-serif;
+    font-family: 'Cinzel', 'Poiret One', serif;
     font-size: 1.8rem;
     letter-spacing: 3px;
     -webkit-text-stroke: 0.5px;
 }
 .logo-text .tulsa { color: #FFFFFF; -webkit-text-stroke-color: #FFFFFF; }
 .logo-text .gays { color: #9B1E5F; -webkit-text-stroke-color: #9B1E5F; }
+.logo-flamingo {
+    height: 2.2rem;
+    width: auto;
+    vertical-align: middle;
+    margin: 0 2px;
+    opacity: 0.9;
+}
 .logo-tagline {
     font-size: 0.7rem;
     color: var(--text-muted);
