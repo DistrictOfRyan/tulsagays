@@ -1,0 +1,17 @@
+{
+  "app_id": "1468075241636760",
+  "page_id": "1086906044497675",
+  "instagram_business_account_id": "17841441654786297",
+  "user_token_note": "Get a fresh user token from Graph API Explorer each session. The user token is used to generate page tokens on the fly.",
+  "how_to_get_page_token": "curl -s 'https://graph.facebook.com/v25.0/1086906044497675?fields=access_token&access_token={USER_TOKEN}' | python3 -c 'import json,sys;print(json.load(sys.stdin)[\"access_token\"])'",
+  "how_to_post_fb": "curl -s -X POST 'https://graph.facebook.com/v25.0/{page_id}/feed' --data-urlencode 'message={text}' -d 'access_token={PAGE_TOKEN}'",
+  "how_to_post_ig": "1) Create container: POST /{ig_account_id}/media with image_url + caption + access_token. 2) Publish: POST /{ig_account_id}/media_publish with creation_id + access_token.",
+  "oauth_url": "https://www.facebook.com/v25.0/dialog/oauth?client_id=1468075241636760&redirect_uri=https://developers.facebook.com/tools/explorer/callback&scope=pages_show_list,pages_manage_posts,pages_read_engagement,instagram_basic,instagram_content_publish&response_type=token&auth_type=rerequest",
+  "quirk": "me/accounts returns empty with Facebook Login for Business. Use direct page query instead: {page_id}?fields=access_token",
+  "last_updated": "2026-03-30T20:45:00-05:00",
+  "last_post": {
+    "date": "2026-03-30",
+    "fb_post_id": "1086906044497675_122097974072853065",
+    "ig_post_id": "18077912186123288"
+  }
+}
