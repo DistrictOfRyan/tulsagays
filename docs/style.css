@@ -144,10 +144,10 @@ a:hover { color: var(--gold-light); }
 .logo-text .tulsa { color: #FFFFFF; -webkit-text-stroke-color: #FFFFFF; }
 .logo-text .gays { color: #9B1E5F; -webkit-text-stroke-color: #9B1E5F; }
 .logo-flamingo {
-    height: 1.4rem;
+    height: 1.2rem;
     width: auto;
     vertical-align: middle;
-    margin: 0 -2px;
+    margin: 0 -4px 0 -3px;
     opacity: 0.85;
 }
 .logo-tagline {
