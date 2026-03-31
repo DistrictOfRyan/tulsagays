@@ -395,7 +395,7 @@ IG_DISPLAY_NAME = "Tulsa Gays"
 IG_BIO = "Your weekly LGBTQ+ event guide for Tulsa \nEvents every Mon & Thu \nHomoHotelHappyHour"
 
 # ── Blog ─────────────────────────────────────────────────────────────────
-BLOG_URL = "https://tulsagays.github.io"
+BLOG_URL = "https://www.tulsagays.com"
 GITHUB_REPO = "tulsagays/tulsagays.github.io"
 
 # ── Hashtags ─────────────────────────────────────────────────────────────
