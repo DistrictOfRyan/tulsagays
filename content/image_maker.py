@@ -1,552 +1,411 @@
-"""Generate Instagram carousel images (1080x1080) for Tulsa Gays event posts.
+"""Generate Instagram carousel images (1080x1080) for Tulsa Gays weekly posts.
 
-Each carousel includes: cover slide, Homo Hotel Happy Hour slide, category
-event slides (community, arts, nightlife), and a closing slide.  Uses
-pride-themed design with dark backgrounds and rainbow accents.
+Brand: Art deco style. Dark background (#0a0a0a), Cinzel headers, Segoe UI Light
+body, pink accent (#9B1E5F), white text, thin line decorators, diamond separators.
+NO rainbow bars. NO pride colors. Clean, elegant, not cluttered.
+
+Slide structure (10 slides):
+  1. Cover: "THIS WEEK" + TULSA [flamingo] GAYS + date range
+  2. Event of the Week (center-aligned spotlight)
+  3-9. Monday through Sunday (3-5 events each, non-bar events first)
+  10. Closing CTA: follow + blog link
 """
 
 import sys
 import os
+import math
 import textwrap
-from datetime import datetime
 from typing import List, Dict, Optional, Tuple
 
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont
 
-# ── Project imports ──────────────────────────────────────────────────────
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
 
-# ── Constants ────────────────────────────────────────────────────────────
+# ── Brand Constants ─────────────────────────────────────────────────────
 SIZE = (1080, 1080)
+BG = (10, 10, 10)
+PINK = (155, 30, 95)
+PINK_LIGHT = (180, 50, 115)
+PINK_DARK = (110, 20, 65)
+WHITE = (255, 255, 255)
+LIGHT = (200, 200, 200)
+MUTED = (130, 130, 130)
+DARK_LINE = (60, 60, 60)
 
-# Colors
-BG_DARK = "#1a1a2e"
-BG_DARK_RGB = (26, 26, 46)
-BG_HOMO_HOTEL = "#2a1a0e"  # warm dark base for the HH slide
-TEXT_WHITE = "#ffffff"
-TEXT_LIGHT = "#e0e0e0"
-TEXT_MUTED = "#aaaaaa"
-GOLD_ACCENT = "#f0c040"
-GOLD_DARK = "#c89b30"
+# Day accent colors (from the blog CSS)
+DAY_COLORS = {
+    "monday": (139, 168, 136),     # sage green
+    "tuesday": (155, 142, 196),    # lavender
+    "wednesday": (184, 134, 11),   # gold
+    "thursday": (196, 132, 139),   # rose
+    "friday": (155, 30, 95),       # pink (brand)
+    "saturday": (155, 142, 196),   # lavender
+    "sunday": (100, 181, 246),     # sky blue
+}
 
-# Pride rainbow colors (top-to-bottom gradient bar order)
-PRIDE_COLORS = [
-    (228, 3, 3),      # red
-    (255, 140, 0),     # orange
-    (255, 237, 0),     # yellow
-    (0, 128, 38),      # green
-    (0, 77, 255),      # blue
-    (117, 7, 135),     # purple
-]
+PAD = 60
+MAX_EVENTS = 5
 
-# Extended pride palette for accent variety
-ACCENT_PINK = "#ff6b9d"
-ACCENT_PURPLE = "#c77dff"
-ACCENT_BLUE = "#48bfe3"
-ACCENT_GREEN = "#56e39f"
-
-# Typography sizing
-FONT_TITLE_SIZE = 72
-FONT_SUBTITLE_SIZE = 42
-FONT_HEADING_SIZE = 48
-FONT_BODY_SIZE = 32
-FONT_SMALL_SIZE = 26
-FONT_TINY_SIZE = 22
-
-RAINBOW_BAR_HEIGHT = 12
-WATERMARK_SIZE = 80
-SLIDE_PADDING = 60
-MAX_EVENTS_PER_SLIDE = 5
+# ── Font paths ──────────────────────────────────────────────────────────
+FONT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fonts")
+WINFONTS = os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "Fonts")
 
 
-# ── Font loading ─────────────────────────────────────────────────────────
-
-def _load_font(name: str, size: int) -> ImageFont.FreeTypeFont:
-    """Load a Windows system font by name, falling back to default."""
-    search_paths = [
-        os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "Fonts"),
-    ]
-    # Map friendly names to filenames
-    font_map = {
-        "impact": "impact.ttf",
-        "arial": "arial.ttf",
-        "arialbd": "arialbd.ttf",
-        "ariali": "ariali.ttf",
-    }
-    filename = font_map.get(name.lower(), f"{name}.ttf")
-    for directory in search_paths:
-        path = os.path.join(directory, filename)
-        if os.path.exists(path):
-            return ImageFont.truetype(path, size)
-    # Last resort
-    try:
-        return ImageFont.truetype(filename, size)
-    except OSError:
-        return ImageFont.load_default()
+def _cinzel(size: int) -> ImageFont.FreeTypeFont:
+    path = os.path.join(FONT_DIR, "Cinzel.ttf")
+    if os.path.exists(path):
+        return ImageFont.truetype(path, size)
+    return ImageFont.load_default()
 
 
-def _font_impact(size: int) -> ImageFont.FreeTypeFont:
-    return _load_font("impact", size)
+def _segoe_light(size: int) -> ImageFont.FreeTypeFont:
+    path = os.path.join(WINFONTS, "segoeuil.ttf")
+    if os.path.exists(path):
+        return ImageFont.truetype(path, size)
+    path2 = os.path.join(WINFONTS, "arial.ttf")
+    if os.path.exists(path2):
+        return ImageFont.truetype(path2, size)
+    return ImageFont.load_default()
 
 
-def _font_arial(size: int) -> ImageFont.FreeTypeFont:
-    return _load_font("arial", size)
+def _segoe_body(size: int) -> ImageFont.FreeTypeFont:
+    return _segoe_light(size)
 
 
-def _font_arial_bold(size: int) -> ImageFont.FreeTypeFont:
-    return _load_font("arialbd", size)
+# ── Drawing helpers ─────────────────────────────────────────────────────
+
+def _new_slide() -> Tuple[Image.Image, ImageDraw.Draw]:
+    img = Image.new("RGB", SIZE, BG)
+    return img, ImageDraw.Draw(img)
 
 
-# ── Drawing helpers ──────────────────────────────────────────────────────
-
-def _new_slide(bg_color: str = BG_DARK) -> Tuple[Image.Image, ImageDraw.Draw]:
-    """Create a blank 1080x1080 slide with the given background."""
-    img = Image.new("RGB", SIZE, bg_color)
-    draw = ImageDraw.Draw(img)
-    return img, draw
+def _line(draw, y, margin=PAD):
+    draw.line([(margin, y), (SIZE[0] - margin, y)], fill=PINK, width=1)
 
 
-def _draw_rainbow_bar(draw: ImageDraw.Draw, y: int = 0,
-                      height: int = RAINBOW_BAR_HEIGHT) -> int:
-    """Draw a horizontal rainbow gradient bar across the top. Returns y after bar."""
-    stripe_h = max(height // len(PRIDE_COLORS), 1)
-    for i, color in enumerate(PRIDE_COLORS):
-        y0 = y + i * stripe_h
-        draw.rectangle([0, y0, SIZE[0], y0 + stripe_h], fill=color)
-    return y + len(PRIDE_COLORS) * stripe_h
+def _diamond(draw, cx, cy, size=5):
+    draw.polygon([(cx, cy - size), (cx + size, cy), (cx, cy + size), (cx - size, cy)], fill=PINK)
 
 
-def _draw_rainbow_bar_thick(draw: ImageDraw.Draw, y: int = 0) -> int:
-    """Draw a thicker rainbow bar (for cover slides)."""
-    return _draw_rainbow_bar(draw, y, height=24)
+def _diamond_sep(draw, y):
+    _line(draw, y, margin=350)
+    _diamond(draw, SIZE[0] // 2, y)
+    return y + 20
 
 
-def _add_watermark(img: Image.Image, logo_path: str,
-                   position: str = "bottom_right") -> Image.Image:
-    """Overlay the Tulsa Gays logo as a small semi-transparent watermark."""
-    if not os.path.exists(logo_path):
-        return img
-
-    try:
-        logo = Image.open(logo_path).convert("RGBA")
-        logo = logo.resize((WATERMARK_SIZE, WATERMARK_SIZE), Image.LANCZOS)
-
-        # Make semi-transparent
-        alpha = logo.split()[3]
-        alpha = alpha.point(lambda p: int(p * 0.5))
-        logo.putalpha(alpha)
-
-        margin = 20
-        if position == "bottom_right":
-            pos = (SIZE[0] - WATERMARK_SIZE - margin,
-                   SIZE[1] - WATERMARK_SIZE - margin)
-        elif position == "bottom_left":
-            pos = (margin, SIZE[1] - WATERMARK_SIZE - margin)
-        elif position == "top_right":
-            pos = (SIZE[0] - WATERMARK_SIZE - margin, margin + RAINBOW_BAR_HEIGHT + 4)
-        else:
-            pos = (margin, margin + RAINBOW_BAR_HEIGHT + 4)
-
-        img.paste(logo, pos, logo)
-    except Exception:
-        pass  # Gracefully skip if logo can't be loaded
-
-    return img
-
-
-def _draw_text_centered(draw: ImageDraw.Draw, text: str,
-                        y: int, font: ImageFont.FreeTypeFont,
-                        fill: str = TEXT_WHITE) -> int:
-    """Draw centered text. Returns the y position after the text."""
-    bbox = draw.textbbox((0, 0), text, font=font)
-    tw = bbox[2] - bbox[0]
-    th = bbox[3] - bbox[1]
-    x = (SIZE[0] - tw) // 2
+def _centered(draw, text, y, font, fill=WHITE):
+    tw = draw.textlength(text, font=font)
+    x = (SIZE[0] - tw) / 2
     draw.text((x, y), text, font=font, fill=fill)
-    return y + th
+    bbox = draw.textbbox((0, 0), text, font=font)
+    return y + (bbox[3] - bbox[1])
 
 
-def _draw_text_wrapped(draw: ImageDraw.Draw, text: str,
-                       x: int, y: int, max_width: int,
-                       font: ImageFont.FreeTypeFont,
-                       fill: str = TEXT_WHITE,
-                       line_spacing: int = 6) -> int:
-    """Draw word-wrapped text within max_width. Returns y after last line."""
-    # Estimate chars per line from average char width
-    avg_char_w = draw.textlength("M", font=font)
-    chars_per_line = max(int(max_width / avg_char_w), 10)
-    lines = textwrap.wrap(text, width=chars_per_line)
+def _wrapped_centered(draw, text, y, font, fill=LIGHT, max_width=SIZE[0] - 2 * PAD):
+    avg_w = draw.textlength("M", font=font)
+    chars = max(int(max_width / avg_w), 10)
+    lines = textwrap.wrap(text, width=chars)
     for line in lines:
+        tw = draw.textlength(line, font=font)
+        x = (SIZE[0] - tw) / 2
         bbox = draw.textbbox((0, 0), line, font=font)
-        line_h = bbox[3] - bbox[1]
         draw.text((x, y), line, font=font, fill=fill)
-        y += line_h + line_spacing
+        y += (bbox[3] - bbox[1]) + 6
     return y
 
 
-def _draw_divider(draw: ImageDraw.Draw, y: int,
-                  color: str = "#444466", margin: int = SLIDE_PADDING) -> int:
-    """Draw a subtle horizontal divider line."""
-    draw.line([(margin, y), (SIZE[0] - margin, y)], fill=color, width=1)
-    return y + 12
+def _draw_flamingo(draw, cx, cy, scale=1.0):
+    s = scale
+    head_y = cy - 42 * s
+    head_r = 4.5 * s
+    draw.ellipse([(cx - head_r, head_y - head_r), (cx + head_r, head_y + head_r)], fill=PINK)
+    draw.line([(cx + head_r * 0.6, head_y + 1 * s), (cx + head_r * 2, head_y + 4 * s)], fill=PINK_DARK, width=max(1, int(2 * s)))
+    draw.ellipse([(cx - 1 * s, head_y - 1.5 * s), (cx + 1 * s, head_y + 0.5 * s)], fill=BG)
+    neck_pts = []
+    for t in range(100):
+        tt = t / 99.0
+        x = cx + math.sin(tt * math.pi * 1.1) * 6 * s * (1 - tt * 0.3)
+        y = cy - 5 * s - tt * 38 * s
+        neck_pts.append((x, y))
+    for i in range(len(neck_pts) - 1):
+        p = i / len(neck_pts)
+        w = max(1, int((4 - p * 2.5) * s))
+        r = int(PINK[0] + p * 15)
+        g = int(PINK[1] + p * 10)
+        b = int(PINK[2] + p * 10)
+        draw.line([neck_pts[i], neck_pts[i + 1]], fill=(r, g, b), width=w)
+    body_pts = []
+    for angle in range(0, 360, 2):
+        rad = math.radians(angle)
+        rx = 16 * s * (1 + 0.25 * math.cos(rad))
+        ry = 10 * s
+        x = cx + rx * math.cos(rad)
+        y = cy + 8 * s + ry * math.sin(rad) * 0.6
+        body_pts.append((x, y))
+    draw.polygon(body_pts, fill=PINK)
+    for angle in range(-30, 120, 3):
+        rad = math.radians(angle)
+        r = 12 * s
+        x = cx + 2 * s + r * math.cos(rad) * 0.8
+        y = cy + 6 * s + r * math.sin(rad) * 0.4
+        if angle > -30:
+            prev_rad = math.radians(angle - 3)
+            px = cx + 2 * s + r * math.cos(prev_rad) * 0.8
+            py = cy + 6 * s + r * math.sin(prev_rad) * 0.4
+            draw.line([(px, py), (x, y)], fill=PINK_LIGHT, width=max(1, int(1.5 * s)))
+    tail_bx = cx + 16 * s
+    tail_by = cy + 8 * s
+    for dy, length in [(-3, 14), (1, 11)]:
+        draw.line([(tail_bx, tail_by + dy * s), (tail_bx + length * s, tail_by + (dy - 2) * s)], fill=PINK_LIGHT, width=max(1, int(1.2 * s)))
+    lt = cy + 16 * s
+    lb = cy + 38 * s
+    kl = (cx - 3 * s, lt + 10 * s)
+    fl = (cx - 1 * s, lb)
+    draw.line([(cx - 2 * s, lt), kl], fill=PINK_DARK, width=max(1, int(1.8 * s)))
+    draw.line([kl, fl], fill=PINK_DARK, width=max(1, int(1.5 * s)))
+    draw.line([fl, (fl[0] + 4 * s, fl[1])], fill=PINK_DARK, width=max(1, int(1.2 * s)))
+    kr = (cx + 1 * s, lt + 8 * s)
+    fr = (cx + 4 * s, lt + 18 * s)
+    draw.line([(cx + 1 * s, lt), kr], fill=PINK_DARK, width=max(1, int(1.5 * s)))
+    draw.line([kr, fr], fill=PINK_DARK, width=max(1, int(1.2 * s)))
 
 
-def _draw_event_block(draw: ImageDraw.Draw, event: Dict,
-                      x: int, y: int, max_width: int,
-                      name_color: str = ACCENT_PINK) -> int:
-    """Draw a single event block (name, date/time, venue, url). Returns y after block."""
-    font_name = _font_arial_bold(FONT_BODY_SIZE)
-    font_detail = _font_arial(FONT_SMALL_SIZE)
+# ── Slide Generators ────────────────────────────────────────────────────
 
-    # Event name
-    name = event.get("name", "Untitled Event")
-    y = _draw_text_wrapped(draw, name, x, y, max_width, font_name, fill=name_color)
-    y += 2
+def make_cover_slide(date_range: str) -> Image.Image:
+    img, draw = _new_slide()
+    _line(draw, 80)
 
-    # Date & time
-    date_str = event.get("date", "")
-    time_str = event.get("time", "")
-    dt_line = " | ".join(filter(None, [date_str, time_str]))
-    if dt_line:
-        draw.text((x, y), dt_line, font=font_detail, fill=TEXT_LIGHT)
-        bbox = draw.textbbox((0, 0), dt_line, font=font_detail)
-        y += (bbox[3] - bbox[1]) + 4
+    tag_font = _cinzel(22)
+    tag = "TULSA'S QUEER EVENT GUIDE"
+    _centered(draw, tag, 95, tag_font, MUTED)
 
-    # Venue / location
-    venue = event.get("venue", event.get("location", ""))
-    if venue:
-        venue_icon = f"@ {venue}"
-        draw.text((x, y), venue_icon, font=font_detail, fill=TEXT_MUTED)
-        bbox = draw.textbbox((0, 0), venue_icon, font=font_detail)
-        y += (bbox[3] - bbox[1]) + 4
+    # TULSA [flamingo] GAYS
+    title_font = _cinzel(72)
+    tulsa_w = draw.textlength("TULSA", font=title_font)
+    gays_w = draw.textlength("GAYS", font=title_font)
+    gap = 55
+    total = tulsa_w + gap + gays_w
+    x = (SIZE[0] - total) / 2
+    y_t = 145
+    draw.text((x, y_t), "TULSA", font=title_font, fill=WHITE)
+    _draw_flamingo(draw, x + tulsa_w + gap / 2, y_t + 50, scale=1.1)
+    draw.text((x + tulsa_w + gap, y_t), "GAYS", font=title_font, fill=PINK)
 
-    # Description / pitch (brief exciting blurb)
-    desc = event.get("description", "")
-    if desc:
-        # Truncate to ~80 chars for slide readability
-        if len(desc) > 85:
-            desc = desc[:82].rsplit(" ", 1)[0] + "..."
-        font_desc = _font_arial(FONT_SMALL_SIZE)
-        y = _draw_text_wrapped(draw, desc, x, y, max_width, font_desc, fill=TEXT_LIGHT)
-        y += 4
-
-    # URL
-    url = event.get("url", event.get("link", ""))
-    if url:
-        # Shorten long URLs for readability
-        display_url = url
-        if len(display_url) > 50:
-            display_url = display_url[:47] + "..."
-        font_url = _font_arial(FONT_TINY_SIZE)
-        draw.text((x, y), display_url, font=font_url, fill=ACCENT_BLUE)
-        bbox = draw.textbbox((0, 0), display_url, font=font_url)
-        y += (bbox[3] - bbox[1]) + 4
-
-    return y + 10  # padding after block
-
-
-# ── Slide generators ─────────────────────────────────────────────────────
-
-def make_cover_slide(post_type: str, date_range: str) -> Image.Image:
-    """Create the cover slide for a carousel.
-
-    Args:
-        post_type: "weekday" or "weekend"
-        date_range: e.g. "Mar 31 - Apr 2"
-    """
-    img, draw = _new_slide(BG_DARK)
-    y = _draw_rainbow_bar_thick(draw, 0)
-
-    # Large centered title
-    title_font = _font_impact(FONT_TITLE_SIZE)
-    label = "WEEKDAY EVENTS" if post_type == "weekday" else "WEEKEND EVENTS"
-
-    y += 180
-    y = _draw_text_centered(draw, label, y, title_font, TEXT_WHITE)
+    _line(draw, 250)
 
     # Date range
-    y += 30
-    range_font = _font_arial_bold(FONT_SUBTITLE_SIZE)
-    y = _draw_text_centered(draw, date_range, y, range_font, ACCENT_PURPLE)
+    date_font = _cinzel(28)
+    _centered(draw, date_range, 275, date_font, WHITE)
 
-    # Decorative rainbow stripe in the middle area
-    y += 50
-    _draw_rainbow_bar(draw, y, height=6)
-    y += 30
+    _diamond_sep(draw, 330)
 
-    # Branding
-    brand_font = _font_impact(FONT_SUBTITLE_SIZE)
-    y = _draw_text_centered(draw, "TULSA GAYS", y + 20, brand_font, ACCENT_PINK)
-    y += 10
-    tagline_font = _font_arial(FONT_SMALL_SIZE)
-    _draw_text_centered(draw, "Your Weekly LGBTQ+ Event Guide", y,
-                        tagline_font, TEXT_MUTED)
+    # Tagline
+    tagline_font = _segoe_light(26)
+    _centered(draw, "Nothing to do? Sounds like a straight person problem.", 355, tagline_font, MUTED)
 
-    # Bottom rainbow bar
-    _draw_rainbow_bar(draw, SIZE[1] - RAINBOW_BAR_HEIGHT, RAINBOW_BAR_HEIGHT)
-
-    img = _add_watermark(img, config.LOGO_PATH, "bottom_right")
+    _line(draw, 1000)
     return img
 
 
-def make_homo_hotel_slide(event: Dict) -> Image.Image:
-    """Create the Homo Hotel Happy Hour feature slide (always slide 2).
+def make_event_of_week_slide(event: Dict) -> Image.Image:
+    img, draw = _new_slide()
+    _line(draw, 80)
 
-    Uses warm gold/amber tones to make it visually distinct.
-    """
-    img, draw = _new_slide(BG_HOMO_HOTEL)
+    label_font = _cinzel(22)
+    _centered(draw, "FEATURED EVENT OF THE WEEK", 100, label_font, PINK)
 
-    # Gold-toned rainbow bar
-    y = _draw_rainbow_bar(draw, 0)
+    # Event name
+    name = event.get("name", "")
+    name_font = _cinzel(44)
+    y = 170
+    # Handle long names by wrapping
+    y = _wrapped_centered(draw, name.upper(), y, name_font, WHITE)
 
-    # Gold accent line
-    draw.rectangle([0, y, SIZE[0], y + 4], fill=GOLD_ACCENT)
-    y += 4
-
-    y += 60
-
-    # Title
-    title_font = _font_impact(60)
-    y = _draw_text_centered(draw, "HOMO HOTEL", y, title_font, GOLD_ACCENT)
-    y += 5
-    y = _draw_text_centered(draw, "HAPPY HOUR", y, title_font, GOLD_ACCENT)
-
-    # Decorative gold divider
+    y += 10
+    _diamond_sep(draw, y)
     y += 25
-    bar_w = 300
-    bar_x = (SIZE[0] - bar_w) // 2
-    draw.rectangle([bar_x, y, bar_x + bar_w, y + 3], fill=GOLD_DARK)
-    y += 30
 
-    # Event details
-    detail_font = _font_arial_bold(FONT_BODY_SIZE)
-    small_font = _font_arial(FONT_BODY_SIZE)
-    label_font = _font_arial(FONT_SMALL_SIZE)
-
+    # Details
+    detail_font = _segoe_light(26)
     date_str = event.get("date", "")
     time_str = event.get("time", "")
+    dt = "  ·  ".join(filter(None, [date_str, time_str]))
+    if dt:
+        _centered(draw, dt, y, detail_font, WHITE)
+        y += 35
+
     venue = event.get("venue", event.get("location", ""))
-    description = event.get("description", "")
-
-    if date_str:
-        y = _draw_text_centered(draw, date_str, y, detail_font, TEXT_WHITE)
-        y += 12
-    if time_str:
-        y = _draw_text_centered(draw, time_str, y, small_font, TEXT_LIGHT)
-        y += 12
     if venue:
-        y += 8
-        y = _draw_text_centered(draw, venue, y, detail_font, GOLD_ACCENT)
-        y += 12
-    if description:
-        y += 10
-        desc_font = _font_arial(FONT_SMALL_SIZE)
-        center_x = SLIDE_PADDING + 20
-        max_w = SIZE[0] - 2 * (SLIDE_PADDING + 20)
-        y = _draw_text_wrapped(draw, description, center_x, y, max_w,
-                               desc_font, TEXT_LIGHT)
+        _centered(draw, venue, y, detail_font, PINK)
+        y += 45
 
-    # URL if present
-    url = event.get("url", event.get("link", ""))
+    # Description
+    desc = event.get("description", "")
+    if desc:
+        desc_font = _segoe_body(22)
+        y = _wrapped_centered(draw, desc, y, desc_font, LIGHT)
+        y += 15
+
+    _line(draw, y + 10)
+
+    # Link
+    url = event.get("url", "")
     if url:
-        y += 16
-        url_font = _font_arial(FONT_TINY_SIZE)
-        y = _draw_text_centered(draw, url, y, url_font, ACCENT_BLUE)
+        url_font = _segoe_body(20)
+        _centered(draw, url, y + 30, url_font, PINK)
 
-    # Bottom gold accent
-    draw.rectangle([0, SIZE[1] - 6, SIZE[0], SIZE[1]], fill=GOLD_DARK)
-    _draw_rainbow_bar(draw, SIZE[1] - 6 - RAINBOW_BAR_HEIGHT, RAINBOW_BAR_HEIGHT)
-
-    img = _add_watermark(img, config.LOGO_PATH, "bottom_right")
+    _line(draw, 1000)
     return img
 
 
-def make_category_slide(category_name: str, events: List[Dict]) -> Image.Image:
-    """Create a slide showing events for one category.
+def make_day_slide(day_name: str, date_str: str, events: List[Dict]) -> Image.Image:
+    img, draw = _new_slide()
+    day_color = DAY_COLORS.get(day_name.lower(), PINK)
 
-    Args:
-        category_name: e.g. "Community Events", "Arts & Culture", "Nightlife"
-        events: list of event dicts with keys: name, date, time, venue, url
-    """
-    img, draw = _new_slide(BG_DARK)
-    y = _draw_rainbow_bar(draw, 0)
+    _line(draw, 60)
 
-    # Category header
-    y += 30
-    header_font = _font_impact(FONT_HEADING_SIZE)
+    # Day header
+    day_font = _cinzel(52)
+    _centered(draw, day_name.upper(), 85, day_font, day_color)
 
-    # Pick accent color based on category
-    cat_lower = category_name.lower()
-    if "community" in cat_lower:
-        header_color = ACCENT_GREEN
-        event_name_color = ACCENT_GREEN
-    elif "art" in cat_lower or "culture" in cat_lower:
-        header_color = ACCENT_PURPLE
-        event_name_color = ACCENT_PURPLE
-    elif "nightlife" in cat_lower or "bar" in cat_lower:
-        header_color = ACCENT_PINK
-        event_name_color = ACCENT_PINK
-    else:
-        header_color = ACCENT_BLUE
-        event_name_color = ACCENT_BLUE
+    date_font = _segoe_light(24)
+    _centered(draw, date_str, 145, date_font, MUTED)
 
-    y = _draw_text_centered(draw, category_name.upper(), y, header_font, header_color)
-    y += 15
-    y = _draw_divider(draw, y, color=header_color)
-    y += 10
+    draw.line([(PAD, 185), (SIZE[0] - PAD, 185)], fill=day_color, width=1)
+    y = 210
 
-    # Render events (cap at MAX_EVENTS_PER_SLIDE)
-    x = SLIDE_PADDING
-    max_w = SIZE[0] - 2 * SLIDE_PADDING
-    displayed = events[:MAX_EVENTS_PER_SLIDE]
+    # Events (3-5 per slide)
+    name_font = _cinzel(28)
+    venue_font = _segoe_light(20)
+    desc_font = _segoe_body(20)
+    time_font = _segoe_light(22)
 
-    for i, event in enumerate(displayed):
-        y = _draw_event_block(draw, event, x, y, max_w,
-                              name_color=event_name_color)
+    displayed = events[:MAX_EVENTS]
+    for i, ev in enumerate(displayed):
+        # Time
+        t = ev.get("time", "")
+        if t:
+            _centered(draw, t, y, time_font, day_color)
+            y += 28
+
+        # Event name
+        ename = ev.get("name", "")
+        y = _wrapped_centered(draw, ename, y, name_font, WHITE, max_width=SIZE[0] - 2 * PAD - 40)
+        y += 4
+
+        # Venue
+        venue = ev.get("venue", ev.get("location", ""))
+        if venue:
+            _centered(draw, venue, y, venue_font, MUTED)
+            y += 24
+
+        # Description (1-2 sentences, hyped)
+        desc = ev.get("description", "")
+        if desc:
+            if len(desc) > 100:
+                desc = desc[:97].rsplit(" ", 1)[0] + "..."
+            y = _wrapped_centered(draw, desc, y, desc_font, LIGHT, max_width=SIZE[0] - 2 * PAD - 60)
+
+        y += 8
+
+        # Divider between events
         if i < len(displayed) - 1:
-            y = _draw_divider(draw, y, color="#333355")
+            draw.line([(300, y), (SIZE[0] - 300, y)], fill=DARK_LINE, width=1)
+            y += 16
 
-        # Safety: stop if we're running out of vertical space
-        if y > SIZE[1] - 120:
+        if y > SIZE[1] - 100:
             break
 
-    # If events were truncated, note it
-    if len(events) > MAX_EVENTS_PER_SLIDE:
-        note_font = _font_arial(FONT_TINY_SIZE)
-        note = f"+{len(events) - MAX_EVENTS_PER_SLIDE} more - see blog for full list"
-        _draw_text_centered(draw, note, SIZE[1] - 80, note_font, TEXT_MUTED)
+    if len(events) > MAX_EVENTS:
+        more_font = _segoe_light(18)
+        note = f"+{len(events) - MAX_EVENTS} more on the blog"
+        _centered(draw, note, SIZE[1] - 80, more_font, MUTED)
 
-    # Bottom bar
-    _draw_rainbow_bar(draw, SIZE[1] - RAINBOW_BAR_HEIGHT, RAINBOW_BAR_HEIGHT)
-
-    img = _add_watermark(img, config.LOGO_PATH, "bottom_right")
+    _line(draw, SIZE[0] - 60)
     return img
 
 
 def make_closing_slide() -> Image.Image:
-    """Create the closing CTA slide with follow prompt and hashtags."""
-    img, draw = _new_slide(BG_DARK)
-    y = _draw_rainbow_bar_thick(draw, 0)
+    img, draw = _new_slide()
+    _line(draw, 80)
 
-    y += 160
+    y = 200
+    follow_font = _cinzel(60)
+    _centered(draw, "FOLLOW", y, follow_font, WHITE)
+    y += 80
 
-    # Follow CTA
-    cta_font = _font_impact(FONT_TITLE_SIZE)
-    y = _draw_text_centered(draw, "FOLLOW", y, cta_font, TEXT_WHITE)
-    y += 10
+    handle_font = _cinzel(52)
+    _centered(draw, f"@{config.IG_HANDLE}", y, handle_font, PINK)
+    y += 70
 
-    handle_font = _font_impact(64)
-    y = _draw_text_centered(draw, f"@{config.IG_HANDLE}", y, handle_font, ACCENT_PINK)
-    y += 15
+    sub_font = _segoe_light(28)
+    _centered(draw, "for weekly updates", y, sub_font, LIGHT)
+    y += 60
 
-    sub_font = _font_arial(FONT_SUBTITLE_SIZE)
-    y = _draw_text_centered(draw, "for weekly updates", y, sub_font, TEXT_LIGHT)
-
-    # Decorative divider
-    y += 40
-    _draw_rainbow_bar(draw, y, height=6)
+    _diamond_sep(draw, y)
     y += 30
 
-    # Blog URL
-    url_font = _font_arial_bold(FONT_BODY_SIZE)
-    y = _draw_text_centered(draw, config.BLOG_URL, y, url_font, ACCENT_BLUE)
+    url_font = _cinzel(26)
+    _centered(draw, "WWW.TULSAGAYS.COM", y, url_font, PINK)
+    y += 50
 
-    # Hashtags (pick a subset to fit)
-    y += 40
-    tag_font = _font_arial(FONT_TINY_SIZE)
-    tag_line = " ".join(config.HASHTAGS[:8])
-    _draw_text_wrapped(draw, tag_line, SLIDE_PADDING, y,
-                       SIZE[0] - 2 * SLIDE_PADDING, tag_font, TEXT_MUTED)
+    tagline_font = _segoe_light(24)
+    _centered(draw, "Nothing to do? Sounds like a straight person problem.", y, tagline_font, MUTED)
 
-    # Bottom bar
-    _draw_rainbow_bar(draw, SIZE[1] - RAINBOW_BAR_HEIGHT, RAINBOW_BAR_HEIGHT)
+    # Hashtags
+    y += 60
+    tag_font = _segoe_light(18)
+    tags = " ".join(config.HASHTAGS[:8])
+    _wrapped_centered(draw, tags, y, tag_font, MUTED)
 
-    img = _add_watermark(img, config.LOGO_PATH, "bottom_right")
+    _line(draw, 1000)
     return img
 
 
-# ── Main carousel builders ───────────────────────────────────────────────
+# ── Main carousel builder ───────────────────────────────────────────────
 
-def create_carousel(events_by_category: Dict[str, List[Dict]],
-                    post_type: str,
-                    date_range: str,
-                    logo_path: Optional[str] = None) -> List[Image.Image]:
-    """Build a full carousel of slides from categorized events.
+def create_weekly_carousel(
+    event_of_week: Dict,
+    daily_events: Dict[str, Tuple[str, List[Dict]]],
+    date_range: str,
+) -> List[Image.Image]:
+    """Build a full 10-slide weekly carousel.
 
     Args:
-        events_by_category: dict mapping category keys to lists of event dicts.
-            Expected keys: "homo_hotel", "community", "arts", "nightlife"
-            Each event dict should have: name, date, time, venue, url
-            The "homo_hotel" value should be a single-item list.
-        post_type: "weekday" or "weekend"
-        date_range: human-readable date range, e.g. "Mar 31 - Apr 4"
-        logo_path: path to logo PNG (defaults to config.LOGO_PATH)
+        event_of_week: dict with name, date, time, venue, description, url
+        daily_events: dict mapping day name -> (date_str, [events])
+            e.g. {"monday": ("March 31", [...]), "tuesday": ("April 1", [...])}
+        date_range: e.g. "March 30 - April 5, 2026"
 
     Returns:
-        List of PIL Image objects (one per slide).
+        List of PIL Image objects.
     """
-    if logo_path:
-        # Temporarily override for this run
-        original = config.LOGO_PATH
-        config.LOGO_PATH = logo_path
+    slides = []
 
-    slides: List[Image.Image] = []
+    # 1. Cover
+    slides.append(make_cover_slide(date_range))
 
-    # 1. Cover slide
-    slides.append(make_cover_slide(post_type, date_range))
+    # 2. Event of the Week
+    slides.append(make_event_of_week_slide(event_of_week))
 
-    # 2. Homo Hotel Happy Hour (ALWAYS second)
-    hh_events = events_by_category.get("homo_hotel", [])
-    if hh_events:
-        slides.append(make_homo_hotel_slide(hh_events[0]))
-    else:
-        # Create a placeholder HH slide even if no event data yet
-        placeholder = {
-            "name": "Homo Hotel Happy Hour",
-            "date": "Check @tulsagays for details",
-            "time": "",
-            "venue": "TBA",
-            "description": "The signature weekly happy hour for the Tulsa LGBTQ+ community.",
-        }
-        slides.append(make_homo_hotel_slide(placeholder))
+    # 3-9. Daily slides
+    days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    for day in days:
+        if day in daily_events:
+            date_str, evts = daily_events[day]
+            if evts:
+                slides.append(make_day_slide(day, date_str, evts))
 
-    # 3. Community Events
-    community = events_by_category.get("community", [])
-    if community:
-        slides.append(make_category_slide("Community Events", community))
-
-    # 4. Arts & Culture
-    arts = events_by_category.get("arts", [])
-    if arts:
-        slides.append(make_category_slide("Arts & Culture", arts))
-
-    # 5. Nightlife (only if special events exist)
-    nightlife = events_by_category.get("nightlife", [])
-    if nightlife:
-        slides.append(make_category_slide("Nightlife", nightlife))
-
-    # 6. Closing slide
+    # 10. Closing
     slides.append(make_closing_slide())
-
-    if logo_path:
-        config.LOGO_PATH = original
 
     return slides
 
 
 def save_carousel(images: List[Image.Image], output_dir: str,
                   prefix: str = "slide") -> List[str]:
-    """Save a list of PIL Images to disk as numbered PNGs.
-
-    Args:
-        images: list of PIL Image objects
-        output_dir: directory to save into (created if needed)
-        prefix: filename prefix, e.g. "weekday_2026w13"
-
-    Returns:
-        List of saved file paths.
-    """
     os.makedirs(output_dir, exist_ok=True)
     paths = []
     for i, img in enumerate(images, start=1):
@@ -555,53 +414,3 @@ def save_carousel(images: List[Image.Image], output_dir: str,
         img.save(filepath, "PNG", optimize=True)
         paths.append(filepath)
     return paths
-
-
-# ── CLI quick test ───────────────────────────────────────────────────────
-
-if __name__ == "__main__":
-    print("Generating sample carousel...")
-
-    sample_events = {
-        "homo_hotel": [{
-            "name": "Homo Hotel Happy Hour",
-            "date": "Wednesday, Apr 2",
-            "time": "5:00 PM - 8:00 PM",
-            "venue": "The Venue, 123 Main St",
-            "description": "Join us for the weekly happy hour!",
-            "url": "https://tulsagays.github.io/events",
-        }],
-        "community": [
-            {
-                "name": "OKEQ Support Group",
-                "date": "Tuesday, Apr 1",
-                "time": "6:30 PM",
-                "venue": "Dennis R. Neill Equality Center",
-                "url": "https://www.okeq.org/events",
-            },
-            {
-                "name": "All Souls LGBTQ Fellowship",
-                "date": "Wednesday, Apr 2",
-                "time": "7:00 PM",
-                "venue": "All Souls Unitarian Church",
-                "url": "https://www.allsoulschurch.org",
-            },
-        ],
-        "arts": [
-            {
-                "name": "Drag Bingo Night",
-                "date": "Thursday, Apr 3",
-                "time": "8:00 PM",
-                "venue": "Twisted Arts Tulsa",
-                "url": "https://www.twistedartstulsa.com",
-            },
-        ],
-        "nightlife": [],
-    }
-
-    slides = create_carousel(sample_events, "weekday", "Mar 31 - Apr 4")
-    out_dir = os.path.join(config.DATA_DIR, "sample_carousel")
-    paths = save_carousel(slides, out_dir, prefix="sample")
-    print(f"Saved {len(paths)} slides to {out_dir}/")
-    for p in paths:
-        print(f"  {p}")
