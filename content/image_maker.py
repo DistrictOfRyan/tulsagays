@@ -308,6 +308,14 @@ def make_day_slide(day_name: str, date_str: str, events: List[Dict]) -> Image.Im
                 desc = desc[:97].rsplit(" ", 1)[0] + "..."
             y = _wrapped_centered(draw, desc, y, desc_font, LIGHT, max_width=SIZE[0] - 2 * PAD - 60)
 
+        # Event URL
+        url = ev.get("url", "")
+        if url:
+            url_font = _segoe_light(16)
+            y += 4
+            _centered(draw, url, y, url_font, PINK_LIGHT)
+            y += 20
+
         y += 8
 
         # Divider between events
@@ -318,10 +326,14 @@ def make_day_slide(day_name: str, date_str: str, events: List[Dict]) -> Image.Im
         if y > SIZE[1] - 100:
             break
 
+    # Blog link at bottom of every daily slide
+    blog_font = _segoe_light(20)
+    _centered(draw, "All events at tulsagays.com", SIZE[1] - 80, blog_font, PINK)
+
     if len(events) > MAX_EVENTS:
         more_font = _segoe_light(18)
         note = f"+{len(events) - MAX_EVENTS} more on the blog"
-        _centered(draw, note, SIZE[1] - 80, more_font, MUTED)
+        _centered(draw, note, SIZE[1] - 105, more_font, MUTED)
 
     _line(draw, SIZE[0] - 60)
     return img
