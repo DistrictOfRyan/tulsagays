@@ -25,9 +25,9 @@ import config
 # ── Brand Constants ─────────────────────────────────────────────────────
 SIZE = (1080, 1080)
 BG = (10, 10, 10)
-PINK = (155, 30, 95)
-PINK_LIGHT = (180, 50, 115)
-PINK_DARK = (110, 20, 65)
+PINK = (200, 50, 120)
+PINK_LIGHT = (220, 80, 145)
+PINK_DARK = (160, 30, 85)
 WHITE = (255, 255, 255)
 LIGHT = (200, 200, 200)
 MUTED = (130, 130, 130)
@@ -276,11 +276,11 @@ def make_day_slide(day_name: str, date_str: str, events: List[Dict]) -> Image.Im
     draw.line([(PAD, 185), (SIZE[0] - PAD, 185)], fill=day_color, width=1)
     y = 210
 
-    # Events (3-5 per slide)
-    name_font = _cinzel(28)
-    venue_font = _segoe_light(20)
-    desc_font = _segoe_body(20)
-    time_font = _segoe_light(22)
+    # Events (3-5 per slide) - sized to fill the slide, high contrast
+    name_font = _cinzel(34)
+    venue_font = _segoe_light(22)
+    desc_font = _segoe_body(22)
+    time_font = _cinzel(24)
 
     displayed = events[:MAX_EVENTS]
     for i, ev in enumerate(displayed):
@@ -304,14 +304,14 @@ def make_day_slide(day_name: str, date_str: str, events: List[Dict]) -> Image.Im
         # Description (1-2 sentences, hyped)
         desc = ev.get("description", "")
         if desc:
-            if len(desc) > 100:
-                desc = desc[:97].rsplit(" ", 1)[0] + "..."
+            if len(desc) > 140:
+                desc = desc[:137].rsplit(" ", 1)[0] + "..."
             y = _wrapped_centered(draw, desc, y, desc_font, LIGHT, max_width=SIZE[0] - 2 * PAD - 60)
 
         # Event URL
         url = ev.get("url", "")
         if url:
-            url_font = _segoe_light(16)
+            url_font = _segoe_body(18)
             y += 4
             _centered(draw, url, y, url_font, PINK_LIGHT)
             y += 20
