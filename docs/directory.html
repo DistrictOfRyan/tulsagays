@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGBTQ+ Directory - Tulsa Gays</title>
+    <meta name="description" content="The most comprehensive directory of LGBTQ+ owned and friendly businesses in Tulsa, Oklahoma. 150+ businesses across restaurants, bars, coffee shops, vintage stores, tattoo shops, salons, churches, and more.">
+    <meta name="keywords" content="Tulsa LGBTQ businesses, Tulsa gay friendly, queer owned Tulsa, LGBTQ directory Oklahoma, Tulsa gay bars, Tulsa queer community">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="LGBTQ+ Directory - Tulsa Gays">
+    <meta property="og:description" content="The most comprehensive directory of LGBTQ+ owned and friendly businesses in Tulsa, Oklahoma. 150+ businesses.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.tulsagays.com/directory.html">
+    <meta property="og:site_name" content="Tulsa Gays">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="LGBTQ+ Directory - Tulsa Gays">
+    <meta name="twitter:description" content="The most comprehensive directory of LGBTQ+ owned and friendly businesses in Tulsa, Oklahoma.">
+    <link rel="canonical" href="https://www.tulsagays.com/directory.html">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poiret+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9WMT8TW05T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9WMT8TW05T');
+    </script>
+
+    <style>
+        .directory-intro {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto 2rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .directory-intro a {
+            color: var(--peacock);
+            font-weight: 600;
+        }
+        .category-section {
+            margin-bottom: 3rem;
+        }
+        .category-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            padding-bottom: 8px;
+        }
+        .category-divider {
+            height: 1px;
+            background: var(--gold);
+            opacity: 0.3;
+            margin-bottom: 16px;
+            border: none;
+        }
+        .biz-card {
+            background: var(--bg-card);
+            border: 1px solid #1e1e1e;
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+        .biz-card:hover {
+            background: var(--bg-card-hover);
+            border-color: #2a2a2a;
+        }
+        .biz-name {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        .biz-name a {
+            color: var(--text-primary);
+        }
+        .biz-name a:hover {
+            color: var(--peacock);
+        }
+        .biz-address {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .biz-desc {
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+            line-height: 1.5;
+        }
+        .directory-sources {
+            text-align: center;
+            max-width: 650px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(155,30,95,0.2);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo-area">
+                <div>
+                    <div class="logo-text"><span class="tulsa">TULSA</span> <img src="images/flamingo.png" alt="" class="logo-flamingo"> <span class="gays">GAYS</span></div>
+                    <div class="logo-tagline">Your Weekly LGBTQ+ Event Guide</div>
+                </div>
+            </a>
+            <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.querySelector('nav').classList.toggle('open')">&#9776;</button>
+            <nav>
+                <ul>
+                    <li><a href="index.html">This Week</a></li>
+                    <li><a href="archive.html">Archive</a></li>
+                    <li><a href="blog/index.html">Blog</a></li>
+                    <li><a href="directory.html" class="active">Directory</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="https://instagram.com/tulsagays" target="_blank" rel="noopener">Instagram</a></li>
+                    <li><a href="https://linktr.ee/tulsagays" target="_blank" rel="noopener">Linktree</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="week-header">
+            <h1>LGBTQ+ Directory</h1>
+            <p class="date-range">Tulsa's Queer-Owned and Queer-Friendly Businesses</p>
+        </div>
+
+        <div class="directory-intro">
+            <p>The most comprehensive list of LGBTQ+ owned and affirming businesses in Tulsa, Oklahoma. Whether you're looking for a great meal, a new tattoo, a place to worship, or your next favorite coffee shop, we've got you covered.</p>
+            <p>Know a business that should be listed? DM us on Instagram <a href="https://instagram.com/tulsagays" target="_blank" rel="noopener">@tulsagays</a></p>
+        </div>
+
+        <!-- 1. LGBTQ+ Community Hubs -->
+        <div class="category-section">
+            <h2 class="category-title">LGBTQ+ Community Hubs</h2>
+            <hr class="category-divider">
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.okeq.org" target="_blank" rel="noopener">Oklahomans for Equality (OkEq)</a></div>
+                <div class="biz-address">Dennis R. Neill Equality Center, 621 E 4th St</div>
+                <div class="biz-desc">Tulsa's flagship LGBTQ+ organization. Community programs, events, support groups, and the home base for queer life in Tulsa.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.okeq.org/programs" target="_blank" rel="noopener">OkEq Business Alliance</a></div>
+                <div class="biz-desc">Network of LGBTQ+ owned and allied businesses across Tulsa. Hosts mixers, networking events, and supports queer entrepreneurs.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.instagram.com/blackqueertulsa/" target="_blank" rel="noopener">Black Queer Tulsa</a></div>
+                <div class="biz-desc">Community organization centering Black LGBTQ+ voices in Tulsa through events, gatherings, and advocacy.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.freedomoklahoma.org" target="_blank" rel="noopener">Freedom Oklahoma</a></div>
+                <div class="biz-desc">Statewide LGBTQ+ advocacy organization fighting for equality in Oklahoma policy and legislation.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.tulsapride.org" target="_blank" rel="noopener">Tulsa Pride</a></div>
+                <div class="biz-desc">Organizers of the annual Tulsa Pride Festival, one of the largest pride celebrations in the region.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Tulsa PFLAG</div>
+                <div class="biz-desc">Local chapter of Parents, Families, and Friends of Lesbians and Gays. Support, education, and advocacy for LGBTQ+ families.</div>
+            </div>
+        </div>
+
+        <!-- 2. Bars & Nightlife -->
+        <div class="category-section">
+            <h2 class="category-title">Bars &amp; Nightlife</h2>
+            <hr class="category-divider">
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.instagram.com/clubmajestic918/" target="_blank" rel="noopener">Club Majestic</a></div>
+                <div class="biz-address">124 N Boston Ave</div>
+                <div class="biz-desc">Tulsa's premier LGBTQ+ nightclub. Drag shows, DJs, theme nights, and weekend dance parties in the heart of downtown.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.instagram.com/tulsaeagle/" target="_blank" rel="noopener">Tulsa Eagle</a></div>
+                <div class="biz-address">2630 E 15th St</div>
+                <div class="biz-desc">Laid-back neighborhood bar with a leather and bear vibe. Pool tables, karaoke nights, and a welcoming patio.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.instagram.com/ybrtulsa/" target="_blank" rel="noopener">Yellow Brick Road (YBR)</a></div>
+                <div class="biz-address">2630 E 15th St</div>
+                <div class="biz-desc">Connected to the Eagle, YBR hosts drag performances, karaoke, and community events in a colorful, inclusive space.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Studio 66</div>
+                <div class="biz-address">1742 S Boston Ave</div>
+                <div class="biz-desc">Intimate lounge and performance space popular with the LGBTQ+ community. Live music, comedy, and themed evenings.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.instagram.com/saintvitusbar/" target="_blank" rel="noopener">St. Vitus Bar</a></div>
+                <div class="biz-address">1707 S Boston Ave</div>
+                <div class="biz-desc">Neighborhood cocktail bar in Brookside with a strong queer following. Craft cocktails, moody atmosphere, and great bartenders.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Starlite Lounge</div>
+                <div class="biz-desc">Dive bar energy with a welcoming queer crowd. Cheap drinks, good music, and zero pretension.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.mercuryloungetulsa.com" target="_blank" rel="noopener">Mercury Lounge</a></div>
+                <div class="biz-address">1747 S Boston Ave</div>
+                <div class="biz-desc">Live music venue and bar on the Brookside strip. Indie acts, local bands, and a reliably queer-friendly crowd.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">The Fur Shop</div>
+                <div class="biz-address">1218 E 4th St</div>
+                <div class="biz-desc">Arts district bar with a gritty, welcoming vibe. Live punk, indie, and DJ nights with a diverse crowd.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">MixCo</div>
+                <div class="biz-address">1724 E 8th St</div>
+                <div class="biz-desc">Cocktail bar in the Kendall-Whittier district with creative drinks and a queer-friendly atmosphere.</div>
+            </div>
+        </div>
+
+        <!-- 3. Coffee & Books -->
+        <div class="category-section">
+            <h2 class="category-title">Coffee &amp; Books</h2>
+            <hr class="category-divider">
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.instagram.com/ponycoffee/" target="_blank" rel="noopener">Pony Coffee</a></div>
+                <div class="biz-address">1218 E 4th St (inside The Fur Shop)</div>
+                <div class="biz-desc">Queer-owned coffee shop inside The Fur Shop. Great espresso, cozy vibes, and a community gathering spot in the Arts District.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.fultonstreetbooks.com" target="_blank" rel="noopener">Fulton Street Books &amp; Coffee</a></div>
+                <div class="biz-address">1415 E 3rd St</div>
+                <div class="biz-desc">Black-owned independent bookstore and coffee shop. Strong LGBTQ+ section, author events, and community space in the Arts District.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.instagram.com/shebrewscoffee/" target="_blank" rel="noopener">She Brews Coffee</a></div>
+                <div class="biz-desc">Woman-owned, queer-friendly coffee spot. Specialty drinks, warm service, and community support.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.gypsycoffee.com" target="_blank" rel="noopener">Gypsy Coffee House</a></div>
+                <div class="biz-address">303 N Cincinnati Ave</div>
+                <div class="biz-desc">Long-running independent coffee house in the Arts District. Open mic nights, live music, and a bohemian atmosphere beloved by the queer community.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Coracle Coffee</div>
+                <div class="biz-desc">Specialty coffee roaster with a focus on quality and community. Queer-friendly vibes and excellent single-origin pours.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.shadesofbrowncoffee.com" target="_blank" rel="noopener">Shades of Brown Coffee</a></div>
+                <div class="biz-address">3302 S Peoria Ave</div>
+                <div class="biz-desc">Brookside staple. Eclectic, cozy, and welcoming to all. Great coffee, board games, and a living-room feel.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.magiccitybooks.com" target="_blank" rel="noopener">Magic City Books</a></div>
+                <div class="biz-address">221 E Archer St</div>
+                <div class="biz-desc">Tulsa's beloved independent bookstore. Excellent LGBTQ+ selection, author readings, and a cornerstone of the local literary community.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Oak Tree Books</div>
+                <div class="biz-desc">Used bookstore with a thoughtful queer section and friendly staff. A great spot for browsing and discovery.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Chimera Cafe</div>
+                <div class="biz-address">212 N Main St</div>
+                <div class="biz-desc">Downtown coffee shop and eatery with a creative, inclusive atmosphere. Breakfast, lunch, and specialty drinks.</div>
+            </div>
+        </div>
+
+        <!-- 4. Restaurants & Food -->
+        <div class="category-section">
+            <h2 class="category-title">Restaurants &amp; Food</h2>
+            <hr class="category-divider">
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.ilsemetulsa.com" target="_blank" rel="noopener">Il Seme</a></div>
+                <div class="biz-address">1419 E 15th St</div>
+                <div class="biz-desc">Italian fine dining in Cherry Street. Handmade pasta, seasonal menus, and a warm, welcoming atmosphere with queer-friendly ownership.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.elotetulsa.com" target="_blank" rel="noopener">Elote</a></div>
+                <div class="biz-address">514 S Boston Ave</div>
+                <div class="biz-desc">Award-winning Mexican and Southwestern cuisine. Known for creative dishes, great cocktails, and a vibrant dining room.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.farmbartulsa.com" target="_blank" rel="noopener">FarmBar</a></div>
+                <div class="biz-address">301 N Cincinnati Ave</div>
+                <div class="biz-desc">Farm-to-table dining in the Arts District. Seasonal menus, local ingredients, and a commitment to community and sustainability.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.dalesandros.com" target="_blank" rel="noopener">Dalesandro's Italian Cuisine</a></div>
+                <div class="biz-address">1742 S Boston Ave</div>
+                <div class="biz-desc">Brookside Italian restaurant known for generous portions and a loyal following. Classic dishes in a comfortable setting.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">East Village Bohemian Pizza</div>
+                <div class="biz-address">1309 E 15th St</div>
+                <div class="biz-desc">Cherry Street pizza joint with a bohemian flair. Unique topping combos, craft beer, and a relaxed atmosphere.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.empireslice.com" target="_blank" rel="noopener">Empire Slice House</a></div>
+                <div class="biz-address">1307 E 3rd St</div>
+                <div class="biz-desc">New York-style slices with wild daily specials. Funky decor, late-night hours, and an Arts District favorite for the queer crowd.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Cherry &amp; Bark</div>
+                <div class="biz-desc">Wood-fired cooking and craft cocktails. Seasonal menus with a focus on local sourcing and creative preparations.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.bigdippertulsa.com" target="_blank" rel="noopener">Big Dipper</a></div>
+                <div class="biz-address">316 E 2nd St</div>
+                <div class="biz-desc">Downtown creamery and diner serving creative ice cream flavors alongside burgers and sandwiches. A sweet spot for everyone.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Donut Hole</div>
+                <div class="biz-desc">Classic donut shop with fresh, made-daily donuts. A simple pleasure and local favorite.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Nicky's Hoagies</div>
+                <div class="biz-desc">Queer-friendly sandwich shop with east coast-style hoagies and a loyal community following.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.bluemooncafetulsa.com" target="_blank" rel="noopener">Blue Moon Cafe</a></div>
+                <div class="biz-desc">Eclectic diner with hearty breakfasts and a bohemian soul. A Tulsa institution loved by the queer community.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Country Bird</div>
+                <div class="biz-desc">Fried chicken done right. Comfort food with a modern twist in a casual, welcoming setting.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Lone Wolf Banh Mi</div>
+                <div class="biz-address">1349 E 15th St</div>
+                <div class="biz-desc">Vietnamese sandwiches and noodle bowls on Cherry Street. Quick, flavorful, and community-minded.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Trencher's Delicatessen</div>
+                <div class="biz-address">1307 E 41st St</div>
+                <div class="biz-desc">Neighborhood deli with house-smoked meats, creative sandwiches, and a devoted local following.</div>
+            </div>
+        </div>
+
+        <!-- 5. Breweries -->
+        <div class="category-section">
+            <h2 class="category-title">Breweries</h2>
+            <hr class="category-divider">
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.americansolera.com" target="_blank" rel="noopener">American Solera</a></div>
+                <div class="biz-address">1702 E 6th St</div>
+                <div class="biz-desc">Nationally acclaimed brewery specializing in wild ales and barrel-aged beers. Taproom in the Pearl District with a welcoming vibe.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.heirloomrusticales.com" target="_blank" rel="noopener">Heirloom Rustic Ales</a></div>
+                <div class="biz-address">2113 E Admiral Blvd</div>
+                <div class="biz-desc">Farmhouse ales and rustic brews in a cozy taproom. Known for community involvement and a queer-friendly culture.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.goodcausebrewing.com" target="_blank" rel="noopener">Good Cause Brewing</a></div>
+                <div class="biz-desc">Brewery with a mission. A portion of proceeds goes to local causes. Solid beers and a community-first mindset.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Cabin Boys Brewery</div>
+                <div class="biz-address">1703 E 6th St</div>
+                <div class="biz-desc">Pearl District brewery with adventurous styles and a relaxed taproom. Dog-friendly patio and a welcoming crowd.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Nothing's Left Brewing</div>
+                <div class="biz-address">802 E 3rd St</div>
+                <div class="biz-desc">Arts District brewery known for hazy IPAs and creative small batches. Frequent community events and collaborations.</div>
+            </div>
+        </div>
+
+        <!-- 6. Vintage & Shopping -->
+        <div class="category-section">
+            <h2 class="category-title">Vintage &amp; Shopping</h2>
+            <hr class="category-divider">
+
+            <div class="biz-card">
+                <div class="biz-name">Mom's Closet</div>
+                <div class="biz-desc">Vintage clothing and accessories with a curated eye. Queer-owned and always stocked with unique finds.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Jo &amp; June</div>
+                <div class="biz-desc">Women-owned boutique with a mix of vintage and modern fashion. Inclusive sizing and a warm shopping experience.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Love Me Two Times</div>
+                <div class="biz-address">1124 S Lewis Ave</div>
+                <div class="biz-desc">Vintage furniture, decor, and clothing in the Kendall-Whittier district. A treasure hunt every visit.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Harrington Rose</div>
+                <div class="biz-desc">Curated vintage and antique shop with eclectic finds and a strong queer community presence.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Pollyhester</div>
+                <div class="biz-desc">Retro and vintage fashion with bold colors and funky finds. A favorite for drag wardrobes and statement pieces.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">SoBo Vintage Market</div>
+                <div class="biz-address">South Boston Ave corridor</div>
+                <div class="biz-desc">Multi-vendor vintage market with booths full of clothing, records, art, and collectibles. Great weekend browsing.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.decopolis.com" target="_blank" rel="noopener">Decopolis</a></div>
+                <div class="biz-address">501 E 2nd St (Tulsa Arts District)</div>
+                <div class="biz-desc">Tulsa-themed art deco gifts and souvenirs. A celebration of the city's deco heritage with locally made goods.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.spexton.com" target="_blank" rel="noopener">Spexton Jewelry</a></div>
+                <div class="biz-address">1551 E 15th St</div>
+                <div class="biz-desc">Custom and alternative wedding rings and jewelry. Popular with LGBTQ+ couples for unique, handcrafted bands.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Ida Red General Store</div>
+                <div class="biz-address">1621 E 15th St</div>
+                <div class="biz-desc">Cherry Street gift shop with Oklahoma-made goods, quirky souvenirs, and Pride merchandise year-round.</div>
+            </div>
+        </div>
+
+        <!-- 7. Tattoo & Beauty -->
+        <div class="category-section">
+            <h2 class="category-title">Tattoo &amp; Beauty</h2>
+            <hr class="category-divider">
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.instagram.com/crybabytattootulsa/" target="_blank" rel="noopener">Crybaby Tattoo</a></div>
+                <div class="biz-desc">Queer-owned tattoo studio known for illustrative and fine-line work. Inclusive, body-positive environment.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.ritualelectrictattoo.com" target="_blank" rel="noopener">Ritual Electric Tattoo</a></div>
+                <div class="biz-desc">Custom tattoo studio with a diverse team of artists. All styles welcome in a clean, professional, affirming space.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Geek Ink Tattoo</div>
+                <div class="biz-desc">Nerdy, creative, and queer-friendly tattoo shop. Specializing in pop culture, anime, and fandom-inspired work.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.tonsorialtulsa.com" target="_blank" rel="noopener">Tonsorial Parlor</a></div>
+                <div class="biz-address">302 S Elgin Ave</div>
+                <div class="biz-desc">Arts District barbershop with old-school charm and an inclusive clientele. Great cuts, hot towel shaves, and cocktails.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Golden Salon</div>
+                <div class="biz-desc">Gender-affirming hair salon welcoming all identities. Creative color, cuts, and styling in a safe, comfortable environment.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">The Parlour</div>
+                <div class="biz-desc">Full-service salon with a queer-friendly team. Hair, nails, and beauty services in a modern, welcoming space.</div>
+            </div>
+        </div>
+
+        <!-- 8. Affirming Churches -->
+        <div class="category-section">
+            <h2 class="category-title">Affirming Churches</h2>
+            <hr class="category-divider">
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.allsoulschurch.org" target="_blank" rel="noopener">All Souls Unitarian Church</a></div>
+                <div class="biz-address">2952 S Peoria Ave</div>
+                <div class="biz-desc">Welcoming, affirming congregation in midtown. Hosts LGBTQ+ events, support groups, and community programs year-round.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.fellowshipucc.com" target="_blank" rel="noopener">Fellowship Congregational UCC</a></div>
+                <div class="biz-address">2900 S Harvard Ave</div>
+                <div class="biz-desc">Open and affirming United Church of Christ congregation. Actively involved in LGBTQ+ advocacy and justice work.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.hopeuu.org" target="_blank" rel="noopener">Hope Unitarian Church</a></div>
+                <div class="biz-address">8432 S Sheridan Rd</div>
+                <div class="biz-desc">South Tulsa Unitarian Universalist community. Inclusive worship, social justice focus, and welcoming of all identities.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">House Church Tulsa</div>
+                <div class="biz-desc">Small, intimate faith community centered on radical inclusion and LGBTQ+ affirmation.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.stdunstanstulsa.org" target="_blank" rel="noopener">St. Dunstan's Episcopal Church</a></div>
+                <div class="biz-address">5635 E 71st St</div>
+                <div class="biz-desc">Welcoming Episcopal congregation with a strong commitment to inclusion. Active community outreach and affirming ministry.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Church of the Restoration (Unitarian Universalist)</div>
+                <div class="biz-address">1314 N Greenwood Ave</div>
+                <div class="biz-desc">Historic Greenwood District UU congregation. Committed to racial justice, LGBTQ+ inclusion, and building beloved community.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Asbury United Methodist Church</div>
+                <div class="biz-address">6767 S Mingo Rd</div>
+                <div class="biz-desc">Large United Methodist congregation that has taken affirming stances. Active in community service and welcome.</div>
+            </div>
+        </div>
+
+        <!-- 9. Arts & Culture -->
+        <div class="category-section">
+            <h2 class="category-title">Arts &amp; Culture</h2>
+            <hr class="category-divider">
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.circlecinema.com" target="_blank" rel="noopener">Circle Cinema</a></div>
+                <div class="biz-address">10 S Lewis Ave</div>
+                <div class="biz-desc">Tulsa's nonprofit indie theater. LGBTQ+ film screenings, festivals, and a vibrant cultural hub since 1928.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.instagram.com/tulsahouseofdrag/" target="_blank" rel="noopener">Tulsa House of Drag</a></div>
+                <div class="biz-desc">Drag performance collective producing shows, competitions, and events across the city. The heart of Tulsa's drag scene.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.instagram.com/twistedarts_tulsa/" target="_blank" rel="noopener">Twisted Arts Tulsa</a></div>
+                <div class="biz-desc">Queer-centered arts organization hosting performances, visual art shows, open mics, and creative community events.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.gatheringplace.org" target="_blank" rel="noopener">Gathering Place</a></div>
+                <div class="biz-address">2650 S John Williams Way</div>
+                <div class="biz-desc">Tulsa's world-class riverfront park. Free and open to all, with playgrounds, gardens, trails, and community events.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.philbrook.org" target="_blank" rel="noopener">Philbrook Museum of Art</a></div>
+                <div class="biz-address">2727 S Rockford Rd</div>
+                <div class="biz-desc">Stunning art museum in a historic villa with beautiful gardens. Hosts inclusive exhibitions and community programming.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.tulsaballet.org" target="_blank" rel="noopener">Tulsa Ballet</a></div>
+                <div class="biz-address">1212 E 45th Pl</div>
+                <div class="biz-desc">Professional ballet company with world-class performances. Strong LGBTQ+ community support and audience.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.ahhatulsa.org" target="_blank" rel="noopener">ahha Tulsa</a></div>
+                <div class="biz-address">101 E Archer St</div>
+                <div class="biz-desc">Interactive arts experience in the Arts District. Hands-on creativity, rotating exhibitions, and community workshops.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Living Arts</div>
+                <div class="biz-address">307 E Reconciliation Way</div>
+                <div class="biz-desc">Contemporary art space with experimental exhibitions, performances, and events. A long-time Arts District anchor.</div>
+            </div>
+        </div>
+
+        <!-- 10. Sports & Fitness -->
+        <div class="category-section">
+            <h2 class="category-title">Sports &amp; Fitness</h2>
+            <hr class="category-divider">
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.instagram.com/hotmesstulsa/" target="_blank" rel="noopener">HotMess</a></div>
+                <div class="biz-desc">LGBTQ+ social sports and fitness group. Organized activities, community workouts, and a fun way to stay active and connected.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Lambda Bowling League</div>
+                <div class="biz-desc">LGBTQ+ bowling league. Casual, social, and competitive options. A Tulsa queer tradition for making friends and having fun.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Pride Sports Kickball</div>
+                <div class="biz-desc">Seasonal LGBTQ+ kickball league. All skill levels welcome. Social events and after-game hangs included.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">SweatClub</div>
+                <div class="biz-desc">Inclusive fitness community with group classes and personal training. Welcoming environment for all body types and experience levels.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.climbtulsa.com" target="_blank" rel="noopener">Climb Tulsa</a></div>
+                <div class="biz-desc">Indoor rock climbing gym with a diverse, welcoming membership. Bouldering, top-rope, classes, and yoga.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Tulsa Rowing Club</div>
+                <div class="biz-desc">Competitive and recreational rowing on the Arkansas River. Open to all skill levels and welcoming of LGBTQ+ members.</div>
+            </div>
+        </div>
+
+        <!-- 11. Health & Wellness -->
+        <div class="category-section">
+            <h2 class="category-title">Health &amp; Wellness</h2>
+            <hr class="category-divider">
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.diversityfamilyhealth.com" target="_blank" rel="noopener">Diversity Family Health</a></div>
+                <div class="biz-desc">LGBTQ+ affirming primary care clinic. Hormone therapy, PrEP, STI testing, and general healthcare in a welcoming environment.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.hopetesting.org" target="_blank" rel="noopener">H.O.P.E. Testing</a></div>
+                <div class="biz-desc">Free and confidential HIV testing and prevention services. PrEP navigation, harm reduction, and community health outreach.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.tulsacares.org" target="_blank" rel="noopener">Tulsa CARES (TACO)</a></div>
+                <div class="biz-desc">Comprehensive HIV/AIDS services including case management, housing assistance, and support programs for people living with HIV.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">OkEq Health Programs</div>
+                <div class="biz-desc">Health clinics and wellness programs run through the Equality Center. STI testing, mental health resources, and community health events.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Planned Parenthood of the Heartland</div>
+                <div class="biz-desc">Reproductive and sexual health services. Gender-affirming care, hormone therapy, and inclusive healthcare for all.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Calm Waters</div>
+                <div class="biz-desc">Grief and trauma counseling center offering LGBTQ+ inclusive therapy, support groups, and crisis resources.</div>
+            </div>
+        </div>
+
+        <!-- 12. Support Groups -->
+        <div class="category-section">
+            <h2 class="category-title">Support Groups</h2>
+            <hr class="category-divider">
+
+            <div class="biz-card">
+                <div class="biz-name">Gender Support Group (OkEq)</div>
+                <div class="biz-address">Dennis R. Neill Equality Center, 621 E 4th St</div>
+                <div class="biz-desc">Peer support group for transgender, nonbinary, and gender-questioning individuals. Safe space for sharing and connection.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">SMART Recovery LGBTQ+</div>
+                <div class="biz-desc">Evidence-based addiction recovery meetings with an LGBTQ+ focus. Self-management and recovery training in a supportive setting.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Lambda Unity AA</div>
+                <div class="biz-desc">LGBTQ+ Alcoholics Anonymous meetings. A safe, affirming space for recovery and fellowship within the queer community.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">PFLAG Tulsa</div>
+                <div class="biz-desc">Monthly meetings for parents, families, and allies of LGBTQ+ people. Education, support, and advocacy for all families.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">OkEq Youth Group</div>
+                <div class="biz-address">Dennis R. Neill Equality Center</div>
+                <div class="biz-desc">Safe space for LGBTQ+ youth to connect, socialize, and find support. Regular meetings and activities at the Equality Center.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Trans Lifeline</div>
+                <div class="biz-desc">National peer support hotline run by and for transgender people. Available for Tulsa community members at (877) 565-8860.</div>
+            </div>
+        </div>
+
+        <!-- 13. Pets & Other -->
+        <div class="category-section">
+            <h2 class="category-title">Pets &amp; Other</h2>
+            <hr class="category-divider">
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.jpk9.com" target="_blank" rel="noopener">JPK9 Dog Training</a></div>
+                <div class="biz-desc">Professional dog training with a queer-friendly approach. Obedience, behavior modification, and puppy programs.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Route 66 Dog Ranch</div>
+                <div class="biz-desc">Dog boarding, daycare, and grooming with a welcoming attitude. Your pup's home away from home on historic Route 66.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Ethno Canine</div>
+                <div class="biz-desc">Holistic pet care and training services. Natural products, behavior consulting, and a community-minded approach to pet wellness.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Tulsa SPCA</div>
+                <div class="biz-address">6232 E 60th Pl</div>
+                <div class="biz-desc">Animal rescue and adoption center. Volunteer opportunities and community events. A great way to find your next furry companion.</div>
+            </div>
+        </div>
+
+        <!-- Sources -->
+        <div class="directory-sources">
+            <p>Sources: OkEq Business Alliance, Tulsa Remote, Reddit r/tulsa community, and our own research. Last updated: April 2026.</p>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p>Follow us on Instagram: <a href="https://instagram.com/tulsagays" target="_blank" rel="noopener">@tulsagays</a> &middot; <a href="https://linktr.ee/tulsagays" target="_blank" rel="noopener">All Links</a></p>
+            <p>Updated weekly &middot; Your guide to LGBTQ+ Tulsa</p>
+        </div>
+    </footer>
+
+</body>
+</html>
