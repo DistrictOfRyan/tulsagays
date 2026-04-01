@@ -19,15 +19,18 @@ logger = logging.getLogger(__name__)
 
 # ── Configuration for Homo Hotel Happy Hour ──────────────────────────────
 # Adjust these as the event details become known/change
+EVENT_DAY_OF_WEEK = 4  # Friday (0=Mon, 4=Fri)
 EVENT_TIME = "6:00 PM - 8:00 PM"
-EVENT_VENUE = "Downtown Tulsa (First Friday)"
-EVENT_URL = "https://linktr.ee/homohotelhappyhour"
+EVENT_VENUE = "Homo Hotel"
+EVENT_RECURRENCE = "first_friday"  # Only on the first Friday of each month
 EVENT_DESCRIPTION = (
-    "The queerest happy hour in T-Town is back. First Friday tradition. "
-    "Drink specials, good vibes, and the community you've been looking for. "
-    "All are welcome. Bring a friend, make a friend, be yourself."
+    "Tulsa's queerest happy hour is a First Friday tradition. The Homo Hotel "
+    "opens its doors for an evening of community, conversation, and cocktails. "
+    "Whether you're new to Tulsa or a longtime local, this is THE place to "
+    "kick off your weekend with your LGBTQ+ family. All are welcome - bring "
+    "a friend, make a friend, be yourself. No cover, just vibes."
 )
-WEEKS_AHEAD = 6  # Generate events for the next N weeks
+WEEKS_AHEAD = 4  # Generate events for the next N weeks
 
 
 class HomoHotelScraper(BaseScraper):
@@ -39,38 +42,45 @@ class HomoHotelScraper(BaseScraper):
 
     source_name = "homo_hotel"
 
+    def _is_first_friday(self, date) -> bool:
+        """Check if a date is the first Friday of its month."""
+        return date.weekday() == 4 and date.day <= 7
+
     def scrape(self) -> List[Dict]:
-        """Generate upcoming Homo Hotel Happy Hour events (First Friday of each month)."""
+        """Generate upcoming Homo Hotel Happy Hour events (first Friday only)."""
         events = []
         today = datetime.now().date()
 
-        # Find First Fridays for the next several months
-        for month_offset in range(WEEKS_AHEAD):
-            year = today.year
-            month = today.month + month_offset
-            if month > 12:
-                year += (month - 1) // 12
-                month = ((month - 1) % 12) + 1
+        for week_offset in range(WEEKS_AHEAD):
+            # Find the next occurrence of the event day
+            target = today + timedelta(weeks=week_offset)
+            # Adjust to the correct day of week
+            days_ahead = EVENT_DAY_OF_WEEK - target.weekday()
+            if days_ahead < 0 and week_offset == 0:
+                days_ahead += 7
+            elif week_offset > 0 and days_ahead < 0:
+                days_ahead += 7
 
-            # Find the first Friday of this month
-            first_day = datetime(year, month, 1).date()
-            days_to_friday = (4 - first_day.weekday()) % 7  # 4 = Friday
-            first_friday = first_day + timedelta(days=days_to_friday)
+            event_date = target + timedelta(days=days_ahead)
 
             # Skip dates in the past
-            if first_friday < today:
+            if event_date < today:
                 continue
 
-            date_str = first_friday.strftime("%Y-%m-%d")
-            friendly_date = first_friday.strftime("%A, %B %d")
+            # Only generate for FIRST FRIDAY of the month
+            if not self._is_first_friday(event_date):
+                continue
+
+            date_str = event_date.strftime("%Y-%m-%d")
+            friendly_date = event_date.strftime("%A, %B %d")
 
             events.append(self.make_event(
                 name="Homo Hotel Happy Hour",
                 date=date_str,
                 time=EVENT_TIME,
                 venue=EVENT_VENUE,
-                description=f"{EVENT_DESCRIPTION}\n\nThis {friendly_date}, don't miss it!",
-                url=EVENT_URL,
+                description=f"{EVENT_DESCRIPTION}\n\nThis {friendly_date} - don't miss it!",
+                url="",  # No dedicated URL yet
                 priority=1,  # ALWAYS priority 1
             ))
 

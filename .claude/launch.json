@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "tulsagays-slides",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "slides", "-l", "3456", "--no-clipboard"],
+      "port": 3456
+    }
+  ]
+}

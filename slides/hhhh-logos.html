@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HHHH Logo Options</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #222; font-family: 'Segoe UI', sans-serif; }
+
+  .logo {
+    width: 800px;
+    height: 800px;
+    position: relative;
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .logo.active { display: flex; }
+
+  /* Tulsa Skyline SVG inline (simplified geometric) */
+  .skyline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+  }
+
+  /* ─── OPTION 1: Art Deco Classic ─── */
+  .opt1 {
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(139,114,52,0.12) 0%, transparent 60%),
+      #0a0a0a;
+  }
+  .opt1 .frame {
+    border: 2px solid #8B7234;
+    padding: 60px 50px;
+    position: relative;
+  }
+  .opt1 .frame::before, .opt1 .frame::after {
+    content: '';
+    position: absolute;
+    border: 1px solid rgba(139,114,52,0.4);
+  }
+  .opt1 .frame::before {
+    top: 8px; left: 8px; right: 8px; bottom: 8px;
+  }
+  .opt1 .frame::after {
+    top: -8px; left: -8px; right: -8px; bottom: -8px;
+    border: 1px solid rgba(139,114,52,0.2);
+  }
+  .opt1 .homo-hotel {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 72px;
+    color: #8B7234;
+    letter-spacing: 6px;
+    line-height: 1;
+  }
+  .opt1 .happy-hour {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 72px;
+    color: #00838F;
+    letter-spacing: 6px;
+    line-height: 1;
+    margin-top: 4px;
+  }
+  .opt1 .diamond-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .opt1 .diamond-row::before, .opt1 .diamond-row::after {
+    content: '';
+    width: 100px;
+    height: 1px;
+    background: #8B7234;
+  }
+  .opt1 .diamond {
+    width: 10px; height: 10px;
+    background: #8B7234;
+    transform: rotate(45deg);
+  }
+  .opt1 .first-friday {
+    font-size: 18px;
+    color: #BF5700;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .opt1 .tulsa-label {
+    font-size: 16px;
+    color: #F5E6C8;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+  /* Skyline for opt1 */
+  .opt1 .skyline-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 140px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    padding: 0 60px;
+  }
+  .opt1 .building {
+    background: #1a1a1a;
+    border-top: 1px solid rgba(139,114,52,0.3);
+    flex-shrink: 0;
+  }
+
+  /* ─── OPTION 2: Cocktail Glass Monogram ─── */
+  .opt2 {
+    background: #0a0a0a;
+  }
+  .opt2 .circle-frame {
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    border: 3px solid #8B7234;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .opt2 .circle-frame::after {
+    content: '';
+    position: absolute;
+    top: 10px; left: 10px; right: 10px; bottom: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(139,114,52,0.3);
+  }
+  .opt2 .hhhh-big {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 120px;
+    color: #8B7234;
+    letter-spacing: 12px;
+    line-height: 1;
+  }
+  .opt2 .full-name {
+    font-size: 16px;
+    color: #F5E6C8;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-top: 16px;
+  }
+  .opt2 .tagline {
+    font-size: 14px;
+    color: #00838F;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+  .opt2 .cocktail {
+    font-size: 48px;
+    margin-top: 16px;
+  }
+  .opt2 .skyline-row {
+    position: absolute;
+    bottom: 40px;
+    display: flex;
+    gap: 3px;
+    align-items: flex-end;
+  }
+  .opt2 .bldg {
+    background: rgba(139,114,52,0.15);
+    border-top: 1px solid rgba(139,114,52,0.3);
+  }
+
+  /* ─── OPTION 3: Stacked Vertical ─── */
+  .opt3 {
+    background:
+      linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 100%);
+  }
+  .opt3 .vert-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .opt3 .word {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 100px;
+    letter-spacing: 10px;
+    line-height: 1.05;
+  }
+  .opt3 .w-homo { color: #BF5700; }
+  .opt3 .w-hotel { color: #8B7234; }
+  .opt3 .w-happy { color: #00838F; }
+  .opt3 .w-hour { color: #A89050; }
+  .opt3 .line-accent {
+    width: 300px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #8B7234, transparent);
+    margin: 12px 0;
+  }
+  .opt3 .tulsa-sub {
+    font-size: 16px;
+    color: #999;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+  .opt3 .skyline-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 100px;
+    background: linear-gradient(180deg, transparent, rgba(139,114,52,0.05));
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    padding: 0 100px;
+  }
+  .opt3 .sk { background: #111; border-top: 1px solid rgba(139,114,52,0.2); }
+
+  /* ─── OPTION 4: Peacock Lounge ─── */
+  .opt4 {
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(0,131,143,0.1) 0%, transparent 60%),
+      #0a0a0a;
+  }
+  .opt4 .badge {
+    width: 520px;
+    padding: 50px 40px;
+    border: 2px solid #00838F;
+    text-align: center;
+    position: relative;
+    background: rgba(0,0,0,0.5);
+  }
+  .opt4 .badge::before {
+    content: '';
+    position: absolute;
+    top: 6px; left: 6px; right: 6px; bottom: 6px;
+    border: 1px solid rgba(0,131,143,0.3);
+  }
+  .opt4 .top-label {
+    font-size: 14px;
+    color: #BF5700;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .opt4 .main-text {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 64px;
+    line-height: 1.05;
+    letter-spacing: 4px;
+  }
+  .opt4 .main-text .line1 { color: #F5E6C8; }
+  .opt4 .main-text .line2 { color: #00838F; }
+  .opt4 .divider {
+    width: 200px;
+    height: 1px;
+    background: #00838F;
+    margin: 20px auto;
+  }
+  .opt4 .bottom-text {
+    font-size: 15px;
+    color: #A89050;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+  .opt4 .est {
+    font-size: 12px;
+    color: #555;
+    letter-spacing: 3px;
+    margin-top: 12px;
+  }
+  .opt4 .skyline-abs {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 120px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    padding: 0 80px;
+  }
+  .opt4 .bl { background: #0f0f0f; border-top: 1px solid rgba(0,131,143,0.2); }
+
+  /* ─── OPTION 5: Minimalist Gold ─── */
+  .opt5 {
+    background: #0a0a0a;
+  }
+  .opt5 .min-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .opt5 .four-h {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .opt5 .h-letter {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 110px;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border: 2px solid;
+  }
+  .opt5 .h1 { color: #BF5700; border-color: #BF5700; }
+  .opt5 .h2 { color: #8B7234; border-color: #8B7234; }
+  .opt5 .h3 { color: #00838F; border-color: #00838F; }
+  .opt5 .h4 { color: #A89050; border-color: #A89050; }
+  .opt5 .words-below {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .opt5 .word-sm {
+    font-size: 14px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #999;
+  }
+  .opt5 .word-sm:nth-child(1) { color: #BF5700; }
+  .opt5 .word-sm:nth-child(2) { color: #8B7234; }
+  .opt5 .word-sm:nth-child(3) { color: #00838F; }
+  .opt5 .word-sm:nth-child(4) { color: #A89050; }
+  .opt5 .city-label {
+    font-size: 12px;
+    color: #555;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+  .opt5 .sky-row {
+    position: absolute;
+    bottom: 30px;
+    display: flex;
+    gap: 3px;
+    align-items: flex-end;
+  }
+  .opt5 .sb { background: rgba(139,114,52,0.1); border-top: 1px solid rgba(139,114,52,0.2); }
+
+  /* Nav */
+  .nav-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    background: rgba(0,0,0,0.9);
+    padding: 12px 24px;
+    border: 1px solid #8B7234;
+  }
+  .nav-controls button {
+    background: #8B7234;
+    color: #0a0a0a;
+    border: none;
+    padding: 8px 20px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .nav-controls span {
+    color: #F5E6C8;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<!-- OPTION 1: Art Deco Classic -->
+<div class="logo opt1 active" id="logo-1">
+  <div class="frame">
+    <div class="first-friday">First Friday</div>
+    <div class="diamond-row"><div class="diamond"></div></div>
+    <div class="homo-hotel">HOMO HOTEL</div>
+    <div class="happy-hour">HAPPY HOUR</div>
+    <div class="diamond-row"><div class="diamond"></div></div>
+    <div class="tulsa-label">Tulsa, Oklahoma</div>
+  </div>
+  <div class="skyline-bar">
+    <div class="building" style="width:20px;height:40px"></div>
+    <div class="building" style="width:16px;height:55px"></div>
+    <div class="building" style="width:24px;height:30px"></div>
+    <div class="building" style="width:14px;height:80px"></div>
+    <div class="building" style="width:20px;height:45px"></div>
+    <div class="building" style="width:30px;height:100px"></div>
+    <div class="building" style="width:18px;height:60px"></div>
+    <div class="building" style="width:22px;height:120px"></div>
+    <div class="building" style="width:16px;height:70px"></div>
+    <div class="building" style="width:26px;height:90px"></div>
+    <div class="building" style="width:14px;height:50px"></div>
+    <div class="building" style="width:20px;height:75px"></div>
+    <div class="building" style="width:18px;height:35px"></div>
+    <div class="building" style="width:24px;height:65px"></div>
+    <div class="building" style="width:16px;height:45px"></div>
+    <div class="building" style="width:20px;height:55px"></div>
+    <div class="building" style="width:22px;height:40px"></div>
+  </div>
+</div>
+
+<!-- OPTION 2: Circle Monogram -->
+<div class="logo opt2" id="logo-2">
+  <div class="circle-frame">
+    <div class="hhhh-big">HHHH</div>
+    <div class="full-name">Homo Hotel Happy Hour</div>
+    <div class="tagline">First Fridays &middot; Tulsa</div>
+    <div class="cocktail">&#127864;</div>
+  </div>
+  <div class="skyline-row">
+    <div class="bldg" style="width:14px;height:30px"></div>
+    <div class="bldg" style="width:10px;height:50px"></div>
+    <div class="bldg" style="width:16px;height:35px"></div>
+    <div class="bldg" style="width:12px;height:70px"></div>
+    <div class="bldg" style="width:18px;height:45px"></div>
+    <div class="bldg" style="width:14px;height:90px"></div>
+    <div class="bldg" style="width:20px;height:55px"></div>
+    <div class="bldg" style="width:12px;height:40px"></div>
+    <div class="bldg" style="width:16px;height:60px"></div>
+    <div class="bldg" style="width:14px;height:35px"></div>
+  </div>
+</div>
+
+<!-- OPTION 3: Stacked Vertical -->
+<div class="logo opt3" id="logo-3">
+  <div class="vert-stack">
+    <div class="word w-homo">HOMO</div>
+    <div class="word w-hotel">HOTEL</div>
+    <div class="line-accent"></div>
+    <div class="word w-happy">HAPPY</div>
+    <div class="word w-hour">HOUR</div>
+    <div class="tulsa-sub">Tulsa</div>
+  </div>
+  <div class="skyline-bottom">
+    <div class="sk" style="width:16px;height:30px"></div>
+    <div class="sk" style="width:12px;height:50px"></div>
+    <div class="sk" style="width:20px;height:25px"></div>
+    <div class="sk" style="width:10px;height:65px"></div>
+    <div class="sk" style="width:18px;height:40px"></div>
+    <div class="sk" style="width:24px;height:85px"></div>
+    <div class="sk" style="width:14px;height:50px"></div>
+    <div class="sk" style="width:20px;height:35px"></div>
+    <div class="sk" style="width:12px;height:55px"></div>
+    <div class="sk" style="width:16px;height:30px"></div>
+  </div>
+</div>
+
+<!-- OPTION 4: Peacock Lounge -->
+<div class="logo opt4" id="logo-4">
+  <div class="badge">
+    <div class="top-label">First Friday</div>
+    <div class="main-text">
+      <div class="line1">HOMO HOTEL</div>
+      <div class="line2">HAPPY HOUR</div>
+    </div>
+    <div class="divider"></div>
+    <div class="bottom-text">Tulsa, Oklahoma</div>
+    <div class="est">Est. 2026</div>
+  </div>
+  <div class="skyline-abs">
+    <div class="bl" style="width:18px;height:35px"></div>
+    <div class="bl" style="width:14px;height:55px"></div>
+    <div class="bl" style="width:22px;height:30px"></div>
+    <div class="bl" style="width:12px;height:75px"></div>
+    <div class="bl" style="width:20px;height:45px"></div>
+    <div class="bl" style="width:28px;height:95px"></div>
+    <div class="bl" style="width:16px;height:55px"></div>
+    <div class="bl" style="width:20px;height:40px"></div>
+    <div class="bl" style="width:14px;height:60px"></div>
+    <div class="bl" style="width:18px;height:35px"></div>
+  </div>
+</div>
+
+<!-- OPTION 5: Four H Grid -->
+<div class="logo opt5" id="logo-5">
+  <div class="min-layout">
+    <div class="four-h">
+      <div class="h-letter h1">H</div>
+      <div class="h-letter h2">H</div>
+      <div class="h-letter h3">H</div>
+      <div class="h-letter h4">H</div>
+    </div>
+    <div class="words-below">
+      <div class="word-sm">HOMO</div>
+      <div class="word-sm">HOTEL</div>
+      <div class="word-sm">HAPPY</div>
+      <div class="word-sm">HOUR</div>
+    </div>
+    <div class="city-label">Tulsa, Oklahoma</div>
+  </div>
+  <div class="sky-row">
+    <div class="sb" style="width:14px;height:25px"></div>
+    <div class="sb" style="width:10px;height:40px"></div>
+    <div class="sb" style="width:18px;height:20px"></div>
+    <div class="sb" style="width:12px;height:55px"></div>
+    <div class="sb" style="width:16px;height:35px"></div>
+    <div class="sb" style="width:22px;height:70px"></div>
+    <div class="sb" style="width:14px;height:45px"></div>
+    <div class="sb" style="width:18px;height:30px"></div>
+  </div>
+</div>
+
+<div class="nav-controls">
+  <button onclick="nav(-1)">PREV</button>
+  <span id="counter">Option 1 / 5</span>
+  <button onclick="nav(1)">NEXT</button>
+</div>
+
+<script>
+let c = 1;
+function nav(d) {
+  document.getElementById('logo-'+c).classList.remove('active');
+  c = Math.max(1, Math.min(5, c+d));
+  document.getElementById('logo-'+c).classList.add('active');
+  document.getElementById('counter').textContent = 'Option ' + c + ' / 5';
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') nav(1);
+  if (e.key === 'ArrowLeft') nav(-1);
+});
+</script>
+</body>
+</html>
