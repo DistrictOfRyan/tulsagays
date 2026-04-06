@@ -10,8 +10,8 @@
   "quirk": "me/accounts returns empty with Facebook Login for Business. Use direct page query instead: {page_id}?fields=access_token",
   "last_updated": "2026-03-30T20:45:00-05:00",
   "last_post": {
-    "date": "2026-04-01",
-    "fb_post_id": "1086906044497675_122099678126853065",
-    "ig_post_id": "18082758113062127"
+    "date": "2026-04-06",
+    "fb_post_id": "1086906044497675_122103903242853065",
+    "ig_post_id": "18125612773585244"
   }
 }
