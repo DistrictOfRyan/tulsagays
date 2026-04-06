@@ -1,7 +1,7 @@
-"""Generate minimal, modern Instagram carousel slides (1080x1080) for Tulsa Gays.
+"""Generate Tulsa Gays Instagram carousel slides (1080x1080).
 
-Clean dark-background design with typography-focused layout, subtle accent
-colors per category, and no visual clutter. Max 3 events per slide.
+Brand: Modern Geometric Deco. Dark bg, Poiret One headers, Neon Pink accents.
+NOT the HHHH brand — no burnt orange, no rainbow bars, no gold deco lines.
 """
 
 import re
@@ -13,57 +13,38 @@ from typing import List, Dict, Optional, Tuple
 
 from PIL import Image, ImageDraw, ImageFont
 
-# ── Project imports ──────────────────────────────────────────────────────
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
 
-# ── Constants ────────────────────────────────────────────────────────────
+# ── Paths ─────────────────────────────────────────────────────────────────
+FONTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fonts")
+
+# ── Canvas ────────────────────────────────────────────────────────────────
 SIZE = (1080, 1080)
 W, H = SIZE
+PAD = 72  # side padding
 
-# Backgrounds
-BG = "#0a0a0a"
-BG_RGB = (10, 10, 10)
+# ── Tulsa Gays Color Palette ──────────────────────────────────────────────
+BG            = (10, 10, 10)       # #0a0a0a — all slides
+NEON_PINK     = "#FF1493"          # primary accent: "GAYS", bars, links, highlights
+WHITE         = "#FFFFFF"          # "TULSA", primary text, event names
+LIGHT_GRAY    = "#CCCCCC"          # descriptions, secondary text
+GRAY          = "#888888"          # times, muted info
+DARK_GRAY     = "#555555"          # dividers, subtle elements
+STRIP_BG      = (18, 18, 18)       # "Also happening" section background
 
-# Text colors
-WHITE = "#ffffff"
-GRAY = "#999999"
-DARK_GRAY = "#555555"
-LIGHT = "#cccccc"
+# Day accent colors — per DESIGN_STANDARD.md
+DAY_ACCENTS = {
+    "Monday":    "#A8D8A8",  # Bright Sage
+    "Tuesday":   "#C0AEFF",  # Bright Lavender
+    "Wednesday": "#FFD060",  # Warm Gold
+    "Thursday":  "#F0A0B0",  # Bright Rose
+    "Friday":    "#FF1493",  # Neon Pink
+    "Saturday":  "#C0AEFF",  # Bright Lavender
+    "Sunday":    "#80CCFF",  # Sky Blue
+}
 
-# Accent palette (one per category)
-MCM_DARK_GOLD = "#D4A574"   # warm amber for HHHH
-ACCENT_COMMUNITY = "#8BA888"  # soft sage
-ACCENT_ARTS = "#9B8EC4"       # muted lavender
-ACCENT_NIGHTLIFE = "#C4848B"  # dusty rose
-ACCENT_DEFAULT = "#888888"    # neutral fallback
-# ── Mid-Century Deco Palette ─────────────────────────────────────────────
-MCM_DARK_GOLD = "#8B7234"     # deep warm gold (not yellow)
-MCM_GOLD_LIGHT = "#A89050"    # lighter gold for accents
-MCM_PEACOCK = "#006D6F"       # deep peacock teal
-MCM_PEACOCK_LIGHT = "#00838F" # deep peacock, still readable on dark
-MCM_HUNTER = "#355E3B"        # hunter green
-MCM_BURNT_ORANGE = "#BF5700"  # burnt orange
-MCM_CREAM = "#F5E6C8"         # warm cream for text
-
-# Subtle rainbow for the 3px top line
-RAINBOW = [
-    (228, 3, 3),    # red
-    (255, 140, 0),  # orange
-    (255, 237, 0),  # yellow
-    (0, 128, 38),   # green
-    (0, 77, 255),   # blue
-    (117, 7, 135),  # purple
-]
-
-# Layout
-PAD = 80            # slide edge padding
-MAX_EVENTS = 3      # max events per category slide
-NAME_MAX = 45       # truncate event names
-DESC_MAX = 70       # truncate descriptions
-RAINBOW_H = 3       # thin rainbow line height
-
-# Sassy cover tagline (rotate these weekly for variety)
+# Sassy cover taglines — rotate weekly
 COVER_TAGLINES = [
     "Nothing to do in Tulsa? Sounds like a straight person problem.",
     "There's only nothing to do in Tulsa if you're boring.",
@@ -73,741 +54,661 @@ COVER_TAGLINES = [
     "Tulsa has nothing to do? You're just not invited to the right things.",
 ]
 
-# Skip garbage event names
-SKIP_NAMES = {"event calendar", "events", "calendar", "untitled", ""}
+SKIP_NAMES = {"event calendar", "events", "calendar", "untitled", "",
+              "map", "google calendar", "get your tickets", "upcoming events"}
 
 
-# ── Font loading ─────────────────────────────────────────────────────────
+# ── Font Loading ──────────────────────────────────────────────────────────
 
 def _font(name: str, size: int) -> ImageFont.FreeTypeFont:
-    """Load a Windows system font, falling back gracefully."""
-    fonts_dir = os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "Fonts")
-    mapping = {
-        "segoe": "segoeui.ttf",
-        "segoe-light": "segoeuil.ttf",
-        "segoe-bold": "segoeuib.ttf",
-        "segoe-semibold": "seguisb.ttf",
-        "arial": "arial.ttf",
-        "arial-bold": "arialbd.ttf",
-        "impact": "impact.ttf",
+    """Load a font. Checks project fonts/ dir first, then Windows system fonts."""
+    project_map = {
+        "poiret":   "PoiretOne-Regular.ttf",
+        "cinzel":   "Cinzel.ttf",
+        "playfair": "PlayfairDisplay.ttf",
     }
-    filename = mapping.get(name.lower(), f"{name}.ttf")
-    path = os.path.join(fonts_dir, filename)
+    if name.lower() in project_map:
+        path = os.path.join(FONTS_DIR, project_map[name.lower()])
+        if os.path.exists(path):
+            return ImageFont.truetype(path, size)
+
+    win_fonts = os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "Fonts")
+    system_map = {
+        "segoe":         "segoeui.ttf",
+        "segoe-light":   "segoeuil.ttf",
+        "segoe-bold":    "segoeuib.ttf",
+        "segoe-semi":    "seguisb.ttf",
+        "arial":         "arial.ttf",
+        "arial-bold":    "arialbd.ttf",
+    }
+    filename = system_map.get(name.lower(), f"{name}.ttf")
+    path = os.path.join(win_fonts, filename)
     if os.path.exists(path):
         return ImageFont.truetype(path, size)
-    # Try raw filename
-    try:
-        return ImageFont.truetype(filename, size)
-    except OSError:
-        pass
-    # Fallback chain: try Arial, then default
-    for fallback in ["arial.ttf", "arialbd.ttf"]:
-        fb_path = os.path.join(fonts_dir, fallback)
-        if os.path.exists(fb_path):
-            return ImageFont.truetype(fb_path, size)
+
+    for fallback in ["segoeuil.ttf", "segoeui.ttf", "arial.ttf"]:
+        fb = os.path.join(win_fonts, fallback)
+        if os.path.exists(fb):
+            return ImageFont.truetype(fb, size)
     return ImageFont.load_default()
 
 
-# ── Text helpers ─────────────────────────────────────────────────────────
+# ── Text Utilities ────────────────────────────────────────────────────────
 
 def clean_text(text: str) -> str:
-    """Strip emoji, non-ASCII decorative chars, and excess whitespace."""
+    """Strip emoji, non-ASCII decorative chars, excess whitespace."""
     if not text:
         return ""
-    # Remove emoji and misc symbols (broad Unicode ranges)
     text = re.sub(
-        r'[\U0001F600-\U0001F64F'   # emoticons
-        r'\U0001F300-\U0001F5FF'     # symbols & pictographs
-        r'\U0001F680-\U0001F6FF'     # transport & map
-        r'\U0001F1E0-\U0001F1FF'     # flags
-        r'\U00002702-\U000027B0'     # dingbats
-        r'\U0000FE00-\U0000FE0F'     # variation selectors
-        r'\U0001F900-\U0001F9FF'     # supplemental symbols
-        r'\U0001FA00-\U0001FA6F'     # chess symbols
-        r'\U0001FA70-\U0001FAFF'     # symbols extended-A
-        r'\U00002600-\U000026FF'     # misc symbols
-        r'\U0000200D'                # zero width joiner
-        r'\U0000231A-\U0000231B'     # watch/hourglass
-        r'\U00002B50'                # star
-        r'\U000023F0-\U000023F3'     # clocks
-        r']+', '', text
+        r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF'
+        r'\U0001F1E0-\U0001F1FF\U00002702-\U000027B0\U0000FE00-\U0000FE0F'
+        r'\U0001F900-\U0001F9FF\U00002600-\U000026FF\U0000200D'
+        r'\U0001FA00-\U0001FA6F\U0001FA70-\U0001FAFF]+', '', text
     )
-    # Collapse whitespace
-    text = re.sub(r'\s+', ' ', text).strip()
-    return text
+    return re.sub(r'\s+', ' ', text).strip()
 
 
 def format_date(date_str: str) -> str:
-    """Convert various date formats to 'Thu, Apr 3' style.
-
-    Handles: '2026-04-03', 'April 3, 2026', 'Thursday, April 3',
-    'Apr 3', and already-formatted strings.
-    """
+    """Convert YYYY-MM-DD or similar to 'Mon, Apr 6' format."""
     if not date_str:
         return ""
-
     date_str = date_str.strip()
-
-    # Already short format like "Thu, Apr 3"
-    if re.match(r'^[A-Z][a-z]{2}, [A-Z][a-z]{2} \d{1,2}$', date_str):
-        return date_str
-
-    # Try ISO format: 2026-04-03
-    try:
-        dt = datetime.strptime(date_str, "%Y-%m-%d")
-        return dt.strftime("%a, %b %-d") if os.name != 'nt' else dt.strftime("%a, %b %#d")
-    except ValueError:
-        pass
-
-    # Try common formats
-    for fmt in ["%B %d, %Y", "%A, %B %d", "%A, %B %d, %Y",
-                "%b %d, %Y", "%b %d", "%B %d"]:
+    for fmt in ["%Y-%m-%d", "%B %d, %Y", "%b %d, %Y",
+                "%A, %B %d, %Y", "%B %d", "%b %d"]:
         try:
             dt = datetime.strptime(date_str, fmt)
-            # If year wasn't in format, keep current year
             if dt.year == 1900:
                 dt = dt.replace(year=datetime.now().year)
-            return dt.strftime("%a, %b %-d") if os.name != 'nt' else dt.strftime("%a, %b %#d")
+            return dt.strftime("%a, %b %#d") if os.name == "nt" else dt.strftime("%a, %b %-d")
         except ValueError:
             continue
-
-    # Strip day-of-week prefix if present: "Wednesday, Apr 2" -> "Wed, Apr 2"
-    m = re.match(r'^(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?\s*(.+)$',
-                 date_str, re.IGNORECASE)
-    if m:
-        remainder = m.group(1)
-        for fmt in ["%B %d", "%b %d", "%B %d, %Y", "%b %d, %Y"]:
-            try:
-                dt = datetime.strptime(remainder.strip(), fmt)
-                if dt.year == 1900:
-                    dt = dt.replace(year=datetime.now().year)
-                return dt.strftime("%a, %b %-d") if os.name != 'nt' else dt.strftime("%a, %b %#d")
-            except ValueError:
-                continue
-
-    # Give up, return cleaned original
     return date_str
 
 
-def _truncate(text: str, limit: int) -> str:
-    """Truncate text to limit, adding ellipsis if needed."""
-    text = clean_text(text)
-    if len(text) <= limit:
-        return text
-    return text[:limit - 1].rsplit(" ", 1)[0] + "..."
+def _text_width(draw: ImageDraw.Draw, text: str, font: ImageFont.FreeTypeFont) -> int:
+    bbox = draw.textbbox((0, 0), text, font=font)
+    return bbox[2] - bbox[0]
 
 
-def _is_garbage_event(event: Dict) -> bool:
-    """Return True if event should be skipped."""
+def _text_height(draw: ImageDraw.Draw, text: str, font: ImageFont.FreeTypeFont) -> int:
+    bbox = draw.textbbox((0, 0), text, font=font)
+    return bbox[3] - bbox[1]
+
+
+def _wrap_to_width(draw: ImageDraw.Draw, text: str,
+                   font: ImageFont.FreeTypeFont, max_px: int) -> List[str]:
+    """Wrap text to fit within max_px. Returns list of lines."""
+    words = clean_text(text).split()
+    lines, current = [], ""
+    for word in words:
+        candidate = (current + " " + word).strip()
+        if _text_width(draw, candidate, font) <= max_px:
+            current = candidate
+        else:
+            if current:
+                lines.append(current)
+            current = word
+    if current:
+        lines.append(current)
+    return lines or [""]
+
+
+def _draw_centered(draw: ImageDraw.Draw, text: str, y: int,
+                   font: ImageFont.FreeTypeFont, fill: str) -> int:
+    """Draw horizontally centered text. Returns y after the text."""
+    tw = _text_width(draw, text, font)
+    th = _text_height(draw, text, font)
+    draw.text(((W - tw) // 2, y), text, font=font, fill=fill)
+    return y + th
+
+
+def _draw_wrapped(draw: ImageDraw.Draw, text: str, y: int,
+                  font: ImageFont.FreeTypeFont, fill: str,
+                  max_px: int = W - PAD * 2,
+                  max_lines: int = 3, line_gap: int = 6) -> int:
+    """Draw word-wrapped centered text. Returns y after last line."""
+    lines = _wrap_to_width(draw, text, font, max_px)[:max_lines]
+    for line in lines:
+        y = _draw_centered(draw, line, y, font, fill)
+        y += line_gap
+    return y
+
+
+def _pink_bar(draw: ImageDraw.Draw, y: int, height: int = 3) -> int:
+    """Draw a neon pink horizontal bar across the full width."""
+    draw.rectangle([0, y, W, y + height - 1], fill=NEON_PINK)
+    return y + height
+
+
+def _thin_divider(draw: ImageDraw.Draw, y: int,
+                  margin: int = PAD, color: str = "#2a2a2a") -> int:
+    """Draw a subtle 1px divider. Returns y after."""
+    draw.line([(margin, y), (W - margin, y)], fill=color, width=1)
+    return y + 1
+
+
+def _watermark(draw: ImageDraw.Draw):
+    """Tiny 'TULSA GAYS' in bottom-right corner."""
+    font = _font("segoe", 14)
+    text = "TULSA GAYS"
+    tw = _text_width(draw, text, font)
+    draw.text((W - tw - 28, H - 36), text, font=font, fill=DARK_GRAY)
+
+
+def _is_garbage(event: Dict) -> bool:
     name = clean_text(event.get("name", "")).lower().strip()
     return name in SKIP_NAMES or len(name) < 3
 
 
-# ── Drawing primitives ───────────────────────────────────────────────────
-
-def _new_slide() -> Tuple[Image.Image, ImageDraw.Draw]:
-    """Create a blank 1080x1080 dark slide."""
-    img = Image.new("RGB", SIZE, BG)
-    draw = ImageDraw.Draw(img)
-    return img, draw
-
-
-def _rainbow_line(draw: ImageDraw.Draw, y: int = 0, height: int = RAINBOW_H):
-    """Draw a thin rainbow gradient line across the full width."""
-    segment_w = W // len(RAINBOW)
-    for i, color in enumerate(RAINBOW):
-        x0 = i * segment_w
-        x1 = (i + 1) * segment_w if i < len(RAINBOW) - 1 else W
-        draw.rectangle([x0, y, x1, y + height - 1], fill=color)
-
-
-def _centered_text(draw: ImageDraw.Draw, text: str, y: int,
-                   font: ImageFont.FreeTypeFont, fill: str = WHITE) -> int:
-    """Draw horizontally centered text. Returns y after text."""
-    bbox = draw.textbbox((0, 0), text, font=font)
-    tw = bbox[2] - bbox[0]
-    th = bbox[3] - bbox[1]
-    x = (W - tw) // 2
-    draw.text((x, y), text, font=font, fill=fill)
-    return y + th
-
-
-def _thin_line(draw: ImageDraw.Draw, y: int, color: str = DARK_GRAY,
-               margin: int = PAD) -> int:
-    """Draw a subtle 1px divider line. Returns y after line + gap."""
-    draw.line([(margin, y), (W - margin, y)], fill=color, width=1)
-    return y + 20
-
-
-def _watermark(draw: ImageDraw.Draw):
-    """Draw small 'TULSA GAYS' watermark in bottom-right corner."""
-    font = _font("segoe", 16)
-    text = "TULSA GAYS"
-    bbox = draw.textbbox((0, 0), text, font=font)
-    tw = bbox[2] - bbox[0]
-    x = W - tw - 30
-    y = H - 40
-    draw.text((x, y), text, font=font, fill=DARK_GRAY)
-
-
-def _accent_dot(draw: ImageDraw.Draw, x: int, y: int, color: str, r: int = 4):
-    """Draw a small colored dot."""
-    draw.ellipse([x - r, y - r, x + r, y + r], fill=color)
-
-
-# ── Slide generators ─────────────────────────────────────────────────────
-
-def _deco_line(draw: ImageDraw.Draw, y: int, color: str = MCM_DARK_GOLD,
-               margin: int = 200, thickness: int = 2) -> int:
-    """Draw an Art Deco style decorative line."""
-    draw.rectangle([margin, y, W - margin, y + thickness - 1], fill=color)
-    return y + thickness + 10
-
-
-def _deco_double_line(draw: ImageDraw.Draw, y: int, color: str = MCM_DARK_GOLD,
-                      margin: int = 250) -> int:
-    """Draw Art Deco double-line accent."""
-    draw.rectangle([margin, y, W - margin, y], fill=color)
-    draw.rectangle([margin, y + 4, W - margin, y + 4], fill=color)
-    return y + 15
-
+# ── Slide Generators ──────────────────────────────────────────────────────
 
 def make_cover_slide(post_type: str, date_range: str,
-                     tagline: Optional[str] = None) -> Image.Image:
-    """Cover slide: Art Deco / mid-century modern style."""
-    img, draw = _new_slide()
+                     featured_event: Optional[Dict] = None,
+                     tagline: Optional[str] = None,
+                     upcoming_event: Optional[Dict] = None) -> Image.Image:
+    """Slide 1: Cover + Event of the Week.
+    Top ~half: TULSA GAYS branding + date.
+    Bottom half: featured event of the week with name, time, venue, pitch.
+    """
+    img = Image.new("RGB", SIZE, BG)
+    draw = ImageDraw.Draw(img)
 
-    # Pick a tagline
+    week_num = datetime.now().isocalendar()[1]
     if tagline is None:
-        week_num = datetime.now().isocalendar()[1]
         tagline = COVER_TAGLINES[week_num % len(COVER_TAGLINES)]
 
-    # Fonts — Impact for deco bold feel, Segoe for supporting text
-    title_font = _font("impact", 50)
-    tulsa_font = _font("impact", 110)
-    gays_font = _font("impact", 110)
-    date_font = _font("segoe-light", 34)
-    tagline_font = _font("segoe-semibold", 24)
-    brand_font = _font("segoe-bold", 20)
+    f_week_label    = _font("poiret", 32)
+    f_date          = _font("segoe-light", 28)
+    f_tulsa         = _font("poiret", 96)
+    f_gays          = _font("poiret", 96)
+    f_eotw_label    = _font("poiret", 24)
+    f_eotw_name     = _font("poiret", 46)
+    f_eotw_name2    = _font("poiret", 36)
+    f_eotw_dt       = _font("segoe", 24)
+    f_eotw_venue    = _font("segoe", 24)
+    f_eotw_pitch    = _font("segoe", 20)
+    f_footer        = _font("poiret", 28)
+    f_upc_label     = _font("poiret", 24)
+    f_upc_name      = _font("poiret", 46)
+    f_upc_detail    = _font("segoe-light", 22)
+    f_upc_link      = _font("segoe-semi", 28)
 
-    # Top deco accent — burnt orange line
-    draw.rectangle([0, 0, W, 4], fill=MCM_BURNT_ORANGE)
+    _pink_bar(draw, 0, height=4)
 
-    # Deco double line
-    y = 200
-    _deco_double_line(draw, y, MCM_DARK_GOLD, margin=300)
-    y += 30
+    # ── Top branding block ────────────────────────────────────────────────
+    y = 38
+    y = _draw_centered(draw, "YOUR QUEER WEEK IN TULSA", y, f_week_label, NEON_PINK)
+    y += 14
+    y = _draw_centered(draw, date_range.upper(), y, f_date, WHITE)
+    y += 38
 
-    # "THIS WEEK" / "THIS WEEKEND" in burnt orange
-    title = "THIS WEEKEND" if post_type == "weekend" else "THIS WEEK"
-    y = _centered_text(draw, title, y, title_font, MCM_BURNT_ORANGE)
+    y = _draw_centered(draw, "TULSA", y, f_tulsa, WHITE)
+    y += 4
+    y = _draw_centered(draw, "GAYS", y, f_gays, NEON_PINK)
+    y += 16
+
+    bar_w = 240
+    draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 3], fill=NEON_PINK)
+    y += 3
+
+    branding_bottom = y
+
+    # ── Divider ───────────────────────────────────────────────────────────
+    y += 14
+    _thin_divider(draw, y, margin=PAD, color="#333333")
     y += 20
 
-    # "TULSA" in dark gold
-    y = _centered_text(draw, "TULSA", y, tulsa_font, MCM_DARK_GOLD)
-    y += 5
+    # ── Event of the Week ─────────────────────────────────────────────────
+    if featured_event and not _is_garbage(featured_event):
+        ev_name  = clean_text(featured_event.get("name", ""))
+        ev_time  = featured_event.get("time", "")
+        ev_venue = clean_text(featured_event.get("venue", ""))
+        ev_desc  = featured_event.get("description", "")
+        ev_date  = format_date(featured_event.get("date", ""))
 
-    # "GAYS" in deep peacock
-    y = _centered_text(draw, "GAYS", y, gays_font, MCM_PEACOCK_LIGHT)
-    y += 20
+        y = _draw_centered(draw, "EVENT OF THE WEEK", y, f_eotw_label, NEON_PINK)
+        y += 16
 
-    # Deco double line under title block
-    _deco_double_line(draw, y, MCM_DARK_GOLD, margin=300)
-    y += 30
+        name_font = f_eotw_name if len(ev_name) <= 32 else f_eotw_name2
+        y = _draw_wrapped(draw, ev_name, y, name_font, WHITE, max_px=W - 120, max_lines=2, line_gap=8)
+        y += 12
 
-    # Date range in cream
-    y = _centered_text(draw, date_range, y, date_font, MCM_CREAM)
+        dt_line = f"{ev_date}  ·  {ev_time}" if ev_date and ev_time else (ev_date or ev_time)
+        if dt_line:
+            y = _draw_centered(draw, dt_line, y, f_eotw_dt, GRAY)
+            y += 10
 
-    # Sassy tagline
-    y += 30
-    y = _centered_text(draw, tagline, y, tagline_font, GRAY)
+        if ev_venue:
+            y = _draw_wrapped(draw, f"@ {ev_venue}", y, f_eotw_venue, NEON_PINK,
+                              max_px=W - 140, max_lines=1, line_gap=6)
+            y += 10
 
-    # Small deco diamond accent
-    y += 25
-    cx, cy = W // 2, y
-    draw.polygon([(cx, cy - 5), (cx + 5, cy), (cx, cy + 5), (cx - 5, cy)],
-                 fill=MCM_DARK_GOLD)
-
-    # Bottom branding
-    brand_y = H - 80
-    _deco_double_line(draw, brand_y - 20, MCM_DARK_GOLD, margin=350)
-    # "TULSA" in gold, "GAYS" in burnt orange
-    tulsa_bbox = draw.textbbox((0, 0), "TULSA ", font=brand_font)
-    gays_bbox = draw.textbbox((0, 0), "GAYS", font=brand_font)
-    total_w = (tulsa_bbox[2] - tulsa_bbox[0]) + (gays_bbox[2] - gays_bbox[0])
-    bx = (W - total_w) // 2
-    draw.text((bx, brand_y), "TULSA ", font=brand_font, fill=MCM_DARK_GOLD)
-    draw.text((bx + tulsa_bbox[2] - tulsa_bbox[0], brand_y), "GAYS",
-              font=brand_font, fill=MCM_BURNT_ORANGE)
-
-    # Bottom deco line
-    draw.rectangle([0, H - 4, W, H], fill=MCM_HUNTER)
-
-    return img
-
-
-def make_homo_hotel_slide(event: Dict) -> Image.Image:
-    """Homo Hotel Happy Hour feature slide -- warm, special, inviting."""
-    img, draw = _new_slide()
-
-    # Thin amber accent line at top
-    draw.rectangle([0, 0, W, 2], fill=MCM_DARK_GOLD)
-
-    # Build date/time string
-    raw_date = event.get("date", "")
-    time_str = event.get("time", "")
-    venue = event.get("venue", event.get("location", ""))
-    description = event.get("description", "")
-
-    nice_date = format_date(raw_date)
-
-    # Layout: centered, generous spacing
-    label_font = _font("segoe", 20)
-    hero_font = _font("segoe-light", 52)
-    detail_font = _font("segoe", 34)
-    venue_font = _font("segoe", 28)
-    tagline_font = _font("segoe", 22)
-
-    # "FEATURED EVENT OF THE WEEK" label at top
-    y = 180
-    y = _centered_text(draw, "FEATURED EVENT OF THE WEEK", y, label_font, MCM_PEACOCK_LIGHT)
-    y += 40
-
-    # Hero title
-    y = _centered_text(draw, "HOMO HOTEL", y, hero_font, MCM_DARK_GOLD)
-    y += 6
-    y = _centered_text(draw, "HAPPY HOUR", y, hero_font, MCM_DARK_GOLD)
-
-    # Thin gold line
-    y += 35
-    line_w = 200
-    line_x = (W - line_w) // 2
-    draw.rectangle([line_x, y, line_x + line_w, y + 1], fill=MCM_DARK_GOLD)
-    y += 40
-
-    # Date and time
-    if nice_date and time_str:
-        dt_line = f"{nice_date}  ·  {time_str}"
-    elif nice_date:
-        dt_line = nice_date
-    elif time_str:
-        dt_line = time_str
+        if ev_desc:
+            y = _draw_wrapped(draw, ev_desc, y, f_eotw_pitch, LIGHT_GRAY,
+                              max_px=W - 160, max_lines=2, line_gap=6)
     else:
-        dt_line = ""
+        # No featured event — show tagline instead
+        y = _draw_wrapped(draw, tagline, y, f_eotw_pitch, LIGHT_GRAY,
+                          max_px=W - 160, max_lines=3, line_gap=8)
 
-    if dt_line:
-        y = _centered_text(draw, dt_line, y, detail_font, WHITE)
-        y += 20
+    # ── Upcoming Featured Event ───────────────────────────────────────────────
+    if upcoming_event and not _is_garbage(upcoming_event):
+        upc_name   = clean_text(upcoming_event.get("name", ""))
+        upc_date   = format_date(upcoming_event.get("date", ""))
+        upc_hype   = upcoming_event.get("hype", "")
+        upc_url    = upcoming_event.get("url", "")
+        upc_img    = upcoming_event.get("image_path", "")
 
-    # Venue
-    if venue:
-        venue_clean = clean_text(venue)
-        y = _centered_text(draw, f"@ {venue_clean}", y, venue_font, MCM_DARK_GOLD)
-        y += 30
+        if upc_name:
+            y += 18
+            _thin_divider(draw, y, margin=PAD, color="#2a2a2a")
+            y += 14
 
-    # Tagline
-    if description:
-        desc_clean = _truncate(description, DESC_MAX)
-        y = _centered_text(draw, desc_clean, y, tagline_font, GRAY)
-    else:
-        y = _centered_text(draw, "The weekly queer happy hour tradition", y,
-                           tagline_font, GRAY)
+            y = _draw_centered(draw, "COMING UP", y, f_upc_label, "#FFD060")
+            y += 8
 
-    # Bottom amber accent line
-    draw.rectangle([0, H - 2, W, H], fill=MCM_DARK_GOLD)
+            # ── Optional event image ──────────────────────────────────────
+            if upc_img and os.path.exists(upc_img):
+                try:
+                    ev_img = Image.open(upc_img).convert("RGB")
+                    max_w  = W - PAD * 2
+                    max_h  = 120
+                    scale  = min(max_w / ev_img.width, max_h / ev_img.height)
+                    img_w  = int(ev_img.width * scale)
+                    img_h  = int(ev_img.height * scale)
+                    ev_img = ev_img.resize((img_w, img_h), Image.LANCZOS)
+                    img.paste(ev_img, ((W - img_w) // 2, y))
+                    y += img_h + 10
+                except Exception:
+                    pass  # silently skip if image fails to load
 
+            y = _draw_wrapped(draw, upc_name, y, f_upc_name, WHITE,
+                              max_px=W - 120, max_lines=2, line_gap=4)
+            y += 4
+
+            if upc_date:
+                y = _draw_centered(draw, upc_date, y, f_upc_detail, GRAY)
+                y += 4
+
+            if upc_hype:
+                y = _draw_wrapped(draw, upc_hype, y, f_upc_detail, LIGHT_GRAY,
+                                  max_px=W - 140, max_lines=2, line_gap=4)
+                y += 4
+
+            if upc_url:
+                ticket_line = f"GET TICKETS  \u2192  {upc_url}"
+                y = _draw_wrapped(draw, ticket_line, y, f_upc_link, NEON_PINK,
+                                  max_px=W - 80, max_lines=2, line_gap=4)
+
+    # Footer — prominent TULSAGAYS.COM
+    _pink_bar(draw, H - 58, height=2)
+    _draw_centered(draw, "TULSAGAYS.COM", H - 52, f_footer, NEON_PINK)
+    _pink_bar(draw, H - 3, height=3)
     _watermark(draw)
     return img
 
 
-def make_category_slide(category_name: str, events: List[Dict],
-                        accent_color: str = ACCENT_DEFAULT) -> Image.Image:
-    """Category event slide with up to 3 events, clean layout."""
-    img, draw = _new_slide()
+def make_featured_slide(event: Dict) -> Image.Image:
+    """Slide 2: Featured event of the week."""
+    img = Image.new("RGB", SIZE, BG)
+    draw = ImageDraw.Draw(img)
 
-    # Filter out garbage events
-    events = [e for e in events if not _is_garbage_event(e)]
-    if not events:
-        return img
+    name        = clean_text(event.get("name", ""))
+    time_str    = event.get("time", "")
+    venue       = clean_text(event.get("venue", ""))
+    description = event.get("description", "")
+    raw_date    = event.get("date", "")
+    nice_date   = format_date(raw_date)
 
-    # Thin accent line at top
-    draw.rectangle([0, 0, W, 2], fill=accent_color)
+    # Is this HHHH?
+    is_hhhh = "homo hotel" in name.lower()
 
-    # Category label - small, uppercase, at top
-    cat_font = _font("segoe", 20)
-    y = 70
-    y = _centered_text(draw, category_name.upper(), y, cat_font, accent_color)
+    f_label  = _font("poiret", 36)
+    f_name   = _font("poiret", 82)
+    f_name2  = _font("poiret", 66)
+    f_dt     = _font("segoe", 42)
+    f_venue  = _font("segoe", 40)
+    f_desc   = _font("segoe", 34)
+    f_footer = _font("poiret", 26)
 
-    # Thin divider under category name
-    y += 20
-    line_w = 60
-    line_x = (W - line_w) // 2
-    draw.rectangle([line_x, y, line_x + line_w, y + 1], fill=accent_color)
-    y += 50
+    # Top pink bar
+    _pink_bar(draw, 0, height=4)
 
-    # Render events (max 3)
-    displayed = events[:MAX_EVENTS]
-    total_events = len(displayed)
+    # Vertically center the whole content block
+    label_text = "HOMO HOTEL HAPPY HOUR" if is_hhhh else "FEATURED EVENT OF THE WEEK"
+    name_font  = f_name if len(name) <= 30 else f_name2
 
-    # Calculate vertical spacing to center events
-    # Each event block is roughly 130-160px tall
-    estimated_block_h = 140
-    total_content_h = total_events * estimated_block_h + (total_events - 1) * 20
-    available_h = H - y - 120  # leave room for bottom
-    start_y = y + max(0, (available_h - total_content_h) // 2)
-    y = start_y
+    # Estimate content height
+    name_lines = _wrap_to_width(draw, name, name_font, W - 120)[:3]
+    est_h  = _text_height(draw, "X", f_label) + 14 + 2 + 48   # label + bar
+    est_h += sum(_text_height(draw, ln, name_font) + 10 for ln in name_lines) + 24
+    est_h += _text_height(draw, "X", f_dt) + 16
+    est_h += _text_height(draw, "X", f_venue) * 2 + 20
+    est_h += _text_height(draw, "X", f_desc) * 3 + 24
 
-    name_font = _font("segoe-bold", 32)
-    date_font = _font("segoe", 22)
-    venue_font = _font("segoe", 22)
-    desc_font = _font("segoe", 19)
+    y = max(80, (H - est_h) // 2 - 20)
 
-    for i, event in enumerate(displayed):
-        # Event name (bold, white)
-        name = _truncate(event.get("name", "Untitled"), NAME_MAX)
-        bbox = draw.textbbox((0, 0), name, font=name_font)
-        tw = bbox[2] - bbox[0]
-        name_x = (W - tw) // 2
-        draw.text((name_x, y), name, font=name_font, fill=WHITE)
-        y += (bbox[3] - bbox[1]) + 10
+    # Label
+    y = _draw_centered(draw, label_text, y, f_label, NEON_PINK)
+    y += 14
+    bar_w = 80
+    draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 2], fill=NEON_PINK)
+    y += 48
 
-        # Date and time line
-        raw_date = event.get("date", "")
-        time_str = event.get("time", "")
-        nice_date = format_date(raw_date)
+    # Event name
+    y = _draw_wrapped(draw, name, y, name_font, WHITE,
+                      max_px=W - 120, max_lines=3, line_gap=10)
+    y += 24
 
-        if nice_date and time_str:
-            dt_text = f"{nice_date}  ·  {time_str}"
-        elif nice_date:
-            dt_text = nice_date
-        elif time_str:
-            dt_text = time_str
-        else:
-            dt_text = ""
+    # Date / time
+    if nice_date and time_str:
+        dt_line = f"{nice_date}  ·  {time_str}"
+    elif time_str:
+        dt_line = time_str
+    elif nice_date:
+        dt_line = nice_date
+    else:
+        dt_line = ""
+    if dt_line:
+        y = _draw_centered(draw, dt_line, y, f_dt, GRAY)
+        y += 16
 
-        if dt_text:
-            y = _centered_text(draw, dt_text, y, date_font, GRAY)
-            y += 8
+    # Venue
+    if venue:
+        y = _draw_wrapped(draw, f"@ {venue}", y, f_venue, NEON_PINK,
+                          max_px=W - 140, max_lines=2, line_gap=8)
+        y += 20
 
-        # Venue
-        venue = event.get("venue", event.get("location", ""))
-        if venue:
-            venue_text = f"@ {clean_text(venue)}"
-            if len(venue_text) > 50:
-                venue_text = venue_text[:47] + "..."
-            y = _centered_text(draw, venue_text, y, venue_font, accent_color)
-            y += 8
+    # Description
+    if description:
+        y = _draw_wrapped(draw, description, y, f_desc, LIGHT_GRAY,
+                          max_px=W - 140, max_lines=4, line_gap=8)
 
-        # Brief description
-        desc = event.get("description", "")
-        if desc:
-            desc_clean = _truncate(desc, DESC_MAX)
-            y = _centered_text(draw, desc_clean, y, desc_font, DARK_GRAY)
-            y += 6
+    # Bottom
+    _draw_centered(draw, "tulsagays.com", H - 60, f_footer, GRAY)
+    _pink_bar(draw, H - 4, height=4)
+    _watermark(draw)
+    return img
 
-        # Divider between events
-        if i < total_events - 1:
-            y += 15
-            y = _thin_line(draw, y, color="#222222", margin=PAD + 100)
-            y += 5
 
-        # Safety: bail if running out of space
-        if y > H - 140:
-            break
+def make_day_slide(day_name: str, events: List[Dict],
+                   also_happening: Optional[List[Dict]] = None) -> Image.Image:
+    """Day slide: ALL events in a flowing layout with ○ ○ ○ separators.
+    Font sizes scale with event count. No slot-based layout — content flows
+    top to bottom, no wasted space.
+    """
+    img = Image.new("RGB", SIZE, BG)
+    draw = ImageDraw.Draw(img)
 
-    # "+" note if events were truncated
-    if len(events) > MAX_EVENTS:
-        remaining = len(events) - MAX_EVENTS
-        note_font = _font("segoe", 18)
-        note = f"+{remaining} more events at tulsagays.github.io"
-        _centered_text(draw, note, H - 90, note_font, DARK_GRAY)
+    # Merge ALL events — show every one as a full entry, not a tiny strip
+    all_events = [e for e in events if not _is_garbage(e)]
+    if also_happening:
+        all_events.extend([e for e in also_happening if not _is_garbage(e)])
+    n      = len(all_events)
+    accent = DAY_ACCENTS.get(day_name, GRAY)
 
-    # Bottom accent line
-    draw.rectangle([0, H - 2, W, H], fill=accent_color)
+    # ── Font sizes scale with event count ─────────────────────────────────
+    if n <= 1:
+        f_name, f_det, f_pitch, f_url = (
+            _font("poiret", 80), _font("segoe", 36),
+            _font("segoe", 30),  _font("segoe", 21))
+        name_max_lines, pitch_max_lines, sep_gap = 2, 4, 18
+    elif n == 2:
+        f_name, f_det, f_pitch, f_url = (
+            _font("poiret", 64), _font("segoe", 30),
+            _font("segoe", 26),  _font("segoe", 19))
+        name_max_lines, pitch_max_lines, sep_gap = 2, 3, 14
+    elif n == 3:
+        f_name, f_det, f_pitch, f_url = (
+            _font("poiret", 52), _font("segoe", 26),
+            _font("segoe", 23),  _font("segoe", 17))
+        name_max_lines, pitch_max_lines, sep_gap = 2, 2, 10
+    elif n == 4:
+        f_name, f_det, f_pitch, f_url = (
+            _font("poiret", 44), _font("segoe", 22),
+            _font("segoe", 19),  _font("segoe", 15))
+        name_max_lines, pitch_max_lines, sep_gap = 1, 2, 8
+    else:
+        f_name, f_det, f_pitch, f_url = (
+            _font("poiret", 38), _font("segoe", 19),
+            _font("segoe", 17),  _font("segoe", 14))
+        name_max_lines, pitch_max_lines, sep_gap = 1, 1, 6
 
+    f_day          = _font("poiret", 72)
+    f_sep          = _font("segoe", 20)
+    f_footer_big   = _font("poiret", 34)
+    f_footer_sub   = _font("segoe", 15)
+
+    # ── Header ────────────────────────────────────────────────────────────
+    _pink_bar(draw, 0, height=4)
+    y = 20
+    y = _draw_centered(draw, day_name.upper(), y, f_day, accent)
+    y += 7
+    bar_w = 60
+    draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 3], fill=accent)
+    y += 3 + 12
+
+    # ── Footer reserve (two-line prominent block) ─────────────────────────
+    footer_big_h  = _text_height(draw, "TULSAGAYS.COM", f_footer_big)
+    footer_sub_h  = _text_height(draw, "X", f_footer_sub)
+    footer_h      = footer_big_h + footer_sub_h + 18   # padding above + between
+    content_bottom = H - footer_h
+
+    # ── Flow layout — all events top to bottom ────────────────────────────
+    if n == 0:
+        mid = y + (content_bottom - y) // 2
+        _draw_centered(draw, "Check tulsagays.com for events", mid, _font("segoe", 26), GRAY)
+    else:
+        y_first_start = None
+        y_first_end   = None
+
+        for i, event in enumerate(all_events):
+            if y >= content_bottom:
+                break
+
+            if i == 0:
+                y_first_start = y - 6
+
+            ev_name  = clean_text(event.get("name", ""))
+            ev_time  = event.get("time", "")
+            ev_venue = clean_text(event.get("venue", ""))
+            ev_pitch = event.get("description", "")
+            ev_url   = event.get("url", "")
+            nice_dt  = format_date(event.get("date", ""))
+
+            # Name
+            name_lines_drawn = _wrap_to_width(draw, ev_name, f_name, W - PAD * 2)[:name_max_lines]
+            for ln in name_lines_drawn:
+                if y >= content_bottom:
+                    break
+                _draw_centered(draw, ln, y, f_name, WHITE)
+                y += _text_height(draw, ln, f_name) + 3
+            y += 4
+
+            # Time · Venue
+            if y < content_bottom:
+                det_parts = []
+                if nice_dt and ev_time:
+                    det_parts.append(f"{nice_dt}  ·  {ev_time}")
+                elif ev_time:
+                    det_parts.append(ev_time)
+                elif nice_dt:
+                    det_parts.append(nice_dt)
+                if ev_venue:
+                    det_parts.append(ev_venue[:55])
+
+                if det_parts:
+                    det_str = "  ·  ".join(det_parts)
+                    if len(det_parts) == 2 and _text_width(draw, det_str, f_det) > W - PAD * 2:
+                        _draw_centered(draw, det_parts[0], y, f_det, GRAY)
+                        y += _text_height(draw, "X", f_det) + 2
+                        if y < content_bottom:
+                            _draw_centered(draw, f"@ {det_parts[1]}", y, f_det, NEON_PINK)
+                            y += _text_height(draw, "X", f_det) + 3
+                    else:
+                        _draw_centered(draw, det_str, y, f_det, GRAY)
+                        y += _text_height(draw, "X", f_det) + 3
+
+            # Pitch
+            if ev_pitch and y < content_bottom:
+                pitch_list = _wrap_to_width(draw, ev_pitch, f_pitch, W - PAD * 2 - 40)[:pitch_max_lines]
+                for pl in pitch_list:
+                    if y >= content_bottom:
+                        break
+                    _draw_centered(draw, pl, y, f_pitch, LIGHT_GRAY)
+                    y += _text_height(draw, pl, f_pitch) + 3
+                y += 2
+
+            # URL
+            if ev_url and y < content_bottom:
+                display_url = re.sub(r'^https?://', '', ev_url).split("?")[0]
+                if len(display_url) > 50:
+                    display_url = display_url[:50] + "..."
+                _draw_centered(draw, display_url, y, f_url, NEON_PINK)
+                y += _text_height(draw, "X", f_url) + 2
+
+            # Track first event bottom bound (before separator)
+            if i == 0:
+                y_first_end = y + 6
+
+            # ○ ○ ○ separator between events
+            if i < n - 1 and y < content_bottom - sep_gap * 4:
+                y += sep_gap
+                _draw_centered(draw, "\u25cb  \u25cb  \u25cb", y, f_sep, "#555555")
+                y += _text_height(draw, "\u25cb  \u25cb  \u25cb", f_sep) + sep_gap
+
+        # ── Pink highlight box around top recommended event ────────────────
+        if y_first_start is not None and y_first_end is not None:
+            draw.rounded_rectangle(
+                [PAD - 14, y_first_start,
+                 W - PAD + 14, y_first_end],
+                radius=10,
+                outline=NEON_PINK,
+                width=2
+            )
+
+    # ── Footer ── prominent TULSAGAYS.COM block ───────────────────────────
+    footer_y = H - footer_h + 6
+    _draw_centered(draw, "TULSAGAYS.COM", footer_y, f_footer_big, NEON_PINK)
+    footer_y += footer_big_h + 4
+    _draw_centered(draw, "Full event listings + descriptions at every link",
+                   footer_y, f_footer_sub, GRAY)
     _watermark(draw)
     return img
 
 
 def make_closing_slide() -> Image.Image:
-    """Closing CTA slide: follow prompt, clean and centered."""
-    img, draw = _new_slide()
+    """Slide 10: CTA. DM us, follow, linktr.ee."""
+    img = Image.new("RGB", SIZE, BG)
+    draw = ImageDraw.Draw(img)
 
-    # Small rainbow gradient dot cluster at top
-    dot_y = 380
-    spacing = 14
-    start_x = W // 2 - (len(RAINBOW) * spacing) // 2
-    for i, color in enumerate(RAINBOW):
-        _accent_dot(draw, start_x + i * spacing, dot_y, _rgb_to_hex(color), r=4)
+    f_intro   = _font("segoe-semi", 42)
+    f_handle  = _font("poiret", 88)
+    f_sub     = _font("segoe", 36)
+    f_link    = _font("segoe", 36)
 
-    # Main CTA
-    handle_font = _font("segoe-light", 56)
-    sub_font = _font("segoe", 26)
-    brand_font = _font("segoe", 20)
+    _pink_bar(draw, 0, height=4)
 
-    y = 420
-    y = _centered_text(draw, f"FOLLOW @TULSAGAYS", y, handle_font, WHITE)
+    # Estimate total content height to vertically center it
+    intro_h  = _text_height(draw, "X", f_intro)
+    handle_h = _text_height(draw, "DM US", f_handle)
+    at_h     = _text_height(draw, "@TULSAGAYS", f_handle)
+    sub_h    = _text_height(draw, "X", f_sub)
+    link_h   = _text_height(draw, "X", f_link)
+    total_h  = intro_h + 16 + handle_h + 10 + at_h + 32 + 2 + 32 + sub_h + 24 + link_h
 
-    y += 25
-    y = _centered_text(draw, "for weekly LGBTQ+ events in Tulsa", y, sub_font, GRAY)
+    y = max(80, (H - total_h) // 2)
 
-    # Small rainbow line at bottom
-    _rainbow_line(draw, y=H - RAINBOW_H, height=RAINBOW_H)
+    y = _draw_centered(draw, "Know about an event?", y, f_intro, LIGHT_GRAY)
+    y += 16
+    y = _draw_centered(draw, "DM US", y, f_handle, WHITE)
+    y += 10
+    y = _draw_centered(draw, "@TULSAGAYS", y, f_handle, NEON_PINK)
+    y += 32
 
+    bar_w = 200
+    draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 2], fill=NEON_PINK)
+    y += 32
+
+    y = _draw_centered(draw, "Follow for weekly LGBTQ+ events in Tulsa", y, f_sub, LIGHT_GRAY)
+    y += 24
+    y = _draw_centered(draw, "linktr.ee/tulsagays", y, f_link, NEON_PINK)
+
+    _pink_bar(draw, H - 4, height=4)
     _watermark(draw)
     return img
 
 
-def _rgb_to_hex(rgb: Tuple[int, int, int]) -> str:
-    """Convert RGB tuple to hex string."""
-    return f"#{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}"
-
-
-def _get_accent_color(category_name: str) -> str:
-    """Pick accent color based on category name."""
-    cat = category_name.lower()
-    if "community" in cat:
-        return ACCENT_COMMUNITY
-    elif "art" in cat or "culture" in cat:
-        return ACCENT_ARTS
-    elif "nightlife" in cat or "bar" in cat or "club" in cat:
-        return ACCENT_NIGHTLIFE
-    return ACCENT_DEFAULT
-
-
-# ── Main carousel builders ───────────────────────────────────────────────
-
-def make_featured_slide(event: Dict) -> Image.Image:
-    """Featured event slide — the coolest/trendiest event of the week.
-    If HHHH is happening, it's always this. Otherwise pick the best one."""
-    name = clean_text(event.get("name", ""))
-    if "homo hotel" in name.lower():
-        return make_homo_hotel_slide(event)
-
-    # Generic featured event with special styling
-    img, draw = _new_slide()
-
-    # Rainbow line at top for featured
-    _rainbow_line(draw, y=0, height=4)
-
-    raw_date = event.get("date", "")
-    time_str = event.get("time", "")
-    venue = event.get("venue", event.get("location", ""))
-    description = event.get("description", "")
-    nice_date = format_date(raw_date)
-
-    label_font = _font("segoe", 20)
-    hero_font = _font("segoe-bold", 48)
-    detail_font = _font("segoe", 32)
-    venue_font = _font("segoe", 26)
-    desc_font = _font("segoe", 22)
-
-    y = 220
-    y = _centered_text(draw, "FEATURED EVENT OF THE WEEK", y, label_font, MCM_PEACOCK_LIGHT)
-    y += 15
-    line_w = 80
-    line_x = (W - line_w) // 2
-    draw.rectangle([line_x, y, line_x + line_w, y + 1], fill=MCM_PEACOCK_LIGHT)
-    y += 60
-
-    # Event name (wrap if long)
-    event_name = _truncate(name, 60)
-    lines = textwrap.wrap(event_name, width=25)
-    for line in lines:
-        y = _centered_text(draw, line, y, hero_font, WHITE)
-        y += 8
-    y += 20
-
-    if nice_date and time_str:
-        dt_line = f"{nice_date}  ·  {time_str}"
-    elif nice_date:
-        dt_line = nice_date
-    else:
-        dt_line = time_str
-    if dt_line:
-        y = _centered_text(draw, dt_line, y, detail_font, GRAY)
-        y += 15
-
-    if venue:
-        y = _centered_text(draw, f"@ {clean_text(venue)}", y, venue_font, MCM_PEACOCK_LIGHT)
-        y += 25
-
-    if description:
-        desc_clean = _truncate(description, 100)
-        wrapped = textwrap.wrap(desc_clean, width=45)
-        for line in wrapped[:3]:
-            y = _centered_text(draw, line, y, desc_font, DARK_GRAY)
-            y += 4
-
-    _rainbow_line(draw, y=H - 4, height=4)
-    _watermark(draw)
-    return img
-
-
-def make_day_slide(day_name: str, events: List[Dict]) -> Image.Image:
-    """Single day slide — shows all events for one day of the week."""
-    img, draw = _new_slide()
-
-    events = [e for e in events if not _is_garbage_event(e)]
-    if not events:
-        # Empty day — still show the day name
-        day_font = _font("segoe-light", 48)
-        note_font = _font("segoe", 24)
-        _rainbow_line(draw, y=0, height=2)
-        _centered_text(draw, day_name.upper(), 400, day_font, DARK_GRAY)
-        _centered_text(draw, "No events listed yet", 470, note_font, DARK_GRAY)
-        _watermark(draw)
-        return img
-
-    # Pick accent based on day
-    day_accents = {
-        "Monday": ACCENT_COMMUNITY,
-        "Tuesday": ACCENT_ARTS,
-        "Wednesday": "#B8860B",       # dark gold
-        "Thursday": ACCENT_NIGHTLIFE,
-        "Friday": MCM_DARK_GOLD,
-        "Saturday": "#9B8EC4",        # lavender
-        "Sunday": MCM_PEACOCK_LIGHT,
+def make_category_slide(category_name: str, events: List[Dict],
+                        accent_color: str = GRAY) -> Image.Image:
+    """Legacy category slide — kept for backward compatibility."""
+    day_equiv = {
+        "community": "Monday",
+        "arts": "Tuesday",
+        "nightlife": "Thursday",
     }
-    accent = day_accents.get(day_name, ACCENT_DEFAULT)
+    day = day_equiv.get(category_name.lower(), "Monday")
+    return make_day_slide(day, events)
 
-    # Thin accent line at top
-    draw.rectangle([0, 0, W, 2], fill=accent)
 
-    # Day name header
-    day_font = _font("segoe-light", 44)
-    y = 60
-    y = _centered_text(draw, day_name.upper(), y, day_font, accent)
-    y += 15
-    line_w = 60
-    line_x = (W - line_w) // 2
-    draw.rectangle([line_x, y, line_x + line_w, y + 1], fill=accent)
-    y += 40
+def make_homo_hotel_slide(event: Dict) -> Image.Image:
+    """HHHH featured slide — delegates to make_featured_slide."""
+    return make_featured_slide(event)
 
-    # Render events (up to 4 per day)
-    displayed = events[:4]
-    name_font = _font("segoe-bold", 30)
-    time_font = _font("segoe", 21)
-    venue_font = _font("segoe", 21)
-    desc_font = _font("segoe", 18)
 
-    for i, event in enumerate(displayed):
-        name = _truncate(event.get("name", "Untitled"), NAME_MAX)
-        bbox = draw.textbbox((0, 0), name, font=name_font)
-        tw = bbox[2] - bbox[0]
-        draw.text(((W - tw) // 2, y), name, font=name_font, fill=WHITE)
-        y += (bbox[3] - bbox[1]) + 8
-
-        time_str = event.get("time", "")
-        if time_str:
-            y = _centered_text(draw, time_str, y, time_font, GRAY)
-            y += 6
-
-        venue = event.get("venue", event.get("location", ""))
-        if venue:
-            y = _centered_text(draw, f"@ {clean_text(venue)}", y, venue_font, accent)
-            y += 6
-
-        desc = event.get("description", "")
-        if desc:
-            y = _centered_text(draw, _truncate(desc, DESC_MAX), y, desc_font, DARK_GRAY)
-            y += 4
-
-        if i < len(displayed) - 1:
-            y += 12
-            y = _thin_line(draw, y, color="#222222", margin=PAD + 80)
-            y += 8
-
-        if y > H - 120:
-            break
-
-    if len(events) > 4:
-        remaining = len(events) - 4
-        note_font = _font("segoe", 17)
-        _centered_text(draw, f"+{remaining} more at tulsagays.github.io", H - 80, note_font, DARK_GRAY)
-
-    draw.rectangle([0, H - 2, W, H], fill=accent)
-    _watermark(draw)
-    return img
-
+# ── Carousel Builder ──────────────────────────────────────────────────────
 
 def create_carousel(events_by_category: Dict[str, List[Dict]],
                     post_type: str,
                     date_range: str,
                     logo_path: Optional[str] = None,
                     events_by_day: Optional[Dict[str, List[Dict]]] = None,
-                    featured_event: Optional[Dict] = None) -> List[Image.Image]:
-    """Build a full carousel: Cover → Featured → Mon-Sun → CTA.
-
-    Args:
-        events_by_category: dict mapping category keys to event lists
-            (kept for backward compat; used to find HHHH if featured_event not given)
-        post_type: "weekday" or "weekend"
-        date_range: human-readable range, e.g. "Mar 31 - Apr 6"
-        logo_path: unused (kept for API compatibility)
-        events_by_day: dict mapping day names to event lists
-            e.g. {"Monday": [...], "Tuesday": [...], ...}
-        featured_event: the single best event of the week (HHHH if available)
-
-    Returns:
-        List of PIL Image objects (one per slide).
-    """
+                    featured_event: Optional[Dict] = None,
+                    upcoming_event: Optional[Dict] = None) -> List[Image.Image]:
+    """Build full 10-slide carousel: Cover → Featured → Mon-Sun → CTA."""
     slides: List[Image.Image] = []
     days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday",
                     "Friday", "Saturday", "Sunday"]
 
-    # 1. Cover slide
-    slides.append(make_cover_slide(post_type, date_range))
-
-    # 2. Featured event slide (HHHH always wins if present)
-    hh_events = events_by_category.get("homo_hotel", [])
-    if featured_event:
-        slides.append(make_featured_slide(featured_event))
-    elif hh_events:
-        slides.append(make_featured_slide(hh_events[0]))
-    else:
-        # Pick the first interesting event from any category
-        for cat in ["community", "arts", "nightlife"]:
-            cat_events = events_by_category.get(cat, [])
-            valid = [e for e in cat_events if not _is_garbage_event(e)]
-            if valid:
-                slides.append(make_featured_slide(valid[0]))
-                break
+    # Resolve featured event if not provided
+    eotw = featured_event
+    if not eotw or _is_garbage(eotw):
+        hh = events_by_category.get("homo_hotel", [])
+        if hh:
+            eotw = hh[0]
         else:
-            # No events at all — use HHHH placeholder
-            placeholder = {
-                "name": "Homo Hotel Happy Hour",
-                "date": "", "time": "", "venue": "TBA",
-                "description": "The weekly queer happy hour tradition",
-            }
-            slides.append(make_homo_hotel_slide(placeholder))
+            for cat in ["community", "arts", "nightlife"]:
+                valid = [e for e in events_by_category.get(cat, []) if not _is_garbage(e)]
+                if valid:
+                    eotw = valid[0]
+                    break
 
-    # 3. Daily slides (Monday through Sunday)
+    # Slide 1: Cover + Event of the Week combined
+    slides.append(make_cover_slide(post_type, date_range, featured_event=eotw,
+                                   upcoming_event=upcoming_event))
+
+    # Slides 3-9: One per day
     if events_by_day:
         for day in days_of_week:
-            day_events = events_by_day.get(day, [])
-            slides.append(make_day_slide(day, day_events))
+            day_events = [e for e in events_by_day.get(day, [])
+                          if not _is_garbage(e)]
+            featured = day_events[:3]
+            secondary = day_events[3:6]  # up to 3 in the strip
+            slides.append(make_day_slide(day, featured,
+                                         also_happening=secondary or None))
     else:
-        # Fallback: use old category format if events_by_day not provided
-        category_display = {
-            "community": "COMMUNITY",
-            "arts": "ARTS & CULTURE",
-            "nightlife": "NIGHTLIFE",
-        }
-        category_colors = {
-            "community": ACCENT_COMMUNITY,
-            "arts": ACCENT_ARTS,
-            "nightlife": ACCENT_NIGHTLIFE,
-        }
-        for key, display_name in category_display.items():
-            events = events_by_category.get(key, [])
-            events = [e for e in events if not _is_garbage_event(e)]
-            if events:
-                slides.append(make_category_slide(
-                    display_name, events, category_colors.get(key, ACCENT_DEFAULT)
-                ))
+        # Fallback: map categories to day slides
+        cat_day_map = {"community": "Monday", "arts": "Wednesday", "nightlife": "Friday"}
+        for cat, day in cat_day_map.items():
+            ev = [e for e in events_by_category.get(cat, []) if not _is_garbage(e)]
+            slides.append(make_day_slide(day, ev[:3], also_happening=ev[3:6] or None))
+        # Fill remaining days
+        filled = set(cat_day_map.values())
+        for day in days_of_week:
+            if day not in filled:
+                slides.append(make_day_slide(day, []))
 
-    # 4. Closing CTA
+    # Slide 10: CTA
     slides.append(make_closing_slide())
 
     return slides
@@ -815,91 +716,162 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
 
 def save_carousel(images: List[Image.Image], output_dir: str,
                   prefix: str = "slide") -> List[str]:
-    """Save slides as numbered PNGs.
-
-    Args:
-        images: list of PIL Image objects
-        output_dir: directory to save into (created if needed)
-        prefix: filename prefix
-
-    Returns:
-        List of saved file paths.
-    """
+    """Save slides as numbered PNGs. Returns list of file paths."""
     os.makedirs(output_dir, exist_ok=True)
     paths = []
     for i, img in enumerate(images, start=1):
-        filename = f"{prefix}_{i:02d}.png"
-        filepath = os.path.join(output_dir, filename)
-        img.save(filepath, "PNG", optimize=True)
-        paths.append(filepath)
+        path = os.path.join(output_dir, f"{prefix}_{i:02d}.png")
+        img.save(path, "PNG", optimize=True)
+        paths.append(path)
     return paths
 
 
-# ── CLI test ─────────────────────────────────────────────────────────────
+# ── CLI test ──────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    print("Generating sample carousel with minimal design...")
+    print("Generating Tulsa Gays carousel (corrected design)...")
 
-    sample_events = {
-        "homo_hotel": [{
-            "name": "Homo Hotel Happy Hour",
-            "date": "2026-04-02",
-            "time": "5:00 PM - 8:00 PM",
-            "venue": "The Venue, 123 Main St",
-            "description": "Join us for the weekly happy hour!",
-        }],
-        "community": [
-            {
-                "name": "OKEQ Support Group",
-                "date": "2026-04-01",
-                "time": "6:30 PM",
-                "venue": "Dennis R. Neill Equality Center",
-                "description": "Peer support for the LGBTQ+ community",
-            },
-            {
-                "name": "All Souls LGBTQ Fellowship",
-                "date": "2026-04-02",
-                "time": "7:00 PM",
-                "venue": "All Souls Unitarian Church",
-            },
-            {
-                "name": "Tulsa Pride Planning Committee",
-                "date": "2026-04-03",
-                "time": "6:00 PM",
-                "venue": "Equality Center - Room B",
-                "description": "Help plan the 2026 Tulsa Pride celebration",
-            },
+    events_by_day = {
+        "Monday": [
+            {"name": "Lambda Bowling League", "time": "7:00 PM",
+             "venue": "AMF Sheridan Lanes, 3121 S Sheridan",
+             "description": "Tulsa's LGBTQ+ bowling league rolls every Monday. All skill levels. Show up at 7.",
+             "url": "facebook.com/groups/tulsalambda",
+             "date": "2026-04-06"},
+            {"name": "Gay AA Meeting (Lambda Unity)", "time": "8:00 PM",
+             "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+             "description": "LGBTQ+ AA meeting. All are welcome.",
+             "url": "okeq.org",
+             "date": "2026-04-06"},
+            {"name": "All Souls Sunday Reset", "time": "Various times",
+             "venue": "All Souls Unitarian, 2952 S Peoria",
+             "description": "Missed Sunday? All Souls has multiple weekly gatherings. LGBTQ+ affirming community.",
+             "url": "allsoulschurch.org",
+             "date": "2026-04-06"},
         ],
-        "arts": [
-            {
-                "name": "Drag Bingo Night",
-                "date": "2026-04-03",
-                "time": "8:00 PM",
-                "venue": "Circle Cinema",
-                "description": "Fabulous prizes and even more fabulous hosts",
-            },
-            {
-                "name": "Queer Film Screening: Moonlight",
-                "date": "2026-04-04",
-                "time": "7:30 PM",
-                "venue": "Circle Cinema",
-            },
+        "Tuesday": [
+            {"name": "Mamma Mia! Opening Night", "time": "7:30 PM",
+             "venue": "Chapman Music Hall, Tulsa PAC",
+             "description": "ABBA on a Broadway stage in Tulsa. The touring production opens tonight. The gay cultural event of the season.",
+             "url": "tulsapac.com",
+             "date": "2026-04-07"},
+            {"name": "OSU Tulsa Queer Support Group", "time": "6:00 PM",
+             "venue": "OSU Tulsa Campus, 700 N Greenwood",
+             "description": "Free, open to all adults every Tuesday. Real people talking about real stuff in a safe space.",
+             "url": "events.tulsa.okstate.edu",
+             "date": "2026-04-07"},
+            {"name": "Gender Outreach Support Group", "time": "7:00 PM",
+             "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+             "description": "Free weekly support for trans, nonbinary, and gender-questioning folks. Run by OKEQ.",
+             "url": "okeq.org",
+             "date": "2026-04-07"},
         ],
-        "nightlife": [
-            {
-                "name": "Glow Party at Majestic",
-                "date": "2026-04-05",
-                "time": "10:00 PM",
-                "venue": "Majestic Night Club",
-                "description": "UV lights, glow paint, and great music all night",
-            },
+        "Wednesday": [
+            {"name": "Mamma Mia! (Wednesday)", "time": "7:30 PM",
+             "venue": "Chapman Music Hall, Tulsa PAC",
+             "description": "ABBA on Broadway, mid-week. Go before the weekend crowds. Still tickets available.",
+             "url": "tulsapac.com",
+             "date": "2026-04-08"},
+            {"name": "Gender Outreach Support Group", "time": "7:00 PM - 9:00 PM",
+             "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+             "description": "Free weekly support for trans, nonbinary, and gender-questioning folks. Run by OKEQ. No judgment.",
+             "url": "okeq.org",
+             "date": "2026-04-08"},
+            {"name": "Queer Women's Collective", "time": "7:00 PM",
+             "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+             "description": "1st Wednesday monthly. Space for queer women and femmes in Tulsa. Community, connection, good people.",
+             "url": "okeq.org",
+             "date": "2026-04-08"},
+        ],
+        "Thursday": [
+            {"name": "DRAGNIFICENT! Drag Show", "time": "Doors 9 PM, Show 10 PM",
+             "venue": "Club Majestic, 124 N Boston Ave",
+             "description": "Tulsa's weekly Thursday drag institution hosted by Shanel Sterling. Rotating performers who come to slay. 18+ ($8/$4 cover).",
+             "url": "clubmajestic.com",
+             "date": "2026-04-09"},
+            {"name": "Mamma Mia! (Thursday)", "time": "7:30 PM",
+             "venue": "Chapman Music Hall, Tulsa PAC",
+             "description": "Thursday night Broadway. ABBA, dancing, a mystery dad. Catch it before the weekend shows sell out.",
+             "url": "tulsapac.com",
+             "date": "2026-04-09"},
+            {"name": "Green Country Bears Monthly Meetup", "time": "7:00 PM",
+             "venue": "Restaurant varies, check greencountrybears.com",
+             "description": "Second Thursday. Tulsa's bear community gathers for food and good company. All bears and friends welcome.",
+             "url": "greencountrybears.com",
+             "date": "2026-04-09"},
+        ],
+        "Friday": [
+            {"name": "Mamma Mia! (Friday Night)", "time": "8:00 PM",
+             "venue": "Chapman Music Hall, Tulsa PAC",
+             "description": "Friday night Broadway. ABBA, sequins, a wild story about who's the dad. Date night sorted.",
+             "url": "tulsapac.com",
+             "date": "2026-04-10"},
+            {"name": "Tulsa Eagle Friday Night", "time": "9:00 PM",
+             "venue": "Tulsa Eagle, 1820 E 5th Pl",
+             "description": "The leather bar is open. Strong drinks, strong community. 21+.",
+             "url": "tulsaeagle.com",
+             "date": "2026-04-10"},
+            {"name": "Yellow Brick Road Weekend", "time": "9:00 PM",
+             "venue": "Yellow Brick Road, 3314 E 32nd Pl",
+             "description": "Tulsa's LGBTQ+ bar is open and the dance floor is yours. Friday vibes.",
+             "url": "facebook.com/ybrtulsa",
+             "date": "2026-04-10"},
+        ],
+        "Saturday": [
+            {"name": "Elote Drag Brunch", "time": "11:00 AM + 1:30 PM",
+             "venue": "Elote Cafe, 514 S Boston Ave",
+             "description": "Two seatings. Glitter as gospel, brunch as blessing. This sells out every time. Get tickets on Eventbrite now.",
+             "url": "eloterestaurant.com",
+             "date": "2026-04-11"},
+            {"name": "Mamma Mia! (Saturday Shows)", "time": "2:00 PM + 8:00 PM",
+             "venue": "Chapman Music Hall, Tulsa PAC",
+             "description": "Two shows Saturday. Your last weekend chance. Book the matinee and be home for dinner, or do the 8pm for full glamour.",
+             "url": "tulsapac.com",
+             "date": "2026-04-11"},
+            {"name": "Yellow Brick Road Saturday Night", "time": "9:00 PM",
+             "venue": "Yellow Brick Road, 3314 E 32nd Pl",
+             "description": "Saturday at YBR. The main event. Full bar, dancing, and your people.",
+             "url": "facebook.com/ybrtulsa",
+             "date": "2026-04-11"},
+        ],
+        "Sunday": [
+            {"name": "Mamma Mia! Closing Day", "time": "1:00 PM + 6:30 PM",
+             "venue": "Chapman Music Hall, Tulsa PAC",
+             "description": "Last day. Two shows. ABBA on Broadway. Your last shot. Don't let it slip away.",
+             "url": "tulsapac.com",
+             "date": "2026-04-12"},
+            {"name": "Sunday Showdown Open Talent Night", "time": "Doors 9 PM, Show 11 PM",
+             "venue": "Club Majestic, 124 N Boston Ave",
+             "description": "Hosted by Shanel Sterling. Come watch or come perform. 18+. Sunday nights at Majestic are always a moment.",
+             "url": "clubmajestic.com",
+             "date": "2026-04-12"},
+            {"name": "All Souls Unitarian Sunday Services", "time": "10:00 AM + 11:15 AM",
+             "venue": "All Souls Unitarian Church, 2952 S Peoria Ave",
+             "description": "The largest UU congregation in the US. LGBTQ+ affirming since forever. Walk in as you are.",
+             "url": "allsoulschurch.org",
+             "date": "2026-04-12"},
         ],
     }
 
-    slides = create_carousel(sample_events, "weekday", "Mar 31 - Apr 4")
-    out_dir = os.path.join(config.DATA_DIR, "sample_carousel")
-    paths = save_carousel(slides, out_dir, prefix="sample")
+    featured = {
+        "name": "Mamma Mia! (Broadway Touring)",
+        "date": "2026-04-07",
+        "time": "7:30 PM",
+        "venue": "Chapman Music Hall, Tulsa PAC",
+        "description": "ABBA on Broadway in Tulsa all week. The gay cultural event of the season. Runs Apr 7-12.",
+        "url": "tulsapac.com",
+    }
 
-    print(f"Saved {len(paths)} slides to {out_dir}")
+    slides = create_carousel(
+        events_by_category={},
+        post_type="weekday",
+        date_range="April 6 - 12, 2026",
+        events_by_day=events_by_day,
+        featured_event=featured,
+    )
+
+    output = os.path.join("docs", "images", "weekly")
+    paths = save_carousel(slides, output)
+    print(f"Generated {len(paths)} slides:")
     for p in paths:
-        print(f"  {p}")
+        print(f"  {os.path.basename(p)}")
