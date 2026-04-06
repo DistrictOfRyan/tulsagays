@@ -22,7 +22,7 @@ FONTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 # ── Canvas ────────────────────────────────────────────────────────────────
 SIZE = (1080, 1080)
 W, H = SIZE
-PAD = 72  # side padding
+PAD = 96  # side padding
 
 # ── Tulsa Gays Color Palette ──────────────────────────────────────────────
 BG            = (10, 10, 10)       # #0a0a0a — all slides
