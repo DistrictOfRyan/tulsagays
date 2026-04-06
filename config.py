@@ -128,9 +128,20 @@ SOURCES = {
     "qwc_tulsa": {
         "name": "Queer Women's Collective Tulsa",
         "url": "https://www.facebook.com/queerwomenscollectivetulsa/",
+        "fb_group_url": "https://www.facebook.com/share/14Vwhcwwq2i/",
+        "contact": "Hannah Jackson",
         "priority": 2,
         "type": "community",
-        "description": "Monthly happy hour (1st Wednesday) for queer women and allies",
+        "description": "Monthly happy hour on the FIRST WEDNESDAY of each month for queer women and allies. Contact Hannah Jackson for details. Check FB group for venue/time.",
+        "recurring": "1st Wednesday monthly",
+    },
+    "wclub_tulsa": {
+        "name": "WClub Tulsa",
+        "url": "https://www.facebook.com/share/18DoQE9Jb4/",
+        "priority": 2,
+        "type": "community",
+        "description": "Queer women's social club in Tulsa. Check admin profile for event listings and announcements.",
+        "notes": "Admin profile URL provided — check for event posts and group link",
     },
     "pflag_tulsa": {
         "name": "PFLAG Tulsa",
