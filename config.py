@@ -110,6 +110,7 @@ SOURCES = {
         "priority": 2,
         "type": "arts",
         "description": "Dance parties, drag race watch parties, fashion shows",
+        # NOTE: s66tulsa.com returned ECONNREFUSED on 2026-04-09 spot-check. Verify if still active.
     },
     "lambda_bowling": {
         "name": "Lambda Bowling League",
@@ -345,6 +346,29 @@ SOURCES = {
         "type": "community",
         "description": "2SLGBTQIA+ youth resources and programming",
     },
+    "yst_lgbtq": {
+        "name": "Youth Services of Tulsa (YST) LGBTQ+",
+        "url": "https://www.ysthelp.com/",
+        "priority": 2,
+        "type": "community",
+        "description": "LGBTQ+ youth programs: weekly Coffee House, LGBTQ Support Group (ages 13-20), Out and About community activities, Pride Prom. Drop-in center at 311 S Madison Ave.",
+        "recurring": "Weekly Coffee House; LGBTQ support group for ages 13-20",
+    },
+    "queer_night_tulsa": {
+        "name": "Queer Night Tulsa",
+        "url": "https://www.instagram.com/queernight.tulsa/",
+        "priority": 2,
+        "type": "community",
+        "description": "Monthly sober community gathering at YWCA Tulsa. Skill-sharing, trivia, crafts, performances. Created by Irissa Baxter-Luper after Nex Benedict tragedy. Active as of March 2025.",
+        "recurring": "Monthly at YWCA Tulsa",
+    },
+    "urban_lgbt_tulsa": {
+        "name": "Urban LGBT Tulsa Inc",
+        "url": "https://www.facebook.com/p/Urban-Lgbt-Tulsa-inc-100085937172262/",
+        "priority": 3,
+        "type": "community",
+        "description": "Nonprofit at 4th & Peoria with Rainbow Room, Pride Socials, community events. 15+ years serving Tulsa LGBTQ+ community.",
+    },
     # ── Book Clubs ────────────────────────────────────────────────────
     "queerlit_collective": {
         "name": "QueerLit Collective",
@@ -391,6 +415,13 @@ SOURCES = {
         "priority": 3,
         "type": "aggregator",
         "description": "Events and hotspots guide",
+    },
+    "tulsa_lgbtq_hot_list": {
+        "name": "TULSA LGBTQ HOT LIST",
+        "url": "https://www.facebook.com/groups/472710852857064/",
+        "priority": 3,
+        "type": "aggregator",
+        "description": "Facebook community group where members post and share LGBTQ+ events happening in Tulsa. Good crowdsourced aggregator for events not listed elsewhere.",
     },
 }
 
