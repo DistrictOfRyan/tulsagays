@@ -1,3 +1,19 @@
 User-agent: *
 Allow: /
-Sitemap: https://tulsagays.github.io/sitemap.xml
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+Sitemap: https://www.tulsagays.com/sitemap.xml
