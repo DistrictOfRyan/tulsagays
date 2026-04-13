@@ -8,12 +8,16 @@
   "how_to_post_ig": "1) Create container: POST /{ig_account_id}/media with image_url + caption + access_token. 2) Publish: POST /{ig_account_id}/media_publish with creation_id + access_token.",
   "oauth_url": "https://www.facebook.com/v25.0/dialog/oauth?client_id=1468075241636760&redirect_uri=https://developers.facebook.com/tools/explorer/callback&scope=pages_show_list,pages_manage_posts,pages_read_engagement,instagram_basic,instagram_content_publish&response_type=token&auth_type=rerequest",
   "quirk": "me/accounts returns empty with Facebook Login for Business. Use direct page query instead: {page_id}?fields=access_token",
-  "last_updated": "2026-03-30T20:45:00-05:00",
+  "last_updated": "2026-04-13",
   "last_post": {
-    "date": "2026-04-06",
-    "fb_post_id": "1086906044497675_122103996836853065",
-    "ig_post_id": "18085898975606320",
-    "week": "Apr 6-12 2026",
-    "note": "9-slide carousel posted via Graph API browser method"
-  }
+    "date": "2026-04-13",
+    "ig_post_id": "17880891246408027",
+    "fb_post_id": "1086906044497675_122105998850853065",
+    "note": "HHHH May 2026 promo. Charity band highlighted. Two IG + two FB posts exist (old graphic still up) \u2014 manually delete older ones if desired.",
+    "event": "FB event 27263241339928650 cover photo needs manual update (API blocked)",
+    "meetup": "Meetup event 314238731 cover photo needs manual update (mixed content blocked)"
+  },
+  "page_access_token": "TEST",
+  "page_token_expires": "2026-06-11",
+  "page_token_note": "Page token. Refresh by running OAuth flow again when expired."
 }
