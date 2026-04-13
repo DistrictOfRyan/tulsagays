@@ -1,14 +1,23 @@
-"""Scraper for Eventbrite and Meetup LGBTQ events in Tulsa via public search pages."""
+"""Scraper for Eventbrite and Meetup LGBTQ events in Tulsa.
+
+Eventbrite primary path:
+1. Public search API: https://www.eventbrite.com/api/v3/destination/search/
+   - Returns JSON with events including start_date, start_time, venue.name
+2. JSON-LD structured data from search result pages (fallback)
+3. Event link extraction (last resort, no dates)
+
+Meetup: JSON-LD from search pages + link extraction fallback.
+"""
 
 import sys
 import os
 import re
+import json
 import logging
 import urllib.parse
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import config
 from scraper.base import BaseScraper
 
 logger = logging.getLogger(__name__)
@@ -23,28 +32,53 @@ SEARCH_TERMS = [
     "rainbow",
 ]
 
+# Tulsa bounding box: SW lat/lon, NE lat/lon
+# Format for Eventbrite API: "lat_min,lng_min,lat_max,lng_max"
+TULSA_BBOX = "36.05,-96.05,36.25,-95.85"
+
+EVENTBRITE_API = "https://www.eventbrite.com/api/v3/destination/search/"
+EVENTBRITE_SEARCH_URL = "https://www.eventbrite.com/d/ok--tulsa/{query}/"
+
 
 class EventbriteScraper(BaseScraper):
-    """Search Eventbrite's public pages for Tulsa LGBTQ events."""
+    """Search Eventbrite for Tulsa LGBTQ events.
+
+    Primary: public search API (returns proper JSON with dates).
+    Fallback 1: JSON-LD on search result pages.
+    Fallback 2: Event link extraction (no dates, last resort).
+    """
 
     source_name = "eventbrite"
-
-    SEARCH_URL = "https://www.eventbrite.com/d/ok--tulsa/{query}/"
 
     def scrape(self) -> List[Dict]:
         events = []
         seen_names = set()
 
+        # Primary: API endpoint
+        api_events = self._try_api()
+        for event in api_events:
+            key = event["name"].lower().strip()
+            if key not in seen_names:
+                seen_names.add(key)
+                events.append(event)
+
+        if events:
+            logger.info(f"[eventbrite] API path: {len(events)} events with dates")
+            return events
+
+        # Fallback: scrape search pages for JSON-LD
         for term in SEARCH_TERMS:
-            url = self.SEARCH_URL.format(query=urllib.parse.quote(term))
+            url = EVENTBRITE_SEARCH_URL.format(query=urllib.parse.quote(term))
             soup = self.fetch_page(url)
             if not soup:
                 self._random_delay()
                 continue
 
-            found = self._extract_events(soup)
+            found = self._extract_json_ld(soup)
+            if not found:
+                found = self._parse_links(soup)
+
             for event in found:
-                # Deduplicate within this scraper
                 key = event["name"].lower().strip()
                 if key not in seen_names:
                     seen_names.add(key)
@@ -52,92 +86,104 @@ class EventbriteScraper(BaseScraper):
 
             self._random_delay()
 
-            # Stop early if we have plenty of events
             if len(events) >= 30:
                 break
 
         return events
 
-    def _extract_events(self, soup) -> List[Dict]:
-        """Extract events from Eventbrite search results."""
-        events = []
+    def _try_api(self) -> List[Dict]:
+        """Try the Eventbrite public search API for each search term."""
+        all_events = []
+        seen = set()
 
-        # Eventbrite search result cards
-        cards = (
-            soup.select("[data-testid='search-event-card']")
-            or soup.select(".search-event-card-wrapper")
-            or soup.select(".eds-event-card-content__content")
-            or soup.select(".discover-search-desktop-card")
-            or soup.select("article[class*='event']")
-            or soup.select("[class*='SearchResultCard']")
-        )
+        for term in SEARCH_TERMS:
+            try:
+                self._rotate_user_agent()
+                resp = self.session.get(
+                    EVENTBRITE_API,
+                    params={
+                        "page_size": 50,
+                        "q": term,
+                        "bbox": TULSA_BBOX,
+                    },
+                    timeout=15,
+                )
+                if resp.status_code != 200:
+                    logger.debug(f"[eventbrite] API returned {resp.status_code} for '{term}'")
+                    continue
 
-        for card in cards:
-            event = self._parse_card(card)
-            if event:
-                events.append(event)
+                data = resp.json()
+                # The API wraps results in various keys depending on version
+                events_data = (
+                    data.get("events", {}).get("results", [])
+                    or data.get("results", [])
+                    or data.get("events", [])
+                )
+                if isinstance(events_data, dict):
+                    events_data = events_data.get("results", [])
 
-        # Fallback: look for any event-like structured data
-        if not events:
-            events = self._parse_json_ld(soup)
+                for item in events_data:
+                    event = self._parse_api_event(item)
+                    if not event:
+                        continue
+                    key = event["name"].lower().strip()
+                    if key not in seen:
+                        seen.add(key)
+                        all_events.append(event)
 
-        # Fallback: generic link scraping
-        if not events:
-            events = self._parse_links(soup)
+                self._random_delay()
 
-        return events
+                if len(all_events) >= 30:
+                    break
 
-    def _parse_card(self, card) -> Dict | None:
-        """Parse an Eventbrite event card."""
-        # Title
-        title_el = (
-            card.select_one("[data-testid='event-card-title']")
-            or card.select_one("h2, h3")
-            or card.select_one(".eds-event-card-content__title")
-            or card.select_one("[class*='title']")
-        )
-        if not title_el:
-            return None
+            except Exception as e:
+                logger.debug(f"[eventbrite] API request failed for '{term}': {e}")
 
-        name = title_el.get_text(strip=True)
+        return all_events
+
+    def _parse_api_event(self, item: dict) -> Optional[Dict]:
+        """Parse one event from the Eventbrite API response."""
+        # Item structure varies; try common keys
+        name = item.get("name") or item.get("title", "")
+        if isinstance(name, dict):
+            name = name.get("text", "")
         if not name or len(name) < 5:
             return None
 
-        # URL
-        link = card.find("a", href=True)
-        url = ""
-        if link:
-            href = link["href"]
-            # Clean tracking params
-            url = href.split("?")[0] if "eventbrite.com" in href else href
+        # Dates
+        start = item.get("start_date") or item.get("start", {})
+        if isinstance(start, dict):
+            date_str = start.get("local", "")[:10] if start.get("local") else ""
+            time_str = start.get("local", "")[11:16] if start.get("local") and "T" in start.get("local", "") else ""
+        elif isinstance(start, str):
+            date_str = start[:10]
+            time_str = ""
+        else:
+            date_str = ""
+            time_str = ""
 
-        # Date
-        date_el = (
-            card.select_one("[data-testid='event-card-date']")
-            or card.select_one("p[class*='date']")
-            or card.select_one("[class*='date']")
-        )
-        date_str = ""
-        time_str = ""
-        if date_el:
-            raw = date_el.get_text(strip=True)
-            date_str = self.parse_date_flexible(raw)
-            # Try to extract time
-            time_match = re.search(r'(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm))', raw)
-            if time_match:
-                time_str = time_match.group(1)
+        # start_time separate field
+        if not time_str:
+            time_str = item.get("start_time", "")
 
-        # Location / venue
-        venue_el = (
-            card.select_one("[data-testid='event-card-venue']")
-            or card.select_one("[class*='location']")
-            or card.select_one("[class*='venue']")
-        )
-        venue = venue_el.get_text(strip=True) if venue_el else ""
+        # Venue
+        venue_data = item.get("venue") or item.get("primary_venue", {})
+        venue = ""
+        if isinstance(venue_data, dict):
+            venue = venue_data.get("name", "") or venue_data.get("address", {}).get("localized_address_display", "")
 
-        # Description (usually minimal in cards)
-        desc_el = card.select_one("p:not([class*='date']):not([class*='venue'])")
-        description = desc_el.get_text(strip=True)[:300] if desc_el else ""
+        url = item.get("url") or item.get("eventbrite_url", "")
+        if not url:
+            event_id = item.get("id") or item.get("eid", "")
+            if event_id:
+                url = f"https://www.eventbrite.com/e/{event_id}"
+
+        description = ""
+        desc = item.get("description") or item.get("summary", "")
+        if isinstance(desc, dict):
+            description = desc.get("text", "")[:500]
+        elif isinstance(desc, str):
+            description = desc[:500]
 
         return self.make_event(
             name=name,
@@ -149,55 +195,52 @@ class EventbriteScraper(BaseScraper):
             priority=2,
         )
 
-    def _parse_json_ld(self, soup) -> List[Dict]:
-        """Try to extract events from JSON-LD structured data."""
-        import json
+    def _extract_json_ld(self, soup) -> List[Dict]:
+        """Extract events from JSON-LD structured data on Eventbrite search pages."""
         events = []
-
         for script in soup.find_all("script", type="application/ld+json"):
             try:
-                data = json.loads(script.string)
+                raw = script.string
+                if not raw:
+                    continue
+                data = json.loads(raw)
                 items = data if isinstance(data, list) else [data]
                 for item in items:
-                    if item.get("@type") == "Event":
-                        name = item.get("name", "")
-                        if not name:
-                            continue
-
-                        start = item.get("startDate", "")
-                        date_str = start[:10] if start else ""
-                        time_str = ""
-                        if "T" in start:
-                            time_str = start.split("T")[1][:5]
-
-                        location = item.get("location", {})
-                        venue = ""
-                        if isinstance(location, dict):
-                            venue = location.get("name", "")
-
-                        events.append(self.make_event(
-                            name=name,
-                            date=date_str,
-                            time=time_str,
-                            venue=venue,
-                            description=item.get("description", "")[:300],
-                            url=item.get("url", ""),
-                            priority=2,
-                        ))
+                    if item.get("@type") != "Event":
+                        continue
+                    name = item.get("name", "")
+                    if not name:
+                        continue
+                    start = item.get("startDate", "")
+                    date_str = start[:10] if start else ""
+                    time_str = ""
+                    if "T" in start:
+                        time_str = start.split("T")[1][:5]
+                    location = item.get("location", {})
+                    venue = ""
+                    if isinstance(location, dict):
+                        venue = location.get("name", "")
+                    events.append(self.make_event(
+                        name=name,
+                        date=date_str,
+                        time=time_str,
+                        venue=venue,
+                        description=item.get("description", "")[:300],
+                        url=item.get("url", ""),
+                        priority=2,
+                    ))
             except (json.JSONDecodeError, TypeError):
                 continue
-
         return events
 
     def _parse_links(self, soup) -> List[Dict]:
-        """Fallback: look for event links."""
+        """Fallback: look for event links on the page (no date, last resort)."""
         events = []
         seen = set()
 
         for link in soup.find_all("a", href=True):
             href = link["href"]
             text = link.get_text(strip=True)
-
             if (
                 "eventbrite.com/e/" in href
                 and text
@@ -226,14 +269,19 @@ class MeetupScraper(BaseScraper):
         events = []
         seen_names = set()
 
-        for term in SEARCH_TERMS[:4]:  # Meetup is stricter, fewer queries
+        for term in SEARCH_TERMS[:4]:
             url = self.SEARCH_URL.format(query=urllib.parse.quote(term))
-            soup = self.fetch_page(url)
+            soup = self.fetch_page(url, timeout=8)
             if not soup:
                 self._random_delay()
                 continue
 
-            found = self._extract_events(soup)
+            found = self._extract_json_ld(soup)
+            if not found:
+                found = self._parse_cards(soup)
+            if not found:
+                found = self._parse_links(soup)
+
             for event in found:
                 key = event["name"].lower().strip()
                 if key not in seen_names:
@@ -247,114 +295,92 @@ class MeetupScraper(BaseScraper):
 
         return events
 
-    def _extract_events(self, soup) -> List[Dict]:
-        """Extract events from Meetup search results."""
+    def _extract_json_ld(self, soup) -> List[Dict]:
         events = []
+        for script in soup.find_all("script", type="application/ld+json"):
+            try:
+                raw = script.string
+                if not raw:
+                    continue
+                data = json.loads(raw)
+                items = data if isinstance(data, list) else [data]
+                for item in items:
+                    if item.get("@type") != "Event":
+                        continue
+                    name = item.get("name", "")
+                    if not name:
+                        continue
+                    start = item.get("startDate", "")
+                    location = item.get("location", {})
+                    venue = ""
+                    if isinstance(location, dict):
+                        venue = location.get("name", "")
+                    events.append(self.make_event(
+                        name=name,
+                        date=start[:10] if start else "",
+                        venue=venue,
+                        description=item.get("description", "")[:300],
+                        url=item.get("url", ""),
+                        priority=2,
+                    ))
+            except (json.JSONDecodeError, TypeError):
+                continue
+        return events
 
-        # Meetup search result cards
+    def _parse_cards(self, soup) -> List[Dict]:
+        events = []
         cards = (
             soup.select("[class*='eventCard']")
             or soup.select("[data-testid*='event']")
             or soup.select(".searchResult")
-            or soup.select("[id*='event']")
         )
 
         for card in cards:
-            event = self._parse_card(card)
-            if event:
-                events.append(event)
-
-        # Fallback: JSON-LD
-        if not events:
-            events = self._parse_json_ld(soup)
-
-        # Fallback: links
-        if not events:
-            events = self._parse_links(soup)
-
-        return events
-
-    def _parse_card(self, card) -> Dict | None:
-        """Parse a Meetup event card."""
-        title_el = card.select_one("h2, h3, [class*='title'], [class*='name']")
-        if not title_el:
-            return None
-
-        name = title_el.get_text(strip=True)
-        if not name or len(name) < 5:
-            return None
-
-        link = card.find("a", href=True)
-        url = ""
-        if link:
-            href = link["href"]
-            url = href if href.startswith("http") else "https://www.meetup.com" + href
-
-        date_el = card.select_one("time, [class*='date'], [class*='time']")
-        date_str = ""
-        time_str = ""
-        if date_el:
-            raw = date_el.get("datetime", "") or date_el.get_text(strip=True)
-            if raw:
-                date_str = self.parse_date_flexible(raw[:10] if len(raw) > 10 else raw)
-                time_match = re.search(r'(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm))', raw)
-                if time_match:
-                    time_str = time_match.group(1)
-
-        venue_el = card.select_one("[class*='venue'], [class*='location']")
-        venue = venue_el.get_text(strip=True) if venue_el else ""
-
-        return self.make_event(
-            name=name,
-            date=date_str,
-            time=time_str,
-            venue=venue,
-            url=url,
-            priority=2,
-        )
-
-    def _parse_json_ld(self, soup) -> List[Dict]:
-        """Try JSON-LD structured data."""
-        import json
-        events = []
-
-        for script in soup.find_all("script", type="application/ld+json"):
-            try:
-                data = json.loads(script.string)
-                items = data if isinstance(data, list) else [data]
-                for item in items:
-                    if item.get("@type") == "Event":
-                        name = item.get("name", "")
-                        if not name:
-                            continue
-                        start = item.get("startDate", "")
-                        events.append(self.make_event(
-                            name=name,
-                            date=start[:10] if start else "",
-                            venue=item.get("location", {}).get("name", "") if isinstance(item.get("location"), dict) else "",
-                            description=item.get("description", "")[:300],
-                            url=item.get("url", ""),
-                            priority=2,
-                        ))
-            except (json.JSONDecodeError, TypeError):
+            title_el = card.select_one("h2, h3, [class*='title'], [class*='name']")
+            if not title_el:
                 continue
+            name = title_el.get_text(strip=True)
+            if not name or len(name) < 5:
+                continue
+
+            link = card.find("a", href=True)
+            url = ""
+            if link:
+                href = link["href"]
+                url = href if href.startswith("http") else "https://www.meetup.com" + href
+
+            date_el = card.select_one("time, [class*='date'], [class*='time']")
+            date_str = ""
+            time_str = ""
+            if date_el:
+                raw = date_el.get("datetime", "") or date_el.get_text(strip=True)
+                if raw:
+                    date_str = self.parse_date_flexible(raw[:10] if len(raw) > 10 else raw)
+                    time_match = re.search(r'(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm))', raw)
+                    if time_match:
+                        time_str = time_match.group(1)
+
+            venue_el = card.select_one("[class*='venue'], [class*='location']")
+            venue = venue_el.get_text(strip=True) if venue_el else ""
+
+            events.append(self.make_event(
+                name=name,
+                date=date_str,
+                time=time_str,
+                venue=venue,
+                url=url,
+                priority=2,
+            ))
 
         return events
 
     def _parse_links(self, soup) -> List[Dict]:
-        """Fallback: event links."""
         events = []
         seen = set()
-
         for link in soup.find_all("a", href=True):
             href = link["href"]
             text = link.get_text(strip=True)
-            if (
-                "/events/" in href
-                and text
-                and len(text) > 10
-                and text not in seen
-            ):
+            if "/events/" in href and text and len(text) > 10 and text not in seen:
                 seen.add(text)
                 full_url = href if href.startswith("http") else "https://www.meetup.com" + href
                 events.append(self.make_event(
@@ -363,20 +389,14 @@ class MeetupScraper(BaseScraper):
                     url=full_url,
                     priority=2,
                 ))
-
         return events
 
 
 def scrape() -> List[Dict]:
     """Module-level entry point. Scrapes both Eventbrite and Meetup."""
     all_events = []
-
-    eb = EventbriteScraper()
-    all_events.extend(eb.safe_scrape())
-
-    mu = MeetupScraper()
-    all_events.extend(mu.safe_scrape())
-
+    all_events.extend(EventbriteScraper().safe_scrape())
+    all_events.extend(MeetupScraper().safe_scrape())
     return all_events
 
 

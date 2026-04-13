@@ -155,11 +155,13 @@ def _wrap_to_width(draw: ImageDraw.Draw, text: str,
 
 def _draw_centered(draw: ImageDraw.Draw, text: str, y: int,
                    font: ImageFont.FreeTypeFont, fill: str) -> int:
-    """Draw horizontally centered text. Returns y after the text."""
-    tw = _text_width(draw, text, font)
-    th = _text_height(draw, text, font)
-    draw.text(((W - tw) // 2, y), text, font=font, fill=fill)
-    return y + th
+    """Draw horizontally centered text with visual top at y. Returns y after text."""
+    bbox = draw.textbbox((0, 0), text, font=font)
+    tw   = bbox[2] - bbox[0]
+    # Draw with visual top at y (subtract bbox[1] offset so ink starts at y)
+    draw.text(((W - tw) // 2, y - bbox[1]), text, font=font, fill=fill)
+    # Advance by the actual visual height (bbox[3] - bbox[1])
+    return y + (bbox[3] - bbox[1])
 
 
 def _draw_wrapped(draw: ImageDraw.Draw, text: str, y: int,
@@ -200,6 +202,41 @@ def _is_garbage(event: Dict) -> bool:
     return name in SKIP_NAMES or len(name) < 3
 
 
+def _parse_event_time(time_str: str) -> int:
+    """Return minutes-since-midnight for sorting. Unknown times sort last.
+    Handles ranges like '5:30 - 7:00 PM' (uses start time) and prefixes
+    like 'Doors 7 PM, Show 8 PM' (uses first time found).
+    """
+    if not time_str:
+        return 9999
+    # Find first AM/PM time marker in the string
+    m = re.search(r'(\d{1,2}):?(\d{0,2})\s*(AM|PM)', time_str, re.IGNORECASE)
+    if not m:
+        return 9999
+    ampm = m.group(3).upper()
+    # Check if there's an H:MM time before this AM/PM marker (range start)
+    prefix = time_str[:m.start()]
+    early_matches = list(re.finditer(r'(\d{1,2}):(\d{2})', prefix))
+    m_early = early_matches[-1] if early_matches else None
+    if m_early:
+        hour   = int(m_early.group(1))
+        minute = int(m_early.group(2))
+        ref_h  = int(m.group(1))
+        # If range start hour is less than ref hour, it's same meridiem
+        if ampm == "PM" and hour < ref_h:
+            hour += 12
+        elif ampm == "AM" and hour == 12:
+            hour = 0
+    else:
+        hour   = int(m.group(1))
+        minute = int(m.group(2)) if m.group(2) else 0
+        if ampm == "PM" and hour != 12:
+            hour += 12
+        if ampm == "AM" and hour == 12:
+            hour = 0
+    return hour * 60 + minute
+
+
 # ── Slide Generators ──────────────────────────────────────────────────────
 
 def make_cover_slide(post_type: str, date_range: str,
@@ -221,17 +258,17 @@ def make_cover_slide(post_type: str, date_range: str,
     f_date          = _font("segoe-light", 28)
     f_tulsa         = _font("poiret", 96)
     f_gays          = _font("poiret", 96)
-    f_eotw_label    = _font("poiret", 24)
-    f_eotw_name     = _font("poiret", 46)
-    f_eotw_name2    = _font("poiret", 36)
+    f_eotw_label    = _font("poiret", 30)
+    f_eotw_name     = _font("poiret", 52)
+    f_eotw_name2    = _font("poiret", 40)
     f_eotw_dt       = _font("segoe", 24)
     f_eotw_venue    = _font("segoe", 24)
-    f_eotw_pitch    = _font("segoe", 20)
-    f_footer        = _font("poiret", 28)
-    f_upc_label     = _font("poiret", 24)
+    f_eotw_pitch    = _font("segoe", 21)
+    f_footer        = _font("poiret", 36)
+    f_upc_label     = _font("poiret", 28)
     f_upc_name      = _font("poiret", 46)
     f_upc_detail    = _font("segoe-light", 22)
-    f_upc_link      = _font("segoe-semi", 28)
+    f_upc_link      = _font("segoe-semi", 26)
 
     _pink_bar(draw, 0, height=4)
 
@@ -240,7 +277,12 @@ def make_cover_slide(post_type: str, date_range: str,
     y = _draw_centered(draw, "YOUR QUEER WEEK IN TULSA", y, f_week_label, NEON_PINK)
     y += 14
     y = _draw_centered(draw, date_range.upper(), y, f_date, WHITE)
-    y += 38
+    y += 10
+    if tagline:
+        f_tagline = _font("segoe", 19)
+        y = _draw_wrapped(draw, tagline, y, f_tagline, LIGHT_GRAY,
+                          max_px=W - PAD * 2, max_lines=1, line_gap=4)
+    y += 24
 
     y = _draw_centered(draw, "TULSA", y, f_tulsa, WHITE)
     y += 4
@@ -266,7 +308,7 @@ def make_cover_slide(post_type: str, date_range: str,
         ev_desc  = featured_event.get("description", "")
         ev_date  = format_date(featured_event.get("date", ""))
 
-        y = _draw_centered(draw, "EVENT OF THE WEEK", y, f_eotw_label, NEON_PINK)
+        y = _draw_centered(draw, "EVENT OF THE WEEK", y, f_eotw_label, WHITE)
         y += 16
 
         name_font = f_eotw_name if len(ev_name) <= 32 else f_eotw_name2
@@ -292,6 +334,7 @@ def make_cover_slide(post_type: str, date_range: str,
                           max_px=W - 160, max_lines=3, line_gap=8)
 
     # ── Upcoming Featured Event ───────────────────────────────────────────────
+    cover_footer_top = H - 76  # keep COMING UP content above the footer bar
     if upcoming_event and not _is_garbage(upcoming_event):
         upc_name   = clean_text(upcoming_event.get("name", ""))
         upc_date   = format_date(upcoming_event.get("date", ""))
@@ -299,20 +342,21 @@ def make_cover_slide(post_type: str, date_range: str,
         upc_url    = upcoming_event.get("url", "")
         upc_img    = upcoming_event.get("image_path", "")
 
-        if upc_name:
+        if upc_name and y < cover_footer_top - 60:
             y += 18
             _thin_divider(draw, y, margin=PAD, color="#2a2a2a")
             y += 14
 
-            y = _draw_centered(draw, "COMING UP", y, f_upc_label, "#FFD060")
-            y += 8
+            if y < cover_footer_top:
+                y = _draw_centered(draw, "COMING UP", y, f_upc_label, WHITE)
+                y += 8
 
             # ── Optional event image ──────────────────────────────────────
-            if upc_img and os.path.exists(upc_img):
+            if upc_img and os.path.exists(upc_img) and y < cover_footer_top:
                 try:
                     ev_img = Image.open(upc_img).convert("RGB")
                     max_w  = W - PAD * 2
-                    max_h  = 120
+                    max_h  = 100
                     scale  = min(max_w / ev_img.width, max_h / ev_img.height)
                     img_w  = int(ev_img.width * scale)
                     img_h  = int(ev_img.height * scale)
@@ -322,27 +366,28 @@ def make_cover_slide(post_type: str, date_range: str,
                 except Exception:
                     pass  # silently skip if image fails to load
 
-            y = _draw_wrapped(draw, upc_name, y, f_upc_name, WHITE,
-                              max_px=W - 120, max_lines=2, line_gap=4)
-            y += 4
+            if y < cover_footer_top:
+                y = _draw_wrapped(draw, upc_name, y, f_upc_name, WHITE,
+                                  max_px=W - 120, max_lines=2, line_gap=4)
+                y += 4
 
-            if upc_date:
+            if upc_date and y < cover_footer_top:
                 y = _draw_centered(draw, upc_date, y, f_upc_detail, GRAY)
                 y += 4
 
-            if upc_hype:
+            if upc_hype and y < cover_footer_top:
                 y = _draw_wrapped(draw, upc_hype, y, f_upc_detail, LIGHT_GRAY,
                                   max_px=W - 140, max_lines=2, line_gap=4)
                 y += 4
 
-            if upc_url:
+            if upc_url and y < cover_footer_top:
                 ticket_line = f"GET TICKETS  \u2192  {upc_url}"
                 y = _draw_wrapped(draw, ticket_line, y, f_upc_link, NEON_PINK,
                                   max_px=W - 80, max_lines=2, line_gap=4)
 
     # Footer — prominent TULSAGAYS.COM
-    _pink_bar(draw, H - 58, height=2)
-    _draw_centered(draw, "TULSAGAYS.COM", H - 52, f_footer, NEON_PINK)
+    _pink_bar(draw, H - 72, height=2)
+    _draw_centered(draw, "TULSAGAYS.COM", H - 64, f_footer, WHITE)
     _pink_bar(draw, H - 3, height=3)
     _watermark(draw)
     return img
@@ -363,7 +408,7 @@ def make_featured_slide(event: Dict) -> Image.Image:
     # Is this HHHH?
     is_hhhh = "homo hotel" in name.lower()
 
-    f_label  = _font("poiret", 36)
+    f_label  = _font("poiret", 40)
     f_name   = _font("poiret", 82)
     f_name2  = _font("poiret", 66)
     f_dt     = _font("segoe", 42)
@@ -389,7 +434,7 @@ def make_featured_slide(event: Dict) -> Image.Image:
     y = max(80, (H - est_h) // 2 - 20)
 
     # Label
-    y = _draw_centered(draw, label_text, y, f_label, NEON_PINK)
+    y = _draw_centered(draw, label_text, y, f_label, WHITE)
     y += 14
     bar_w = 80
     draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 2], fill=NEON_PINK)
@@ -444,6 +489,16 @@ def make_day_slide(day_name: str, events: List[Dict],
     all_events = [e for e in events if not _is_garbage(e)]
     if also_happening:
         all_events.extend([e for e in also_happening if not _is_garbage(e)])
+    all_events = all_events[:4]  # cap at 4 events — guarantees no overflow
+
+    # The first event in the original list is the featured/highlighted one.
+    # Sort all events chronologically, then find where the featured event landed.
+    featured_event_obj = all_events[0] if all_events else None
+    all_events = sorted(all_events, key=lambda e: _parse_event_time(e.get("time", "")))
+    feat_idx = next(
+        (i for i, e in enumerate(all_events) if e is featured_event_obj), 0
+    )
+
     n      = len(all_events)
     accent = DAY_ACCENTS.get(day_name, GRAY)
 
@@ -451,48 +506,48 @@ def make_day_slide(day_name: str, events: List[Dict],
     if n <= 1:
         f_name, f_det, f_pitch, f_url = (
             _font("poiret", 80), _font("segoe", 36),
-            _font("segoe", 30),  _font("segoe", 21))
-        name_max_lines, pitch_max_lines, sep_gap = 2, 4, 18
+            _font("segoe", 30),  _font("segoe", 26))
+        name_max_lines, pitch_max_lines, sep_gap = 2, 4, 0
     elif n == 2:
         f_name, f_det, f_pitch, f_url = (
             _font("poiret", 64), _font("segoe", 30),
-            _font("segoe", 26),  _font("segoe", 19))
-        name_max_lines, pitch_max_lines, sep_gap = 2, 3, 14
+            _font("segoe", 26),  _font("segoe", 24))
+        name_max_lines, pitch_max_lines, sep_gap = 2, 3, 24
     elif n == 3:
         f_name, f_det, f_pitch, f_url = (
             _font("poiret", 52), _font("segoe", 26),
-            _font("segoe", 23),  _font("segoe", 17))
-        name_max_lines, pitch_max_lines, sep_gap = 2, 2, 10
+            _font("segoe", 22),  _font("segoe", 22))
+        name_max_lines, pitch_max_lines, sep_gap = 2, 2, 22
     elif n == 4:
         f_name, f_det, f_pitch, f_url = (
-            _font("poiret", 44), _font("segoe", 22),
-            _font("segoe", 19),  _font("segoe", 15))
-        name_max_lines, pitch_max_lines, sep_gap = 1, 2, 8
-    else:
+            _font("poiret", 44), _font("segoe", 20),
+            _font("segoe", 19),  _font("segoe", 21))
+        name_max_lines, pitch_max_lines, sep_gap = 1, 1, 14
+    else:  # n >= 5 — safety net only, cap should prevent this
         f_name, f_det, f_pitch, f_url = (
-            _font("poiret", 38), _font("segoe", 19),
-            _font("segoe", 17),  _font("segoe", 14))
-        name_max_lines, pitch_max_lines, sep_gap = 1, 1, 6
+            _font("poiret", 38), _font("segoe", 18),
+            _font("segoe", 16),  _font("segoe", 18))
+        name_max_lines, pitch_max_lines, sep_gap = 1, 0, 10
 
-    f_day          = _font("poiret", 72)
+    f_day          = _font("poiret", 60)
     f_sep          = _font("segoe", 20)
-    f_footer_big   = _font("poiret", 34)
-    f_footer_sub   = _font("segoe", 15)
+    f_footer_big   = _font("poiret", 42)
+    f_footer_sub   = _font("segoe", 17)
 
     # ── Header ────────────────────────────────────────────────────────────
     _pink_bar(draw, 0, height=4)
     y = 20
     y = _draw_centered(draw, day_name.upper(), y, f_day, accent)
-    y += 7
+    y += 14
     bar_w = 60
-    draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 3], fill=accent)
-    y += 3 + 12
+    draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 3], fill=NEON_PINK)
+    y += 3 + 22
 
     # ── Footer reserve (two-line prominent block) ─────────────────────────
     footer_big_h  = _text_height(draw, "TULSAGAYS.COM", f_footer_big)
     footer_sub_h  = _text_height(draw, "X", f_footer_sub)
-    footer_h      = footer_big_h + footer_sub_h + 18   # padding above + between
-    content_bottom = H - footer_h
+    footer_h      = footer_big_h + footer_sub_h + 52   # generous padding above + between
+    content_bottom = H - footer_h - 16  # safety margin above footer
 
     # ── Flow layout — all events top to bottom ────────────────────────────
     if n == 0:
@@ -506,8 +561,12 @@ def make_day_slide(day_name: str, events: List[Dict],
             if y >= content_bottom:
                 break
 
-            if i == 0:
-                y_first_start = y - 6
+            # Extra gap before the featured event (if it's not the first rendered)
+            if i == feat_idx and i > 0:
+                y += 10
+
+            if i == feat_idx:
+                y_first_start = y - 10  # box padding above featured event
 
             ev_name  = clean_text(event.get("name", ""))
             ev_time  = event.get("time", "")
@@ -522,8 +581,8 @@ def make_day_slide(day_name: str, events: List[Dict],
                 if y >= content_bottom:
                     break
                 _draw_centered(draw, ln, y, f_name, WHITE)
-                y += _text_height(draw, ln, f_name) + 3
-            y += 4
+                y += _text_height(draw, ln, f_name) + 4
+            y += 6
 
             # Time · Venue
             if y < content_bottom:
@@ -535,19 +594,19 @@ def make_day_slide(day_name: str, events: List[Dict],
                 elif nice_dt:
                     det_parts.append(nice_dt)
                 if ev_venue:
-                    det_parts.append(ev_venue[:55])
+                    det_parts.append(ev_venue[:45])  # tighter truncation prevents 2-line wraps
 
                 if det_parts:
                     det_str = "  ·  ".join(det_parts)
                     if len(det_parts) == 2 and _text_width(draw, det_str, f_det) > W - PAD * 2:
                         _draw_centered(draw, det_parts[0], y, f_det, GRAY)
-                        y += _text_height(draw, "X", f_det) + 2
+                        y += _text_height(draw, "X", f_det) + 4
                         if y < content_bottom:
                             _draw_centered(draw, f"@ {det_parts[1]}", y, f_det, NEON_PINK)
-                            y += _text_height(draw, "X", f_det) + 3
+                            y += _text_height(draw, "X", f_det) + 5
                     else:
                         _draw_centered(draw, det_str, y, f_det, GRAY)
-                        y += _text_height(draw, "X", f_det) + 3
+                        y += _text_height(draw, "X", f_det) + 5
 
             # Pitch
             if ev_pitch and y < content_bottom:
@@ -556,8 +615,8 @@ def make_day_slide(day_name: str, events: List[Dict],
                     if y >= content_bottom:
                         break
                     _draw_centered(draw, pl, y, f_pitch, LIGHT_GRAY)
-                    y += _text_height(draw, pl, f_pitch) + 3
-                y += 2
+                    y += _text_height(draw, pl, f_pitch) + 4
+                y += 4
 
             # URL
             if ev_url and y < content_bottom:
@@ -565,11 +624,11 @@ def make_day_slide(day_name: str, events: List[Dict],
                 if len(display_url) > 50:
                     display_url = display_url[:50] + "..."
                 _draw_centered(draw, display_url, y, f_url, NEON_PINK)
-                y += _text_height(draw, "X", f_url) + 2
+                y += _text_height(draw, "X", f_url) + 4
 
-            # Track first event bottom bound (before separator)
-            if i == 0:
-                y_first_end = y + 6
+            # Track featured event bottom bound (for the highlight box)
+            if i == feat_idx:
+                y_first_end = y + 14
 
             # ○ ○ ○ separator between events
             if i < n - 1 and y < content_bottom - sep_gap * 4:
@@ -580,19 +639,19 @@ def make_day_slide(day_name: str, events: List[Dict],
         # ── Pink highlight box around top recommended event ────────────────
         if y_first_start is not None and y_first_end is not None:
             draw.rounded_rectangle(
-                [PAD - 14, y_first_start,
-                 W - PAD + 14, y_first_end],
-                radius=10,
+                [PAD - 22, y_first_start,
+                 W - PAD + 22, y_first_end],
+                radius=12,
                 outline=NEON_PINK,
-                width=2
+                width=3
             )
 
     # ── Footer ── prominent TULSAGAYS.COM block ───────────────────────────
-    footer_y = H - footer_h + 6
-    _draw_centered(draw, "TULSAGAYS.COM", footer_y, f_footer_big, NEON_PINK)
-    footer_y += footer_big_h + 4
+    footer_y = H - footer_h + 22
+    _draw_centered(draw, "TULSAGAYS.COM", footer_y, f_footer_big, WHITE)
+    footer_y += footer_big_h + 8
     _draw_centered(draw, "Full event listings + descriptions at every link",
-                   footer_y, f_footer_sub, GRAY)
+                   footer_y, f_footer_sub, LIGHT_GRAY)
     _watermark(draw)
     return img
 
@@ -692,10 +751,7 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
         for day in days_of_week:
             day_events = [e for e in events_by_day.get(day, [])
                           if not _is_garbage(e)]
-            featured = day_events[:3]
-            secondary = day_events[3:6]  # up to 3 in the strip
-            slides.append(make_day_slide(day, featured,
-                                         also_happening=secondary or None))
+            slides.append(make_day_slide(day, day_events[:4]))
     else:
         # Fallback: map categories to day slides
         cat_day_map = {"community": "Monday", "arts": "Wednesday", "nightlife": "Friday"}
