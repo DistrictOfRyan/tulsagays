@@ -22,10 +22,10 @@ GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 SOURCES = {
     "homo_hotel": {
         "name": "Homo Hotel Happy Hour",
-        "url": "",  # Will be discovered/set
+        "url": "https://www.meetup.com/tulsa-4h-homo-hotel-happy-hour/",
         "priority": 1,  # ALWAYS TOP BILLING
         "type": "priority",
-        "description": "The signature weekly happy hour event - ALWAYS featured first",
+        "description": "Monthly LGBTQIA+ social at rotating Tulsa hotel bars, 1st Friday 7pm. Benefits local queer charities. Meetup group has event listings.",
     },
     "okeq": {
         "name": "Oklahomans for Equality (OKEQ)",
@@ -106,11 +106,11 @@ SOURCES = {
     },
     "studio_66": {
         "name": "Studio 66",
-        "url": "https://www.s66tulsa.com/",
+        "url": "https://www.instagram.com/studio.66_/",
+        "fallback_url": "https://www.s66tulsa.com/",
         "priority": 2,
         "type": "arts",
-        "description": "Dance parties, drag race watch parties, fashion shows",
-        # NOTE: s66tulsa.com returned ECONNREFUSED on 2026-04-09 spot-check. Verify if still active.
+        "description": "LGBTQIA+ nonprofit hosting dance parties, drag race watch parties, fashion shows, and multi-day festivals. s66tulsa.com ECONNREFUSED on 2026-04-09 and 2026-04-16 — use Instagram @studio.66_ for event listings.",
     },
     "lambda_bowling": {
         "name": "Lambda Bowling League",
@@ -121,10 +121,10 @@ SOURCES = {
     },
     "hotmess_sports": {
         "name": "HotMess Sports",
-        "url": "",
+        "url": "https://www.hotmesssports.com/tulsa",
         "priority": 2,
         "type": "sports",
-        "description": "LGBTQ+ recreational sports leagues in Tulsa",
+        "description": "LGBTQ+ recreational sports leagues in Tulsa — dodgeball, kickball, volleyball, cornhole, bowling, and more. League Commissioner: Grant Cobb (Grant@HotMessSports.com).",
     },
     "qwc_tulsa": {
         "name": "Queer Women's Collective Tulsa",
@@ -280,10 +280,12 @@ SOURCES = {
     },
     "tulsa_house_of_drag": {
         "name": "Tulsa House of Drag",
-        "url": "https://www.tulsahouseofdrag.com/",
+        "url": "https://www.facebook.com/people/Tulsa-House-of-Drag/61557097803540/",
+        "fallback_url": "https://www.tulsahouseofdrag.com/",
+        "instagram": "https://www.instagram.com/tulsahouseofdrag/",
         "priority": 2,
         "type": "arts",
-        "description": "Tulsa drag scene platform, show listings, performer directory",
+        "description": "Tulsa drag scene landing page — show listings, performer directory, merch. tulsahouseofdrag.com ECONNREFUSED on 2026-04-16; use Facebook or Instagram @tulsahouseofdrag.",
     },
     "dragnificent_majestic": {
         "name": "DRAGNIFICENT! at Club Majestic",
@@ -422,6 +424,21 @@ SOURCES = {
         "priority": 3,
         "type": "aggregator",
         "description": "Facebook community group where members post and share LGBTQ+ events happening in Tulsa. Good crowdsourced aggregator for events not listed elsewhere.",
+    },
+    # ── New sources added 2026-04-16 ─────────────────────────────────────
+    "tulsa_pride_site": {
+        "name": "Tulsa Pride (tulsapride.org)",
+        "url": "https://tulsapride.org/",
+        "priority": 1,
+        "type": "priority",
+        "description": "Dedicated site for Tulsa Pride — a program of Oklahomans for Equality. Annual parade and festival (2nd Saturday in October), VIP tickets, parade applications, and lead-up events. Separate from okeq.org event calendar.",
+    },
+    "tulsa_lgbtq_nightlife_fb": {
+        "name": "Tulsa's LGBT Nightlife (Facebook Group)",
+        "url": "https://www.facebook.com/groups/220878821301627/",
+        "priority": 3,
+        "type": "aggregator",
+        "description": "Facebook group focused on LGBT nightlife in Tulsa. Members share bar events, club nights, and niche gatherings not listed on official venues. Good secondary crowdsourced check.",
     },
 }
 
