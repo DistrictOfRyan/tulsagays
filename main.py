@@ -96,6 +96,10 @@ def cmd_generate(post_type="weekday"):
         from content.generator import enrich_event_descriptions
         events = enrich_event_descriptions(events)
         print(f"Enriched {len(events)} events with compelling descriptions")
+        # Save enriched descriptions back to JSON so website and other tools use them
+        with open(events_file, "w", encoding="utf-8") as _f:
+            json.dump(events, _f, ensure_ascii=False, indent=2)
+        print(f"Enriched descriptions saved to {events_file}")
     except Exception as e:
         print(f"Event enrichment skipped: {e}")
 
@@ -113,16 +117,22 @@ def cmd_generate(post_type="weekday"):
         caption = _fallback_caption(events, post_type, date_range)
         category_events = _categorize_events(events)
 
-    # Build events_by_day — group events by their weekday name in Mon→Sun order
+    # Build events_by_day — only events within THIS week's Mon-Sun date range
     days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday",
                     "Friday", "Saturday", "Sunday"]
     events_by_day = {day: [] for day in days_of_week}
     no_date_events = []
+    _today = datetime.now().date()
+    _week_monday = _today - timedelta(days=_today.weekday())
+    _week_sunday = _week_monday + timedelta(days=6)
     for ev in events:
         date_str = ev.get("date", "")
         if date_str:
             try:
                 dt = datetime.strptime(date_str, "%Y-%m-%d")
+                ev_date = dt.date()
+                if not (_week_monday <= ev_date <= _week_sunday):
+                    continue  # event is outside this week's range — skip
                 day_name = dt.strftime("%A")
                 if day_name in events_by_day:
                     events_by_day[day_name].append(ev)
@@ -130,10 +140,10 @@ def cmd_generate(post_type="weekday"):
                 no_date_events.append(ev)
         else:
             no_date_events.append(ev)
-    # Sort each day's events by time so they appear in chronological order
+    # Sort each day's events: timed events first (chronologically), untimed last
     def _time_sort_key(e):
         t = e.get("time", "") or ""
-        return t
+        return (1, "") if not t else (0, t)
     for day in days_of_week:
         events_by_day[day].sort(key=_time_sort_key)
 

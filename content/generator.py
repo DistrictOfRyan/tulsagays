@@ -259,73 +259,90 @@ def _call_claude(user_prompt: str) -> str:
 
 
 def enrich_event_descriptions(events: list[dict]) -> list[dict]:
-    """Use Claude to generate exciting, brief descriptions for each event.
+    """Use Claude to generate event-specific descriptions for every event.
 
-    Adds/replaces the 'description' field with a compelling 1-2 sentence pitch
-    that tells people why they should go and what to expect.
+    Processes all events in batches of 20. Only enriches events that are
+    missing a description or have scraper-artifact text. Preserves good
+    existing descriptions. Falls back to rule-based if API is unavailable.
     """
     if not events:
         return events
 
-    # If no API key, use rule-based enrichment immediately
     if not config.ANTHROPIC_API_KEY:
         print("[generator] No API key — using rule-based enrichment")
         return _rule_based_enrich_all(events)
 
-    # Build a batch prompt for efficiency (one API call for all events)
-    event_lines = []
-    for i, e in enumerate(events[:15]):  # cap at 15 to stay within token limits
-        name = e.get("name", "Unknown")
-        venue = e.get("venue", "")
-        date = e.get("date", "")
-        time = e.get("time", "")
-        source = e.get("source", "")
-        desc = e.get("description", "")
-        event_lines.append(
-            f"{i+1}. {name} | {venue} | {date} {time} | source: {source}"
-            + (f" | existing desc: {desc[:100]}" if desc else "")
+    client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
+    BATCH = 20
+
+    # Only enrich events that need it
+    needs_enrichment = [
+        (i, e) for i, e in enumerate(events)
+        if not (e.get("description") or "").strip()
+        or len((e.get("description") or "").strip()) < 60
+        or _is_scraper_artifact((e.get("description") or ""))
+    ]
+
+    print(f"[generator] Enriching {len(needs_enrichment)} of {len(events)} events via Claude API")
+
+    for batch_start in range(0, len(needs_enrichment), BATCH):
+        batch = needs_enrichment[batch_start:batch_start + BATCH]
+        event_lines = []
+        for j, (orig_idx, e) in enumerate(batch):
+            name = e.get("name", "Unknown")
+            venue = (e.get("venue") or "").split(",")[0].strip()  # business name only
+            date = e.get("date", "")
+            time = e.get("time", "")
+            existing = (e.get("description") or "").strip()
+            line = f"{j+1}. {name}"
+            if venue:
+                line += f" @ {venue}"
+            if date or time:
+                line += f" ({date} {time})".strip()
+            if existing and len(existing) > 20 and not _is_scraper_artifact(existing):
+                line += f" — hint: {existing[:120]}"
+            event_lines.append(line)
+
+        prompt = (
+            "For each event below, write a 1-2 sentence description (under 160 chars) "
+            "that tells someone what this specific event IS, why it's worth going, "
+            "and what to expect. Be specific to this event — no generic 'come meet people' filler. "
+            "Warm, Tulsa queer community voice. Use any hint provided to be more specific.\n\n"
+            "Events:\n" + "\n".join(event_lines) +
+            "\n\nReply with ONLY a numbered list. Format: 1. [description]"
         )
 
-    events_block = "\n".join(event_lines)
-    prompt = f"""\
-For each event below, write a brief exciting description (1-2 sentences max, under 80 characters ideal)
-that would make someone want to go. Write like a local Tulsa queer person hyping their friends.
-Be specific about what makes each one special or fun. Don't use generic filler.
-
-Events:
-{events_block}
-
-Reply with ONLY a numbered list matching the input, one description per line.
-Format: 1. [description]
-"""
-
-    try:
-        client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
-        message = client.messages.create(
-            model="claude-sonnet-4-5-20250514",
-            max_tokens=800,
-            system="You write brief, exciting event descriptions for a Tulsa LGBTQ+ community Instagram account. Casual tone, like texting a friend. No AI-sounding words.",
-            messages=[{"role": "user", "content": prompt}],
-        )
-        response = message.content[0].text.strip()
-
-        # Parse numbered responses back into events
-        for line in response.split("\n"):
-            line = line.strip()
-            if not line or not line[0].isdigit():
-                continue
-            try:
-                dot_idx = line.index(".")
-                num = int(line[:dot_idx]) - 1
-                desc = line[dot_idx + 1:].strip()
-                if 0 <= num < len(events):
-                    events[num]["description"] = desc
-            except (ValueError, IndexError):
-                continue
-
-    except Exception as e:
-        print(f"[generator] Event enrichment failed, using rule-based fallback: {e}")
-        events = _rule_based_enrich_all(events)
+        try:
+            message = client.messages.create(
+                model="claude-sonnet-4-6",
+                max_tokens=1200,
+                system=(
+                    "You write event descriptions for TulsaGays.com, an LGBTQ+ community events guide. "
+                    "Casual, warm, specific. Sound like a local friend texting you about what to do this weekend. "
+                    "Never use em dashes. Never say 'vibrant community' or 'safe space' or 'don't miss out'."
+                ),
+                messages=[{"role": "user", "content": prompt}],
+            )
+            response = message.content[0].text.strip()
+            for line in response.split("\n"):
+                line = line.strip()
+                if not line or not line[0].isdigit():
+                    continue
+                try:
+                    dot_idx = line.index(".")
+                    num = int(line[:dot_idx]) - 1
+                    desc = line[dot_idx + 1:].strip()
+                    if 0 <= num < len(batch):
+                        orig_idx = batch[num][0]
+                        events[orig_idx]["description"] = desc
+                except (ValueError, IndexError):
+                    continue
+            print(f"[generator] Batch {batch_start//BATCH + 1} done ({len(batch)} events)")
+        except Exception as e:
+            print(f"[generator] Batch enrichment failed: {e} — applying rule-based to this batch")
+            for _, ev in batch:
+                if not (ev.get("description") or "").strip():
+                    ev["description"] = _rule_based_enrich(ev)
 
     return events
 
