@@ -13,6 +13,27 @@ with open(f'data/events/{wk}_all.json', encoding='utf-8') as f:
 
 events = raw if isinstance(raw, list) else raw.get('events', [])
 
+# Filter out non-LGBTQ events that slipped through scrapers
+_LGBTQ_FILTER_KW = [
+    "lgbtq", "lgbt", "queer", "gay", "lesbian", "bisexual", "trans",
+    "transgender", "nonbinary", "non-binary", "drag", "pride", "rainbow",
+    "equality", "homo", "okeq", "sonic ray", "twisted arts", "council oak",
+    "sapphic", "gender",
+]
+# facebook_events and meetup come from curated LGBTQ groups — trust them all
+_TRUSTED_SOURCES = {"homo_hotel", "recurring", "manual", "okeq", "extended_calendars",
+                    "community_groups", "facebook_events", "meetup"}
+
+def _is_lgbtq(ev):
+    if ev.get("source", "") in _TRUSTED_SOURCES:
+        return True
+    combined = " ".join([
+        ev.get("name", ""), ev.get("description", ""), ev.get("venue", ""), ev.get("source", "")
+    ]).lower()
+    return any(kw in combined for kw in _LGBTQ_FILTER_KW)
+
+events = [e for e in events if _is_lgbtq(e)]
+
 # Enrich events with sassy descriptions before rendering
 try:
     from content.generator import _rule_based_enrich_all

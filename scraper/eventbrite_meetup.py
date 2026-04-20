@@ -30,7 +30,20 @@ SEARCH_TERMS = [
     "drag",
     "trans",
     "rainbow",
+    "sonic ray",  # The Sonic Ray — inclusive sound baths, community partner
 ]
+
+LGBTQ_KEYWORDS = [
+    "lgbtq", "lgbt", "queer", "gay", "lesbian", "bisexual", "trans",
+    "transgender", "nonbinary", "non-binary", "drag", "pride", "rainbow",
+    "equality", "homo", "sapphic", "two-spirit", "twospirit",
+    "gender", "okeq", "sonic ray", "twisted arts", "council oak",
+]
+
+def _is_lgbtq_relevant(name: str, description: str = "", venue: str = "") -> bool:
+    """Return True if any field contains an LGBTQ keyword."""
+    combined = " ".join([name, description, venue]).lower()
+    return any(kw in combined for kw in LGBTQ_KEYWORDS)
 
 # Tulsa bounding box: SW lat/lon, NE lat/lon
 # Format for Eventbrite API: "lat_min,lng_min,lat_max,lng_max"
@@ -126,6 +139,8 @@ class EventbriteScraper(BaseScraper):
                     event = self._parse_api_event(item)
                     if not event:
                         continue
+                    if not _is_lgbtq_relevant(event["name"], event.get("description", ""), event.get("venue", "")):
+                        continue
                     key = event["name"].lower().strip()
                     if key not in seen:
                         seen.add(key)
@@ -220,12 +235,15 @@ class EventbriteScraper(BaseScraper):
                     venue = ""
                     if isinstance(location, dict):
                         venue = location.get("name", "")
+                    desc = item.get("description", "")[:300]
+                    if not _is_lgbtq_relevant(name, desc, venue):
+                        continue
                     events.append(self.make_event(
                         name=name,
                         date=date_str,
                         time=time_str,
                         venue=venue,
-                        description=item.get("description", "")[:300],
+                        description=desc,
                         url=item.get("url", ""),
                         priority=2,
                     ))
