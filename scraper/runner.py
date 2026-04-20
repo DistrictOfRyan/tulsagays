@@ -28,6 +28,7 @@ from scraper import (
     bars,
     manual_input,
     tulsa_arts_district,
+    facebook_events,
 )
 
 logger = logging.getLogger(__name__)
@@ -52,6 +53,8 @@ LGBTQ_SOURCES = {
     "osu_tulsa", "manual",
     # Arts/culture venues (LGBTQ-filtered at scraper level)
     "circle_cinema", "philbrook_museum", "tulsa_arts_district",
+    # Facebook events (LGBTQ-filtered at scraper level)
+    "facebook_events",
 }
 
 LGBTQ_KEYWORDS = [
@@ -273,6 +276,33 @@ def ensure_homo_hotel(events: List[Dict]) -> List[Dict]:
     return events
 
 
+def _normalize_time_str(t: str) -> str:
+    """Convert any time string to 12-hour AM/PM format (e.g. '19:00' -> '7:00 PM')."""
+    t = t.strip()
+    # Handle ranges like "7:00 PM - 9:00 PM" — normalize just the first part
+    first = t.split(" - ")[0].split(" to ")[0].strip()
+    for fmt in ["%I:%M %p", "%I:%M%p", "%H:%M", "%I %p"]:
+        try:
+            dt = datetime.strptime(first.upper(), fmt)
+            result = dt.strftime("%I:%M %p").lstrip("0")
+            # Preserve range suffix if present
+            if " - " in t:
+                end = t.split(" - ", 1)[1].strip()
+                # Normalize end time too
+                for efmt in ["%I:%M %p", "%I:%M%p", "%H:%M", "%I %p"]:
+                    try:
+                        edt = datetime.strptime(end.upper(), efmt)
+                        end = edt.strftime("%I:%M %p").lstrip("0")
+                        break
+                    except Exception:
+                        pass
+                return f"{result} - {end}"
+            return result
+        except Exception:
+            pass
+    return t  # Return as-is if unparseable
+
+
 # ── Save ─────────────────────────────────────────────────────────────────────
 
 def get_week_key(date: datetime = None) -> str:
@@ -347,6 +377,7 @@ def run_all_scrapers() -> List[Dict]:
         ("churches", churches.scrape),
         ("bars", bars.scrape),
         ("tulsa_arts_district", tulsa_arts_district.scrape),
+        ("facebook_events", facebook_events.scrape),
     ]
 
     # Playwright scrapers run after all static scrapers
@@ -401,6 +432,12 @@ def main():
 
     # 5. Sort by priority then date
     sorted_events = sort_events(unique_events)
+
+    # 5b. Normalize all time strings to 12-hour AM/PM format
+    for ev in sorted_events:
+        raw_t = (ev.get("time") or "").strip()
+        if raw_t:
+            ev["time"] = _normalize_time_str(raw_t)
 
     # 6. Save results
     week_key = get_week_key()
