@@ -11,7 +11,8 @@ if os.path.exists(_env_file):
             if _line and not _line.startswith("#") and "=" in _line:
                 _k, _v = _line.split("=", 1)
                 if _v.strip():
-                    os.environ.setdefault(_k.strip(), _v.strip())
+                    # Always set from .env — overrides empty env vars (e.g. inherited shell vars)
+                    os.environ[_k.strip()] = _v.strip()
 
 # ── Paths ────────────────────────────────────────────────────────────────
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
