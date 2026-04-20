@@ -74,11 +74,12 @@ PAGE_URLS = [
 
 # ── Tulsa LGBTQ+ Facebook group event tabs ─────────────────────────────────────
 GROUP_URLS = [
-    "https://www.facebook.com/groups/161646500587551/events",   # Gay Men of Tulsa (1.3K)
-    "https://www.facebook.com/groups/2612250565491228/events",  # Okie Gays (6K)
-    "https://www.facebook.com/groups/715281449025002/events",   # Tulsa LGBTQ+ Scene (2.8K)
-    "https://www.facebook.com/groups/472710852857064/events",   # LGBTQ Hot List
-    "https://www.facebook.com/groups/220878821301627/events",   # LGBT Nightlife Tulsa
+    "https://www.facebook.com/groups/161646500587551/events",          # Gay Men of Tulsa (1.3K)
+    "https://www.facebook.com/groups/2612250565491228/events",         # Okie Gays (6K)
+    "https://www.facebook.com/groups/715281449025002/events",          # Tulsa LGBTQ+ Scene (2.8K)
+    "https://www.facebook.com/groups/472710852857064/events",          # LGBTQ Hot List
+    "https://www.facebook.com/groups/220878821301627/events",          # LGBT Nightlife Tulsa
+    "https://www.facebook.com/groups/InterestingThingsToDoInTulsa/events",  # Interesting Things To Do In Tulsa (72K)
 ]
 
 LGBTQ_KEYWORDS = [
