@@ -20,7 +20,7 @@ import shutil
 import subprocess
 import time
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -48,33 +48,186 @@ DOCS_DIR   = ROOT / "docs" / "posts" / WEEK_KEY
 # GitHub Pages public URL base (www.tulsagays.com is the custom domain)
 SITE_BASE  = f"https://www.tulsagays.com/posts/{WEEK_KEY}"
 
-FB_BASE_CAPTION = (
-    "THIS WEEK IN TULSA. Your daily LGBTQ+ community guide. "
-    "Live music, drag shows, gatherings, events, and connection points all week. "
-    "Swipe through for each day. Full listings at tulsagays.com. "
-    "#TulsaGays #TulsaPride #QueerTulsa"
-)
+WEEK_OPENERS = [
+    "Okay. We need to talk about what's happening in Tulsa this week.",
+    "Your calendar needs clearing. At least one night. Actually all of them.",
+    "Tulsa is doing the absolute most this week and we are completely here for it.",
+    "Leave the house. We've given you zero reasons not to.",
+    "This week in Tulsa? Fully undefeated. Here's what's on the agenda.",
+    "If your week looks empty right now — fix that.",
+    "We've got rhinestones, live music, drag, and community. Pick a night. Or all of them.",
+    "This is your official sign to stop scrolling and start planning.",
+]
 
-IG_BASE_CAPTION = (
-    "THIS WEEK IN TULSA Your daily community guide. "
-    "Swipe for each day of events, live music, drag shows, and connection. "
-    "Full listings at tulsagays.com. "
-    "#TulsaGays #LGBTQ #TulsaPride #QueerTulsa #Oklahoma"
-)
+EOTW_LEADS = [
+    "This week's must-go:",
+    "The event that needs to be on your calendar before anything else:",
+    "Start with this one. Do not skip it:",
+    "If you do one thing this week, make it this:",
+    "The event of the week is not even a debate:",
+    "We don't say 'don't miss it' lightly. This time we mean it:",
+    "Clear the night. Here's why:",
+    "This week's headliner:",
+]
+
+URGENCY_LINES = [
+    lambda day, time, venue: f"{day} at {time}{f', {venue}' if venue else ''}. One night. An intimate room. You either go or you hear about it.",
+    lambda day, time, venue: f"That's {day} at {time}{f' at {venue}' if venue else ''}. This doesn't happen every week. That's the whole point.",
+    lambda day, time, venue: f"{day} night. {time}{f' at {venue}' if venue else ''}. You will not find anything like this anywhere else in Tulsa.",
+    lambda day, time, venue: f"One night{f' — {day} at {time}' if day and time else ''}. An intimate space. The kind of evening you actually remember.",
+    lambda day, time, venue: f"{day} at {time}{f', {venue}' if venue else ''}. The room is small. The energy is not. Go.",
+    lambda day, time, venue: f"It's {day} at {time}{f' at {venue}' if venue else ''}. A room full of queer joy and no reason to be anywhere else.",
+    lambda day, time, venue: f"{day}. {time}{f'. {venue}' if venue else ''}. Be there or spend Friday hearing about it.",
+    lambda day, time, venue: f"This is {day} at {time}{f' at {venue}' if venue else ''}. Intimate. Live. Unrepeatable. Go.",
+]
+
+FOMO_CLOSES = [
+    "And that's just one night. The whole week is stacked — swipe through.",
+    "Beyond that? Something happening every single day this week. Tap through.",
+    "That's the headliner. The rest of the week keeps going — swipe to see it all.",
+    "The week doesn't stop there. There's something on every single day.",
+    "Clear that night first. Then swipe — the rest of the week is just as full.",
+    "One night is not all you get. There's a whole week of this. Tap through.",
+]
+
+HASHTAGS = "#TulsaGays #TulsaPride #QueerTulsa #LGBTQ #Oklahoma #TulsaEvents"
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
+def _get_eotw() -> dict | None:
+    """Find the Event of the Week from this week's events JSON."""
+    events_file = ROOT / "data" / "events" / f"{WEEK_KEY}_all.json"
+    if not events_file.exists():
+        return None
+    with open(events_file, encoding="utf-8") as f:
+        data = json.load(f)
+    events = data if isinstance(data, list) else data.get("events", [])
+
+    today = datetime.now().date()
+    week_monday = today - timedelta(days=today.weekday())
+    week_sunday = week_monday + timedelta(days=6)
+
+    def in_week(e):
+        d = e.get("date", "")
+        try:
+            return week_monday <= datetime.strptime(d, "%Y-%m-%d").date() <= week_sunday
+        except Exception:
+            return False
+
+    this_week = [e for e in events if in_week(e)]
+
+    def _is_hh(e):
+        return "homo hotel" in ((e.get("name") or "") + " " + (e.get("source") or "")).lower()
+
+    def _is_council(e):
+        combined = ((e.get("name") or "") + " " + (e.get("source") or "")).lower()
+        return "council oak" in combined or "comc" in combined
+
+    def _is_skip(e):
+        name = (e.get("name") or "").lower()
+        src = (e.get("source") or "").lower()
+        if src in {"recurring", "aa_meetings", "bars"}:
+            return True
+        return any(k in name for k in ["bowling", "aa meeting", "support group", "sound bath", "sonic ray"])
+
+    _QUEER_PERF_KW = [
+        "drag", "drag show", "drag bingo", "drag brunch", "drag queen", "drag king",
+        "cabaret", "pride show", "pride event", "pride night", "queer night",
+        "gay night", "lgbtq+ night", "twisted arts", "okeq", "rainbow",
+        "pride dance", "pride party",
+    ]
+
+    def _is_queer_perf(e):
+        combined = " ".join([
+            (e.get("name") or ""), (e.get("description") or ""),
+            (e.get("venue") or ""), (e.get("source") or "")
+        ]).lower()
+        return any(kw in combined for kw in _QUEER_PERF_KW)
+
+    hh = [e for e in this_week if _is_hh(e)]
+    if hh:
+        return hh[0]
+    council = [e for e in this_week if _is_council(e)]
+    if council:
+        return council[0]
+    queer_perf = [e for e in this_week if _is_queer_perf(e) and not _is_skip(e)
+                  and not _is_hh(e) and not _is_council(e)]
+    if queer_perf:
+        return queer_perf[0]
+    specials = [e for e in this_week if not _is_skip(e)]
+    return specials[0] if specials else (this_week[0] if this_week else None)
+
+
+def _format_date(date_str: str) -> str:
+    try:
+        dt = datetime.strptime(date_str, "%Y-%m-%d")
+        return dt.strftime("%A, %B ") + str(dt.day)
+    except Exception:
+        return date_str
+
+
+def generate_caption() -> str:
+    """Sassy, EOTW-focused caption. Sells the experience. Sounds like a person."""
+    week_num = datetime.now().isocalendar()[1]
+    eotw = _get_eotw()
+
+    lines = [WEEK_OPENERS[week_num % len(WEEK_OPENERS)], ""]
+
+    if eotw:
+        name = eotw.get("name", "").strip()
+        desc = eotw.get("description", "").strip()
+        venue_full = eotw.get("venue", "").strip()
+        venue = venue_full.split(",")[0].strip() if venue_full else ""
+        date_str = eotw.get("date", "")
+        time_str = eotw.get("time", "").strip()
+
+        day_name = ""
+        if date_str:
+            try:
+                day_name = datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
+            except Exception:
+                pass
+
+        # Lead → event name → full description (the sell) → when/where + urgency
+        lines.append(EOTW_LEADS[week_num % len(EOTW_LEADS)])
+        lines.append("")
+        lines.append(name)
+        lines.append("")
+
+        # Full description — use all of it, this is what sells it
+        if desc:
+            sentences = [s.strip() for s in desc.replace("\n", " ").split(".") if s.strip()]
+            full_desc = ". ".join(sentences)
+            if not full_desc.endswith("."):
+                full_desc += "."
+            lines.append(full_desc)
+            lines.append("")
+
+        # When/where + urgency — AFTER the pitch, as the call to act
+        urgency_fn = URGENCY_LINES[week_num % len(URGENCY_LINES)]
+        lines.append(urgency_fn(day_name, time_str, venue))
+        lines.append("")
+
+    lines.append(FOMO_CLOSES[week_num % len(FOMO_CLOSES)])
+    lines.append("")
+    lines.append("Hundreds of fabulous events every week in Tulsa. Full list at tulsagays.com")
+    lines.append("")
+    lines.append(HASHTAGS)
+
+    return "\n".join(lines)
+
+
 def load_caption() -> str:
-    """Read the generated caption from all_post.json if available."""
+    """Return the post caption — custom from all_post.json, or dynamically generated."""
     post_json = SLIDES_DIR / "all_post.json"
     if post_json.exists():
         with open(post_json, encoding="utf-8") as f:
             data = json.load(f)
         cap = data.get("caption", "").strip()
-        if cap and len(cap) > 50:
+        if cap and len(cap) > 100:
             return cap
-    return FB_BASE_CAPTION
+    return generate_caption()
 
 
 def get_slides() -> list[Path]:
@@ -94,7 +247,7 @@ def validate_slides(slides: list[Path]) -> None:
                  f"Run: python main.py generate-all")
     for s in slides:
         size = s.stat().st_size
-        if size < 50 * 1024:
+        if size < 30 * 1024:
             sys.exit(f"ERROR: {s.name} is only {size // 1024}KB — likely corrupt or blank.\n"
                      f"Re-generate slides: python main.py generate-all")
     print(f"[OK] {len(slides)} slides validated ({WEEK_KEY})")
@@ -351,15 +504,21 @@ def main():
     print(f"  IG post:   {ig_post_id}")
     print(f"  Photos:    {len(fb_result['photo_ids'])} uploaded to FB")
     print("=" * 60)
-    print("\nNEXT STEP: Share to FB groups via browser.")
-    print("Groups to share to (copy the FB post link into each):")
-    print("  1. Gay men of Tulsa   facebook.com/groups/161646500587551")
-    print("  2. Okie Gays          facebook.com/groups/2612250565491228")
-    print("  3. Tulsa LGBTQ+ Scene facebook.com/groups/715281449025002")
-    print("  4. Gay Tulsa          facebook.com/groups/GayTulsa")
-    print("  5. Tulsa's LGBT Night facebook.com/groups/220878821301627")
-    print("  6. Things To Do Tulsa facebook.com/groups/InterestingThingsToDoInTulsa")
-    print("  7. What's Up Tulsa    facebook.com/groups/WhatsHappeningTulsa")
+    print("\nNEXT STEP: Upload all 9 slides directly to each FB group (browser).")
+    print("Switch to Tulsa Gays page identity first. Then for each group:")
+    print("  - Open group, Create post, attach all 9 images in order, add sassy EOTW caption, post.")
+    print("Groups (11 total):")
+    print("  1.  Gay men of Tulsa          groups/161646500587551")
+    print("  2.  Okie Gays                 groups/2612250565491228")
+    print("  3.  Tulsa LGBTQ+ Scene        groups/715281449025002")
+    print("  4.  Gay Tulsa                 groups/GayTulsa")
+    print("  5.  Tulsa's LGBT Nightlife    groups/220878821301627")
+    print("  6.  Black Queer Tulsa         groups/436526440885847")
+    print("  7.  Oklahoma Lesbian Friends  groups/649753022551343")
+    print("  8.  Oklahoma House of Drag    groups/418182474119895")
+    print("  9.  Interesting Things Tulsa  groups/InterestingThingsToDoInTulsa")
+    print("  10. What's Up Tulsa?          groups/WhatsHappeningTulsa")
+    print("  11. Tulsa Events              groups/114530202225051")
 
 
 if __name__ == "__main__":

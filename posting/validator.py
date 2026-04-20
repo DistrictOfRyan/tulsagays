@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 REQUIRED_SLIDE_COUNT = 9
 REQUIRED_WIDTH = 1080
 REQUIRED_HEIGHT = 1080
-MIN_FILE_SIZE_BYTES = 50 * 1024  # 50 KB
+MIN_FILE_SIZE_BYTES = 30 * 1024  # 30 KB (CTA slide can be minimal)
 MAX_BLACK_RATIO = 0.40           # 40% black pixels in center region = likely blank
 
 # Slide filename pattern: all__01.png ... all__09.png (prefix "all_", separator "_")

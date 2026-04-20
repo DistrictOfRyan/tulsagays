@@ -57,6 +57,17 @@ COVER_TAGLINES = [
 SKIP_NAMES = {"event calendar", "events", "calendar", "untitled", "",
               "map", "google calendar", "get your tickets", "upcoming events"}
 
+# Unique footer taglines per day — FOMO-baiting, sassy, never the same line twice
+DAY_FOOTER_TAGLINES = {
+    "Monday":    "This is already happening. Are you there or are you on the couch again?",
+    "Tuesday":   "Your friends went. You'll hear about it Wednesday. Or you could just go.",
+    "Wednesday": "Half the week already poppin' and you're just now looking. Get in.",
+    "Thursday":  "Thursday is warming up. The people who show up are the ones with the stories.",
+    "Friday":    "Everyone you know is out tonight. You know that, right?",
+    "Saturday":  "The weekend peaked. You were either there or you weren't.",
+    "Sunday":    "You'll wake up Monday wishing you went. We're just saying.",
+}
+
 
 # ── Font Loading ──────────────────────────────────────────────────────────
 
@@ -254,7 +265,7 @@ def make_cover_slide(post_type: str, date_range: str,
     if tagline is None:
         tagline = COVER_TAGLINES[week_num % len(COVER_TAGLINES)]
 
-    f_week_label    = _font("poiret", 32)
+    f_week_label    = _font("segoe-semi", 44)
     f_date          = _font("segoe-light", 28)
     f_tulsa         = _font("poiret", 96)
     f_gays          = _font("poiret", 96)
@@ -273,10 +284,13 @@ def make_cover_slide(post_type: str, date_range: str,
     _pink_bar(draw, 0, height=4)
 
     # ── Top branding block ────────────────────────────────────────────────
-    y = 38
-    y = _draw_centered(draw, "YOUR QUEER WEEK IN TULSA", y, f_week_label, NEON_PINK)
-    y += 14
-    y = _draw_centered(draw, date_range.upper(), y, f_date, WHITE)
+    y = 28
+    y = _draw_centered(draw, "YOUR QUEER WEEK IN TULSA", y, f_week_label, WHITE)
+    y += 6
+    bar_accent_w = 180
+    draw.rectangle([(W - bar_accent_w) // 2, y, (W + bar_accent_w) // 2, y + 3], fill=NEON_PINK)
+    y += 16
+    y = _draw_centered(draw, date_range.upper(), y, f_date, NEON_PINK)
     y += 10
     if tagline:
         f_tagline = _font("segoe", 19)
@@ -308,6 +322,8 @@ def make_cover_slide(post_type: str, date_range: str,
         ev_desc  = featured_event.get("description", "")
         ev_date  = format_date(featured_event.get("date", ""))
 
+        eotw_box_top = y - 10
+
         y = _draw_centered(draw, "EVENT OF THE WEEK", y, f_eotw_label, WHITE)
         y += 16
 
@@ -327,7 +343,25 @@ def make_cover_slide(post_type: str, date_range: str,
 
         if ev_desc:
             y = _draw_wrapped(draw, ev_desc, y, f_eotw_pitch, LIGHT_GRAY,
-                              max_px=W - 160, max_lines=2, line_gap=6)
+                              max_px=W - 160, max_lines=6, line_gap=7)
+            y += 10
+
+        ev_url = featured_event.get("url", "") if featured_event else ""
+        if ev_url:
+            f_eotw_link = _font("segoe-semi", 22)
+            display_url = re.sub(r'^https?://', '', ev_url).split("?")[0]
+            if len(display_url) > 55:
+                display_url = display_url[:55] + "..."
+            y = _draw_centered(draw, f"TICKETS  \u2192  {display_url}", y,
+                               f_eotw_link, NEON_PINK)
+
+        # Pink highlight box around the entire EOTW section
+        draw.rounded_rectangle(
+            [PAD - 22, eotw_box_top, W - PAD + 22, y + 14],
+            radius=12,
+            outline=NEON_PINK,
+            width=3,
+        )
     else:
         # No featured event — show tagline instead
         y = _draw_wrapped(draw, tagline, y, f_eotw_pitch, LIGHT_GRAY,
@@ -385,10 +419,13 @@ def make_cover_slide(post_type: str, date_range: str,
                 y = _draw_wrapped(draw, ticket_line, y, f_upc_link, NEON_PINK,
                                   max_px=W - 80, max_lines=2, line_gap=4)
 
-    # Footer — prominent TULSAGAYS.COM
-    _pink_bar(draw, H - 72, height=2)
-    _draw_centered(draw, "TULSAGAYS.COM", H - 64, f_footer, WHITE)
-    _pink_bar(draw, H - 3, height=3)
+    # Footer — prominent TULSAGAYS.COM with "hundreds of events" call-to-action
+    _pink_bar(draw, H - 100, height=2)
+    _draw_centered(draw, "TULSAGAYS.COM", H - 88, f_footer, WHITE)
+    f_footer_cta = _font("segoe", 17)
+    _draw_centered(draw, "Hundreds of fabulous events this week \u00b7 visit to see the full list",
+                   H - 48, f_footer_cta, LIGHT_GRAY)
+    _pink_bar(draw, H - 10, height=3)
     _watermark(draw)
     return img
 
@@ -517,7 +554,7 @@ def make_day_slide(day_name: str, events: List[Dict],
         f_name, f_det, f_pitch, f_url = (
             _font("poiret", 52), _font("segoe", 26),
             _font("segoe", 22),  _font("segoe", 22))
-        name_max_lines, pitch_max_lines, sep_gap = 2, 2, 22
+        name_max_lines, pitch_max_lines, sep_gap = 2, 3, 22
     elif n == 4:
         f_name, f_det, f_pitch, f_url = (
             _font("poiret", 44), _font("segoe", 20),
@@ -543,10 +580,10 @@ def make_day_slide(day_name: str, events: List[Dict],
     draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 3], fill=NEON_PINK)
     y += 3 + 22
 
-    # ── Footer reserve (two-line prominent block) ─────────────────────────
+    # ── Footer reserve (three-line block: FOMO tagline + CTA + site) ────────
     footer_big_h  = _text_height(draw, "TULSAGAYS.COM", f_footer_big)
     footer_sub_h  = _text_height(draw, "X", f_footer_sub)
-    footer_h      = footer_big_h + footer_sub_h + 52   # generous padding above + between
+    footer_h      = footer_big_h + footer_sub_h * 2 + 64   # extra line for CTA
     content_bottom = H - footer_h - 16  # safety margin above footer
 
     # ── Flow layout — all events top to bottom ────────────────────────────
@@ -646,11 +683,14 @@ def make_day_slide(day_name: str, events: List[Dict],
                 width=3
             )
 
-    # ── Footer ── prominent TULSAGAYS.COM block ───────────────────────────
-    footer_y = H - footer_h + 22
+    # ── Footer ── FOMO tagline + TULSAGAYS.COM + "hundreds of events" CTA ──
+    footer_y = H - footer_h + 16
+    day_tagline = DAY_FOOTER_TAGLINES.get(day_name, "Hundreds of fabulous events this week in Tulsa.")
+    _draw_centered(draw, day_tagline, footer_y, f_footer_sub, NEON_PINK)
+    footer_y += footer_sub_h + 10
     _draw_centered(draw, "TULSAGAYS.COM", footer_y, f_footer_big, WHITE)
-    footer_y += footer_big_h + 8
-    _draw_centered(draw, "Full event listings + descriptions at every link",
+    footer_y += footer_big_h + 6
+    _draw_centered(draw, "Hundreds of fabulous events this week \u00b7 visit to see the full list",
                    footer_y, f_footer_sub, LIGHT_GRAY)
     _watermark(draw)
     return img
@@ -689,9 +729,11 @@ def make_closing_slide() -> Image.Image:
     draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 2], fill=NEON_PINK)
     y += 32
 
-    y = _draw_centered(draw, "Follow for weekly LGBTQ+ events in Tulsa", y, f_sub, LIGHT_GRAY)
+    y = _draw_centered(draw, "Hundreds of fabulous events this week in Tulsa.", y, f_sub, LIGHT_GRAY)
+    y += 10
+    y = _draw_centered(draw, "Visit tulsagays.com to see the full list.", y, f_sub, LIGHT_GRAY)
     y += 24
-    y = _draw_centered(draw, "linktr.ee/tulsagays", y, f_link, NEON_PINK)
+    y = _draw_centered(draw, "tulsagays.com  \u00b7  linktr.ee/tulsagays", y, f_link, NEON_PINK)
 
     _pink_bar(draw, H - 4, height=4)
     _watermark(draw)
@@ -746,7 +788,10 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
             src = (e.get("source") or "").lower()
             name = (e.get("name") or "").lower()
             recurring_sources = {"recurring", "aa_meetings", "bars"}
-            recurring_keywords = {"bowling", "aa meeting", "support group", "outreach group"}
+            recurring_keywords = {
+                "bowling", "aa meeting", "support group", "outreach group",
+                "sound bath", "sonic ray", "sound sanctuary", "sound meditation",
+            }
             if src in recurring_sources:
                 return True
             return any(kw in name for kw in recurring_keywords)
@@ -757,24 +802,64 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
 
         def _is_council_oak(e: Dict) -> bool:
             combined = ((e.get("name") or "") + " " + (e.get("source") or "")).lower()
-            return "council oak" in combined
+            return "council oak" in combined or "comc" in combined
 
-        # Priority 1: Homo Hotel Happy Hour (signature monthly event)
-        hh = [e for e in all_events_flat if _is_homo_hotel(e)]
-        if hh:
-            eotw = hh[0]
+        QUEER_PERFORMANCE_KEYWORDS = [
+            "drag", "drag show", "drag bingo", "drag brunch", "drag queen",
+            "drag king", "drag race", "cabaret", "pride show", "pride event",
+            "pride night", "queer night", "gay night", "lgbtq+ night",
+            "twisted arts", "okeq", "rainbow", "pride dance", "pride party",
+        ]
+
+        def _is_queer_performance(e: Dict) -> bool:
+            combined = " ".join([
+                (e.get("name") or ""), (e.get("description") or ""),
+                (e.get("venue") or ""), (e.get("source") or "")
+            ]).lower()
+            return any(kw in combined for kw in QUEER_PERFORMANCE_KEYWORDS)
+
+        # Compute this week's Monday-Sunday date range
+        from datetime import timedelta
+        today = datetime.now().date()
+        week_monday = today - timedelta(days=today.weekday())
+        week_sunday = week_monday + timedelta(days=6)
+
+        def _event_in_week(e: Dict) -> bool:
+            date_str = e.get("date", "")
+            if not date_str:
+                return False
+            try:
+                ev_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+                return week_monday <= ev_date <= week_sunday
+            except ValueError:
+                return False
+
+        # Priority 1: Homo Hotel Happy Hour — only if it falls within THIS week
+        hh_this_week = [e for e in all_events_flat if _is_homo_hotel(e) and _event_in_week(e)]
+        hh_upcoming  = [e for e in all_events_flat if _is_homo_hotel(e) and not _event_in_week(e)]
+        if hh_this_week:
+            eotw = hh_this_week[0]
         else:
+            # HHHH not this week — save it as upcoming teaser if no upcoming_event yet
+            if not upcoming_event and hh_upcoming:
+                upcoming_event = hh_upcoming[0]
             # Priority 2: Council Oak Men's Chorus (concerts/cabarets)
             council = [e for e in all_events_flat if _is_council_oak(e)]
             if council:
                 eotw = council[0]
             else:
-                # Priority 3: Best non-recurring special event
-                special = [e for e in all_events_flat if not _is_recurring(e)]
-                if special:
-                    eotw = special[0]
-                elif all_events_flat:
-                    eotw = all_events_flat[0]
+                # Priority 3: Drag shows, queer performances, explicitly LGBTQ events
+                queer_perf = [e for e in all_events_flat
+                              if _is_queer_performance(e) and not _is_recurring(e)]
+                if queer_perf:
+                    eotw = queer_perf[0]
+                else:
+                    # Priority 4: Best non-recurring special event
+                    special = [e for e in all_events_flat if not _is_recurring(e)]
+                    if special:
+                        eotw = special[0]
+                    elif all_events_flat:
+                        eotw = all_events_flat[0]
 
     # Slide 1: Cover + Event of the Week combined
     slides.append(make_cover_slide(post_type, date_range, featured_event=eotw,
@@ -785,7 +870,19 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
         for day in days_of_week:
             day_events = [e for e in events_by_day.get(day, [])
                           if not _is_garbage(e)]
-            slides.append(make_day_slide(day, day_events[:4]))
+            # Ensure EOTW appears first on its own day slide
+            if eotw and day_events:
+                eotw_in_day = [e for e in day_events if e is eotw or (
+                    e.get("name") == (eotw.get("name") if eotw else None)
+                    and e.get("date") == (eotw.get("date") if eotw else None)
+                )]
+                if eotw_in_day:
+                    day_events = [eotw_in_day[0]] + [
+                        e for e in day_events if e is not eotw_in_day[0]
+                        and not (e.get("name") == eotw_in_day[0].get("name")
+                                 and e.get("date") == eotw_in_day[0].get("date"))
+                    ]
+            slides.append(make_day_slide(day, day_events[:3]))
     else:
         # Fallback: map categories to day slides
         cat_day_map = {"community": "Monday", "arts": "Wednesday", "nightlife": "Friday"}

@@ -63,6 +63,32 @@ LGBTQ_KEYWORDS = [
     "affirming", "inclusive", "homo", "sapphic",
 ]
 
+# Community partners: LGBTQ-adjacent orgs whose events are always welcome
+# even if their names don't contain LGBTQ keywords
+COMMUNITY_PARTNER_KEYWORDS = [
+    "the sonic ray", "sonic ray", "sonicray",
+]
+
+# Events matching ANY of these keywords are explicitly excluded — even from trusted sources
+NON_LGBTQ_BLOCKLIST = [
+    # College/pro sports (non-LGBTQ-specific)
+    "football game", "football season", "nfl ", " nfl", "nba ", " nba",
+    "mlb ", " mlb", "nhl ", " nhl", "college football", "college basketball",
+    "oral roberts university", "oru football", "oru basketball", "oru baseball",
+    "golden eagles football", "golden eagles basketball",
+    "tu football", "osu football", "ou football", "sooners football",
+    "nascar", "ufc ", " ufc", "mma fight",
+    # Petroleum/energy industry conferences
+    "society of petroleum", "spe tulsa", "petroleum engineers",
+    "spe ior", "spe improved", "improved oil recovery",
+    "reservoir heterogeneity", "reservoir characterization",
+    "oil and gas conference", "oil & gas conference",
+    "drilling conference", "pipeline conference", "petroleum conference",
+    # Non-LGBTQ religious mass events
+    "revival meeting", "men's prayer breakfast", "prayer rally",
+    "women's prayer breakfast",
+]
+
 # These are clearly nav/junk strings that get scraped as "event names"
 JUNK_NAMES = {
     "map", "google calendar", "get your tickets", "buy tickets",
@@ -155,20 +181,41 @@ def _is_in_current_week(date_str: str) -> bool:
         return False
 
 
+def _is_clearly_not_lgbtq(event: Dict) -> bool:
+    """Return True if this event matches the non-LGBTQ blocklist — exclude regardless of source."""
+    combined = " ".join([
+        (event.get("name") or ""),
+        (event.get("description") or ""),
+        (event.get("venue") or ""),
+    ]).lower()
+    return any(kw in combined for kw in NON_LGBTQ_BLOCKLIST)
+
+
 def _is_lgbtq_relevant(event: Dict) -> bool:
-    """Return True if this event is LGBTQ-relevant."""
+    """Return True if this event is LGBTQ-relevant or from a community partner org."""
     source = event.get("source", "")
     if source in LGBTQ_SOURCES:
         return True
-    combined = (event.get("name", "") + " " + event.get("description", "")).lower()
-    return any(kw in combined for kw in LGBTQ_KEYWORDS)
+    combined = " ".join([
+        event.get("name", ""),
+        event.get("description", ""),
+        event.get("url", ""),
+    ]).lower()
+    if any(kw in combined for kw in LGBTQ_KEYWORDS):
+        return True
+    if any(kw in combined for kw in COMMUNITY_PARTNER_KEYWORDS):
+        return True
+    return False
 
 
 def apply_quality_filters(events: List[Dict]) -> List[Dict]:
     """Apply all quality filters and annotate each event with lgbtq_relevant."""
     monday, sunday = _get_week_range()
     filtered = []
-    removed_counts = {"no_name": 0, "junk_name": 0, "out_of_week": 0}
+    removed_counts = {
+        "no_name": 0, "junk_name": 0, "out_of_week": 0,
+        "non_lgbtq_blocklist": 0, "not_lgbtq_relevant": 0,
+    }
 
     for event in events:
         name = event.get("name", "")
@@ -187,23 +234,35 @@ def apply_quality_filters(events: List[Dict]) -> List[Dict]:
             continue
 
         # Filter 3: dated events outside current week
-        # Recurring-source events without a date are already excluded by recurring.py
-        # (it always generates proper dates). Undated events from other sources pass through.
         if date_str:
             if not _is_in_current_week(date_str):
                 removed_counts["out_of_week"] += 1
                 logger.debug(f"[filter] Out-of-week removed: '{name}' on {date_str}")
                 continue
 
+        # Filter 4: non-LGBTQ blocklist — blocks matching events from ANY source
+        if _is_clearly_not_lgbtq(event):
+            removed_counts["non_lgbtq_blocklist"] += 1
+            logger.info(f"[filter] Non-LGBTQ blocklist removed: '{name}' (source={source})")
+            continue
+
         # Annotate LGBTQ relevance
         event["lgbtq_relevant"] = _is_lgbtq_relevant(event)
+
+        # Filter 5: events from non-trusted sources must have LGBTQ keywords
+        if source not in LGBTQ_SOURCES and not event["lgbtq_relevant"]:
+            removed_counts["not_lgbtq_relevant"] += 1
+            logger.info(f"[filter] Not LGBTQ-relevant removed: '{name}' (source={source})")
+            continue
 
         filtered.append(event)
 
     logger.info(
         f"[filter] Removed: {removed_counts['no_name']} no-name, "
         f"{removed_counts['junk_name']} junk-name, "
-        f"{removed_counts['out_of_week']} out-of-week"
+        f"{removed_counts['out_of_week']} out-of-week, "
+        f"{removed_counts['non_lgbtq_blocklist']} non-LGBTQ blocklist, "
+        f"{removed_counts['not_lgbtq_relevant']} not LGBTQ-relevant"
     )
     return filtered
 
