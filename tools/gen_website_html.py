@@ -13,6 +13,13 @@ with open(f'data/events/{wk}_all.json', encoding='utf-8') as f:
 
 events = raw if isinstance(raw, list) else raw.get('events', [])
 
+# Enrich events with sassy descriptions before rendering
+try:
+    from content.generator import _rule_based_enrich_all
+    events = _rule_based_enrich_all(events)
+except Exception as _e:
+    print(f"[warn] description enrichment skipped: {_e}")
+
 today = datetime.now().date()
 week_monday = today - timedelta(days=today.weekday())
 week_sunday = week_monday + timedelta(days=6)
@@ -35,8 +42,23 @@ def _is_council_oak(e):
 
 def _is_recurring(e):
     name = (e.get('name') or '').lower()
-    kw = ['bowling', 'aa meeting', 'alcoholics', 'support group', 'yoga', 'meditation']
+    kw = ['bowling', 'aa meeting', 'alcoholics', 'support group', 'yoga', 'meditation',
+          'sound bath', 'sonic ray', 'sound sanctuary', 'sound meditation']
     return any(k in name for k in kw)
+
+QUEER_PERFORMANCE_KEYWORDS = [
+    'drag', 'drag show', 'drag bingo', 'drag brunch', 'drag queen', 'drag king',
+    'cabaret', 'pride show', 'pride event', 'pride night', 'queer night',
+    'gay night', 'lgbtq+ night', 'twisted arts', 'okeq', 'rainbow',
+    'pride dance', 'pride party',
+]
+
+def _is_queer_performance(e):
+    combined = ' '.join([
+        (e.get('name') or ''), (e.get('description') or ''),
+        (e.get('venue') or ''), (e.get('source') or '')
+    ]).lower()
+    return any(kw in combined for kw in QUEER_PERFORMANCE_KEYWORDS)
 
 # Group events by day (only this week)
 events_by_day = defaultdict(list)
@@ -73,19 +95,43 @@ def time_sort_key(e):
 for day in DAYS:
     events_by_day[day].sort(key=time_sort_key)
 
-# Find EOTW
+# Find EOTW — priority: HH → Council Oak → Drag/Queer Performance → other specials
 all_flat = [e for day in DAYS for e in events_by_day[day]]
 hh = [e for e in all_flat if _is_homo_hotel(e)]
 council = [e for e in all_flat if _is_council_oak(e)]
-specials = [e for e in all_flat if not _is_homo_hotel(e) and not _is_council_oak(e) and not _is_recurring(e)]
+queer_perf = [e for e in all_flat if _is_queer_performance(e) and not _is_recurring(e)
+              and not _is_homo_hotel(e) and not _is_council_oak(e)]
+specials = [e for e in all_flat if not _is_homo_hotel(e) and not _is_council_oak(e)
+            and not _is_queer_performance(e) and not _is_recurring(e)]
 
-eotw = hh[0] if hh else (council[0] if council else (specials[0] if specials else None))
+eotw = (hh[0] if hh else
+        council[0] if council else
+        queer_perf[0] if queer_perf else
+        specials[0] if specials else None)
 eotw_key = (eotw.get('name', ''), eotw.get('date', '')) if eotw else None
 
 def esc(s):
     if not s:
         return ''
     return str(s).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+
+_VENUE_JUNK = ('shared by ', 'posted by ', 'reposted by ', 'event by ')
+def _clean_venue(raw: str) -> str:
+    """Return a display-ready venue name, stripping scraper artifacts and raw addresses."""
+    v = (raw or '').strip()
+    if not v:
+        return ''
+    low = v.lower()
+    if any(low.startswith(j) for j in _VENUE_JUNK):
+        return ''
+    # "Business Name, Street Address, City, State" → keep only the business name
+    parts = [p.strip() for p in v.split(',')]
+    if len(parts) >= 2 and parts[0] and not parts[0][0].isdigit():
+        return parts[0]
+    # Pure street address (starts with house number) — omit it, not useful as display name
+    if parts[0] and parts[0][0].isdigit():
+        return ''
+    return v
 
 def format_time(t):
     if not t:
@@ -135,10 +181,11 @@ for day in DAYS:
             time_color = 'var(--gold)' if is_featured else f'var({css_var})'
 
             hour, ampm = format_time(ev.get('time', '') or '')
-            venue = esc(ev.get('venue', '') or '')
+            venue = esc(_clean_venue(ev.get('venue', '') or ''))
             location = ev.get('location', '') or ''
-            if location and location.lower() not in (ev.get('venue', '') or '').lower():
-                venue_str = f'{venue} &middot; {esc(location)}'
+            loc_clean = esc(_clean_venue(location))
+            if loc_clean and loc_clean.lower() not in venue.lower():
+                venue_str = f'{venue} &middot; {loc_clean}' if venue else loc_clean
             else:
                 venue_str = venue
 

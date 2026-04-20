@@ -267,6 +267,11 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
     if not events:
         return events
 
+    # If no API key, use rule-based enrichment immediately
+    if not config.ANTHROPIC_API_KEY:
+        print("[generator] No API key — using rule-based enrichment")
+        return _rule_based_enrich_all(events)
+
     # Build a batch prompt for efficiency (one API call for all events)
     event_lines = []
     for i, e in enumerate(events[:15]):  # cap at 15 to stay within token limits
@@ -319,8 +324,121 @@ Format: 1. [description]
                 continue
 
     except Exception as e:
-        print(f"[generator] Event enrichment failed, keeping existing descriptions: {e}")
+        print(f"[generator] Event enrichment failed, using rule-based fallback: {e}")
+        events = _rule_based_enrich_all(events)
 
+    return events
+
+
+def _rule_based_enrich(event: dict) -> str:
+    """Generate a sassy, action-oriented pitch that makes people want to go."""
+    name = (event.get("name") or "").lower()
+    venue = (event.get("venue") or "").strip()
+    time  = (event.get("time") or "").strip()
+    src   = (event.get("source") or "").lower()
+    existing = (event.get("description") or "").strip()
+
+    _scraper_artifacts = [
+        "tulsa events lists", "ticket options may be available",
+        "verified providers", "events.tulsa.okstate.edu",
+        "did you know that **", "this event is sold out this is not an official",
+    ]
+    if existing and len(existing) > 80 and not any(a in existing.lower() for a in _scraper_artifacts):
+        return existing  # already has a good description
+
+    at_venue = f" at {venue}" if venue else ""
+    at_time  = f" at {time}" if time else ""
+
+    if any(k in name for k in ["dragnificent", "drag show", "drag night", "drag brunch", "drag queen", "drag king", "drag performer"]):
+        return (f"Go. Put the phone away, get to the front, and tip the queens. "
+                "You will absolutely lose your mind in the best possible way, and you will thank yourself for not staying home.")
+
+    if any(k in name for k in ["cabaret", "comc", "chorus", "chorale", "council oak"]):
+        return (f"Dress up. Get there early. Sit close. "
+                "This is live performance from a real ensemble that pours everything into it, and the energy in that room is unlike anything else in Tulsa.")
+
+    if "happy hour" in name or "homo hotel" in name:
+        return ("Do not go and stand in the corner on your phone. Go up to someone with a great outfit, compliment them, and start a conversation. "
+                "You will leave with at least three new friends and a story worth telling.")
+
+    if "brunch" in name or "boozy brunch" in name:
+        return (f"Dress like you tried. Order the thing you normally wouldn't. Talk to the table next to you. "
+                "Brunch with this crowd is a full event, not just a meal, and you will regret skipping it.")
+
+    if any(k in name for k in ["craft", "crochet", "knit", "stitch", "maker", "queer craft"]):
+        return (f"You do not need to know what you're doing. Just show up{at_venue} with your hands and your personality. "
+                "Queer people creating things together is magic, and you'll leave with something to show for it.")
+
+    if any(k in name for k in ["karaoke"]):
+        return ("Get up there and sing something embarrassing. Nobody here is going to judge you, "
+                "and you will feel incredible afterward. The person who goes first always has the most fun.")
+
+    if any(k in name for k in ["trivia", "quiz"]):
+        return (f"Make a team with strangers. Name it something that will get a reaction. Talk trash, play hard, and buy a round when you win. "
+                "This is a room full of people who would love to meet you if you'd stop overthinking it.")
+
+    if any(k in name for k in ["comedy", "comedian", "loony bin", "standup", "stand-up"]) or "comedy" in venue.lower():
+        return (f"Sit close to the front. Laugh out loud when it's funny. Talk to the people next to you during the break. "
+                "Live comedy in an intimate room hits different, and you have literally zero excuses to not go.")
+
+    if any(k in name for k in ["rave", "broadway rave", "dance", "dj ", "w/dj", "latin night", "dance party"]):
+        return (f"Wear something you can move in, because you WILL be dancing. "
+                "Leave your self-consciousness at the door, get on the floor in the first 20 minutes, and do not leave before midnight.")
+
+    if any(k in name for k in ["tulsa eagle", "yellow brick", "majestic"]) or src in ("bars", "nightlife"):
+        return (f"Get there{at_time}, order your drink, and start a conversation with whoever's at the bar next to you. "
+                "Tulsa's queer nightlife runs on community, and the community only stays strong when you show up.")
+
+    if any(k in name for k in ["market", "art market", "art show", "art fair", "gallery"]):
+        return (f"Bring cash. Budget a little more than you think you'll spend. Talk to the artists. Ask them about their work. "
+                "This is where Tulsa's creative community lives, and it's better than anything you'd find scrolling at home.")
+
+    if any(k in name for k in ["concert", "live music", "music night", "performance"]):
+        return (f"Arrive before it starts. Find a spot. Put the phone away. "
+                "Live music in Tulsa is genuinely underrated and you are going to feel something if you actually let yourself be present for it.")
+
+    if any(k in name for k in ["support group", "healing", "chronic", "wellness"]):
+        return (f"You don't have to have it together to walk in. That's literally the whole point. "
+                "Show up, listen, share if you're ready, and remember you are not the only one going through it.")
+
+    if any(k in name for k in ["all souls", "unitarian", "church", "spiritual", "meditation"]):
+        return (f"One of the largest UU congregations in the country and one of the most affirming spaces in Tulsa. "
+                "Walk in exactly as you are. You will feel it immediately.")
+
+    if "bowling" in name:
+        return (f"Lambda Bowling is a Tulsa LGBTQ+ institution. Show up even if you haven't bowled in years. "
+                "Nobody's judging your form. Everyone's glad you made it out.")
+
+    if any(k in name for k in ["canasta", "card", "game night", "board game", "dungeons", "d&d", "dragons"]):
+        return (f"Step away from the screen and use your brain for something that actually requires other people. "
+                "Sit down next to a stranger, learn the rules, and talk trash. This is genuinely a great time.")
+
+    if "okeq" in src or "equality center" in (venue or "").lower():
+        return (f"OKEQ's space{at_venue} is the heartbeat of Tulsa's queer community. "
+                "Walk in. Say hi to someone. Life genuinely gets better when you show up for your community.")
+
+    return ("Put this on your calendar and actually go. "
+            "The people in that room are your people, and you'll only know that if you show up.")
+
+
+_SCRAPER_ARTIFACTS = [
+    "tulsa events lists", "ticket options may be available",
+    "verified providers", "events.tulsa.okstate.edu",
+    "did you know that **", "this event is sold out this is not an official",
+]
+
+
+def _is_scraper_artifact(desc: str) -> bool:
+    d = desc.lower()
+    return any(a in d for a in _SCRAPER_ARTIFACTS)
+
+
+def _rule_based_enrich_all(events: list[dict]) -> list[dict]:
+    """Apply rule-based enrichment to all events missing good or sassy descriptions."""
+    for ev in events:
+        existing = (ev.get("description") or "").strip()
+        if not existing or len(existing) < 60 or _is_scraper_artifact(existing):
+            ev["description"] = _rule_based_enrich(ev)
     return events
 
 
