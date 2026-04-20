@@ -29,10 +29,10 @@ SOURCES = {
     },
     "okeq": {
         "name": "Oklahomans for Equality (OKEQ)",
-        "url": "https://www.okeq.org/events",
+        "url": "https://okeq.org/event-calendar/",
         "priority": 1,
         "type": "priority",
-        "description": "Dennis R. Neill Equality Center events",
+        "description": "Dennis R. Neill Equality Center events - comprehensive event calendar",
     },
     "twisted_arts": {
         "name": "Twisted Arts",
@@ -469,6 +469,21 @@ SOURCES = {
         "priority": 3,
         "type": "aggregator",
         "description": "Facebook community group where members post and share LGBTQ+ events happening in Tulsa. Good crowdsourced aggregator for events not listed elsewhere.",
+    },
+    # ── New sources added 2026-04-20 ─────────────────────────────────────
+    "lgbt_of_oklahoma_fb": {
+        "name": "LGBT of Oklahoma (Facebook Group)",
+        "url": "https://www.facebook.com/groups/673721549395149/",
+        "priority": 2,
+        "type": "aggregator",
+        "description": "Public Facebook group, 955 members. Statewide LGBTQ+ community group — filter for Tulsa-area events.",
+    },
+    "okc_lgbtq_events_fb": {
+        "name": "OKC Area LGBTQ+ Events and Community Activities (Facebook Group)",
+        "url": "https://www.facebook.com/groups/526396531335580/",
+        "priority": 2,
+        "type": "aggregator",
+        "description": "Public Facebook group, 14K members, 219 friends in group, 7+ posts/day. Covers OKC and statewide — filter for Tulsa events. High-volume source.",
     },
     # ── New sources added 2026-04-16 ─────────────────────────────────────
     "tulsa_pride_site": {

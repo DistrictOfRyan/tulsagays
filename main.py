@@ -37,6 +37,9 @@ def get_date_range(post_type):
     if post_type == "weekday":
         start = monday
         end = monday + timedelta(days=3)  # Mon-Thu
+    elif post_type == "all":
+        start = monday
+        end = monday + timedelta(days=6)  # Mon-Sun
     else:
         start = monday + timedelta(days=4)  # Friday
         end = monday + timedelta(days=6)  # Sunday
@@ -110,16 +113,54 @@ def cmd_generate(post_type="weekday"):
         caption = _fallback_caption(events, post_type, date_range)
         category_events = _categorize_events(events)
 
+    # Build events_by_day — group events by their weekday name in Mon→Sun order
+    days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday",
+                    "Friday", "Saturday", "Sunday"]
+    events_by_day = {day: [] for day in days_of_week}
+    no_date_events = []
+    for ev in events:
+        date_str = ev.get("date", "")
+        if date_str:
+            try:
+                dt = datetime.strptime(date_str, "%Y-%m-%d")
+                day_name = dt.strftime("%A")
+                if day_name in events_by_day:
+                    events_by_day[day_name].append(ev)
+            except ValueError:
+                no_date_events.append(ev)
+        else:
+            no_date_events.append(ev)
+    # Sort each day's events by time so they appear in chronological order
+    def _time_sort_key(e):
+        t = e.get("time", "") or ""
+        return t
+    for day in days_of_week:
+        events_by_day[day].sort(key=_time_sort_key)
+
+    # Validate: warn if any day has zero events (expected for some days)
+    days_with_events = [d for d in days_of_week if events_by_day[d]]
+    print(f"\nEvents per day: { {d: len(events_by_day[d]) for d in days_of_week} }")
+    if len(days_with_events) < 4:
+        print(f"WARNING: Only {len(days_with_events)} days have events. "
+              "Check scrapers — some sources may have failed.")
+
     # Generate carousel images
     print("\nGenerating carousel images...")
     try:
         from content.image_maker import create_carousel, save_carousel
         logo_path = config.LOGO_PATH if os.path.exists(config.LOGO_PATH) else None
-        images = create_carousel(category_events, post_type, date_range, logo_path)
+        images = create_carousel(
+            category_events, post_type, date_range, logo_path,
+            events_by_day=events_by_day
+        )
         output_dir = os.path.join(config.DATA_DIR, "posts", week_key)
         os.makedirs(output_dir, exist_ok=True)
         image_paths = save_carousel(images, output_dir, f"{post_type}_")
         print(f"Generated {len(image_paths)} carousel slides")
+        # Sanity check: alert if any day slide appears blank (0 events)
+        blank_days = [d for d in days_of_week if not events_by_day[d]]
+        if blank_days:
+            print(f"NOTE: Blank slides for days with no events: {', '.join(blank_days)}")
     except Exception as e:
         print(f"Image generation failed: {e}")
         image_paths = []
@@ -345,6 +386,7 @@ if __name__ == "__main__":
     commands = {
         "scrape": cmd_scrape,
         "generate": lambda: cmd_generate(sys.argv[2] if len(sys.argv) > 2 else "weekday"),
+        "generate-all": lambda: cmd_generate("all"),
         "post-weekday": lambda: cmd_post("weekday"),
         "post-weekend": lambda: cmd_post("weekend"),
         "update-blog": cmd_update_blog,

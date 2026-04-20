@@ -729,18 +729,52 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
     days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday",
                     "Friday", "Saturday", "Sunday"]
 
-    # Resolve featured event if not provided
+    # Resolve featured event — priority order:
+    # 1. Homo Hotel Happy Hour (always wins if present)
+    # 2. Council Oak Men's Chorus (any event with "council oak" in name/source)
+    # 3. Any non-recurring special event (exclude source=="recurring" and sports)
+    # NEVER pick a recurring event (bowling, AA, support groups, etc.)
     eotw = featured_event
     if not eotw or _is_garbage(eotw):
-        hh = events_by_category.get("homo_hotel", [])
+        all_events_flat = [
+            e for cat in events_by_category.values()
+            for e in cat
+            if not _is_garbage(e)
+        ]
+
+        def _is_recurring(e: Dict) -> bool:
+            src = (e.get("source") or "").lower()
+            name = (e.get("name") or "").lower()
+            recurring_sources = {"recurring", "aa_meetings", "bars"}
+            recurring_keywords = {"bowling", "aa meeting", "support group", "outreach group"}
+            if src in recurring_sources:
+                return True
+            return any(kw in name for kw in recurring_keywords)
+
+        def _is_homo_hotel(e: Dict) -> bool:
+            return ("homo hotel" in (e.get("name") or "").lower()
+                    or (e.get("source") or "").lower() == "homo_hotel")
+
+        def _is_council_oak(e: Dict) -> bool:
+            combined = ((e.get("name") or "") + " " + (e.get("source") or "")).lower()
+            return "council oak" in combined
+
+        # Priority 1: Homo Hotel Happy Hour (signature monthly event)
+        hh = [e for e in all_events_flat if _is_homo_hotel(e)]
         if hh:
             eotw = hh[0]
         else:
-            for cat in ["community", "arts", "nightlife"]:
-                valid = [e for e in events_by_category.get(cat, []) if not _is_garbage(e)]
-                if valid:
-                    eotw = valid[0]
-                    break
+            # Priority 2: Council Oak Men's Chorus (concerts/cabarets)
+            council = [e for e in all_events_flat if _is_council_oak(e)]
+            if council:
+                eotw = council[0]
+            else:
+                # Priority 3: Best non-recurring special event
+                special = [e for e in all_events_flat if not _is_recurring(e)]
+                if special:
+                    eotw = special[0]
+                elif all_events_flat:
+                    eotw = all_events_flat[0]
 
     # Slide 1: Cover + Event of the Week combined
     slides.append(make_cover_slide(post_type, date_range, featured_event=eotw,

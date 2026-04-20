@@ -14,29 +14,36 @@ from typing import Tuple, List
 
 logger = logging.getLogger(__name__)
 
-REQUIRED_SLIDE_COUNT = 10
+REQUIRED_SLIDE_COUNT = 9
 REQUIRED_WIDTH = 1080
 REQUIRED_HEIGHT = 1080
 MIN_FILE_SIZE_BYTES = 50 * 1024  # 50 KB
 MAX_BLACK_RATIO = 0.40           # 40% black pixels in center region = likely blank
 
+# Slide filename pattern: all__01.png ... all__09.png (prefix "all_", separator "_")
+SLIDE_PREFIX = "all_"
+
+
+def _slide_filenames(count: int = REQUIRED_SLIDE_COUNT) -> list:
+    return [f"{SLIDE_PREFIX}_{i:02d}.png" for i in range(1, count + 1)]
+
 
 def validate_slides(slide_dir: str) -> Tuple[bool, List[str]]:
-    """Check that all 10 slides exist, are the right size, and are not blank.
+    """Check that all 9 slides exist, are the right size, and are not blank.
 
     Args:
-        slide_dir: Path to the directory containing slide_01.png ... slide_10.png
+        slide_dir: Path to the directory containing all__01.png ... all__09.png
 
     Returns:
         (passed, errors) where passed is True only if all checks clear.
         errors is a list of human-readable problem descriptions.
     """
     errors: List[str] = []
+    slide_names = _slide_filenames()
 
-    # ── Check 1: All 10 slide files exist ─────────────────────────────────────
+    # ── Check 1: All 9 slide files exist ─────────────────────────────────────
     missing = []
-    for i in range(1, REQUIRED_SLIDE_COUNT + 1):
-        filename = f"slide_{i:02d}.png"
+    for filename in slide_names:
         path = os.path.join(slide_dir, filename)
         if not os.path.exists(path):
             missing.append(filename)
@@ -45,8 +52,7 @@ def validate_slides(slide_dir: str) -> Tuple[bool, List[str]]:
         errors.append(f"Missing slides: {', '.join(missing)}")
 
     # ── Check 2: File size (not empty/corrupt) ─────────────────────────────────
-    for i in range(1, REQUIRED_SLIDE_COUNT + 1):
-        filename = f"slide_{i:02d}.png"
+    for filename in slide_names:
         path = os.path.join(slide_dir, filename)
         if not os.path.exists(path):
             continue  # Already flagged above
@@ -62,8 +68,7 @@ def validate_slides(slide_dir: str) -> Tuple[bool, List[str]]:
         from PIL import Image
         import numpy as np
 
-        for i in range(1, REQUIRED_SLIDE_COUNT + 1):
-            filename = f"slide_{i:02d}.png"
+        for filename in slide_names:
             path = os.path.join(slide_dir, filename)
             if not os.path.exists(path):
                 continue  # Already flagged above
