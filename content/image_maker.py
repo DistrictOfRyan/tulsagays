@@ -142,20 +142,29 @@ def clean_venue(raw: str) -> str:
 
 
 _FIVE_FL_KW = [
+    # Drag / pride spectacle
     'drag show', 'drag bingo', 'drag brunch', 'drag queen', 'drag king', 'drag race',
     'pride show', 'pride party', 'pride dance', 'pride night', 'queer night',
     'gay night', 'lgbtq+ night', 'homo hotel', 'hhhh', 'rainbow night', 'twisted arts',
     'queer cabaret', 'dragnificent', 'lambda bowling',
+    # Explicitly queer identity/support spaces
+    'queer support group', 'lgbtq support group', 'gender outreach support',
+    'queer women', 'sapphic social', 'queer social', 'trans support group',
+    'osu tulsa queer', 'pflag tulsa', 'queer support',
 ]
+# Known Tulsa gay bar venues — any event at these is automatically super gay
+_GAY_BAR_VENUES = {
+    'club majestic', 'tulsa eagle', 'yellow brick', 'majestic tulsa',
+    '1330 e 3rd', '1338 e 3rd',    # The Vanguard area
+    'the vanguard',
+}
 _FOUR_FL_KW = [
     'lgbtq', 'lgbt', 'queer', 'lesbian', 'bisexual', 'sapphic',
     'transgender', 'nonbinary', 'non-binary', 'gender outreach',
     'equality center', 'okeq', 'pflag', 'rainbow pride', 'pride month',
     'sonic ray', 'council oak', 'hrc', 'gay bar', 'gay club',
-    'gender outreach', 'queer support', 'queer collective', 'queer crafters',
-    'pflag', 'support group', 'trans support',
+    'queer collective', 'queer crafters', 'support group', 'trans support',
 ]
-# Sources that are curated LGBTQ groups — but only boost if event itself has community signal
 _LGBTQ_COMMUNITY_SOURCES = {"homo_hotel", "okeq", "recurring", "manual"}
 _COMMUNITY_KW = [
     'support', 'group', 'meeting', 'collective', 'social', 'community',
@@ -169,20 +178,21 @@ _TWO_FL_KW = [
 
 def _flamingo_score(ev: dict) -> int:
     name    = ev.get('name', '').lower()
-    desc    = (ev.get('slide_description') or ev.get('description', '')).lower()
-    venue   = ev.get('venue', '').lower()
+    venue   = ev.get('venue', '').lower()   # raw, before address cleaning
     source  = ev.get('source', '')
-    content = f"{name} {venue}"  # score on event identity, not enriched description
+    content = f"{name} {venue}"
 
-    # 5 — explicitly flamboyant LGBTQ events
+    # 5 — drag/pride spectacle, explicitly queer identity events, or any event at a gay bar
     if any(kw in content for kw in _FIVE_FL_KW):
         return 5
-    # 4 — explicitly LGBTQ-focused events/spaces
+    if any(bar in venue for bar in _GAY_BAR_VENUES):
+        return 5
+    # 4 — explicitly LGBTQ-focused orgs/spaces/events
     if any(kw in content for kw in _FOUR_FL_KW):
         return 4
     if source in ('homo_hotel', 'okeq'):
         return 4
-    # 3 — LGBTQ community-organized events (bowling leagues, support groups, etc.)
+    # 3 — LGBTQ community-organized but not explicitly identity events
     if source in _LGBTQ_COMMUNITY_SOURCES and any(kw in content for kw in _COMMUNITY_KW):
         return 3
     # 2 — gay-friendly arts/culture/entertainment

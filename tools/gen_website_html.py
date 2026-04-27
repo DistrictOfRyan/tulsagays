@@ -23,14 +23,20 @@ _FIVE_FL = [
     'pride show', 'pride party', 'pride dance', 'pride night', 'queer night',
     'gay night', 'lgbtq+ night', 'homo hotel', 'hhhh', 'rainbow night', 'twisted arts',
     'queer cabaret', 'dragnificent', 'lambda bowling',
+    'queer support group', 'lgbtq support group', 'gender outreach support',
+    'queer women', 'sapphic social', 'queer social', 'trans support group',
+    'osu tulsa queer', 'pflag tulsa', 'queer support',
 ]
+_GAY_BAR_VENUES = {
+    'club majestic', 'tulsa eagle', 'yellow brick', 'majestic tulsa',
+    '1330 e 3rd', '1338 e 3rd', 'the vanguard',
+}
 _FOUR_FL = [
     'lgbtq', 'lgbt', 'queer', 'lesbian', 'bisexual', 'sapphic',
     'transgender', 'nonbinary', 'non-binary', 'gender outreach',
     'equality center', 'okeq', 'pflag', 'rainbow pride', 'pride month',
     'sonic ray', 'council oak', 'hrc', 'gay bar', 'gay club',
-    'gender outreach', 'queer support', 'queer collective', 'queer crafters',
-    'support group', 'trans support',
+    'queer collective', 'queer crafters', 'support group', 'trans support',
 ]
 _LGBTQ_COMMUNITY_SOURCES = {"homo_hotel", "okeq", "recurring", "manual"}
 _COMMUNITY_KW = [
@@ -45,11 +51,13 @@ _TWO_FL = [
 
 def _flamingo_score(ev) -> int:
     name   = ev.get('name', '').lower()
-    venue  = ev.get('venue', '').lower()
+    venue  = ev.get('venue', '').lower()   # raw, before address cleaning
     source = ev.get('source', '')
-    content = f"{name} {venue}"  # score on event identity, not enriched description
+    content = f"{name} {venue}"
 
     if any(kw in content for kw in _FIVE_FL):
+        return 5
+    if any(bar in venue for bar in _GAY_BAR_VENUES):
         return 5
     if any(kw in content for kw in _FOUR_FL):
         return 4
