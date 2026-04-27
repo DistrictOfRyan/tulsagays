@@ -16,6 +16,7 @@ Usage:
 
 import sys
 import os
+import re
 import json
 import time
 import random
@@ -140,12 +141,154 @@ def cmd_generate(post_type="weekday"):
                 no_date_events.append(ev)
         else:
             no_date_events.append(ev)
-    # Sort each day's events: timed events first (chronologically), untimed last
-    def _time_sort_key(e):
-        t = e.get("time", "") or ""
-        return (1, "") if not t else (0, t)
+    # Priority sort: LGBTQ non-bar non-recurring first, bars and non-LGBTQ last.
+    # Within each tier, sort by actual time (AM/PM parsed correctly, untimed last).
+    _BAR_VENUES = {"1338 e 3rd", "302 south frankfort", "302 s. frankfort",
+                   "302 s frankfort", "124 n boston", "frequency lounge", "sutures bar"}
+    _BAR_NAME_FRAGMENTS = {"touchtunes", "leather night", "shenanigans", "eagle bingo",
+                           "derby watch party", "derby hat"}
+    _LGBTQ_KEYWORDS = {
+        "lgbtq", "queer", "gay", "lesbian", "trans", "drag", "pride",
+        "bisexual", "nonbinary", "non-binary", "equality", "homo hotel",
+        "hhhh", "two-spirit", "pflag", "okeq", "rainbow", "gender outreach",
+        "lambda bowling", "lambda league",
+    }
+    # Known gay bars / LGBTQ venues — events here are LGBTQ even without keywords
+    _LGBTQ_VENUES = {"dennis r. neill", "dennis r neill", "oklahomans for equality",
+                     "positive space", "okeq",
+                     "1338 e 3rd",        # Tulsa Eagle
+                     "302 south frankfort", "302 s frankfort", "302 s. frankfort",  # DVL
+                     "124 n boston",      # Club Majestic
+                     }
+    _LGBTQ_SOURCES = {"homo_hotel", "okeq", "community_groups"}
+    _RECURRING_SOURCES = {"recurring"}
+    _RECURRING_NAME_FRAGMENTS = {
+        "bowling league", "support group", "lambda unity",
+        "outreach group", "monthly meeting",
+        "happy hour!",   # generic bar open-door entries (DVL, etc.) — not real events
+        "touchtunes",    # weekly Eagle promo, every Friday
+    }
+    # These events should never appear in the top 3 — deprioritize to T6+
+    _ALWAYS_DEPRIORITIZE = {
+        "mix and mingle",     # straight networking, not a community event
+        "aa meeting",         # valuable but not a highlight event
+        "aa meetings",
+        "book club - tulsa",  # org-specific book clubs (Tulsa SWE, etc.)
+        "shut up & write",    # productivity meetup
+        "raise your spiritual iq",  # generic self-help
+    }
+    # Cultural/entertainment events get a sub-tier boost so they float above
+    # generic T5 events even when their start time is later
+    _CULTURAL_KEYWORDS = {
+        "concert", "symphony", "musical", "opera", "ballet",
+        "film", "cinema", "silent film", "live music",
+        "guthrie green", "cain's ballroom", "performing arts center",
+    }
+
+    def _parse_time_minutes(t):
+        if not t:
+            return 9999
+        t = t.split("-")[0].split("–")[0].strip()
+        for fmt in ("%I:%M %p", "%I %p", "%H:%M"):
+            try:
+                dt_parsed = datetime.strptime(t, fmt)
+                return dt_parsed.hour * 60 + dt_parsed.minute
+            except ValueError:
+                continue
+        return 9999
+
+    def _slide_priority(e):
+        venue  = (e.get("venue") or "").lower()
+        name   = (e.get("name") or "").lower()
+        src    = (e.get("source") or "").lower()
+        desc   = (e.get("description") or "").lower()
+        combo  = f"{name} {desc} {venue} {src}"
+        is_bar = (src == "bars"
+                  or any(bv in venue for bv in _BAR_VENUES)
+                  or any(bf in name  for bf in _BAR_NAME_FRAGMENTS))
+        is_lgbtq = (any(kw in combo for kw in _LGBTQ_KEYWORDS)
+                    or any(v in combo for v in _LGBTQ_VENUES)
+                    or src in _LGBTQ_SOURCES)
+        is_recurring = (src in _RECURRING_SOURCES
+                        or any(kw in name for kw in _RECURRING_NAME_FRAGMENTS))
+        is_deprioritized = any(kw in name for kw in _ALWAYS_DEPRIORITIZE)
+        # Cultural events float above generic events at the same tier
+        is_cultural = any(kw in combo for kw in _CULTURAL_KEYWORDS)
+        sub_tier = 0 if is_cultural else 1
+        minutes = _parse_time_minutes(e.get("time", ""))
+        # Drag/performance shows at bars still rank high — they're worth featuring
+        _PERFORMANCE_KEYWORDS = {"drag", "talent night", "open talent", "cabaret", "variety show"}
+        is_drag_show = any(kw in combo for kw in _PERFORMANCE_KEYWORDS) and is_lgbtq
+        if is_lgbtq and not is_bar and not is_recurring:
+            tier = 1   # LGBTQ, non-bar, non-recurring — always show first
+        elif is_drag_show and is_bar:
+            tier = 2   # Drag/performance at a bar — worth featuring
+        elif is_lgbtq and is_bar and not is_recurring:
+            tier = 3   # LGBTQ bar, special one-off
+        elif not is_lgbtq and not is_bar:
+            tier = 4   # Non-LGBTQ cultural (concerts, art, film)
+        elif is_lgbtq and not is_bar and is_recurring:
+            tier = 5   # HARD RULE: recurring events (bowling, support groups) never lead a day
+        elif is_lgbtq and is_bar:
+            tier = 6   # Regular bar programming
+        else:
+            tier = 7   # Non-LGBTQ bar or generic catch-all
+        # Deprioritized events never beat real events — sink to T6 minimum
+        if is_deprioritized:
+            tier = max(tier, 6)
+        return (tier, sub_tier, minutes)
+
     for day in days_of_week:
-        events_by_day[day].sort(key=_time_sort_key)
+        events_by_day[day].sort(key=_slide_priority)
+
+    # Deduplicate: collapse same-day events with the same name (or HHHH variants)
+    # into one record, merging the most complete venue/address/URL/description.
+    def _dedup_day(ev_list):
+        def _norm(s):
+            return re.sub(r'\W+', ' ', (s or '').lower()).strip()
+
+        def _has_address(venue):
+            v = venue or ''
+            return ',' in v or any(c.isdigit() for c in v)
+
+        seen = {}   # key -> index in result
+        result = []
+        for ev in ev_list:
+            name_norm = _norm(ev.get('name', ''))
+            date = ev.get('date', '')
+            # Collapse all HHHH variants to a single bucket
+            if 'homo hotel' in name_norm or ('hhhh' in name_norm):
+                key = ('__hhhh__', date)
+            else:
+                key = (name_norm[:40], date)
+
+            if key not in seen:
+                seen[key] = len(result)
+                result.append(dict(ev))
+            else:
+                idx = seen[key]
+                existing = result[idx]
+                new_venue = ev.get('venue') or ''
+                old_venue = existing.get('venue') or ''
+                # Always prefer venue that has a street address (has comma or digit)
+                if _has_address(new_venue) and not _has_address(old_venue):
+                    existing['venue'] = new_venue
+                elif _has_address(new_venue) and len(new_venue) > len(old_venue):
+                    existing['venue'] = new_venue
+                # Take longest/best description (keep sassy copy)
+                if len(ev.get('description') or '') > len(existing.get('description') or ''):
+                    existing['description'] = ev['description']
+                # Take URL if missing
+                if ev.get('url') and not existing.get('url'):
+                    existing['url'] = ev['url']
+        return result
+
+    for day in days_of_week:
+        before = len(events_by_day[day])
+        events_by_day[day] = _dedup_day(events_by_day[day])
+        after = len(events_by_day[day])
+        if before != after:
+            print(f"  [dedup] {day}: {before} -> {after} events (collapsed {before - after} duplicates)")
 
     # Validate: warn if any day has zero events (expected for some days)
     days_with_events = [d for d in days_of_week if events_by_day[d]]
@@ -154,6 +297,26 @@ def cmd_generate(post_type="weekday"):
         print(f"WARNING: Only {len(days_with_events)} days have events. "
               "Check scrapers — some sources may have failed.")
 
+    # Pre-select EOTW from deduplicated events_by_day so the cover uses
+    # the merged record (correct venue/address) rather than raw category_events.
+    _all_deduped = [e for d in days_of_week for e in events_by_day[d]]
+    def _is_hh(e): return 'homo hotel' in (e.get('name') or '').lower() or (e.get('source') or '') == 'homo_hotel'
+    def _is_co(e): return 'council oak' in ((e.get('name') or '') + (e.get('source') or '')).lower()
+    def _is_qp(e):
+        c = ' '.join([e.get('name',''), e.get('description',''), e.get('venue',''), e.get('source','')]).lower()
+        return any(k in c for k in ['drag','cabaret','pride show','pride event','queer night','gay night','twisted arts'])
+    def _is_rec(e):
+        s = (e.get('source') or '').lower()
+        n = (e.get('name') or '').lower()
+        return s in {'recurring','aa_meetings','bars'} or any(k in n for k in ['bowling league','support group','outreach group'])
+    _hh = [e for e in _all_deduped if _is_hh(e)]
+    _co = [e for e in _all_deduped if _is_co(e)]
+    _qp = [e for e in _all_deduped if _is_qp(e) and not _is_rec(e) and not _is_hh(e)]
+    _sp = [e for e in _all_deduped if not _is_hh(e) and not _is_co(e) and not _is_qp(e) and not _is_rec(e)]
+    _preselected_eotw = _hh[0] if _hh else (_co[0] if _co else (_qp[0] if _qp else (_sp[0] if _sp else None)))
+    if _preselected_eotw:
+        print(f"  [eotw] {_preselected_eotw.get('name')} @ {_preselected_eotw.get('venue')}")
+
     # Generate carousel images
     print("\nGenerating carousel images...")
     try:
@@ -161,7 +324,8 @@ def cmd_generate(post_type="weekday"):
         logo_path = config.LOGO_PATH if os.path.exists(config.LOGO_PATH) else None
         images = create_carousel(
             category_events, post_type, date_range, logo_path,
-            events_by_day=events_by_day
+            events_by_day=events_by_day,
+            featured_event=_preselected_eotw,
         )
         output_dir = os.path.join(config.DATA_DIR, "posts", week_key)
         os.makedirs(output_dir, exist_ok=True)

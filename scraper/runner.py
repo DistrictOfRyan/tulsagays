@@ -29,6 +29,7 @@ from scraper import (
     manual_input,
     tulsa_arts_district,
     facebook_events,
+    ticketing_sites,
 )
 
 logger = logging.getLogger(__name__)
@@ -437,6 +438,7 @@ def run_all_scrapers() -> List[Dict]:
         ("bars", bars.scrape),
         ("tulsa_arts_district", tulsa_arts_district.scrape),
         ("facebook_events", facebook_events.scrape),
+        ("ticketing_sites", ticketing_sites.scrape),
     ]
 
     # Playwright scrapers run after all static scrapers

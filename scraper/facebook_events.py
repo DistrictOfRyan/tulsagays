@@ -74,12 +74,22 @@ PAGE_URLS = [
 
 # ── Tulsa LGBTQ+ Facebook group event tabs ─────────────────────────────────────
 GROUP_URLS = [
+    # LGBTQ-specific groups
     "https://www.facebook.com/groups/161646500587551/events",          # Gay Men of Tulsa (1.3K)
     "https://www.facebook.com/groups/2612250565491228/events",         # Okie Gays (6K)
     "https://www.facebook.com/groups/715281449025002/events",          # Tulsa LGBTQ+ Scene (2.8K)
     "https://www.facebook.com/groups/472710852857064/events",          # LGBTQ Hot List
     "https://www.facebook.com/groups/220878821301627/events",          # LGBT Nightlife Tulsa
+    # General Tulsa community / entertainment groups — goldmines for local events
     "https://www.facebook.com/groups/InterestingThingsToDoInTulsa/events",  # Interesting Things To Do In Tulsa (72K)
+    "https://www.facebook.com/groups/funstufftodointulsa/events",      # Fun Stuff to Do in Tulsa!
+    "https://www.facebook.com/groups/tulsaartists/events",             # Tulsa Artists
+    # Music & shows groups
+    "https://www.facebook.com/groups/1996680830384050/events",         # Tulsa Concerts and Music Events
+    "https://www.facebook.com/groups/862121663843106/events",          # Tulsa Events and Music Promotions
+    # General events / community
+    "https://www.facebook.com/groups/114530202225051/events",          # Tulsa Events (TULSA EVENT)
+    "https://www.facebook.com/groups/2974145312757018/events",         # Tulsa Conscious Community and Events
 ]
 
 LGBTQ_KEYWORDS = [

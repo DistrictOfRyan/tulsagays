@@ -28,6 +28,7 @@ ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 META_ACCESS_TOKEN = os.environ.get("META_ACCESS_TOKEN", "")
 META_IG_USER_ID = os.environ.get("META_IG_USER_ID", "")
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
+TICKETMASTER_API_KEY = os.environ.get("TICKETMASTER_API_KEY", "")
 
 # ── Event Sources ────────────────────────────────────────────────────────
 # Priority: 1 = always feature, 2 = feature if good, 3 = only if special/slow week

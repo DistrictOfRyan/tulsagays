@@ -13,26 +13,62 @@ with open(f'data/events/{wk}_all.json', encoding='utf-8') as f:
 
 events = raw if isinstance(raw, list) else raw.get('events', [])
 
-# Filter out non-LGBTQ events that slipped through scrapers
-_LGBTQ_FILTER_KW = [
-    "lgbtq", "lgbt", "queer", "gay", "lesbian", "bisexual", "trans",
-    "transgender", "nonbinary", "non-binary", "drag", "pride", "rainbow",
-    "equality", "homo", "okeq", "sonic ray", "twisted arts", "council oak",
-    "sapphic", "gender",
-]
-# facebook_events and meetup come from curated LGBTQ groups — trust them all
+# Show ALL events on the website — gay score distinguishes LGBTQ events from general ones
+# Trusted LGBTQ sources get a score boost
 _TRUSTED_SOURCES = {"homo_hotel", "recurring", "manual", "okeq", "extended_calendars",
                     "community_groups", "facebook_events", "meetup"}
 
-def _is_lgbtq(ev):
-    if ev.get("source", "") in _TRUSTED_SOURCES:
-        return True
-    combined = " ".join([
-        ev.get("name", ""), ev.get("description", ""), ev.get("venue", ""), ev.get("source", "")
-    ]).lower()
-    return any(kw in combined for kw in _LGBTQ_FILTER_KW)
+_FIVE_FL = [
+    'drag show', 'drag bingo', 'drag brunch', 'drag queen', 'drag king', 'drag race',
+    'pride show', 'pride party', 'pride dance', 'pride night', 'queer night',
+    'gay night', 'lgbtq+ night', 'homo hotel', 'hhhh', 'rainbow night', 'twisted arts',
+    'queer cabaret', 'dragnificent', 'lambda bowling',
+]
+_FOUR_FL = [
+    'lgbtq', 'lgbt', 'queer', 'lesbian', 'bisexual', 'sapphic',
+    'transgender', 'nonbinary', 'non-binary', 'gender outreach',
+    'equality center', 'okeq', 'pflag', 'rainbow pride', 'pride month',
+    'sonic ray', 'council oak', 'hrc', 'gay bar', 'gay club',
+    'gender outreach', 'queer support', 'queer collective', 'queer crafters',
+    'support group', 'trans support',
+]
+_LGBTQ_COMMUNITY_SOURCES = {"homo_hotel", "okeq", "recurring", "manual"}
+_COMMUNITY_KW = [
+    'support', 'group', 'meeting', 'collective', 'social', 'community',
+    'bowling', 'yoga', 'meditation', 'sound bath', 'seniors', 'testing',
+]
+_TWO_FL = [
+    'art', 'music', 'concert', 'gallery', 'theater', 'theatre', 'comedy',
+    'poetry', 'film', 'cinema', 'festival', 'cabaret', 'dance', 'live music',
+    'cultural', 'brunch', 'karaoke', 'trivia', 'open mic', 'rooftop',
+]
 
-events = [e for e in events if _is_lgbtq(e)]
+def _flamingo_score(ev) -> int:
+    name   = ev.get('name', '').lower()
+    venue  = ev.get('venue', '').lower()
+    source = ev.get('source', '')
+    content = f"{name} {venue}"  # score on event identity, not enriched description
+
+    if any(kw in content for kw in _FIVE_FL):
+        return 5
+    if any(kw in content for kw in _FOUR_FL):
+        return 4
+    if source in ('homo_hotel', 'okeq'):
+        return 4
+    if source in _LGBTQ_COMMUNITY_SOURCES and any(kw in content for kw in _COMMUNITY_KW):
+        return 3
+    if any(kw in content for kw in _TWO_FL):
+        return 2
+    return 1
+
+_FL_LABELS = ['', 'Mostly straight', 'Gay-friendly', 'LGBTQ-friendly', 'Very queer', 'Super gay']
+
+def _flamingo_html(score: int) -> str:
+    filled = '🦩' * score
+    empty  = '<span style="opacity:0.18">🦩</span>' * (5 - score)
+    label  = _FL_LABELS[score]
+    return (f'<span class="flamingo-score">{filled}{empty}</span>'
+            f'<span class="flamingo-label">{label}</span>')
 
 # Enrich events with sassy descriptions before rendering
 try:
@@ -195,7 +231,19 @@ def format_time(t):
         return parts[0], parts[1]
     return t_orig, ''
 
-lines = []
+_LEGEND_HTML = '''\
+        <div class="flamingo-legend">
+            <span class="flamingo-legend-title">Gay Score</span>
+            <span class="flamingo-legend-items">
+                <span>🦩 Mostly straight</span>
+                <span>🦩🦩 Gay-friendly</span>
+                <span>🦩🦩🦩 LGBTQ-friendly</span>
+                <span>🦩🦩🦩🦩 Very queer</span>
+                <span>🦩🦩🦩🦩🦩 Super gay</span>
+            </span>
+        </div>'''
+
+lines = [_LEGEND_HTML]
 _past_divider_added = False
 
 for day in DAYS_ORDERED:
@@ -252,6 +300,8 @@ for day in DAYS_ORDERED:
 
             desc = (ev.get('description') or '').strip()
             url = ev.get('url', '') or ''
+            fl_score = _flamingo_score(ev)
+            fl_html = _flamingo_html(fl_score)
 
             lines.append('')
             lines.append(f'                <div class="{card_cls}"{pink_style}>')
@@ -266,6 +316,7 @@ for day in DAYS_ORDERED:
             lines.append(f'                        <div class="event-name" style="color:{name_color}">{esc(ev_name)}</div>')
             if venue_str:
                 lines.append(f'                        <div class="event-venue" style="color:var({css_var})">{venue_str}</div>')
+            lines.append(f'                        <div class="event-flamingo">{fl_html}</div>')
             if desc:
                 lines.append(f'                        <div class="event-description">{esc(desc)}</div>')
             if url:

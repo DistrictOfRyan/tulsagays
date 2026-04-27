@@ -89,6 +89,7 @@ def _font(name: str, size: int) -> ImageFont.FreeTypeFont:
         "segoe-light":   "segoeuil.ttf",
         "segoe-bold":    "segoeuib.ttf",
         "segoe-semi":    "seguisb.ttf",
+        "segoe-emoji":   "seguiemj.ttf",
         "arial":         "arial.ttf",
         "arial-bold":    "arialbd.ttf",
     }
@@ -107,7 +108,7 @@ def _font(name: str, size: int) -> ImageFont.FreeTypeFont:
 # ── Text Utilities ────────────────────────────────────────────────────────
 
 def clean_text(text: str) -> str:
-    """Strip emoji, non-ASCII decorative chars, excess whitespace."""
+    """Strip emoji, non-ASCII decorative chars, excess whitespace. Replace em/en dashes."""
     if not text:
         return ""
     text = re.sub(
@@ -116,7 +117,79 @@ def clean_text(text: str) -> str:
         r'\U0001F900-\U0001F9FF\U00002600-\U000026FF\U0000200D'
         r'\U0001FA00-\U0001FA6F\U0001FA70-\U0001FAFF]+', '', text
     )
+    text = text.replace('—', ',').replace('–', '-')  # em dash -> comma, en dash -> hyphen
     return re.sub(r'\s+', ' ', text).strip()
+
+
+_VENUE_JUNK = ('shared by ', 'posted by ', 'reposted by ', 'event by ')
+
+def clean_venue(raw: str) -> str:
+    """Return a display-ready venue name, stripping raw addresses and scraper artifacts."""
+    v = clean_text(raw or '').strip()
+    if not v:
+        return ''
+    low = v.lower()
+    if any(low.startswith(j) for j in _VENUE_JUNK):
+        return ''
+    parts = [p.strip() for p in v.split(',')]
+    # "Business Name, Street, City, State" → keep business name
+    if len(parts) >= 2 and parts[0] and not parts[0][0].isdigit():
+        return parts[0]
+    # Pure street address (starts with house number) — omit
+    if parts[0] and parts[0][0].isdigit():
+        return ''
+    return v
+
+
+_FIVE_FL_KW = [
+    'drag show', 'drag bingo', 'drag brunch', 'drag queen', 'drag king', 'drag race',
+    'pride show', 'pride party', 'pride dance', 'pride night', 'queer night',
+    'gay night', 'lgbtq+ night', 'homo hotel', 'hhhh', 'rainbow night', 'twisted arts',
+    'queer cabaret', 'dragnificent', 'lambda bowling',
+]
+_FOUR_FL_KW = [
+    'lgbtq', 'lgbt', 'queer', 'lesbian', 'bisexual', 'sapphic',
+    'transgender', 'nonbinary', 'non-binary', 'gender outreach',
+    'equality center', 'okeq', 'pflag', 'rainbow pride', 'pride month',
+    'sonic ray', 'council oak', 'hrc', 'gay bar', 'gay club',
+    'gender outreach', 'queer support', 'queer collective', 'queer crafters',
+    'pflag', 'support group', 'trans support',
+]
+# Sources that are curated LGBTQ groups — but only boost if event itself has community signal
+_LGBTQ_COMMUNITY_SOURCES = {"homo_hotel", "okeq", "recurring", "manual"}
+_COMMUNITY_KW = [
+    'support', 'group', 'meeting', 'collective', 'social', 'community',
+    'bowling', 'yoga', 'meditation', 'sound bath', 'seniors', 'testing',
+]
+_TWO_FL_KW = [
+    'art', 'music', 'concert', 'gallery', 'theater', 'theatre', 'comedy',
+    'poetry', 'film', 'cinema', 'festival', 'cabaret', 'dance', 'live music',
+    'cultural', 'brunch', 'karaoke', 'trivia', 'open mic', 'rooftop',
+]
+
+def _flamingo_score(ev: dict) -> int:
+    name    = ev.get('name', '').lower()
+    desc    = (ev.get('slide_description') or ev.get('description', '')).lower()
+    venue   = ev.get('venue', '').lower()
+    source  = ev.get('source', '')
+    content = f"{name} {venue}"  # score on event identity, not enriched description
+
+    # 5 — explicitly flamboyant LGBTQ events
+    if any(kw in content for kw in _FIVE_FL_KW):
+        return 5
+    # 4 — explicitly LGBTQ-focused events/spaces
+    if any(kw in content for kw in _FOUR_FL_KW):
+        return 4
+    if source in ('homo_hotel', 'okeq'):
+        return 4
+    # 3 — LGBTQ community-organized events (bowling leagues, support groups, etc.)
+    if source in _LGBTQ_COMMUNITY_SOURCES and any(kw in content for kw in _COMMUNITY_KW):
+        return 3
+    # 2 — gay-friendly arts/culture/entertainment
+    if any(kw in content for kw in _TWO_FL_KW):
+        return 2
+    # 1 — general public event
+    return 1
 
 
 def format_date(date_str: str) -> str:
@@ -144,6 +217,19 @@ def _text_width(draw: ImageDraw.Draw, text: str, font: ImageFont.FreeTypeFont) -
 def _text_height(draw: ImageDraw.Draw, text: str, font: ImageFont.FreeTypeFont) -> int:
     bbox = draw.textbbox((0, 0), text, font=font)
     return bbox[3] - bbox[1]
+
+
+def _draw_flamingo_score(draw: ImageDraw.Draw, score: int, x: int, y: int, size: int = 18) -> int:
+    """Draw flamingo emoji score row centered at x; returns new y after drawing."""
+    try:
+        f_emoji = _font("segoe-emoji", size)
+        flamingo = "\U0001F9A9"  # 🦩
+        row = flamingo * score
+        tw = _text_width(draw, row, f_emoji)
+        draw.text(((W - tw) // 2, y), row, font=f_emoji, fill="#e84fa0", embedded_color=True)
+        return y + _text_height(draw, row, f_emoji) + 4
+    except Exception:
+        return y
 
 
 def _wrap_to_width(draw: ImageDraw.Draw, text: str,
@@ -310,15 +396,15 @@ def make_cover_slide(post_type: str, date_range: str,
     branding_bottom = y
 
     # ── Divider ───────────────────────────────────────────────────────────
-    y += 14
+    y += 24
     _thin_divider(draw, y, margin=PAD, color="#333333")
-    y += 20
+    y += 34
 
     # ── Event of the Week ─────────────────────────────────────────────────
     if featured_event and not _is_garbage(featured_event):
         ev_name  = clean_text(featured_event.get("name", ""))
         ev_time  = featured_event.get("time", "")
-        ev_venue = clean_text(featured_event.get("venue", ""))
+        ev_venue = clean_venue(featured_event.get("venue", ""))
         ev_desc  = featured_event.get("description", "")
         ev_date  = format_date(featured_event.get("date", ""))
 
@@ -331,14 +417,14 @@ def make_cover_slide(post_type: str, date_range: str,
         y = _draw_wrapped(draw, ev_name, y, name_font, WHITE, max_px=W - 120, max_lines=2, line_gap=8)
         y += 12
 
+        if ev_venue:
+            y = _draw_wrapped(draw, f"@ {ev_venue}", y, f_eotw_venue, NEON_PINK,
+                              max_px=W - 140, max_lines=2, line_gap=6)
+            y += 10
+
         dt_line = f"{ev_date}  ·  {ev_time}" if ev_date and ev_time else (ev_date or ev_time)
         if dt_line:
             y = _draw_centered(draw, dt_line, y, f_eotw_dt, GRAY)
-            y += 10
-
-        if ev_venue:
-            y = _draw_wrapped(draw, f"@ {ev_venue}", y, f_eotw_venue, NEON_PINK,
-                              max_px=W - 140, max_lines=1, line_gap=6)
             y += 10
 
         if ev_desc:
@@ -352,7 +438,9 @@ def make_cover_slide(post_type: str, date_range: str,
             display_url = re.sub(r'^https?://', '', ev_url).split("?")[0]
             if len(display_url) > 55:
                 display_url = display_url[:55] + "..."
-            y = _draw_centered(draw, f"TICKETS  \u2192  {display_url}", y,
+            is_hhhh_event = "homo hotel" in ev_name.lower()
+            link_label = "MORE INFO" if is_hhhh_event else "TICKETS"
+            y = _draw_centered(draw, f"{link_label}  \u2192  {display_url}", y,
                                f_eotw_link, NEON_PINK)
 
         # Pink highlight box around the entire EOTW section
@@ -513,8 +601,89 @@ def make_featured_slide(event: Dict) -> Image.Image:
     return img
 
 
+def _day_fonts_at_scale(n: int, scale: float = 1.0):
+    """Return (f_name, f_det, f_pitch, f_url, name_max_lines, pitch_max_lines, sep_gap, f_sep)."""
+    def sz(b): return max(16, round(b * scale))
+    if n <= 1:
+        return (_font("poiret", sz(80)), _font("segoe-bold", sz(36)),
+                _font("segoe-bold", sz(30)), _font("segoe", sz(26)),
+                2, 20, 0, _font("segoe", sz(20)))
+    elif n == 2:
+        return (_font("poiret", sz(64)), _font("segoe-bold", sz(30)),
+                _font("segoe-bold", sz(26)), _font("segoe", sz(24)),
+                2, 12, 20, _font("segoe", sz(20)))
+    elif n == 3:
+        return (_font("poiret", sz(58)), _font("segoe-bold", sz(28)),
+                _font("segoe-bold", sz(24)), _font("segoe", sz(22)),
+                2, 8, 12, _font("segoe", sz(18)))
+    elif n == 4:
+        return (_font("poiret", sz(46)), _font("segoe-bold", sz(23)),
+                _font("segoe-bold", sz(21)), _font("segoe", sz(20)),
+                1, 5, 8, _font("segoe", sz(16)))
+    else:
+        return (_font("poiret", sz(38)), _font("segoe", sz(19)),
+                _font("segoe", sz(17)), _font("segoe", sz(17)),
+                1, 3, 6, _font("segoe", sz(14)))
+
+
+def _measure_events_height(draw, all_events: List[Dict], header_y: int,
+                            f_name, f_det, f_pitch, f_url, f_sep,
+                            name_max_lines: int, pitch_max_lines: int, sep_gap: int) -> int:
+    """Dry-run the day slide layout; returns simulated final y (no drawing)."""
+    y = header_y
+    n = len(all_events)
+    for i, event in enumerate(all_events):
+        ev_name  = clean_text(event.get("name", ""))
+        ev_time  = event.get("time", "")
+        ev_venue = clean_venue(event.get("venue", ""))
+        ev_pitch = event.get("slide_description") or event.get("description", "")
+        ev_url   = event.get("url", "")
+        nice_dt  = format_date(event.get("date", ""))
+        # Name
+        name_lines = _wrap_to_width(draw, ev_name, f_name, W - PAD * 2)[:name_max_lines]
+        for ln in name_lines:
+            y += _text_height(draw, ln, f_name) + 4
+        y += 6
+        # Venue (before time)
+        if ev_venue:
+            venue_line = f"@ {ev_venue}"
+            if _text_width(draw, venue_line, f_det) > W - PAD * 2:
+                vlines = _wrap_to_width(draw, venue_line, f_det, W - PAD * 2)[:2]
+                y += sum(_text_height(draw, "X", f_det) + 3 for _ in vlines)
+            else:
+                y += _text_height(draw, "X", f_det) + 3
+        # Time
+        time_str = ""
+        if nice_dt and ev_time:
+            time_str = f"{nice_dt}  ·  {ev_time}"
+        elif ev_time:
+            time_str = ev_time
+        elif nice_dt:
+            time_str = nice_dt
+        if time_str:
+            y += _text_height(draw, "X", f_det) + 3
+        y += 2
+        # Flamingo score row
+        y += 22  # approx height of emoji row at typical size
+        # Pitch
+        if ev_pitch:
+            pitch_list = _wrap_to_width(draw, ev_pitch, f_pitch, W - PAD * 2 - 40)[:pitch_max_lines]
+            for pl in pitch_list:
+                y += _text_height(draw, pl, f_pitch) + 4
+            y += 4
+        # URL
+        if ev_url:
+            y += _text_height(draw, "X", f_url) + 4
+        # Separator
+        if i < n - 1 and sep_gap > 0:
+            y += sep_gap
+            y += _text_height(draw, "○  ○  ○", f_sep) + sep_gap
+    return y
+
+
 def make_day_slide(day_name: str, events: List[Dict],
-                   also_happening: Optional[List[Dict]] = None) -> Image.Image:
+                   also_happening: Optional[List[Dict]] = None,
+                   total_day_events: int = 0) -> Image.Image:
     """Day slide: ALL events in a flowing layout with ○ ○ ○ separators.
     Font sizes scale with event count. No slot-based layout — content flows
     top to bottom, no wasted space.
@@ -539,52 +708,52 @@ def make_day_slide(day_name: str, events: List[Dict],
     n      = len(all_events)
     accent = DAY_ACCENTS.get(day_name, GRAY)
 
-    # ── Font sizes scale with event count ─────────────────────────────────
-    if n <= 1:
-        f_name, f_det, f_pitch, f_url = (
-            _font("poiret", 80), _font("segoe", 36),
-            _font("segoe", 30),  _font("segoe", 26))
-        name_max_lines, pitch_max_lines, sep_gap = 2, 4, 0
-    elif n == 2:
-        f_name, f_det, f_pitch, f_url = (
-            _font("poiret", 64), _font("segoe", 30),
-            _font("segoe", 26),  _font("segoe", 24))
-        name_max_lines, pitch_max_lines, sep_gap = 2, 3, 24
-    elif n == 3:
-        f_name, f_det, f_pitch, f_url = (
-            _font("poiret", 52), _font("segoe", 26),
-            _font("segoe", 22),  _font("segoe", 22))
-        name_max_lines, pitch_max_lines, sep_gap = 2, 3, 22
-    elif n == 4:
-        f_name, f_det, f_pitch, f_url = (
-            _font("poiret", 44), _font("segoe", 20),
-            _font("segoe", 19),  _font("segoe", 21))
-        name_max_lines, pitch_max_lines, sep_gap = 1, 1, 14
-    else:  # n >= 5 — safety net only, cap should prevent this
-        f_name, f_det, f_pitch, f_url = (
-            _font("poiret", 38), _font("segoe", 18),
-            _font("segoe", 16),  _font("segoe", 18))
-        name_max_lines, pitch_max_lines, sep_gap = 1, 0, 10
+    f_day        = _font("poiret", 68)
+    f_day_date   = _font("segoe-light", 22)
+    f_footer_big = _font("poiret", 44)
+    f_cta        = _font("segoe-bold", 28)
 
-    f_day          = _font("poiret", 60)
-    f_sep          = _font("segoe", 20)
-    f_footer_big   = _font("poiret", 42)
-    f_footer_sub   = _font("segoe", 17)
+    # Compute the calendar date for this day
+    from datetime import timedelta as _td
+    _today = datetime.now().date()
+    _week_monday = _today - _td(days=_today.weekday())
+    _day_offset = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"].index(day_name)
+    _day_date = _week_monday + _td(days=_day_offset)
+    day_date_str = f"{_day_date.month}/{_day_date.day}"
 
     # ── Header ────────────────────────────────────────────────────────────
     _pink_bar(draw, 0, height=4)
     y = 20
     y = _draw_centered(draw, day_name.upper(), y, f_day, accent)
-    y += 14
+    y += 4
+    y = _draw_centered(draw, day_date_str, y, f_day_date, GRAY)
+    y += 10
     bar_w = 60
     draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 3], fill=NEON_PINK)
-    y += 3 + 22
+    y += 3 + 18
 
     # ── Footer reserve (three-line block: FOMO tagline + CTA + site) ────────
-    footer_big_h  = _text_height(draw, "TULSAGAYS.COM", f_footer_big)
-    footer_sub_h  = _text_height(draw, "X", f_footer_sub)
-    footer_h      = footer_big_h + footer_sub_h * 2 + 64   # extra line for CTA
+    footer_big_h  = _text_height(draw, "SEE ALL AT TULSAGAYS.COM", f_footer_big)
+    footer_cta_h  = _text_height(draw, "X", f_cta)
+    footer_h      = footer_big_h + footer_cta_h + 52
     content_bottom = H - footer_h - 16  # safety margin above footer
+    y_content_start = y
+
+    # ── Auto-scale: pick the largest font set that fits ───────────────────
+    _SCALES = [1.0, 0.92, 0.85, 0.78, 0.72, 0.66, 0.60]
+    chosen_params = _day_fonts_at_scale(n, 0.60)
+    for sc in _SCALES:
+        params = _day_fonts_at_scale(n, sc)
+        if n == 0:
+            chosen_params = params
+            break
+        f_nm, f_dt, f_pt, f_ur, _nm, _pm, _sg, f_sp = params
+        if _measure_events_height(draw, all_events, y_content_start,
+                                  f_nm, f_dt, f_pt, f_ur, f_sp, _nm, _pm, _sg) <= content_bottom:
+            chosen_params = params
+            break
+    f_name, f_det, f_pitch, f_url, name_max_lines, pitch_max_lines, sep_gap, f_sep = chosen_params
+    y = y_content_start
 
     # ── Flow layout — all events top to bottom ────────────────────────────
     if n == 0:
@@ -607,8 +776,8 @@ def make_day_slide(day_name: str, events: List[Dict],
 
             ev_name  = clean_text(event.get("name", ""))
             ev_time  = event.get("time", "")
-            ev_venue = clean_text(event.get("venue", ""))
-            ev_pitch = event.get("description", "")
+            ev_venue = clean_venue(event.get("venue", ""))
+            ev_pitch = event.get("slide_description") or event.get("description", "")
             ev_url   = event.get("url", "")
             nice_dt  = format_date(event.get("date", ""))
 
@@ -621,29 +790,39 @@ def make_day_slide(day_name: str, events: List[Dict],
                 y += _text_height(draw, ln, f_name) + 4
             y += 6
 
-            # Time · Venue
-            if y < content_bottom:
-                det_parts = []
-                if nice_dt and ev_time:
-                    det_parts.append(f"{nice_dt}  ·  {ev_time}")
-                elif ev_time:
-                    det_parts.append(ev_time)
-                elif nice_dt:
-                    det_parts.append(nice_dt)
-                if ev_venue:
-                    det_parts.append(ev_venue[:45])  # tighter truncation prevents 2-line wraps
+            # Venue / address line (pink, before time)
+            if ev_venue and y < content_bottom:
+                venue_line = f"@ {ev_venue}"
+                if _text_width(draw, venue_line, f_det) > W - PAD * 2:
+                    venue_lines = _wrap_to_width(draw, venue_line, f_det, W - PAD * 2)[:2]
+                    for vl in venue_lines:
+                        if y >= content_bottom:
+                            break
+                        _draw_centered(draw, vl, y, f_det, NEON_PINK)
+                        y += _text_height(draw, "X", f_det) + 3
+                else:
+                    _draw_centered(draw, venue_line, y, f_det, NEON_PINK)
+                    y += _text_height(draw, "X", f_det) + 3
 
-                if det_parts:
-                    det_str = "  ·  ".join(det_parts)
-                    if len(det_parts) == 2 and _text_width(draw, det_str, f_det) > W - PAD * 2:
-                        _draw_centered(draw, det_parts[0], y, f_det, GRAY)
-                        y += _text_height(draw, "X", f_det) + 4
-                        if y < content_bottom:
-                            _draw_centered(draw, f"@ {det_parts[1]}", y, f_det, NEON_PINK)
-                            y += _text_height(draw, "X", f_det) + 5
-                    else:
-                        _draw_centered(draw, det_str, y, f_det, GRAY)
-                        y += _text_height(draw, "X", f_det) + 5
+            # Time line (gray, after venue)
+            if y < content_bottom:
+                time_parts = []
+                if nice_dt and ev_time:
+                    time_parts.append(f"{nice_dt}  ·  {ev_time}")
+                elif ev_time:
+                    time_parts.append(ev_time)
+                elif nice_dt:
+                    time_parts.append(nice_dt)
+                if time_parts:
+                    _draw_centered(draw, time_parts[0], y, f_det, GRAY)
+                    y += _text_height(draw, "X", f_det) + 3
+            y += 2  # small gap after venue/time block
+
+            # Flamingo score
+            if y < content_bottom:
+                fl = _flamingo_score(event)
+                fl_size = max(12, round(16 * (f_det.size / 28)))
+                y = _draw_flamingo_score(draw, fl, W // 2, y, size=fl_size)
 
             # Pitch
             if ev_pitch and y < content_bottom:
@@ -683,15 +862,15 @@ def make_day_slide(day_name: str, events: List[Dict],
                 width=3
             )
 
-    # ── Footer ── FOMO tagline + TULSAGAYS.COM + "hundreds of events" CTA ──
-    footer_y = H - footer_h + 16
-    day_tagline = DAY_FOOTER_TAGLINES.get(day_name, "Hundreds of fabulous events this week in Tulsa.")
-    _draw_centered(draw, day_tagline, footer_y, f_footer_sub, NEON_PINK)
-    footer_y += footer_sub_h + 10
-    _draw_centered(draw, "TULSAGAYS.COM", footer_y, f_footer_big, WHITE)
-    footer_y += footer_big_h + 6
-    _draw_centered(draw, "Hundreds of fabulous events this week \u00b7 visit to see the full list",
-                   footer_y, f_footer_sub, LIGHT_GRAY)
+    # ── Footer ── pink divider then "X more events today" CTA ───────────────
+    footer_y = H - footer_h + 8
+    _pink_bar(draw, footer_y, height=2)
+    footer_y += 12
+    more_count = max(0, total_day_events - len(events))
+    cta_line1 = f"{more_count} MORE EVENTS TODAY" if more_count > 0 else "YOUR FULL QUEER WEEK"
+    _draw_centered(draw, cta_line1, footer_y, f_cta, NEON_PINK)
+    footer_y += footer_cta_h + 10
+    _draw_centered(draw, "SEE ALL AT TULSAGAYS.COM", footer_y, f_footer_big, WHITE)
     _watermark(draw)
     return img
 
@@ -882,7 +1061,7 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
                         and not (e.get("name") == eotw_in_day[0].get("name")
                                  and e.get("date") == eotw_in_day[0].get("date"))
                     ]
-            slides.append(make_day_slide(day, day_events[:3]))
+            slides.append(make_day_slide(day, day_events[:3], total_day_events=len(day_events)))
     else:
         # Fallback: map categories to day slides
         cat_day_map = {"community": "Monday", "arts": "Wednesday", "nightlife": "Friday"}

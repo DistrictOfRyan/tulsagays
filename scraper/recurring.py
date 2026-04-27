@@ -89,7 +89,7 @@ RECURRING = [
         "day": "Friday",
         "freq": "1st",
         "time": "6:00 PM - 8:00 PM",
-        "venue": "wxyz bar at Aloft Tulsa Downtown, 200 Civic Center",
+        "venue": "DoubleTree by Hilton Tulsa Downtown, 616 W 7th St",
         "url": "https://www.meetup.com/homo-hotel-happy-hour/",
         "priority": 1,
     },
