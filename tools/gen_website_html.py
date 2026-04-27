@@ -266,15 +266,8 @@ eotw = (hh[0] if hh else
         specials[0] if specials else None)
 eotw_key = (eotw.get('name', ''), eotw.get('date', '')) if eotw else None
 
-# Top event per day — lowest priority wins, then earliest time. Gets a pink featured box.
 def _day_sort_key(e):
     return (e.get('priority', 99), _parse_minutes(e.get('time') or ''))
-
-day_top_keys = set()
-for day in DAYS:
-    if events_by_day[day]:
-        top = min(events_by_day[day], key=_day_sort_key)
-        day_top_keys.add((top.get('name', ''), top.get('date', '')))
 
 def esc(s):
     if not s:
@@ -388,15 +381,10 @@ for day in DAYS_ORDERED:
             ev_name = ev.get('name', '')
             ev_key = (ev_name, ev.get('date', ''))
             is_featured = bool(eotw_key and ev_key == eotw_key)
-            is_day_top = ev_key in day_top_keys
             card_cls = 'event-card featured' if is_featured else 'event-card'
             name_color = 'var(--gold)' if is_featured else f'var({css_var})'
             time_color = 'var(--gold)' if is_featured else f'var({css_var})'
-            # Pink box for the top event of each day
-            pink_style = (
-                ' style="border:2px solid #e84fa0;box-shadow:0 0 14px rgba(232,79,160,0.30);'
-                'background:rgba(232,79,160,0.06);border-radius:12px;"'
-            ) if is_day_top else ''
+            pink_style = ''
 
             hour, ampm = format_time(ev.get('time', '') or '')
             venue = esc(_clean_venue(ev.get('venue', '') or ''))

@@ -129,7 +129,11 @@ def _get_eotw() -> dict | None:
         src = (e.get("source") or "").lower()
         if src in {"recurring", "aa_meetings", "bars"}:
             return True
-        return any(k in name for k in ["bowling", "aa meeting", "support group", "sound bath", "sonic ray"])
+        return any(k in name for k in [
+            "bowling", "aa meeting", "support group", "sound bath", "sonic ray",
+            "health clinic", "okeq health", "hope testing", "drop-in therapy",
+            "therapy session", "free drop-in", "health outreach",
+        ])
 
     _QUEER_PERF_KW = [
         "drag", "drag show", "drag bingo", "drag brunch", "drag queen", "drag king",

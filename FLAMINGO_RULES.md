@@ -124,6 +124,12 @@ These are scraper artifacts and should never appear on the website or in slides:
 - `Bruce Goff Event Center` — venue name scraped as event
 - Any event name under 4 characters
 
+**Daily health/clinical services** (scraped from OKEQ but not community events — filtered at runner level):
+- `OKEQ Health Clinic` — daily medical clinic, repeats every weekday
+- `HOPE Testing` (Health Outreach, Prevention & Education) — daily STI testing
+- `Free Drop-In Therapy Sessions` — daily therapy availability notice
+- Any variant of the above
+
 ---
 
 ## Slide Sorting Priority
@@ -143,7 +149,11 @@ Events within a day are ranked for slides in this order:
 Within each tier, events sort by start time (AM before PM, untimed events last).
 
 **Always deprioritized (T6 minimum):** mix-and-mingle networking, AA meetings,
-generic book clubs, "shut up & write", self-help seminars.
+generic book clubs, "shut up & write", self-help seminars, health clinics,
+drop-in therapy sessions, STI testing services.
+
+**NEVER featured as Event of the Day or in top 3 events:** anything matching the
+daily health services list above, AA meetings, bowling leagues, recurring support groups.
 
 ---
 

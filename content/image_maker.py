@@ -1024,6 +1024,8 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
             recurring_keywords = {
                 "bowling", "aa meeting", "support group", "outreach group",
                 "sound bath", "sonic ray", "sound sanctuary", "sound meditation",
+                "health clinic", "okeq health", "hope testing", "drop-in therapy",
+                "therapy session", "free drop-in", "health outreach",
             }
             if src in recurring_sources:
                 return True

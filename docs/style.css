@@ -293,8 +293,8 @@ nav a:hover, nav a.active { color: var(--cream); }
 }
 .flamingo-legend-items {
     display: flex;
-    flex-wrap: wrap;
-    gap: 6px 18px;
+    flex-direction: column;
+    gap: 3px;
 }
 .flamingo-legend-items span {
     white-space: nowrap;

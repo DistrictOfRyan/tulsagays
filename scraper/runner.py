@@ -98,6 +98,16 @@ JUNK_NAMES = {
     "home", "about", "menu", "calendar", "events", "back",
 }
 
+# Daily health/clinical services scraped from OKEQ — not community events.
+# These repeat every weekday and are not worth listing as events.
+DAILY_SERVICE_SUBSTRINGS = [
+    "okeq health clinic",
+    "hope testing",
+    "drop-in therapy",
+    "free drop-in therapy",
+    "health outreach, prevention & education",
+]
+
 
 # ── Normalization & dedup ─────────────────────────────────────────────────────
 
@@ -160,12 +170,15 @@ def _get_week_range():
 
 
 def _is_junk_name(name: str) -> bool:
-    """Return True if the name is clearly navigation/UI text, not an event."""
+    """Return True if the name is clearly navigation/UI text or a daily health service."""
     if not name or len(name) < 5:
         return True
-    if name.lower().strip() in JUNK_NAMES:
+    nl = name.lower().strip()
+    if nl in JUNK_NAMES:
         return True
-    if len(name) > 200:  # Way too long for an event name
+    if len(name) > 200:
+        return True
+    if any(svc in nl for svc in DAILY_SERVICE_SUBSTRINGS):
         return True
     return False
 

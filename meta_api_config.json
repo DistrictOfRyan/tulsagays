@@ -10,22 +10,22 @@
   "quirk": "me/accounts returns empty with Facebook Login for Business. Use direct page query instead: {page_id}?fields=access_token",
   "last_updated": "2026-04-16",
   "last_post": {
-    "date": "2026-04-20",
-    "week_key": "2026-W17",
-    "fb_post_id": "1086906044497675_122107851884853065",
-    "ig_post_id": "17889052170352770",
+    "date": "2026-04-27",
+    "week_key": "2026-W18",
+    "fb_post_id": "1086906044497675_122109286466853065",
+    "ig_post_id": "17960795535077845",
     "photo_ids": [
-      "122107851338853065",
-      "122107851440853065",
-      "122107851488853065",
-      "122107851530853065",
-      "122107851584853065",
-      "122107851644853065",
-      "122107851692853065",
-      "122107851776853065",
-      "122107851836853065"
+      "122109285998853065",
+      "122109286046853065",
+      "122109286142853065",
+      "122109286220853065",
+      "122109286262853065",
+      "122109286304853065",
+      "122109286346853065",
+      "122109286388853065",
+      "122109286436853065"
     ],
-    "note": "Weekly carousel 2026-W17. 9 slides."
+    "note": "Weekly carousel 2026-W18. 9 slides."
   },
   "page_access_token": "EAAU3NOdIA5gBRMtIw1kK1hVZATgOgCTwvrHBBhtwkpVnHIuN3ZBoObPqvgCMyzZCTE2NRJYtzT2Hxol8WWYWm6igrA3IAUiZCfjqDLNSVadTNjtS422p1hscBrn7qbP2cjssnHLNDQEkMhwg0Q0cuWGMvNidZBu08L8wGXOV1RdWuZAZCJnUQpaMe3Gn5pitpyfAD9eBVMZAf2Q6Xq65xgZDZD",
   "page_token_expires": "never",
