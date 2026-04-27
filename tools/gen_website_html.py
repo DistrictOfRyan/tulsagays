@@ -450,3 +450,66 @@ for d in DAYS:
     print(f"  {d}: {len(events_by_day[d])} events")
 print(f"EOTW: {eotw_key}")
 print(f"Day order: {' -> '.join(DAYS_ORDERED)}")
+
+# ── Also update the static header: date-range + EOTW banner ──────────────────
+with open(_idx_path, encoding='utf-8') as _f:
+    _html2 = _f.read()
+
+# 1. Date range header (between <!-- DATE-RANGE --> markers)
+_week_start = day_dates[DAYS[0]].strftime('%B ') + str(day_dates[DAYS[0]].day)
+_week_end_dt = day_dates[DAYS[-1]]
+_week_end = _week_end_dt.strftime('%B ') + str(_week_end_dt.day) + ', ' + str(_week_end_dt.year)
+_new_date_range = f'<!-- DATE-RANGE -->{_week_start} &mdash; {_week_end}<!-- /DATE-RANGE -->'
+_html2 = re.sub(r'<!-- DATE-RANGE -->.*?<!-- /DATE-RANGE -->', _new_date_range, _html2)
+
+# 2. EOTW banner (between <!-- EOTW-START --> and <!-- EOTW-END --> markers)
+if eotw:
+    _e = eotw
+    _ename = _e.get('name', '')
+    _ewords = _ename.upper().split()
+    _half = max(1, len(_ewords) // 2)
+    _gold_part = ' '.join(_ewords[:_half])
+    _pink_part = ' '.join(_ewords[_half:])
+
+    _edate = _e.get('date', '')
+    _etime = _e.get('time', '')
+    try:
+        _eday = datetime.strptime(_edate, '%Y-%m-%d').strftime('%A, %B ') + str(datetime.strptime(_edate, '%Y-%m-%d').day)
+    except Exception:
+        _eday = _edate
+    _ewhen = f'{_eday} &middot; {_etime}' if _etime else _eday
+
+    _evenue_raw = _e.get('venue', '')
+    _evenue = _evenue_raw.split(',')[0].strip() if _evenue_raw else ''
+
+    _edesc = (_e.get('website_description') or _e.get('description') or '').strip()
+    # Trim to ~3 sentences for the banner
+    _esents = [s.strip() for s in _edesc.replace('\n', ' ').split('.') if s.strip()]
+    _edesc_short = '. '.join(_esents[:4]) + '.' if _esents else ''
+
+    _eurl = _e.get('url', '')
+    _elink = f'<a href="{esc(_eurl)}" class="event-link" style="margin-top:12px;display:inline-block" target="_blank" rel="noopener">{esc(_ename)} &rarr;</a>' if _eurl else ''
+
+    _eotw_html = f'''
+        <div class="featured-banner">
+            <div class="featured-label">Event of the Week</div>
+            <div class="deco-double"><span></span><span></span></div>
+            <div class="featured-name"><span class="gold">{esc(_gold_part)}</span> <span class="peacock">{esc(_pink_part)}</span></div>
+            <div class="diamond-sep"><div class="diamond"></div></div>
+            <div class="featured-when">{_ewhen}</div>
+            <div class="featured-where">{esc(_evenue)}</div>
+            <div class="featured-desc">{esc(_edesc_short)}</div>
+            {_elink}
+        </div>
+        '''
+    _html2 = re.sub(
+        r'<!-- EOTW-START -->.*?<!-- EOTW-END -->',
+        '<!-- EOTW-START -->' + _eotw_html + '<!-- EOTW-END -->',
+        _html2,
+        flags=re.DOTALL,
+    )
+
+with open(_idx_path, 'w', encoding='utf-8') as _f:
+    _f.write(_html2)
+print(f"Updated date range: {_week_start} — {_week_end}")
+print(f"Updated EOTW banner: {eotw.get('name') if eotw else 'none'}")
