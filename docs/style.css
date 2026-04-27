@@ -245,6 +245,30 @@ nav a:hover, nav a.active { color: var(--cream); }
     border: none;
 }
 
+/* ── Earlier This Week divider ───────────────────────────────────────── */
+.earlier-this-week {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0 24px;
+    opacity: 0.45;
+}
+.earlier-this-week::before,
+.earlier-this-week::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gold);
+}
+.earlier-this-week span {
+    font-size: 11px;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+}
+
 /* ── Event Cards ─────────────────────────────────────────────────────── */
 .events-list {
     display: flex;

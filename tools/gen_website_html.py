@@ -47,6 +47,12 @@ week_sunday = week_monday + timedelta(days=6)
 
 DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 day_dates = {d: week_monday + timedelta(i) for i, d in enumerate(DAYS)}
+
+# Reorder so today is first; past days move to the bottom
+today_name = today.strftime('%A')
+today_idx = DAYS.index(today_name) if today_name in DAYS else 0
+DAYS_ORDERED = DAYS[today_idx:] + DAYS[:today_idx]  # today+future, then past
+DAYS_PAST = set(DAYS[:today_idx])  # days already gone this week
 day_css = {
     'Monday': '--day-mon', 'Tuesday': '--day-tue', 'Wednesday': '--day-wed',
     'Thursday': '--day-thu', 'Friday': '--day-fri', 'Saturday': '--day-sat',
@@ -97,10 +103,15 @@ for ev in events:
         pass
 
 def _parse_minutes(t):
-    """Convert time string to minutes since midnight for proper chronological sort."""
+    """Convert time string to minutes since midnight. Extracts start time from ranges."""
     if not t:
         return 9999
     t = t.strip().upper()
+    # Extract first recognizable time from ranges like "6:00 PM - 8:00 PM",
+    # "Doors 9 PM, Show 10 PM", "10:00 AM and 11:15 AM"
+    m = re.search(r'(\d{1,2}:\d{2}\s*(?:AM|PM)|\b\d{1,2}\s+(?:AM|PM))\b', t)
+    if m:
+        t = m.group(1).strip()
     for fmt in ['%I:%M %p', '%H:%M', '%I:%M%p', '%I %p']:
         try:
             dt = datetime.strptime(t, fmt)
@@ -131,6 +142,16 @@ eotw = (hh[0] if hh else
         specials[0] if specials else None)
 eotw_key = (eotw.get('name', ''), eotw.get('date', '')) if eotw else None
 
+# Top event per day — lowest priority wins, then earliest time. Gets a pink featured box.
+def _day_sort_key(e):
+    return (e.get('priority', 99), _parse_minutes(e.get('time') or ''))
+
+day_top_keys = set()
+for day in DAYS:
+    if events_by_day[day]:
+        top = min(events_by_day[day], key=_day_sort_key)
+        day_top_keys.add((top.get('name', ''), top.get('date', '')))
+
 def esc(s):
     if not s:
         return ''
@@ -157,7 +178,12 @@ def _clean_venue(raw: str) -> str:
 def format_time(t):
     if not t:
         return None, None
-    t = t.strip().upper()
+    t_orig = t.strip()
+    t = t_orig.upper()
+    # Extract start time from ranges like "6:00 PM - 8:00 PM", "Doors 9 PM, Show 10 PM"
+    m = re.search(r'(\d{1,2}:\d{2}\s*(?:AM|PM)|\b\d{1,2}\s+(?:AM|PM))\b', t)
+    if m:
+        t = m.group(1).strip()
     for fmt in ['%I:%M %p', '%H:%M', '%I:%M%p', '%I %p']:
         try:
             dt = datetime.strptime(t, fmt)
@@ -167,18 +193,26 @@ def format_time(t):
     parts = t.split()
     if len(parts) >= 2:
         return parts[0], parts[1]
-    return t, ''
+    return t_orig, ''
 
 lines = []
+_past_divider_added = False
 
-for day in DAYS:
+for day in DAYS_ORDERED:
     day_evs = events_by_day[day]
     css_var = day_css[day]
     dt_obj = day_dates[day]
-    # Windows-compatible date format (no %-d)
-    date_str = dt_obj.strftime('%B %d').lstrip('0').replace(' 0', ' ')
-    # Actually strftime on Windows doesn't support %-d, use this:
     date_str = dt_obj.strftime('%B') + ' ' + str(dt_obj.day)
+
+    # Insert "Earlier This Week" divider before the first past day (if any have events)
+    if day in DAYS_PAST and not _past_divider_added:
+        past_has_events = any(events_by_day[d] for d in DAYS_PAST)
+        if past_has_events:
+            lines.append('')
+            lines.append('        <div class="earlier-this-week">')
+            lines.append('            <span>Earlier This Week</span>')
+            lines.append('        </div>')
+            _past_divider_added = True
 
     lines.append('')
     lines.append(f'        <!-- {day.upper()} -->')
@@ -197,9 +231,15 @@ for day in DAYS:
             ev_name = ev.get('name', '')
             ev_key = (ev_name, ev.get('date', ''))
             is_featured = bool(eotw_key and ev_key == eotw_key)
+            is_day_top = ev_key in day_top_keys
             card_cls = 'event-card featured' if is_featured else 'event-card'
             name_color = 'var(--gold)' if is_featured else f'var({css_var})'
             time_color = 'var(--gold)' if is_featured else f'var({css_var})'
+            # Pink box for the top event of each day
+            pink_style = (
+                ' style="border:2px solid #e84fa0;box-shadow:0 0 14px rgba(232,79,160,0.30);'
+                'background:rgba(232,79,160,0.06);border-radius:12px;"'
+            ) if is_day_top else ''
 
             hour, ampm = format_time(ev.get('time', '') or '')
             venue = esc(_clean_venue(ev.get('venue', '') or ''))
@@ -214,7 +254,7 @@ for day in DAYS:
             url = ev.get('url', '') or ''
 
             lines.append('')
-            lines.append(f'                <div class="{card_cls}">')
+            lines.append(f'                <div class="{card_cls}"{pink_style}>')
             if hour:
                 lines.append(f'                    <div class="event-time-col">')
                 lines.append(f'                        <div class="event-time" style="color:{time_color}">{esc(hour)}</div>')
@@ -238,10 +278,34 @@ for day in DAYS:
     lines.append(f'        </section>')
 
 result = '\n'.join(lines)
-with open('/tmp/day_sections.html', 'w', encoding='utf-8') as f:
-    f.write(result)
+
+# Auto-inject into docs/index.html between the first day comment and </main>
+_idx_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'docs', 'index.html')
+with open(_idx_path, encoding='utf-8') as _f:
+    _html = _f.read()
+
+# Find injection boundaries: first day marker → closing </main>
+_start_markers = ['<!-- MONDAY -->', '<!-- TUESDAY -->', '<!-- WEDNESDAY -->',
+                  '<!-- THURSDAY -->', '<!-- FRIDAY -->', '<!-- SATURDAY -->', '<!-- SUNDAY -->']
+_inject_start = min(
+    (_html.find(m) for m in _start_markers if _html.find(m) != -1),
+    default=-1
+)
+_inject_end = _html.find('</main>', _inject_start if _inject_start != -1 else 0)
+
+if _inject_start != -1 and _inject_end != -1:
+    _new_html = _html[:_inject_start] + result + '\n\n\n        ' + _html[_inject_end:]
+    with open(_idx_path, 'w', encoding='utf-8') as _f:
+        _f.write(_new_html)
+    print(f"Injected into docs/index.html (replaced chars {_inject_start}-{_inject_end})")
+else:
+    print(f"[warn] Could not find injection boundaries in index.html")
+    with open('/tmp/day_sections.html', 'w', encoding='utf-8') as f:
+        f.write(result)
+    print("Wrote to /tmp/day_sections.html instead")
 
 print(f"Generated {len(lines)} lines, {len(result)} chars")
 for d in DAYS:
     print(f"  {d}: {len(events_by_day[d])} events")
 print(f"EOTW: {eotw_key}")
+print(f"Day order: {' -> '.join(DAYS_ORDERED)}")
