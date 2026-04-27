@@ -122,6 +122,22 @@ def clean_text(text: str) -> str:
 
 
 _VENUE_JUNK = ('shared by ', 'posted by ', 'reposted by ', 'event by ')
+# Known address fragments → display name (used before address-stripping)
+_VENUE_NAME_MAP = {
+    '302 south frankfort': 'DVL Club & Lounge',
+    '302 s. frankfort':    'DVL Club & Lounge',
+    '302 s frankfort':     'DVL Club & Lounge',
+    '1338 e 3rd':          'Tulsa Eagle',
+    '1330 e 3rd':          'Tulsa Eagle',
+    '602 south lewis':     'Pump Bar',
+    '602 s. lewis':        'Pump Bar',
+    '602 s lewis':         'Pump Bar',
+    '6808 s. memorial':    'Loony Bin Comedy Club',
+    '6808 s memorial':     'Loony Bin Comedy Club',
+    '1124 s. lewis':       'WEL Bar',
+    '1301 s. boston':      'Boston Ave UMC',
+    '2224 w 51st':         'Zarrow Library',
+}
 
 def clean_venue(raw: str) -> str:
     """Return a display-ready venue name, stripping raw addresses and scraper artifacts."""
@@ -131,19 +147,24 @@ def clean_venue(raw: str) -> str:
     low = v.lower()
     if any(low.startswith(j) for j in _VENUE_JUNK):
         return ''
+    # Map known address fragments to business names
+    for addr, name in _VENUE_NAME_MAP.items():
+        if addr in low:
+            return name
     parts = [p.strip() for p in v.split(',')]
     # "Business Name, Street, City, State" → keep business name
     if len(parts) >= 2 and parts[0] and not parts[0][0].isdigit():
         return parts[0]
-    # Pure street address (starts with house number) — omit
+    # Pure street address (starts with house number) — show street only (not city/state)
     if parts[0] and parts[0][0].isdigit():
-        return ''
+        return parts[0]
     return v
 
 
 _FIVE_FL_KW = [
     # Drag / pride spectacle
     'drag show', 'drag bingo', 'drag brunch', 'drag queen', 'drag king', 'drag race',
+    'drag sing', 'drag along', 'drag perform', 'drag night',
     'pride show', 'pride party', 'pride dance', 'pride night', 'queer night',
     'gay night', 'lgbtq+ night', 'homo hotel', 'hhhh', 'rainbow night', 'twisted arts',
     'queer cabaret', 'dragnificent', 'lambda bowling',
@@ -151,12 +172,18 @@ _FIVE_FL_KW = [
     'queer support group', 'lgbtq support group', 'gender outreach support',
     'queer women', 'sapphic social', 'queer social', 'trans support group',
     'osu tulsa queer', 'pflag tulsa', 'queer support',
+    'pflag', 'lambda unity',
+    'bar crawl', 'pub crawl', 'pride crawl',
 ]
-# Known Tulsa gay bar venues — any event at these is automatically super gay
+# True gay bars — any event at these is automatically super gay (5 flamingos)
 _GAY_BAR_VENUES = {
     'club majestic', 'tulsa eagle', 'yellow brick', 'majestic tulsa',
-    '1330 e 3rd', '1338 e 3rd',    # The Vanguard area
-    'the vanguard',
+    '1330 e 3rd', '1338 e 3rd', 'the vanguard',
+    'pump bar', '602 south lewis', '602 s. lewis', '602 s lewis',
+}
+# Queer-friendly venues (not exclusively gay) → 4 flamingos
+_FOUR_VENUES = {
+    'dvl', '302 south frankfort', '302 s. frankfort', '302 s frankfort', 'elote',
 }
 _FOUR_FL_KW = [
     'lgbtq', 'lgbt', 'queer', 'lesbian', 'bisexual', 'sapphic',
@@ -164,16 +191,18 @@ _FOUR_FL_KW = [
     'equality center', 'okeq', 'pflag', 'rainbow pride', 'pride month',
     'sonic ray', 'council oak', 'hrc', 'gay bar', 'gay club',
     'queer collective', 'queer crafters', 'support group', 'trans support',
+    'musical', 'the musical', 'pride', 'opera', 'broadway',
 ]
 _LGBTQ_COMMUNITY_SOURCES = {"homo_hotel", "okeq", "recurring", "manual"}
 _COMMUNITY_KW = [
     'support', 'group', 'meeting', 'collective', 'social', 'community',
-    'bowling', 'yoga', 'meditation', 'sound bath', 'seniors', 'testing',
+    'bowling', 'yoga', 'meditation', 'sound bath', 'seniors', 'testing', 'coffee',
 ]
 _TWO_FL_KW = [
     'art', 'music', 'concert', 'gallery', 'theater', 'theatre', 'comedy',
     'poetry', 'film', 'cinema', 'festival', 'cabaret', 'dance', 'live music',
     'cultural', 'brunch', 'karaoke', 'trivia', 'open mic', 'rooftop',
+    'bingo', 'scavenger', 'sketch', 'craft', 'workshop', 'coffee',
 ]
 
 def _flamingo_score(ev: dict) -> int:
@@ -187,8 +216,10 @@ def _flamingo_score(ev: dict) -> int:
         return 5
     if any(bar in venue for bar in _GAY_BAR_VENUES):
         return 5
-    # 4 — explicitly LGBTQ-focused orgs/spaces/events
+    # 4 — explicitly LGBTQ-focused orgs/spaces/events, or queer-friendly venues
     if any(kw in content for kw in _FOUR_FL_KW):
+        return 4
+    if any(v in venue for v in _FOUR_VENUES):
         return 4
     if source in ('homo_hotel', 'okeq'):
         return 4
@@ -198,8 +229,8 @@ def _flamingo_score(ev: dict) -> int:
     # 2 — gay-friendly arts/culture/entertainment
     if any(kw in content for kw in _TWO_FL_KW):
         return 2
-    # 1 — general public event
-    return 1
+    # 2 — default; 1 flamingo is reserved for truly exclusionary/corporate-only events
+    return 2
 
 
 def format_date(date_str: str) -> str:
@@ -719,7 +750,7 @@ def make_day_slide(day_name: str, events: List[Dict],
     accent = DAY_ACCENTS.get(day_name, GRAY)
 
     f_day        = _font("poiret", 68)
-    f_day_date   = _font("segoe-light", 22)
+    f_day_date   = _font("segoe-semi", 26)
     f_footer_big = _font("poiret", 44)
     f_cta        = _font("segoe-bold", 28)
 
@@ -736,7 +767,7 @@ def make_day_slide(day_name: str, events: List[Dict],
     y = 20
     y = _draw_centered(draw, day_name.upper(), y, f_day, accent)
     y += 4
-    y = _draw_centered(draw, day_date_str, y, f_day_date, GRAY)
+    y = _draw_centered(draw, day_date_str, y, f_day_date, WHITE)
     y += 10
     bar_w = 60
     draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 3], fill=NEON_PINK)
@@ -824,7 +855,7 @@ def make_day_slide(day_name: str, events: List[Dict],
                 elif nice_dt:
                     time_parts.append(nice_dt)
                 if time_parts:
-                    _draw_centered(draw, time_parts[0], y, f_det, GRAY)
+                    _draw_centered(draw, time_parts[0], y, f_det, LIGHT_GRAY)
                     y += _text_height(draw, "X", f_det) + 3
             y += 2  # small gap after venue/time block
 

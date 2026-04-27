@@ -29,11 +29,8 @@ import config
 def get_date_range(post_type):
     """Get the date range string for the current week's post type."""
     today = datetime.now()
-    # Find next Monday
-    days_until_monday = (7 - today.weekday()) % 7
-    if days_until_monday == 0 and today.hour >= 12:
-        days_until_monday = 7
-    monday = today + timedelta(days=days_until_monday) if days_until_monday > 0 else today
+    # Always use the current week's Monday (Monday=0 in weekday())
+    monday = today - timedelta(days=today.weekday())
 
     if post_type == "weekday":
         start = monday

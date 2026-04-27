@@ -20,16 +20,26 @@ _TRUSTED_SOURCES = {"homo_hotel", "recurring", "manual", "okeq", "extended_calen
 
 _FIVE_FL = [
     'drag show', 'drag bingo', 'drag brunch', 'drag queen', 'drag king', 'drag race',
+    'drag sing', 'drag along', 'drag perform', 'drag night',
     'pride show', 'pride party', 'pride dance', 'pride night', 'queer night',
     'gay night', 'lgbtq+ night', 'homo hotel', 'hhhh', 'rainbow night', 'twisted arts',
     'queer cabaret', 'dragnificent', 'lambda bowling',
     'queer support group', 'lgbtq support group', 'gender outreach support',
     'queer women', 'sapphic social', 'queer social', 'trans support group',
     'osu tulsa queer', 'pflag tulsa', 'queer support',
+    'pflag', 'lambda unity',
+    'bar crawl', 'pub crawl', 'pride crawl',
 ]
+# True gay bars — any event here is automatically super gay (5 flamingos)
 _GAY_BAR_VENUES = {
     'club majestic', 'tulsa eagle', 'yellow brick', 'majestic tulsa',
     '1330 e 3rd', '1338 e 3rd', 'the vanguard',
+    'pump bar', '602 south lewis', '602 s. lewis', '602 s lewis',
+}
+# Queer-friendly venues (not exclusively gay) → 4 flamingos
+_FOUR_VENUES = {
+    'dvl', '302 south frankfort', '302 s. frankfort', '302 s frankfort',
+    'elote',
 }
 _FOUR_FL = [
     'lgbtq', 'lgbt', 'queer', 'lesbian', 'bisexual', 'sapphic',
@@ -37,16 +47,18 @@ _FOUR_FL = [
     'equality center', 'okeq', 'pflag', 'rainbow pride', 'pride month',
     'sonic ray', 'council oak', 'hrc', 'gay bar', 'gay club',
     'queer collective', 'queer crafters', 'support group', 'trans support',
+    'musical', 'the musical', 'pride', 'opera', 'broadway',
 ]
 _LGBTQ_COMMUNITY_SOURCES = {"homo_hotel", "okeq", "recurring", "manual"}
 _COMMUNITY_KW = [
     'support', 'group', 'meeting', 'collective', 'social', 'community',
-    'bowling', 'yoga', 'meditation', 'sound bath', 'seniors', 'testing',
+    'bowling', 'yoga', 'meditation', 'sound bath', 'seniors', 'testing', 'coffee',
 ]
 _TWO_FL = [
     'art', 'music', 'concert', 'gallery', 'theater', 'theatre', 'comedy',
     'poetry', 'film', 'cinema', 'festival', 'cabaret', 'dance', 'live music',
     'cultural', 'brunch', 'karaoke', 'trivia', 'open mic', 'rooftop',
+    'bingo', 'scavenger', 'sketch', 'craft', 'workshop', 'coffee',
 ]
 
 def _flamingo_score(ev) -> int:
@@ -61,13 +73,15 @@ def _flamingo_score(ev) -> int:
         return 5
     if any(kw in content for kw in _FOUR_FL):
         return 4
+    if any(v in venue for v in _FOUR_VENUES):
+        return 4
     if source in ('homo_hotel', 'okeq'):
         return 4
     if source in _LGBTQ_COMMUNITY_SOURCES and any(kw in content for kw in _COMMUNITY_KW):
         return 3
     if any(kw in content for kw in _TWO_FL):
         return 2
-    return 1
+    return 2  # 1 flamingo is reserved for truly exclusionary/corporate-only events
 
 _FL_LABELS = ['', 'Mostly straight', 'Gay-friendly', 'LGBTQ-friendly', 'Very queer', 'Super gay']
 
@@ -168,7 +182,43 @@ def time_sort_key(e):
     t = (e.get('time') or '').strip()
     return _parse_minutes(t)
 
+def _dedup_events(evs):
+    """Collapse events with similar names on the same day. Keeps highest-priority source.
+    Uses substring matching so 'Cindy Kaza' dedupes with 'Cindy Kaza @ The Loony Bin...'
+    and 'Homo Hotel' dedupes with '4H: Homo Hotel Happy Hour, May @ DoubleTree'.
+    """
+    _src_prio = {'homo_hotel': 0, 'okeq': 1, 'recurring': 2, 'manual': 3}
+    norms = []   # parallel list of normalized names for each event in result
+    result = []
+
+    def _norm(name):
+        return re.sub(r'[^a-z0-9]', '', name.lower())
+
+    def _is_dup(n1, n2):
+        if not n1 or not n2:
+            return False
+        short, long = (n1, n2) if len(n1) <= len(n2) else (n2, n1)
+        if len(short) < 7:
+            return n1 == n2
+        return short in long
+
+    for ev in evs:
+        n = _norm(ev.get('name', ''))
+        dup_idx = next((i for i, en in enumerate(norms) if _is_dup(n, en)), None)
+        if dup_idx is None:
+            norms.append(n)
+            result.append(ev)
+        else:
+            existing = result[dup_idx]
+            ex_p = _src_prio.get(existing.get('source', ''), 99)
+            nw_p = _src_prio.get(ev.get('source', ''), 99)
+            if nw_p < ex_p:
+                result[dup_idx] = ev
+                norms[dup_idx] = n
+    return result
+
 for day in DAYS:
+    events_by_day[day] = _dedup_events(events_by_day[day])
     events_by_day[day].sort(key=time_sort_key)
 
 # Find EOTW — priority: HH → Council Oak → Drag/Queer Performance → other specials
@@ -202,6 +252,23 @@ def esc(s):
     return str(s).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
 
 _VENUE_JUNK = ('shared by ', 'posted by ', 'reposted by ', 'event by ')
+# Known address fragments → display name (checked before address-stripping)
+_VENUE_NAME_MAP = {
+    '302 south frankfort': 'DVL Club & Lounge',
+    '302 s. frankfort':    'DVL Club & Lounge',
+    '302 s frankfort':     'DVL Club & Lounge',
+    '1338 e 3rd':          'Tulsa Eagle',
+    '1330 e 3rd':          'Tulsa Eagle',
+    '602 south lewis':     'Pump Bar',
+    '602 s. lewis':        'Pump Bar',
+    '602 s lewis':         'Pump Bar',
+    '6808 s. memorial':    'Loony Bin Comedy Club',
+    '6808 s memorial':     'Loony Bin Comedy Club',
+    '1124 s. lewis':       'WEL Bar',
+    '1301 s. boston':      'Boston Ave UMC',
+    '2224 w 51st':         'Zarrow Library',
+}
+
 def _clean_venue(raw: str) -> str:
     """Return a display-ready venue name, stripping scraper artifacts and raw addresses."""
     v = (raw or '').strip()
@@ -210,13 +277,17 @@ def _clean_venue(raw: str) -> str:
     low = v.lower()
     if any(low.startswith(j) for j in _VENUE_JUNK):
         return ''
+    # Map known address fragments to business names
+    for addr, name in _VENUE_NAME_MAP.items():
+        if addr in low:
+            return name
     # "Business Name, Street Address, City, State" → keep only the business name
     parts = [p.strip() for p in v.split(',')]
     if len(parts) >= 2 and parts[0] and not parts[0][0].isdigit():
         return parts[0]
-    # Pure street address (starts with house number) — omit it, not useful as display name
+    # Pure street address — show just the street segment (without city/state)
     if parts[0] and parts[0][0].isdigit():
-        return ''
+        return parts[0]
     return v
 
 def format_time(t):
@@ -306,7 +377,7 @@ for day in DAYS_ORDERED:
             else:
                 venue_str = venue
 
-            desc = (ev.get('description') or '').strip()
+            desc = (ev.get('website_description') or ev.get('description') or '').strip()
             url = ev.get('url', '') or ''
             fl_score = _flamingo_score(ev)
             fl_html = _flamingo_html(fl_score)
@@ -343,13 +414,10 @@ _idx_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 with open(_idx_path, encoding='utf-8') as _f:
     _html = _f.read()
 
-# Find injection boundaries: first day marker → closing </main>
-_start_markers = ['<!-- MONDAY -->', '<!-- TUESDAY -->', '<!-- WEDNESDAY -->',
-                  '<!-- THURSDAY -->', '<!-- FRIDAY -->', '<!-- SATURDAY -->', '<!-- SUNDAY -->']
-_inject_start = min(
-    (_html.find(m) for m in _start_markers if _html.find(m) != -1),
-    default=-1
-)
+# Find injection boundaries: EVENTS-START marker → closing </main>
+_inject_start = _html.find('<!-- EVENTS-START -->')
+if _inject_start != -1:
+    _inject_start += len('<!-- EVENTS-START -->')
 _inject_end = _html.find('</main>', _inject_start if _inject_start != -1 else 0)
 
 if _inject_start != -1 and _inject_end != -1:
