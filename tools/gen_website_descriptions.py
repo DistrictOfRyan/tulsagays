@@ -989,6 +989,17 @@ with open(path, encoding='utf-8') as f:
 
 events = raw if isinstance(raw, list) else raw.get('events', [])
 
+_GARBAGE_NAMES = {
+    '(map)', 'stay connected!', 'our partners', 'event application',
+    'event calendar', 'bruce goff event center',
+}
+def _is_garbage(ev):
+    name = (ev.get('name') or '').strip()
+    if not name or len(name) < 4:
+        return True
+    return name.lower() in _GARBAGE_NAMES
+events = [e for e in events if not _is_garbage(e)]
+
 updated = 0
 for ev in events:
     score = flamingo_score(ev)

@@ -13,6 +13,20 @@ with open(f'data/events/{wk}_all.json', encoding='utf-8') as f:
 
 events = raw if isinstance(raw, list) else raw.get('events', [])
 
+# Scraper artifacts and non-events — filter these out before display
+_GARBAGE_NAMES = {
+    '(map)', 'stay connected!', 'our partners', 'event application',
+    'event calendar', 'bruce goff event center',
+}
+def _is_garbage(ev):
+    name = (ev.get('name') or '').strip()
+    if not name or len(name) < 4:
+        return True
+    if name.lower() in _GARBAGE_NAMES:
+        return True
+    return False
+events = [e for e in events if not _is_garbage(e)]
+
 # Show ALL events on the website — gay score distinguishes LGBTQ events from general ones
 # Trusted LGBTQ sources get a score boost
 _TRUSTED_SOURCES = {"homo_hotel", "recurring", "manual", "okeq", "extended_calendars",
