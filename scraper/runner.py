@@ -15,13 +15,13 @@ import config
 from scraper import (
     recurring,
     okeq_calendar,
+    twisted_arts,
     specific_orgs,
     eventbrite_meetup,
     community_calendars,
     extended_calendars,
     aa_meetings,
     homo_hotel,
-    okeq,
     community_groups,
     qlist,
     churches,
@@ -424,6 +424,7 @@ def run_all_scrapers() -> List[Dict]:
         ("manual_input", manual_input.scrape),  # Always first — manually curated, priority=1
         ("recurring", recurring.scrape),
         ("okeq_calendar", okeq_calendar.scrape),
+        ("twisted_arts", twisted_arts.scrape),
         ("specific_orgs", specific_orgs.scrape),
         ("eventbrite_meetup", eventbrite_meetup.scrape),
         ("meetup", None),  # Already included in eventbrite_meetup.scrape
@@ -431,7 +432,6 @@ def run_all_scrapers() -> List[Dict]:
         ("community_calendars", community_calendars.scrape),
         ("extended_calendars", extended_calendars.scrape),
         ("aa_meetings", aa_meetings.scrape),
-        ("okeq", okeq.scrape),
         ("qlist", qlist.scrape),
         ("community_groups", community_groups.scrape),
         ("churches", churches.scrape),

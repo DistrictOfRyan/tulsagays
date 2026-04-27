@@ -174,6 +174,8 @@ _FIVE_FL_KW = [
     'osu tulsa queer', 'pflag tulsa', 'queer support',
     'pflag', 'lambda unity',
     'bar crawl', 'pub crawl', 'pride crawl',
+    'gabbin with gabbi', 'pride nation entertainment', 'brad lee',
+    'lesbian attachment',
 ]
 # True gay bars — any event at these is automatically super gay (5 flamingos)
 _GAY_BAR_VENUES = {
@@ -197,6 +199,14 @@ _LGBTQ_COMMUNITY_SOURCES = {"homo_hotel", "okeq", "recurring", "manual"}
 _COMMUNITY_KW = [
     'support', 'group', 'meeting', 'collective', 'social', 'community',
     'bowling', 'yoga', 'meditation', 'sound bath', 'seniors', 'testing', 'coffee',
+]
+_THREE_FL_KW = [
+    'first friday art crawl', 'art crawl',
+    'ballet', 'symphony', 'orchestra', 'choir', 'chorale', 'choral',
+    'performing arts', 'theatre', 'theater', 'cabaret',
+    'live performance', 'stage production', 'dance performance',
+    'recital', 'repertory', 'philharmonic',
+    'all souls',
 ]
 _TWO_FL_KW = [
     'art', 'music', 'concert', 'gallery', 'theater', 'theatre', 'comedy',
@@ -225,6 +235,9 @@ def _flamingo_score(ev: dict) -> int:
         return 4
     # 3 — LGBTQ community-organized but not explicitly identity events
     if source in _LGBTQ_COMMUNITY_SOURCES and any(kw in content for kw in _COMMUNITY_KW):
+        return 3
+    # 3 — specific welcoming events that score above generic arts/culture
+    if any(kw in content for kw in _THREE_FL_KW):
         return 3
     # 2 — gay-friendly arts/culture/entertainment
     if any(kw in content for kw in _TWO_FL_KW):

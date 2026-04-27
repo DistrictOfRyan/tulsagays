@@ -43,6 +43,8 @@ _FIVE_FL = [
     'osu tulsa queer', 'pflag tulsa', 'queer support',
     'pflag', 'lambda unity',
     'bar crawl', 'pub crawl', 'pride crawl',
+    'gabbin with gabbi', 'pride nation entertainment', 'brad lee',
+    'lesbian attachment',
 ]
 # True gay bars — any event here is automatically super gay (5 flamingos)
 _GAY_BAR_VENUES = {
@@ -68,6 +70,18 @@ _COMMUNITY_KW = [
     'support', 'group', 'meeting', 'collective', 'social', 'community',
     'bowling', 'yoga', 'meditation', 'sound bath', 'seniors', 'testing', 'coffee',
 ]
+# Performing arts and specific community events — always 3, even if name contains 2-tier words
+_THREE_FL = [
+    # Art crawls
+    'first friday art crawl', 'art crawl',
+    # Performing arts (live stage events)
+    'ballet', 'symphony', 'orchestra', 'choir', 'chorale', 'choral',
+    'performing arts', 'theatre', 'theater', 'cabaret',
+    'live performance', 'stage production', 'dance performance',
+    'recital', 'repertory', 'philharmonic',
+    # LGBTQ-affirming venues / orgs (not exclusively gay, but always welcome)
+    'all souls',
+]
 _TWO_FL = [
     'art', 'music', 'concert', 'gallery', 'theater', 'theatre', 'comedy',
     'poetry', 'film', 'cinema', 'festival', 'cabaret', 'dance', 'live music',
@@ -92,6 +106,8 @@ def _flamingo_score(ev) -> int:
     if source in ('homo_hotel', 'okeq'):
         return 4
     if source in _LGBTQ_COMMUNITY_SOURCES and any(kw in content for kw in _COMMUNITY_KW):
+        return 3
+    if any(kw in content for kw in _THREE_FL):
         return 3
     if any(kw in content for kw in _TWO_FL):
         return 2

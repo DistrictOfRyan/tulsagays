@@ -26,6 +26,8 @@ _FIVE_FL = [
     'osu tulsa queer', 'pflag tulsa', 'queer support',
     'pflag', 'lambda unity',
     'bar crawl', 'pub crawl', 'pride crawl',
+    'gabbin with gabbi', 'pride nation entertainment', 'brad lee',
+    'lesbian attachment',
 ]
 _GAY_BAR_VENUES = {
     'club majestic', 'tulsa eagle', 'yellow brick', 'majestic tulsa',
@@ -48,6 +50,14 @@ _COMMUNITY_KW = [
     'support', 'group', 'meeting', 'collective', 'social', 'community',
     'bowling', 'yoga', 'meditation', 'sound bath', 'seniors', 'testing', 'coffee',
 ]
+_THREE_FL = [
+    'first friday art crawl', 'art crawl',
+    'ballet', 'symphony', 'orchestra', 'choir', 'chorale', 'choral',
+    'performing arts', 'theatre', 'theater', 'cabaret',
+    'live performance', 'stage production', 'dance performance',
+    'recital', 'repertory', 'philharmonic',
+    'all souls',
+]
 _TWO_FL = [
     'art', 'music', 'concert', 'gallery', 'theater', 'theatre', 'comedy',
     'poetry', 'film', 'cinema', 'festival', 'cabaret', 'dance', 'live music',
@@ -66,6 +76,7 @@ def flamingo_score(ev: dict) -> int:
     if any(v in venue for v in _FOUR_VENUES): return 4
     if source in ('homo_hotel', 'okeq'): return 4
     if source in _LGBTQ_COMMUNITY_SOURCES and any(kw in content for kw in _COMMUNITY_KW): return 3
+    if any(kw in content for kw in _THREE_FL): return 3
     if any(kw in content for kw in _TWO_FL): return 2
     return 2  # 1 flamingo is reserved for truly exclusionary/corporate-only events
 

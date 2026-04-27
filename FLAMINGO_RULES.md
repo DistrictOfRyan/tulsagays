@@ -27,6 +27,9 @@ Awarded automatically to any event at a **true gay bar** OR matching a **super-g
   `queer women`, `sapphic social`, `queer social`, `trans support group`,
   `osu tulsa queer`, `pflag tulsa`, `queer support`, `pflag`, `lambda unity`, `lambda bowling`
 - Crawls: `bar crawl`, `pub crawl`, `pride crawl`
+- Recurring drag-hosted shows: `gabbin with gabbi`
+- Production companies (always gay): `pride nation entertainment`, `brad lee` (Brad Lee Ent)
+- Dedicated lesbian events: `lesbian attachment`
 
 ---
 
@@ -50,13 +53,19 @@ Awarded automatically to any event at a **true gay bar** OR matching a **super-g
 ---
 
 ### 3 Flamingos — LGBTQ-Friendly
-Awarded when the event comes from a trusted LGBTQ community source AND matches a community keyword.
+Awarded when the event comes from a trusted LGBTQ community source AND matches a community keyword,
+OR the event name matches a specific 3-tier phrase.
 
 **Community sources:** `homo_hotel`, `okeq`, `recurring`, `manual`
 
 **Community keywords that lift to 3:**
 `support`, `group`, `meeting`, `collective`, `social`, `community`, `bowling`, `yoga`,
 `meditation`, `sound bath`, `seniors`, `testing`, `coffee`
+
+**Specific phrases that are always 3 (regardless of source):**
+- `first friday art crawl`, `art crawl` — welcoming community crawl, known LGBTQ turnout
+- All performing arts keywords: `ballet`, `symphony`, `orchestra`, `choir`, `chorale`, `choral`, `performing arts`, `theatre`, `theater`, `cabaret`, `live performance`, `stage production`, `dance performance`, `recital`, `repertory`, `philharmonic`
+- LGBTQ-affirming venues/orgs (not exclusively gay but always 3+): `all souls` (All Souls Unitarian)
 
 ---
 
