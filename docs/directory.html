@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LGBTQ+ Directory - Tulsa Gays</title>
-    <meta name="description" content="The most comprehensive directory of LGBTQ+ owned and friendly businesses in Tulsa, Oklahoma. 150+ businesses across restaurants, bars, coffee shops, vintage stores, tattoo shops, salons, churches, and more.">
-    <meta name="keywords" content="Tulsa LGBTQ businesses, Tulsa gay friendly, queer owned Tulsa, LGBTQ directory Oklahoma, Tulsa gay bars, Tulsa queer community">
+    <title>LGBTQ+ Friendly Business Directory - Tulsa, Oklahoma | Tulsa Gays</title>
+    <meta name="description" content="The most comprehensive directory of LGBTQ+ owned and friendly businesses in Tulsa, Oklahoma. Bars, restaurants, coffee shops, tattoo studios, affirming churches, health providers, and more — searchable and filterable.">
+    <meta name="keywords" content="Tulsa LGBTQ businesses, Tulsa gay friendly, queer owned Tulsa, LGBTQ directory Oklahoma, Tulsa gay bars, Tulsa queer community, gay friendly restaurants Tulsa, LGBTQ affirming Tulsa">
     <meta name="robots" content="index, follow">
-    <meta property="og:title" content="LGBTQ+ Directory - Tulsa Gays">
-    <meta property="og:description" content="The most comprehensive directory of LGBTQ+ owned and friendly businesses in Tulsa, Oklahoma. 150+ businesses.">
+    <meta property="og:title" content="LGBTQ+ Friendly Business Directory - Tulsa | Tulsa Gays">
+    <meta property="og:description" content="The most comprehensive directory of LGBTQ+ owned and friendly businesses in Tulsa, Oklahoma. 80+ businesses across 13 categories.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.tulsagays.com/directory.html">
     <meta property="og:site_name" content="Tulsa Gays">
     <meta property="og:locale" content="en_US">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="LGBTQ+ Directory - Tulsa Gays">
+    <meta name="twitter:title" content="LGBTQ+ Friendly Business Directory - Tulsa | Tulsa Gays">
     <meta name="twitter:description" content="The most comprehensive directory of LGBTQ+ owned and friendly businesses in Tulsa, Oklahoma.">
     <link rel="canonical" href="https://www.tulsagays.com/directory.html">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poiret+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
@@ -29,7 +33,19 @@
       gtag('config', 'G-3ZGBZH6554');
     </script>
 
+    <!-- Schema.org: Local Business Directory -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "LGBTQ+ Friendly Businesses in Tulsa, Oklahoma",
+      "description": "A curated directory of LGBTQ+ owned and affirming businesses in Tulsa, Oklahoma.",
+      "url": "https://www.tulsagays.com/directory.html"
+    }
+    </script>
+
     <style>
+        /* ── Directory Intro ─────────────────────────────────────────────── */
         .directory-intro {
             text-align: center;
             max-width: 650px;
@@ -42,6 +58,190 @@
             color: var(--peacock);
             font-weight: 600;
         }
+
+        /* ── Submit Form ─────────────────────────────────────────────────── */
+        .submit-section {
+            background: var(--bg-card);
+            border: 1px solid rgba(155, 30, 95, 0.3);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .submit-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+        }
+        .submit-section h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        .submit-section .submit-tagline {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        .submit-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+        .submit-form .full-width {
+            grid-column: 1 / -1;
+        }
+        .submit-form input,
+        .submit-form select,
+        .submit-form textarea {
+            width: 100%;
+            background: var(--bg-secondary);
+            border: 1px solid #2a2a2a;
+            color: var(--text-primary);
+            padding: 0.6rem 0.85rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        .submit-form input:focus,
+        .submit-form select:focus,
+        .submit-form textarea:focus {
+            border-color: var(--gold);
+        }
+        .submit-form select {
+            appearance: none;
+            cursor: pointer;
+        }
+        .submit-form textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .submit-form input::placeholder,
+        .submit-form textarea::placeholder {
+            color: var(--dark-gray);
+        }
+        .submit-form select option {
+            background: var(--bg-secondary);
+        }
+        .submit-btn {
+            background: var(--gold);
+            color: white;
+            border: none;
+            padding: 0.7rem 2rem;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        .submit-btn:hover { opacity: 0.85; }
+        .submit-btn:active { transform: scale(0.98); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .form-status {
+            font-size: 0.9rem;
+            padding: 0.6rem;
+            display: none;
+        }
+        .form-status.success { color: #4caf50; display: block; }
+        .form-status.error { color: #ef5350; display: block; }
+        @media (max-width: 600px) {
+            .submit-form { grid-template-columns: 1fr; }
+            .submit-form .full-width { grid-column: 1; }
+        }
+
+        /* ── Search & Filter Controls ────────────────────────────────────── */
+        .dir-controls {
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg);
+            padding: 1rem 0 0.75rem;
+            border-bottom: 1px solid rgba(155, 30, 95, 0.15);
+        }
+        .dir-search-wrap {
+            position: relative;
+            margin-bottom: 0.75rem;
+        }
+        .dir-search {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid #2a2a2a;
+            color: var(--text-primary);
+            padding: 0.7rem 1rem 0.7rem 2.5rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .dir-search:focus { border-color: var(--gold); }
+        .dir-search::placeholder { color: var(--dark-gray); }
+        .search-icon {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dark-gray);
+            font-size: 1rem;
+            pointer-events: none;
+        }
+        .dir-search-clear {
+            position: absolute;
+            right: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--dark-gray);
+            cursor: pointer;
+            font-size: 1.1rem;
+            line-height: 1;
+            padding: 0;
+            display: none;
+        }
+        .dir-search-clear:hover { color: var(--text-primary); }
+        .filter-scroll {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .filter-scroll::-webkit-scrollbar { display: none; }
+        .filter-btn {
+            background: var(--bg-card);
+            border: 1px solid #2a2a2a;
+            color: var(--text-secondary);
+            padding: 0.4rem 0.9rem;
+            font-size: 0.78rem;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+        .filter-btn:hover {
+            border-color: var(--gold);
+            color: var(--text-primary);
+        }
+        .filter-btn.active {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: white;
+        }
+
+        /* ── Business Cards ──────────────────────────────────────────────── */
         .category-section {
             margin-bottom: 3rem;
         }
@@ -72,18 +272,15 @@
             background: var(--bg-card-hover);
             border-color: #2a2a2a;
         }
+        .biz-card.hidden { display: none; }
         .biz-name {
             font-weight: 700;
             font-size: 1.05rem;
             color: var(--text-primary);
             margin-bottom: 2px;
         }
-        .biz-name a {
-            color: var(--text-primary);
-        }
-        .biz-name a:hover {
-            color: var(--peacock);
-        }
+        .biz-name a { color: var(--text-primary); }
+        .biz-name a:hover { color: var(--peacock); }
         .biz-address {
             font-size: 0.8rem;
             color: var(--text-muted);
@@ -94,6 +291,42 @@
             color: var(--dark-gray);
             line-height: 1.5;
         }
+        .biz-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border: 1px solid rgba(155, 30, 95, 0.4);
+            color: var(--gold);
+            margin-left: 6px;
+            vertical-align: middle;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* ── No Results ──────────────────────────────────────────────────── */
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+        }
+        .no-results.visible { display: block; }
+        .no-results p { margin-bottom: 0.5rem; }
+        .no-results a { color: var(--gold); }
+
+        /* ── Results Count ───────────────────────────────────────────────── */
+        .results-count {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-align: right;
+            margin-bottom: 1rem;
+            min-height: 1.2em;
+        }
+
+        /* ── Sources ─────────────────────────────────────────────────────── */
         .directory-sources {
             text-align: center;
             max-width: 650px;
@@ -136,619 +369,710 @@
     <main class="container">
         <div class="week-header">
             <h1>LGBTQ+ Directory</h1>
-            <p class="date-range">Tulsa's Queer-Owned and Queer-Friendly Businesses</p>
+            <p class="date-range">Tulsa's Queer-Owned &amp; Queer-Friendly Businesses</p>
         </div>
 
         <div class="directory-intro">
-            <p>The most comprehensive list of LGBTQ+ owned and affirming businesses in Tulsa, Oklahoma. Whether you're looking for a great meal, a new tattoo, a place to worship, or your next favorite coffee shop, we've got you covered.</p>
-            <p>Know a business that should be listed? DM us on Instagram <a href="https://instagram.com/tulsagays" target="_blank" rel="noopener">@tulsagays</a></p>
+            <p>The most comprehensive list of LGBTQ+ owned and affirming businesses in Tulsa, Oklahoma. Whether you're hunting for a great meal, a new tattoo, a place to worship without the side-eye, or a doctor who actually gets it, this is your list.</p>
         </div>
 
+        <!-- ══ SUBMIT A BUSINESS ════════════════════════════════════════════ -->
+        <!--
+            SETUP REQUIRED: This form uses Formspree (formspree.io).
+            1. Go to formspree.io, create a free account, and create a new form.
+            2. Copy your form endpoint (looks like: https://formspree.io/f/abc12345)
+            3. Replace the action URL below with your endpoint.
+            Free tier handles 50 submissions/month — more than enough.
+        -->
+        <section class="submit-section" id="submit-business">
+            <h2>Add Your Business</h2>
+            <p class="submit-tagline">
+                Know a bar, brunch spot, therapist, tattoo artist, or literal dog groomer who deserves their flowers?
+                Drop them here. We check every submission and add legit businesses within a week.
+            </p>
+
+            <form class="submit-form" id="bizSubmitForm" action="https://formspree.io/f/REPLACE_WITH_YOUR_ID" method="POST">
+                <input type="text" name="business_name" placeholder="Business Name *" required>
+                <select name="category" required>
+                    <option value="" disabled selected>Category *</option>
+                    <option value="Community Hubs">Community Hubs</option>
+                    <option value="Bars & Nightlife">Bars &amp; Nightlife</option>
+                    <option value="Coffee & Books">Coffee &amp; Books</option>
+                    <option value="Restaurants & Food">Restaurants &amp; Food</option>
+                    <option value="Breweries">Breweries</option>
+                    <option value="Vintage & Shopping">Vintage &amp; Shopping</option>
+                    <option value="Tattoo & Beauty">Tattoo &amp; Beauty</option>
+                    <option value="Affirming Churches">Affirming Churches</option>
+                    <option value="Arts & Culture">Arts &amp; Culture</option>
+                    <option value="Sports & Fitness">Sports &amp; Fitness</option>
+                    <option value="Health & Wellness">Health &amp; Wellness</option>
+                    <option value="Support Groups">Support Groups</option>
+                    <option value="Other">Other</option>
+                </select>
+                <input type="text" name="address" placeholder="Address (optional)">
+                <input type="url" name="website" placeholder="Website or Instagram URL">
+                <textarea name="description" class="full-width" placeholder="Why should they be on this list? LGBTQ+ owned, affirming staff, Pride-friendly, all of the above? Tell us. *" required></textarea>
+                <input type="text" name="your_name" placeholder="Your name (optional)">
+                <input type="email" name="your_email" placeholder="Your email (optional, for follow-up)">
+                <div class="full-width" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+                    <button type="submit" class="submit-btn" id="submitBtn">Submit Business</button>
+                    <span class="form-status" id="formStatus"></span>
+                </div>
+                <!-- Honeypot field - do not remove, catches spam -->
+                <input type="text" name="_gotcha" style="display:none">
+            </form>
+        </section>
+
+        <!-- ══ SEARCH & FILTER ═════════════════════════════════════════════ -->
+        <div class="dir-controls" id="dirControls">
+            <div class="dir-search-wrap">
+                <span class="search-icon">&#128269;</span>
+                <input type="search" class="dir-search" id="dirSearch" placeholder="Search businesses, categories, descriptions..." autocomplete="off">
+                <button class="dir-search-clear" id="searchClear" aria-label="Clear search">&times;</button>
+            </div>
+            <div class="filter-scroll" id="filterBar">
+                <button class="filter-btn active" data-cat="all">All</button>
+                <button class="filter-btn" data-cat="community-hubs">Community Hubs</button>
+                <button class="filter-btn" data-cat="bars-nightlife">Bars &amp; Nightlife</button>
+                <button class="filter-btn" data-cat="coffee-books">Coffee &amp; Books</button>
+                <button class="filter-btn" data-cat="restaurants">Food</button>
+                <button class="filter-btn" data-cat="breweries">Breweries</button>
+                <button class="filter-btn" data-cat="vintage-shopping">Shopping</button>
+                <button class="filter-btn" data-cat="tattoo-beauty">Tattoo &amp; Beauty</button>
+                <button class="filter-btn" data-cat="churches">Churches</button>
+                <button class="filter-btn" data-cat="arts-culture">Arts &amp; Culture</button>
+                <button class="filter-btn" data-cat="sports-fitness">Sports &amp; Fitness</button>
+                <button class="filter-btn" data-cat="health-wellness">Health</button>
+                <button class="filter-btn" data-cat="support-groups">Support Groups</button>
+                <button class="filter-btn" data-cat="pets-other">Pets &amp; Other</button>
+            </div>
+        </div>
+
+        <div class="results-count" id="resultsCount"></div>
+        <div class="no-results" id="noResults">
+            <p>We searched every corner. Even the sketchy ones.</p>
+            <p>Nothing matched that search. Know a business that should be here? <a href="#submit-business">Submit it above.</a></p>
+        </div>
+
+        <!-- ══ CATEGORY SECTIONS ════════════════════════════════════════════ -->
+
         <!-- 1. LGBTQ+ Community Hubs -->
-        <div class="category-section">
+        <div class="category-section" data-cat="community-hubs">
             <h2 class="category-title">LGBTQ+ Community Hubs</h2>
             <hr class="category-divider">
 
             <div class="biz-card">
-                <div class="biz-name"><a href="https://www.okeq.org" target="_blank" rel="noopener">Oklahomans for Equality (OkEq)</a></div>
+                <div class="biz-name"><a href="https://www.okeq.org" target="_blank" rel="noopener">Oklahomans for Equality (OkEq)</a> <span class="biz-badge">Anchor</span></div>
                 <div class="biz-address">Dennis R. Neill Equality Center, 621 E 4th St</div>
-                <div class="biz-desc">Tulsa's flagship LGBTQ+ organization. Community programs, events, support groups, and the home base for queer life in Tulsa.</div>
+                <div class="biz-desc">Tulsa's flagship LGBTQ+ organization since 1980. Counseling, support groups, health services, community programs, events, and the home base for everything queer in Tulsa. If you're new here, start here.</div>
             </div>
 
             <div class="biz-card">
-                <div class="biz-name"><a href="https://www.okeq.org/programs" target="_blank" rel="noopener">OkEq Business Alliance</a></div>
-                <div class="biz-desc">Network of LGBTQ+ owned and allied businesses across Tulsa. Hosts mixers, networking events, and supports queer entrepreneurs.</div>
+                <div class="biz-name"><a href="https://okeq.org/eba/" target="_blank" rel="noopener">OkEq Equality Business Alliance</a></div>
+                <div class="biz-desc">Network of LGBTQ+ owned and allied businesses across Tulsa. Hosts monthly mixers (last Thursday, 6-7:30pm), networking events, and supports queer entrepreneurs. Want your business on this list? Start here too.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.instagram.com/blackqueertulsa/" target="_blank" rel="noopener">Black Queer Tulsa</a></div>
-                <div class="biz-desc">Community organization centering Black LGBTQ+ voices in Tulsa through events, gatherings, and advocacy.</div>
+                <div class="biz-desc">Community organization centering Black LGBTQ+ voices in Tulsa through events, gatherings, and advocacy. Doing the work that needs doing.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.freedomoklahoma.org" target="_blank" rel="noopener">Freedom Oklahoma</a></div>
-                <div class="biz-desc">Statewide LGBTQ+ advocacy organization fighting for equality in Oklahoma policy and legislation.</div>
+                <div class="biz-desc">Statewide LGBTQ+ advocacy organization fighting for equality in Oklahoma policy and legislation. Given the current legislative climate, these folks are essential.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.tulsapride.org" target="_blank" rel="noopener">Tulsa Pride</a></div>
-                <div class="biz-desc">Organizers of the annual Tulsa Pride Festival, one of the largest pride celebrations in the region.</div>
+                <div class="biz-desc">Organizers of the annual Tulsa Pride Festival, one of the largest pride celebrations in the region. If you're in town in June, this is the event.</div>
             </div>
 
             <div class="biz-card">
-                <div class="biz-name">Tulsa PFLAG</div>
-                <div class="biz-desc">Local chapter of Parents, Families, and Friends of Lesbians and Gays. Support, education, and advocacy for LGBTQ+ families.</div>
+                <div class="biz-name"><a href="https://tulsapflag.org/" target="_blank" rel="noopener">PFLAG Tulsa</a></div>
+                <div class="biz-desc">Local chapter of Parents, Families, and Friends of Lesbians and Gays. Meets first Saturday of each month at 7pm. Support, education, and advocacy for LGBTQ+ families and the people who love them.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.instagram.com/twistedarts_tulsa/" target="_blank" rel="noopener">Twisted Arts Tulsa</a></div>
+                <div class="biz-desc">Queer-centered film and arts organization hosting festivals, workshops, screenings, and creative community events. Supporting LGBTQ+ filmmakers and artists year-round.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.okrainbowcollective.com/orc-directory" target="_blank" rel="noopener">Oklahoma Rainbow Collective</a></div>
+                <div class="biz-desc">Statewide LGBTQ+ directory and community network. Their ORC Directory covers businesses and resources across Oklahoma, not just Tulsa.</div>
             </div>
         </div>
 
         <!-- 2. Bars & Nightlife -->
-        <div class="category-section">
+        <div class="category-section" data-cat="bars-nightlife">
             <h2 class="category-title">Bars &amp; Nightlife</h2>
             <hr class="category-divider">
 
             <div class="biz-card">
-                <div class="biz-name"><a href="https://www.instagram.com/clubmajestic918/" target="_blank" rel="noopener">Club Majestic</a></div>
+                <div class="biz-name"><a href="https://www.instagram.com/clubmajestic918/" target="_blank" rel="noopener">Club Majestic</a> <span class="biz-badge">Flagship</span></div>
                 <div class="biz-address">124 N Boston Ave</div>
-                <div class="biz-desc">Tulsa's premier LGBTQ+ nightclub. Drag shows, DJs, theme nights, and weekend dance parties in the heart of downtown.</div>
+                <div class="biz-desc">Tulsa's premier LGBTQ+ nightclub in the heart of downtown. Drag shows, DJs, theme nights, and weekend dance parties that go until the cows come home. This is the one you've heard about. It earns it.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.instagram.com/tulsaeagle/" target="_blank" rel="noopener">Tulsa Eagle</a></div>
                 <div class="biz-address">2630 E 15th St</div>
-                <div class="biz-desc">Laid-back neighborhood bar with a leather and bear vibe. Pool tables, karaoke nights, and a welcoming patio.</div>
+                <div class="biz-desc">Laid-back neighborhood bar with leather and bear energy. Pool tables, karaoke, a welcoming patio, and strong drinks that don't mess around. Zero attitude at the door.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.instagram.com/ybrtulsa/" target="_blank" rel="noopener">Yellow Brick Road (YBR)</a></div>
                 <div class="biz-address">2630 E 15th St</div>
-                <div class="biz-desc">Connected to the Eagle, YBR hosts drag performances, karaoke, and community events in a colorful, inclusive space.</div>
+                <div class="biz-desc">Right next door to the Eagle. Drag performances, karaoke, and community events in a colorful, inclusive space. The dynamic duo of Tulsa's gayborhood.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Studio 66</div>
                 <div class="biz-address">1742 S Boston Ave</div>
-                <div class="biz-desc">Intimate lounge and performance space popular with the LGBTQ+ community. Live music, comedy, and themed evenings.</div>
+                <div class="biz-desc">Intimate lounge and performance space with a strong queer following. Live music, comedy, themed evenings, and the kind of crowd that's genuinely happy you showed up.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.instagram.com/saintvitusbar/" target="_blank" rel="noopener">St. Vitus Bar</a></div>
                 <div class="biz-address">1707 S Boston Ave</div>
-                <div class="biz-desc">Neighborhood cocktail bar in Brookside with a strong queer following. Craft cocktails, moody atmosphere, and great bartenders.</div>
+                <div class="biz-desc">Neighborhood cocktail bar in Brookside with a reliably queer crowd. Moody atmosphere, craft cocktails, and bartenders who remember your name by your third visit.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Starlite Lounge</div>
-                <div class="biz-desc">Dive bar energy with a welcoming queer crowd. Cheap drinks, good music, and zero pretension.</div>
+                <div class="biz-desc">Dive bar energy. Cheap drinks, good music, zero pretension, and exactly the kind of place you end up staying at for three hours when you only meant to stop for one.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.mercuryloungetulsa.com" target="_blank" rel="noopener">Mercury Lounge</a></div>
                 <div class="biz-address">1747 S Boston Ave</div>
-                <div class="biz-desc">Live music venue and bar on the Brookside strip. Indie acts, local bands, and a reliably queer-friendly crowd.</div>
+                <div class="biz-desc">Live music venue and bar on the Brookside strip. Indie acts, local bands, and a reliably queer-friendly crowd. Great for a date night that starts with music and ends wherever.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">The Fur Shop</div>
                 <div class="biz-address">1218 E 4th St</div>
-                <div class="biz-desc">Arts district bar with a gritty, welcoming vibe. Live punk, indie, and DJ nights with a diverse crowd.</div>
+                <div class="biz-desc">Arts District bar with gritty, welcoming energy. Live punk, indie, and DJ nights. The kind of place where your outfit gets compliments no matter what it is.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">MixCo</div>
                 <div class="biz-address">1724 E 8th St</div>
-                <div class="biz-desc">Cocktail bar in the Kendall-Whittier district with creative drinks and a queer-friendly atmosphere.</div>
+                <div class="biz-desc">Cocktail bar in the Kendall-Whittier district. Creative drinks, a queer-friendly atmosphere, and enough charm to make you forget you're in Oklahoma for a minute.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Lefty's on Greenwood</div>
+                <div class="biz-address">Historic Greenwood District</div>
+                <div class="biz-desc">Restaurant and bar in the historic Greenwood District with live music, comedy shows, and Drag Queen shows. Good food, better shows.</div>
             </div>
         </div>
 
         <!-- 3. Coffee & Books -->
-        <div class="category-section">
+        <div class="category-section" data-cat="coffee-books">
             <h2 class="category-title">Coffee &amp; Books</h2>
             <hr class="category-divider">
 
             <div class="biz-card">
-                <div class="biz-name"><a href="https://www.instagram.com/ponycoffee/" target="_blank" rel="noopener">Pony Coffee</a></div>
+                <div class="biz-name"><a href="https://www.instagram.com/ponycoffee/" target="_blank" rel="noopener">Pony Coffee</a> <span class="biz-badge">Queer-Owned</span></div>
                 <div class="biz-address">1218 E 4th St (inside The Fur Shop)</div>
-                <div class="biz-desc">Queer-owned coffee shop inside The Fur Shop. Great espresso, cozy vibes, and a community gathering spot in the Arts District.</div>
+                <div class="biz-desc">Queer-owned coffee shop inside The Fur Shop. Great espresso, cozy vibes, and a community gathering spot in the Arts District. Your morning starts here.</div>
             </div>
 
             <div class="biz-card" style="opacity:0.6;">
                 <div class="biz-name"><span style="text-decoration:line-through;">Fulton Street Books &amp; Coffee</span> <span style="color:#c0392b;font-size:0.85em;font-weight:bold;">CLOSED</span></div>
                 <div class="biz-address">1415 E 3rd St (closed October 2025)</div>
-                <div class="biz-desc">Black-owned independent bookstore and coffee shop. Strong LGBTQ+ section, author events, and beloved community space in the Arts District. Closed October 2025 due to financial pressures and Oklahoma's legislative climate.</div>
+                <div class="biz-desc">Black-owned independent bookstore and coffee shop with a strong LGBTQ+ section and soul. Closed October 2025 due to financial pressures and Oklahoma's legislative climate. We miss it deeply. Support the ones that are still here.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.instagram.com/shebrewscoffee/" target="_blank" rel="noopener">She Brews Coffee</a></div>
-                <div class="biz-desc">Woman-owned, queer-friendly coffee spot. Specialty drinks, warm service, and community support.</div>
+                <div class="biz-desc">Woman-owned, queer-friendly coffee spot with specialty drinks and the kind of warm service that makes you actually look forward to Monday mornings. Almost.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.gypsycoffee.com" target="_blank" rel="noopener">Gypsy Coffee House</a></div>
                 <div class="biz-address">303 N Cincinnati Ave</div>
-                <div class="biz-desc">Long-running independent coffee house in the Arts District. Open mic nights, live music, and a bohemian atmosphere beloved by the queer community.</div>
+                <div class="biz-desc">Long-running independent coffee house in the Arts District. Open mic nights, live music, and a bohemian atmosphere that the queer community has called home for decades.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Coracle Coffee</div>
-                <div class="biz-desc">Specialty coffee roaster with a focus on quality and community. Queer-friendly vibes and excellent single-origin pours.</div>
+                <div class="biz-desc">Specialty coffee roaster with a focus on quality and community. Queer-friendly vibes and excellent single-origin pours for the coffee snobs among us. You know who you are.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.shadesofbrowncoffee.com" target="_blank" rel="noopener">Shades of Brown Coffee</a></div>
                 <div class="biz-address">3302 S Peoria Ave</div>
-                <div class="biz-desc">Brookside staple. Eclectic, cozy, and welcoming to all. Great coffee, board games, and a living-room feel.</div>
+                <div class="biz-desc">Brookside institution. Eclectic, cozy, welcoming to absolutely everyone. Board games on the table, coffee in your hand, nowhere to be.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.magiccitybooks.com" target="_blank" rel="noopener">Magic City Books</a></div>
                 <div class="biz-address">221 E Archer St</div>
-                <div class="biz-desc">Tulsa's beloved independent bookstore. Excellent LGBTQ+ selection, author readings, and a cornerstone of the local literary community.</div>
-            </div>
-
-            <div class="biz-card">
-                <div class="biz-name">Oak Tree Books</div>
-                <div class="biz-desc">Used bookstore with a thoughtful queer section and friendly staff. A great spot for browsing and discovery.</div>
+                <div class="biz-desc">Tulsa's beloved independent bookstore. Excellent LGBTQ+ section, author readings, and a cornerstone of the local literary community. Buy something. Bookstores need your money more than Amazon does.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Chimera Cafe</div>
                 <div class="biz-address">212 N Main St</div>
-                <div class="biz-desc">Downtown coffee shop and eatery with a creative, inclusive atmosphere. Breakfast, lunch, and specialty drinks.</div>
+                <div class="biz-desc">Downtown coffee shop and eatery with a creative, inclusive atmosphere. Breakfast, lunch, specialty drinks, and the kind of place where you accidentally spend your whole afternoon.</div>
             </div>
         </div>
 
         <!-- 4. Restaurants & Food -->
-        <div class="category-section">
+        <div class="category-section" data-cat="restaurants">
             <h2 class="category-title">Restaurants &amp; Food</h2>
             <hr class="category-divider">
 
             <div class="biz-card">
-                <div class="biz-name"><a href="https://www.ilsemetulsa.com" target="_blank" rel="noopener">Il Seme</a></div>
+                <div class="biz-name"><a href="https://www.ilsemetulsa.com" target="_blank" rel="noopener">Il Seme</a> <span class="biz-badge">Queer-Owned</span></div>
                 <div class="biz-address">1419 E 15th St</div>
-                <div class="biz-desc">Italian fine dining in Cherry Street. Handmade pasta, seasonal menus, and a warm, welcoming atmosphere with queer-friendly ownership.</div>
+                <div class="biz-desc">Queer-owned Italian fine dining on Cherry Street. Handmade pasta, seasonal menus, and a warm, romantic atmosphere that's perfect for a date night or treating yourself on a Tuesday because you deserve it.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.elotetulsa.com" target="_blank" rel="noopener">Elote</a></div>
                 <div class="biz-address">514 S Boston Ave</div>
-                <div class="biz-desc">Award-winning Mexican and Southwestern cuisine. Known for creative dishes, great cocktails, and a vibrant dining room.</div>
+                <div class="biz-desc">Award-winning Mexican and Southwestern cuisine. Drag brunch is a Tulsa institution. Creative dishes, great cocktails, and a dining room that's always full of people who know what they're doing with their lives.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.farmbartulsa.com" target="_blank" rel="noopener">FarmBar</a></div>
                 <div class="biz-address">301 N Cincinnati Ave</div>
-                <div class="biz-desc">Farm-to-table dining in the Arts District. Seasonal menus, local ingredients, and a commitment to community and sustainability.</div>
+                <div class="biz-desc">Farm-to-table dining in the Arts District. Seasonal menus with local ingredients and a commitment to community. The kind of restaurant that makes you feel good about what you're eating and where your money's going.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://junipertulsa.com" target="_blank" rel="noopener">Juniper</a></div>
+                <div class="biz-address">324 E 3rd St</div>
+                <div class="biz-desc">Award-winning farm-to-table in the Blue Dome district. OkEq Equality Business Alliance member. Craft cocktails, creative cuisine, and the kind of place visitors from bigger cities are genuinely surprised by.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.dalesandros.com" target="_blank" rel="noopener">Dalesandro's Italian Cuisine</a></div>
                 <div class="biz-address">1742 S Boston Ave</div>
-                <div class="biz-desc">Brookside Italian restaurant known for generous portions and a loyal following. Classic dishes in a comfortable setting.</div>
+                <div class="biz-desc">Brookside Italian restaurant with generous portions and a loyal following that's been coming back for years. Classic dishes, comfortable setting, no drama.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">East Village Bohemian Pizza</div>
                 <div class="biz-address">1309 E 15th St</div>
-                <div class="biz-desc">Cherry Street pizza joint with a bohemian flair. Unique topping combos, craft beer, and a relaxed atmosphere.</div>
+                <div class="biz-desc">Cherry Street pizza with a bohemian twist. Unique toppings, craft beer on tap, and the kind of relaxed atmosphere where you can actually have a conversation.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.empireslice.com" target="_blank" rel="noopener">Empire Slice House</a></div>
                 <div class="biz-address">1307 E 3rd St</div>
-                <div class="biz-desc">New York-style slices with wild daily specials. Funky decor, late-night hours, and an Arts District favorite for the queer crowd.</div>
+                <div class="biz-desc">New York-style slices with wild daily specials, funky decor, and late-night hours. The Arts District staple that fed the queer community through every major event for years running.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Cherry &amp; Bark</div>
-                <div class="biz-desc">Wood-fired cooking and craft cocktails. Seasonal menus with a focus on local sourcing and creative preparations.</div>
+                <div class="biz-desc">Queer-owned small-batch ice cream near 18th and Boston. Dairy and non-dairy options made with the kind of care that makes you question every ice cream decision you've ever made before this.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.bigdippertulsa.com" target="_blank" rel="noopener">Big Dipper</a></div>
                 <div class="biz-address">316 E 2nd St</div>
-                <div class="biz-desc">Downtown creamery and diner serving creative ice cream flavors alongside burgers and sandwiches. A sweet spot for everyone.</div>
-            </div>
-
-            <div class="biz-card">
-                <div class="biz-name">Donut Hole</div>
-                <div class="biz-desc">Classic donut shop with fresh, made-daily donuts. A simple pleasure and local favorite.</div>
-            </div>
-
-            <div class="biz-card">
-                <div class="biz-name">Nicky's Hoagies</div>
-                <div class="biz-desc">Queer-friendly sandwich shop with east coast-style hoagies and a loyal community following.</div>
-            </div>
-
-            <div class="biz-card">
-                <div class="biz-name"><a href="https://www.bluemooncafetulsa.com" target="_blank" rel="noopener">Blue Moon Cafe</a></div>
-                <div class="biz-desc">Eclectic diner with hearty breakfasts and a bohemian soul. A Tulsa institution loved by the queer community.</div>
-            </div>
-
-            <div class="biz-card">
-                <div class="biz-name">Country Bird</div>
-                <div class="biz-desc">Fried chicken done right. Comfort food with a modern twist in a casual, welcoming setting.</div>
+                <div class="biz-desc">Downtown creamery and diner. Creative ice cream flavors, burgers, sandwiches, and a spot that welcomes everyone who walks through the door.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Lone Wolf Banh Mi</div>
                 <div class="biz-address">1349 E 15th St</div>
-                <div class="biz-desc">Vietnamese sandwiches and noodle bowls on Cherry Street. Quick, flavorful, and community-minded.</div>
+                <div class="biz-desc">Vietnamese sandwiches and noodle bowls on Cherry Street. Quick, flavorful, and community-minded. The lunch spot you'll put in your rotation and not regret it.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Trencher's Delicatessen</div>
                 <div class="biz-address">1307 E 41st St</div>
-                <div class="biz-desc">Neighborhood deli with house-smoked meats, creative sandwiches, and a devoted local following.</div>
+                <div class="biz-desc">Neighborhood deli with house-smoked meats and creative sandwiches. A devoted local following does not lie. Try the pastrami. You'll understand.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Nicky's Hoagies</div>
+                <div class="biz-desc">Queer-friendly sandwich shop with east coast-style hoagies and a community following that keeps coming back. Lunch is a commitment here.</div>
             </div>
         </div>
 
         <!-- 5. Breweries -->
-        <div class="category-section">
+        <div class="category-section" data-cat="breweries">
             <h2 class="category-title">Breweries</h2>
             <hr class="category-divider">
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.americansolera.com" target="_blank" rel="noopener">American Solera</a></div>
                 <div class="biz-address">1702 E 6th St</div>
-                <div class="biz-desc">Nationally acclaimed brewery specializing in wild ales and barrel-aged beers. Taproom in the Pearl District with a welcoming vibe.</div>
+                <div class="biz-desc">Nationally acclaimed brewery specializing in wild ales and barrel-aged beers. Pearl District taproom, welcoming crowd, and the kind of beers that make you want to talk about beer even if you never cared about beer before.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.heirloomrusticales.com" target="_blank" rel="noopener">Heirloom Rustic Ales</a></div>
                 <div class="biz-address">2113 E Admiral Blvd</div>
-                <div class="biz-desc">Farmhouse ales and rustic brews in a cozy taproom. Known for community involvement and a queer-friendly culture.</div>
+                <div class="biz-desc">Farmhouse ales and rustic brews in a cozy taproom. Known for community involvement and a culture that doesn't make you feel weird for showing up in a sequin top.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.goodcausebrewing.com" target="_blank" rel="noopener">Good Cause Brewing</a></div>
-                <div class="biz-desc">Brewery with a mission. A portion of proceeds goes to local causes. Solid beers and a community-first mindset.</div>
+                <div class="biz-desc">Brewery with a mission. A portion of proceeds goes to local causes. Solid beers plus the warm feeling of doing something good. That's a two-for-one.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Cabin Boys Brewery</div>
                 <div class="biz-address">1703 E 6th St</div>
-                <div class="biz-desc">Pearl District brewery with adventurous styles and a relaxed taproom. Dog-friendly patio and a welcoming crowd.</div>
+                <div class="biz-desc">Pearl District brewery with adventurous styles and a relaxed taproom. Dog-friendly patio. Drag events on rotation. This is a neighborhood staple for a reason.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Nothing's Left Brewing</div>
                 <div class="biz-address">802 E 3rd St</div>
-                <div class="biz-desc">Arts District brewery known for hazy IPAs and creative small batches. Frequent community events and collaborations.</div>
+                <div class="biz-desc">Arts District brewery known for hazy IPAs and creative small batches. Frequent community events and collaborations. The kind of brewery that actually shows up for Pride.</div>
             </div>
         </div>
 
         <!-- 6. Vintage & Shopping -->
-        <div class="category-section">
+        <div class="category-section" data-cat="vintage-shopping">
             <h2 class="category-title">Vintage &amp; Shopping</h2>
             <hr class="category-divider">
 
             <div class="biz-card">
                 <div class="biz-name">Mom's Closet</div>
-                <div class="biz-desc">Vintage clothing and accessories with a curated eye. Queer-owned and always stocked with unique finds.</div>
+                <div class="biz-desc">Vintage clothing and accessories with a curated eye. Queer-owned and always stocked with finds you won't see anyone else wearing. The drag community knows this one well.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Jo &amp; June</div>
-                <div class="biz-desc">Women-owned boutique with a mix of vintage and modern fashion. Inclusive sizing and a warm shopping experience.</div>
+                <div class="biz-desc">Women-owned boutique mixing vintage and modern fashion. Inclusive sizing, warm staff, and the kind of shop that makes you feel like the main character the moment you walk in.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Love Me Two Times</div>
                 <div class="biz-address">1124 S Lewis Ave</div>
-                <div class="biz-desc">Vintage furniture, decor, and clothing in the Kendall-Whittier district. A treasure hunt every visit.</div>
+                <div class="biz-desc">Vintage furniture, decor, and clothing in Kendall-Whittier. Every visit is a treasure hunt. Budget accordingly because you will leave with things you didn't know you needed.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Harrington Rose</div>
-                <div class="biz-desc">Curated vintage and antique shop with eclectic finds and a strong queer community presence.</div>
+                <div class="biz-desc">Curated vintage and antiques with eclectic finds and a strong queer community presence. Prices are fair, finds are real, vibes are immaculate.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Pollyhester</div>
-                <div class="biz-desc">Retro and vintage fashion with bold colors and funky finds. A favorite for drag wardrobes and statement pieces.</div>
-            </div>
-
-            <div class="biz-card">
-                <div class="biz-name">SoBo Vintage Market</div>
-                <div class="biz-address">South Boston Ave corridor</div>
-                <div class="biz-desc">Multi-vendor vintage market with booths full of clothing, records, art, and collectibles. Great weekend browsing.</div>
+                <div class="biz-desc">Retro and vintage fashion with bold colors and funky picks. A go-to for drag wardrobes and anyone who believes "too much" is not actually a real concept.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.decopolis.com" target="_blank" rel="noopener">Decopolis</a></div>
                 <div class="biz-address">501 E 2nd St (Tulsa Arts District)</div>
-                <div class="biz-desc">Tulsa-themed art deco gifts and souvenirs. A celebration of the city's deco heritage with locally made goods.</div>
+                <div class="biz-desc">Tulsa-themed art deco gifts and locally made goods. A love letter to this city in souvenir form. Get something for yourself, not just for your aunt back home.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.spexton.com" target="_blank" rel="noopener">Spexton Jewelry</a></div>
                 <div class="biz-address">1551 E 15th St</div>
-                <div class="biz-desc">Custom and alternative wedding rings and jewelry. Popular with LGBTQ+ couples for unique, handcrafted bands.</div>
+                <div class="biz-desc">Custom and alternative wedding rings and jewelry. The go-to for LGBTQ+ couples who want something handcrafted and unique instead of whatever the mall is selling. Highly recommend.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Ida Red General Store</div>
                 <div class="biz-address">1621 E 15th St</div>
-                <div class="biz-desc">Cherry Street gift shop with Oklahoma-made goods, quirky souvenirs, and Pride merchandise year-round.</div>
+                <div class="biz-desc">Cherry Street gift shop with Oklahoma-made goods, quirky souvenirs, and Pride merchandise year-round, not just in June. That detail matters.</div>
             </div>
         </div>
 
         <!-- 7. Tattoo & Beauty -->
-        <div class="category-section">
+        <div class="category-section" data-cat="tattoo-beauty">
             <h2 class="category-title">Tattoo &amp; Beauty</h2>
             <hr class="category-divider">
 
             <div class="biz-card">
-                <div class="biz-name"><a href="https://www.instagram.com/crybabytattootulsa/" target="_blank" rel="noopener">Crybaby Tattoo</a></div>
-                <div class="biz-desc">Queer-owned tattoo studio known for illustrative and fine-line work. Inclusive, body-positive environment.</div>
+                <div class="biz-name"><a href="https://www.instagram.com/crybabytattootulsa/" target="_blank" rel="noopener">Crybaby Tattoo</a> <span class="biz-badge">Queer-Owned</span></div>
+                <div class="biz-desc">Queer-owned tattoo studio known for illustrative and fine-line work. Inclusive, body-positive, and staffed by artists who have done their own work. No judgment, only gorgeous tattoos.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.ritualelectrictattoo.com" target="_blank" rel="noopener">Ritual Electric Tattoo</a></div>
-                <div class="biz-desc">Custom tattoo studio with a diverse team of artists. All styles welcome in a clean, professional, affirming space.</div>
+                <div class="biz-desc">Custom tattoo studio with a diverse team handling all styles. Clean, professional, affirming. The kind of shop where you feel comfortable saying exactly what you want.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Geek Ink Tattoo</div>
-                <div class="biz-desc">Nerdy, creative, and queer-friendly tattoo shop. Specializing in pop culture, anime, and fandom-inspired work.</div>
+                <div class="biz-desc">Creative and queer-friendly shop specializing in pop culture, anime, and fandom-inspired work. If you've ever wanted a tattoo of something extremely specific, these are your people.</div>
             </div>
 
             <div class="biz-card">
-                <div class="biz-name"><a href="https://www.tonsorialtulsa.com" target="_blank" rel="noopener">Tonsorial Parlor</a></div>
+                <div class="biz-name"><a href="https://www.tonsorialtulsa.com" target="_blank" rel="noopener">Tonsorial Parlor</a> <span class="biz-badge">Queer-Friendly</span></div>
                 <div class="biz-address">302 S Elgin Ave</div>
-                <div class="biz-desc">Arts District barbershop with old-school charm and an inclusive clientele. Great cuts, hot towel shaves, and cocktails.</div>
+                <div class="biz-desc">Arts District barbershop with old-school charm and a proudly inclusive clientele. Great cuts, hot towel shaves, craft cocktails, and a place where all races, sexualities, and gender identities are genuinely welcome. Not performatively. Actually.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Golden Salon</div>
-                <div class="biz-desc">Gender-affirming hair salon welcoming all identities. Creative color, cuts, and styling in a safe, comfortable environment.</div>
+                <div class="biz-desc">Gender-affirming hair salon welcoming all identities. Creative color, cuts, and styling in a space where you can be exactly who you are and walk out looking even better.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">The Parlour</div>
-                <div class="biz-desc">Full-service salon with a queer-friendly team. Hair, nails, and beauty services in a modern, welcoming space.</div>
+                <div class="biz-desc">Full-service salon with a queer-friendly team. Hair, nails, and beauty services in a modern space. No misgendering, no weird looks, just good work.</div>
             </div>
         </div>
 
         <!-- 8. Affirming Churches -->
-        <div class="category-section">
+        <div class="category-section" data-cat="churches">
             <h2 class="category-title">Affirming Churches</h2>
             <hr class="category-divider">
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.allsoulschurch.org" target="_blank" rel="noopener">All Souls Unitarian Church</a></div>
                 <div class="biz-address">2952 S Peoria Ave</div>
-                <div class="biz-desc">Welcoming, affirming congregation in midtown. Hosts LGBTQ+ events, support groups, and community programs year-round.</div>
+                <div class="biz-desc">Welcoming and affirming congregation in midtown. LGBTQ+ events, support groups, and community programs throughout the year. If someone told you church and queer don't mix, they haven't been here.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.fellowshipucc.com" target="_blank" rel="noopener">Fellowship Congregational UCC</a></div>
                 <div class="biz-address">2900 S Harvard Ave</div>
-                <div class="biz-desc">Open and affirming United Church of Christ congregation. Actively involved in LGBTQ+ advocacy and justice work.</div>
+                <div class="biz-desc">Open and affirming United Church of Christ. Actively involved in LGBTQ+ advocacy and justice work. This is the church that shows up, not just the one that puts a rainbow in its logo.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.hopeuu.org" target="_blank" rel="noopener">Hope Unitarian Church</a></div>
                 <div class="biz-address">8432 S Sheridan Rd</div>
-                <div class="biz-desc">South Tulsa Unitarian Universalist community. Inclusive worship, social justice focus, and welcoming of all identities.</div>
+                <div class="biz-desc">South Tulsa Unitarian Universalist community. Inclusive worship, social justice focus, and a congregation that would wear the pride flag as a cape if the board approved it.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">House Church Tulsa</div>
-                <div class="biz-desc">Small, intimate faith community centered on radical inclusion and LGBTQ+ affirmation.</div>
+                <div class="biz-desc">Small, intimate faith community built around radical inclusion and LGBTQ+ affirmation. No performance of tolerance here, just real welcome.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.stdunstanstulsa.org" target="_blank" rel="noopener">St. Dunstan's Episcopal Church</a></div>
                 <div class="biz-address">5635 E 71st St</div>
-                <div class="biz-desc">Welcoming Episcopal congregation with a strong commitment to inclusion. Active community outreach and affirming ministry.</div>
+                <div class="biz-desc">Welcoming Episcopal congregation with genuine commitment to inclusion. Active community outreach and an affirming ministry that means it.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Church of the Restoration (Unitarian Universalist)</div>
                 <div class="biz-address">1314 N Greenwood Ave</div>
-                <div class="biz-desc">Historic Greenwood District UU congregation. Committed to racial justice, LGBTQ+ inclusion, and building beloved community.</div>
+                <div class="biz-desc">Historic Greenwood District UU congregation. Committed to racial justice, LGBTQ+ inclusion, and building the kind of community that doesn't leave anyone at the door.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Asbury United Methodist Church</div>
                 <div class="biz-address">6767 S Mingo Rd</div>
-                <div class="biz-desc">Large United Methodist congregation that has taken affirming stances. Active in community service and welcome.</div>
+                <div class="biz-desc">Large United Methodist congregation that has taken affirming stances. Active in community service and genuine in their welcome.</div>
             </div>
         </div>
 
         <!-- 9. Arts & Culture -->
-        <div class="category-section">
+        <div class="category-section" data-cat="arts-culture">
             <h2 class="category-title">Arts &amp; Culture</h2>
             <hr class="category-divider">
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.circlecinema.com" target="_blank" rel="noopener">Circle Cinema</a></div>
                 <div class="biz-address">10 S Lewis Ave</div>
-                <div class="biz-desc">Tulsa's nonprofit indie theater. LGBTQ+ film screenings, festivals, and a vibrant cultural hub since 1928.</div>
+                <div class="biz-desc">Tulsa's nonprofit indie theater since 1928. LGBTQ+ film screenings, festivals, and one of the best reasons to be in this city. Support this one with your actual dollars.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.instagram.com/tulsahouseofdrag/" target="_blank" rel="noopener">Tulsa House of Drag</a></div>
-                <div class="biz-desc">Drag performance collective producing shows, competitions, and events across the city. The heart of Tulsa's drag scene.</div>
-            </div>
-
-            <div class="biz-card">
-                <div class="biz-name"><a href="https://www.instagram.com/twistedarts_tulsa/" target="_blank" rel="noopener">Twisted Arts Tulsa</a></div>
-                <div class="biz-desc">Queer-centered arts organization hosting performances, visual art shows, open mics, and creative community events.</div>
+                <div class="biz-desc">Drag performance collective producing shows, competitions, and events across the city. These are the people who kept Tulsa's drag scene alive through everything. Tip your performers.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.gatheringplace.org" target="_blank" rel="noopener">Gathering Place</a></div>
                 <div class="biz-address">2650 S John Williams Way</div>
-                <div class="biz-desc">Tulsa's world-class riverfront park. Free and open to all, with playgrounds, gardens, trails, and community events.</div>
+                <div class="biz-desc">Tulsa's world-class riverfront park. Free and open to everyone. Playgrounds, gardens, trails, and community events. Out-of-towners are always shocked by how good this park is. We enjoy telling them.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.philbrook.org" target="_blank" rel="noopener">Philbrook Museum of Art</a></div>
                 <div class="biz-address">2727 S Rockford Rd</div>
-                <div class="biz-desc">Stunning art museum in a historic villa with beautiful gardens. Hosts inclusive exhibitions and community programming.</div>
+                <div class="biz-desc">Stunning art museum in a historic villa with beautiful gardens. Inclusive exhibitions and community programming. Philbrook After Dark is a recurring fan favorite. Look it up.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.tulsaballet.org" target="_blank" rel="noopener">Tulsa Ballet</a></div>
                 <div class="biz-address">1212 E 45th Pl</div>
-                <div class="biz-desc">Professional ballet company with world-class performances. Strong LGBTQ+ community support and audience.</div>
+                <div class="biz-desc">Professional ballet company with world-class performances and a strong LGBTQ+ community following. The Nutcracker is the crowd pleaser, but the contemporary seasons are where it gets interesting.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.ahhatulsa.org" target="_blank" rel="noopener">ahha Tulsa</a></div>
                 <div class="biz-address">101 E Archer St</div>
-                <div class="biz-desc">Interactive arts experience in the Arts District. Hands-on creativity, rotating exhibitions, and community workshops.</div>
+                <div class="biz-desc">Interactive arts experience in the Arts District. Hands-on creativity, rotating exhibitions, and community workshops. Great for dates, great for when you have visiting family who needs to be occupied.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Living Arts</div>
                 <div class="biz-address">307 E Reconciliation Way</div>
-                <div class="biz-desc">Contemporary art space with experimental exhibitions, performances, and events. A long-time Arts District anchor.</div>
+                <div class="biz-desc">Contemporary art space with experimental exhibitions and performances. Long-time Arts District anchor and a regular home for queer and boundary-pushing work.</div>
             </div>
         </div>
 
         <!-- 10. Sports & Fitness -->
-        <div class="category-section">
+        <div class="category-section" data-cat="sports-fitness">
             <h2 class="category-title">Sports &amp; Fitness</h2>
             <hr class="category-divider">
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.instagram.com/hotmesstulsa/" target="_blank" rel="noopener">HotMess</a></div>
-                <div class="biz-desc">LGBTQ+ social sports and fitness group. Organized activities, community workouts, and a fun way to stay active and connected.</div>
+                <div class="biz-desc">LGBTQ+ social sports and fitness group with kickball, running, and general organized chaos. The after-game hangs are honestly the point. Show up, make friends, get sweaty, repeat.</div>
             </div>
 
             <div class="biz-card">
-                <div class="biz-name">Lambda Bowling League</div>
-                <div class="biz-desc">LGBTQ+ bowling league. Casual, social, and competitive options. A Tulsa queer tradition for making friends and having fun.</div>
+                <div class="biz-name"><a href="https://www.facebook.com/tulsalambdaleague/" target="_blank" rel="noopener">Lambda Bowling League</a></div>
+                <div class="biz-desc">LGBTQ+ bowling league affiliated with the International Gay Bowling Organization. Fall and summer sessions at Andy B's. You do not need to be a good bowler. You need to show up.</div>
             </div>
 
             <div class="biz-card">
-                <div class="biz-name">Pride Sports Kickball</div>
-                <div class="biz-desc">Seasonal LGBTQ+ kickball league. All skill levels welcome. Social events and after-game hangs included.</div>
+                <div class="biz-name"><a href="https://okeq.org/esa/" target="_blank" rel="noopener">Equality Sports Alliance of Tulsa</a></div>
+                <div class="biz-desc">Formed in 2011 to support and grow LGBTQ+ welcoming sports in the Tulsa metro. Bowling, softball, football, kickball, and more. New sports added regularly. Find your thing.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">SweatClub</div>
-                <div class="biz-desc">Inclusive fitness community with group classes and personal training. Welcoming environment for all body types and experience levels.</div>
+                <div class="biz-desc">Inclusive fitness community with group classes and personal training. Welcoming environment for all body types and experience levels. No bro energy.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.climbtulsa.com" target="_blank" rel="noopener">Climb Tulsa</a></div>
-                <div class="biz-desc">Indoor rock climbing gym with a diverse, welcoming membership. Bouldering, top-rope, classes, and yoga.</div>
+                <div class="biz-desc">Indoor rock climbing gym with a diverse, welcoming membership. Bouldering, top-rope, classes, yoga, and a community that actively recruits newcomers.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Tulsa Rowing Club</div>
-                <div class="biz-desc">Competitive and recreational rowing on the Arkansas River. Open to all skill levels and welcoming of LGBTQ+ members.</div>
+                <div class="biz-desc">Competitive and recreational rowing on the Arkansas River. Open to all skill levels and welcoming of LGBTQ+ members. Surprisingly approachable for something that sounds this athletic.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.usgsn.com/tulsa" target="_blank" rel="noopener">US Gay Sports Network - Tulsa</a></div>
+                <div class="biz-desc">National gay sports network with a Tulsa chapter. Organized sports events and competitive leagues for LGBTQ+ athletes across multiple sports.</div>
             </div>
         </div>
 
         <!-- 11. Health & Wellness -->
-        <div class="category-section">
+        <div class="category-section" data-cat="health-wellness">
             <h2 class="category-title">Health &amp; Wellness</h2>
             <hr class="category-divider">
 
             <div class="biz-card">
-                <div class="biz-name"><a href="https://www.diversityfamilyhealth.com" target="_blank" rel="noopener">Diversity Family Health</a></div>
-                <div class="biz-desc">LGBTQ+ affirming primary care clinic. Hormone therapy, PrEP, STI testing, and general healthcare in a welcoming environment.</div>
+                <div class="biz-name"><a href="https://www.diversityfamilyhealth.com" target="_blank" rel="noopener">Diversity Family Health</a> <span class="biz-badge">LGBTQ+ Affirming</span></div>
+                <div class="biz-desc">LGBTQ+ affirming primary care clinic near 15th and Utica. Hormone therapy, PrEP, STI testing, HIV prevention and treatment, gender-affirming care, and general healthcare from a team that actually gets it.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.hopetesting.org" target="_blank" rel="noopener">H.O.P.E. Testing</a></div>
-                <div class="biz-desc">Free and confidential HIV testing and prevention services. PrEP navigation, harm reduction, and community health outreach.</div>
+                <div class="biz-desc">Free and confidential HIV testing, PrEP navigation, and harm reduction services. Community health outreach done right. No shame, no judgment, just care.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.tulsacares.org" target="_blank" rel="noopener">Tulsa CARES (TACO)</a></div>
-                <div class="biz-desc">Comprehensive HIV/AIDS services including case management, housing assistance, and support programs for people living with HIV.</div>
+                <div class="biz-desc">Comprehensive HIV/AIDS services including case management, housing assistance, and support programs. If you or someone you know needs these services, this is the place.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">OkEq Health Programs</div>
-                <div class="biz-desc">Health clinics and wellness programs run through the Equality Center. STI testing, mental health resources, and community health events.</div>
+                <div class="biz-desc">Health clinics and wellness programs through the Equality Center. STI testing, mental health resources, and community health events. On a sliding scale. No one gets turned away for ability to pay.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://okeq.org/counseling-mental-health/" target="_blank" rel="noopener">OkEq Counseling &amp; Mental Health</a></div>
+                <div class="biz-desc">Mental health counseling through the Equality Center with affirming therapists. Individual and group therapy for the LGBTQ+ community. Affordable rates.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.graymatterstulsa.com/lgbtq" target="_blank" rel="noopener">Gray Matters Counseling</a></div>
+                <div class="biz-desc">LGBTQ+ affirming counseling and therapy. Specialist in religious trauma, identity work, and the particular emotional landscape of being queer in Oklahoma. Important work.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Planned Parenthood of the Heartland</div>
-                <div class="biz-desc">Reproductive and sexual health services. Gender-affirming care, hormone therapy, and inclusive healthcare for all.</div>
+                <div class="biz-desc">Reproductive and sexual health services. Gender-affirming care, hormone therapy, and inclusive healthcare for all. Essential resource in a state that's not always making it easy.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Calm Waters</div>
-                <div class="biz-desc">Grief and trauma counseling center offering LGBTQ+ inclusive therapy, support groups, and crisis resources.</div>
+                <div class="biz-desc">Grief and trauma counseling with LGBTQ+ inclusive therapy, support groups, and crisis resources. Because sometimes life is heavy and you need professional help carrying it.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://www.outcarehealth.org/outlist/oklahoma/" target="_blank" rel="noopener">OutCare Oklahoma Directory</a></div>
+                <div class="biz-desc">National LGBTQ+ healthcare directory with an Oklahoma page listing affirming providers across the state. Good starting point for finding specialists not listed here.</div>
             </div>
         </div>
 
         <!-- 12. Support Groups -->
-        <div class="category-section">
+        <div class="category-section" data-cat="support-groups">
             <h2 class="category-title">Support Groups</h2>
             <hr class="category-divider">
 
             <div class="biz-card">
                 <div class="biz-name">Gender Support Group (OkEq)</div>
                 <div class="biz-address">Dennis R. Neill Equality Center, 621 E 4th St</div>
-                <div class="biz-desc">Peer support group for transgender, nonbinary, and gender-questioning individuals. Safe space for sharing and connection.</div>
-            </div>
-
-            <div class="biz-card">
-                <div class="biz-name">SMART Recovery LGBTQ+</div>
-                <div class="biz-desc">Evidence-based addiction recovery meetings with an LGBTQ+ focus. Self-management and recovery training in a supportive setting.</div>
-            </div>
-
-            <div class="biz-card">
-                <div class="biz-name">Lambda Unity AA</div>
-                <div class="biz-desc">LGBTQ+ Alcoholics Anonymous meetings. A safe, affirming space for recovery and fellowship within the queer community.</div>
-            </div>
-
-            <div class="biz-card">
-                <div class="biz-name">PFLAG Tulsa</div>
-                <div class="biz-desc">Monthly meetings for parents, families, and allies of LGBTQ+ people. Education, support, and advocacy for all families.</div>
+                <div class="biz-desc">Peer support group for transgender, nonbinary, and gender-questioning individuals. A safe space to be exactly who you are and find people who understand what that costs in this state.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">OkEq Youth Group</div>
                 <div class="biz-address">Dennis R. Neill Equality Center</div>
-                <div class="biz-desc">Safe space for LGBTQ+ youth to connect, socialize, and find support. Regular meetings and activities at the Equality Center.</div>
+                <div class="biz-desc">Safe space for LGBTQ+ youth to connect, socialize, and find support. Regular meetings and activities. If you know a queer teenager who needs community, send them here.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://tulsapflag.org/" target="_blank" rel="noopener">PFLAG Tulsa</a></div>
+                <div class="biz-desc">Monthly meetings for parents, families, and allies. Education, support, and advocacy. Because some of our biggest advocates are the moms who didn't get it at first and then got it completely.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">SMART Recovery LGBTQ+</div>
+                <div class="biz-desc">Evidence-based addiction recovery meetings with an LGBTQ+ focus. Self-management and recovery training in a supportive setting that understands why community matters to sobriety.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name">Lambda Unity AA</div>
+                <div class="biz-desc">LGBTQ+ Alcoholics Anonymous meetings. A safe, affirming space for recovery and fellowship within the queer community. You can be sober and still be the life of the party.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Trans Lifeline</div>
-                <div class="biz-desc">National peer support hotline run by and for transgender people. Available for Tulsa community members at (877) 565-8860.</div>
+                <div class="biz-desc">National peer support hotline run by and for transgender people. Available for Tulsa community members at <a href="tel:8775658860">(877) 565-8860</a>. Staffed by trans operators. Free and confidential.</div>
+            </div>
+
+            <div class="biz-card">
+                <div class="biz-name"><a href="https://amplifytulsa.org/lgbtq/" target="_blank" rel="noopener">Amplify Tulsa - LGBTQ+ Resources</a></div>
+                <div class="biz-desc">Community resource hub with a dedicated LGBTQ+ section. Connections to local support groups, services, and community programs in one place.</div>
             </div>
         </div>
 
         <!-- 13. Pets & Other -->
-        <div class="category-section">
+        <div class="category-section" data-cat="pets-other">
             <h2 class="category-title">Pets &amp; Other</h2>
             <hr class="category-divider">
 
             <div class="biz-card">
                 <div class="biz-name"><a href="https://www.jpk9.com" target="_blank" rel="noopener">JPK9 Dog Training</a></div>
-                <div class="biz-desc">Professional dog training with a queer-friendly approach. Obedience, behavior modification, and puppy programs.</div>
+                <div class="biz-desc">Professional dog training with a queer-friendly approach. Obedience, behavior modification, and puppy programs. Your dog deserves good manners. Your trainer should be someone safe.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Route 66 Dog Ranch</div>
-                <div class="biz-desc">Dog boarding, daycare, and grooming with a welcoming attitude. Your pup's home away from home on historic Route 66.</div>
-            </div>
-
-            <div class="biz-card">
-                <div class="biz-name">Ethno Canine</div>
-                <div class="biz-desc">Holistic pet care and training services. Natural products, behavior consulting, and a community-minded approach to pet wellness.</div>
+                <div class="biz-desc">Dog boarding, daycare, and grooming with a welcoming attitude. Your pup's home away from home on historic Route 66. They don't ask about your pronouns but they're fine with all of them.</div>
             </div>
 
             <div class="biz-card">
                 <div class="biz-name">Tulsa SPCA</div>
                 <div class="biz-address">6232 E 60th Pl</div>
-                <div class="biz-desc">Animal rescue and adoption center. Volunteer opportunities and community events. A great way to find your next furry companion.</div>
+                <div class="biz-desc">Animal rescue and adoption. Volunteer opportunities and community events. Adopt your next companion here. Every queer person needs at least one very devoted dog. This is not a suggestion.</div>
             </div>
         </div>
 
         <!-- Sources -->
         <div class="directory-sources">
-            <p>Sources: OkEq Business Alliance, Tulsa Remote, Reddit r/tulsa community, and our own research. Last updated: April 2026.</p>
+            <p>Sources: <a href="https://okeq.org/eba/" target="_blank" rel="noopener">OkEq Equality Business Alliance</a>, <a href="https://blog.tulsaremote.com/lgbtq-businesses-and-resources-in-tulsa" target="_blank" rel="noopener">Tulsa Remote</a>, <a href="https://www.okrainbowcollective.com/orc-directory" target="_blank" rel="noopener">Oklahoma Rainbow Collective</a>, Tulsa community research, and submissions from readers like you.</p>
+            <p style="margin-top:0.5rem;">Last updated: April 2026. Got a business to add? <a href="#submit-business">Submit it above.</a></p>
         </div>
 
     </main>
@@ -760,6 +1084,158 @@
             <p>Updated weekly &middot; Your guide to LGBTQ+ Tulsa</p>
         </div>
     </footer>
+
+    <!-- ══ SEARCH + FILTER JAVASCRIPT ══════════════════════════════════════ -->
+    <script>
+    (function() {
+        const searchInput = document.getElementById('dirSearch');
+        const searchClear = document.getElementById('searchClear');
+        const filterBtns  = document.querySelectorAll('.filter-btn');
+        const sections    = document.querySelectorAll('.category-section');
+        const bizCards    = document.querySelectorAll('.biz-card');
+        const noResults   = document.getElementById('noResults');
+        const countEl     = document.getElementById('resultsCount');
+
+        let activeFilter = 'all';
+        let searchQuery  = '';
+
+        function updateDisplay() {
+            let visibleTotal = 0;
+
+            sections.forEach(section => {
+                const cat = section.dataset.cat;
+                const catMatch = (activeFilter === 'all' || activeFilter === cat);
+
+                if (!catMatch) {
+                    section.style.display = 'none';
+                    return;
+                }
+
+                section.style.display = '';
+                let sectionVisible = 0;
+
+                section.querySelectorAll('.biz-card').forEach(card => {
+                    const text = card.textContent.toLowerCase();
+                    const matches = !searchQuery || text.includes(searchQuery);
+                    card.style.display = matches ? '' : 'none';
+                    if (matches) sectionVisible++;
+                });
+
+                // Hide section entirely if search has no hits in it
+                if (searchQuery && sectionVisible === 0) {
+                    section.style.display = 'none';
+                } else {
+                    visibleTotal += sectionVisible;
+                }
+            });
+
+            // No results message
+            if (visibleTotal === 0 && (searchQuery || activeFilter !== 'all')) {
+                noResults.classList.add('visible');
+                countEl.textContent = '';
+            } else {
+                noResults.classList.remove('visible');
+                if (searchQuery || activeFilter !== 'all') {
+                    countEl.textContent = visibleTotal + ' business' + (visibleTotal === 1 ? '' : 'es') + ' shown';
+                } else {
+                    countEl.textContent = '';
+                }
+            }
+
+            // Show/hide clear button
+            searchClear.style.display = searchQuery ? 'block' : 'none';
+        }
+
+        // Search handler
+        searchInput.addEventListener('input', function() {
+            searchQuery = this.value.toLowerCase().trim();
+            updateDisplay();
+        });
+
+        // Clear search
+        searchClear.addEventListener('click', function() {
+            searchInput.value = '';
+            searchQuery = '';
+            searchInput.focus();
+            updateDisplay();
+        });
+
+        // Category filter handler
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                activeFilter = this.dataset.cat;
+                // Clear search when changing category
+                searchInput.value = '';
+                searchQuery = '';
+                updateDisplay();
+                // Scroll to top of directory
+                document.getElementById('dirControls').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Keyboard shortcut: / to focus search
+        document.addEventListener('keydown', function(e) {
+            if (e.key === '/' && document.activeElement !== searchInput) {
+                e.preventDefault();
+                searchInput.focus();
+                searchInput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+
+    })();
+    </script>
+
+    <!-- ══ FORM SUBMISSION (AJAX via Formspree) ════════════════════════════ -->
+    <script>
+    (function() {
+        const form       = document.getElementById('bizSubmitForm');
+        const btn        = document.getElementById('submitBtn');
+        const statusEl   = document.getElementById('formStatus');
+
+        if (!form) return;
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Don't submit if using placeholder endpoint
+            if (form.action.includes('REPLACE_WITH_YOUR_ID')) {
+                statusEl.className = 'form-status error';
+                statusEl.textContent = 'Form not yet configured. DM us on Instagram @tulsagays to submit a business.';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+            statusEl.className = 'form-status';
+            statusEl.textContent = '';
+
+            try {
+                const data = new FormData(form);
+                const res  = await fetch(form.action, {
+                    method: 'POST',
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (res.ok) {
+                    statusEl.className = 'form-status success';
+                    statusEl.textContent = 'Submitted! We review every entry and will add qualifying businesses within a week.';
+                    form.reset();
+                } else {
+                    throw new Error('Server error');
+                }
+            } catch (err) {
+                statusEl.className = 'form-status error';
+                statusEl.textContent = 'Something went wrong. DM us on Instagram @tulsagays instead.';
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Submit Business';
+        });
+    })();
+    </script>
 
 </body>
 </html>
