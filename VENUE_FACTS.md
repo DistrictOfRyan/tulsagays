@@ -13,8 +13,8 @@ as NEEDS VERIFICATION, either verify it or omit the address entirely.
 | Venue | Address | Status | Notes |
 |---|---|---|---|
 | Club Majestic | 124 N Boston Ave, Downtown Tulsa | OPEN | Flagship LGBTQ+ nightclub. Drag shows, DJs, theme nights. |
-| Tulsa Eagle | 2630 E 15th St, Cherry Street area | OPEN | Leather/bear bar. Pool, karaoke, patio. |
-| Yellow Brick Road (YBR) | **ADDRESS NEEDS VERIFICATION** | OPEN | Cherry Street area. NOT in the same building as the Eagle. Neighboring but separate venues. Do not claim they share an address or building. |
+| Tulsa Eagle | 2630 E 15th St, Cherry Street area | OPEN | Leather/bear bar. Pool, karaoke, patio. Neighborhood: Cherry Street (E 15th St), NOT Brookside. |
+| Yellow Brick Road (YBR) | **ADDRESS NEEDS VERIFICATION** | OPEN | Cherry Street area (E 15th St). NOT in the same building as the Eagle. NOT in Brookside. Neighboring but separate venues. Do not claim they share an address or building. |
 | The Fur Shop | 1218 E 4th St | **PERMANENTLY CLOSED** | Do not recommend or describe as open. Do not reference Pony Coffee as being inside The Fur Shop. |
 | St. Vitus Bar | 1707 S Boston Ave, Brookside | OPEN | Neighborhood cocktail bar. Reliably queer-friendly. |
 | Mercury Lounge | 1747 S Boston Ave, Brookside | OPEN | Live music venue. Queer-friendly crowd. |
@@ -82,6 +82,7 @@ as NEEDS VERIFICATION, either verify it or omit the address entirely.
 ## Known Errors to Avoid
 
 - **Eagle + YBR same building**: FALSE. They are separate venues near each other in the Cherry Street area. YBR's exact address is not verified. Do not say they "share a building" or list both at 2630 E 15th St.
+- **Eagle + YBR in Brookside**: FALSE. Both are on Cherry Street (E 15th St), which is its own distinct neighborhood. Brookside is the adjacent neighborhood (S Peoria Ave area). Do not place the Eagle or YBR in Brookside.
 - **Pony Coffee inside The Fur Shop**: The Fur Shop is permanently closed. Pony Coffee's current location is unverified. Do not reference the Fur Shop address for Pony Coffee.
 - **The Fur Shop as open**: Permanently closed. Remove from any "where to go" recommendations.
 - **Girl Scouts events from OkEq**: These are youth org meetings held at the Equality Center, not LGBTQ+ community events. Do not include in the event scrape or event listings.
