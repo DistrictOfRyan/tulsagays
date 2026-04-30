@@ -337,6 +337,29 @@ def _clean_venue(raw: str) -> str:
         return parts[0]
     return v
 
+
+def _extract_address(raw: str) -> str:
+    """Extract a street address from a raw location string for a separate display line.
+
+    Examples:
+      "Tulsa Eagle, 1338 E 3rd St, Tulsa, OK"  → "1338 E 3rd St"
+      "1338 E 3rd St, Tulsa, OK"               → "1338 E 3rd St"
+      "Tulsa Eagle"                             → ""
+    """
+    v = (raw or '').strip()
+    if not v:
+        return ''
+    parts = [p.strip() for p in v.split(',')]
+    # "Venue Name, Street, City, State" — pick the street segment (part[1] if it starts with a digit)
+    if len(parts) >= 2 and parts[0] and not parts[0][0].isdigit():
+        if parts[1] and parts[1][0].isdigit():
+            return parts[1]
+        return ''
+    # "123 Street, City, State" — pick just the street
+    if parts[0] and parts[0][0].isdigit():
+        return parts[0]
+    return ''
+
 def format_time(t):
     if not t:
         return None, None
@@ -418,14 +441,18 @@ for day in DAYS_ORDERED:
                 venue_str = f'{venue} &middot; {loc_clean}' if venue else loc_clean
             else:
                 venue_str = venue
+            # Extract street address for a separate muted display line (#10)
+            raw_addr = _extract_address(location)
+            address_line = esc(raw_addr) if raw_addr and raw_addr.lower() not in venue_str.lower() else ''
 
             desc = (ev.get('website_description') or ev.get('description') or '').strip()
             url = ev.get('url', '') or ''
             fl_score = _flamingo_score(ev)
             fl_html = _flamingo_html(fl_score)
+            ev_date_iso = ev.get('date', '')
 
             lines.append('')
-            lines.append(f'                <div class="{card_cls}"{pink_style}>')
+            lines.append(f'                <div class="{card_cls}"{pink_style} data-date="{ev_date_iso}">')
             if hour:
                 lines.append(f'                    <div class="event-time-col">')
                 lines.append(f'                        <div class="event-time" style="color:{time_color}">{esc(hour)}</div>')
@@ -438,6 +465,8 @@ for day in DAYS_ORDERED:
             lines.append(f'                        <div class="event-name" style="color:{name_color}">{esc(ev_name)}</div>')
             if venue_str:
                 lines.append(f'                        <div class="event-venue" style="color:var({css_var})">{venue_str}</div>')
+            if address_line:
+                lines.append(f'                        <div class="event-address">{address_line}</div>')
             lines.append(f'                        <div class="event-flamingo">{fl_html}</div>')
             if desc:
                 lines.append(f'                        <div class="event-description">{esc(desc)}</div>')
@@ -452,6 +481,23 @@ for day in DAYS_ORDERED:
             elif url:
                 link_lbl = esc(ev_name[:50]) + ' &rarr;' if len(ev_name) > 50 else esc(ev_name) + ' &rarr;'
                 lines.append(f'                        <a href="{esc(url)}" class="event-link" target="_blank" rel="noopener">{link_lbl}</a>')
+            # Share button (#9)
+            _raw_venue = _clean_venue(ev.get('venue', '') or '') or _clean_venue(location)
+            _share_parts = [ev_name]
+            if _raw_venue:
+                _share_parts.append(f'at {_raw_venue}')
+            if ev_date_iso:
+                try:
+                    _sd = datetime.strptime(ev_date_iso, '%Y-%m-%d')
+                    _share_parts.append(_sd.strftime('%A, %B ') + str(_sd.day))
+                except Exception:
+                    pass
+            if hour:
+                _share_parts.append(f'{hour} {ampm}'.strip() if ampm else hour)
+            _share_text = ' | '.join(_share_parts)
+            lines.append(f'                        <button class="share-btn" onclick="shareEvent(this)" '
+                         f'data-title="{esc(ev_name[:80])}" data-text="{esc(_share_text)}" '
+                         f'aria-label="Share this event">Share</button>')
             lines.append(f'                    </div>')
             lines.append(f'                </div>')
 

@@ -63,12 +63,17 @@ FLAMINGO_THREE = (
 def build_card(ev: dict, css_var: str) -> str:
     """Build the HTML for a single community event card."""
     name = esc(ev.get('name', 'Untitled Event'))
-    venue = esc(ev.get('venue_name', '') or ev.get('venue', ''))
-    address = esc(ev.get('venue_address', ''))
-    if address and address.lower() not in venue.lower():
-        venue_str = f'{venue} &middot; {address}' if venue else address
-    else:
+    raw_venue = (ev.get('venue_name', '') or ev.get('venue', '')).strip()
+    venue = esc(raw_venue)
+    raw_address = (ev.get('venue_address', '') or ev.get('address', '')).strip()
+    address = esc(raw_address)
+    # Venue line shows venue name only; address shown separately (#10)
+    if venue:
         venue_str = venue
+        addr_display = address if raw_address and raw_address.lower() not in raw_venue.lower() else ''
+    else:
+        venue_str = address  # fallback: show address as the venue line
+        addr_display = ''
 
     start = esc(ev.get('start_time', ''))
     end = esc(ev.get('end_time', ''))
@@ -78,8 +83,28 @@ def build_card(ev: dict, css_var: str) -> str:
 
     desc = esc(ev.get('description', ''))
     url = (ev.get('event_url', '') or ev.get('url', '')).strip()
+    ev_date_iso = (ev.get('date', '') or ev.get('event_date', '')).strip()
+
+    # Build share text (#9)
+    _share_parts = [ev.get('name', 'Untitled Event')]
+    if raw_venue:
+        _share_parts.append(f'at {raw_venue}')
+    if raw_address and not raw_venue:
+        _share_parts.append(f'at {raw_address}')
+    if ev_date_iso:
+        try:
+            from datetime import datetime as _dt
+            _sd = _dt.strptime(ev_date_iso, '%Y-%m-%d')
+            _share_parts.append(_sd.strftime('%A, %B ') + str(_sd.day))
+        except Exception:
+            pass
+    raw_start = (ev.get('start_time', '') or '').strip()
+    if raw_start:
+        _share_parts.append(raw_start)
+    _share_text = ' | '.join(_share_parts)
+
     lines = []
-    lines.append(f'                <div class="event-card community-event">')
+    lines.append(f'                <div class="event-card community-event" data-date="{esc(ev_date_iso)}">')
     lines.append(f'                    <div class="event-details">')
     lines.append(f'                        <span class="community-badge">Community Submission</span>')
 
@@ -90,6 +115,9 @@ def build_card(ev: dict, css_var: str) -> str:
 
     if venue_str:
         lines.append(f'                        <div class="event-venue" style="color:var({css_var})">{venue_str}</div>')
+
+    if addr_display:
+        lines.append(f'                        <div class="event-address">{addr_display}</div>')
 
     lines.append(f'                        <div class="event-flamingo">{FLAMINGO_THREE}</div>')
 
@@ -103,6 +131,11 @@ def build_card(ev: dict, css_var: str) -> str:
             f'target="_blank" rel="noopener">{link_lbl}</a>'
         )
 
+    lines.append(
+        f'                        <button class="share-btn" onclick="shareEvent(this)" '
+        f'data-title="{esc(ev.get("name", "")[:80])}" data-text="{esc(_share_text)}" '
+        f'aria-label="Share this event">Share</button>'
+    )
     lines.append(f'                    </div>')
     lines.append(f'                </div>')
     return '\n'.join(lines)

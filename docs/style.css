@@ -940,3 +940,70 @@ button:focus-visible,
   z-index: 99999; text-decoration: none;
 }
 .skip-link:focus { top: 8px; }
+
+/* ── Urgency Badges (Tonight / Tomorrow) ── */
+.urgency-badge {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  margin-bottom: 10px;
+  border-radius: 2px;
+  line-height: 1.6;
+}
+.badge-tonight {
+  background: var(--tg-pink);
+  color: #fff;
+}
+.badge-tomorrow {
+  background: transparent;
+  color: var(--tg-pink);
+  border: 1px solid var(--tg-pink);
+}
+
+/* ── Event Address ── */
+.event-address {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+
+/* ── Share Button ── */
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  padding: 4px 12px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: border-color 0.2s, color 0.2s;
+  margin-top: 8px;
+  font-family: inherit;
+  text-transform: uppercase;
+}
+.share-btn:hover {
+  border-color: var(--tg-pink30);
+  color: var(--tg-pink);
+}
+.share-btn:active { opacity: 0.7; }
+
+/* ── Newsletter Nav Link ── */
+nav a.newsletter-cta {
+  color: var(--tg-pink);
+  border: 1px solid var(--tg-pink30);
+  padding: 4px 12px;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+nav a.newsletter-cta:hover {
+  background: var(--tg-pink12);
+  border-color: var(--tg-pink);
+}

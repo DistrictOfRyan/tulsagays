@@ -74,6 +74,7 @@
                     <li><a href="directory.html">Directory</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a href="submit.html" class="submit-cta">Submit Event</a></li>
+                    <li><a href="newsletter.html" class="newsletter-cta">Newsletter</a></li>
                     <li><a href="https://instagram.com/tulsagays" target="_blank" rel="noopener">Instagram</a></li>
                     <li><a href="https://linktr.ee/tulsagays" target="_blank" rel="noopener">Linktree</a></li>
                 </ul>
@@ -1776,5 +1777,51 @@
             <p style="font-size:0.75em;opacity:0.55;margin-top:0.5em">&copy; 2026 Tulsa Gays&#8482; &middot; Homo Hotel Happy Hour&#8482;</p>
         </div>
     </footer>
+
+    <script>
+    /* ── Tonight / Tomorrow urgency badges ── */
+    (function() {
+        var pad = function(n) { return String(n).padStart(2, '0'); };
+        var now = new Date();
+        var today    = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate());
+        var tom      = new Date(now); tom.setDate(tom.getDate() + 1);
+        var tomorrow = tom.getFullYear() + '-' + pad(tom.getMonth()+1) + '-' + pad(tom.getDate());
+        document.querySelectorAll('.event-card[data-date]').forEach(function(card) {
+            var d = card.getAttribute('data-date');
+            if (!d) return;
+            var badge = document.createElement('div');
+            if (d === today) {
+                badge.className = 'urgency-badge badge-tonight';
+                badge.textContent = 'TONIGHT';
+                card.insertBefore(badge, card.firstChild);
+            } else if (d === tomorrow) {
+                badge.className = 'urgency-badge badge-tomorrow';
+                badge.textContent = 'TOMORROW';
+                card.insertBefore(badge, card.firstChild);
+            }
+        });
+    })();
+
+    /* ── Share button ── */
+    function shareEvent(btn) {
+        var title = btn.getAttribute('data-title') || 'Tulsa Gays Event';
+        var text  = btn.getAttribute('data-text')  || title;
+        var url   = 'https://www.tulsagays.com/';
+        if (navigator.share) {
+            navigator.share({ title: title, text: text, url: url }).catch(function(){});
+        } else {
+            var copyText = text + '\n' + url;
+            navigator.clipboard.writeText(copyText).then(function() {
+                var orig = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(function() { btn.textContent = orig; }, 2000);
+            }).catch(function() {
+                var orig = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(function() { btn.textContent = orig; }, 2000);
+            });
+        }
+    }
+    </script>
 
 </body>

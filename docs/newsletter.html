@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter - Tulsa Gays</title>
+    <meta name="description" content="Get Tulsa's queer events delivered to your inbox every week. Sign up for the Tulsa Gays newsletter.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Newsletter - Tulsa Gays">
+    <meta property="og:description" content="Get Tulsa's queer events delivered to your inbox every week.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.tulsagays.com/newsletter.html">
+    <meta property="og:site_name" content="Tulsa Gays">
+    <link rel="canonical" href="https://www.tulsagays.com/newsletter.html">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3ZGBZH6554"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3ZGBZH6554');
+    </script>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo-area">
+                <div>
+                    <div class="logo-text"><span class="tulsa">TULSA</span> <span class="gays">GAYS</span></div>
+                    <div class="logo-tagline">Your Weekly LGBTQ+ Event Guide</div>
+                </div>
+            </a>
+            <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.querySelector('nav').classList.toggle('open')">&#9776;</button>
+            <nav>
+                <ul>
+                    <li><a href="index.html">This Week</a></li>
+                    <li><a href="archive.html">Archive</a></li>
+                    <li><a href="blog/index.html">Blog</a></li>
+                    <li><a href="directory.html">Directory</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="submit.html" class="submit-cta">Submit Event</a></li>
+                    <li><a href="newsletter.html" class="newsletter-cta active">Newsletter</a></li>
+                    <li><a href="https://instagram.com/tulsagays" target="_blank" rel="noopener">Instagram</a></li>
+                    <li><a href="https://linktr.ee/tulsagays" target="_blank" rel="noopener">Linktree</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <div class="submit-form-wrap">
+            <h1>STAY IN THE LOOP</h1>
+            <div class="diamond-sep"><div class="diamond"></div></div>
+            <p class="form-intro">Get Tulsa's queer events delivered to your inbox every week. No spam. No algorithms. Just your community's calendar, straight to you.</p>
+
+            <form action="https://formspree.io/f/mykogbrb" method="POST">
+
+                <!-- Honeypot anti-spam field -->
+                <div class="honey-field" aria-hidden="true">
+                    <input type="text" name="_honey" tabindex="-1" autocomplete="off">
+                </div>
+
+                <!-- Subject override so newsletter signups are easy to spot in Gmail -->
+                <input type="hidden" name="_subject" value="Newsletter Signup - Tulsa Gays">
+                <input type="hidden" name="_next" value="https://www.tulsagays.com/newsletter-thanks.html">
+
+                <div class="form-group">
+                    <label for="email">Email Address <span style="color:var(--peacock)">*</span></label>
+                    <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" id="first_name" name="first_name" placeholder="What should we call you?">
+                </div>
+
+                <button type="submit" class="submit-btn">Sign Me Up</button>
+
+                <p class="form-note">You can unsubscribe any time. We send once a week, every week.</p>
+
+            </form>
+        </div>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p>Follow us on Instagram: <a href="https://instagram.com/tulsagays" target="_blank" rel="noopener">@tulsagays</a> &middot; <a href="https://linktr.ee/tulsagays" target="_blank" rel="noopener">All Links</a></p>
+            <p>Updated weekly &middot; Your guide to LGBTQ+ Tulsa</p>
+            <p style="font-size:0.75em;opacity:0.55;margin-top:0.5em">&copy; 2026 Tulsa Gays&#8482; &middot; Homo Hotel Happy Hour&#8482;</p>
+        </div>
+    </footer>
+
+</body>
+</html>
