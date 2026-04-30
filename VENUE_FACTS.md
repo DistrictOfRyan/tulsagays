@@ -52,7 +52,13 @@ as NEEDS VERIFICATION, either verify it or omit the address entirely.
 
 | Venue | Address | Status | Notes |
 |---|---|---|---|
-| Juniper | Blue Dome District | OPEN | Farm-to-table. Address unverified — do not publish street number. |
+| Juniper | 324 E 3rd St, Blue Dome area | OPEN | Farm-to-table. Verified Yelp March 2026. |
+| Chimera Cafe | 212 N Main St, Brady Arts District | OPEN | Verified OpenTable April 2026. |
+| Andolini's | 1552 E 15th St (Cherry Street flagship); 114 S Detroit Ave (Blue Dome) | OPEN | Pizza. Multiple locations. Verified Yelp April 2026. |
+| Bodean's | 3376 E 51st St | OPEN | Seafood institution. Verified Yelp April 2026. |
+| McNellie's | 409 E 1st St (Downtown); 7031 S Zurich Ave (South) | OPEN | Gastropub. Both locations active April 2026. |
+| Roosevelt's | 1551 E 15th St, Cherry Street | OPEN | Bar/gastropub. No confirmed "rooftop" — do not describe as a rooftop bar or place at "6th and Peoria." |
+| Burn Co. Barbecue | 1738 S Boston Ave (CLOSED); 500 Riverwalk Ter, Jenks (OPEN) | TULSA LOCATION CLOSED | Do NOT recommend the Tulsa location. Jenks only. |
 | Il Seme | Cherry Street (E 15th St area) | OPEN | Queer-owned Italian. Address unverified — do not publish street number. Book ahead. |
 | Elote | Address unverified | OPEN | Mexican and Southwestern. Drag brunch. Do not publish street number. |
 
