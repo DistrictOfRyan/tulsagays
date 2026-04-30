@@ -1906,7 +1906,7 @@
     </footer>
 
     <script>
-    /* ── Tonight / Tomorrow urgency badges ── */
+    /* ── Tonight / Tomorrow urgency badges + hide past days ── */
     (function() {
         var pad = function(n) { return String(n).padStart(2, '0'); };
         var now = new Date();
@@ -1927,6 +1927,21 @@
                 card.insertBefore(badge, card.firstChild);
             }
         });
+
+        var sections = document.querySelectorAll('.day-section');
+        var hidden = 0;
+        sections.forEach(function(section) {
+            var card = section.querySelector('.event-card[data-date]');
+            if (!card) return;
+            if (card.getAttribute('data-date') < today) {
+                section.style.display = 'none';
+                hidden++;
+            }
+        });
+        // Safety net: if the entire week is past (stale page), show everything
+        if (sections.length > 0 && hidden === sections.length) {
+            sections.forEach(function(s) { s.style.display = ''; });
+        }
     })();
 
     /* ── Share button ── */
