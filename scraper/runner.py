@@ -30,6 +30,8 @@ from scraper import (
     tulsa_arts_district,
     facebook_events,
     ticketing_sites,
+    timetree_scraper,
+    slack_browser_scraper,
 )
 
 logger = logging.getLogger(__name__)
@@ -56,6 +58,10 @@ LGBTQ_SOURCES = {
     "circle_cinema", "philbrook_museum", "tulsa_arts_district",
     # Facebook events (LGBTQ-filtered at scraper level)
     "facebook_events",
+    # Tulsa Isn't Boring — curated community calendar, all events are relevant
+    "tulsa_isnt_boring",
+    # Slack channels — LGBTQ-filtered at scraper level
+    "slack_events_local", "slack_unite_lgbtq_plus",
 }
 
 LGBTQ_KEYWORDS = [
@@ -98,15 +104,6 @@ JUNK_NAMES = {
     "home", "about", "menu", "calendar", "events", "back",
 }
 
-# Daily health/clinical services scraped from OKEQ — not community events.
-# These repeat every weekday and are not worth listing as events.
-DAILY_SERVICE_SUBSTRINGS = [
-    "okeq health clinic",
-    "hope testing",
-    "drop-in therapy",
-    "free drop-in therapy",
-    "health outreach, prevention & education",
-]
 
 
 # ── Normalization & dedup ─────────────────────────────────────────────────────
@@ -145,6 +142,10 @@ def deduplicate(events: List[Dict]) -> List[Dict]:
         for i, existing in enumerate(unique):
             if _are_similar(event["name"], existing["name"]) and _same_date(event["date"], existing["date"]):
                 is_dup = True
+                # Collect all unique URLs from both events before deciding winner
+                merged_urls = list(dict.fromkeys(
+                    (existing.get("source_urls") or []) + (event.get("source_urls") or [])
+                ))
                 if event["priority"] < existing["priority"]:
                     unique[i] = event
                 elif event["priority"] == existing["priority"]:
@@ -152,6 +153,8 @@ def deduplicate(events: List[Dict]) -> List[Dict]:
                     existing_info = sum(1 for v in existing.values() if v)
                     if event_info > existing_info:
                         unique[i] = event
+                # Apply the merged URL list to whichever event won
+                unique[i]["source_urls"] = merged_urls
                 break
         if not is_dup:
             unique.append(event)
@@ -170,15 +173,12 @@ def _get_week_range():
 
 
 def _is_junk_name(name: str) -> bool:
-    """Return True if the name is clearly navigation/UI text or a daily health service."""
+    """Return True if the name is clearly navigation/UI text, not an event."""
     if not name or len(name) < 5:
         return True
-    nl = name.lower().strip()
-    if nl in JUNK_NAMES:
+    if name.lower().strip() in JUNK_NAMES:
         return True
     if len(name) > 200:
-        return True
-    if any(svc in nl for svc in DAILY_SERVICE_SUBSTRINGS):
         return True
     return False
 
@@ -452,6 +452,8 @@ def run_all_scrapers() -> List[Dict]:
         ("tulsa_arts_district", tulsa_arts_district.scrape),
         ("facebook_events", facebook_events.scrape),
         ("ticketing_sites", ticketing_sites.scrape),
+        ("timetree_scraper", timetree_scraper.scrape),  # Tulsa Isn't Boring -- iCal/Playwright/browser-flag
+        ("slack_browser_scraper", slack_browser_scraper.scrape),  # TulsaRemote Slack -- browser-extracted JSON or flag
     ]
 
     # Playwright scrapers run after all static scrapers
@@ -475,8 +477,78 @@ def run_all_scrapers() -> List[Dict]:
     return all_events
 
 
+def _append_growth_log(events: List[Dict], week_key: str, start_time: datetime):
+    """Append a stats record for this scrape run to the growth log JSON array."""
+    try:
+        # Build events_per_source (only sources with count > 0)
+        source_counts: Dict[str, int] = {}
+        for e in events:
+            src = e.get("source", "unknown")
+            source_counts[src] = source_counts.get(src, 0) + 1
+        events_per_source = dict(
+            sorted(source_counts.items(), key=lambda x: -x[1])
+        )
+
+        # blank_days: Mon-Sun day names with 0 events this week
+        day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        day_counts: Dict[str, int] = {d: 0 for d in day_names}
+        for e in events:
+            date_str = e.get("date", "")
+            if date_str:
+                try:
+                    dt = datetime.strptime(date_str, "%Y-%m-%d")
+                    day_name = day_names[dt.weekday()]
+                    day_counts[day_name] += 1
+                except ValueError:
+                    pass
+        blank_days = [d for d in day_names if day_counts[d] == 0]
+
+        record = {
+            "week": week_key,
+            "timestamp": datetime.now().isoformat(),
+            "total_events": len(events),
+            "events_with_dates": sum(1 for e in events if e.get("date", "") != ""),
+            "blank_days": blank_days,
+            "events_per_source": events_per_source,
+            "top_sources": list(events_per_source.keys())[:5],
+            "scrape_duration_seconds": round(
+                (datetime.now() - start_time).total_seconds(), 1
+            ),
+        }
+
+        # Load existing log or start fresh
+        log_data: List[Dict] = []
+        if os.path.exists(config.GROWTH_LOG):
+            try:
+                with open(config.GROWTH_LOG, "r", encoding="utf-8") as f:
+                    log_data = json.load(f)
+            except (json.JSONDecodeError, OSError):
+                log_data = []
+
+        # Update in place if same week_key already exists, otherwise append
+        updated = False
+        for i, existing in enumerate(log_data):
+            if existing.get("week") == week_key:
+                log_data[i] = record
+                updated = True
+                break
+        if not updated:
+            log_data.append(record)
+
+        config.ensure_dirs()
+        with open(config.GROWTH_LOG, "w", encoding="utf-8") as f:
+            json.dump(log_data, f, indent=2, ensure_ascii=False)
+
+        logger.info(f"Growth log updated: {week_key} - {len(events)} events")
+
+    except Exception as exc:
+        logger.error(f"Growth log write failed: {exc}", exc_info=True)
+
+
 def main():
     """Main entry point: run all scrapers, filter, deduplicate, sort, save."""
+    start_time = datetime.now()
+
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
@@ -520,6 +592,9 @@ def main():
     logger.info(f"\nResults saved for week {week_key}:")
     for p in paths:
         logger.info(f"  {p}")
+
+    # 6c. Append growth log entry
+    _append_growth_log(sorted_events, week_key, start_time)
 
     # 6b. Date-parse health check
     _events_with_dates = [e for e in sorted_events if e.get("date")]

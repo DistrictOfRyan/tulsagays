@@ -150,11 +150,12 @@ SOURCES = {
         "description": "LGBTQ+ kickball league. Spring, Summer, Fall seasons. Organized, competitive, community-focused.",
     },
     "gay_kickball_tulsa": {
-        "name": "Gay Kickball Tulsa",
-        "url": "https://www.gaykickball.com/tulsa.html",
+        "name": "Gay Kickball Tulsa (via HotMess Sports)",
+        "url": "https://www.hotmesssports.com/tulsa",
+        "instagram": "https://www.instagram.com/hotmesssports/",
         "priority": 1,
         "type": "sports",
-        "description": "LGBTQ+ & Ally kickball league. Community-based, organized, competitive, fun. Multiple seasons (Spring/Summer/Fall).",
+        "description": "LGBTQ+ kickball in Tulsa, now run through HotMess Sports. gaykickball.com/tulsa.html is DNS dead as of 2026-04-28. Find current league info at hotmesssports.com/tulsa and @hotmesssports on Instagram.",
     },
     "tulsa_metro_softball_league": {
         "name": "Tulsa Metro Softball League (TMSL)",
@@ -838,18 +839,21 @@ SOURCES = {
     },
     # ── REMOTE WORK & COMMUNITY NETWORKS ───────────────────────────────────
     "tulsa_remote_events": {
-        "name": "Tulsa Remote - Member Events Calendar",
-        "url": "https://memberevents.tulsaremote.com/s/",
+        "name": "Tulsa Remote - #events-local Slack Channel",
+        "url": "https://app.slack.com/client/TF1E6FCR5/CGV2YLJSG",
         "priority": 1,
         "type": "community",
-        "description": "Community platform for 2,500+ remote workers in Tulsa. Dozens of monthly events: park days, concerts, tastings, networking.",
+        "description": "TulsaRemote Slack #events-local channel (2,500+ member workspace). PRIMARY source for local Tulsa community events. Scraped via Claude-in-Chrome by slack-events-scraper SKILL. memberevents.tulsaremote.com is dead as of 2026-04-28 -- Slack is the live replacement.",
+        "scrape_method": "slack_browser",
+        "channel_id": "CGV2YLJSG",
+        "workspace_id": "TF1E6FCR5",
     },
     "tulsa_remote_slack": {
         "name": "TulsaRemote Slack Community",
         "url": "https://tulsaremote.slack.com/",
         "priority": 2,
         "type": "community",
-        "description": "Private Slack with 2,500+ members sharing events, recommendations, startup advice. **REQUIRES LOGIN** — goldmine for real-time event announcements and community happenings.",
+        "description": "Private Slack with 2,500+ members sharing events, recommendations, startup advice. REQUIRES LOGIN -- goldmine for real-time event announcements and community happenings.",
     },
     "gradient_slack_events": {
         "name": "Gradient Slack Channel (TulsaRemote)",
@@ -1003,6 +1007,14 @@ SOURCES = {
         "priority": 1,
         "type": "aggregator",
         "description": "Electronic concerts and music events filtered by Tulsa area and electronic genre.",
+    },
+    # ── New sources added 2026-04-28 ─────────────────────────────────────
+    "tulsa_isnt_boring": {
+        "name": "Tulsa Isn't Boring (TimeTree Public Calendar)",
+        "url": "https://timetreeapp.com/public_calendars/tulsa_isnt_boring",
+        "priority": 1,
+        "type": "aggregator",
+        "description": "Community-curated public calendar of Tulsa events published via TimeTree. Covers arts, culture, music, food, outdoor, and community events. High-quality curation — treat as a primary source.",
     },
 }
 
