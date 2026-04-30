@@ -399,6 +399,12 @@ nav a:hover, nav a.active { color: var(--cream); }
     transition: all 0.2s;
     vertical-align: middle;
     line-height: inherit;
+    margin-bottom: 8px;
+}
+/* Match the bottom margin on share-btn so the buttons row reserves
+   a consistent gap whether they're on one line or wrapped. */
+.event-details > .share-btn {
+    margin-bottom: 8px;
 }
 .event-link:hover {
     background: var(--peacock);

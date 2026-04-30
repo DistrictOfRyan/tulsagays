@@ -1938,7 +1938,11 @@
     function shareEvent(btn) {
         var title = btn.getAttribute('data-title') || 'Tulsa Gays Event';
         var text  = btn.getAttribute('data-text')  || title;
-        var url   = 'https://www.tulsagays.com/';
+        // Prefer the event's source URL (Eventbrite/Meetup/Facebook/venue site)
+        // so the recipient lands on the actual event, not just the homepage.
+        var card  = btn.closest('.event-card');
+        var link  = card ? card.querySelector('.event-link') : null;
+        var url   = (link && link.href) || 'https://www.tulsagays.com/';
         if (navigator.share) {
             navigator.share({ title: title, text: text, url: url }).catch(function(){});
         } else {
