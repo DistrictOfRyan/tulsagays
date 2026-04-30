@@ -129,6 +129,7 @@ a:hover { color: var(--gold-light); }
     align-items: center;
     gap: 0.75rem;
     text-decoration: none;
+    flex-shrink: 0;
 }
 .logo-area img {
     width: 48px;
@@ -140,6 +141,7 @@ a:hover { color: var(--gold-light); }
     font-size: 1.8rem;
     letter-spacing: 3px;
     -webkit-text-stroke: 0.5px;
+    white-space: nowrap;
 }
 .logo-text .tulsa { color: #FFFFFF; -webkit-text-stroke-color: #FFFFFF; }
 .logo-text .gays { color: #9B1E5F; -webkit-text-stroke-color: #9B1E5F; }
