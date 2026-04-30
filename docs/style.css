@@ -406,6 +406,17 @@ nav a:hover, nav a.active { color: var(--cream); }
 .event-details > .share-btn {
     margin-bottom: 8px;
 }
+
+/* Pulse highlight when arriving via a shared deep-link (#event-...) */
+.event-card.event-highlight {
+    outline: 2px solid #FF2D6F;
+    outline-offset: 4px;
+    animation: event-deeplink-pulse 2.2s ease-out;
+}
+@keyframes event-deeplink-pulse {
+    0%   { outline-color: #FF2D6F; box-shadow: 0 0 24px rgba(255, 45, 111, 0.45); }
+    100% { outline-color: transparent; box-shadow: 0 0 0 rgba(255, 45, 111, 0); }
+}
 .event-link:hover {
     background: var(--peacock);
     color: var(--bg);

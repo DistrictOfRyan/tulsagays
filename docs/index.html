@@ -1932,17 +1932,60 @@
         if (sections.length > 0 && hidden === sections.length) {
             sections.forEach(function(s) { s.style.display = ''; });
         }
+
+        // Assign a unique id to every event-card so shares can deep-link to it.
+        function _slugify(s) {
+            return (s || '').toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '')
+                .slice(0, 60);
+        }
+        var slugCounts = {};
+        document.querySelectorAll('.event-card').forEach(function(card) {
+            if (card.id) return;
+            var name = (card.querySelector('.event-name') || {}).textContent || '';
+            var date = card.getAttribute('data-date') || '';
+            var timeEl = card.querySelector('.event-time-col .event-time');
+            var time = timeEl ? timeEl.textContent : '';
+            var base = 'event-' + _slugify(name + '-' + date + '-' + time);
+            if (slugCounts[base]) {
+                slugCounts[base]++;
+                card.id = base + '-' + slugCounts[base];
+            } else {
+                slugCounts[base] = 1;
+                card.id = base;
+            }
+        });
+
+        // If we landed with a hash, scroll to that event and highlight it.
+        // Un-hide its day-section first in case the page-load past-day filter
+        // swept it under (e.g. shared event becomes "past" by the time the
+        // recipient opens it).
+        if (location.hash && location.hash.length > 1) {
+            var target = document.getElementById(location.hash.substring(1));
+            if (target) {
+                var section = target.closest('.day-section');
+                if (section) section.style.display = '';
+                setTimeout(function() {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    target.classList.add('event-highlight');
+                    setTimeout(function() {
+                        target.classList.remove('event-highlight');
+                    }, 2400);
+                }, 120);
+            }
+        }
     })();
 
     /* ── Share button ── */
     function shareEvent(btn) {
         var title = btn.getAttribute('data-title') || 'Tulsa Gays Event';
         var text  = btn.getAttribute('data-text')  || title;
-        // Prefer the event's source URL (Eventbrite/Meetup/Facebook/venue site)
-        // so the recipient lands on the actual event, not just the homepage.
+        // Share a tulsagays.com deep-link to the specific event so traffic
+        // comes back to our site, not Eventbrite / Meetup / Facebook.
         var card  = btn.closest('.event-card');
-        var link  = card ? card.querySelector('.event-link') : null;
-        var url   = (link && link.href) || 'https://www.tulsagays.com/';
+        var slug  = card ? card.id : '';
+        var url   = 'https://www.tulsagays.com/' + (slug ? '#' + slug : '');
         // Include the URL inside the text body too — some iOS share targets
         // ignore the {url} field when there's also a {text}, and others
         // overwrite it with the page URL. Embedding here makes it bulletproof.
