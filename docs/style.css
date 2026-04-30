@@ -864,7 +864,7 @@ nav a.active {
   top: 4px;
   font-size: 56px;
   line-height: 1;
-  opacity: 0.14;
+  opacity: 0.28;
   pointer-events: none;
   user-select: none;
 }
@@ -885,7 +885,7 @@ nav a.active {
   display: block;
   text-align: center;
   font-size: 22px;
-  opacity: 0.14;
+  opacity: 0.32;
   letter-spacing: 12px;
   margin: 8px 0;
 }
