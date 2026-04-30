@@ -137,30 +137,32 @@ about getting people out to events.
 VOICE & TONE RULES (critical -- follow these exactly):
 - Write like a real person texting their group chat about weekend plans
 - Casual, warm, sometimes a lil chaotic. You live here. You go to these events.
+- Sassy and opinionated. You have thoughts. You share them.
 - Okay to start sentences with "and" or "but" or "like"
-- Okay to use sentence fragments
-- Mix short punchy lines with longer ones
+- Mix short punchy lines with longer conversational ones
 - Use emojis but dont go overboard -- 4-7 total per post max
-- Include 1-2 moments of genuine enthusiasm ("we LOVE this one", "dont sleep on this", "obsessed")
+- Include 1-2 moments of genuine enthusiasm or a light read ("we LOVE this one", "no excuses this time", "your couch will survive without you")
 - Occasionally drop a Tulsa-specific reference (Brookside, the Gathering Place, Cherry Street, 11th & Lewis, Philbrook, etc)
 - Swear lightly if it fits the vibe (hell yeah, damn, etc) but keep it IG-friendly
+- Convince people to go. Tell them what to do when they get there. Be specific.
 
 WORDS/PHRASES YOU MUST NEVER USE (these are AI tells):
 - delve, landscape, tapestry, vibrant, foster, holistic, synergy, leverage
 - "I'd be happy to", "certainly", "absolutely", "it's worth noting"
 - "in conclusion", "furthermore", "however" at the start of sentences
-- "a]rich tapestry", "bustling", "myriad", "plethora"
-- "nestled", "embark", "comprehensive", "paramount"
+- "bustling", "myriad", "plethora", "nestled", "embark", "comprehensive", "paramount"
+- "safe space", "don't miss out", "something for everyone"
 - Never use the word "community" more than once per post
+- No em dashes
 
 HOMO HOTEL HAPPY HOUR RULES:
 - This event is ALWAYS listed first, always gets the most hype
-- Describe it with genuine excitement each time but vary the wording
-- Its the signature weekly event -- treat it that way
+- Describe it with genuine excitement each time but vary the wording every week
+- Its the signature event -- treat it like the main character it is
 
 FORMAT RULES:
-- First line is the hook -- short, punchy, makes people stop scrolling
-- Then Homo Hotel Happy Hour callout
+- First line is the hook -- short, punchy, makes people stop mid-scroll
+- Then Homo Hotel Happy Hour callout with real enthusiasm
 - Then 3-5 other events with date/time/venue on each
 - End with a call to action (tag a friend, save this, see you there, etc)
 - Hashtags go at the very end, separated by a blank line
@@ -304,10 +306,11 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
             event_lines.append(line)
 
         prompt = (
-            "For each event below, write a 1-2 sentence description (under 160 chars) "
-            "that tells someone what this specific event IS, why it's worth going, "
-            "and what to expect. Be specific to this event — no generic 'come meet people' filler. "
-            "Warm, Tulsa queer community voice. Use any hint provided to be more specific.\n\n"
+            "For each event below, write a 1-2 sentence description (under 180 chars) "
+            "that tells someone what this specific event IS, why a gay introvert should drag "
+            "themselves there, and what to do to have the best time. Be specific to THIS event. "
+            "Sassy and warm, like a friend who has opinions and wants you to go. No em dashes. "
+            "No 'safe space', 'vibrant', 'don't miss out', or other AI tells.\n\n"
             "Events:\n" + "\n".join(event_lines) +
             "\n\nReply with ONLY a numbered list. Format: 1. [description]"
         )
@@ -317,9 +320,11 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
                 model="claude-sonnet-4-6",
                 max_tokens=1200,
                 system=(
-                    "You write event descriptions for TulsaGays.com, an LGBTQ+ community events guide. "
-                    "Casual, warm, specific. Sound like a local friend texting you about what to do this weekend. "
-                    "Never use em dashes. Never say 'vibrant community' or 'safe space' or 'don't miss out'."
+                    "You write short event descriptions for TulsaGays.com. Voice: Joan Crawford "
+                    "at a queer community mixer. Sardonic, warm, opinionated, always on the reader's "
+                    "side. You are convincing an introverted gay person to leave the house. Be specific "
+                    "to the actual event. Never use em dashes. Never write fragmented sentence bursts "
+                    "like 'No scripts. No judgment. No fuss.' Write connected prose instead."
                 ),
                 messages=[{"role": "user", "content": prompt}],
             )
@@ -367,75 +372,90 @@ def _rule_based_enrich(event: dict) -> str:
     at_time  = f" at {time}" if time else ""
 
     if any(k in name for k in ["dragnificent", "drag show", "drag night", "drag brunch", "drag queen", "drag king", "drag performer"]):
-        return (f"Go. Put the phone away, get to the front, and tip the queens. "
-                "You will absolutely lose your mind in the best possible way, and you will thank yourself for not staying home.")
+        return ("Put the phone in your pocket, get yourself to the front, and tip the queens properly. "
+                "You are going to lose your mind in the best possible way and you will spend the whole drive home "
+                "wishing you had done this weeks ago.")
 
     if any(k in name for k in ["cabaret", "comc", "chorus", "chorale", "council oak"]):
-        return (f"Dress up. Get there early. Sit close. "
-                "This is live performance from a real ensemble that pours everything into it, and the energy in that room is unlike anything else in Tulsa.")
+        return ("Dress up, get there early, and sit close enough to see faces during the big moments. "
+                "This is a real ensemble that pours everything into every performance, and the energy in that "
+                "room is unlike most things available to you on a Tuesday in Tulsa.")
 
     if "happy hour" in name or "homo hotel" in name:
-        return ("Do not go and stand in the corner on your phone. Go up to someone with a great outfit, compliment them, and start a conversation. "
-                "You will leave with at least three new friends and a story worth telling.")
+        return ("Do not go and stand in the corner looking at your phone. Walk up to someone whose "
+                "outfit you genuinely like, tell them so, and start a conversation from there. "
+                "You will leave with at least two new people you actually want to see again.")
 
     if "brunch" in name or "boozy brunch" in name:
-        return (f"Dress like you tried. Order the thing you normally wouldn't. Talk to the table next to you. "
-                "Brunch with this crowd is a full event, not just a meal, and you will regret skipping it.")
+        return ("Dress like you made an effort. Order the thing you normally talk yourself out of. "
+                "Talk to the table next to you because brunch with this crowd is a full social event "
+                "and you will regret it if you spend it looking at your phone.")
 
     if any(k in name for k in ["craft", "crochet", "knit", "stitch", "maker", "queer craft"]):
-        return (f"You do not need to know what you're doing. Just show up{at_venue} with your hands and your personality. "
-                "Queer people creating things together is magic, and you'll leave with something to show for it.")
+        return (f"You do not need to know what you're doing. Show up{at_venue} with your hands and "
+                "your personality and let the rest figure itself out. You will leave with something "
+                "you made and probably someone new you actually like.")
 
     if any(k in name for k in ["karaoke"]):
-        return ("Get up there and sing something embarrassing. Nobody here is going to judge you, "
-                "and you will feel incredible afterward. The person who goes first always has the most fun.")
+        return ("Get up there and sing something you are slightly embarrassed to admit you love this much. "
+                "Nobody is judging you and you will feel genuinely great afterward. The person who goes "
+                "first always has the most fun. Be that person.")
 
     if any(k in name for k in ["trivia", "quiz"]):
-        return (f"Make a team with strangers. Name it something that will get a reaction. Talk trash, play hard, and buy a round when you win. "
-                "This is a room full of people who would love to meet you if you'd stop overthinking it.")
+        return ("Make a team with strangers, name it something that gets a reaction from the host, "
+                "and talk trash between rounds. This is a room full of people who would genuinely "
+                "enjoy meeting you if you stopped overthinking the approach.")
 
     if any(k in name for k in ["comedy", "comedian", "loony bin", "standup", "stand-up"]) or "comedy" in venue.lower():
-        return (f"Sit close to the front. Laugh out loud when it's funny. Talk to the people next to you during the break. "
-                "Live comedy in an intimate room hits different, and you have literally zero excuses to not go.")
+        return ("Sit close to the front because it is always a better show from there, laugh out loud "
+                "when it's actually funny, and talk to whoever's next to you during the break. "
+                "Live comedy in a small room hits differently and there is no good reason not to go.")
 
     if any(k in name for k in ["rave", "broadway rave", "dance", "dj ", "w/dj", "latin night", "dance party"]):
-        return (f"Wear something you can move in, because you WILL be dancing. "
-                "Leave your self-consciousness at the door, get on the floor in the first 20 minutes, and do not leave before midnight.")
+        return ("Wear something you can actually move in because you will be dancing whether you planned "
+                "to or not. Get on the floor within the first 20 minutes and do not leave before midnight. "
+                "Your self-consciousness can wait in the car.")
 
     if any(k in name for k in ["tulsa eagle", "yellow brick", "majestic"]) or src in ("bars", "nightlife"):
-        return (f"Get there{at_time}, order your drink, and start a conversation with whoever's at the bar next to you. "
-                "Tulsa's queer nightlife runs on community, and the community only stays strong when you show up.")
+        return (f"Get there{at_time}, order something, and start a conversation with whoever is next to you "
+                "at the bar. Queer nightlife only stays worth having when people actually show up to it.")
 
     if any(k in name for k in ["market", "art market", "art show", "art fair", "gallery"]):
-        return (f"Bring cash. Budget a little more than you think you'll spend. Talk to the artists. Ask them about their work. "
-                "This is where Tulsa's creative community lives, and it's better than anything you'd find scrolling at home.")
+        return ("Bring cash and plan to spend a little more than you think you will. Talk to the artists "
+                "because most of them genuinely want to tell you about their work. "
+                "This is better than anything you'd find scrolling at home for the same amount of time.")
 
     if any(k in name for k in ["concert", "live music", "music night", "performance"]):
-        return (f"Arrive before it starts. Find a spot. Put the phone away. "
-                "Live music in Tulsa is genuinely underrated and you are going to feel something if you actually let yourself be present for it.")
+        return ("Arrive before it starts, find a spot worth holding, and put your phone away for at least "
+                "the first three songs. Live music in Tulsa is genuinely underrated and you are going to "
+                "feel something if you let yourself be actually present for it.")
 
     if any(k in name for k in ["support group", "healing", "chronic", "wellness"]):
-        return (f"You don't have to have it together to walk in. That's literally the whole point. "
-                "Show up, listen, share if you're ready, and remember you are not the only one going through it.")
+        return ("You do not have to have it together before you walk in. That is the entire point of the "
+                "group. Show up, listen, share when you're ready, and remember that you are not as alone "
+                "in this as it has been feeling lately.")
 
     if any(k in name for k in ["all souls", "unitarian", "church", "spiritual", "meditation"]):
-        return (f"One of the largest UU congregations in the country and one of the most affirming spaces in Tulsa. "
-                "Walk in exactly as you are. You will feel it immediately.")
+        return ("One of the largest UU congregations in the country and one of the most genuinely affirming "
+                "spaces in Tulsa. Walk in exactly as you are. You will feel the difference immediately.")
 
     if "bowling" in name:
-        return (f"Lambda Bowling is a Tulsa LGBTQ+ institution. Show up even if you haven't bowled in years. "
-                "Nobody's judging your form. Everyone's glad you made it out.")
+        return ("Show up even if you haven't bowled in years, because nobody is judging your form and "
+                "the worse you bowl the better your lane-mates feel about theirs. "
+                "Everyone there is just glad you made it out.")
 
     if any(k in name for k in ["canasta", "card", "game night", "board game", "dungeons", "d&d", "dragons"]):
-        return (f"Step away from the screen and use your brain for something that actually requires other people. "
-                "Sit down next to a stranger, learn the rules, and talk trash. This is genuinely a great time.")
+        return ("Step away from the screen and use your brain for something that requires other actual "
+                "humans. Sit next to a stranger, learn whatever's being played, and talk trash appropriately. "
+                "This is a genuinely good time and the bar for entry is just showing up.")
 
     if "okeq" in src or "equality center" in (venue or "").lower():
-        return (f"OKEQ's space{at_venue} is the heartbeat of Tulsa's queer community. "
-                "Walk in. Say hi to someone. Life genuinely gets better when you show up for your community.")
+        return (f"OKEQ's space{at_venue} is where Tulsa's queer community actually gathers and does the "
+                "work. Walk in. Say hello to someone. Things get measurably better when you show up.")
 
-    return ("Put this on your calendar and actually go. "
-            "The people in that room are your people, and you'll only know that if you show up.")
+    return ("Put this on your calendar and actually go this time. "
+            "The people in that room are your people, and the only way you find that out is by walking "
+            "through the door.")
 
 
 _SCRAPER_ARTIFACTS = [
