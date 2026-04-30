@@ -397,6 +397,8 @@ nav a:hover, nav a.active { color: var(--cream); }
     border: 1px solid var(--peacock);
     padding: 4px 14px;
     transition: all 0.2s;
+    vertical-align: middle;
+    line-height: inherit;
 }
 .event-link:hover {
     background: var(--peacock);
@@ -1005,6 +1007,12 @@ button:focus-visible,
 .event-details > .share-btn:first-of-type {
   margin-left: 0;
   margin-top: 6px;
+}
+
+/* When share-btn sits beside an event-link, line them up on one row */
+.event-details > .event-link + .share-btn {
+  margin-top: 0;
+  margin-left: 6px;
 }
 
 /* ── Newsletter Nav Link ── */
