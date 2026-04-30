@@ -1957,22 +1957,53 @@
             }
         });
 
-        // If we landed with a hash, scroll to that event and highlight it.
-        // Un-hide its day-section first in case the page-load past-day filter
-        // swept it under (e.g. shared event becomes "past" by the time the
-        // recipient opens it).
-        if (location.hash && location.hash.length > 1) {
-            var target = document.getElementById(location.hash.substring(1));
+        // If we landed with a deep-link, scroll to that event and highlight it.
+        // Prefer ?event= (preserved across all share targets) over #hash
+        // (stripped by some iOS messaging apps when generating link previews).
+        var deepLinkId = '';
+        var qsMatch = location.search.match(/[?&]event=([^&]+)/);
+        if (qsMatch) {
+            deepLinkId = decodeURIComponent(qsMatch[1]);
+        } else if (location.hash && location.hash.length > 1) {
+            deepLinkId = location.hash.substring(1);
+        }
+        if (deepLinkId) {
+            // Disable browser scroll restoration so it doesn't fight our scroll.
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+            var target = document.getElementById(deepLinkId);
             if (target) {
                 var section = target.closest('.day-section');
                 if (section) section.style.display = '';
+                void target.offsetHeight;  // force reflow
+
+                // CSS sets html { scroll-behavior: smooth } globally, which
+                // queues scroll-to-target as an animation that can be canceled
+                // mid-flight by browser scroll-restoration during page load.
+                // Force-instant the deep-link scroll to avoid that.
+                var doScroll = function() {
+                    var t = document.getElementById(deepLinkId);
+                    if (!t) return;
+                    var top = t.getBoundingClientRect().top + window.scrollY - 12;
+                    window.scrollTo({ top: top, left: 0, behavior: 'instant' });
+                };
+
+                // Multiple attempts to beat any post-load layout shifts /
+                // browser auto-restoration. Idempotent: each call recomputes.
+                requestAnimationFrame(doScroll);
+                setTimeout(doScroll, 100);
+                setTimeout(doScroll, 400);
                 setTimeout(function() {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    target.classList.add('event-highlight');
-                    setTimeout(function() {
-                        target.classList.remove('event-highlight');
-                    }, 2400);
-                }, 120);
+                    doScroll();
+                    var t = document.getElementById(deepLinkId);
+                    if (t) {
+                        t.classList.add('event-highlight');
+                        setTimeout(function() {
+                            t.classList.remove('event-highlight');
+                        }, 2400);
+                    }
+                }, 800);
             }
         }
     })();
@@ -1983,17 +2014,18 @@
         var text  = btn.getAttribute('data-text')  || title;
         // Share a tulsagays.com deep-link to the specific event so traffic
         // comes back to our site, not Eventbrite / Meetup / Facebook.
+        // Use ?event= (a query param) instead of #hash because iOS Messages
+        // strips fragments when generating link previews — query params survive.
         var card  = btn.closest('.event-card');
         var slug  = card ? card.id : '';
-        var url   = 'https://www.tulsagays.com/' + (slug ? '#' + slug : '');
-        // Include the URL inside the text body too — some iOS share targets
-        // ignore the {url} field when there's also a {text}, and others
-        // overwrite it with the page URL. Embedding here makes it bulletproof.
-        var richText = text + '\n\n' + url;
+        var url   = 'https://www.tulsagays.com/' + (slug ? '?event=' + encodeURIComponent(slug) : '');
         if (navigator.share) {
-            navigator.share({ title: title, text: richText, url: url }).catch(function(){});
+            // Don't embed url in text — Messages would render it twice.
+            navigator.share({ title: title, text: text, url: url }).catch(function(){});
         } else {
-            navigator.clipboard.writeText(richText).then(function() {
+            // Clipboard fallback: include URL since there's no other carrier.
+            var copyText = text + '\n' + url;
+            navigator.clipboard.writeText(copyText).then(function() {
                 var orig = btn.textContent;
                 btn.textContent = 'Copied!';
                 setTimeout(function() { btn.textContent = orig; }, 2000);
