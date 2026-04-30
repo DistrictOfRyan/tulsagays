@@ -497,7 +497,7 @@ for day in DAYS_ORDERED:
             _share_text = ' | '.join(_share_parts)
             lines.append(f'                        <button class="share-btn" onclick="shareEvent(this)" '
                          f'data-title="{esc(ev_name[:80])}" data-text="{esc(_share_text)}" '
-                         f'aria-label="Share this event">Share</button>')
+                         f'aria-label="Share this event">&#8599; Tell Your Gays</button>')
             lines.append(f'                    </div>')
             lines.append(f'                </div>')
 

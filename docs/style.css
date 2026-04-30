@@ -972,28 +972,36 @@ button:focus-visible,
 
 /* ── Share Button ── */
 .share-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.7rem;
+  display: inline-block;
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 1px;
-  color: #aaaaaa;
+  letter-spacing: 0px;
+  color: #666;
   background: transparent;
-  border: 1px solid #444444;
-  padding: 4px 12px;
+  border: 1px solid #3a3a3a;
+  padding: 4px 14px;
   cursor: pointer;
-  border-radius: 2px;
-  transition: border-color 0.2s, color 0.2s;
-  margin-top: 8px;
+  transition: all 0.2s;
+  margin-left: 6px;
   font-family: inherit;
   text-transform: uppercase;
+  vertical-align: middle;
+  line-height: inherit;
+  -webkit-appearance: none;
+  appearance: none;
 }
 .share-btn:hover {
-  border-color: var(--tg-pink30);
+  border-color: var(--tg-pink);
   color: var(--tg-pink);
+  background: transparent;
 }
 .share-btn:active { opacity: 0.7; }
+
+/* Share button when it's the only action (no event-link sibling) */
+.event-details > .share-btn:first-of-type {
+  margin-left: 0;
+  margin-top: 6px;
+}
 
 /* ── Newsletter Nav Link ── */
 nav a.newsletter-cta {
