@@ -901,9 +901,9 @@ nav a.active {
   margin: 8px 0;
 }
 
-/* ── Event cards: pink left border + hover slide ── */
+/* ── Event cards: day-colored left border + hover slide ── */
 .event-card {
-  border-left: 3px solid var(--tg-pink) !important;
+  border-left: 3px solid var(--day-color, var(--tg-pink)) !important;
   border-radius: 0 4px 4px 0 !important;
   background: #141414 !important;
   transition: background 0.18s ease, transform 0.15s ease !important;

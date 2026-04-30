@@ -390,7 +390,7 @@ for day in DAYS_ORDERED:
 
     lines.append('')
     lines.append(f'        <!-- {day.upper()} -->')
-    lines.append(f'        <section class="day-section">')
+    lines.append(f'        <section class="day-section" style="--day-color:var({css_var})">')
     lines.append(f'            <h2 class="day-title" style="color:var({css_var})">{day}</h2>')
     lines.append(f'            <div class="day-date">{date_str}</div>')
     lines.append(f'            <hr class="day-divider">')
