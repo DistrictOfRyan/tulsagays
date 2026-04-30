@@ -66,7 +66,7 @@ as NEEDS VERIFICATION, either verify it or omit the address entirely.
 | Magic City Books | E Archer (Arts District) | OPEN | Independent bookstore. Strong LGBTQ+ section. Address unverified — do not publish exact street number. |
 | Gathering Place | Riverside Dr | OPEN | Free public park. Not specifically queer but heavily used by community. One of the best parks in the US. |
 | Philbrook Museum | Address unverified | OPEN | Fine arts museum. Queer-friendly. Do not publish street number. |
-| Gilcrease Museum | Address unverified | OPEN | Art and history museum. |
+| Gilcrease Museum | 1400 N Gilcrease Museum Rd, Tulsa OK 74127 | OPEN | Art and history museum. 23 acres in the Osage Hills. Verified address. Phone: 918-596-2783. |
 
 ---
 
