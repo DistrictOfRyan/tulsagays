@@ -913,15 +913,8 @@ nav a.active {
   transform: translateX(4px) !important;
 }
 
-/* ── Event time: always pink ── */
-.event-time {
-  color: var(--tg-pink) !important;
-}
-
-/* ── Event name: bright white ── */
-.event-name {
-  color: #ffffff !important;
-}
+/* ── Event time + name: day colors win (set via inline style per day) ── */
+/* Removed !important overrides so var(--day-*) inline styles take precedence */
 
 /* ── Gay Score pill ── */
 .event-flamingo {
