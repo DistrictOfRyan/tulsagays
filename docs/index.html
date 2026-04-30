@@ -1943,11 +1943,14 @@
         var card  = btn.closest('.event-card');
         var link  = card ? card.querySelector('.event-link') : null;
         var url   = (link && link.href) || 'https://www.tulsagays.com/';
+        // Include the URL inside the text body too — some iOS share targets
+        // ignore the {url} field when there's also a {text}, and others
+        // overwrite it with the page URL. Embedding here makes it bulletproof.
+        var richText = text + '\n\n' + url;
         if (navigator.share) {
-            navigator.share({ title: title, text: text, url: url }).catch(function(){});
+            navigator.share({ title: title, text: richText, url: url }).catch(function(){});
         } else {
-            var copyText = text + '\n' + url;
-            navigator.clipboard.writeText(copyText).then(function() {
+            navigator.clipboard.writeText(richText).then(function() {
                 var orig = btn.textContent;
                 btn.textContent = 'Copied!';
                 setTimeout(function() { btn.textContent = orig; }, 2000);
