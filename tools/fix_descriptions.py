@@ -64,9 +64,9 @@ DESCS = {
         "hours before Monday finds you. Use them."
     ),
     "sunday showdown open talent night": (
-        "Open stage at Club Majestic. Real performers competing live, unscripted. Some will "
-        "be brilliant. Some will spectacularly wipe out. Both are worth showing up for. "
-        "Doors 9, show 11. Sleep is a Monday problem."
+        "Open stage at Club Majestic. Real performers, live and unscripted. Anyone with the "
+        "nerve to sign up gets the mic, and the room shows up for all of it. Doors 9, show 11. "
+        "Sleep is a Monday problem."
     ),
     "equality business alliance networking mixer": (
         "LGBTQ+ professionals making real connections at the Equality Center. Not the awkward "

@@ -300,17 +300,16 @@ NAMED_DESCRIPTIONS = {
         "morning because you have earned this evening and the inbox will survive."
     ),
     "sunday showdown": (
-        "Open Talent Night at Club Majestic. Doors at 9, show at 11. This is unscripted, live, "
-        "and completely unpredictable, which is exactly the point and also the reason you cannot "
+        "Open Talent Night at Club Majestic. Doors at 9, show at 11. Live, unscripted, and "
+        "completely unpredictable, which is exactly the point and also the reason you cannot "
         "leave early because the next act might be the most interesting thing you see all month. "
-        "Performers sign up, take the stage, and compete live for the crowd's approval, which "
-        "means some will be brilliant, some will make bold choices that land beautifully, and "
-        "some will make bold choices that don't land at all, and all of it is genuinely worth "
-        "watching because live performance carries real risk and that risk is what makes it feel "
-        "like something actually happening rather than content. "
+        "Anyone with the nerve to sign up gets the stage, and the room shows up for every one "
+        "of them. Every act is somebody stepping into a real crowd and going for it, which is "
+        "honestly the bravest thing you can do on a Sunday night, and live performance like "
+        "this is what makes a Sunday feel like something actually happening rather than content. "
         "Club Majestic's Sunday Showdown is the kind of queer nightlife that keeps you up past "
-        "midnight simply because you cannot bring yourself to leave before you see what comes "
-        "next. Sleep is a Monday problem. Tonight is yours."
+        "midnight simply because you cannot bring yourself to leave before you see who walks up "
+        "to that mic next. Sleep is a Monday problem. Tonight is yours."
     ),
     "touchtunes friday": (
         "TOUCHTUNES FRIDAY at the Tulsa Eagle, which is the night where you and everyone else in "
