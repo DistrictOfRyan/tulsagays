@@ -14,7 +14,7 @@ as NEEDS VERIFICATION, either verify it or omit the address entirely.
 |---|---|---|---|
 | Club Majestic | 124 N Boston Ave, Downtown Tulsa | OPEN | Flagship LGBTQ+ nightclub. Drag shows, DJs, theme nights. |
 | Tulsa Eagle | 2630 E 15th St, Cherry Street area | OPEN | Leather/bear bar. Pool, karaoke, patio. Neighborhood: Cherry Street (E 15th St), NOT Brookside. |
-| Yellow Brick Road (YBR) | **ADDRESS NEEDS VERIFICATION** | OPEN | Cherry Street area (E 15th St). NOT in the same building as the Eagle. NOT in Brookside. Neighboring but separate venues. Do not claim they share an address or building. |
+| Yellow Brick Road (YBR) | 2630 E 15th St, Cherry Street area | OPEN | Same address as the Eagle (same strip/complex), but separate venues. NOT in Brookside. Do not say they "share a building" — they are distinct bars. |
 | The Fur Shop | 1218 E 4th St | **PERMANENTLY CLOSED** | Do not recommend or describe as open. Do not reference Pony Coffee as being inside The Fur Shop. |
 | St. Vitus Bar | 1707 S Boston Ave, Brookside | OPEN | Neighborhood cocktail bar. Reliably queer-friendly. |
 | Mercury Lounge | 1747 S Boston Ave, Brookside | OPEN | Live music venue. Queer-friendly crowd. |
@@ -40,7 +40,7 @@ as NEEDS VERIFICATION, either verify it or omit the address entirely.
 
 | Venue | Address | Status | Notes |
 |---|---|---|---|
-| Pony Coffee | **ADDRESS NEEDS VERIFICATION** | OPEN | Queer-owned. Was formerly located inside The Fur Shop (now closed). Current location unconfirmed — do not publish The Fur Shop address. |
+| Pony Coffee | 1623 S Main St, Tulsa OK 74119 | OPEN | Queer-owned. Specialty coffee roaster. Riverview area. Former Fur Shop location is gone — this is the current address. |
 | Gypsy Coffee House | 303 N Cincinnati Ave, Arts District | OPEN | Decades-old indie coffee house. Queer community home base. |
 | She Brews Coffee | Address unverified | OPEN | Woman-owned, queer-friendly. Do not publish a street number. |
 | Coracle Coffee | Address unverified | OPEN | Specialty roaster. Queer-friendly. Do not publish a street number. |
@@ -81,8 +81,8 @@ as NEEDS VERIFICATION, either verify it or omit the address entirely.
 
 ## Known Errors to Avoid
 
-- **Eagle + YBR same building**: FALSE. They are separate venues near each other in the Cherry Street area. YBR's exact address is not verified. Do not say they "share a building" or list both at 2630 E 15th St.
-- **Eagle + YBR in Brookside**: FALSE. Both are on Cherry Street (E 15th St), which is its own distinct neighborhood. Brookside is the adjacent neighborhood (S Peoria Ave area). Do not place the Eagle or YBR in Brookside.
+- **Eagle + YBR same building**: Both are at 2630 E 15th St (same complex), but they are two distinct, separate bars — different spaces, different vibes. Describe them as "neighbors in the same complex," not as one venue or one building.
+- **Eagle + YBR in Brookside**: FALSE. Both are on Cherry Street (E 15th St), which is its own distinct neighborhood. Brookside is the S Peoria Ave area. Do not place the Eagle or YBR in Brookside.
 - **Pony Coffee inside The Fur Shop**: The Fur Shop is permanently closed. Pony Coffee's current location is unverified. Do not reference the Fur Shop address for Pony Coffee.
 - **The Fur Shop as open**: Permanently closed. Remove from any "where to go" recommendations.
 - **Girl Scouts events from OkEq**: These are youth org meetings held at the Equality Center, not LGBTQ+ community events. Do not include in the event scrape or event listings.
