@@ -990,6 +990,74 @@ def _desc_generic(ev, score):
     return base
 
 
+# ── Claude API description generator ─────────────────────────────────────────
+
+def _generate_sassy_descriptions(ev: dict, score: int) -> tuple:
+    """Call Claude to generate unique sassy descriptions. Returns (website_desc, slide_desc).
+    Falls back to template if API unavailable."""
+    try:
+        import anthropic
+        client = anthropic.Anthropic()
+
+        name    = ev.get('name', '')
+        venue   = ev.get('venue', '') or ''
+        time    = ev.get('time', '') or ''
+        date    = ev.get('date', '') or ''
+        raw     = ev.get('description', '') or ''
+        label   = {5: "Super Gay", 4: "Very Queer", 3: "LGBTQ-Friendly", 2: "Gay-Friendly", 1: "Mostly Straight"}.get(score, "Gay-Friendly")
+
+        prompt = f"""You write event descriptions for Tulsa Gays, a website helping LGBTQ+ people in Tulsa Oklahoma find events.
+Your personality: sassy gay drag queen. Cheeky, slightly inappropriate, genuinely funny, very specific.
+Your mission: convince a gay introvert to get off the couch and go to this event.
+
+EVENT DETAILS:
+Name: {name}
+Venue: {venue}
+Date/Time: {date} {time}
+Gay Score: {score}/5 ({label})
+Raw info: {raw[:400] if raw else 'none'}
+
+Write TWO versions:
+
+WEBSITE: 4-6 sentences. Tell them what it is, why they NEED to go, how to maximize fun (arrive early, bring singles, etc.). Be specific to THIS event. Slightly inappropriate, drag queen sass. If it's a low gay score (1-2), explain why a gay person should care about this non-gay event. If high score (4-5), lean into the community energy and FOMO.
+
+SLIDE: 2-3 sentences MAX. Punchy, gets to the point fast. Perfect for a social media slide. Same sassy voice but shorter.
+
+Rules:
+- Unique to THIS specific event, not generic filler
+- No em dashes (use commas or parentheses instead)
+- No hashtags
+- Don't start both with the event name
+
+Format EXACTLY as:
+WEBSITE: [your text here]
+SLIDE: [your text here]"""
+
+        resp = client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=500,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        text = resp.content[0].text.strip()
+
+        website_desc = ""
+        slide_desc   = ""
+        if "WEBSITE:" in text and "SLIDE:" in text:
+            parts        = text.split("SLIDE:", 1)
+            website_desc = parts[0].replace("WEBSITE:", "").strip()
+            slide_desc   = parts[1].strip()
+        else:
+            website_desc = text
+            slide_desc   = text[:250].strip()
+
+        return website_desc, slide_desc
+
+    except Exception as e:
+        print(f"    [API error: {e}] falling back to template")
+        fallback = _find_description(ev, score)
+        return fallback, fallback[:220].strip()
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 wk = config.current_week_key()
@@ -1014,10 +1082,11 @@ events = [e for e in events if not _is_garbage(e)]
 updated = 0
 for ev in events:
     score = flamingo_score(ev)
-    desc = _find_description(ev, score)
-    ev['website_description'] = desc
+    website_desc, slide_desc = _generate_sassy_descriptions(ev, score)
+    ev['website_description'] = website_desc
+    ev['slide_description']   = slide_desc
     updated += 1
-    print(f"  [{score}🦩] {ev.get('name','')[:60]}")
+    print(f"  [{score}🦩] {ev.get('name','')[:55]}")
 
 if isinstance(raw, dict):
     raw['events'] = events
@@ -1028,4 +1097,4 @@ else:
 with open(path, 'w', encoding='utf-8') as f:
     json.dump(save_obj, f, ensure_ascii=False, indent=2)
 
-print(f"\nWrote website_description to {updated} events -> {path}")
+print(f"\nWrote website_description + slide_description to {updated} events -> {path}")

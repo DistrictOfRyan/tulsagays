@@ -81,13 +81,15 @@ class BaseScraper:
         priority: int = 2,
     ) -> Dict:
         """Create a standardized event dict."""
+        _url = url.strip() if url else ""
         return {
             "name": name.strip() if name else "",
             "date": date.strip() if date else "",
             "time": time.strip() if time else "",
             "venue": venue.strip() if venue else "",
             "description": description.strip() if description else "",
-            "url": url.strip() if url else "",
+            "url": _url,
+            "source_urls": [_url] if _url else [],
             "priority": priority,
             "source": self.source_name,
         }

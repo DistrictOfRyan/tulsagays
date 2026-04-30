@@ -274,6 +274,30 @@ def esc(s):
         return ''
     return str(s).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
 
+_DOMAIN_LABELS = {
+    'eventbrite.com': 'Eventbrite',
+    'facebook.com': 'Facebook',
+    'fb.com': 'Facebook',
+    'meetup.com': 'Meetup',
+    'ticketmaster.com': 'Ticketmaster',
+    'axs.com': 'AXS',
+    'instagram.com': 'Instagram',
+    'tickets.com': 'Tickets',
+}
+
+def _url_label(url: str) -> str:
+    """Return a short display label for a URL based on its hostname."""
+    try:
+        from urllib.parse import urlparse
+        host = urlparse(url).hostname or ''
+        host = host.lower().lstrip('www.')
+        if host in _DOMAIN_LABELS:
+            return _DOMAIN_LABELS[host]
+        # Capitalize first segment before the first dot
+        return host.split('.')[0].capitalize() if host else 'Link'
+    except Exception:
+        return 'Link'
+
 _VENUE_JUNK = ('shared by ', 'posted by ', 'reposted by ', 'event by ')
 # Known address fragments → display name (checked before address-stripping)
 _VENUE_NAME_MAP = {
@@ -416,7 +440,15 @@ for day in DAYS_ORDERED:
             lines.append(f'                        <div class="event-flamingo">{fl_html}</div>')
             if desc:
                 lines.append(f'                        <div class="event-description">{esc(desc)}</div>')
-            if url:
+            source_urls = ev.get('source_urls') or []
+            if len(source_urls) > 1:
+                # Multiple sources: render a small button for each unique URL
+                for _su in source_urls:
+                    if not _su:
+                        continue
+                    _lbl = esc(_url_label(_su))
+                    lines.append(f'                        <a href="{esc(_su)}" class="event-link event-link-source" target="_blank" rel="noopener">{_lbl} &rarr;</a>')
+            elif url:
                 link_lbl = esc(ev_name[:50]) + ' &rarr;' if len(ev_name) > 50 else esc(ev_name) + ' &rarr;'
                 lines.append(f'                        <a href="{esc(url)}" class="event-link" target="_blank" rel="noopener">{link_lbl}</a>')
             lines.append(f'                    </div>')

@@ -57,6 +57,14 @@ COVER_TAGLINES = [
 SKIP_NAMES = {"event calendar", "events", "calendar", "untitled", "",
               "map", "google calendar", "get your tickets", "upcoming events"}
 
+FLAMINGO_LABELS = {
+    1: "Mostly Straight",
+    2: "Gay-Friendly",
+    3: "Half Gay",
+    4: "Very Queer",
+    5: "Super Gay",
+}
+
 # Unique footer taglines per day — FOMO-baiting, sassy, never the same line twice
 DAY_FOOTER_TAGLINES = {
     "Monday":    "This is already happening. Are you there or are you on the couch again?",
@@ -274,14 +282,57 @@ def _text_height(draw: ImageDraw.Draw, text: str, font: ImageFont.FreeTypeFont) 
 
 
 def _draw_flamingo_score(draw: ImageDraw.Draw, score: int, x: int, y: int, size: int = 18) -> int:
-    """Draw flamingo emoji score row centered at x; returns new y after drawing."""
+    """Draw flamingo emoji row + label text, centered; returns new y after drawing."""
     try:
         f_emoji = _font("segoe-emoji", size)
+        f_label = _font("segoe", max(11, size - 4))
         flamingo = "\U0001F9A9"  # 🦩
         row = flamingo * score
+        label = FLAMINGO_LABELS.get(score, "")
+
         tw = _text_width(draw, row, f_emoji)
         draw.text(((W - tw) // 2, y), row, font=f_emoji, fill="#e84fa0", embedded_color=True)
-        return y + _text_height(draw, row, f_emoji) + 4
+        y += _text_height(draw, row, f_emoji) + 2
+
+        if label:
+            lw = _text_width(draw, label, f_label)
+            draw.text(((W - lw) // 2, y), label, font=f_label, fill="#e84fa0")
+            y += _text_height(draw, label, f_label) + 6
+        else:
+            y += 6
+
+        return y
+    except Exception:
+        return y
+
+
+def _draw_gay_scale(draw: ImageDraw.Draw, y: int, font_size: int = 13) -> int:
+    """Draw a 5-tier gay scale legend as a two-column table. Returns new y."""
+    try:
+        f_emoji = _font("segoe-emoji", font_size)
+        f_label = _font("segoe", font_size)
+        flamingo = "\U0001F9A9"
+        entries = [
+            (5, "Super Gay"),
+            (4, "Very Queer"),
+            (3, "Half Gay"),
+            (2, "Gay-Friendly"),
+            (1, "Mostly Straight"),
+        ]
+        gap = 10  # px between emoji column and label column
+        emoji_col_w = max(_text_width(draw, flamingo * s, f_emoji) for s, _ in entries)
+        label_col_w = max(_text_width(draw, lbl, f_label) for _, lbl in entries)
+        row_h = max(_text_height(draw, flamingo, f_emoji), _text_height(draw, "X", f_label))
+        x_start = (W - emoji_col_w - gap - label_col_w) // 2
+        for score, label in entries:
+            emojis = flamingo * score
+            ew = _text_width(draw, emojis, f_emoji)
+            # Right-align emojis so the rightmost flamingo always lines up
+            draw.text((x_start + emoji_col_w - ew, y), emojis, font=f_emoji, fill="#e84fa0", embedded_color=True)
+            # Labels always start at the same x
+            draw.text((x_start + emoji_col_w + gap, y), label, font=f_label, fill=LIGHT_GRAY)
+            y += row_h + 4
+        return y + 4
     except Exception:
         return y
 
@@ -459,7 +510,9 @@ def make_cover_slide(post_type: str, date_range: str,
         ev_name  = clean_text(featured_event.get("name", ""))
         ev_time  = featured_event.get("time", "")
         ev_venue = clean_venue(featured_event.get("venue", ""))
-        ev_desc  = featured_event.get("description", "")
+        ev_desc  = (featured_event.get("website_description")
+                    or featured_event.get("slide_description")
+                    or featured_event.get("description", ""))
         ev_date  = format_date(featured_event.get("date", ""))
 
         eotw_box_top = y - 10
@@ -479,11 +532,15 @@ def make_cover_slide(post_type: str, date_range: str,
         dt_line = f"{ev_date}  ·  {ev_time}" if ev_date and ev_time else (ev_date or ev_time)
         if dt_line:
             y = _draw_centered(draw, dt_line, y, f_eotw_dt, GRAY)
-            y += 10
+            y += 8
+
+        # Flamingo score for the featured event
+        eotw_score = _flamingo_score(featured_event)
+        y = _draw_flamingo_score(draw, eotw_score, W // 2, y, size=20)
 
         if ev_desc:
             y = _draw_wrapped(draw, ev_desc, y, f_eotw_pitch, LIGHT_GRAY,
-                              max_px=W - 160, max_lines=6, line_gap=7)
+                              max_px=W - 160, max_lines=8, line_gap=7)
             y += 10
 
         ev_url = featured_event.get("url", "") if featured_event else ""
@@ -560,6 +617,11 @@ def make_cover_slide(post_type: str, date_range: str,
                 ticket_line = f"GET TICKETS  \u2192  {upc_url}"
                 y = _draw_wrapped(draw, ticket_line, y, f_upc_link, NEON_PINK,
                                   max_px=W - 80, max_lines=2, line_gap=4)
+
+    # Gay scale legend — larger, centered, fixed above footer bar
+    scale_top = H - 255
+    _thin_divider(draw, scale_top, margin=PAD, color="#2a2a2a")
+    _draw_gay_scale(draw, scale_top + 12, font_size=16)
 
     # Footer — prominent TULSAGAYS.COM with "hundreds of events" call-to-action
     _pink_bar(draw, H - 100, height=2)
@@ -716,9 +778,9 @@ def _measure_events_height(draw, all_events: List[Dict], header_y: int,
             time_str = nice_dt
         if time_str:
             y += _text_height(draw, "X", f_det) + 3
-        y += 2
-        # Flamingo score row
-        y += 22  # approx height of emoji row at typical size
+        y += 8
+        # Flamingo score row + label
+        y += 42  # emoji row + label text + gaps
         # Pitch
         if ev_pitch:
             pitch_list = _wrap_to_width(draw, ev_pitch, f_pitch, W - PAD * 2 - 40)[:pitch_max_lines]
@@ -841,8 +903,8 @@ def make_day_slide(day_name: str, events: List[Dict],
                 if y >= content_bottom:
                     break
                 _draw_centered(draw, ln, y, f_name, WHITE)
-                y += _text_height(draw, ln, f_name) + 4
-            y += 6
+                y += _text_height(draw, ln, f_name) + 5
+            y += 10
 
             # Venue / address line (pink, before time)
             if ev_venue and y < content_bottom:
@@ -853,10 +915,10 @@ def make_day_slide(day_name: str, events: List[Dict],
                         if y >= content_bottom:
                             break
                         _draw_centered(draw, vl, y, f_det, NEON_PINK)
-                        y += _text_height(draw, "X", f_det) + 3
+                        y += _text_height(draw, "X", f_det) + 4
                 else:
                     _draw_centered(draw, venue_line, y, f_det, NEON_PINK)
-                    y += _text_height(draw, "X", f_det) + 3
+                    y += _text_height(draw, "X", f_det) + 4
 
             # Time line (gray, after venue)
             if y < content_bottom:
@@ -869,8 +931,8 @@ def make_day_slide(day_name: str, events: List[Dict],
                     time_parts.append(nice_dt)
                 if time_parts:
                     _draw_centered(draw, time_parts[0], y, f_det, LIGHT_GRAY)
-                    y += _text_height(draw, "X", f_det) + 3
-            y += 2  # small gap after venue/time block
+                    y += _text_height(draw, "X", f_det) + 4
+            y += 8  # gap before flamingo score
 
             # Flamingo score
             if y < content_bottom:
@@ -885,8 +947,8 @@ def make_day_slide(day_name: str, events: List[Dict],
                     if y >= content_bottom:
                         break
                     _draw_centered(draw, pl, y, f_pitch, LIGHT_GRAY)
-                    y += _text_height(draw, pl, f_pitch) + 4
-                y += 4
+                    y += _text_height(draw, pl, f_pitch) + 5
+                y += 8
 
             # URL
             if ev_url and y < content_bottom:
@@ -894,7 +956,7 @@ def make_day_slide(day_name: str, events: List[Dict],
                 if len(display_url) > 50:
                     display_url = display_url[:50] + "..."
                 _draw_centered(draw, display_url, y, f_url, NEON_PINK)
-                y += _text_height(draw, "X", f_url) + 4
+                y += _text_height(draw, "X", f_url) + 6
 
             # Track featured event bottom bound (for the highlight box)
             if i == feat_idx:
@@ -1016,6 +1078,13 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
             for e in cat
             if not _is_garbage(e)
         ]
+        # Also search events_by_day when categories are empty
+        if not all_events_flat and events_by_day:
+            all_events_flat = [
+                e for day_evs in events_by_day.values()
+                for e in day_evs
+                if not _is_garbage(e)
+            ]
 
         def _is_recurring(e: Dict) -> bool:
             src = (e.get("source") or "").lower()
@@ -1043,7 +1112,8 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
             "drag", "drag show", "drag bingo", "drag brunch", "drag queen",
             "drag king", "drag race", "cabaret", "pride show", "pride event",
             "pride night", "queer night", "gay night", "lgbtq+ night",
-            "twisted arts", "okeq", "rainbow", "pride dance", "pride party",
+            "twisted arts", "inner circle drag", "open talent", "variety show",
+            "okeq", "rainbow", "pride dance", "pride party",
         ]
 
         def _is_queer_performance(e: Dict) -> bool:

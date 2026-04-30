@@ -124,12 +124,6 @@ These are scraper artifacts and should never appear on the website or in slides:
 - `Bruce Goff Event Center` — venue name scraped as event
 - Any event name under 4 characters
 
-**Daily health/clinical services** (scraped from OKEQ but not community events — filtered at runner level):
-- `OKEQ Health Clinic` — daily medical clinic, repeats every weekday
-- `HOPE Testing` (Health Outreach, Prevention & Education) — daily STI testing
-- `Free Drop-In Therapy Sessions` — daily therapy availability notice
-- Any variant of the above
-
 ---
 
 ## Slide Sorting Priority
@@ -149,11 +143,11 @@ Events within a day are ranked for slides in this order:
 Within each tier, events sort by start time (AM before PM, untimed events last).
 
 **Always deprioritized (T6 minimum):** mix-and-mingle networking, AA meetings,
-generic book clubs, "shut up & write", self-help seminars, health clinics,
-drop-in therapy sessions, STI testing services.
+generic book clubs, "shut up & write", self-help seminars.
 
-**NEVER featured as Event of the Day or in top 3 events:** anything matching the
-daily health services list above, AA meetings, bowling leagues, recurring support groups.
+**NEVER featured as Event of the Day:** daily health services (OKEQ Health Clinic,
+HOPE Testing, Drop-In Therapy), AA meetings, bowling leagues, recurring support groups.
+These appear on the website and are visible — just never in a featured position.
 
 ---
 
@@ -162,3 +156,98 @@ daily health services list above, AA meetings, bowling leagues, recurring suppor
 - **No Tulsa Gays tasks on Fridays or Thursday nights**
 - Full scrape must complete and be verified before generating slides or posting
 - Week always runs Monday–Sunday; cover card shows current week (not next week)
+
+---
+
+## Never-Feature Events (_NEVER_FEATURE)
+
+These events are deprioritized to T6+ and must never lead a day as the featured event.
+They appear on the website and are visible — just not in a highlighted position.
+
+| Event keyword | Reason |
+|---|---|
+| `mix and mingle` | Straight networking event, not a community event |
+| `aa meeting` / `aa meetings` | Valuable but not a highlight event |
+| `book club - tulsa` | Org-specific book clubs (Tulsa SWE, etc.) |
+| `shut up & write` | Productivity meetup, not community |
+| `raise your spiritual iq` | Generic self-help seminar |
+| `okeq senior` | Senior program is important but should never headline; it's for the regulars |
+| `girl scout` | Troop meetings at the Equality Center — community context, not a featured night out |
+
+---
+
+## Recurring Name Fragments (_RECURRING_NAME_FRAGMENTS)
+
+Events matching any of these fragments are treated as recurring (T5) and will never lead a day.
+
+| Fragment | Reason |
+|---|---|
+| `bowling league` | Weekly league — appears every week, not a special event |
+| `support group` | Weekly or monthly; important but not a highlight |
+| `lambda unity` | Recurring LGBTQ support/social |
+| `outreach group` | Recurring outreach programming |
+| `monthly meeting` | Generic recurring meeting |
+| `happy hour!` | Generic bar open-door entries (DVL, etc.) — not real programmed events |
+| `touchtunes` | Weekly Eagle promo; appears every Friday, never an actual event |
+| `ttrpg` | Recurring tabletop RPG session at OKEQ |
+| `tabletop` | Generic recurring tabletop gaming |
+
+---
+
+## Flamingo Scale Labels (canonical)
+
+Do not change these labels without updating `image_maker.py` > `FLAMINGO_LABELS`.
+
+| Score | Label | Notes |
+|---|---|---|
+| 5 | Super Gay | True gay bars + drag/pride keywords |
+| 4 | Very Queer | LGBTQ orgs, queer-friendly venues, identity terms |
+| 3 | Half Gay | Community-organized, performing arts, All Souls |
+| 2 | Gay-Friendly | Arts/culture/entertainment default |
+| 1 | Mostly Straight | Effectively retired — almost nothing should score 1 |
+
+The old label "LGBTQ-Friendly" for tier 3 was retired because it was too similar
+to "Gay-Friendly" (tier 2). "Half Gay" is the canonical tier 3 label.
+
+---
+
+## Facebook Posting Checklist
+
+**Page URL (always use this — vanity URL /tulsagays does not work):**
+```
+https://www.facebook.com/profile.php?id=61575591958277
+```
+Page ID: `1086906044497675`
+
+**Groups to post to (priority order — see `tools/fb_groups.py` for full list):**
+
+| Group | Members | Type |
+|---|---|---|
+| Okie Gays | 6,000 | LGBTQ statewide |
+| Tulsa LGBTQ+ Scene | 2,900 | LGBTQ Tulsa |
+| Tulsa's LGBT Nightlife | 1,900 | LGBTQ Tulsa |
+| Gay Men of Tulsa | 1,400 | LGBTQ Tulsa |
+| Oklahoma LGBT Event Group | ~2,000 | LGBTQ Tulsa (ID TBD) |
+| OKC Area LGBTQ+ Events | 14,000 | LGBTQ OKC (big Tulsa events only) |
+
+Groups with "TBD" IDs in `fb_groups.py` require manual confirmation before automated posting.
+
+---
+
+## Weekly Verification Checklist
+
+Run `python tools/verify_week.py` after scraping, before generating slides.
+This runs automatically in `py main.py full-run` between scrape and generate.
+
+| Check | What it catches |
+|---|---|
+| A — Duplicate events | Same venue + same time + same date with different names |
+| B — HHHH venue | Any HHHH event not at DoubleTree Tulsa Downtown (auto-fixed) |
+| C — Day mismatch | Description that says "Thursday" but event is on Saturday |
+| D — Garbage events | Scraper artifacts: `(map)`, `stay connected!`, names under 4 chars, etc. |
+| E — Flamingo sanity | Gay bar events scoring below 5, drag events scoring below 4 |
+| F — Never-feature ordering | A never-feature event that would lead a day |
+
+Exit code 0 = all pass or warn (auto-fixed). Exit code 1 = manual fix required.
+
+Standalone: `python tools/verify_week.py --week 2026-W18`

@@ -3,15 +3,16 @@ Tulsa Gays - Main Orchestrator
 Coordinates scraping, content generation, image creation, posting, and blog updates.
 
 Usage:
-    py main.py scrape          # Run all scrapers
-    py main.py generate        # Generate content for this week
-    py main.py post-weekday    # Post weekday events
-    py main.py post-weekend    # Post weekend events
-    py main.py update-blog     # Update the blog with current events
-    py main.py discover        # Discover new event sources
-    py main.py report          # Generate engagement report
-    py main.py full-run        # Run the complete weekly pipeline
-    py main.py test            # Test run without posting
+    py main.py scrape               # Run all scrapers
+    py main.py verify [2026-W18]    # Run pre-slide verification (optional week arg)
+    py main.py generate             # Generate content for this week
+    py main.py post-weekday         # Post weekday events
+    py main.py post-weekend         # Post weekend events
+    py main.py update-blog          # Update the blog with current events
+    py main.py discover             # Discover new event sources
+    py main.py report               # Generate engagement report
+    py main.py full-run             # Run the complete weekly pipeline
+    py main.py test                 # Test run without posting
 """
 
 import sys
@@ -55,6 +56,29 @@ def cmd_scrape():
     events = run_scrapers()
     print(f"\nTotal events found: {len(events) if events else 0}")
     return events
+
+
+def cmd_verify(week=None):
+    """Run pre-generation verification checks on the week's events.
+
+    Loads events from data/events/<week>_all.json and runs six checks:
+      A - Same-venue/time/date duplicates
+      B - HHHH venue validation (auto-fixes DoubleTree)
+      C - Day-of-week description mismatches
+      D - Garbage event filter
+      E - Flamingo score sanity
+      F - Never-feature event ordering
+
+    Exits with code 1 if any FAIL check is found (WARN = auto-fixed = OK).
+    """
+    import sys as _sys
+    from tools.verify_week import run_verification
+
+    week_key = week or config.current_week_key()
+    exit_code = run_verification(week_key)
+    if exit_code != 0:
+        print("\n[STOP] Verification failed. Fix the issues above before generating slides.")
+        _sys.exit(exit_code)
 
 
 def cmd_generate(post_type="weekday"):
@@ -164,6 +188,8 @@ def cmd_generate(post_type="weekday"):
         "outreach group", "monthly meeting",
         "happy hour!",   # generic bar open-door entries (DVL, etc.) — not real events
         "touchtunes",    # weekly Eagle promo, every Friday
+        "ttrpg",         # weekly/recurring tabletop RPG sessions
+        "tabletop",      # generic tabletop gaming — recurring
     }
     # These events should never appear in the top 3 — deprioritize to T6+
     _ALWAYS_DEPRIORITIZE = {
@@ -173,6 +199,8 @@ def cmd_generate(post_type="weekday"):
         "book club - tulsa",  # org-specific book clubs (Tulsa SWE, etc.)
         "shut up & write",    # productivity meetup
         "raise your spiritual iq",  # generic self-help
+        "okeq senior",        # seniors program — important but never the featured event
+        "girl scout",         # troop meetings — community but not a featured highlight
     }
     # Cultural/entertainment events get a sub-tier boost so they float above
     # generic T5 events even when their start time is later
@@ -214,7 +242,10 @@ def cmd_generate(post_type="weekday"):
         sub_tier = 0 if is_cultural else 1
         minutes = _parse_time_minutes(e.get("time", ""))
         # Drag/performance shows at bars still rank high — they're worth featuring
-        _PERFORMANCE_KEYWORDS = {"drag", "talent night", "open talent", "cabaret", "variety show"}
+        _PERFORMANCE_KEYWORDS = {
+            "drag", "talent night", "open talent", "cabaret", "variety show",
+            "twisted arts drag", "inner circle drag",
+        }
         is_drag_show = any(kw in combo for kw in _PERFORMANCE_KEYWORDS) and is_lgbtq
         if is_lgbtq and not is_bar and not is_recurring:
             tier = 1   # LGBTQ, non-bar, non-recurring — always show first
@@ -469,16 +500,20 @@ def cmd_full_run():
     # Step 1: Scrape
     cmd_scrape()
 
-    # Step 2: Generate weekday content
+    # Step 2: Verify (runs after scrape, before any slide generation)
+    # Exits with code 1 on hard failures, auto-fixes WARN issues in the JSON
+    cmd_verify()
+
+    # Step 3: Generate weekday content
     cmd_generate("weekday")
 
-    # Step 3: Generate weekend content
+    # Step 4: Generate weekend content
     cmd_generate("weekend")
 
-    # Step 4: Update blog
+    # Step 5: Update blog
     cmd_update_blog()
 
-    # Step 5: Discover new sources
+    # Step 6: Discover new sources
     cmd_discover()
 
     print("\n" + "=" * 60)
@@ -556,6 +591,7 @@ if __name__ == "__main__":
     command = sys.argv[1].lower().replace("_", "-")
     commands = {
         "scrape": cmd_scrape,
+        "verify": lambda: cmd_verify(sys.argv[2] if len(sys.argv) > 2 else None),
         "generate": lambda: cmd_generate(sys.argv[2] if len(sys.argv) > 2 else "weekday"),
         "generate-all": lambda: cmd_generate("all"),
         "post-weekday": lambda: cmd_post("weekday"),
