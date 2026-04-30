@@ -434,6 +434,9 @@ for day in DAYS_ORDERED:
                 lines.append(f'                    </div>')
 
             lines.append(f'                    <div class="event-details">')
+            img_url = (ev.get('image_url') or '').strip()
+            if img_url:
+                lines.append(f'                        <div class="event-img-wrap"><img class="event-img" src="{esc(img_url)}" alt="{esc(ev_name)}" loading="lazy"></div>')
             lines.append(f'                        <div class="event-name" style="color:{name_color}">{esc(ev_name)}</div>')
             if venue_str:
                 lines.append(f'                        <div class="event-venue" style="color:var({css_var})">{venue_str}</div>')

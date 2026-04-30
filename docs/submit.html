@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit an Event - Tulsa Gays</title>
+    <meta name="description" content="Submit your LGBTQ+ event to Tulsa Gays. Community submissions are reviewed and published within 24 hours.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Submit an Event - Tulsa Gays">
+    <meta property="og:description" content="Submit your LGBTQ+ event to Tulsa Gays. Community submissions are reviewed and published within 24 hours.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.tulsagays.com/submit.html">
+    <meta property="og:site_name" content="Tulsa Gays">
+    <link rel="canonical" href="https://www.tulsagays.com/submit.html">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3ZGBZH6554"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3ZGBZH6554');
+    </script>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo-area">
+                <div>
+                    <div class="logo-text"><span class="tulsa">TULSA</span> <span class="gays">GAYS</span></div>
+                    <div class="logo-tagline">Your Weekly LGBTQ+ Event Guide</div>
+                </div>
+            </a>
+            <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.querySelector('nav').classList.toggle('open')">&#9776;</button>
+            <nav>
+                <ul>
+                    <li><a href="index.html">This Week</a></li>
+                    <li><a href="archive.html">Archive</a></li>
+                    <li><a href="blog/index.html">Blog</a></li>
+                    <li><a href="directory.html">Directory</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="submit.html" class="submit-cta active">Submit Event</a></li>
+                    <li><a href="https://instagram.com/tulsagays" target="_blank" rel="noopener">Instagram</a></li>
+                    <li><a href="https://linktr.ee/tulsagays" target="_blank" rel="noopener">Linktree</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <div class="submit-form-wrap">
+            <h1>SUBMIT AN EVENT</h1>
+            <div class="diamond-sep"><div class="diamond"></div></div>
+            <p class="form-intro">Got a queer event, community gathering, or LGBTQ+-friendly happening in Tulsa? Get it in front of the community. Fill out the form below and we'll review it within 24 hours.</p>
+
+            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+
+                <!-- Honeypot anti-spam field -->
+                <div class="honey-field" aria-hidden="true">
+                    <input type="text" name="_honey" tabindex="-1" autocomplete="off">
+                </div>
+
+                <!-- Hidden reply-to field -->
+                <input type="hidden" name="_replyto" value="">
+
+                <div class="form-group">
+                    <label for="event_name">Event Name <span style="color:var(--peacock)">*</span></label>
+                    <input type="text" id="event_name" name="event_name" required placeholder="What's the event called?">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="event_date">Date <span style="color:var(--peacock)">*</span></label>
+                        <input type="date" id="event_date" name="event_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_time">Start Time <span style="color:var(--peacock)">*</span></label>
+                        <input type="text" id="start_time" name="start_time" required placeholder="e.g. 7:00 PM">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="end_time">End Time</label>
+                    <input type="text" id="end_time" name="end_time" placeholder="e.g. 9:00 PM">
+                </div>
+
+                <div class="form-group">
+                    <label for="venue_name">Venue Name <span style="color:var(--peacock)">*</span></label>
+                    <input type="text" id="venue_name" name="venue_name" required placeholder="Where is this happening?">
+                </div>
+
+                <div class="form-group">
+                    <label for="venue_address">Venue Address</label>
+                    <input type="text" id="venue_address" name="venue_address" placeholder="e.g. 124 N Boston Ave, Tulsa">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="4" placeholder="Tell people why they should come..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="event_url">Event URL</label>
+                    <input type="url" id="event_url" name="event_url" placeholder="Facebook event, Eventbrite, etc.">
+                </div>
+
+                <div class="form-group">
+                    <label for="image_url">Image URL</label>
+                    <input type="url" id="image_url" name="image_url" placeholder="Flyer or promo image URL">
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="is_recurring" name="is_recurring" value="yes" onchange="toggleRecurring(this)">
+                    <label for="is_recurring">Recurring event?</label>
+                </div>
+
+                <div class="recurring-options" id="recurring-options">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="frequency">Frequency</label>
+                            <select id="frequency" name="frequency">
+                                <option value="">Select frequency</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="bi-weekly">Bi-weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="runs_until">Runs Until</label>
+                            <input type="date" id="runs_until" name="runs_until">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="submitter_name">Your Name or Organization</label>
+                    <input type="text" id="submitter_name" name="submitter_name" placeholder="Who's submitting this?">
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Event</button>
+
+                <p class="form-note">Submissions are reviewed and published within 24 hours.</p>
+
+            </form>
+        </div>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p>Follow us on Instagram: <a href="https://instagram.com/tulsagays" target="_blank" rel="noopener">@tulsagays</a> &middot; <a href="https://linktr.ee/tulsagays" target="_blank" rel="noopener">All Links</a></p>
+            <p>Updated weekly &middot; Your guide to LGBTQ+ Tulsa</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleRecurring(checkbox) {
+            var opts = document.getElementById('recurring-options');
+            opts.style.display = checkbox.checked ? 'block' : 'none';
+        }
+    </script>
+
+</body>
+</html>
