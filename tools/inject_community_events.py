@@ -78,19 +78,10 @@ def build_card(ev: dict, css_var: str) -> str:
 
     desc = esc(ev.get('description', ''))
     url = (ev.get('event_url', '') or ev.get('url', '')).strip()
-    image_url = (ev.get('image_url', '') or '').strip()
-
     lines = []
     lines.append(f'                <div class="event-card community-event">')
     lines.append(f'                    <div class="event-details">')
     lines.append(f'                        <span class="community-badge">Community Submission</span>')
-
-    if image_url:
-        lines.append(
-            f'                        <div class="event-img-wrap">'
-            f'<img class="event-img" src="{esc(image_url)}" alt="{name}" loading="lazy">'
-            f'</div>'
-        )
 
     lines.append(f'                        <div class="event-name" style="color:var({css_var})">{name}</div>')
 
