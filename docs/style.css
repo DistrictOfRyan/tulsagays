@@ -592,3 +592,220 @@ nav a:hover, nav a.active { color: var(--cream); }
     .event-card { padding: 16px; }
     .venue-grid { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   STYLE D — FLAMINGO NOIR
+   Applied 2026-04-29
+   ============================================================ */
+
+/* ── Color tokens ── */
+:root {
+  --tg-pink:    #FF2D6F;
+  --tg-pink12:  rgba(255, 45, 111, 0.12);
+  --tg-pink20:  rgba(255, 45, 111, 0.20);
+  --tg-pink30:  rgba(255, 45, 111, 0.30);
+}
+
+/* ── Top stripe: bold solid pink ── */
+body::before {
+  content: '';
+  display: block;
+  height: 5px;
+  background: var(--tg-pink);
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 10000;
+}
+.site-header { margin-top: 5px; }
+
+/* ── Logo: flamingo bird before the text ── */
+.logo-text::before {
+  content: '🦩';
+  font-size: 0.85em;
+  margin-right: 10px;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+/* ── Nav: pink underline on active + hover ── */
+nav a {
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+nav a:hover,
+nav a.active {
+  color: var(--tg-pink) !important;
+  border-bottom-color: var(--tg-pink);
+}
+
+/* ── Hero: large flanking flamingo silhouettes ── */
+.week-header {
+  position: relative;
+  overflow: hidden;
+}
+.week-header::before {
+  content: '🦩';
+  position: absolute;
+  left: -10px;
+  bottom: 0;
+  font-size: 200px;
+  line-height: 1;
+  opacity: 0.07;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+.week-header::after {
+  content: '🦩';
+  position: absolute;
+  right: -10px;
+  bottom: 0;
+  font-size: 200px;
+  line-height: 1;
+  opacity: 0.07;
+  pointer-events: none;
+  user-select: none;
+  transform: scaleX(-1);
+  z-index: 0;
+}
+.week-header > * { position: relative; z-index: 1; }
+
+/* ── Featured banner: solid pink top border + flamingo watermark ── */
+.featured-banner {
+  position: relative;
+  overflow: hidden;
+  border-top: 3px solid var(--tg-pink) !important;
+  background: #1c1320 !important;
+}
+.featured-banner::after {
+  content: '🦩';
+  position: absolute;
+  right: -10px;
+  bottom: -20px;
+  font-size: 160px;
+  line-height: 1;
+  opacity: 0.08;
+  pointer-events: none;
+  user-select: none;
+  transform: scaleX(-1);
+}
+
+/* ── Flamingo legend: styled reference box ── */
+.flamingo-legend {
+  background: #1e1520 !important;
+  border: 1px solid var(--tg-pink30) !important;
+  border-radius: 4px;
+  padding: 20px 24px !important;
+  margin: 32px 0;
+}
+.flamingo-legend-title {
+  font-size: 10px !important;
+  letter-spacing: 0.28em !important;
+  color: var(--tg-pink) !important;
+  text-transform: uppercase;
+  font-family: sans-serif;
+  font-weight: 700;
+  margin-bottom: 14px !important;
+}
+
+/* ── Day section headers: flamingo before title + ghost bird right ── */
+.day-section {
+  position: relative;
+}
+.day-section::after {
+  content: '🦩';
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  font-size: 56px;
+  line-height: 1;
+  opacity: 0.14;
+  pointer-events: none;
+  user-select: none;
+}
+.day-title::before {
+  content: '🦩';
+  font-size: 0.75em;
+  margin-right: 10px;
+  opacity: 0.7;
+  vertical-align: middle;
+  display: inline-block;
+}
+.day-divider {
+  position: relative;
+  overflow: visible;
+}
+.day-divider::after {
+  content: '🦩  🦩  🦩';
+  display: block;
+  text-align: center;
+  font-size: 22px;
+  opacity: 0.14;
+  letter-spacing: 12px;
+  margin: 8px 0;
+}
+
+/* ── Event cards: pink left border + hover slide ── */
+.event-card {
+  border-left: 3px solid var(--tg-pink) !important;
+  border-radius: 0 4px 4px 0 !important;
+  background: #141414 !important;
+  transition: background 0.18s ease, transform 0.15s ease !important;
+}
+.event-card:hover {
+  background: #1c1520 !important;
+  transform: translateX(4px) !important;
+}
+
+/* ── Event time: always pink ── */
+.event-time {
+  color: var(--tg-pink) !important;
+}
+
+/* ── Event name: bright white ── */
+.event-name {
+  color: #ffffff !important;
+}
+
+/* ── Gay Score pill ── */
+.event-flamingo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 6px 12px;
+  background: var(--tg-pink12);
+  border: 1px solid var(--tg-pink20);
+  border-radius: 3px;
+}
+.flamingo-score { font-size: 17px; letter-spacing: 2px; }
+.flamingo-label {
+  font-size: 11px !important;
+  color: var(--tg-pink) !important;
+  font-style: italic;
+}
+
+/* ── Footer: subtle pink top border ── */
+.site-footer {
+  border-top: 1px solid var(--tg-pink30) !important;
+}
+
+/* ── Accessibility: visible focus states ── */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--tg-pink);
+  outline-offset: 3px;
+}
+
+/* ── Skip-to-content ── */
+.skip-link {
+  position: absolute;
+  top: -999px; left: 8px;
+  background: var(--tg-pink); color: #fff;
+  padding: 8px 16px; border-radius: 3px;
+  font-family: sans-serif; font-size: 14px; font-weight: 700;
+  z-index: 99999; text-decoration: none;
+}
+.skip-link:focus { top: 8px; }
