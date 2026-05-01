@@ -1108,6 +1108,11 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
             combined = ((e.get("name") or "") + " " + (e.get("source") or "")).lower()
             return "council oak" in combined or "comc" in combined
 
+        def _is_deprioritized_venue(e: Dict) -> bool:
+            # Per organizer/site policy: Club Majestic events never lead the carousel.
+            venue = (e.get("venue") or "").lower()
+            return "majestic" in venue or "124 n boston" in venue
+
         QUEER_PERFORMANCE_KEYWORDS = [
             "drag", "drag show", "drag bingo", "drag brunch", "drag queen",
             "drag king", "drag race", "cabaret", "pride show", "pride event",
@@ -1155,12 +1160,16 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
             else:
                 # Priority 3: Drag shows, queer performances, explicitly LGBTQ events
                 queer_perf = [e for e in all_events_flat
-                              if _is_queer_performance(e) and not _is_recurring(e)]
+                              if _is_queer_performance(e)
+                              and not _is_recurring(e)
+                              and not _is_deprioritized_venue(e)]
                 if queer_perf:
                     eotw = queer_perf[0]
                 else:
                     # Priority 4: Best non-recurring special event
-                    special = [e for e in all_events_flat if not _is_recurring(e)]
+                    special = [e for e in all_events_flat
+                               if not _is_recurring(e)
+                               and not _is_deprioritized_venue(e)]
                     if special:
                         eotw = special[0]
                     elif all_events_flat:

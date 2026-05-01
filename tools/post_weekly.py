@@ -149,6 +149,11 @@ def _get_eotw() -> dict | None:
         ]).lower()
         return any(kw in combined for kw in _QUEER_PERF_KW)
 
+    def _is_deprioritized_venue(e):
+        # Per organizer/site policy: Club Majestic events never lead the caption.
+        venue = (e.get("venue") or "").lower()
+        return "majestic" in venue or "124 n boston" in venue
+
     hh = [e for e in this_week if _is_hh(e)]
     if hh:
         return hh[0]
@@ -156,10 +161,11 @@ def _get_eotw() -> dict | None:
     if council:
         return council[0]
     queer_perf = [e for e in this_week if _is_queer_perf(e) and not _is_skip(e)
-                  and not _is_hh(e) and not _is_council(e)]
+                  and not _is_hh(e) and not _is_council(e)
+                  and not _is_deprioritized_venue(e)]
     if queer_perf:
         return queer_perf[0]
-    specials = [e for e in this_week if not _is_skip(e)]
+    specials = [e for e in this_week if not _is_skip(e) and not _is_deprioritized_venue(e)]
     return specials[0] if specials else (this_week[0] if this_week else None)
 
 

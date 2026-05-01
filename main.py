@@ -202,6 +202,11 @@ def cmd_generate(post_type="weekday"):
         "okeq senior",        # seniors program — important but never the featured event
         "girl scout",         # troop meetings — community but not a featured highlight
     }
+    # These VENUES should never appear in the top 3 of any day or as EOTW
+    _DEPRIORITIZE_VENUES = {
+        "majestic",           # Club Majestic — per organizer/site policy, never feature
+        "124 n boston",       # Club Majestic address fallback
+    }
     # Cultural/entertainment events get a sub-tier boost so they float above
     # generic T5 events even when their start time is later
     _CULTURAL_KEYWORDS = {
@@ -236,7 +241,10 @@ def cmd_generate(post_type="weekday"):
                     or src in _LGBTQ_SOURCES)
         is_recurring = (src in _RECURRING_SOURCES
                         or any(kw in name for kw in _RECURRING_NAME_FRAGMENTS))
-        is_deprioritized = any(kw in name for kw in _ALWAYS_DEPRIORITIZE)
+        is_deprioritized = (
+            any(kw in name for kw in _ALWAYS_DEPRIORITIZE)
+            or any(v in venue for v in _DEPRIORITIZE_VENUES)
+        )
         # Cultural events float above generic events at the same tier
         is_cultural = any(kw in combo for kw in _CULTURAL_KEYWORDS)
         sub_tier = 0 if is_cultural else 1
