@@ -130,22 +130,9 @@ def clean_text(text: str) -> str:
 
 
 _VENUE_JUNK = ('shared by ', 'posted by ', 'reposted by ', 'event by ')
-# Known address fragments → display name (used before address-stripping)
-_VENUE_NAME_MAP = {
-    '302 south frankfort': 'DVL Club & Lounge',
-    '302 s. frankfort':    'DVL Club & Lounge',
-    '302 s frankfort':     'DVL Club & Lounge',
-    '1338 e 3rd':          'Tulsa Eagle',
-    '1330 e 3rd':          'Tulsa Eagle',
-    '602 south lewis':     'Pump Bar',
-    '602 s. lewis':        'Pump Bar',
-    '602 s lewis':         'Pump Bar',
-    '6808 s. memorial':    'Loony Bin Comedy Club',
-    '6808 s memorial':     'Loony Bin Comedy Club',
-    '1124 s. lewis':       'WEL Bar',
-    '1301 s. boston':      'Boston Ave UMC',
-    '2224 w 51st':         'Zarrow Library',
-}
+# Known address fragments → display name. City-specific. Read from config.VENUE_NAME_MAP
+# with safe empty fallback for new-city scaffolds.
+_VENUE_NAME_MAP = getattr(config, "VENUE_NAME_MAP", {})
 
 def clean_venue(raw: str) -> str:
     """Return a display-ready venue name, stripping raw addresses and scraper artifacts."""
@@ -169,53 +156,81 @@ def clean_venue(raw: str) -> str:
     return v
 
 
-_FIVE_FL_KW = [
+# Generic FIVE-flamingo keywords (universal across cities — drag, pride spectacles,
+# generic queer identity events). City-specific signature events, local org names,
+# and city anchors come from config.FIVE_FL_KEYWORDS_CITY.
+_FIVE_FL_KW_GENERIC = [
     # Drag / pride spectacle
     'drag show', 'drag bingo', 'drag brunch', 'drag queen', 'drag king', 'drag race',
     'drag sing', 'drag along', 'drag perform', 'drag night',
     'pride show', 'pride party', 'pride dance', 'pride night', 'queer night',
-    'gay night', 'lgbtq+ night', 'homo hotel', 'hhhh', 'rainbow night', 'twisted arts',
-    'queer cabaret', 'dragnificent', 'lambda bowling',
+    'gay night', 'lgbtq+ night', 'rainbow night',
+    'queer cabaret', 'dragnificent',
     # Explicitly queer identity/support spaces
     'queer support group', 'lgbtq support group', 'gender outreach support',
     'queer women', 'sapphic social', 'queer social', 'trans support group',
-    'osu tulsa queer', 'pflag tulsa', 'queer support',
-    'pflag', 'lambda unity',
+    'queer support', 'pflag',
     'bar crawl', 'pub crawl', 'pride crawl',
-    'gabbin with gabbi', 'pride nation entertainment', 'brad lee',
-    'lesbian attachment',
 ]
-# True gay bars — any event at these is automatically super gay (5 flamingos)
-_GAY_BAR_VENUES = {
-    'club majestic', 'tulsa eagle', 'yellow brick', 'majestic tulsa',
-    '1330 e 3rd', '1338 e 3rd', 'the vanguard',
-    'pump bar', '602 south lewis', '602 s. lewis', '602 s lewis',
-}
-# Queer-friendly venues (not exclusively gay) → 4 flamingos
-_FOUR_VENUES = {
-    'dvl', '302 south frankfort', '302 s. frankfort', '302 s frankfort', 'elote',
-}
-_FOUR_FL_KW = [
+_FIVE_FL_KW = _FIVE_FL_KW_GENERIC + getattr(config, "FIVE_FL_KEYWORDS_CITY", [])
+
+# True gay bars — events here automatically score 5. City-specific via config.
+_GAY_BAR_VENUES = getattr(config, "TRUE_GAY_BAR_VENUES", set())
+
+# Queer-friendly venues (not exclusively gay) → 4 flamingos. City-specific via config.
+_FOUR_VENUES = getattr(config, "QUEER_FRIENDLY_VENUES", set())
+
+# Generic FOUR-flamingo keywords. City-specific anchors come from config.FOUR_FL_KEYWORDS_CITY.
+_FOUR_FL_KW_GENERIC = [
     'lgbtq', 'lgbt', 'queer', 'lesbian', 'bisexual', 'sapphic',
     'transgender', 'nonbinary', 'non-binary', 'gender outreach',
-    'equality center', 'okeq', 'pflag', 'rainbow pride', 'pride month',
-    'sonic ray', 'council oak', 'hrc', 'gay bar', 'gay club',
-    'queer collective', 'queer crafters', 'support group', 'trans support',
+    'rainbow pride', 'pride month',
+    'gay bar', 'gay club',
+    'support group', 'trans support',
     'musical', 'the musical', 'pride', 'opera', 'broadway',
 ]
-_LGBTQ_COMMUNITY_SOURCES = {"homo_hotel", "okeq", "recurring", "manual"}
+_FOUR_FL_KW = _FOUR_FL_KW_GENERIC + getattr(config, "FOUR_FL_KEYWORDS_CITY", [])
+
+_LGBTQ_COMMUNITY_SOURCES = getattr(config, "LGBTQ_COMMUNITY_SOURCES", set())
+
+
+def _is_signature_event(e: Dict) -> bool:
+    """True if event matches the city's signature event configured in config.SIGNATURE_EVENT.
+    No-op for cities without a signature event (returns False)."""
+    sig = getattr(config, "SIGNATURE_EVENT", None) or {}
+    if not sig:
+        return False
+    src_key = sig.get("source_key", "")
+    if src_key and (e.get("source") or "").lower() == src_key.lower():
+        return True
+    name = (e.get("name") or "").lower()
+    return any(kw.lower() in name for kw in sig.get("name_keywords", []))
+
+
+def _is_anchor_cultural(e: Dict) -> bool:
+    """True if event matches the city's anchor cultural event (config.ANCHOR_CULTURAL_EVENT).
+    No-op for cities without an anchor (returns False)."""
+    anchor = getattr(config, "ANCHOR_CULTURAL_EVENT", None) or {}
+    if not anchor:
+        return False
+    src_key = anchor.get("source_key", "")
+    if src_key and (e.get("source") or "").lower() == src_key.lower():
+        return True
+    combined = ((e.get("name") or "") + " " + (e.get("source") or "")).lower()
+    return any(kw.lower() in combined for kw in anchor.get("name_keywords", []))
 _COMMUNITY_KW = [
     'support', 'group', 'meeting', 'collective', 'social', 'community',
     'bowling', 'yoga', 'meditation', 'sound bath', 'seniors', 'testing', 'coffee',
 ]
-_THREE_FL_KW = [
+# Generic THREE-flamingo (performing arts, etc.) + city-specific affirming venues
+_THREE_FL_KW_GENERIC = [
     'first friday art crawl', 'art crawl',
     'ballet', 'symphony', 'orchestra', 'choir', 'chorale', 'choral',
     'performing arts', 'theatre', 'theater', 'cabaret',
     'live performance', 'stage production', 'dance performance',
     'recital', 'repertory', 'philharmonic',
-    'all souls',
 ]
+_THREE_FL_KW = _THREE_FL_KW_GENERIC + getattr(config, "AFFIRMING_VENUE_KEYWORDS_CITY", [])
 _TWO_FL_KW = [
     'art', 'music', 'concert', 'gallery', 'theater', 'theatre', 'comedy',
     'poetry', 'film', 'cinema', 'festival', 'cabaret', 'dance', 'live music',
@@ -239,10 +254,12 @@ def _flamingo_score(ev: dict) -> int:
         return 4
     if any(v in venue for v in _FOUR_VENUES):
         return 4
-    if source in ('homo_hotel', 'okeq'):
+    # Events from LGBTQ-community-organizing sources (signature event, equality center, etc.) score 4
+    if source in _LGBTQ_COMMUNITY_SOURCES:
         return 4
-    # 3 — LGBTQ community-organized but not explicitly identity events
-    if source in _LGBTQ_COMMUNITY_SOURCES and any(kw in content for kw in _COMMUNITY_KW):
+    # 3 — LGBTQ community-organized but not explicitly identity events (community subset)
+    _community_subset = {s for s in _LGBTQ_COMMUNITY_SOURCES if s in ("recurring", "manual")}
+    if source in _community_subset and any(kw in content for kw in _COMMUNITY_KW):
         return 3
     # 3 — specific welcoming events that score above generic arts/culture
     if any(kw in content for kw in _THREE_FL_KW):
@@ -549,7 +566,7 @@ def make_cover_slide(post_type: str, date_range: str,
             display_url = re.sub(r'^https?://', '', ev_url).split("?")[0]
             if len(display_url) > 55:
                 display_url = display_url[:55] + "..."
-            is_hhhh_event = "homo hotel" in ev_name.lower()
+            is_hhhh_event = _is_signature_event({"name": ev_name})
             link_label = "MORE INFO" if is_hhhh_event else "TICKETS"
             y = _draw_centered(draw, f"{link_label}  \u2192  {display_url}", y,
                                f_eotw_link, NEON_PINK)
@@ -646,8 +663,8 @@ def make_featured_slide(event: Dict) -> Image.Image:
     raw_date    = event.get("date", "")
     nice_date   = format_date(raw_date)
 
-    # Is this HHHH?
-    is_hhhh = "homo hotel" in name.lower()
+    # Is this the city's signature event?
+    is_hhhh = _is_signature_event({"name": name})
 
     f_label  = _font("poiret", 40)
     f_name   = _font("poiret", 82)
@@ -660,8 +677,10 @@ def make_featured_slide(event: Dict) -> Image.Image:
     # Top pink bar
     _pink_bar(draw, 0, height=4)
 
-    # Vertically center the whole content block
-    label_text = "HOMO HOTEL HAPPY HOUR" if is_hhhh else "FEATURED EVENT OF THE WEEK"
+    # Vertically center the whole content block. Use city's signature event name as label
+    # when the event matches it; otherwise fall back to generic.
+    _sig_name = (getattr(config, "SIGNATURE_EVENT", None) or {}).get("name", "")
+    label_text = _sig_name.upper() if (is_hhhh and _sig_name) else "FEATURED EVENT OF THE WEEK"
     name_font  = f_name if len(name) <= 30 else f_name2
 
     # Estimate content height
@@ -1066,10 +1085,11 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
     days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday",
                     "Friday", "Saturday", "Sunday"]
 
-    # Resolve featured event — priority order:
-    # 1. Homo Hotel Happy Hour (always wins if present)
-    # 2. Council Oak Men's Chorus (any event with "council oak" in name/source)
-    # 3. Any non-recurring special event (exclude source=="recurring" and sports)
+    # Resolve featured event — priority order (configured per-city):
+    # 1. Signature event (config.SIGNATURE_EVENT) — always wins if this week
+    # 2. Anchor cultural event (config.ANCHOR_CULTURAL_EVENT)
+    # 3. Drag/queer-performance events
+    # 4. Any non-recurring special event
     # NEVER pick a recurring event (bowling, AA, support groups, etc.)
     eotw = featured_event
     if not eotw or _is_garbage(eotw):
@@ -1089,37 +1109,34 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
         def _is_recurring(e: Dict) -> bool:
             src = (e.get("source") or "").lower()
             name = (e.get("name") or "").lower()
+            # Generic recurring sources (work for any city)
             recurring_sources = {"recurring", "aa_meetings", "bars"}
-            recurring_keywords = {
+            # Generic recurring keywords + city-specific community partner keywords
+            # (e.g. Sonic Ray sound baths) which appear in COMMUNITY_PARTNER_KEYWORDS
+            generic_recurring_kw = {
                 "bowling", "aa meeting", "support group", "outreach group",
-                "sound bath", "sonic ray", "sound sanctuary", "sound meditation",
-                "health clinic", "okeq health", "hope testing", "drop-in therapy",
+                "sound bath", "sound sanctuary", "sound meditation",
+                "health clinic", "hope testing", "drop-in therapy",
                 "therapy session", "free drop-in", "health outreach",
             }
+            city_partner_kw = set(getattr(config, "COMMUNITY_PARTNER_KEYWORDS", []))
+            recurring_keywords = generic_recurring_kw | {kw.lower() for kw in city_partner_kw}
             if src in recurring_sources:
                 return True
             return any(kw in name for kw in recurring_keywords)
 
-        def _is_homo_hotel(e: Dict) -> bool:
-            return ("homo hotel" in (e.get("name") or "").lower()
-                    or (e.get("source") or "").lower() == "homo_hotel")
-
-        def _is_council_oak(e: Dict) -> bool:
-            combined = ((e.get("name") or "") + " " + (e.get("source") or "")).lower()
-            return "council oak" in combined or "comc" in combined
-
-        def _is_deprioritized_venue(e: Dict) -> bool:
-            # Per organizer/site policy: Club Majestic events never lead the carousel.
-            venue = (e.get("venue") or "").lower()
-            return "majestic" in venue or "124 n boston" in venue
-
-        QUEER_PERFORMANCE_KEYWORDS = [
+        # Generic queer-performance keywords (universal across cities). City-specific
+        # production companies / drag collectives come from config.FIVE_FL_KEYWORDS_CITY.
+        _QUEER_PERFORMANCE_GENERIC = [
             "drag", "drag show", "drag bingo", "drag brunch", "drag queen",
             "drag king", "drag race", "cabaret", "pride show", "pride event",
             "pride night", "queer night", "gay night", "lgbtq+ night",
-            "twisted arts", "inner circle drag", "open talent", "variety show",
-            "okeq", "rainbow", "pride dance", "pride party",
+            "rainbow", "pride dance", "pride party", "variety show",
         ]
+        QUEER_PERFORMANCE_KEYWORDS = (
+            _QUEER_PERFORMANCE_GENERIC +
+            [kw.lower() for kw in getattr(config, "FIVE_FL_KEYWORDS_CITY", [])]
+        )
 
         def _is_queer_performance(e: Dict) -> bool:
             combined = " ".join([
@@ -1144,32 +1161,28 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
             except ValueError:
                 return False
 
-        # Priority 1: Homo Hotel Happy Hour — only if it falls within THIS week
-        hh_this_week = [e for e in all_events_flat if _is_homo_hotel(e) and _event_in_week(e)]
-        hh_upcoming  = [e for e in all_events_flat if _is_homo_hotel(e) and not _event_in_week(e)]
-        if hh_this_week:
-            eotw = hh_this_week[0]
+        # Priority 1: Signature event — only if it falls within THIS week
+        sig_this_week = [e for e in all_events_flat if _is_signature_event(e) and _event_in_week(e)]
+        sig_upcoming  = [e for e in all_events_flat if _is_signature_event(e) and not _event_in_week(e)]
+        if sig_this_week:
+            eotw = sig_this_week[0]
         else:
-            # HHHH not this week — save it as upcoming teaser if no upcoming_event yet
-            if not upcoming_event and hh_upcoming:
-                upcoming_event = hh_upcoming[0]
-            # Priority 2: Council Oak Men's Chorus (concerts/cabarets)
-            council = [e for e in all_events_flat if _is_council_oak(e)]
-            if council:
-                eotw = council[0]
+            # Signature event not this week — save it as upcoming teaser if no upcoming_event yet
+            if not upcoming_event and sig_upcoming:
+                upcoming_event = sig_upcoming[0]
+            # Priority 2: Anchor cultural event (e.g. Council Oak Men's Chorale)
+            anchor_evs = [e for e in all_events_flat if _is_anchor_cultural(e)]
+            if anchor_evs:
+                eotw = anchor_evs[0]
             else:
                 # Priority 3: Drag shows, queer performances, explicitly LGBTQ events
                 queer_perf = [e for e in all_events_flat
-                              if _is_queer_performance(e)
-                              and not _is_recurring(e)
-                              and not _is_deprioritized_venue(e)]
+                              if _is_queer_performance(e) and not _is_recurring(e)]
                 if queer_perf:
                     eotw = queer_perf[0]
                 else:
                     # Priority 4: Best non-recurring special event
-                    special = [e for e in all_events_flat
-                               if not _is_recurring(e)
-                               and not _is_deprioritized_venue(e)]
+                    special = [e for e in all_events_flat if not _is_recurring(e)]
                     if special:
                         eotw = special[0]
                     elif all_events_flat:
