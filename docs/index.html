@@ -13,9 +13,14 @@
     <meta property="og:url" content="https://www.tulsagays.com">
     <meta property="og:site_name" content="Tulsa Gays">
     <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://www.tulsagays.com/favicon-512.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt" content="Tulsa Gays - Weekly LGBTQ+ Event Guide">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Tulsa Gays - Weekly LGBTQ+ Events">
     <meta name="twitter:description" content="Your weekly guide to LGBTQ+ events in Tulsa, Oklahoma.">
+    <meta name="twitter:image" content="https://www.tulsagays.com/favicon-512.png">
     <link rel="canonical" href="https://www.tulsagays.com/">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
@@ -59,7 +64,7 @@
 
     <header class="site-header">
         <div class="header-inner">
-            <a href="index.html" class="logo-area">
+            <a href="/" class="logo-area">
                 <div>
                     <div class="logo-text"><span class="tulsa">TULSA</span> <span class="gays">GAYS</span></div>
                     <div class="logo-tagline">Your Weekly LGBTQ+ Event Guide</div>
@@ -68,13 +73,14 @@
             <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.querySelector('nav').classList.toggle('open')">&#9776;</button>
             <nav>
                 <ul>
-                    <li><a href="index.html" class="active">This Week</a></li>
+                    <li><a href="/" class="active">This Week</a></li>
                     <li><a href="archive.html">Archive</a></li>
                     <li><a href="blog/index.html">Blog</a></li>
                     <li><a href="directory.html">Directory</a></li>
                     <li><a href="about.html">About</a></li>
-                    <li><a href="https://instagram.com/tulsagays" target="_blank" rel="noopener">Instagram</a></li>
                     <li><a href="https://linktr.ee/tulsagays" target="_blank" rel="noopener">Linktree</a></li>
+                    <li><a href="submit.html" class="submit-cta">Submit Event</a></li>
+                    <li><a href="newsletter.html" class="newsletter-cta">Newsletter</a></li>
                 </ul>
             </nav>
         </div>
@@ -89,7 +95,7 @@
                 <span class="tulsa">TULSA</span> <span class="gays">GAYS</span>
             </h1>
             <p class="date-range"><!-- DATE-RANGE -->May 4 &mdash; May 10, 2026<!-- /DATE-RANGE --></p>
-            <p class="tagline">Nothing to do in Tulsa? Sounds like a straight person problem.</p>
+            <p class="tagline">Nothing to do in Tulsa?<br>Sounds like a straight person problem.</p>
             <div class="diamond-sep"><div class="diamond"></div></div>
         </div>
 
@@ -1057,7 +1063,151 @@ With this freedom comes responsibility, wi</div>
         <div class="footer-inner">
             <p>Follow us on Instagram: <a href="https://instagram.com/tulsagays" target="_blank" rel="noopener">@tulsagays</a> &middot; <a href="https://linktr.ee/tulsagays" target="_blank" rel="noopener">All Links</a></p>
             <p>Updated weekly &middot; Your guide to LGBTQ+ Tulsa</p>
+            <p style="font-size:0.75em;opacity:0.55;margin-top:0.5em">&copy; 2026 Tulsa Gays&#8482; &middot; Homo Hotel Happy Hour&#8482;</p>
         </div>
     </footer>
+
+    <script>
+    /* ── Tonight / Tomorrow urgency badges + hide past days ── */
+    (function() {
+        var pad = function(n) { return String(n).padStart(2, '0'); };
+        var now = new Date();
+        var today    = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate());
+        var tom      = new Date(now); tom.setDate(tom.getDate() + 1);
+        var tomorrow = tom.getFullYear() + '-' + pad(tom.getMonth()+1) + '-' + pad(tom.getDate());
+        document.querySelectorAll('.event-card[data-date]').forEach(function(card) {
+            var d = card.getAttribute('data-date');
+            if (!d) return;
+            var badge = document.createElement('div');
+            if (d === today) {
+                badge.className = 'urgency-badge badge-tonight';
+                badge.textContent = 'TONIGHT';
+                card.insertBefore(badge, card.firstChild);
+            } else if (d === tomorrow) {
+                badge.className = 'urgency-badge badge-tomorrow';
+                badge.textContent = 'TOMORROW';
+                card.insertBefore(badge, card.firstChild);
+            }
+        });
+
+        var sections = document.querySelectorAll('.day-section');
+        var hidden = 0;
+        sections.forEach(function(section) {
+            var card = section.querySelector('.event-card[data-date]');
+            if (!card) return;
+            if (card.getAttribute('data-date') < today) {
+                section.style.display = 'none';
+                hidden++;
+            }
+        });
+        // Safety net: if the entire week is past (stale page), show everything
+        if (sections.length > 0 && hidden === sections.length) {
+            sections.forEach(function(s) { s.style.display = ''; });
+        }
+
+        // Assign a unique id to every event-card so shares can deep-link to it.
+        function _slugify(s) {
+            return (s || '').toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '')
+                .slice(0, 60);
+        }
+        var slugCounts = {};
+        document.querySelectorAll('.event-card').forEach(function(card) {
+            if (card.id) return;
+            var name = (card.querySelector('.event-name') || {}).textContent || '';
+            var date = card.getAttribute('data-date') || '';
+            var timeEl = card.querySelector('.event-time-col .event-time');
+            var time = timeEl ? timeEl.textContent : '';
+            var base = 'event-' + _slugify(name + '-' + date + '-' + time);
+            if (slugCounts[base]) {
+                slugCounts[base]++;
+                card.id = base + '-' + slugCounts[base];
+            } else {
+                slugCounts[base] = 1;
+                card.id = base;
+            }
+        });
+
+        // If we landed with a deep-link, scroll to that event and highlight it.
+        // Prefer ?event= (preserved across all share targets) over #hash
+        // (stripped by some iOS messaging apps when generating link previews).
+        var deepLinkId = '';
+        var qsMatch = location.search.match(/[?&]event=([^&]+)/);
+        if (qsMatch) {
+            deepLinkId = decodeURIComponent(qsMatch[1]);
+        } else if (location.hash && location.hash.length > 1) {
+            deepLinkId = location.hash.substring(1);
+        }
+        if (deepLinkId) {
+            // Disable browser scroll restoration so it doesn't fight our scroll.
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+            var target = document.getElementById(deepLinkId);
+            if (target) {
+                var section = target.closest('.day-section');
+                if (section) section.style.display = '';
+                void target.offsetHeight;  // force reflow
+
+                // CSS sets html { scroll-behavior: smooth } globally, which
+                // queues scroll-to-target as an animation that can be canceled
+                // mid-flight by browser scroll-restoration during page load.
+                // Force-instant the deep-link scroll to avoid that.
+                var doScroll = function() {
+                    var t = document.getElementById(deepLinkId);
+                    if (!t) return;
+                    var top = t.getBoundingClientRect().top + window.scrollY - 12;
+                    window.scrollTo({ top: top, left: 0, behavior: 'instant' });
+                };
+
+                // Multiple attempts to beat any post-load layout shifts /
+                // browser auto-restoration. Idempotent: each call recomputes.
+                requestAnimationFrame(doScroll);
+                setTimeout(doScroll, 100);
+                setTimeout(doScroll, 400);
+                setTimeout(function() {
+                    doScroll();
+                    var t = document.getElementById(deepLinkId);
+                    if (t) {
+                        t.classList.add('event-highlight');
+                        setTimeout(function() {
+                            t.classList.remove('event-highlight');
+                        }, 2400);
+                    }
+                }, 800);
+            }
+        }
+    })();
+
+    /* ── Share button ── */
+    function shareEvent(btn) {
+        var title = btn.getAttribute('data-title') || 'Tulsa Gays Event';
+        var text  = btn.getAttribute('data-text')  || title;
+        // Share a tulsagays.com deep-link to the specific event so traffic
+        // comes back to our site, not Eventbrite / Meetup / Facebook.
+        // Use ?event= (a query param) instead of #hash because iOS Messages
+        // strips fragments when generating link previews — query params survive.
+        var card  = btn.closest('.event-card');
+        var slug  = card ? card.id : '';
+        var url   = 'https://www.tulsagays.com/' + (slug ? '?event=' + encodeURIComponent(slug) : '');
+        if (navigator.share) {
+            // Don't embed url in text — Messages would render it twice.
+            navigator.share({ title: title, text: text, url: url }).catch(function(){});
+        } else {
+            // Clipboard fallback: include URL since there's no other carrier.
+            var copyText = text + '\n' + url;
+            navigator.clipboard.writeText(copyText).then(function() {
+                var orig = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(function() { btn.textContent = orig; }, 2000);
+            }).catch(function() {
+                var orig = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(function() { btn.textContent = orig; }, 2000);
+            });
+        }
+    }
+    </script>
 
 </body>

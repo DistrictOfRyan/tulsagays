@@ -45,6 +45,67 @@ def _is_lgbtq_relevant(name: str, description: str = "", venue: str = "") -> boo
     combined = " ".join([name, description, venue]).lower()
     return any(kw in combined for kw in LGBTQ_KEYWORDS)
 
+
+# Tulsa metro area — Tulsa proper plus the immediate suburbs we'll cover.
+TULSA_AREA_CITIES = {
+    "tulsa", "broken arrow", "bixby", "owasso", "sand springs",
+    "jenks", "skiatook", "glenpool", "sapulpa", "catoosa", "coweta",
+}
+
+# Substrings that indicate the event is in another metro. Matched
+# against the full URL + name + venue + description, so a Meetup
+# group slug like 'consciousgirlfrienddallas' triggers a reject.
+NON_TULSA_HINTS = [
+    "dallas", "fortworth", "fort worth", "austin", "houston", "sanantonio", "san antonio",
+    "okc", "oklahomacity", "oklahoma city",
+    "kansascity", "kansas city",
+    "shreveport", "neworleans", "new orleans",
+    "littlerock", "little rock",
+    "wichita", "denver", "phoenix",
+    "springfield", "joplin", "stlouis", "st. louis", "st louis",
+    "memphis", "nashville",
+    "fayetteville", "bentonville", "rogers",
+    "chicago", "minneapolis", "atlanta", "seattle",
+    "norman", "stillwater", "lawton", "edmond",
+]
+
+
+def _is_tulsa_area(name: str = "", url: str = "", venue: str = "",
+                    description: str = "", location: dict = None) -> bool:
+    """Best-effort filter: reject events we can prove are not in the Tulsa metro.
+
+    Strategy: if any signal (url slug, name, venue, description, structured
+    address) names another city/region we know isn't Tulsa, bail. If we
+    have explicit structured location data, the city must be in
+    TULSA_AREA_CITIES or the region must be Oklahoma. Otherwise (no
+    location info at all) we accept, since the search query already
+    targeted Tulsa.
+    """
+    haystack = " ".join([url or "", name or "", venue or "", description or ""]).lower()
+
+    for hint in NON_TULSA_HINTS:
+        if hint in haystack:
+            return False
+
+    if isinstance(location, dict):
+        addr = location.get("address") or {}
+        if isinstance(addr, dict):
+            city = (addr.get("addressLocality") or "").lower().strip()
+            region = (addr.get("addressRegion") or "").lower().strip()
+            if city:
+                # Explicit city — must be Tulsa-area.
+                return city in TULSA_AREA_CITIES
+            if region and region not in ("ok", "oklahoma"):
+                # Explicit non-OK region.
+                return False
+        loc_name = (location.get("name") or "").lower()
+        if loc_name:
+            # If venue name explicitly mentions a non-Tulsa city we already
+            # caught it above. Otherwise accept.
+            pass
+
+    return True
+
 # Tulsa bounding box: SW lat/lon, NE lat/lon
 # Format for Eventbrite API: "lat_min,lng_min,lat_max,lng_max"
 TULSA_BBOX = "36.05,-96.05,36.25,-95.85"
@@ -329,16 +390,28 @@ class MeetupScraper(BaseScraper):
                     if not name:
                         continue
                     start = item.get("startDate", "")
+                    # Pull both date and time from the ISO timestamp.
+                    date_str = start[:10] if start else ""
+                    time_str = ""
+                    if "T" in start:
+                        time_str = start.split("T")[1][:5]
                     location = item.get("location", {})
                     venue = ""
                     if isinstance(location, dict):
                         venue = location.get("name", "")
+                    description = item.get("description", "")[:300]
+                    url = item.get("url", "")
+                    if not _is_tulsa_area(name=name, url=url, venue=venue,
+                                          description=description, location=location):
+                        logger.debug(f"[meetup] filtered non-Tulsa event: {name} ({url})")
+                        continue
                     events.append(self.make_event(
                         name=name,
-                        date=start[:10] if start else "",
+                        date=date_str,
+                        time=time_str,
                         venue=venue,
-                        description=item.get("description", "")[:300],
-                        url=item.get("url", ""),
+                        description=description,
+                        url=url,
                         priority=2,
                     ))
             except (json.JSONDecodeError, TypeError):
@@ -381,6 +454,10 @@ class MeetupScraper(BaseScraper):
             venue_el = card.select_one("[class*='venue'], [class*='location']")
             venue = venue_el.get_text(strip=True) if venue_el else ""
 
+            if not _is_tulsa_area(name=name, url=url, venue=venue):
+                logger.debug(f"[meetup] filtered non-Tulsa card: {name} ({url})")
+                continue
+
             events.append(self.make_event(
                 name=name,
                 date=date_str,
@@ -401,6 +478,9 @@ class MeetupScraper(BaseScraper):
             if "/events/" in href and text and len(text) > 10 and text not in seen:
                 seen.add(text)
                 full_url = href if href.startswith("http") else "https://www.meetup.com" + href
+                if not _is_tulsa_area(name=text, url=full_url):
+                    logger.debug(f"[meetup] filtered non-Tulsa link: {text} ({full_url})")
+                    continue
                 events.append(self.make_event(
                     name=text,
                     date="",

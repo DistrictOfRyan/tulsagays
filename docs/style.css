@@ -116,12 +116,12 @@ a:hover { color: var(--gold-light); }
 }
 
 .header-inner {
-    max-width: var(--max-width);
     margin: 0 auto;
-    padding: 1.25rem var(--spacing);
+    padding: 1.25rem clamp(1.25rem, 3vw, 2.5rem);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 2rem;
 }
 
 .logo-area {
@@ -129,6 +129,7 @@ a:hover { color: var(--gold-light); }
     align-items: center;
     gap: 0.75rem;
     text-decoration: none;
+    flex-shrink: 0;
 }
 .logo-area img {
     width: 48px;
@@ -140,6 +141,7 @@ a:hover { color: var(--gold-light); }
     font-size: 1.8rem;
     letter-spacing: 3px;
     -webkit-text-stroke: 0.5px;
+    white-space: nowrap;
 }
 .logo-text .tulsa { color: #FFFFFF; -webkit-text-stroke-color: #FFFFFF; }
 .logo-text .gays { color: #9B1E5F; -webkit-text-stroke-color: #9B1E5F; }
@@ -160,7 +162,8 @@ a:hover { color: var(--gold-light); }
 nav ul {
     list-style: none;
     display: flex;
-    gap: 1.5rem;
+    gap: 1.1rem;
+    align-items: center;
 }
 nav a {
     color: var(--text-muted);
@@ -168,6 +171,7 @@ nav a {
     font-size: 0.9rem;
     letter-spacing: 0.5px;
     transition: color 0.2s ease;
+    white-space: nowrap;
 }
 nav a:hover, nav a.active { color: var(--cream); }
 
@@ -393,6 +397,25 @@ nav a:hover, nav a.active { color: var(--cream); }
     border: 1px solid var(--peacock);
     padding: 4px 14px;
     transition: all 0.2s;
+    vertical-align: middle;
+    line-height: inherit;
+    margin-bottom: 8px;
+}
+/* Match the bottom margin on share-btn so the buttons row reserves
+   a consistent gap whether they're on one line or wrapped. */
+.event-details > .share-btn {
+    margin-bottom: 8px;
+}
+
+/* Pulse highlight when arriving via a shared deep-link (#event-...) */
+.event-card.event-highlight {
+    outline: 2px solid #FF2D6F;
+    outline-offset: 4px;
+    animation: event-deeplink-pulse 2.2s ease-out;
+}
+@keyframes event-deeplink-pulse {
+    0%   { outline-color: #FF2D6F; box-shadow: 0 0 24px rgba(255, 45, 111, 0.45); }
+    100% { outline-color: transparent; box-shadow: 0 0 0 rgba(255, 45, 111, 0); }
 }
 .event-link:hover {
     background: var(--peacock);
@@ -568,8 +591,146 @@ nav a:hover, nav a.active { color: var(--cream); }
     color: var(--dark-gray);
 }
 
+
+/* ── Submit CTA Nav Link ─────────────────────────────────────────────── */
+nav a.submit-cta {
+    color: var(--peacock);
+    border: 1px solid var(--peacock);
+    padding: 4px 12px;
+    border-radius: 2px;
+    transition: all 0.2s;
+}
+nav a.submit-cta:hover {
+    background: var(--peacock);
+    color: #fff;
+}
+
+/* ── Community Badge ─────────────────────────────────────────────────── */
+.community-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--peacock);
+    border: 1px solid var(--peacock);
+    padding: 2px 8px;
+    margin-bottom: 8px;
+    border-radius: 2px;
+}
+
+/* ── Submit Form ─────────────────────────────────────────────────────── */
+.submit-form-wrap {
+    max-width: 640px;
+    margin: 0 auto;
+}
+.submit-form-wrap h1 {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 3px;
+    color: var(--peacock);
+    margin-bottom: 0.5rem;
+}
+.submit-form-wrap .form-intro {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+.form-group {
+    margin-bottom: 1.25rem;
+}
+.form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="url"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid #2a2a2a;
+    color: var(--text-primary);
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    border-radius: 2px;
+    transition: border-color 0.2s;
+    outline: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--peacock);
+}
+.form-group textarea { resize: vertical; }
+.form-group select { appearance: none; cursor: pointer; }
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+.recurring-options {
+    display: none;
+    background: rgba(155,30,95,0.05);
+    border: 1px solid rgba(155,30,95,0.2);
+    border-radius: 2px;
+    padding: 16px;
+    margin-top: 12px;
+}
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+}
+.checkbox-group input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--peacock);
+    cursor: pointer;
+}
+.checkbox-group label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+.submit-btn {
+    display: inline-block;
+    padding: 12px 32px;
+    background: transparent;
+    border: 1px solid var(--peacock);
+    color: var(--peacock);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    border-radius: 2px;
+}
+.submit-btn:hover {
+    background: var(--peacock);
+    color: #fff;
+}
+.form-note {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 1rem;
+    font-style: italic;
+}
+.honey-field { display: none !important; }
+
 /* ── Responsive ──────────────────────────────────────────────────────── */
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
     .header-inner { flex-wrap: wrap; }
     .nav-toggle { display: block; }
     nav {
@@ -578,8 +739,8 @@ nav a:hover, nav a.active { color: var(--cream); }
         max-height: 0;
         transition: max-height 0.3s ease;
     }
-    nav.open { max-height: 300px; }
-    nav ul { flex-direction: column; padding-top: 1rem; gap: 0.75rem; }
+    nav.open { max-height: 400px; }
+    nav ul { flex-direction: column; padding-top: 1rem; gap: 0.75rem; align-items: flex-start; }
     .logo-text { font-size: 1.3rem; }
     .week-header h1 { font-size: 2rem; }
     .featured-name { font-size: 2rem; }
@@ -651,7 +812,7 @@ nav a.active {
   bottom: 0;
   font-size: 200px;
   line-height: 1;
-  opacity: 0.07;
+  opacity: 0.22;
   pointer-events: none;
   user-select: none;
   z-index: 0;
@@ -663,7 +824,7 @@ nav a.active {
   bottom: 0;
   font-size: 200px;
   line-height: 1;
-  opacity: 0.07;
+  opacity: 0.22;
   pointer-events: none;
   user-select: none;
   transform: scaleX(-1);
@@ -685,7 +846,7 @@ nav a.active {
   bottom: -20px;
   font-size: 160px;
   line-height: 1;
-  opacity: 0.08;
+  opacity: 0.24;
   pointer-events: none;
   user-select: none;
   transform: scaleX(-1);
@@ -720,7 +881,7 @@ nav a.active {
   top: 4px;
   font-size: 56px;
   line-height: 1;
-  opacity: 0.14;
+  opacity: 0.28;
   pointer-events: none;
   user-select: none;
 }
@@ -741,14 +902,14 @@ nav a.active {
   display: block;
   text-align: center;
   font-size: 22px;
-  opacity: 0.14;
+  opacity: 0.32;
   letter-spacing: 12px;
   margin: 8px 0;
 }
 
-/* ── Event cards: pink left border + hover slide ── */
+/* ── Event cards: day-colored left border + hover slide ── */
 .event-card {
-  border-left: 3px solid var(--tg-pink) !important;
+  border-left: 3px solid var(--day-color, var(--tg-pink)) !important;
   border-radius: 0 4px 4px 0 !important;
   background: #141414 !important;
   transition: background 0.18s ease, transform 0.15s ease !important;
@@ -758,15 +919,8 @@ nav a.active {
   transform: translateX(4px) !important;
 }
 
-/* ── Event time: always pink ── */
-.event-time {
-  color: var(--tg-pink) !important;
-}
-
-/* ── Event name: bright white ── */
-.event-name {
-  color: #ffffff !important;
-}
+/* ── Event time + name: day colors win (set via inline style per day) ── */
+/* Removed !important overrides so var(--day-*) inline styles take precedence */
 
 /* ── Gay Score pill ── */
 .event-flamingo {
@@ -809,3 +963,84 @@ button:focus-visible,
   z-index: 99999; text-decoration: none;
 }
 .skip-link:focus { top: 8px; }
+
+/* ── Urgency Badges (Tonight / Tomorrow) ── */
+.urgency-badge {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  margin-bottom: 10px;
+  border-radius: 2px;
+  line-height: 1.6;
+}
+.badge-tonight {
+  background: var(--tg-pink);
+  color: #fff;
+}
+.badge-tomorrow {
+  background: transparent;
+  color: var(--tg-pink);
+  border: 1px solid var(--tg-pink);
+}
+
+/* ── Event Address ── */
+.event-address {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+
+/* ── Share Button ── */
+.share-btn {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0px;
+  color: #666;
+  background: transparent;
+  border: 1px solid #3a3a3a;
+  padding: 4px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 6px;
+  font-family: inherit;
+  text-transform: uppercase;
+  vertical-align: middle;
+  line-height: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.share-btn:hover {
+  border-color: var(--tg-pink);
+  color: var(--tg-pink);
+  background: transparent;
+}
+.share-btn:active { opacity: 0.7; }
+
+/* Share button when it's the only action (no event-link sibling) */
+.event-details > .share-btn:first-of-type {
+  margin-left: 0;
+  margin-top: 6px;
+}
+
+/* When share-btn sits beside an event-link, line them up on one row */
+.event-details > .event-link + .share-btn {
+  margin-top: 0;
+  margin-left: 6px;
+}
+
+/* ── Newsletter Nav Link ── */
+nav a.newsletter-cta {
+  color: var(--tg-pink);
+  border: 1px solid var(--tg-pink30);
+  padding: 4px 12px;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+nav a.newsletter-cta:hover {
+  background: var(--tg-pink12);
+  border-color: var(--tg-pink);
+}

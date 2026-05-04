@@ -249,7 +249,7 @@
 
     <header class="site-header">
         <div class="header-inner">
-            <a href="../index.html" class="logo-area">
+            <a href="/" class="logo-area">
                 <div>
                     <div class="logo-text"><span class="tulsa">TULSA</span> <span class="gays">GAYS</span></div>
                     <div class="logo-tagline">Your Weekly LGBTQ+ Event Guide</div>
@@ -258,13 +258,14 @@
             <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.querySelector('nav').classList.toggle('open')">&#9776;</button>
             <nav>
                 <ul>
-                    <li><a href="../index.html">This Week</a></li>
+                    <li><a href="/">This Week</a></li>
                     <li><a href="../archive.html">Archive</a></li>
-                    <li><a href="index.html" class="active">Blog</a></li>
+                    <li><a href="/blog/" class="active">Blog</a></li>
                     <li><a href="../directory.html">Directory</a></li>
                     <li><a href="../about.html">About</a></li>
-                    <li><a href="https://instagram.com/tulsagays" target="_blank" rel="noopener">Instagram</a></li>
                     <li><a href="https://linktr.ee/tulsagays" target="_blank" rel="noopener">Linktree</a></li>
+                    <li><a href="../submit.html" class="submit-cta">Submit Event</a></li>
+                    <li><a href="../newsletter.html" class="newsletter-cta">Newsletter</a></li>
                 </ul>
             </nav>
         </div>
@@ -272,7 +273,7 @@
 
     <main class="container">
 
-        <a href="index.html" class="back-link">Back to Blog</a>
+        <a href="/blog/" class="back-link">Back to Blog</a>
 
         <div class="week-header">
             <h1>
@@ -294,9 +295,7 @@
         <article class="post-body">
 
             <p>
-                If you've ever tried to find out what's happening for queer folks in Tulsa on any given weekend, you know the drill.
-                You check Facebook. You check Eventbrite. You ask a friend. You get two different answers and miss the third thing entirely.
-                That's exactly the problem we built this site to solve.
+                If you have ever tried to find queer events in Tulsa on your own, you know exactly how this goes. You check Facebook and get three different things from three different groups. You check Eventbrite and find two listings from 2019 that never got taken down. You ask a friend who says "I think there's something at the Eagle tonight maybe?" and you still miss the drag show at Majestic because it was announced in a Slack workspace you didn't know existed. That is the specific, infuriating problem this site was built to solve, and we take it seriously.
             </p>
 
             <div class="pull-quote">
@@ -304,14 +303,11 @@
             </div>
 
             <p>
-                Every Monday morning, an automated system runs through more than 80 sources across five tiers of reliability,
-                pulling in everything from Oklahomans for Equality's calendar to the Tulsa Eagle's Facebook page to Slack channels
-                you probably didn't know existed. Then it curates, sorts, and publishes the week's guide before most people
-                have finished their first cup of coffee.
+                Every Monday morning, an automated system runs through more than 80 sources across five tiers of reliability, pulling in everything from Oklahomans for Equality's formal event calendar to the Tulsa Eagle's Facebook page to Slack workspaces you almost certainly did not know existed. It curates, deduplicates, scores for quality, and publishes the week's queer Tulsa guide before most people have finished their first cup of coffee. You wake up Monday, check TulsaGays.com, and you know what's actually happening. That's the whole idea.
             </p>
 
             <p>
-                Here's exactly how it works.
+                Here's exactly how the machine works.
             </p>
 
             <h2>The Five-Tier Discovery System</h2>
@@ -604,9 +600,7 @@
             </p>
 
             <p>
-                We're just the pipe that connects you to all of it. The 625-search deep research report that informed our
-                source directory took us weeks to compile and validate. The ongoing scrape is automated. But it started
-                with humans doing the work of knowing their community.
+                We're the pipe that connects you to all of it, which sounds less glamorous than it is. The 625-source research audit that built our original directory took weeks to compile and validate, and the ongoing scrape runs on automation. But it started with humans sitting down and actually doing the work of knowing their community, and that part never really stopped.
             </p>
 
             <div class="pull-quote">
@@ -631,7 +625,7 @@
     </main>
 
     <footer style="text-align:center;padding:2rem;color:var(--text-muted);font-size:0.8rem;margin-top:3rem;">
-        <p>&copy; 2026 Tulsa Gays. Nothing to do? Sounds like a straight person problem.</p>
+        <p>&copy; 2026 Tulsa Gays&#8482;. Nothing to do? Sounds like a straight person problem.</p>
         <p style="margin-top:0.5rem;"><a href="https://linktr.ee/tulsagays" style="color:var(--gold);">linktr.ee/tulsagays</a></p>
     </footer>
 

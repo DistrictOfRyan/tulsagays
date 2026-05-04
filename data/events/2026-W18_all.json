@@ -1,7 +1,7 @@
 {
   "week": "2026-W18",
   "generated_at": "2026-04-29T20:13:31.911918",
-  "total_events": 137,
+  "total_events": 136,
   "events": [
     {
       "name": "Homo Hotel Happy Hour",
@@ -337,8 +337,8 @@
       "priority": 1,
       "source": "recurring",
       "lgbtq_relevant": true,
-      "website_description": "Open Talent Night at Club Majestic. Doors at 9, show at 11. This is unscripted, live, and completely unpredictable — which is exactly the point. Performers sign up, take the stage, and compete live for the crowd's approval. Some will be brilliant. Some will have bold choices that may or may not land. All of it is worth watching. Club Majestic's Sunday Showdown is the kind of queer nightlife that keeps you up past midnight because you can't leave when the next act might be the most interesting thing you see all month. Sleep is a Monday problem. Show up Sunday.",
-      "slide_description": "Open Talent Night at Club Majestic. Doors at 9, show at 11. This is unscripted, live, and completely unpredictable — which is exactly the point. Performers sign up, take the stage, and compete live for the crowd's approv"
+      "website_description": "Open Talent Night at Club Majestic. Doors at 9, show at 11. Live, unscripted, and completely unpredictable, which is exactly the point. Anyone with the nerve to sign up gets the stage, and the room shows up for every one of them. Every act is somebody stepping into a real crowd and going for it, which is honestly the bravest thing you can do on a Sunday night. Club Majestic's Sunday Showdown is the kind of queer nightlife that keeps you up past midnight because you do not want to miss whoever walks up to that mic next. Sleep is a Monday problem. Show up Sunday.",
+      "slide_description": "Open Talent Night at Club Majestic. Doors at 9, show at 11. Live, unscripted, and completely unpredictable, which is exactly the point. Anyone with the nerve to sign up gets the stage, and the room shows up for every"
     },
     {
       "name": "Gabbin with Gabbi Bingo",
@@ -813,22 +813,6 @@
       "lgbtq_relevant": true,
       "website_description": "First Friday on Archer: Archer Creatives pop-up. The Tulsa Arts District on First Friday is the most walkable, social, gay-friendly thing you can do on a Friday evening in this city. Archer Creatives pops up with art, makers, and the general energy of people who make things and want you to see them. The crowd on Archer on First Friday is artsy, curious, and warm. Walk from gallery to gallery. Stop at a pop-up. Buy something from someone local. End the night somewhere on Archer with something good to eat. That's the move.",
       "slide_description": "First Friday on Archer: Archer Creatives pop-up. The Tulsa Arts District on First Friday is the most walkable, social, gay-friendly thing you can do on a Friday evening in this city. Archer Creatives pops up with art, ma"
-    },
-    {
-      "name": "Lesbian Attachment & Communication Healing Intensive",
-      "date": "2026-05-02",
-      "time": "",
-      "venue": "",
-      "description": "Join this 5-part experiential intensive, not offered since 2024, because it is a heart saver! Join us to learn how to understand, heal from and *prevent* the leading cause of lesbian fights, breakups and pain.\n\nAn RSVP to this meetup group alone is not sufficient. Please click on this link to learn",
-      "url": "https://www.meetup.com/consciousgirlfrienddallas/events/314353313/",
-      "source_urls": [
-        "https://www.meetup.com/consciousgirlfrienddallas/events/314353313/"
-      ],
-      "priority": 2,
-      "source": "meetup",
-      "lgbtq_relevant": true,
-      "website_description": "This is a five-part experiential intensive for lesbians focusing on attachment, communication, and the specific relational patterns that can quietly derail otherwise good connections. It hasn't been offered since 2024. The curriculum was designed around what actually happens in lesbian relationships -- the closeness, the conflict styles, the communication loops -- by someone who has been doing this work long enough to know the terrain. An RSVP on Meetup alone is not sufficient: click through to the full event page for registration details. If this describes your relationship, or your last relationship, or the pattern you keep noticing: this is the workshop that changes how things go next time.",
-      "slide_description": "Five-part lesbian attachment and communication intensive -- not offered since 2024. RSVP on Meetup is not enough, click through for registration."
     },
     {
       "name": "Shut Up & Write!® at Foolish Things",
