@@ -10,7 +10,7 @@
   ,{
       "name": "tulsagays-web",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "docs", "-l", "3457", "--no-clipboard"],
+      "runtimeArgs": ["serve", "C:/Users/willi/tulsagays/docs", "-l", "3457", "--no-clipboard"],
       "port": 3457
     }
   ]

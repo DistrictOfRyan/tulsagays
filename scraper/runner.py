@@ -48,45 +48,23 @@ except ImportError:
 # ── Constants ────────────────────────────────────────────────────────────────
 SIMILARITY_THRESHOLD = 0.75
 
-LGBTQ_SOURCES = {
-    "recurring", "okeq", "okeq_calendar", "specific_orgs",
-    "aa_meetings", "homo_hotel", "community_groups", "twisted_arts",
-    "qlist", "pflag_tulsa", "black_queer_tulsa", "freedom_oklahoma",
-    "council_oak", "hotmess_sports", "all_souls_special", "utulsa_pride",
-    "osu_tulsa", "manual",
-    # Arts/culture venues (LGBTQ-filtered at scraper level)
-    "circle_cinema", "philbrook_museum", "tulsa_arts_district",
-    # Facebook events (LGBTQ-filtered at scraper level)
-    "facebook_events",
-    # Tulsa Isn't Boring — curated community calendar, all events are relevant
-    "tulsa_isnt_boring",
-    # Slack channels — LGBTQ-filtered at scraper level
-    "slack_events_local", "slack_unite_lgbtq_plus",
-}
-
+# Generic LGBTQ keywords (universal — same across cities).
 LGBTQ_KEYWORDS = [
     "lgbtq", "queer", "gay", "lesbian", "bi", "trans", "drag", "pride",
     "rainbow", "dyke", "nonbinary", "non-binary", "gender", "equality",
     "affirming", "inclusive", "homo", "sapphic",
 ]
 
-# Community partners: LGBTQ-adjacent orgs whose events are always welcome
-# even if their names don't contain LGBTQ keywords
-COMMUNITY_PARTNER_KEYWORDS = [
-    "the sonic ray", "sonic ray", "sonicray",
-]
-
-# Events matching ANY of these keywords are explicitly excluded — even from trusted sources
-NON_LGBTQ_BLOCKLIST = [
-    # College/pro sports (non-LGBTQ-specific)
+# Generic non-LGBTQ blocklist — sports, oil/gas, mass non-LGBTQ religious events.
+# Patterns most US cities will share. City-specific additions live in
+# config.NON_LGBTQ_BLOCKLIST_CITY (e.g. local college sports team names).
+_GENERIC_NON_LGBTQ_BLOCKLIST = [
+    # College/pro sports (universal)
     "football game", "football season", "nfl ", " nfl", "nba ", " nba",
     "mlb ", " mlb", "nhl ", " nhl", "college football", "college basketball",
-    "oral roberts university", "oru football", "oru basketball", "oru baseball",
-    "golden eagles football", "golden eagles basketball",
-    "tu football", "osu football", "ou football", "sooners football",
     "nascar", "ufc ", " ufc", "mma fight",
     # Petroleum/energy industry conferences
-    "society of petroleum", "spe tulsa", "petroleum engineers",
+    "society of petroleum", "petroleum engineers",
     "spe ior", "spe improved", "improved oil recovery",
     "reservoir heterogeneity", "reservoir characterization",
     "oil and gas conference", "oil & gas conference",
@@ -96,13 +74,18 @@ NON_LGBTQ_BLOCKLIST = [
     "women's prayer breakfast",
 ]
 
-# These are clearly nav/junk strings that get scraped as "event names"
+# Generic junk names — scraper artifacts to discard regardless of city.
 JUNK_NAMES = {
     "map", "google calendar", "get your tickets", "buy tickets",
     "learn more", "view all", "see more", "load more", "rsvp",
     "register", "sign up", "donate", "subscribe", "contact us",
     "home", "about", "menu", "calendar", "events", "back",
 }
+
+# Compose city-specific values from config (with safe fallbacks for new-city scaffolds).
+LGBTQ_SOURCES = getattr(config, "LGBTQ_SOURCES", set())
+COMMUNITY_PARTNER_KEYWORDS = getattr(config, "COMMUNITY_PARTNER_KEYWORDS", [])
+NON_LGBTQ_BLOCKLIST = _GENERIC_NON_LGBTQ_BLOCKLIST + getattr(config, "NON_LGBTQ_BLOCKLIST_CITY", [])
 
 
 
@@ -317,9 +300,19 @@ def split_weekday_weekend(events: List[Dict]) -> Dict[str, List[Dict]]:
     weekday.extend(undated)
     weekend.extend(undated)
 
-    # Homo Hotel always in both groups
-    hh = [e for e in events if e.get("source") == "homo_hotel" or "homo hotel" in e.get("name", "").lower()]
-    for h in hh:
+    # Signature event always in both groups (configured via config.SIGNATURE_EVENT)
+    _sig_event = getattr(config, "SIGNATURE_EVENT", None) or {}
+    _sig_source_key = _sig_event.get("source_key", "")
+    _sig_keywords = _sig_event.get("name_keywords", [])
+
+    def _is_signature(ev: dict) -> bool:
+        if _sig_source_key and ev.get("source") == _sig_source_key:
+            return True
+        name = ev.get("name", "").lower()
+        return any(kw in name for kw in _sig_keywords)
+
+    sig_events = [e for e in events if _is_signature(e)]
+    for h in sig_events:
         if h not in weekday:
             weekday.insert(0, h)
         if h not in weekend:
@@ -328,25 +321,45 @@ def split_weekday_weekend(events: List[Dict]) -> Dict[str, List[Dict]]:
     return {"weekday": weekday, "weekend": weekend}
 
 
-# ── Homo Hotel guarantee ──────────────────────────────────────────────────────
+# ── Signature event guarantee ─────────────────────────────────────────────────
 
-def ensure_homo_hotel(events: List[Dict]) -> List[Dict]:
-    """Always ensure Homo Hotel Happy Hour is present and at the top."""
-    has_hh = any(e.get("source") == "homo_hotel" for e in events)
+def ensure_signature_event(events: List[Dict]) -> List[Dict]:
+    """Always ensure the city's signature event is present and at the top.
+    Configured via config.SIGNATURE_EVENT. If a city has no signature event,
+    this is a no-op."""
+    sig_event = getattr(config, "SIGNATURE_EVENT", None) or {}
+    sig_source_key = sig_event.get("source_key", "")
 
-    if not has_hh:
-        hh_events = homo_hotel.scrape()
-        # Apply lgbtq_relevant annotation
-        for e in hh_events:
+    if not sig_source_key:
+        return events
+
+    has_sig = any(e.get("source") == sig_source_key for e in events)
+
+    if not has_sig:
+        # Try to import the signature event scraper if it exists
+        try:
+            from scraper import homo_hotel as _signature_scraper
+        except ImportError:
+            try:
+                _signature_scraper = __import__(f"scraper.{sig_source_key}", fromlist=[""])
+            except ImportError:
+                logger.warning(f"Signature event source '{sig_source_key}' has no scraper module; skipping inject")
+                return events
+        sig_events = _signature_scraper.scrape()
+        for e in sig_events:
             e["lgbtq_relevant"] = True
-        events = hh_events + events
-        logger.info("Injected Homo Hotel Happy Hour events (were missing)")
+        events = sig_events + events
+        logger.info(f"Injected {sig_event.get('name', 'signature')} events (were missing)")
     else:
-        hh = [e for e in events if e.get("source") == "homo_hotel"]
-        others = [e for e in events if e.get("source") != "homo_hotel"]
-        events = hh + others
+        sig_evs = [e for e in events if e.get("source") == sig_source_key]
+        others = [e for e in events if e.get("source") != sig_source_key]
+        events = sig_evs + others
 
     return events
+
+
+# Backward-compat alias so existing call sites keep working
+ensure_homo_hotel = ensure_signature_event
 
 
 def _normalize_time_str(t: str) -> str:

@@ -1051,6 +1051,126 @@ SEARCH_QUERIES = [
     "tulsa lgbtq community",
 ]
 
+# ── City-specific filters and scoring ────────────────────────────────────
+# These data structures are CITY-SPECIFIC. Shared code (runner.py, image_maker.py,
+# gen_website_html.py, generator.py) reads from these. NEVER hardcode city values
+# in shared code — that breaks the sync pattern. See city-growth-playbook §15.5.
+#
+# When scaffolding a new city, this section gets reset to empty/generic defaults.
+# Each city populates its own values during launch (Phase 3 source discovery).
+#
+# Tulsa Gays values below are the reference implementation.
+
+# Source keys (subset of SOURCES) considered always-LGBTQ.
+# Used by runner.py to decide whether an event needs the LGBTQ keyword filter.
+LGBTQ_SOURCES = {
+    # Generic — work for any city if those source modules exist
+    "recurring", "specific_orgs", "manual", "facebook_events",
+    "aa_meetings", "community_groups", "qlist",
+    # City-specific (Tulsa)
+    "okeq", "okeq_calendar", "homo_hotel", "twisted_arts",
+    "council_oak", "hotmess_sports", "all_souls_special",
+    "pflag_tulsa", "black_queer_tulsa", "freedom_oklahoma",
+    "utulsa_pride", "osu_tulsa",
+    "circle_cinema", "philbrook_museum", "tulsa_arts_district",
+    "tulsa_isnt_boring",
+    "slack_events_local", "slack_unite_lgbtq_plus",
+}
+
+# Inclusive community partners (city-specific). Events from these orgs are welcome
+# even when they don't contain LGBTQ keywords. Add the actual org name as a substring.
+COMMUNITY_PARTNER_KEYWORDS = [
+    "the sonic ray", "sonic ray", "sonicray",
+]
+
+# City-specific blocklist additions. Combined with the generic blocklist in runner.py.
+# Use lowercase substrings. Generic blocklist (sports/oil/non-LGBTQ-religious) lives in
+# shared code as _GENERIC_NON_LGBTQ_BLOCKLIST.
+NON_LGBTQ_BLOCKLIST_CITY = [
+    "oral roberts university", "oru football", "oru basketball", "oru baseball",
+    "golden eagles football", "golden eagles basketball",
+    "tu football", "osu football", "ou football", "sooners football",
+    "spe tulsa",
+]
+
+# Address fragment → display business name. Used by clean_venue() in image_maker.py
+# and gen_website_html.py to display business names instead of raw street addresses.
+VENUE_NAME_MAP = {
+    '302 south frankfort': 'DVL Club & Lounge',
+    '302 s. frankfort':    'DVL Club & Lounge',
+    '302 s frankfort':     'DVL Club & Lounge',
+    '1338 e 3rd':          'Tulsa Eagle',
+    '1330 e 3rd':          'Tulsa Eagle',
+    '602 south lewis':     'Pump Bar',
+    '602 s. lewis':        'Pump Bar',
+    '602 s lewis':         'Pump Bar',
+    '6808 s. memorial':    'Loony Bin Comedy Club',
+    '6808 s memorial':     'Loony Bin Comedy Club',
+    '1124 s. lewis':       'WEL Bar',
+    '1301 s. boston':      'Boston Ave UMC',
+    '2224 w 51st':         'Zarrow Library',
+}
+
+# True gay bar venues — events at these always score 5 in flamingo scoring.
+# Use lowercase substrings (matched against venue field, after clean_venue).
+TRUE_GAY_BAR_VENUES = {
+    'club majestic', 'tulsa eagle', 'yellow brick', 'majestic tulsa',
+    '1330 e 3rd', '1338 e 3rd', 'the vanguard',
+    'pump bar', '602 south lewis', '602 s. lewis', '602 s lewis',
+}
+
+# Queer-friendly venues (not exclusively gay) — events here default to 4 unless
+# higher tier matches first.
+QUEER_FRIENDLY_VENUES = {
+    'dvl', '302 south frankfort', '302 s. frankfort', '302 s frankfort', 'elote',
+}
+
+# Source keys that are LGBTQ-community-organized. Events from these sources matching
+# COMMUNITY_KW score 3 minimum. Subset of LGBTQ_SOURCES.
+LGBTQ_COMMUNITY_SOURCES = {"homo_hotel", "okeq", "recurring", "manual"}
+
+# Signature event configuration (the "HHHH" slot). City-specific.
+# If a city has no signature event yet, set "name_keywords": [] — EOTW logic will
+# skip directly to anchor cultural event or generic priority.
+SIGNATURE_EVENT = {
+    "name": "Homo Hotel Happy Hour",
+    "name_keywords": ["homo hotel", "hhhh"],
+    "source_key": "homo_hotel",
+    "schedule": "1st Friday monthly, 7pm",
+    "is_priority_one": True,
+}
+
+# Anchor cultural event (the "Council Oak Men's Chorale" slot). City-specific.
+# If none, set "name_keywords": [].
+ANCHOR_CULTURAL_EVENT = {
+    "name": "Council Oak Men's Chorale",
+    "name_keywords": ["council oak", "comc"],
+    "source_key": "council_oak_chorus",
+    "is_priority_two": True,
+}
+
+# Affirming venue keywords that score 3 (non-bar non-arts but reliably welcoming).
+# E.g. specific UU congregations.
+AFFIRMING_VENUE_KEYWORDS_CITY = ["all souls"]
+
+# City-specific keywords added to the FIVE-flamingo (super gay) keyword list.
+# Generic queer terms (drag, pride, queer night, etc.) live in shared code.
+# Add city-specific org names, signature events, etc.
+FIVE_FL_KEYWORDS_CITY = [
+    "homo hotel", "hhhh", "twisted arts",
+    "osu tulsa queer", "pflag tulsa",
+    "lambda bowling", "lambda unity",
+    "gabbin with gabbi", "pride nation entertainment",
+    "brad lee", "lesbian attachment",
+]
+
+# City-specific keywords added to the FOUR-flamingo (very queer) keyword list.
+FOUR_FL_KEYWORDS_CITY = [
+    "equality center", "okeq", "pflag", "sonic ray", "council oak", "hrc",
+    "queer collective", "queer crafters",
+]
+
+
 # ── Helpers ──────────────────────────────────────────────────────────────
 def ensure_dirs():
     """Create data directories if they don't exist."""

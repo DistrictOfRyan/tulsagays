@@ -27,61 +27,61 @@ def _is_garbage(ev):
     return False
 events = [e for e in events if not _is_garbage(e)]
 
-# Show ALL events on the website — gay score distinguishes LGBTQ events from general ones
-# Trusted LGBTQ sources get a score boost
-_TRUSTED_SOURCES = {"homo_hotel", "recurring", "manual", "okeq", "extended_calendars",
-                    "community_groups", "facebook_events", "meetup"}
+# Show ALL events on the website — gay score distinguishes LGBTQ events from general ones.
+# All city-specific data (venues, source keys, anchor keywords) reads from config.py.
+# Generic universal patterns stay here in shared code. See city-growth-playbook §15.5.
 
-_FIVE_FL = [
+_TRUSTED_SOURCES = (
+    {"recurring", "manual", "extended_calendars",
+     "community_groups", "facebook_events", "meetup"}
+    | getattr(config, "LGBTQ_COMMUNITY_SOURCES", set())
+)
+
+# Generic FIVE-flamingo keywords — universal across cities.
+_FIVE_FL_GENERIC = [
     'drag show', 'drag bingo', 'drag brunch', 'drag queen', 'drag king', 'drag race',
     'drag sing', 'drag along', 'drag perform', 'drag night',
     'pride show', 'pride party', 'pride dance', 'pride night', 'queer night',
-    'gay night', 'lgbtq+ night', 'homo hotel', 'hhhh', 'rainbow night', 'twisted arts',
-    'queer cabaret', 'dragnificent', 'lambda bowling',
+    'gay night', 'lgbtq+ night', 'rainbow night',
+    'queer cabaret', 'dragnificent',
     'queer support group', 'lgbtq support group', 'gender outreach support',
     'queer women', 'sapphic social', 'queer social', 'trans support group',
-    'osu tulsa queer', 'pflag tulsa', 'queer support',
-    'pflag', 'lambda unity',
+    'queer support', 'pflag',
     'bar crawl', 'pub crawl', 'pride crawl',
-    'gabbin with gabbi', 'pride nation entertainment', 'brad lee',
-    'lesbian attachment',
 ]
-# True gay bars — any event here is automatically super gay (5 flamingos)
-_GAY_BAR_VENUES = {
-    'club majestic', 'tulsa eagle', 'yellow brick', 'majestic tulsa',
-    '1330 e 3rd', '1338 e 3rd', 'the vanguard',
-    'pump bar', '602 south lewis', '602 s. lewis', '602 s lewis',
-}
-# Queer-friendly venues (not exclusively gay) → 4 flamingos
-_FOUR_VENUES = {
-    'dvl', '302 south frankfort', '302 s. frankfort', '302 s frankfort',
-    'elote',
-}
-_FOUR_FL = [
+_FIVE_FL = _FIVE_FL_GENERIC + getattr(config, "FIVE_FL_KEYWORDS_CITY", [])
+
+# True gay bars — any event here automatically scores 5. City-specific via config.
+_GAY_BAR_VENUES = getattr(config, "TRUE_GAY_BAR_VENUES", set())
+
+# Queer-friendly venues — score 4. City-specific via config.
+_FOUR_VENUES = getattr(config, "QUEER_FRIENDLY_VENUES", set())
+
+# Generic FOUR-flamingo keywords. City-specific anchors via config.
+_FOUR_FL_GENERIC = [
     'lgbtq', 'lgbt', 'queer', 'lesbian', 'bisexual', 'sapphic',
     'transgender', 'nonbinary', 'non-binary', 'gender outreach',
-    'equality center', 'okeq', 'pflag', 'rainbow pride', 'pride month',
-    'sonic ray', 'council oak', 'hrc', 'gay bar', 'gay club',
-    'queer collective', 'queer crafters', 'support group', 'trans support',
+    'rainbow pride', 'pride month',
+    'gay bar', 'gay club',
+    'support group', 'trans support',
     'musical', 'the musical', 'pride', 'opera', 'broadway',
 ]
-_LGBTQ_COMMUNITY_SOURCES = {"homo_hotel", "okeq", "recurring", "manual"}
+_FOUR_FL = _FOUR_FL_GENERIC + getattr(config, "FOUR_FL_KEYWORDS_CITY", [])
+
+_LGBTQ_COMMUNITY_SOURCES = getattr(config, "LGBTQ_COMMUNITY_SOURCES", set())
 _COMMUNITY_KW = [
     'support', 'group', 'meeting', 'collective', 'social', 'community',
     'bowling', 'yoga', 'meditation', 'sound bath', 'seniors', 'testing', 'coffee',
 ]
-# Performing arts and specific community events — always 3, even if name contains 2-tier words
-_THREE_FL = [
-    # Art crawls
+# Generic THREE-flamingo (performing arts) + city-specific affirming venues
+_THREE_FL_GENERIC = [
     'first friday art crawl', 'art crawl',
-    # Performing arts (live stage events)
     'ballet', 'symphony', 'orchestra', 'choir', 'chorale', 'choral',
     'performing arts', 'theatre', 'theater', 'cabaret',
     'live performance', 'stage production', 'dance performance',
     'recital', 'repertory', 'philharmonic',
-    # LGBTQ-affirming venues / orgs (not exclusively gay, but always welcome)
-    'all souls',
 ]
+_THREE_FL = _THREE_FL_GENERIC + getattr(config, "AFFIRMING_VENUE_KEYWORDS_CITY", [])
 _TWO_FL = [
     'art', 'music', 'concert', 'gallery', 'theater', 'theatre', 'comedy',
     'poetry', 'film', 'cinema', 'festival', 'cabaret', 'dance', 'live music',
@@ -103,9 +103,11 @@ def _flamingo_score(ev) -> int:
         return 4
     if any(v in venue for v in _FOUR_VENUES):
         return 4
-    if source in ('homo_hotel', 'okeq'):
+    # Events from LGBTQ-community-organizing sources (signature event, equality center, etc.)
+    if source in _LGBTQ_COMMUNITY_SOURCES:
         return 4
-    if source in _LGBTQ_COMMUNITY_SOURCES and any(kw in content for kw in _COMMUNITY_KW):
+    _community_subset = {s for s in _LGBTQ_COMMUNITY_SOURCES if s in ("recurring", "manual")}
+    if source in _community_subset and any(kw in content for kw in _COMMUNITY_KW):
         return 3
     if any(kw in content for kw in _THREE_FL):
         return 3
@@ -148,17 +150,34 @@ day_css = {
 }
 
 def _is_homo_hotel(e):
+    """Match the city's signature event (config.SIGNATURE_EVENT)."""
+    sig = getattr(config, "SIGNATURE_EVENT", None) or {}
+    if not sig:
+        return False
+    src_key = sig.get("source_key", "")
+    if src_key and (e.get('source') or '').lower() == src_key.lower():
+        return True
     combined = ((e.get('name') or '') + ' ' + (e.get('source') or '')).lower()
-    return 'homo hotel' in combined
+    return any(kw.lower() in combined for kw in sig.get("name_keywords", []))
 
 def _is_council_oak(e):
+    """Match the city's anchor cultural event (config.ANCHOR_CULTURAL_EVENT)."""
+    anchor = getattr(config, "ANCHOR_CULTURAL_EVENT", None) or {}
+    if not anchor:
+        return False
+    src_key = anchor.get("source_key", "")
+    if src_key and (e.get('source') or '').lower() == src_key.lower():
+        return True
     combined = ((e.get('name') or '') + ' ' + (e.get('source') or '')).lower()
-    return 'council oak' in combined or 'comc' in combined
+    return any(kw.lower() in combined for kw in anchor.get("name_keywords", []))
 
 def _is_recurring(e):
     name = (e.get('name') or '').lower()
-    kw = ['bowling', 'aa meeting', 'alcoholics', 'support group', 'yoga', 'meditation',
-          'sound bath', 'sonic ray', 'sound sanctuary', 'sound meditation']
+    # Generic recurring keywords + city-specific community partner keywords
+    _generic_kw = ['bowling', 'aa meeting', 'alcoholics', 'support group', 'yoga', 'meditation',
+                   'sound bath', 'sound sanctuary', 'sound meditation']
+    _city_partner_kw = [k.lower() for k in getattr(config, "COMMUNITY_PARTNER_KEYWORDS", [])]
+    kw = _generic_kw + _city_partner_kw
     return any(k in name for k in kw)
 
 QUEER_PERFORMANCE_KEYWORDS = [
@@ -299,22 +318,10 @@ def _url_label(url: str) -> str:
         return 'Link'
 
 _VENUE_JUNK = ('shared by ', 'posted by ', 'reposted by ', 'event by ')
-# Known address fragments → display name (checked before address-stripping)
-_VENUE_NAME_MAP = {
-    '302 south frankfort': 'DVL Club & Lounge',
-    '302 s. frankfort':    'DVL Club & Lounge',
-    '302 s frankfort':     'DVL Club & Lounge',
-    '1338 e 3rd':          'Tulsa Eagle',
-    '1330 e 3rd':          'Tulsa Eagle',
-    '602 south lewis':     'Pump Bar',
-    '602 s. lewis':        'Pump Bar',
-    '602 s lewis':         'Pump Bar',
-    '6808 s. memorial':    'Loony Bin Comedy Club',
-    '6808 s memorial':     'Loony Bin Comedy Club',
-    '1124 s. lewis':       'WEL Bar',
-    '1301 s. boston':      'Boston Ave UMC',
-    '2224 w 51st':         'Zarrow Library',
-}
+# Address fragment → display name. City-specific via config.VENUE_NAME_MAP with safe
+# empty fallback for new-city scaffolds (until VENUE_FACTS / Phase 3 source discovery
+# populate it).
+_VENUE_NAME_MAP = getattr(config, "VENUE_NAME_MAP", {})
 
 def _clean_venue(raw: str) -> str:
     """Return a display-ready venue name, stripping scraper artifacts and raw addresses."""
