@@ -50,9 +50,27 @@ SIMILARITY_THRESHOLD = 0.75
 
 # Generic LGBTQ keywords (universal — same across cities).
 LGBTQ_KEYWORDS = [
+    # Explicit identity
     "lgbtq", "queer", "gay", "lesbian", "bi", "trans", "drag", "pride",
     "rainbow", "dyke", "nonbinary", "non-binary", "gender", "equality",
-    "affirming", "inclusive", "homo", "sapphic",
+    "affirming", "inclusive", "homo", "sapphic", "two-spirit", "twospirit",
+    # Queer-adjacent / community-coded: events that reliably draw queer crowds
+    # even without explicit LGBTQ branding
+    "oddities", "curiosities",          # Oddities & Curiosities touring market
+    "burlesque", "cabaret",             # queer performance traditions
+    "feminist", "radical",              # progressive cultural events
+    "night market", "art market", "bazaar", "market",  # queer-popular market formats
+    "wiz",                              # The Wiz (Black/queer cultural touchstone)
+    "greenwood", "black wall street",   # Black cultural events (intersectional)
+    "boots riley",                      # radical filmmaker, queer community following
+    # Cultural event types — these are table stakes for community relevance
+    # at arts venues; the venue list (COMMUNITY_PARTNER_KEYWORDS) does the curation
+    "screening", "film festival", "documentary",   # film culture
+    "exhibition", "opening reception", "art opening",  # art openings
+    "workshop", "panel discussion", "panel", "lecture",  # community learning
+    "fundraiser", "benefit show", "benefit concert",     # community support
+    "cultural festival", "heritage",                     # cultural programming
+    "open mic", "poetry",                                # alternative performance
 ]
 
 # Generic non-LGBTQ blocklist — sports, oil/gas, mass non-LGBTQ religious events.

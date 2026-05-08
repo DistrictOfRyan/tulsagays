@@ -776,6 +776,22 @@ SOURCES = {
         "description": "Concert venue and event aggregator. Tulsa concert schedule and tickets.",
     },
     # ── MAJOR CULTURAL VENUES & MUSIC HALLS ────────────────────────────────
+    "tulsa_artist_fellowship": {
+        "name": "Tulsa Artist Fellowship / Flagship",
+        "url": "https://www.tulsaartistfellowship.org/calendar",
+        "website": "https://tulsaartistfellowship.org/flagship",
+        "priority": 2,
+        "type": "arts",
+        "description": "Flagship public space (112 N Boston Ave) — screenings, panels, lectures, artist talks, workshops, performances, radical cultural programming. Free and open to public.",
+    },
+    "greenwood_cultural_center": {
+        "name": "Greenwood Cultural Center",
+        "url": "https://www.greenwoodculturalcenter.com/events",
+        "facebook": "https://www.facebook.com/GreenwoodCulturalCenter/",
+        "priority": 2,
+        "type": "arts",
+        "description": "Black Wall Street heritage site. Hosts film screenings, lectures, cultural events, radical cinema, community programming. Intersectional with queer community.",
+    },
     "philbrook_museum": {
         "name": "Philbrook Museum of Art",
         "url": "https://philbrook.org/calendar/",
@@ -1075,12 +1091,30 @@ LGBTQ_SOURCES = {
     "circle_cinema", "philbrook_museum", "tulsa_arts_district",
     "tulsa_isnt_boring",
     "slack_events_local", "slack_unite_lgbtq_plus",
+    "wompa_tulsa",              # trusted community venue — all events relevant, no keyword filter
+    "tulsa_artist_fellowship",  # Flagship space — screenings, lectures, radical cultural events
 }
 
 # Inclusive community partners (city-specific). Events from these orgs are welcome
 # even when they don't contain LGBTQ keywords. Add the actual org name as a substring.
+# The runner checks name + description + URL for any of these strings.
 COMMUNITY_PARTNER_KEYWORDS = [
     "the sonic ray", "sonic ray", "sonicray",
+    # Tulsa venues with strong queer-welcoming reputations —
+    # any event mentioning these places bypasses strict keyword filter.
+    "wompa",
+    "philbrook",
+    "woody guthrie",
+    "gathering place",
+    "greenwood cultural", "greenwood center",
+    "circle cinema",
+    "tulsa pac", "performing arts center",
+    "expo square",
+    "cain's ballroom", "cainsballroom",
+    "guthrie green",
+    "living arts",
+    "vanguard tulsa",
+    "flagship", "tulsa artist fellowship",
 ]
 
 # City-specific blocklist additions. Combined with the generic blocklist in runner.py.
