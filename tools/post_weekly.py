@@ -97,6 +97,8 @@ HASHTAGS = "#TulsaGays #TulsaPride #QueerTulsa #LGBTQ #Oklahoma #TulsaEvents"
 
 def _get_eotw() -> dict | None:
     """Find the Event of the Week from this week's events JSON."""
+    from eotw_selector import select_eotw
+
     events_file = ROOT / "data" / "events" / f"{WEEK_KEY}_all.json"
     if not events_file.exists():
         return None
@@ -116,84 +118,7 @@ def _get_eotw() -> dict | None:
             return False
 
     this_week = [e for e in events if in_week(e)]
-
-    def _is_hh(e):
-        return "homo hotel" in ((e.get("name") or "") + " " + (e.get("source") or "")).lower()
-
-    def _is_council(e):
-        combined = ((e.get("name") or "") + " " + (e.get("source") or "")).lower()
-        return "council oak" in combined or "comc" in combined
-
-    def _is_skip(e):
-        name = (e.get("name") or "").lower()
-        src = (e.get("source") or "").lower()
-        if src in {"recurring", "aa_meetings", "bars"}:
-            return True
-        return any(k in name for k in [
-            "bowling", "aa meeting", "support group", "sound bath", "sonic ray",
-            "health clinic", "okeq health", "hope testing", "drop-in therapy",
-            "therapy session", "free drop-in", "health outreach",
-        ])
-
-    _QUEER_PERF_KW = [
-        "drag", "drag show", "drag bingo", "drag brunch", "drag queen", "drag king",
-        "cabaret", "pride show", "pride event", "pride night", "queer night",
-        "gay night", "lgbtq+ night", "twisted arts", "okeq", "rainbow",
-        "pride dance", "pride party",
-    ]
-
-    def _is_queer_perf(e):
-        combined = " ".join([
-            (e.get("name") or ""), (e.get("description") or ""),
-            (e.get("venue") or ""), (e.get("source") or "")
-        ]).lower()
-        return any(kw in combined for kw in _QUEER_PERF_KW)
-
-    def _is_deprioritized_venue(e):
-        # Per organizer/site policy: Club Majestic events never lead the caption.
-        venue = (e.get("venue") or "").lower()
-        return "majestic" in venue or "124 n boston" in venue
-
-    # LGBTQ relevance check for the EOTW fallback pool
-    _LGBTQ_KW_EOTW = {
-        "lgbtq", "queer", "gay", "lesbian", "trans", "drag", "pride",
-        "bisexual", "nonbinary", "non-binary", "gender", "rainbow",
-        "equality", "homo", "okeq", "sapphic", "affirming",
-    }
-    _LGBTQ_SRCS_EOTW = {
-        "homo_hotel", "okeq", "twisted_arts", "community_groups",
-        "black_queer_tulsa", "freedom_oklahoma", "all_souls_special",
-        "slack_unite_lgbtq_plus",
-    }
-
-    def _is_lgbtq_eotw(e):
-        src = (e.get("source") or "").lower()
-        combined = " ".join([
-            e.get("name", ""), e.get("description", ""),
-            e.get("venue", ""), src,
-        ]).lower()
-        return src in _LGBTQ_SRCS_EOTW or any(kw in combined for kw in _LGBTQ_KW_EOTW)
-
-    hh = [e for e in this_week if _is_hh(e)]
-    if hh:
-        return hh[0]
-    council = [e for e in this_week if _is_council(e)]
-    if council:
-        return council[0]
-    queer_perf = [e for e in this_week if _is_queer_perf(e) and not _is_skip(e)
-                  and not _is_hh(e) and not _is_council(e)
-                  and not _is_deprioritized_venue(e)]
-    if queer_perf:
-        return queer_perf[0]
-    # Fallback: only LGBTQ-relevant events may serve as EOTW.
-    # A Cinco de Mayo street festival or county concert must never be featured here.
-    lgbtq_specials = [
-        e for e in this_week
-        if not _is_skip(e) and not _is_deprioritized_venue(e)
-        and not _is_hh(e) and not _is_council(e) and not _is_queer_perf(e)
-        and _is_lgbtq_eotw(e)
-    ]
-    return lgbtq_specials[0] if lgbtq_specials else None
+    return select_eotw(this_week)
 
 
 def _format_date(date_str: str) -> str:
