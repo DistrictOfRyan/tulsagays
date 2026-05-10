@@ -1034,12 +1034,41 @@ BLOG_URL = "https://www.tulsagays.com"
 GITHUB_REPO = "tulsagays/tulsagays.github.io"
 
 # ── Hashtags ─────────────────────────────────────────────────────────────
+# 5 brand tags (existing followers) + 5 discovery tags (non-followers browsing
+# location/interest pages). Instagram now deprioritizes posts with 12+ hashtags,
+# so we keep the total at 10. Rotate from this pool; always include MUST_HAVE_HASHTAGS.
 HASHTAGS = [
-    "#TulsaGays", "#TulsaPride", "#GayTulsa", "#TulsaLGBTQ",
-    "#QueerTulsa", "#TulsaEvents", "#LGBTQTulsa", "#OklahomaPride",
-    "#TulsaNightlife", "#HomoHotelHappyHour", "#TulsaQueer",
-    "#GayOklahoma", "#TulsaCommunity", "#LoveIsLove",
+    # Brand / community identity
+    "#TulsaGays", "#TulsaLGBTQ", "#QueerTulsa",
+    "#TulsaEvents", "#HomoHotelHappyHour",
+    # Discovery / location — reach non-followers browsing these tags
+    "#Tulsa", "#TulsaOklahoma", "#Oklahoma",
+    "#VisitTulsa", "#OklahomaLGBTQ",
 ]
+
+# These three always appear on every post, no exceptions.
+MUST_HAVE_HASHTAGS = ["#TulsaGays", "#TulsaLGBTQ", "#HomoHotelHappyHour"]
+
+# ── Instagram handle map (source key → @handle) ──────────────────────────
+# When an org's events appear in the weekly post, their handle gets mentioned
+# in the caption so they see it and can reshare. Add handles here as you
+# confirm them — only include handles you've verified are active and correct.
+SOURCE_IG_HANDLES = {
+    # Confirmed from config.py instagram fields
+    "dvl_tulsa":           "@dvltulsa",
+    "hotmess_sports":      "@hotmesssports",
+    "gay_kickball_tulsa":  "@hotmesssports",
+    "studio_66":           "@studio.66_",
+    "tulsa_house_of_drag": "@tulsahouseofdrag",
+    # Add verified handles below as you confirm them:
+    # "homo_hotel":        "@...",
+    # "okeq":              "@okeqtulsa",
+    # "twisted_arts":      "@twistedartstulsa",
+    # "black_queer_tulsa": "@blackqueertulsa",
+    # "freedom_oklahoma":  "@freedomoklahoma",
+    # "circle_cinema":     "@circlecinemat",
+    # "all_souls_special": "@allsoulsuu",
+}
 
 # ── Self-Improvement ─────────────────────────────────────────────────────
 SEARCH_QUERIES = [

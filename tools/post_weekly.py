@@ -90,7 +90,7 @@ FOMO_CLOSES = [
     "One night is not all you get. There's a whole week of this. Tap through.",
 ]
 
-HASHTAGS = "#TulsaGays #TulsaPride #QueerTulsa #LGBTQ #Oklahoma #TulsaEvents"
+HASHTAGS = "#TulsaGays #TulsaLGBTQ #QueerTulsa #TulsaEvents #HomoHotelHappyHour #Tulsa #TulsaOklahoma #Oklahoma #VisitTulsa #OklahomaLGBTQ"
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -119,6 +119,43 @@ def _get_eotw() -> dict | None:
 
     this_week = [e for e in events if in_week(e)]
     return select_eotw(this_week)
+
+
+def _get_handle_line() -> str:
+    """Return an '@mention' line for orgs whose events appear this week.
+
+    Reads this week's events, looks up each source in config.SOURCE_IG_HANDLES,
+    deduplicates, and returns a compact tag line (or '' if none are known).
+    """
+    handle_map = getattr(config, "SOURCE_IG_HANDLES", {})
+    if not handle_map:
+        return ""
+
+    events_file = ROOT / "data" / "events" / f"{WEEK_KEY}_all.json"
+    if not events_file.exists():
+        return ""
+
+    try:
+        with open(events_file, encoding="utf-8") as f:
+            data = json.load(f)
+        events = data if isinstance(data, list) else data.get("events", [])
+    except Exception:
+        return ""
+
+    seen_handles: list[str] = []
+    seen_set: set[str] = set()
+    for e in events:
+        src = (e.get("source") or "").lower()
+        handle = handle_map.get(src)
+        if handle and handle not in seen_set:
+            seen_handles.append(handle)
+            seen_set.add(handle)
+
+    if not seen_handles:
+        return ""
+
+    # Cap at 5 handles — more than that looks spammy
+    return " ".join(seen_handles[:5])
 
 
 def _format_date(date_str: str) -> str:
@@ -175,6 +212,10 @@ def generate_caption() -> str:
     lines.append("")
     lines.append("Hundreds of fabulous events every week in Tulsa. Full list at tulsagays.com")
     lines.append("")
+    handle_line = _get_handle_line()
+    if handle_line:
+        lines.append(handle_line)
+        lines.append("")
     lines.append(HASHTAGS)
 
     return "\n".join(lines)
@@ -421,6 +462,40 @@ def save_results(fb_result: dict, ig_post_id: str) -> None:
         json.dump(results, f, indent=2)
 
     print(f"\nResults saved to {results_path}")
+
+    # Log the post for engagement tracking. The fetch_engagement() call
+    # requires a valid Meta token — it will silently skip if the token is
+    # expired. Re-run engagement_tracker.fetch_engagement(ig_post_id) after
+    # refreshing the page token to backfill this week's numbers.
+    if not DRY_RUN and not ig_post_id.startswith("FAILED"):
+        try:
+            sys.path.insert(0, str(ROOT))
+            from self_improve.engagement_tracker import log_post, fetch_engagement
+            events_file = ROOT / "data" / "events" / f"{WEEK_KEY}_all.json"
+            events_count = 0
+            if events_file.exists():
+                with open(events_file, encoding="utf-8") as ef:
+                    edata = json.load(ef)
+                events_count = edata.get("total_events", 0) if isinstance(edata, dict) else len(edata)
+            log_post(
+                post_id=ig_post_id,
+                post_type="carousel",
+                events_featured=events_count,
+                caption_style="eotw_hype",
+            )
+            print(f"[engagement] Post logged: {ig_post_id}")
+            # Attempt an immediate metrics fetch — will silently fail if token expired
+            metrics = fetch_engagement(ig_post_id)
+            if metrics:
+                print(f"[engagement] Live metrics: reach={metrics.get('reach',0)}, "
+                      f"impressions={metrics.get('impressions',0)}, saves={metrics.get('saves',0)}")
+            else:
+                print("[engagement] Metrics fetch skipped (token likely expired). "
+                      "Refresh page_access_token and re-run: "
+                      "python -c \"from self_improve.engagement_tracker import fetch_engagement; "
+                      f"fetch_engagement('{ig_post_id}')\"")
+        except Exception as _e:
+            print(f"[engagement] Tracking skipped: {_e}")
 
 
 # ── Main ─────────────────────────────────────────────────────────────────────
