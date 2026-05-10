@@ -154,6 +154,26 @@ def _get_eotw() -> dict | None:
         venue = (e.get("venue") or "").lower()
         return "majestic" in venue or "124 n boston" in venue
 
+    # LGBTQ relevance check for the EOTW fallback pool
+    _LGBTQ_KW_EOTW = {
+        "lgbtq", "queer", "gay", "lesbian", "trans", "drag", "pride",
+        "bisexual", "nonbinary", "non-binary", "gender", "rainbow",
+        "equality", "homo", "okeq", "sapphic", "affirming",
+    }
+    _LGBTQ_SRCS_EOTW = {
+        "homo_hotel", "okeq", "twisted_arts", "community_groups",
+        "black_queer_tulsa", "freedom_oklahoma", "all_souls_special",
+        "slack_unite_lgbtq_plus",
+    }
+
+    def _is_lgbtq_eotw(e):
+        src = (e.get("source") or "").lower()
+        combined = " ".join([
+            e.get("name", ""), e.get("description", ""),
+            e.get("venue", ""), src,
+        ]).lower()
+        return src in _LGBTQ_SRCS_EOTW or any(kw in combined for kw in _LGBTQ_KW_EOTW)
+
     hh = [e for e in this_week if _is_hh(e)]
     if hh:
         return hh[0]
@@ -165,8 +185,15 @@ def _get_eotw() -> dict | None:
                   and not _is_deprioritized_venue(e)]
     if queer_perf:
         return queer_perf[0]
-    specials = [e for e in this_week if not _is_skip(e) and not _is_deprioritized_venue(e)]
-    return specials[0] if specials else (this_week[0] if this_week else None)
+    # Fallback: only LGBTQ-relevant events may serve as EOTW.
+    # A Cinco de Mayo street festival or county concert must never be featured here.
+    lgbtq_specials = [
+        e for e in this_week
+        if not _is_skip(e) and not _is_deprioritized_venue(e)
+        and not _is_hh(e) and not _is_council(e) and not _is_queer_perf(e)
+        and _is_lgbtq_eotw(e)
+    ]
+    return lgbtq_specials[0] if lgbtq_specials else None
 
 
 def _format_date(date_str: str) -> str:
@@ -479,6 +506,28 @@ def main():
     if DRY_RUN:
         print("  *** DRY RUN MODE — no actual posts will go out ***")
     print("=" * 60)
+
+    # Step 0: Hard approval gate — slides must be reviewed before posting
+    approval_path = SLIDES_DIR / "approval_status.json"
+    if not DRY_RUN:
+        if not approval_path.exists():
+            print(
+                f"\n[STOP] No approval_status.json found at {approval_path}\n"
+                f"       William has not reviewed this week's content.\n"
+                f"       Run the Sunday approval task, or create approval_status.json with approved=true.\n"
+                f"       Post ABORTED."
+            )
+            sys.exit(1)
+        with open(approval_path, encoding="utf-8") as _f:
+            _approval = json.load(_f)
+        if not _approval.get("approved"):
+            print(
+                f"\n[STOP] approval_status.json exists but approved={_approval.get('approved')}.\n"
+                f"       William has not approved this week's content.\n"
+                f"       Post ABORTED."
+            )
+            sys.exit(1)
+        print(f"[OK] Content approved ({_approval.get('approved_at', 'timestamp unknown')})")
 
     # Step 1: Validate slides
     slides = get_slides()

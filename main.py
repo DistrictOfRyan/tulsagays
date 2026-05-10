@@ -348,10 +348,38 @@ def cmd_generate(post_type="weekday"):
     _hh = [e for e in _all_deduped if _is_hh(e)]
     _co = [e for e in _all_deduped if _is_co(e)]
     _qp = [e for e in _all_deduped if _is_qp(e) and not _is_rec(e) and not _is_hh(e)]
-    _sp = [e for e in _all_deduped if not _is_hh(e) and not _is_co(e) and not _is_qp(e) and not _is_rec(e)]
+
+    # Fallback pool: only LGBTQ-relevant events may serve as EOTW.
+    # Mainstream community events (concerts, street fairs, farmers markets) must never be featured.
+    _LGBTQ_KW_SLIDE = {
+        "lgbtq", "queer", "gay", "lesbian", "trans", "drag", "pride",
+        "bisexual", "nonbinary", "non-binary", "gender", "rainbow",
+        "equality", "homo", "okeq", "sapphic", "affirming",
+    }
+    _LGBTQ_SRCS_SLIDE = {
+        "homo_hotel", "okeq", "twisted_arts", "community_groups",
+        "black_queer_tulsa", "freedom_oklahoma", "all_souls_special",
+        "slack_unite_lgbtq_plus",
+    }
+
+    def _is_lgbtq_slide(e):
+        src = (e.get("source") or "").lower()
+        combined = " ".join([
+            e.get("name", ""), e.get("description", ""),
+            e.get("venue", ""), src,
+        ]).lower()
+        return src in _LGBTQ_SRCS_SLIDE or any(kw in combined for kw in _LGBTQ_KW_SLIDE)
+
+    _sp = [
+        e for e in _all_deduped
+        if not _is_hh(e) and not _is_co(e) and not _is_qp(e) and not _is_rec(e)
+        and _is_lgbtq_slide(e)
+    ]
     _preselected_eotw = _hh[0] if _hh else (_co[0] if _co else (_qp[0] if _qp else (_sp[0] if _sp else None)))
     if _preselected_eotw:
         print(f"  [eotw] {_preselected_eotw.get('name')} @ {_preselected_eotw.get('venue')}")
+    else:
+        print("  [eotw] WARNING: No LGBTQ-relevant event found for EOTW — cover slide will show generic message")
 
     # Generate carousel images
     print("\nGenerating carousel images...")

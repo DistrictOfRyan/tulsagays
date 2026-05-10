@@ -558,6 +558,25 @@ def _append_growth_log(events: List[Dict], week_key: str, start_time: datetime):
         logger.error(f"Growth log write failed: {exc}", exc_info=True)
 
 
+PENDING_ACTIONS_PATH = os.path.join(
+    os.path.expanduser("~"), ".claude", "pending-william-actions.md"
+)
+LGBTQ_DATED_MINIMUM = 8
+PRIMARY_SOURCE_MINIMUM = 3
+
+
+def _write_pending_action(message: str, week_key: str) -> None:
+    """Append a timestamped entry to pending-william-actions.md."""
+    try:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+        entry = f"\n## [{timestamp}] TulsaGays scraper HALTED — {week_key}\n- {message}\n"
+        with open(PENDING_ACTIONS_PATH, "a", encoding="utf-8") as f:
+            f.write(entry)
+        logger.warning(f"[content-gate] Written to pending-william-actions.md")
+    except Exception as exc:
+        logger.error(f"[content-gate] Could not write pending action: {exc}")
+
+
 def main():
     """Main entry point: run all scrapers, filter, deduplicate, sort, save."""
     start_time = datetime.now()
@@ -588,6 +607,56 @@ def main():
 
     # 4. Ensure Homo Hotel is present and at top
     unique_events = ensure_homo_hotel(unique_events)
+
+    # 4.5. Slack zero-event warning — must appear before the content gate
+    slack_events = [e for e in unique_events if "slack" in (e.get("source") or "").lower()]
+    if not slack_events:
+        import glob as _glob
+        flag_file = os.path.join(config.DATA_DIR, "slack_browser_needed.flag")
+        if os.path.exists(flag_file):
+            logger.warning(
+                "[SLACK] ZERO Slack events found and slack_browser_needed.flag exists. "
+                "TulsaRemote Slack (#events-local, #unite-lgbtq-plus) is a REQUIRED source. "
+                "Run the browser extraction step before generating slides."
+            )
+        else:
+            logger.warning(
+                "[SLACK] ZERO Slack events found. slack_browser_needed.flag not present — "
+                "slack_browser_scraper may have failed silently. Check data/slack_events_browser.json."
+            )
+
+    # 4.6. LGBTQ content quality gate — halt if event pool is too thin to produce a good post
+    lgbtq_dated = [
+        e for e in unique_events
+        if e.get("lgbtq_relevant") and e.get("date")
+    ]
+    lgbtq_from_primary = [
+        e for e in unique_events
+        if (e.get("source") or "") in LGBTQ_SOURCES and e.get("date")
+    ]
+
+    week_key = get_week_key()
+
+    if len(lgbtq_dated) < LGBTQ_DATED_MINIMUM or len(lgbtq_from_primary) < PRIMARY_SOURCE_MINIMUM:
+        missing_primary = [
+            src for src in sorted(LGBTQ_SOURCES)
+            if not any((e.get("source") or "") == src for e in unique_events)
+        ]
+        gate_msg = (
+            f"CONTENT GATE FAILED for {week_key}: "
+            f"{len(lgbtq_dated)} LGBTQ-relevant dated events "
+            f"(minimum {LGBTQ_DATED_MINIMUM}), "
+            f"{len(lgbtq_from_primary)} from primary LGBTQ sources "
+            f"(minimum {PRIMARY_SOURCE_MINIMUM}). "
+            f"Primary sources returning 0 events: {missing_primary}. "
+            f"Scrape output is too thin or off-audience to post. "
+            f"Fix scrapers, re-run the browser Slack step, then re-run the scraper."
+        )
+        logger.error(f"[content-gate] {gate_msg}")
+        print(f"\n*** CONTENT GATE HALT ***\n{gate_msg}\n")
+        _write_pending_action(gate_msg, week_key)
+        import sys
+        sys.exit(1)
 
     # 5. Sort by priority then date
     sorted_events = sort_events(unique_events)
