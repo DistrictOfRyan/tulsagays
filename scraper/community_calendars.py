@@ -28,9 +28,25 @@ from scraper.base import BaseScraper
 logger = logging.getLogger(__name__)
 
 LGBTQ_KEYWORDS = [
+    # Explicit identity
     "lgbtq", "queer", "gay", "lesbian", "bi", "trans", "drag", "pride",
     "rainbow", "dyke", "nonbinary", "non-binary", "gender", "equality",
-    "affirming", "inclusive", "homo", "sapphic",
+    "affirming", "inclusive", "homo", "sapphic", "two-spirit", "twospirit",
+    # Queer-adjacent / community-coded
+    "oddities", "curiosities",
+    "burlesque", "cabaret",
+    "feminist", "radical",
+    "night market", "art market", "bazaar", "market",
+    "wiz",
+    "greenwood", "black wall street",
+    "boots riley",
+    # Cultural event types
+    "screening", "film festival", "documentary",
+    "exhibition", "opening reception", "art opening",
+    "workshop", "panel discussion", "panel", "lecture",
+    "fundraiser", "benefit show", "benefit concert",
+    "cultural festival", "heritage",
+    "open mic", "poetry",
 ]
 
 

@@ -31,9 +31,25 @@ logger = logging.getLogger(__name__)
 # ── LGBTQ keyword filter ───────────────────────────────────────────────────────
 
 LGBTQ_KEYWORDS = [
+    # Explicit identity
     "lgbtq", "queer", "gay", "lesbian", "bi", "trans", "drag", "pride",
     "rainbow", "dyke", "nonbinary", "non-binary", "gender", "equality",
-    "affirming", "inclusive", "homo", "sapphic",
+    "affirming", "inclusive", "homo", "sapphic", "two-spirit", "twospirit",
+    # Queer-adjacent / community-coded
+    "oddities", "curiosities",
+    "burlesque", "cabaret",
+    "feminist", "radical",
+    "night market", "art market", "bazaar", "market",
+    "wiz",
+    "greenwood", "black wall street",
+    "boots riley",
+    # Cultural event types
+    "screening", "film festival", "documentary",
+    "exhibition", "opening reception", "art opening",
+    "workshop", "panel discussion", "panel", "lecture",
+    "fundraiser", "benefit show", "benefit concert",
+    "cultural festival", "heritage",
+    "open mic", "poetry",
 ]
 
 
@@ -415,6 +431,37 @@ class FreedomOklahomaScraper(PlaywrightBaseScraper):
 
         events = self._extract_squarespace_html(html, self.BASE_URL, self.DEFAULT_VENUE, self.PRIORITY)
         logger.info(f"[{self.source_name}] Found {len(events)} raw events")
+        return events
+
+
+class TulsaArtistFellowshipScraper(PlaywrightBaseScraper):
+    """Tulsa Artist Fellowship -- Flagship space + main calendar (Squarespace, JS-rendered).
+
+    Flagship (112 N Boston Ave) hosts screenings, panels, lectures, artist talks,
+    workshops, performances, and radical cultural programming. No LGBTQ filter —
+    TAF is a trusted arts community venue; all events are relevant.
+    """
+
+    source_name = "tulsa_artist_fellowship"
+    BASE_URL = "https://www.tulsaartistfellowship.org"
+    EVENTS_URL = "https://www.tulsaartistfellowship.org/calendar"
+    DEFAULT_VENUE = "Flagship / Tulsa Artist Fellowship, 112 N Boston Ave"
+    PRIORITY = 2
+
+    def scrape(self) -> List[Dict]:
+        html = self.fetch_page_js(
+            self.EVENTS_URL,
+            wait_for_selector=".eventlist-event, .summary-item, [class*='eventlist']",
+            timeout=20000,
+        )
+        if not html:
+            logger.warning(f"[{self.source_name}] No HTML returned from Playwright")
+            return []
+
+        events = self._extract_squarespace_html(html, self.BASE_URL, self.DEFAULT_VENUE, self.PRIORITY)
+        # No LGBTQ filter — Flagship programs screenings, lectures, radical cultural events;
+        # queer Tulsans are in that audience.
+        logger.info(f"[{self.source_name}] Found {len(events)} events (all kept, no filter)")
         return events
 
 
@@ -1011,10 +1058,116 @@ class PhilbrookMuseumScraper(PlaywrightBaseScraper):
                     url=url, priority=self.PRIORITY,
                 ))
 
-        # Filter to LGBTQ-relevant only
-        before = len(events)
-        events = [e for e in events if _is_lgbtq_relevant(e.get("name", ""), e.get("description", ""))]
-        logger.info(f"[{self.source_name}] {before} total, {len(events)} LGBTQ-relevant")
+        # No strict LGBTQ filter — Philbrook is a known queer-welcoming institution
+        # (hosts Pride nights, queer artist exhibitions, inclusive programming).
+        # Major art openings and community events are relevant to our audience.
+        logger.info(f"[{self.source_name}] {len(events)} events (all kept, no filter)")
+        return events
+
+
+class WOMPAScraper(PlaywrightBaseScraper):
+    """WOMPA - Event Venue & Creative Community, Tulsa.
+
+    URL is a Wix-hosted JS app (app.wompatulsa.com) — requires Playwright.
+    WOMPA is a trusted community venue; ALL events are returned (no LGBTQ filter).
+    """
+
+    source_name = "wompa_tulsa"
+    BASE_URL = "https://wompatulsa.com"
+    EVENTS_URL = "https://app.wompatulsa.com/events-1/c/0"
+    DEFAULT_VENUE = "WOMPA, 108 N Boston Ave, Tulsa"
+    PRIORITY = 1
+
+    def scrape(self) -> List[Dict]:
+        from bs4 import BeautifulSoup
+
+        html = self.fetch_page_js(
+            self.EVENTS_URL,
+            wait_for_selector=(
+                "[data-hook='events-widget-event-card'], "
+                "[data-hook='list-item'], "
+                "[class*='eventsGallery'], "
+                "[class*='event-list'], "
+                "article, [class*='event']"
+            ),
+            timeout=25000,
+        )
+        if not html:
+            logger.warning(f"[{self.source_name}] No HTML returned from Playwright")
+            return []
+
+        soup = BeautifulSoup(html, "html.parser")
+
+        # Try JSON-LD first
+        events = self._extract_json_ld_from_soup(soup, self.DEFAULT_VENUE, self.PRIORITY)
+        if events:
+            logger.info(f"[{self.source_name}] JSON-LD: {len(events)} events")
+            return events
+
+        # Wix Events widget selectors (Wix has changed these over time — try all)
+        containers = (
+            soup.select("[data-hook='events-widget-event-card']")
+            or soup.select("[data-hook='list-item']")
+            or soup.select("[class*='evGallery-item']")
+            or soup.select("[class*='evWidget-item']")
+            or soup.select("[class*='event-list-item']")
+            or soup.select("[class*='eventCard']")
+            or soup.select("article[class*='event']")
+            or soup.select("li[class*='event']")
+        )
+
+        logger.debug(f"[{self.source_name}] Found {len(containers)} candidate containers")
+
+        for container in containers[:30]:
+            name_el = container.select_one(
+                "h1, h2, h3, h4, "
+                "[data-hook='event-title'], "
+                "[class*='title'], "
+                "[class*='name']"
+            )
+            if not name_el:
+                continue
+            name = name_el.get_text(strip=True)
+            if not name or len(name) < 4:
+                continue
+
+            link_el = container.find("a", href=True)
+            url = ""
+            if link_el:
+                href = link_el["href"]
+                url = href if href.startswith("http") else self.BASE_URL + href
+
+            date_str, time_str = "", ""
+            time_el = container.select_one(
+                "time[datetime], "
+                "[data-hook='event-scheduled-date'], "
+                "[class*='date'], "
+                "[class*='Date']"
+            )
+            if time_el:
+                raw = time_el.get("datetime", "") or time_el.get_text(strip=True)
+                if raw and "T" in raw:
+                    date_str, time_str = _parse_iso_datetime(raw)
+                else:
+                    date_str = BaseScraper.parse_date_flexible(raw)
+
+            desc_el = container.select_one(
+                "p, [data-hook='event-description'], [class*='description'], [class*='excerpt']"
+            )
+            description = desc_el.get_text(strip=True)[:500] if desc_el else ""
+
+            events.append(self.make_event(
+                name=name,
+                date=date_str,
+                time=time_str,
+                venue=self.DEFAULT_VENUE,
+                description=description,
+                url=url,
+                priority=self.PRIORITY,
+            ))
+
+        # No LGBTQ filter — WOMPA is a trusted community venue, all events relevant
+        logger.info(f"[{self.source_name}] Found {len(events)} events (no filter applied)")
         return events
 
 
@@ -1132,6 +1285,7 @@ class OKEQPlaywrightScraper(PlaywrightBaseScraper):
 
 _PLAYWRIGHT_SCRAPERS = [
     FreedomOklahomaScraper,
+    TulsaArtistFellowshipScraper,
     TwistedArtsScraper,
     BlackQueerTulsaScraper,
     AllSoulsScraper,
@@ -1140,6 +1294,7 @@ _PLAYWRIGHT_SCRAPERS = [
     OKEQPlaywrightScraper,
     CircleCinemaScraper,
     PhilbrookMuseumScraper,
+    WOMPAScraper,
 ]
 
 

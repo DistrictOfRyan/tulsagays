@@ -1,0 +1,379 @@
+==================================================
+SCRAPING EVENTS
+==================================================
+2026-05-10 18:31:32,046 [INFO] scraper.runner: ============================================================
+2026-05-10 18:31:32,046 [INFO] scraper.runner: Tulsa Gays Event Scraper - Starting
+2026-05-10 18:31:32,047 [INFO] scraper.runner: Week: 2026-W19
+2026-05-10 18:31:32,047 [INFO] scraper.runner: Date range: 2026-05-04 to 2026-05-10
+2026-05-10 18:31:32,047 [INFO] scraper.runner: ============================================================
+2026-05-10 18:31:32,047 [INFO] scraper.runner: Running scraper: manual_input
+2026-05-10 18:31:32,048 [INFO] scraper.manual_input: [manual_input] Loaded 'The Tempest by Tulsa Shakespeare Company' (source: Direct outreach from Ibrahim, board president of Tulsa Shakespeare Company (Slack message 2026-04-30 5:33pm))
+2026-05-10 18:31:32,048 [INFO] scraper.manual_input: [manual_input] Loaded 'The Tempest by Tulsa Shakespeare Company' (source: Direct outreach from Ibrahim, board president of Tulsa Shakespeare Company (Slack message 2026-04-30 5:33pm))
+2026-05-10 18:31:32,048 [INFO] scraper.manual_input: [manual_input] Loaded 'The Tempest by Tulsa Shakespeare Company' (source: Direct outreach from Ibrahim, board president of Tulsa Shakespeare Company (Slack message 2026-04-30 5:33pm))
+2026-05-10 18:31:32,048 [INFO] scraper.manual_input: [manual_input] Loaded 'The Tempest by Tulsa Shakespeare Company' (source: Direct outreach from Ibrahim, board president of Tulsa Shakespeare Company (Slack message 2026-04-30 5:33pm))
+2026-05-10 18:31:32,048 [INFO] scraper.manual_input: [manual_input] Loaded 'The Tempest by Tulsa Shakespeare Company' (source: Direct outreach from Ibrahim, board president of Tulsa Shakespeare Company (Slack message 2026-04-30 5:33pm))
+2026-05-10 18:31:32,048 [INFO] scraper.manual_input: [manual_input] Loaded 'The Tempest by Tulsa Shakespeare Company' (source: Direct outreach from Ibrahim, board president of Tulsa Shakespeare Company (Slack message 2026-04-30 5:33pm))
+2026-05-10 18:31:32,048 [INFO] scraper.manual_input: [manual_input] Loaded 6 manual event(s) from C:\Users\willi\OneDrive\Desktop\2026Desktop\dev\tulsagays\data\manual_events.json
+2026-05-10 18:31:32,048 [INFO] scraper.runner:   manual_input: 6 events
+2026-05-10 18:31:32,048 [INFO] scraper.runner: Running scraper: recurring
+2026-05-10 18:31:32,049 [INFO] scraper.recurring: [recurring] Generated 10 recurring events for this week
+2026-05-10 18:31:32,049 [INFO] scraper.base: [recurring] Scraped 10 events
+2026-05-10 18:31:32,049 [INFO] scraper.runner:   recurring: 10 events
+2026-05-10 18:31:32,049 [INFO] scraper.runner: Running scraper: okeq_calendar
+2026-05-10 18:31:32,049 [INFO] scraper.base: [okeq] Fetching https://okeq.org/event-calendar/
+2026-05-10 18:31:35,104 [INFO] scraper.okeq_calendar: [okeq] Calendar post ID: 5945
+2026-05-10 18:31:35,121 [INFO] scraper.okeq_calendar: [okeq] Initial page: 88 events
+2026-05-10 18:31:36,827 [INFO] scraper.okeq_calendar: [okeq] Month 2026-06: +77 new events
+2026-05-10 18:31:40,340 [INFO] scraper.okeq_calendar: [okeq] Total events scraped: 165
+2026-05-10 18:31:40,340 [INFO] scraper.base: [okeq] Scraped 165 events
+2026-05-10 18:31:40,343 [INFO] scraper.runner:   okeq_calendar: 165 events
+2026-05-10 18:31:40,344 [INFO] scraper.runner: Running scraper: twisted_arts
+2026-05-10 18:31:40,344 [INFO] scraper.base: [twisted_arts] Fetching https://twistedfest.org/events/
+2026-05-10 18:31:41,128 [INFO] scraper.twisted_arts: [twisted_arts] Found 9 events with dates
+2026-05-10 18:31:41,128 [INFO] scraper.base: [twisted_arts] Scraped 9 events
+2026-05-10 18:31:41,129 [INFO] scraper.runner:   twisted_arts: 9 events
+2026-05-10 18:31:41,129 [INFO] scraper.runner: Running scraper: specific_orgs
+2026-05-10 18:31:41,129 [INFO] scraper.base: [pflag_tulsa] Fetching https://pflag.org/chapter/pflag-tulsa/
+2026-05-10 18:31:41,725 [INFO] scraper.specific_orgs: [pflag_tulsa] HTML parsing found no structured events at https://pflag.org/chapter/pflag-tulsa/
+2026-05-10 18:31:46,104 [INFO] scraper.base: [pflag_tulsa] Scraped 0 events
+2026-05-10 18:31:46,104 [INFO] scraper.specific_orgs: [specific_orgs] pflag_tulsa: 0 events
+2026-05-10 18:31:46,106 [INFO] scraper.specific_orgs: [specific_orgs] black_queer_tulsa: handled by playwright_scrapers
+2026-05-10 18:31:46,107 [INFO] scraper.base: [black_queer_tulsa] Scraped 0 events
+2026-05-10 18:31:46,107 [INFO] scraper.specific_orgs: [specific_orgs] black_queer_tulsa: 0 events
+2026-05-10 18:31:46,107 [INFO] scraper.specific_orgs: [specific_orgs] freedom_oklahoma: handled by playwright_scrapers
+2026-05-10 18:31:46,107 [INFO] scraper.base: [freedom_oklahoma] Scraped 0 events
+2026-05-10 18:31:46,107 [INFO] scraper.specific_orgs: [specific_orgs] freedom_oklahoma: 0 events
+2026-05-10 18:31:46,108 [INFO] scraper.base: [council_oak] Fetching https://www.counciloak.org/concerts
+2026-05-10 18:31:46,958 [INFO] scraper.specific_orgs: [council_oak] HTML parsing found no structured events at https://www.counciloak.org/concerts
+2026-05-10 18:31:50,819 [INFO] scraper.base: [council_oak] Scraped 0 events
+2026-05-10 18:31:50,819 [INFO] scraper.specific_orgs: [specific_orgs] council_oak: 0 events
+2026-05-10 18:31:50,820 [INFO] scraper.base: [hotmess_sports] Fetching https://www.hotmesssports.com/tulsa
+2026-05-10 18:31:51,579 [INFO] scraper.specific_orgs: [hotmess_sports] HTML parsing found no structured events at https://www.hotmesssports.com/tulsa
+2026-05-10 18:31:55,800 [INFO] scraper.base: [hotmess_sports] Scraped 0 events
+2026-05-10 18:31:55,800 [INFO] scraper.specific_orgs: [specific_orgs] hotmess_sports: 0 events
+2026-05-10 18:31:55,801 [INFO] scraper.base: [circle_cinema] Fetching https://www.circlecinema.org/
+2026-05-10 18:31:56,382 [INFO] scraper.specific_orgs: [circle_cinema] HTML parsing found no structured events at https://www.circlecinema.org/
+2026-05-10 18:31:56,382 [INFO] scraper.specific_orgs: [circle_cinema] Filtered 0 -> 0 LGBTQ events
+2026-05-10 18:31:59,321 [INFO] scraper.base: [circle_cinema] Scraped 0 events
+2026-05-10 18:31:59,321 [INFO] scraper.specific_orgs: [specific_orgs] circle_cinema: 0 events
+2026-05-10 18:31:59,322 [INFO] scraper.base: [magic_city_books] Fetching https://magiccitybooks.com/events/
+2026-05-10 18:31:59,820 [INFO] scraper.specific_orgs: [magic_city_books] HTML parsing found no structured events at https://magiccitybooks.com/events/
+2026-05-10 18:31:59,820 [INFO] scraper.specific_orgs: [magic_city_books] Filtered 0 -> 0 LGBTQ events
+2026-05-10 18:32:02,261 [INFO] scraper.base: [magic_city_books] Scraped 0 events
+2026-05-10 18:32:02,261 [INFO] scraper.specific_orgs: [specific_orgs] magic_city_books: 0 events
+2026-05-10 18:32:02,262 [INFO] scraper.base: [all_souls_special] Fetching https://allsoulschurch.org/events/
+2026-05-10 18:32:02,872 [ERROR] scraper.base: [all_souls_special] Failed to fetch https://allsoulschurch.org/events/: 404 Client Error: Not Found for url: https://allsoulschurch.org/events/
+2026-05-10 18:32:06,180 [INFO] scraper.base: [all_souls_special] Fetching https://allsoulschurch.org/calendar/
+2026-05-10 18:32:06,309 [INFO] scraper.specific_orgs: [all_souls_special] HTML parsing found no structured events at https://allsoulschurch.org/events/
+2026-05-10 18:32:10,096 [INFO] scraper.base: [all_souls_special] Fetching https://allsoulschurch.org/upcoming-events/
+2026-05-10 18:32:10,791 [ERROR] scraper.base: [all_souls_special] Failed to fetch https://allsoulschurch.org/upcoming-events/: 404 Client Error: Not Found for url: https://allsoulschurch.org/upcoming-events/
+2026-05-10 18:32:14,504 [INFO] scraper.base: [all_souls_special] Scraped 0 events
+2026-05-10 18:32:14,504 [INFO] scraper.specific_orgs: [specific_orgs] all_souls_special: 0 events
+2026-05-10 18:32:14,505 [INFO] scraper.base: [utulsa_pride] Fetching https://calendar.utulsa.edu/organization/pride-club/
+2026-05-10 18:32:15,294 [ERROR] scraper.base: [utulsa_pride] Failed to fetch https://calendar.utulsa.edu/organization/pride-club/: 404 Client Error: Not Found for url: https://calendar.utulsa.edu/organization/pride-club/
+2026-05-10 18:32:15,294 [WARNING] scraper.specific_orgs: [utulsa_pride] Could not fetch https://calendar.utulsa.edu/organization/pride-club/
+2026-05-10 18:32:18,739 [INFO] scraper.base: [utulsa_pride] Scraped 0 events
+2026-05-10 18:32:18,740 [INFO] scraper.specific_orgs: [specific_orgs] utulsa_pride: 0 events
+2026-05-10 18:32:18,741 [INFO] scraper.base: [osu_tulsa] Fetching https://events.tulsa.okstate.edu
+2026-05-10 18:32:20,509 [INFO] scraper.specific_orgs: [osu_tulsa] Filtered 12 -> 4 LGBTQ events
+2026-05-10 18:32:23,161 [INFO] scraper.base: [osu_tulsa] Scraped 4 events
+2026-05-10 18:32:23,162 [INFO] scraper.specific_orgs: [specific_orgs] osu_tulsa: 4 events
+2026-05-10 18:32:23,163 [INFO] scraper.specific_orgs: [specific_orgs] twisted_arts: handled by playwright_scrapers
+2026-05-10 18:32:23,163 [INFO] scraper.base: [twisted_arts] Scraped 0 events
+2026-05-10 18:32:23,163 [INFO] scraper.specific_orgs: [specific_orgs] twisted_arts: 0 events
+2026-05-10 18:32:23,163 [INFO] scraper.runner:   specific_orgs: 4 events
+2026-05-10 18:32:23,163 [INFO] scraper.runner: Running scraper: eventbrite_meetup
+2026-05-10 18:32:24,736 [INFO] scraper.base: [eventbrite] Fetching https://www.eventbrite.com/d/ok--tulsa/lgbtq/
+2026-05-10 18:32:28,823 [INFO] scraper.base: [eventbrite] Fetching https://www.eventbrite.com/d/ok--tulsa/pride/
+2026-05-10 18:32:33,942 [INFO] scraper.base: [eventbrite] Fetching https://www.eventbrite.com/d/ok--tulsa/queer/
+2026-05-10 18:32:38,816 [INFO] scraper.base: [eventbrite] Fetching https://www.eventbrite.com/d/ok--tulsa/gay/
+2026-05-10 18:32:44,741 [INFO] scraper.base: [eventbrite] Fetching https://www.eventbrite.com/d/ok--tulsa/drag/
+2026-05-10 18:32:48,552 [INFO] scraper.base: [eventbrite] Scraped 35 events
+2026-05-10 18:32:48,553 [INFO] scraper.base: [meetup] Fetching https://www.meetup.com/find/?keywords=lgbtq&location=Tulsa%2C+OK
+2026-05-10 18:32:54,555 [INFO] scraper.base: [meetup] Fetching https://www.meetup.com/find/?keywords=pride&location=Tulsa%2C+OK
+2026-05-10 18:32:59,943 [INFO] scraper.base: [meetup] Fetching https://www.meetup.com/find/?keywords=queer&location=Tulsa%2C+OK
+2026-05-10 18:33:04,024 [INFO] scraper.base: [meetup] Scraped 20 events
+2026-05-10 18:33:04,025 [INFO] scraper.runner:   eventbrite_meetup: 55 events
+2026-05-10 18:33:04,025 [INFO] scraper.runner: Running scraper: homo_hotel
+2026-05-10 18:33:04,025 [INFO] scraper.homo_hotel: [homo_hotel] Generated 1 upcoming Happy Hour events
+2026-05-10 18:33:04,025 [INFO] scraper.base: [homo_hotel] Scraped 1 events
+2026-05-10 18:33:04,025 [INFO] scraper.runner:   homo_hotel: 1 events
+2026-05-10 18:33:04,025 [INFO] scraper.runner: Running scraper: community_calendars
+2026-05-10 18:33:04,025 [INFO] scraper.base: [community_calendars] Fetching https://www.visittulsa.com/events/
+2026-05-10 18:33:08,764 [INFO] scraper.base: [community_calendars] Fetching https://downtowntulsa.com/experience/calendar
+2026-05-10 18:33:16,961 [INFO] scraper.base: [community_calendars] Fetching https://www.publicradiotulsa.org/community-calendar
+2026-05-10 18:33:20,629 [INFO] scraper.base: [community_calendars] Fetching https://www.tulsapeople.com/local-events/
+2026-05-10 18:33:23,478 [INFO] scraper.base: [community_calendars] Fetching https://valuenews.com/calendar-of-events
+2026-05-10 18:33:28,999 [INFO] scraper.base: [community_calendars] Fetching JSON from https://allevents.in/api/index.php
+2026-05-10 18:33:29,355 [ERROR] scraper.base: [community_calendars] Failed to fetch JSON from https://allevents.in/api/index.php: 403 Client Error: Forbidden for url: https://allevents.in/api/index.php?city=Tulsa&state=Oklahoma&country=US&format=json&page=1&limit=50
+2026-05-10 18:33:29,356 [INFO] scraper.base: [community_calendars] Fetching https://allevents.in/tulsa
+2026-05-10 18:33:29,748 [ERROR] scraper.base: [community_calendars] Failed to fetch https://allevents.in/tulsa: 403 Client Error: Forbidden for url: https://allevents.in/tulsa
+2026-05-10 18:33:29,748 [INFO] scraper.community_calendars: [community_calendars] AllEvents.in: no response
+2026-05-10 18:33:29,748 [INFO] scraper.base: [community_calendars] Fetching https://tulsaworld.com/events/
+2026-05-10 18:33:33,777 [INFO] scraper.base: [community_calendars] Fetching https://my.gilcrease.org/uncrease
+2026-05-10 18:33:38,958 [INFO] scraper.community_calendars: [community_calendars] 9 total scraped, 0 LGBTQ-relevant kept
+2026-05-10 18:33:38,958 [INFO] scraper.base: [community_calendars] Scraped 0 events
+2026-05-10 18:33:38,958 [INFO] scraper.runner:   community_calendars: 0 events
+2026-05-10 18:33:38,958 [INFO] scraper.runner: Running scraper: extended_calendars
+2026-05-10 18:33:38,958 [INFO] scraper.base: [extended_calendars] Fetching https://travelok.com/listings/view_feature/category.lodging/city.tulsa
+2026-05-10 18:33:39,466 [ERROR] scraper.base: [extended_calendars] Failed to fetch https://travelok.com/listings/view_feature/category.lodging/city.tulsa: HTTPSConnectionPool(host='travelok.com', port=443): Max retries exceeded with url: /listings/view_feature/category.lodging/city.tulsa (Caused by SSLError(SSLError(1, '[SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1081)')))
+2026-05-10 18:33:39,466 [INFO] scraper.extended_calendars: [extended_calendars] TravelOK: 0 events
+2026-05-10 18:33:39,466 [INFO] scraper.base: [extended_calendars] Fetching https://www.greencountryok.com/cities/tulsa/festivals-events-in-tulsa
+2026-05-10 18:33:42,049 [INFO] scraper.extended_calendars: [extended_calendars] Green Country Oklahoma: 0 events
+2026-05-10 18:33:42,049 [INFO] scraper.base: [extended_calendars] Fetching https://tulsago.com/experience
+2026-05-10 18:33:47,862 [INFO] scraper.extended_calendars: [extended_calendars] TulsaGo: 0 events
+2026-05-10 18:33:47,862 [INFO] scraper.base: [extended_calendars] Fetching https://www.tulsakids.com/calendar/
+2026-05-10 18:33:51,574 [INFO] scraper.extended_calendars: [extended_calendars] TulsaKids Magazine: 0 events
+2026-05-10 18:33:51,575 [INFO] scraper.base: [extended_calendars] Fetching https://tulsa.events
+2026-05-10 18:33:56,041 [INFO] scraper.extended_calendars: [extended_calendars] Tulsa Events: 5 events
+2026-05-10 18:33:56,041 [INFO] scraper.base: [extended_calendars] Fetching https://www.cityoftulsa.org/government/departments/parks-recreation/events/
+2026-05-10 18:34:00,232 [INFO] scraper.extended_calendars: [extended_calendars] City of Tulsa: 0 events
+2026-05-10 18:34:00,233 [INFO] scraper.base: [extended_calendars] Fetching https://philbrook.org/calendar/
+2026-05-10 18:34:05,904 [INFO] scraper.extended_calendars: [extended_calendars] Philbrook Museum: 0 events
+2026-05-10 18:34:05,904 [INFO] scraper.base: [extended_calendars] Fetching https://woodyguthriecenter.org/events/
+2026-05-10 18:34:10,129 [INFO] scraper.extended_calendars: [extended_calendars] Woody Guthrie Center: 0 events
+2026-05-10 18:34:10,129 [INFO] scraper.base: [extended_calendars] Fetching https://www.tulsazoo.org/events/
+2026-05-10 18:34:14,507 [INFO] scraper.extended_calendars: [extended_calendars] Tulsa Zoo: 0 events
+2026-05-10 18:34:14,507 [INFO] scraper.base: [extended_calendars] Fetching https://www.gatheringplace.org/parkcalendar/
+2026-05-10 18:34:18,368 [INFO] scraper.extended_calendars: [extended_calendars] Gathering Place: 0 events
+2026-05-10 18:34:18,368 [INFO] scraper.base: [extended_calendars] Fetching https://www.tulsagardencenter.com/events/
+2026-05-10 18:34:18,904 [ERROR] scraper.base: [extended_calendars] Failed to fetch https://www.tulsagardencenter.com/events/: 404 Client Error: Not Found for url: https://www.tulsagardencenter.com/events/
+2026-05-10 18:34:18,905 [INFO] scraper.extended_calendars: [extended_calendars] Tulsa Garden Center: 0 events
+2026-05-10 18:34:18,905 [INFO] scraper.base: [extended_calendars] Fetching https://www.okaquarium.org/events/
+2026-05-10 18:34:19,387 [ERROR] scraper.base: [extended_calendars] Failed to fetch https://www.okaquarium.org/events/: 404 Client Error: Not Found for url: https://www.okaquarium.org/events/
+2026-05-10 18:34:19,387 [INFO] scraper.extended_calendars: [extended_calendars] Oklahoma Aquarium: 0 events
+2026-05-10 18:34:19,387 [INFO] scraper.base: [extended_calendars] Fetching https://discoverylab.org/events/
+2026-05-10 18:34:22,524 [INFO] scraper.extended_calendars: [extended_calendars] Discovery Lab: 0 events
+2026-05-10 18:34:22,524 [INFO] scraper.base: [extended_calendars] Fetching https://101archer.com/events/
+2026-05-10 18:34:22,584 [ERROR] scraper.base: [extended_calendars] Failed to fetch https://101archer.com/events/: HTTPSConnectionPool(host='101archer.com', port=443): Max retries exceeded with url: /events/ (Caused by NameResolutionError("HTTPSConnection(host='101archer.com', port=443): Failed to resolve '101archer.com' ([Errno 11001] getaddrinfo failed)"))
+2026-05-10 18:34:22,585 [INFO] scraper.extended_calendars: [extended_calendars] 101 Archer: 0 events
+2026-05-10 18:34:22,585 [INFO] scraper.base: [extended_calendars] Fetching https://www.tulsapac.com/events/
+2026-05-10 18:34:27,641 [INFO] scraper.extended_calendars: [extended_calendars] Tulsa PAC: 0 events
+2026-05-10 18:34:27,641 [INFO] scraper.base: [extended_calendars] Fetching https://www.bokcenter.com/events
+2026-05-10 18:34:32,759 [INFO] scraper.extended_calendars: [extended_calendars] BOK Center: 0 events
+2026-05-10 18:34:32,759 [INFO] scraper.base: [extended_calendars] Fetching https://cainsballroom.com/events/
+2026-05-10 18:34:38,154 [INFO] scraper.extended_calendars: [extended_calendars] Cain's Ballroom: 0 events
+2026-05-10 18:34:38,155 [INFO] scraper.base: [extended_calendars] Fetching https://tulsatheater.com/events/
+2026-05-10 18:34:45,087 [INFO] scraper.extended_calendars: [extended_calendars] Tulsa Theater: 0 events
+2026-05-10 18:34:45,087 [INFO] scraper.base: [extended_calendars] Fetching https://www.hardrockcasinotulsa.com/entertainment/
+2026-05-10 18:34:48,565 [INFO] scraper.extended_calendars: [extended_calendars] Hard Rock Live Tulsa: 0 events
+2026-05-10 18:34:48,565 [INFO] scraper.base: [extended_calendars] Fetching https://www.riverspirittulsa.com/entertainment/
+2026-05-10 18:34:53,544 [INFO] scraper.extended_calendars: [extended_calendars] River Spirit Casino: 0 events
+2026-05-10 18:34:53,544 [INFO] scraper.base: [extended_calendars] Fetching https://www.thechurchstudio.com/events/
+2026-05-10 18:34:59,650 [INFO] scraper.extended_calendars: [extended_calendars] The Church Studio: 0 events
+2026-05-10 18:34:59,650 [INFO] scraper.base: [extended_calendars] Fetching https://www.coxcentertulsa.com/events/
+2026-05-10 18:35:00,051 [ERROR] scraper.base: [extended_calendars] Failed to fetch https://www.coxcentertulsa.com/events/: 403 Client Error: Forbidden for url: https://www.coxcentertulsa.com/events/
+2026-05-10 18:35:00,052 [INFO] scraper.extended_calendars: [extended_calendars] Cox Business Convention Center: 0 events
+2026-05-10 18:35:00,052 [INFO] scraper.base: [extended_calendars] Fetching https://www.milb.com/tulsa/schedule/
+2026-05-10 18:35:03,927 [INFO] scraper.extended_calendars: [extended_calendars] Tulsa Drillers (ONEOK Field): 0 events
+2026-05-10 18:35:03,927 [INFO] scraper.base: [extended_calendars] Fetching https://www.fctulsa.com/schedule/
+2026-05-10 18:35:08,666 [INFO] scraper.extended_calendars: [extended_calendars] FC Tulsa: 0 events
+2026-05-10 18:35:08,667 [INFO] scraper.base: [extended_calendars] Fetching https://www.tulsaoilers.com/schedule/
+2026-05-10 18:35:14,475 [INFO] scraper.extended_calendars: [extended_calendars] Tulsa Oilers: 0 events
+2026-05-10 18:35:14,475 [INFO] scraper.base: [extended_calendars] Fetching https://www.exposquare.com/events/
+2026-05-10 18:35:20,110 [INFO] scraper.extended_calendars: [extended_calendars] Expo Square: 0 events
+2026-05-10 18:35:20,110 [INFO] scraper.base: [extended_calendars] Fetching https://events.tulsalibrary.org/
+2026-05-10 18:35:24,041 [INFO] scraper.extended_calendars: [extended_calendars] Tulsa City-County Library: 0 events
+2026-05-10 18:35:24,041 [INFO] scraper.base: [extended_calendars] Fetching https://calendar.utulsa.edu/
+2026-05-10 18:35:26,470 [INFO] scraper.extended_calendars: [extended_calendars] University of Tulsa: 0 events
+2026-05-10 18:35:26,470 [INFO] scraper.base: [extended_calendars] Fetching https://tulsa.okstate.edu/calendar/
+2026-05-10 18:35:26,780 [ERROR] scraper.base: [extended_calendars] Failed to fetch https://tulsa.okstate.edu/calendar/: 403 Client Error: Forbidden for url: https://tulsa.okstate.edu/calendar/
+2026-05-10 18:35:26,781 [INFO] scraper.extended_calendars: [extended_calendars] OSU-Tulsa: 0 events
+2026-05-10 18:35:26,781 [INFO] scraper.base: [extended_calendars] Fetching https://www.oru.edu/events/
+2026-05-10 18:35:27,683 [ERROR] scraper.base: [extended_calendars] Failed to fetch https://www.oru.edu/events/: 404 Client Error: Not Found for url: https://oru.edu/events/
+2026-05-10 18:35:27,683 [INFO] scraper.extended_calendars: [extended_calendars] ORU: 0 events
+2026-05-10 18:35:27,683 [INFO] scraper.base: [extended_calendars] Fetching https://www.tulsacc.edu/campus-life/events/
+2026-05-10 18:35:28,502 [ERROR] scraper.base: [extended_calendars] Failed to fetch https://www.tulsacc.edu/campus-life/events/: 404 Client Error: Not Found for url: https://www.tulsacc.edu/campus-life/events/
+2026-05-10 18:35:28,502 [INFO] scraper.extended_calendars: [extended_calendars] Tulsa Community College: 0 events
+2026-05-10 18:35:28,502 [INFO] scraper.base: [extended_calendars] Fetching https://tulsapride.org/events/
+2026-05-10 18:35:30,056 [ERROR] scraper.base: [extended_calendars] Failed to fetch https://tulsapride.org/events/: 404 Client Error: Not Found for url: https://tulsapride.org/events/
+2026-05-10 18:35:30,056 [INFO] scraper.extended_calendars: [extended_calendars] Tulsa Pride: 0 events
+2026-05-10 18:35:30,056 [INFO] scraper.base: [extended_calendars] Fetching https://seatgeek.com/tulsa-oklahoma-tickets
+2026-05-10 18:35:30,353 [ERROR] scraper.base: [extended_calendars] Failed to fetch https://seatgeek.com/tulsa-oklahoma-tickets: 403 Client Error: Forbidden for url: https://seatgeek.com/tulsa-oklahoma-tickets
+2026-05-10 18:35:30,353 [INFO] scraper.extended_calendars: [extended_calendars] SeatGeek Tulsa: 0 events
+2026-05-10 18:35:30,353 [INFO] scraper.base: [extended_calendars] Fetching https://www.meetup.com/find/?allMeetups=true&radius=25&userFreeform=Tulsa%2C+OK
+2026-05-10 18:35:36,325 [INFO] scraper.extended_calendars: [extended_calendars] Meetup Tulsa: 2 events
+2026-05-10 18:35:36,325 [INFO] scraper.base: [extended_calendars] Fetching https://www.brooksidetulsa.com/events/
+2026-05-10 18:35:36,718 [ERROR] scraper.base: [extended_calendars] Failed to fetch https://www.brooksidetulsa.com/events/: 404 Client Error: Not Found for url: https://www.brooksidetulsa.com/events/
+2026-05-10 18:35:36,719 [INFO] scraper.extended_calendars: [extended_calendars] Brookside Tulsa: 0 events
+2026-05-10 18:35:36,719 [INFO] scraper.base: [extended_calendars] Fetching https://www.cherrystreetfarmersmarket.com/events/
+2026-05-10 18:35:44,835 [ERROR] scraper.base: [extended_calendars] Failed to fetch https://www.cherrystreetfarmersmarket.com/events/: HTTPSConnectionPool(host='www.cherrystreetfarmersmarket.com', port=443): Max retries exceeded with url: /events/ (Caused by NameResolutionError("HTTPSConnection(host='www.cherrystreetfarmersmarket.com', port=443): Failed to resolve 'www.cherrystreetfarmersmarket.com' ([Errno 11002] getaddrinfo failed)"))
+2026-05-10 18:35:44,835 [INFO] scraper.extended_calendars: [extended_calendars] Cherry Street Farmers Market: 0 events
+2026-05-10 18:35:44,835 [INFO] scraper.base: [extended_calendars] Fetching https://www.tulsafarmersmarket.org/events/
+2026-05-10 18:35:45,393 [ERROR] scraper.base: [extended_calendars] Failed to fetch https://www.tulsafarmersmarket.org/events/: 404 Client Error: Not Found for url: https://www.tulsafarmersmarket.org/events/
+2026-05-10 18:35:45,393 [INFO] scraper.extended_calendars: [extended_calendars] Tulsa Farmers' Market: 0 events
+2026-05-10 18:35:45,393 [INFO] scraper.extended_calendars: [extended_calendars] Total: 7 events across 37 sites
+2026-05-10 18:35:45,393 [INFO] scraper.base: [extended_calendars] Scraped 7 events
+2026-05-10 18:35:45,393 [INFO] scraper.runner:   extended_calendars: 7 events
+2026-05-10 18:35:45,393 [INFO] scraper.runner: Running scraper: aa_meetings
+2026-05-10 18:35:45,393 [INFO] scraper.base: [aa_meetings] Fetching JSON from https://aaoklahoma.org/wp-json/tsml/v1/meetings?day=any&region=tulsa&type=LGBTQ
+2026-05-10 18:35:46,195 [ERROR] scraper.base: [aa_meetings] Failed to fetch JSON from https://aaoklahoma.org/wp-json/tsml/v1/meetings?day=any&region=tulsa&type=LGBTQ: 404 Client Error: Not Found for url: https://aaoklahoma.org/wp-json/tsml/v1/meetings?day=any&region=tulsa&type=LGBTQ
+2026-05-10 18:35:46,195 [INFO] scraper.base: [aa_meetings] Fetching https://aaoklahoma.org/meetings/?tsml-day=any&tsml-region=tulsa&tsml-type=LGBTQ
+2026-05-10 18:35:49,114 [INFO] scraper.base: [aa_meetings] Fetching https://aaoklahoma.org/meetings/?tsml-day=any&tsml-region=tulsa&tsml-type=LGBTQ
+2026-05-10 18:35:53,558 [INFO] scraper.aa_meetings: [aa_meetings] Live scraping failed -- using hardcoded known meetings
+2026-05-10 18:35:53,558 [INFO] scraper.base: [aa_meetings] Scraped 1 events
+2026-05-10 18:35:53,559 [INFO] scraper.runner:   aa_meetings: 1 events
+2026-05-10 18:35:53,559 [INFO] scraper.runner: Running scraper: qlist
+2026-05-10 18:35:53,559 [INFO] scraper.base: [qlist] Fetching https://qlist.app/cities/Oklahoma/Tulsa/163
+2026-05-10 18:35:57,350 [INFO] scraper.base: [qlist] Scraped 0 events
+2026-05-10 18:35:57,350 [INFO] scraper.runner:   qlist: 0 events
+2026-05-10 18:35:57,350 [INFO] scraper.runner: Running scraper: community_groups
+2026-05-10 18:35:57,350 [INFO] scraper.base: [community_groups] Fetching https://www.blackqueertulsa.org/
+2026-05-10 18:36:02,163 [INFO] scraper.base: [community_groups] Fetching https://www.s66tulsa.com/
+2026-05-10 18:36:02,226 [ERROR] scraper.base: [community_groups] Failed to fetch https://www.s66tulsa.com/: HTTPSConnectionPool(host='www.s66tulsa.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='www.s66tulsa.com', port=443): Failed to resolve 'www.s66tulsa.com' ([Errno 11001] getaddrinfo failed)"))
+2026-05-10 18:36:02,226 [INFO] scraper.base: [community_groups] Fetching https://www.elotetulsa.com/events
+2026-05-10 18:36:06,893 [INFO] scraper.base: [community_groups] Fetching https://greencountrybears.com/
+2026-05-10 18:36:09,948 [INFO] scraper.base: [community_groups] Fetching https://tulsapflag.org/
+2026-05-10 18:36:13,401 [INFO] scraper.base: [community_groups] Fetching https://www.counciloak.org/concerts
+2026-05-10 18:36:17,170 [INFO] scraper.base: [community_groups] Fetching https://transadvocacyok.org/events
+2026-05-10 18:36:20,859 [INFO] scraper.base: [community_groups] Fetching https://www.hotmesssports.com/tulsa
+2026-05-10 18:36:23,923 [INFO] scraper.base: [community_groups] Fetching https://pridesportstulsa.leagueapps.com/leagues
+2026-05-10 18:36:28,929 [INFO] scraper.base: [community_groups] Fetching https://www.tulsahouseofdrag.com/
+2026-05-10 18:36:28,953 [ERROR] scraper.base: [community_groups] Failed to fetch https://www.tulsahouseofdrag.com/: HTTPSConnectionPool(host='www.tulsahouseofdrag.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='www.tulsahouseofdrag.com', port=443): Failed to resolve 'www.tulsahouseofdrag.com' ([Errno 11001] getaddrinfo failed)"))
+2026-05-10 18:36:28,953 [INFO] scraper.base: [community_groups] Fetching https://www.divaroyale.com/dragquenshow-locations.html
+2026-05-10 18:36:33,786 [INFO] scraper.base: [community_groups] Fetching https://www.facebook.com/queerlitcollective
+2026-05-10 18:36:34,189 [ERROR] scraper.base: [community_groups] Failed to fetch https://www.facebook.com/queerlitcollective: 400 Client Error: Bad Request for url: https://www.facebook.com/queerlitcollective
+2026-05-10 18:36:34,189 [INFO] scraper.base: [community_groups] Scraped 18 events
+2026-05-10 18:36:34,189 [INFO] scraper.runner:   community_groups: 18 events
+2026-05-10 18:36:34,189 [INFO] scraper.runner: Running scraper: churches
+2026-05-10 18:36:34,189 [INFO] scraper.base: [all_souls] Fetching https://www.allsoulschurch.org/events
+2026-05-10 18:36:35,165 [ERROR] scraper.base: [all_souls] Failed to fetch https://www.allsoulschurch.org/events: 404 Client Error: Not Found for url: https://allsoulschurch.org/events
+2026-05-10 18:36:35,165 [INFO] scraper.base: [all_souls] Fetching https://www.allsoulschurch.org/calendar
+2026-05-10 18:36:40,004 [INFO] scraper.base: [all_souls] Fetching https://www.allsoulschurch.org/upcoming-events
+2026-05-10 18:36:41,846 [ERROR] scraper.base: [all_souls] Failed to fetch https://www.allsoulschurch.org/upcoming-events: 404 Client Error: Not Found for url: https://allsoulschurch.org/upcoming-events
+2026-05-10 18:36:41,846 [INFO] scraper.base: [all_souls] Fetching https://www.allsoulschurch.org/whats-happening
+2026-05-10 18:36:42,026 [ERROR] scraper.base: [all_souls] Failed to fetch https://www.allsoulschurch.org/whats-happening: 404 Client Error: Not Found for url: https://allsoulschurch.org/whats-happening
+2026-05-10 18:36:42,026 [INFO] scraper.base: [all_souls] Scraped 0 events
+2026-05-10 18:36:42,028 [INFO] scraper.runner:   churches: 0 events
+2026-05-10 18:36:42,028 [INFO] scraper.runner: Running scraper: bars
+2026-05-10 18:36:42,028 [INFO] scraper.bars: [bars] Note: YBR, Majestic, Studio 66, Tulsa House of Drag DNS-dead. Tulsa Eagle only.
+2026-05-10 18:36:42,028 [INFO] scraper.base: [tulsa_eagle] Fetching https://www.tulsaeagle.com/events
+2026-05-10 18:36:45,565 [INFO] scraper.base: [tulsa_eagle] Fetching https://www.tulsaeagle.com/calendar
+2026-05-10 18:36:48,817 [INFO] scraper.base: [tulsa_eagle] Fetching https://www.tulsaeagle.com
+2026-05-10 18:36:53,574 [INFO] scraper.bars: [tulsa_eagle] No events found. Check manually: https://www.facebook.com/TheTulsaEagle/
+2026-05-10 18:36:53,574 [INFO] scraper.base: [tulsa_eagle] Scraped 0 events
+2026-05-10 18:36:53,575 [INFO] scraper.runner:   bars: 0 events
+2026-05-10 18:36:53,575 [INFO] scraper.runner: Running scraper: tulsa_arts_district
+2026-05-10 18:36:53,575 [INFO] scraper.base: [tulsa_arts_district] Fetching https://thetulsaartsdistrict.org/events/list/
+2026-05-10 18:36:53,894 [ERROR] scraper.base: [tulsa_arts_district] Failed to fetch https://thetulsaartsdistrict.org/events/list/: 403 Client Error: Forbidden for url: https://thetulsaartsdistrict.org/events/list/
+2026-05-10 18:36:55,990 [INFO] scraper.base: [tulsa_arts_district] Fetching https://thetulsaartsdistrict.org/events/
+2026-05-10 18:36:56,132 [INFO] scraper.base: [tulsa_arts_district] Scraped 0 events
+2026-05-10 18:36:56,133 [INFO] scraper.runner:   tulsa_arts_district: 0 events
+2026-05-10 18:36:56,133 [INFO] scraper.runner: Running scraper: facebook_events
+2026-05-10 18:36:56,616 [INFO] scraper.facebook_events: [facebook_events] Loading saved session from C:\Users\willi\OneDrive\Desktop\2026Desktop\dev\tulsagays\data\fb_session.json
+2026-05-10 18:36:56,781 [INFO] scraper.facebook_events: [facebook_events] Target week: 2026-05-04 to 2026-05-10
+2026-05-10 18:36:56,781 [INFO] scraper.facebook_events: [facebook_events] search: lgbtq+tulsa
+2026-05-10 18:37:23,712 [INFO] scraper.facebook_events: [facebook_events]   1 parsed, 0 new in week
+2026-05-10 18:37:23,712 [INFO] scraper.facebook_events: [facebook_events] search: queer+tulsa
+2026-05-10 18:37:45,906 [INFO] scraper.facebook_events: [facebook_events]   3 parsed, 0 new in week
+2026-05-10 18:37:45,907 [INFO] scraper.facebook_events: [facebook_events] search: drag+tulsa
+2026-05-10 18:37:53,929 [INFO] scraper.facebook_events: [facebook_events]   15 parsed, 0 new in week
+2026-05-10 18:37:53,930 [INFO] scraper.facebook_events: [facebook_events] search: gay+tulsa
+2026-05-10 18:38:01,130 [INFO] scraper.facebook_events: [facebook_events]   15 parsed, 0 new in week
+2026-05-10 18:38:01,130 [INFO] scraper.facebook_events: [facebook_events] search: trans+tulsa
+2026-05-10 18:38:08,314 [INFO] scraper.facebook_events: [facebook_events]   4 parsed, 0 new in week
+2026-05-10 18:38:08,314 [INFO] scraper.facebook_events: [facebook_events] search: pride+tulsa
+2026-05-10 18:38:14,712 [INFO] scraper.facebook_events: [facebook_events]   11 parsed, 0 new in week
+2026-05-10 18:38:14,712 [INFO] scraper.facebook_events: [facebook_events] search: tulsa+live+music
+2026-05-10 18:38:37,684 [INFO] scraper.facebook_events: [facebook_events]   16 parsed, 0 new in week
+2026-05-10 18:38:37,684 [INFO] scraper.facebook_events: [facebook_events] search: tulsa+brunch
+2026-05-10 18:39:02,061 [INFO] scraper.facebook_events: [fb:tulsa+brunch] + Mother's Day Brunch (2026-05-10)
+2026-05-10 18:39:02,061 [INFO] scraper.facebook_events: [facebook_events]   16 parsed, 1 new in week
+2026-05-10 18:39:02,061 [INFO] scraper.facebook_events: [facebook_events] search: tulsa+dance+party
+2026-05-10 18:39:27,460 [INFO] scraper.facebook_events: [facebook_events]   14 parsed, 0 new in week
+2026-05-10 18:39:27,461 [INFO] scraper.facebook_events: [facebook_events] search: tulsa+comedy
+2026-05-10 18:39:49,719 [INFO] scraper.facebook_events: [facebook_events]   15 parsed, 0 new in week
+2026-05-10 18:39:49,719 [INFO] scraper.facebook_events: [facebook_events] search: tulsa+karaoke
+2026-05-10 18:40:12,164 [INFO] scraper.facebook_events: [facebook_events]   13 parsed, 0 new in week
+2026-05-10 18:40:12,164 [INFO] scraper.facebook_events: [facebook_events] search: tulsa+trivia
+2026-05-10 18:40:34,616 [INFO] scraper.facebook_events: [facebook_events]   16 parsed, 0 new in week
+2026-05-10 18:40:34,616 [INFO] scraper.facebook_events: [facebook_events] search: tulsa+art
+2026-05-10 18:40:41,201 [INFO] scraper.facebook_events: [facebook_events]   16 parsed, 0 new in week
+2026-05-10 18:40:41,202 [INFO] scraper.facebook_events: [facebook_events] search: tulsa+open+mic
+2026-05-10 18:41:03,366 [INFO] scraper.facebook_events: [facebook_events]   15 parsed, 0 new in week
+2026-05-10 18:41:03,366 [INFO] scraper.facebook_events: [facebook_events] search: tulsa+happy+hour
+2026-05-10 18:41:26,389 [INFO] scraper.facebook_events: [facebook_events]   15 parsed, 0 new in week
+2026-05-10 18:41:26,389 [INFO] scraper.facebook_events: [facebook_events] search: tulsa+concert
+2026-05-10 18:41:48,886 [INFO] scraper.facebook_events: [facebook_events]   15 parsed, 0 new in week
+2026-05-10 18:41:48,886 [INFO] scraper.facebook_events: [facebook_events] search: tulsa+festival
+2026-05-10 18:42:15,436 [INFO] scraper.facebook_events: [fb:tulsa+festival] + Cinco de Mayo Street Festival (2026-05-05)
+2026-05-10 18:42:15,436 [INFO] scraper.facebook_events: [facebook_events]   16 parsed, 1 new in week
+2026-05-10 18:42:15,436 [INFO] scraper.facebook_events: [facebook_events] search: tulsa
+2026-05-10 18:42:38,116 [INFO] scraper.facebook_events: [facebook_events]   14 parsed, 0 new in week
+2026-05-10 18:42:38,116 [INFO] scraper.facebook_events: [facebook_events] page: TheTulsaEagle
+2026-05-10 18:42:45,720 [INFO] scraper.facebook_events: [facebook_events]   15 parsed, 0 new in week
+2026-05-10 18:42:45,720 [INFO] scraper.facebook_events: [facebook_events] page: YBRTulsa
+2026-05-10 18:43:15,448 [INFO] scraper.facebook_events: [facebook_events]   16 parsed, 0 new in week
+2026-05-10 18:43:15,448 [INFO] scraper.facebook_events: [facebook_events] page: clubmajestictulsa
+2026-05-10 18:43:22,704 [INFO] scraper.facebook_events: [facebook_events]   1 parsed, 0 new in week
+2026-05-10 18:43:22,704 [INFO] scraper.facebook_events: [facebook_events] page: dvltulsa
+2026-05-10 18:43:46,109 [INFO] scraper.facebook_events: [facebook_events]   24 parsed, 0 new in week
+2026-05-10 18:43:46,110 [INFO] scraper.facebook_events: [facebook_events] page: TwistedArtsTulsa
+2026-05-10 18:44:11,047 [INFO] scraper.facebook_events: [facebook_events]   16 parsed, 0 new in week
+2026-05-10 18:44:11,047 [INFO] scraper.facebook_events: [facebook_events] page: queerlitcollective
+2026-05-10 18:44:17,713 [INFO] scraper.facebook_events: [facebook_events]   1 parsed, 0 new in week
+2026-05-10 18:44:17,713 [INFO] scraper.facebook_events: [facebook_events] page: CouncilOakMensChorus
+2026-05-10 18:44:44,408 [INFO] scraper.facebook_events: [facebook_events]   0 parsed, 0 new in week
+2026-05-10 18:44:44,408 [INFO] scraper.facebook_events: [facebook_events] page: allnations2S
+2026-05-10 18:44:51,555 [INFO] scraper.facebook_events: [facebook_events]   2 parsed, 0 new in week
+2026-05-10 18:44:51,555 [INFO] scraper.facebook_events: [facebook_events] page: tulsalambdaleague
+2026-05-10 18:44:58,916 [INFO] scraper.facebook_events: [facebook_events]   5 parsed, 0 new in week
+2026-05-10 18:44:58,916 [INFO] scraper.facebook_events: [facebook_events] page: queerwomenscollectivetulsa
+2026-05-10 18:45:06,081 [INFO] scraper.facebook_events: [facebook_events]   16 parsed, 0 new in week
+2026-05-10 18:45:06,081 [INFO] scraper.facebook_events: [facebook_events] page: p/Urban-Lgbt-Tulsa-inc-100085937172262
+2026-05-10 18:45:13,081 [INFO] scraper.facebook_events: [facebook_events]   9 parsed, 0 new in week
+2026-05-10 18:45:13,081 [INFO] scraper.facebook_events: [facebook_events] page: people/Tulsa-House-of-Drag/61557097803540
+2026-05-10 18:45:37,127 [INFO] scraper.facebook_events: [facebook_events]   0 parsed, 0 new in week
+2026-05-10 18:45:37,127 [INFO] scraper.facebook_events: [facebook_events] group: group/161646500587551
+2026-05-10 18:45:43,688 [INFO] scraper.facebook_events: [facebook_events]   4 parsed, 0 new in week
+2026-05-10 18:45:43,688 [INFO] scraper.facebook_events: [facebook_events] group: group/2612250565491228
+2026-05-10 18:45:50,373 [INFO] scraper.facebook_events: [fb:group/2612250565491228] + Bad Boys on the Block (2026-05-08)
+2026-05-10 18:45:50,374 [INFO] scraper.facebook_events: [facebook_events]   3 parsed, 1 new in week
+2026-05-10 18:45:50,374 [INFO] scraper.facebook_events: [facebook_events] group: group/715281449025002
+2026-05-10 18:45:56,881 [INFO] scraper.facebook_events: [facebook_events]   3 parsed, 0 new in week
+2026-05-10 18:45:56,881 [INFO] scraper.facebook_events: [facebook_events] group: group/472710852857064
+2026-05-10 18:46:21,195 [INFO] scraper.facebook_events: [facebook_events]   6 parsed, 0 new in week
+2026-05-10 18:46:21,195 [INFO] scraper.facebook_events: [facebook_events] group: group/220878821301627
+2026-05-10 18:46:27,923 [INFO] scraper.facebook_events: [facebook_events]   6 parsed, 0 new in week
+2026-05-10 18:46:27,923 [INFO] scraper.facebook_events: [facebook_events] group: group/InterestingThingsToDoInTulsa
+2026-05-10 18:46:34,892 [INFO] scraper.facebook_events: [facebook_events]   3 parsed, 0 new in week
+2026-05-10 18:46:34,892 [INFO] scraper.facebook_events: [facebook_events] group: group/funstufftodointulsa
+2026-05-10 18:46:41,822 [INFO] scraper.facebook_events: [facebook_events]   3 parsed, 0 new in week
+2026-05-10 18:46:41,822 [INFO] scraper.facebook_events: [facebook_events] group: group/tulsaartists
+2026-05-10 18:46:48,543 [INFO] scraper.facebook_events: [fb:group/tulsaartists] + Back To Da Basics (2026-05-09)
+2026-05-10 18:46:48,543 [INFO] scraper.facebook_events: [facebook_events]   6 parsed, 1 new in week
+2026-05-10 18:46:48,543 [INFO] scraper.facebook_events: [facebook_events] group: group/1996680830384050
+2026-05-10 18:46:55,237 [INFO] scraper.facebook_events: [facebook_events]   6 parsed, 0 new in week
+2026-05-10 18:46:55,237 [INFO] scraper.facebook_events: [facebook_events] group: group/862121663843106
+2026-05-10 18:47:02,838 [INFO] scraper.facebook_events: [facebook_events]   0 parsed, 0 new in week
+2026-05-10 18:47:02,838 [INFO] scraper.facebook_events: [facebook_events] group: group/114530202225051
+2026-05-10 18:47:09,348 [INFO] scraper.facebook_events: [facebook_events]   3 parsed, 0 new in week
+2026-05-10 18:47:09,348 [INFO] scraper.facebook_events: [facebook_events] group: group/2974145312757018
+2026-05-10 18:47:20,893 [INFO] scraper.facebook_events: [fb:group/2974145312757018] + Intro to Watercolors - fun art classes (2026-05-09)
+2026-05-10 18:47:20,893 [INFO] scraper.facebook_events: [fb:group/2974145312757018] + Authentic Relating Games (2026-05-05)
+2026-05-10 18:47:20,893 [INFO] scraper.facebook_events: [fb:group/2974145312757018] + Scrabble Palooza! (2026-05-04)
+2026-05-10 18:47:20,893 [INFO] scraper.facebook_events: [facebook_events]   3 parsed, 3 new in week
+2026-05-10 18:47:20,893 [INFO] scraper.facebook_events: [facebook_events] Done: 7 total events in target week
+2026-05-10 18:47:26,168 [INFO] scraper.facebook_events: [facebook_events] Session refreshed: C:\Users\willi\OneDrive\Desktop\2026Desktop\dev\tulsagays\data\fb_session.json
+2026-05-10 18:47:55,942 [INFO] scraper.runner:   facebook_events: 7 events
+2026-05-10 18:47:55,942 [INFO] scraper.runner: Running scraper: ticketing_sites
+2026-05-10 18:47:55,942 [INFO] scraper.ticketing_sites: [ticketing] No TICKETMASTER_API_KEY — skipping Ticketmaster. Add key to .env to enable.
+2026-05-10 18:47:55,942 [INFO] scraper.base: [ticketing_sites] Fetching https://www.songkick.com/metro-areas/29100-us-tulsa
+2026-05-10 18:47:56,411 [ERROR] scraper.base: [ticketing_sites] Failed to fetch https://www.songkick.com/metro-areas/29100-us-tulsa: 406 Client Error: Not Acceptable for url: https://www.songkick.com/metro-areas/29100-us-tulsa
+2026-05-10 18:47:56,411 [INFO] scraper.base: [ticketing_sites] Fetching https://do918.com/events
+2026-05-10 18:47:56,521 [ERROR] scraper.base: [ticketing_sites] Failed to fetch https://do918.com/events: HTTPSConnectionPool(host='do918.com', port=443): Max retries exceeded with url: /events (Caused by NameResolutionError("HTTPSConnection(host='do918.com', port=443): Failed to resolve 'do918.com' ([Errno 11001] getaddrinfo failed)"))
+2026-05-10 18:47:56,521 [INFO] scraper.ticketing_sites: [ticketing] Total: 0 events from ticketing sites
+2026-05-10 18:47:56,521 [INFO] scraper.base: [ticketing_sites] Scraped 0 events
+2026-05-10 18:47:56,521 [INFO] scraper.runner:   ticketing_sites: 0 events
+2026-05-10 18:47:56,521 [INFO] scraper.runner: Running scraper: timetree_scraper
+2026-05-10 18:47:57,071 [WARNING] scraper.timetree_scraper: [tulsa_isnt_boring] iCal failed: 404 Client Error: Not Found for url: https://timetreeapp.com/public_calendars/tulsa_isnt_boring.ics
+2026-05-10 18:49:32,732 [WARNING] scraper.timetree_scraper: [tulsa_isnt_boring] Playwright rendered page but found no events
+2026-05-10 18:49:32,733 [WARNING] scraper.timetree_scraper: [tulsa_isnt_boring] All automated methods failed -- browser flag written to C:\Users\willi\OneDrive\Desktop\2026Desktop\dev\tulsagays\data\timetree_browser_needed.flag
+2026-05-10 18:49:32,733 [INFO] scraper.runner:   timetree_scraper: 0 events
+2026-05-10 18:49:32,733 [INFO] scraper.runner: Running scraper: slack_browser_scraper
+2026-05-10 18:49:34,290 [INFO] scraper.slack_browser_scraper: [slack_events_local] Loaded 1 events from C:\Users\willi\OneDrive\Desktop\2026Desktop\dev\tulsagays\data\slack_events_browser.json
+2026-05-10 18:49:35,814 [INFO] scraper.runner:   slack_browser_scraper: 1 events
+2026-05-10 18:49:35,815 [INFO] scraper.runner: Running scraper: playwright_scrapers
+2026-05-10 18:49:57,166 [INFO] scraper.playwright_scrapers: [freedom_oklahoma] Playwright fetching https://www.freedomoklahoma.org/events
+2026-05-10 18:50:23,601 [INFO] scraper.playwright_scrapers: [freedom_oklahoma] Found 30 raw events
+2026-05-10 18:50:23,602 [INFO] scraper.playwright_scrapers: [freedom_oklahoma] Scraped 30 events

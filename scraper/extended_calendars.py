@@ -11,7 +11,7 @@ Sources covered:
   CITY:
     City of Tulsa Special Events
   MUSEUMS & CULTURAL:
-    Philbrook, Woody Guthrie Center, Tulsa Zoo, Gathering Place,
+    Philbrook, Woody Guthrie Center, Greenwood Cultural Center, Tulsa Zoo, Gathering Place,
     Tulsa Garden Center, Oklahoma Aquarium, Discovery Lab, 101 Archer
   PERFORMING ARTS:
     Tulsa PAC, BOK Center, Cain's Ballroom, Tulsa Theater,
@@ -45,9 +45,25 @@ from scraper.base import BaseScraper
 logger = logging.getLogger(__name__)
 
 LGBTQ_KEYWORDS = [
+    # Explicit identity
     "lgbtq", "queer", "gay", "lesbian", "bi", "trans", "drag", "pride",
     "rainbow", "dyke", "nonbinary", "non-binary", "gender", "equality",
     "affirming", "inclusive", "homo", "sapphic", "two-spirit", "twospirit",
+    # Queer-adjacent / community-coded
+    "oddities", "curiosities",
+    "burlesque", "cabaret",
+    "feminist", "radical",
+    "night market", "art market", "bazaar", "market",
+    "wiz",
+    "greenwood", "black wall street",
+    "boots riley",
+    # Cultural event types (effective at curated arts venues)
+    "screening", "film festival", "documentary",
+    "exhibition", "opening reception", "art opening",
+    "workshop", "panel discussion", "panel", "lecture",
+    "fundraiser", "benefit show", "benefit concert",
+    "cultural festival", "heritage",
+    "open mic", "poetry",
 ]
 
 
@@ -77,6 +93,8 @@ SITES: List[Tuple[str, str, str, bool]] = [
     # MUSEUMS & CULTURAL
     ("https://philbrook.org/calendar/", "Philbrook Museum", "museum", False),
     ("https://woodyguthriecenter.org/events/", "Woody Guthrie Center", "museum", False),
+    ("https://www.greenwoodculturalcenter.com/events", "Greenwood Cultural Center", "museum", False),
+    ("https://www.1921tulsamassacre.org/events", "1921 Tulsa Race Massacre Memorial", "museum", False),
     ("https://www.tulsazoo.org/events/", "Tulsa Zoo", "museum", False),
     ("https://www.gatheringplace.org/parkcalendar/", "Gathering Place", "museum", False),
     ("https://www.tulsagardencenter.com/events/", "Tulsa Garden Center", "museum", False),
