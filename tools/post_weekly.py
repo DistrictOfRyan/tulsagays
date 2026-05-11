@@ -92,6 +92,12 @@ FOMO_CLOSES = [
 
 HASHTAGS = "#TulsaGays #TulsaLGBTQ #QueerTulsa #TulsaEvents #HomoHotelHappyHour #Tulsa #TulsaOklahoma #Oklahoma #VisitTulsa #OklahomaLGBTQ"
 
+# Instagram location ID for "Tulsa, Oklahoma" on Facebook/Instagram.
+# Adds a clickable location tag to every post — boosts local discovery.
+# To find: GET graph.facebook.com/v25.0/search?type=place&q=Tulsa+Oklahoma&access_token={TOKEN}
+# Then set IG_LOCATION_ID to the numeric ID of the "Tulsa, Oklahoma" result.
+IG_LOCATION_ID = "213340757"  # Facebook place ID for Tulsa, Oklahoma
+
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -211,6 +217,7 @@ def generate_caption() -> str:
     lines.append(FOMO_CLOSES[week_num % len(FOMO_CLOSES)])
     lines.append("")
     lines.append("Hundreds of fabulous events every week in Tulsa. Full list at tulsagays.com")
+    lines.append("New carousel every Monday. Follow @tulsagays so you don't miss it.")
     lines.append("")
     handle_line = _get_handle_line()
     if handle_line:
@@ -385,6 +392,7 @@ def post_ig_carousel(public_urls: list[str], caption: str) -> str:
             data={"image_url": url, "is_carousel_item": "true", "access_token": PAGE_TOKEN},
             timeout=120,
         )
+        # Note: location_id is set on the carousel container, not individual items
         data = resp.json()
         if "error" in data:
             raise RuntimeError(f"IG container {i} failed: {data['error'].get('message')}")
@@ -396,14 +404,18 @@ def post_ig_carousel(public_urls: list[str], caption: str) -> str:
         time.sleep(2)
 
     print("[IG] Creating carousel container...")
+    carousel_params = {
+        "media_type": "CAROUSEL",
+        "children": ",".join(child_ids),
+        "caption": caption,
+        "access_token": PAGE_TOKEN,
+    }
+    if IG_LOCATION_ID:
+        carousel_params["location_id"] = IG_LOCATION_ID
+        print(f"     Location tag: {IG_LOCATION_ID}")
     resp = requests.post(
         f"{API_BASE}/{IG_ID}/media",
-        data={
-            "media_type": "CAROUSEL",
-            "children": ",".join(child_ids),
-            "caption": caption,
-            "access_token": PAGE_TOKEN,
-        },
+        data=carousel_params,
         timeout=60,
     )
     data = resp.json()
