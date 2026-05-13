@@ -336,22 +336,12 @@ def cmd_generate(post_type="weekday"):
     # Pre-select EOTW from deduplicated events_by_day so the cover uses
     # the merged record (correct venue/address) rather than raw category_events.
     _all_deduped = [e for d in days_of_week for e in events_by_day[d]]
-    def _is_hh(e): return 'homo hotel' in (e.get('name') or '').lower() or (e.get('source') or '') == 'homo_hotel'
-    def _is_co(e): return 'council oak' in ((e.get('name') or '') + (e.get('source') or '')).lower()
-    def _is_qp(e):
-        c = ' '.join([e.get('name',''), e.get('description',''), e.get('venue',''), e.get('source','')]).lower()
-        return any(k in c for k in ['drag','cabaret','pride show','pride event','queer night','gay night','twisted arts'])
-    def _is_rec(e):
-        s = (e.get('source') or '').lower()
-        n = (e.get('name') or '').lower()
-        return s in {'recurring','aa_meetings','bars'} or any(k in n for k in ['bowling league','support group','outreach group'])
-    _hh = [e for e in _all_deduped if _is_hh(e)]
-    _co = [e for e in _all_deduped if _is_co(e)]
-    _qp = [e for e in _all_deduped if _is_qp(e) and not _is_rec(e) and not _is_hh(e)]
-    _sp = [e for e in _all_deduped if not _is_hh(e) and not _is_co(e) and not _is_qp(e) and not _is_rec(e)]
-    _preselected_eotw = _hh[0] if _hh else (_co[0] if _co else (_qp[0] if _qp else (_sp[0] if _sp else None)))
+    from eotw_selector import select_eotw as _select_eotw
+    _preselected_eotw = _select_eotw(_all_deduped)
     if _preselected_eotw:
         print(f"  [eotw] {_preselected_eotw.get('name')} @ {_preselected_eotw.get('venue')}")
+    else:
+        print("  [eotw] WARNING: No suitable LGBTQ event found for EOTW — cover slide will show generic fallback")
 
     # Generate carousel images
     print("\nGenerating carousel images...")

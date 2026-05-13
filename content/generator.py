@@ -91,14 +91,19 @@ def categorize_events(events: list[dict]) -> dict[str, list[dict]]:
     return cats
 
 
-def _pick_hashtags(count: int = 18) -> list[str]:
-    """Grab a randomized subset of hashtags from config."""
+def _pick_hashtags(count: int = 10) -> list[str]:
+    """Return a capped, randomized subset of hashtags from config.
+
+    Always includes MUST_HAVE_HASHTAGS. Total capped at 10 — Instagram's
+    algorithm now penalises posts with excessive hashtags.
+    """
     base = list(config.HASHTAGS)
-    # Always include the anchor tags
-    must_have = ["#TulsaGays", "#HomoHotelHappyHour", "#TulsaLGBTQ"]
+    must_have = getattr(config, "MUST_HAVE_HASHTAGS",
+                        ["#TulsaGays", "#TulsaLGBTQ", "#HomoHotelHappyHour"])
     extras = [h for h in base if h not in must_have]
     random.shuffle(extras)
-    picked = must_have + extras[: count - len(must_have)]
+    cap = min(count, 10)
+    picked = must_have + extras[: cap - len(must_have)]
     random.shuffle(picked)
     return picked
 

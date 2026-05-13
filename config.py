@@ -1050,12 +1050,41 @@ BLOG_URL = "https://www.tulsagays.com"
 GITHUB_REPO = "tulsagays/tulsagays.github.io"
 
 # ── Hashtags ─────────────────────────────────────────────────────────────
+# 5 brand tags (existing followers) + 5 discovery tags (non-followers browsing
+# location/interest pages). Instagram now deprioritizes posts with 12+ hashtags,
+# so we keep the total at 10. Rotate from this pool; always include MUST_HAVE_HASHTAGS.
 HASHTAGS = [
-    "#TulsaGays", "#TulsaPride", "#GayTulsa", "#TulsaLGBTQ",
-    "#QueerTulsa", "#TulsaEvents", "#LGBTQTulsa", "#OklahomaPride",
-    "#TulsaNightlife", "#HomoHotelHappyHour", "#TulsaQueer",
-    "#GayOklahoma", "#TulsaCommunity", "#LoveIsLove",
+    # Brand / community identity
+    "#TulsaGays", "#TulsaLGBTQ", "#QueerTulsa",
+    "#TulsaEvents", "#HomoHotelHappyHour",
+    # Discovery / location — reach non-followers browsing these tags
+    "#Tulsa", "#TulsaOklahoma", "#Oklahoma",
+    "#VisitTulsa", "#OklahomaLGBTQ",
 ]
+
+# These three always appear on every post, no exceptions.
+MUST_HAVE_HASHTAGS = ["#TulsaGays", "#TulsaLGBTQ", "#HomoHotelHappyHour"]
+
+# ── Instagram handle map (source key → @handle) ──────────────────────────
+# When an org's events appear in the weekly post, their handle gets mentioned
+# in the caption so they see it and can reshare. Add handles here as you
+# confirm them — only include handles you've verified are active and correct.
+SOURCE_IG_HANDLES = {
+    # Confirmed from config.py instagram fields
+    "dvl_tulsa":           "@dvltulsa",
+    "hotmess_sports":      "@hotmesssports",
+    "gay_kickball_tulsa":  "@hotmesssports",
+    "studio_66":           "@studio.66_",
+    "tulsa_house_of_drag": "@tulsahouseofdrag",
+    # Add verified handles below as you confirm them:
+    # "homo_hotel":        "@...",
+    # "okeq":              "@okeqtulsa",
+    # "twisted_arts":      "@twistedartstulsa",
+    # "black_queer_tulsa": "@blackqueertulsa",
+    # "freedom_oklahoma":  "@freedomoklahoma",
+    # "circle_cinema":     "@circlecinemat",
+    # "all_souls_special": "@allsoulsuu",
+}
 
 # ── Self-Improvement ─────────────────────────────────────────────────────
 SEARCH_QUERIES = [
@@ -1093,6 +1122,14 @@ LGBTQ_SOURCES = {
     "slack_events_local", "slack_unite_lgbtq_plus",
     "wompa_tulsa",              # trusted community venue — all events relevant, no keyword filter
     "tulsa_artist_fellowship",  # Flagship space — screenings, lectures, radical cultural events
+    "shambhala_tulsa",          # Shambhala Meditation Center — sound baths, meditation, workshops
+    "be_love_yoga",             # Be Love Yoga Studio — workshops, sound baths, kirtan
+    "open_eye_yoga",            # Open Eye Yoga (Brookside) — sound baths, special events
+    "yogaquest_tulsa",          # yogaQuest — workshops and wellness events
+    "the_sonic_ray",            # Nicholas Ray Bradford — sound bath meditation events
+    "updog_yoga_tulsa",         # Updog Yoga (415 E 12th St) — workshops, sound baths
+    "sana_meditation",          # Sana Meditation — mobile sound bath collective
+    "tulsa_yoga_meditation_center",  # Tulsa Yoga Meditation Center — workshops, Reiki, Ayurveda
 }
 
 # Inclusive community partners (city-specific). Events from these orgs are welcome
@@ -1115,6 +1152,15 @@ COMMUNITY_PARTNER_KEYWORDS = [
     "living arts",
     "vanguard tulsa",
     "flagship", "tulsa artist fellowship",
+    # Wellness / meditation / yoga venues — special events (sound baths,
+    # workshops, kirtan, retreats) at these places are queer-welcoming.
+    "shambhala", "shambhala meditation",
+    "be love yoga", "beloveyoga",
+    "open eye yoga", "openeyeyoga",
+    "yogaquest", "yoga quest",
+    "updog yoga", "updogyoga",
+    "sana meditation", "sanameditation",
+    "tulsa yoga meditation center",
 ]
 
 # City-specific blocklist additions. Combined with the generic blocklist in runner.py.

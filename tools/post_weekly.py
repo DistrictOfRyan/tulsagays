@@ -90,13 +90,21 @@ FOMO_CLOSES = [
     "One night is not all you get. There's a whole week of this. Tap through.",
 ]
 
-HASHTAGS = "#TulsaGays #TulsaPride #QueerTulsa #LGBTQ #Oklahoma #TulsaEvents"
+HASHTAGS = "#TulsaGays #TulsaLGBTQ #QueerTulsa #TulsaEvents #HomoHotelHappyHour #Tulsa #TulsaOklahoma #Oklahoma #VisitTulsa #OklahomaLGBTQ"
+
+# Instagram location ID for "Tulsa, Oklahoma" on Facebook/Instagram.
+# Adds a clickable location tag to every post — boosts local discovery.
+# To find: GET graph.facebook.com/v25.0/search?type=place&q=Tulsa+Oklahoma&access_token={TOKEN}
+# Then set IG_LOCATION_ID to the numeric ID of the "Tulsa, Oklahoma" result.
+IG_LOCATION_ID = "213340757"  # Facebook place ID for Tulsa, Oklahoma
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
 def _get_eotw() -> dict | None:
     """Find the Event of the Week from this week's events JSON."""
+    from eotw_selector import select_eotw
+
     events_file = ROOT / "data" / "events" / f"{WEEK_KEY}_all.json"
     if not events_file.exists():
         return None
@@ -116,57 +124,44 @@ def _get_eotw() -> dict | None:
             return False
 
     this_week = [e for e in events if in_week(e)]
+    return select_eotw(this_week)
 
-    def _is_hh(e):
-        return "homo hotel" in ((e.get("name") or "") + " " + (e.get("source") or "")).lower()
 
-    def _is_council(e):
-        combined = ((e.get("name") or "") + " " + (e.get("source") or "")).lower()
-        return "council oak" in combined or "comc" in combined
+def _get_handle_line() -> str:
+    """Return an '@mention' line for orgs whose events appear this week.
 
-    def _is_skip(e):
-        name = (e.get("name") or "").lower()
+    Reads this week's events, looks up each source in config.SOURCE_IG_HANDLES,
+    deduplicates, and returns a compact tag line (or '' if none are known).
+    """
+    handle_map = getattr(config, "SOURCE_IG_HANDLES", {})
+    if not handle_map:
+        return ""
+
+    events_file = ROOT / "data" / "events" / f"{WEEK_KEY}_all.json"
+    if not events_file.exists():
+        return ""
+
+    try:
+        with open(events_file, encoding="utf-8") as f:
+            data = json.load(f)
+        events = data if isinstance(data, list) else data.get("events", [])
+    except Exception:
+        return ""
+
+    seen_handles: list[str] = []
+    seen_set: set[str] = set()
+    for e in events:
         src = (e.get("source") or "").lower()
-        if src in {"recurring", "aa_meetings", "bars"}:
-            return True
-        return any(k in name for k in [
-            "bowling", "aa meeting", "support group", "sound bath", "sonic ray",
-            "health clinic", "okeq health", "hope testing", "drop-in therapy",
-            "therapy session", "free drop-in", "health outreach",
-        ])
+        handle = handle_map.get(src)
+        if handle and handle not in seen_set:
+            seen_handles.append(handle)
+            seen_set.add(handle)
 
-    _QUEER_PERF_KW = [
-        "drag", "drag show", "drag bingo", "drag brunch", "drag queen", "drag king",
-        "cabaret", "pride show", "pride event", "pride night", "queer night",
-        "gay night", "lgbtq+ night", "twisted arts", "okeq", "rainbow",
-        "pride dance", "pride party",
-    ]
+    if not seen_handles:
+        return ""
 
-    def _is_queer_perf(e):
-        combined = " ".join([
-            (e.get("name") or ""), (e.get("description") or ""),
-            (e.get("venue") or ""), (e.get("source") or "")
-        ]).lower()
-        return any(kw in combined for kw in _QUEER_PERF_KW)
-
-    def _is_deprioritized_venue(e):
-        # Per organizer/site policy: Club Majestic events never lead the caption.
-        venue = (e.get("venue") or "").lower()
-        return "majestic" in venue or "124 n boston" in venue
-
-    hh = [e for e in this_week if _is_hh(e)]
-    if hh:
-        return hh[0]
-    council = [e for e in this_week if _is_council(e)]
-    if council:
-        return council[0]
-    queer_perf = [e for e in this_week if _is_queer_perf(e) and not _is_skip(e)
-                  and not _is_hh(e) and not _is_council(e)
-                  and not _is_deprioritized_venue(e)]
-    if queer_perf:
-        return queer_perf[0]
-    specials = [e for e in this_week if not _is_skip(e) and not _is_deprioritized_venue(e)]
-    return specials[0] if specials else (this_week[0] if this_week else None)
+    # Cap at 5 handles — more than that looks spammy
+    return " ".join(seen_handles[:5])
 
 
 def _format_date(date_str: str) -> str:
@@ -222,7 +217,12 @@ def generate_caption() -> str:
     lines.append(FOMO_CLOSES[week_num % len(FOMO_CLOSES)])
     lines.append("")
     lines.append("Hundreds of fabulous events every week in Tulsa. Full list at tulsagays.com")
+    lines.append("New carousel every Monday. Follow @tulsagays so you don't miss it.")
     lines.append("")
+    handle_line = _get_handle_line()
+    if handle_line:
+        lines.append(handle_line)
+        lines.append("")
     lines.append(HASHTAGS)
 
     return "\n".join(lines)
@@ -392,6 +392,7 @@ def post_ig_carousel(public_urls: list[str], caption: str) -> str:
             data={"image_url": url, "is_carousel_item": "true", "access_token": PAGE_TOKEN},
             timeout=120,
         )
+        # Note: location_id is set on the carousel container, not individual items
         data = resp.json()
         if "error" in data:
             raise RuntimeError(f"IG container {i} failed: {data['error'].get('message')}")
@@ -403,14 +404,18 @@ def post_ig_carousel(public_urls: list[str], caption: str) -> str:
         time.sleep(2)
 
     print("[IG] Creating carousel container...")
+    carousel_params = {
+        "media_type": "CAROUSEL",
+        "children": ",".join(child_ids),
+        "caption": caption,
+        "access_token": PAGE_TOKEN,
+    }
+    if IG_LOCATION_ID:
+        carousel_params["location_id"] = IG_LOCATION_ID
+        print(f"     Location tag: {IG_LOCATION_ID}")
     resp = requests.post(
         f"{API_BASE}/{IG_ID}/media",
-        data={
-            "media_type": "CAROUSEL",
-            "children": ",".join(child_ids),
-            "caption": caption,
-            "access_token": PAGE_TOKEN,
-        },
+        data=carousel_params,
         timeout=60,
     )
     data = resp.json()
@@ -470,6 +475,40 @@ def save_results(fb_result: dict, ig_post_id: str) -> None:
 
     print(f"\nResults saved to {results_path}")
 
+    # Log the post for engagement tracking. The fetch_engagement() call
+    # requires a valid Meta token — it will silently skip if the token is
+    # expired. Re-run engagement_tracker.fetch_engagement(ig_post_id) after
+    # refreshing the page token to backfill this week's numbers.
+    if not DRY_RUN and not ig_post_id.startswith("FAILED"):
+        try:
+            sys.path.insert(0, str(ROOT))
+            from self_improve.engagement_tracker import log_post, fetch_engagement
+            events_file = ROOT / "data" / "events" / f"{WEEK_KEY}_all.json"
+            events_count = 0
+            if events_file.exists():
+                with open(events_file, encoding="utf-8") as ef:
+                    edata = json.load(ef)
+                events_count = edata.get("total_events", 0) if isinstance(edata, dict) else len(edata)
+            log_post(
+                post_id=ig_post_id,
+                post_type="carousel",
+                events_featured=events_count,
+                caption_style="eotw_hype",
+            )
+            print(f"[engagement] Post logged: {ig_post_id}")
+            # Attempt an immediate metrics fetch — will silently fail if token expired
+            metrics = fetch_engagement(ig_post_id)
+            if metrics:
+                print(f"[engagement] Live metrics: reach={metrics.get('reach',0)}, "
+                      f"impressions={metrics.get('impressions',0)}, saves={metrics.get('saves',0)}")
+            else:
+                print("[engagement] Metrics fetch skipped (token likely expired). "
+                      "Refresh page_access_token and re-run: "
+                      "python -c \"from self_improve.engagement_tracker import fetch_engagement; "
+                      f"fetch_engagement('{ig_post_id}')\"")
+        except Exception as _e:
+            print(f"[engagement] Tracking skipped: {_e}")
+
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 
@@ -479,6 +518,28 @@ def main():
     if DRY_RUN:
         print("  *** DRY RUN MODE — no actual posts will go out ***")
     print("=" * 60)
+
+    # Step 0: Hard approval gate — slides must be reviewed before posting
+    approval_path = SLIDES_DIR / "approval_status.json"
+    if not DRY_RUN:
+        if not approval_path.exists():
+            print(
+                f"\n[STOP] No approval_status.json found at {approval_path}\n"
+                f"       William has not reviewed this week's content.\n"
+                f"       Run the Sunday approval task, or create approval_status.json with approved=true.\n"
+                f"       Post ABORTED."
+            )
+            sys.exit(1)
+        with open(approval_path, encoding="utf-8") as _f:
+            _approval = json.load(_f)
+        if not _approval.get("approved"):
+            print(
+                f"\n[STOP] approval_status.json exists but approved={_approval.get('approved')}.\n"
+                f"       William has not approved this week's content.\n"
+                f"       Post ABORTED."
+            )
+            sys.exit(1)
+        print(f"[OK] Content approved ({_approval.get('approved_at', 'timestamp unknown')})")
 
     # Step 1: Validate slides
     slides = get_slides()
