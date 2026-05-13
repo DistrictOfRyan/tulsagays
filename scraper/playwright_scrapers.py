@@ -1466,6 +1466,86 @@ class TulsaYogaMeditationCenterScraper(_FlexibleVenueScraper):
     PRIORITY = 2
 
 
+class TulsaPeoplesOrchestraScraper(PlaywrightBaseScraper):
+    """Tulsa People's Orchestra -- Instagram profile scraper.
+
+    Public Instagram at @tulsapeoplesorchestra. Extracts post captions that
+    look like event announcements (brunches, concerts, performances at The Vault
+    and other Tulsa venues). Falls back gracefully if Instagram blocks the request.
+    """
+
+    source_name = "tulsa_peoples_orchestra"
+    PROFILE_URL = "https://www.instagram.com/tulsapeoplesorchestra/"
+    DEFAULT_VENUE = "The Vault, Tulsa"
+    PRIORITY = 2
+
+    EVENT_KEYWORDS = [
+        "brunch", "concert", "performance", "show", "event",
+        "join us", "come out", "tickets", "doors open", "live music",
+        "tonight", "this week", "upcoming", "the vault",
+    ]
+
+    def scrape(self) -> List[Dict]:
+        import re
+        from bs4 import BeautifulSoup
+
+        html = self.fetch_page_js(
+            self.PROFILE_URL,
+            wait_for_selector="article, main, [role='main']",
+            timeout=20000,
+        )
+        if not html:
+            logger.warning(f"[{self.source_name}] No HTML from Instagram -- may require login")
+            return []
+
+        soup = BeautifulSoup(html, "html.parser")
+
+        # Try JSON-LD first
+        events = self._extract_json_ld_from_soup(soup, self.DEFAULT_VENUE, self.PRIORITY)
+        if events:
+            logger.info(f"[{self.source_name}] JSON-LD: {len(events)} events")
+            return events
+
+        # Extract post captions from Instagram's embedded JSON in <script> tags
+        captions = []
+        for script in soup.find_all("script"):
+            text = script.string or ""
+            if not text:
+                continue
+            found = re.findall(r'"edge_media_to_caption":\{"edges":\[.*?"text":"([^"]{10,})"', text)
+            captions.extend(found)
+            found2 = re.findall(r'"caption":"([^"]{10,500})"', text)
+            captions.extend(found2)
+
+        events = []
+        for caption in captions[:20]:
+            caption_clean = caption.replace("\\n", "\n").replace("\\u0026", "&")
+            caption_lower = caption_clean.lower()
+
+            if not any(kw in caption_lower for kw in self.EVENT_KEYWORDS):
+                continue
+
+            date_str = BaseScraper.parse_date_flexible(caption_clean)
+            time_match = re.search(r'\b(\d{1,2}(?::\d{2})?\s*(?:am|pm))\b', caption_lower)
+            time_str = time_match.group(1).upper() if time_match else ""
+
+            venue = "The Vault, Tulsa" if "the vault" in caption_lower else self.DEFAULT_VENUE
+            first_line = caption_clean.split("\n")[0].strip()[:80] or "Tulsa People's Orchestra Event"
+
+            events.append(self.make_event(
+                name=first_line,
+                date=date_str,
+                time=time_str,
+                venue=venue,
+                description=caption_clean[:400],
+                url=self.PROFILE_URL,
+                priority=self.PRIORITY,
+            ))
+
+        logger.info(f"[{self.source_name}] Found {len(events)} event posts from Instagram")
+        return events
+
+
 # ── Module-level entry point ───────────────────────────────────────────────────
 
 _PLAYWRIGHT_SCRAPERS = [
@@ -1488,6 +1568,7 @@ _PLAYWRIGHT_SCRAPERS = [
     UpdogYogaScraper,
     SanaMeditationScraper,
     TulsaYogaMeditationCenterScraper,
+    TulsaPeoplesOrchestraScraper,
 ]
 
 

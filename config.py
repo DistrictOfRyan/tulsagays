@@ -1024,6 +1024,15 @@ SOURCES = {
         "type": "aggregator",
         "description": "Electronic concerts and music events filtered by Tulsa area and electronic genre.",
     },
+    # ── New sources added 2026-05-11 ─────────────────────────────────────
+    "tulsa_peoples_orchestra": {
+        "name": "Tulsa People's Orchestra",
+        "url": "",
+        "instagram": "https://www.instagram.com/tulsapeoplesorchestra",
+        "priority": 2,
+        "type": "arts",
+        "description": "Community orchestra hosting concerts, brunches, and performances at various Tulsa venues including The Vault.",
+    },
     # ── New sources added 2026-04-28 ─────────────────────────────────────
     "tulsa_isnt_boring": {
         "name": "Tulsa Isn't Boring (TimeTree Public Calendar)",
@@ -1161,6 +1170,8 @@ COMMUNITY_PARTNER_KEYWORDS = [
     "updog yoga", "updogyoga",
     "sana meditation", "sanameditation",
     "tulsa yoga meditation center",
+    "tulsa peoples orchestra", "people's orchestra", "peoples orchestra",
+    "the vault",
 ]
 
 # City-specific blocklist additions. Combined with the generic blocklist in runner.py.

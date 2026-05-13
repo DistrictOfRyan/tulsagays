@@ -1,33 +1,33 @@
 {
-  "app_id": "1468075241636760",
-  "page_id": "1086906044497675",
-  "instagram_business_account_id": "17841441654786297",
-  "user_token_note": "Get a fresh user token from Graph API Explorer each session. The user token is used to generate page tokens on the fly.",
-  "how_to_get_page_token": "curl -s 'https://graph.facebook.com/v25.0/1086906044497675?fields=access_token&access_token={USER_TOKEN}' | python3 -c 'import json,sys;print(json.load(sys.stdin)[\"access_token\"])'",
-  "how_to_post_fb": "curl -s -X POST 'https://graph.facebook.com/v25.0/{page_id}/feed' --data-urlencode 'message={text}' -d 'access_token={PAGE_TOKEN}'",
-  "how_to_post_ig": "1) Create container: POST /{ig_account_id}/media with image_url + caption + access_token. 2) Publish: POST /{ig_account_id}/media_publish with creation_id + access_token.",
-  "oauth_url": "https://www.facebook.com/v25.0/dialog/oauth?client_id=1468075241636760&redirect_uri=https://developers.facebook.com/tools/explorer/callback&scope=pages_show_list,pages_manage_posts,pages_read_engagement,instagram_basic,instagram_content_publish&response_type=token&auth_type=rerequest",
-  "quirk": "me/accounts returns empty with Facebook Login for Business. Use direct page query instead: {page_id}?fields=access_token",
-  "last_updated": "2026-04-16",
-  "last_post": {
-    "date": "2026-04-27",
-    "week_key": "2026-W18",
-    "fb_post_id": "1086906044497675_122109286466853065",
-    "ig_post_id": "17960795535077845",
-    "photo_ids": [
-      "122109285998853065",
-      "122109286046853065",
-      "122109286142853065",
-      "122109286220853065",
-      "122109286262853065",
-      "122109286304853065",
-      "122109286346853065",
-      "122109286388853065",
-      "122109286436853065"
-    ],
-    "note": "Weekly carousel 2026-W18. 9 slides."
-  },
-  "page_access_token": "EAAU3NOdIA5gBRMtIw1kK1hVZATgOgCTwvrHBBhtwkpVnHIuN3ZBoObPqvgCMyzZCTE2NRJYtzT2Hxol8WWYWm6igrA3IAUiZCfjqDLNSVadTNjtS422p1hscBrn7qbP2cjssnHLNDQEkMhwg0Q0cuWGMvNidZBu08L8wGXOV1RdWuZAZCJnUQpaMe3Gn5pitpyfAD9eBVMZAf2Q6Xq65xgZDZD",
-  "page_token_expires": "never",
-  "page_token_note": "Permanent page token generated 2026-04-16 via long-lived user token exchange. expires_at=0 (never expires unless password changed or app revoked)."
+    "app_id":  "1468075241636760",
+    "page_id":  "1086906044497675",
+    "instagram_business_account_id":  "17841441654786297",
+    "user_token_note":  "Get a fresh user token from Graph API Explorer each session. The user token is used to generate page tokens on the fly.",
+    "how_to_get_page_token":  "curl -s \u0027https://graph.facebook.com/v25.0/1086906044497675?fields=access_token\u0026access_token={USER_TOKEN}\u0027 | python3 -c \u0027import json,sys;print(json.load(sys.stdin)[\"access_token\"])\u0027",
+    "how_to_post_fb":  "curl -s -X POST \u0027https://graph.facebook.com/v25.0/{page_id}/feed\u0027 --data-urlencode \u0027message={text}\u0027 -d \u0027access_token={PAGE_TOKEN}\u0027",
+    "how_to_post_ig":  "1) Create container: POST /{ig_account_id}/media with image_url + caption + access_token. 2) Publish: POST /{ig_account_id}/media_publish with creation_id + access_token.",
+    "oauth_url":  "https://www.facebook.com/v25.0/dialog/oauth?client_id=1468075241636760\u0026redirect_uri=https://developers.facebook.com/tools/explorer/callback\u0026scope=pages_show_list,pages_manage_posts,pages_read_engagement,instagram_basic,instagram_content_publish\u0026response_type=token\u0026auth_type=rerequest",
+    "quirk":  "me/accounts returns empty with Facebook Login for Business. Use direct page query instead: {page_id}?fields=access_token",
+    "last_updated":  "2026-05-13",
+    "last_post":  {
+                      "date":  "2026-04-27",
+                      "week_key":  "2026-W18",
+                      "fb_post_id":  "1086906044497675_122109286466853065",
+                      "ig_post_id":  "17960795535077845",
+                      "photo_ids":  [
+                                        "122109285998853065",
+                                        "122109286046853065",
+                                        "122109286142853065",
+                                        "122109286220853065",
+                                        "122109286262853065",
+                                        "122109286304853065",
+                                        "122109286346853065",
+                                        "122109286388853065",
+                                        "122109286436853065"
+                                    ],
+                      "note":  "Weekly carousel 2026-W18. 9 slides."
+                  },
+    "page_access_token":  "EAAU3NOdIA5gBRZA6f4FteH3Oo3ZBkYQLg0wtdJvE93ZAD2QUZCM2ln181t0N7qkmm0mlnmsC5EIkYlbE7ALIZCUkEP7XrF6OT3BOmpNRP7NoBjAa086QY9AZCrPZCMu0hTiIZBd1qhMllpBhJBr9ETKaCMxW4NvOO33dwpViKmP98FPoV1eGgBDzVZC7vTMZAu5ICFMkW6JOklrC3A2RGILG89ajxiilzdvQllNE7tKpCyPGUzfd2K7KbLfCiitAZDZD",
+    "page_token_expires":  "never",
+    "page_token_note":  "Permanent page token refreshed 2026-05-13 via Graph API Explorer user token exchange. expires_at=0 (never expires unless password changed or app revoked)."
 }
