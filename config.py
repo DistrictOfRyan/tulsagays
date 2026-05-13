@@ -1122,6 +1122,11 @@ LGBTQ_SOURCES = {
     "slack_events_local", "slack_unite_lgbtq_plus",
     "wompa_tulsa",              # trusted community venue — all events relevant, no keyword filter
     "tulsa_artist_fellowship",  # Flagship space — screenings, lectures, radical cultural events
+    "shambhala_tulsa",          # Shambhala Meditation Center — sound baths, meditation, workshops
+    "be_love_yoga",             # Be Love Yoga Studio — workshops, sound baths, kirtan
+    "open_eye_yoga",            # Open Eye Yoga (Brookside) — sound baths, special events
+    "yogaquest_tulsa",          # yogaQuest — workshops and wellness events
+    "the_sonic_ray",            # Nicholas Ray Bradford — sound bath meditation events
 }
 
 # Inclusive community partners (city-specific). Events from these orgs are welcome
@@ -1144,6 +1149,12 @@ COMMUNITY_PARTNER_KEYWORDS = [
     "living arts",
     "vanguard tulsa",
     "flagship", "tulsa artist fellowship",
+    # Wellness / meditation / yoga venues — special events (sound baths,
+    # workshops, kirtan, retreats) at these places are queer-welcoming.
+    "shambhala", "shambhala meditation",
+    "be love yoga", "beloveyoga",
+    "open eye yoga", "openeyeyoga",
+    "yogaquest", "yoga quest",
 ]
 
 # City-specific blocklist additions. Combined with the generic blocklist in runner.py.

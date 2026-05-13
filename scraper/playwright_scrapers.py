@@ -1281,6 +1281,141 @@ class OKEQPlaywrightScraper(PlaywrightBaseScraper):
         return events
 
 
+# ── Flexible venue scraper (Tribe / Squarespace / JSON-LD / Wix) ───────────────
+
+class _FlexibleVenueScraper(PlaywrightBaseScraper):
+    """Base class for venues whose CMS we don't know upfront.
+
+    Tries JSON-LD → The Events Calendar (Tribe) → Squarespace → Wix selectors
+    against one or more candidate URLs. Subclasses set source_name, BASE_URL,
+    URLS_TO_TRY, DEFAULT_VENUE, PRIORITY. No LGBTQ keyword filter — these
+    venues are added to LGBTQ_SOURCES so the runner trusts their curation.
+    """
+
+    URLS_TO_TRY: List[str] = []
+    WAIT_SELECTOR = (
+        ".tribe-events-calendar, .tribe-event, "
+        ".tribe-events-calendar-list__event, "
+        ".eventlist-event, .summary-item, "
+        "[data-hook='events-widget-event-card'], "
+        "[class*='tribe-event'], [class*='eventlist'], "
+        "article, main"
+    )
+
+    def scrape(self) -> List[Dict]:
+        from bs4 import BeautifulSoup
+
+        for url in self.URLS_TO_TRY:
+            html = self.fetch_page_js(url, wait_for_selector=self.WAIT_SELECTOR, timeout=25000)
+            if not html:
+                logger.debug(f"[{self.source_name}] No HTML from {url}, trying next")
+                continue
+
+            soup = BeautifulSoup(html, "html.parser")
+
+            title_el = soup.find("title")
+            page_title = title_el.get_text(strip=True).lower() if title_el else ""
+            if "404" in page_title or "not found" in page_title:
+                logger.debug(f"[{self.source_name}] 404 at {url}, trying next")
+                continue
+
+            events = self._extract_json_ld_from_soup(soup, self.DEFAULT_VENUE, self.PRIORITY)
+            if not events:
+                events = self._extract_tribe_events(soup)
+            if not events:
+                events = self._extract_squarespace_html(html, self.BASE_URL, self.DEFAULT_VENUE, self.PRIORITY)
+
+            if events:
+                logger.info(f"[{self.source_name}] Found {len(events)} events at {url}")
+                return events
+
+            logger.debug(f"[{self.source_name}] No events parsed from {url}, trying next")
+
+        logger.warning(f"[{self.source_name}] No events found across all URLs")
+        return []
+
+    def _extract_tribe_events(self, soup) -> List[Dict]:
+        """Reuse OKEQPlaywrightScraper's Tribe parser if available; otherwise no-op."""
+        try:
+            return OKEQPlaywrightScraper._extract_tribe_events(self, soup)
+        except Exception:
+            return []
+
+
+class ShambhalaTulsaScraper(_FlexibleVenueScraper):
+    """Shambhala Meditation Center of Tulsa — meditation programs, sound baths,
+    workshops, retreats. Curated wellness calendar, queer-welcoming community space.
+    """
+    source_name = "shambhala_tulsa"
+    BASE_URL = "https://tulsa.shambhala.org"
+    URLS_TO_TRY = [
+        "https://tulsa.shambhala.org/events/",
+        "https://tulsa.shambhala.org/calendar/",
+        "https://tulsa.shambhala.org/programs/",
+    ]
+    DEFAULT_VENUE = "Shambhala Meditation Center of Tulsa"
+    PRIORITY = 2
+
+
+class BeLoveYogaScraper(_FlexibleVenueScraper):
+    """Be Love Yoga Studio (Pearl District / Jenks) — workshops, sound baths,
+    kirtan, donation classes, the Big Om Yoga Retreat. Queer-welcoming.
+    """
+    source_name = "be_love_yoga"
+    BASE_URL = "https://beloveyogastudio.com"
+    URLS_TO_TRY = [
+        "https://beloveyogastudio.com/events/",
+        "https://beloveyogastudio.com/workshops/",
+        "https://beloveyogastudio.com/calendar/",
+    ]
+    DEFAULT_VENUE = "Be Love Yoga Studio, Tulsa"
+    PRIORITY = 2
+
+
+class OpenEyeYogaScraper(_FlexibleVenueScraper):
+    """Open Eye Yoga (Brookside) — power/restorative/yin/kundalini, Sana sound baths,
+    workshops. Queer-welcoming community wellness venue.
+    """
+    source_name = "open_eye_yoga"
+    BASE_URL = "https://www.openeyeyoga.com"
+    URLS_TO_TRY = [
+        "https://www.openeyeyoga.com/events",
+        "https://www.openeyeyoga.com/workshops",
+        "https://www.openeyeyoga.com/calendar",
+    ]
+    DEFAULT_VENUE = "Open Eye Yoga, 4329 S Peoria Ave Suite 350, Tulsa"
+    PRIORITY = 2
+
+
+class YogaQuestScraper(_FlexibleVenueScraper):
+    """yogaQuest — Tulsa wellness studio. Workshops and special events."""
+    source_name = "yogaquest_tulsa"
+    BASE_URL = "https://www.tulsayogaquest.com"
+    URLS_TO_TRY = [
+        "https://www.tulsayogaquest.com/events",
+        "https://www.tulsayogaquest.com/workshops",
+        "https://www.tulsayogaquest.com/calendar",
+    ]
+    DEFAULT_VENUE = "yogaQuest, Tulsa"
+    PRIORITY = 2
+
+
+class SonicRayScraper(_FlexibleVenueScraper):
+    """Nicholas Ray Bradford (@thesonicray) — sound bath meditation events
+    around Tulsa. Mobile artist; venue varies by event.
+    """
+    source_name = "the_sonic_ray"
+    BASE_URL = "https://thesonicray.com"
+    URLS_TO_TRY = [
+        "https://thesonicray.com/events",
+        "https://thesonicray.com/schedule",
+        "https://thesonicray.com/calendar",
+        "https://thesonicray.com/",
+    ]
+    DEFAULT_VENUE = "Various locations, Tulsa (The Sonic Ray)"
+    PRIORITY = 2
+
+
 # ── Module-level entry point ───────────────────────────────────────────────────
 
 _PLAYWRIGHT_SCRAPERS = [
@@ -1295,6 +1430,11 @@ _PLAYWRIGHT_SCRAPERS = [
     CircleCinemaScraper,
     PhilbrookMuseumScraper,
     WOMPAScraper,
+    ShambhalaTulsaScraper,
+    BeLoveYogaScraper,
+    OpenEyeYogaScraper,
+    YogaQuestScraper,
+    SonicRayScraper,
 ]
 
 
