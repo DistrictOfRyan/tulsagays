@@ -1416,6 +1416,56 @@ class SonicRayScraper(_FlexibleVenueScraper):
     PRIORITY = 2
 
 
+class UpdogYogaScraper(_FlexibleVenueScraper):
+    """Updog Yoga Tulsa (415 E 12th St) — indoor/outdoor yoga, infrared heat,
+    hosts Sana Meditation sound baths and other special events.
+    """
+    source_name = "updog_yoga_tulsa"
+    BASE_URL = "https://www.updogyogatulsa.com"
+    URLS_TO_TRY = [
+        "https://www.updogyogatulsa.com/events",
+        "https://www.updogyogatulsa.com/workshops",
+        "https://www.updogyogatulsa.com/calendar",
+        "https://www.updogyogatulsa.com/class-schedule",
+    ]
+    DEFAULT_VENUE = "Updog Yoga, 415 E 12th St, Tulsa"
+    PRIORITY = 2
+
+
+class SanaMeditationScraper(_FlexibleVenueScraper):
+    """Sana Meditation — Tulsa wellness collective (Sue Webb & Tiffany Tran)
+    running immersive sound baths at Fly Loft, Tulsa Botanic Garden, Updog,
+    and other community venues.
+    """
+    source_name = "sana_meditation"
+    BASE_URL = "https://sanameditation.com"
+    URLS_TO_TRY = [
+        "https://sanameditation.com/events",
+        "https://sanameditation.com/schedule",
+        "https://sanameditation.com/calendar",
+        "https://sanameditation.com/",
+    ]
+    DEFAULT_VENUE = "Various locations, Tulsa (Sana Meditation)"
+    PRIORITY = 2
+
+
+class TulsaYogaMeditationCenterScraper(_FlexibleVenueScraper):
+    """Tulsa Yoga Meditation Center (5319 S Sheridan Rd) — yoga, Buddhist
+    meditation, Vedic education, Ayurveda, Reiki. Hosts workshops and
+    therapeutic classes.
+    """
+    source_name = "tulsa_yoga_meditation_center"
+    BASE_URL = "https://www.tulsayogameditationcenter.com"
+    URLS_TO_TRY = [
+        "https://www.tulsayogameditationcenter.com/events",
+        "https://www.tulsayogameditationcenter.com/workshops",
+        "https://www.tulsayogameditationcenter.com/calendar",
+        "https://www.tulsayogameditationcenter.com/classes",
+    ]
+    DEFAULT_VENUE = "Tulsa Yoga Meditation Center, 5319 S Sheridan Rd"
+    PRIORITY = 2
+
+
 # ── Module-level entry point ───────────────────────────────────────────────────
 
 _PLAYWRIGHT_SCRAPERS = [
@@ -1435,6 +1485,9 @@ _PLAYWRIGHT_SCRAPERS = [
     OpenEyeYogaScraper,
     YogaQuestScraper,
     SonicRayScraper,
+    UpdogYogaScraper,
+    SanaMeditationScraper,
+    TulsaYogaMeditationCenterScraper,
 ]
 
 

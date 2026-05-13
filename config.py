@@ -1127,6 +1127,9 @@ LGBTQ_SOURCES = {
     "open_eye_yoga",            # Open Eye Yoga (Brookside) — sound baths, special events
     "yogaquest_tulsa",          # yogaQuest — workshops and wellness events
     "the_sonic_ray",            # Nicholas Ray Bradford — sound bath meditation events
+    "updog_yoga_tulsa",         # Updog Yoga (415 E 12th St) — workshops, sound baths
+    "sana_meditation",          # Sana Meditation — mobile sound bath collective
+    "tulsa_yoga_meditation_center",  # Tulsa Yoga Meditation Center — workshops, Reiki, Ayurveda
 }
 
 # Inclusive community partners (city-specific). Events from these orgs are welcome
@@ -1155,6 +1158,9 @@ COMMUNITY_PARTNER_KEYWORDS = [
     "be love yoga", "beloveyoga",
     "open eye yoga", "openeyeyoga",
     "yogaquest", "yoga quest",
+    "updog yoga", "updogyoga",
+    "sana meditation", "sanameditation",
+    "tulsa yoga meditation center",
 ]
 
 # City-specific blocklist additions. Combined with the generic blocklist in runner.py.
