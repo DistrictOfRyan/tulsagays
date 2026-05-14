@@ -55,6 +55,34 @@ def cmd_scrape():
     from scraper.runner import main as run_scrapers
     events = run_scrapers()
     print(f"\nTotal events found: {len(events) if events else 0}")
+
+    # Save Monday-baseline snapshot so mid-week tasks can detect new events.
+    # Snapshot is only (re)written when run on Monday — Wednesday/Thursday
+    # tasks read from this file to diff against the live events JSON.
+    if datetime.now().weekday() == 0:
+        try:
+            week_key = config.current_week_key()
+            snap_path = os.path.join(config.EVENTS_DIR, f"{week_key}_monday_snapshot.json")
+            live_path = os.path.join(config.EVENTS_DIR, f"{week_key}_all.json")
+            if os.path.exists(live_path):
+                with open(live_path, "r", encoding="utf-8") as f:
+                    payload = json.load(f)
+                live_events = payload.get("events", payload) if isinstance(payload, (dict, list)) else []
+                snapshot = {
+                    "captured_at": datetime.now().isoformat(timespec="seconds"),
+                    "week": week_key,
+                    "count": len(live_events),
+                    "event_keys": sorted({
+                        f"{e.get('date','')}|{(e.get('name','') or '').strip().lower()}|{(e.get('venue','') or '').strip().lower()}"
+                        for e in live_events if isinstance(e, dict)
+                    }),
+                }
+                with open(snap_path, "w", encoding="utf-8") as f:
+                    json.dump(snapshot, f, indent=2, ensure_ascii=False)
+                print(f"Monday snapshot saved: {snap_path} ({snapshot['count']} events)")
+        except Exception as e:
+            print(f"WARN: monday snapshot save failed: {e}")
+
     return events
 
 
