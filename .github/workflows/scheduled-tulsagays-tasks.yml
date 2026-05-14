@@ -1,0 +1,63 @@
+name: Scheduled Tulsa Gays Tasks
+
+# Alternative to the scheduled-tasks MCP. Each cron entry matches one
+# of the four mid-week pipeline tasks. The job dispatches by the cron
+# expression that fired it, so all four share one workflow.
+#
+# Times are UTC. America/Chicago equivalents in comments.
+
+on:
+  schedule:
+    - cron: '0 17 * * 2'   # Tue 12pm CT - tuesday-community-prompt
+    - cron: '0 2 * * 3'    # Tue 9pm CT  - tuesday-reply-scraper
+    - cron: '0 22 * * 3'   # Wed 5pm CT  - wednesday-lastminute
+    - cron: '0 17 * * 4'   # Thu 12pm CT - thursday-spotlight
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Task id to run manually'
+        required: true
+        type: choice
+        options:
+          - tulsagays-tuesday-community-prompt
+          - tulsagays-tuesday-reply-scraper
+          - tulsagays-wednesday-lastminute
+          - tulsagays-thursday-spotlight
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve task id
+        id: which
+        run: |
+          if [ -n "${{ inputs.task }}" ]; then
+            echo "task=${{ inputs.task }}" >> "$GITHUB_OUTPUT"
+          else
+            case "${{ github.event.schedule }}" in
+              "0 17 * * 2") echo "task=tulsagays-tuesday-community-prompt" >> "$GITHUB_OUTPUT" ;;
+              "0 2 * * 3")  echo "task=tulsagays-tuesday-reply-scraper"   >> "$GITHUB_OUTPUT" ;;
+              "0 22 * * 3") echo "task=tulsagays-wednesday-lastminute"    >> "$GITHUB_OUTPUT" ;;
+              "0 17 * * 4") echo "task=tulsagays-thursday-spotlight"      >> "$GITHUB_OUTPUT" ;;
+              *) echo "unknown schedule"; exit 1 ;;
+            esac
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Run task
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+          META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
+          TULSAGAYS_PAGE_ID: ${{ secrets.TULSAGAYS_PAGE_ID }}
+          TULSAGAYS_PAGE_ACCESS_TOKEN: ${{ secrets.TULSAGAYS_PAGE_ACCESS_TOKEN }}
+        run: python tools/run_scheduled_task.py "${{ steps.which.outputs.task }}"

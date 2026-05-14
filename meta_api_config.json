@@ -27,7 +27,7 @@
         ],
         "note": "Weekly carousel 2026-W18. 9 slides."
     },
-    "page_access_token": "EAAU3NOdIA5gBRTpMmzASda4qLgTCjptRtG779HtLYXjsWoZCV4JYGDlhrEmHchZBG9mdvHlXV1Sr6rZAfkronUrMHQyyqMCJjLpXieHfOifwv9RBcCZBHs3tTijHkZAgl1HeTY7vXSrSLZCp1EMZAQzQJQqzQtFSWXa32GsbvjafhvLrtgoTevgPxrz0V0FTWohxJviDAR3WNhtZAn3f28KoOs6MObbwlfIC3AiAqsmFbYk38AME9vMG",
+    "page_access_token": "MOVED_TO_ENV_TULSAGAYS_PAGE_ACCESS_TOKEN",
     "page_token_expires": "never",
-    "page_token_note": "Refreshed 2026-05-13 via me/accounts. Permanent page token."
+    "page_token_note": "Token now read from TULSAGAYS_PAGE_ACCESS_TOKEN env var (see .env.example). The previous value was committed to git and must be rotated at Meta."
 }
