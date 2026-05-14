@@ -99,21 +99,23 @@ def main() -> int:
     week_key = config.current_week_key()
     events_dir = Path(config.EVENTS_DIR)
 
-    # Snapshot lives in docs/snapshots/ (committed) when written by main.py,
-    # data/events/ (gitignored) when run locally on William's PC. Live events
-    # JSON only exists in data/events/ on William's PC, so this task can only
-    # post when that's been committed too. Otherwise silent-skip.
+    # docs/ paths first (committed, visible to GHA runners), then data/ paths
+    # (local, gitignored, only present on William's PC).
     snap_candidates = [
         ROOT / "docs" / "snapshots" / f"{week_key}_monday_snapshot.json",
         events_dir / f"{week_key}_monday_snapshot.json",
     ]
+    live_candidates = [
+        ROOT / "docs" / "data" / "events" / f"{week_key}_all.json",
+        events_dir / f"{week_key}_all.json",
+    ]
     snap_path = next((p for p in snap_candidates if p.exists()), None)
-    live_path = events_dir / f"{week_key}_all.json"
+    live_path = next((p for p in live_candidates if p.exists()), None)
 
-    if not snap_path or not live_path.exists():
+    if not snap_path or not live_path:
         print(
             f"Missing inputs (snap_found={bool(snap_path)} "
-            f"live_exists={live_path.exists()}); silent skip."
+            f"live_found={bool(live_path)}); silent skip."
         )
         return 0
 

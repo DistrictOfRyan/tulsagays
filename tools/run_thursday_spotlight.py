@@ -259,10 +259,15 @@ def main() -> int:
     args = parser.parse_args()
 
     week_key = config.current_week_key()
-    events_path = Path(config.EVENTS_DIR) / f"{week_key}_all.json"
-    if not events_path.exists():
-        print(f"No events file at {events_path}; silent skip.")
+    candidates = [
+        ROOT / "docs" / "data" / "events" / f"{week_key}_all.json",
+        Path(config.EVENTS_DIR) / f"{week_key}_all.json",
+    ]
+    events_path = next((p for p in candidates if p.exists()), None)
+    if not events_path:
+        print(f"No events file at any of {[str(c) for c in candidates]}; silent skip.")
         return 0
+    print(f"events_path={events_path}")
     with events_path.open(encoding="utf-8") as f:
         payload = json.load(f)
     events = payload.get("events", payload) if isinstance(payload, dict) else payload

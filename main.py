@@ -56,19 +56,26 @@ def cmd_scrape():
     events = run_scrapers()
     print(f"\nTotal events found: {len(events) if events else 0}")
 
-    # Save Monday-baseline snapshot so mid-week tasks can detect new events.
-    # Written to both data/events/ (local) and docs/snapshots/ (committable
-    # path) so GitHub Actions runners that don't have data/ available — it's
-    # gitignored — can still diff against the snapshot.
+    # On Mondays, mirror the snapshot + full events JSON into docs/ so the
+    # GitHub Actions mid-week workflows (lastminute, spotlight) can read them.
+    # data/ is gitignored, so anything that lives only there is invisible to
+    # GHA runners. The git push at the bottom is best-effort: if the working
+    # tree is dirty or the remote is unreachable, the scrape still succeeds.
     if datetime.now().weekday() == 0:
         try:
             week_key = config.current_week_key()
+            repo_root = os.path.dirname(os.path.abspath(__file__))
             snap_filename = f"{week_key}_monday_snapshot.json"
-            snap_path = os.path.join(config.EVENTS_DIR, snap_filename)
-            docs_snap_dir = os.path.join(os.path.dirname(__file__), "docs", "snapshots")
+            full_filename = f"{week_key}_all.json"
+            snap_local = os.path.join(config.EVENTS_DIR, snap_filename)
+            docs_snap_dir = os.path.join(repo_root, "docs", "snapshots")
+            docs_data_dir = os.path.join(repo_root, "docs", "data", "events")
             os.makedirs(docs_snap_dir, exist_ok=True)
+            os.makedirs(docs_data_dir, exist_ok=True)
             docs_snap_path = os.path.join(docs_snap_dir, snap_filename)
-            live_path = os.path.join(config.EVENTS_DIR, f"{week_key}_all.json")
+            docs_full_path = os.path.join(docs_data_dir, full_filename)
+            live_path = os.path.join(config.EVENTS_DIR, full_filename)
+
             if os.path.exists(live_path):
                 with open(live_path, "r", encoding="utf-8") as f:
                     payload = json.load(f)
@@ -82,10 +89,45 @@ def cmd_scrape():
                         for e in live_events if isinstance(e, dict)
                     }),
                 }
-                for path in (snap_path, docs_snap_path):
+                for path in (snap_local, docs_snap_path):
                     with open(path, "w", encoding="utf-8") as f:
                         json.dump(snapshot, f, indent=2, ensure_ascii=False)
-                print(f"Monday snapshot saved: {snap_path} + {docs_snap_path} ({snapshot['count']} events)")
+                with open(docs_full_path, "w", encoding="utf-8") as f:
+                    json.dump(payload, f, ensure_ascii=False, indent=2)
+                print(
+                    f"Monday snapshot + events committed: "
+                    f"{docs_snap_path} + {docs_full_path} ({snapshot['count']} events)"
+                )
+
+                try:
+                    import subprocess
+
+                    subprocess.run(
+                        ["git", "add",
+                         os.path.relpath(docs_snap_path, repo_root),
+                         os.path.relpath(docs_full_path, repo_root)],
+                        cwd=repo_root, check=True,
+                    )
+                    diff = subprocess.run(
+                        ["git", "diff", "--cached", "--quiet"], cwd=repo_root
+                    )
+                    if diff.returncode != 0:
+                        subprocess.run(
+                            ["git", "commit", "-m",
+                             f"events: Monday snapshot + full week JSON ({week_key})"],
+                            cwd=repo_root, check=True,
+                        )
+                        subprocess.run(
+                            ["git", "pull", "--rebase", "origin", "main"],
+                            cwd=repo_root, check=False,
+                        )
+                        subprocess.run(
+                            ["git", "push", "origin", "HEAD:main"],
+                            cwd=repo_root, check=True,
+                        )
+                        print(f"events: pushed snapshot + {week_key}_all.json to main")
+                except Exception as e:
+                    print(f"WARN: git push of events data failed (non-fatal): {e}")
         except Exception as e:
             print(f"WARN: monday snapshot save failed: {e}")
 
