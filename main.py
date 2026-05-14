@@ -548,6 +548,35 @@ def cmd_full_run():
     print("=" * 60)
 
 
+def cmd_post_hhhh():
+    """Post a caption (and optional images) to the HHHH Facebook Page.
+
+    Usage:
+        py main.py post-hhhh "caption text"
+        py main.py post-hhhh "caption text" path/to/img1.jpg path/to/img2.jpg
+    """
+    from posting.facebook import post_to_hhhh, FacebookPostError
+
+    if len(sys.argv) < 3:
+        print("Usage: py main.py post-hhhh <caption> [image_path ...]")
+        sys.exit(1)
+
+    caption = sys.argv[2]
+    image_paths = sys.argv[3:] or None
+
+    if not config.HHHH_PAGE_ID or not config.HHHH_PAGE_ACCESS_TOKEN:
+        print("ERROR: HHHH_PAGE_ID and HHHH_PAGE_ACCESS_TOKEN must be set in .env")
+        sys.exit(1)
+
+    try:
+        result = post_to_hhhh(caption, image_paths=image_paths)
+    except FacebookPostError as exc:
+        print(f"HHHH post failed: {exc}")
+        sys.exit(1)
+
+    print(f"Posted to HHHH Page. Response: {result}")
+
+
 def cmd_test():
     """Test run - scrape and generate without posting."""
     print("*" * 60)
@@ -622,6 +651,7 @@ if __name__ == "__main__":
         "generate-all": lambda: cmd_generate("all"),
         "post-weekday": lambda: cmd_post("weekday"),
         "post-weekend": lambda: cmd_post("weekend"),
+        "post-hhhh": cmd_post_hhhh,
         "update-blog": cmd_update_blog,
         "discover": cmd_discover,
         "report": cmd_report,
