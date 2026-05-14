@@ -252,6 +252,51 @@
             display: block;
             margin-bottom: 2rem;
         }
+
+        .post-figure {
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+        .post-figure.pf-full { clear: both; }
+        .post-figure.pf-right {
+            float: right;
+            width: 46%;
+            margin: 0.25rem 0 1rem 1.5rem;
+        }
+        .post-figure.pf-left {
+            float: left;
+            width: 46%;
+            margin: 0.25rem 1.5rem 1rem 0;
+        }
+        .post-figure img {
+            width: 100%;
+            border-radius: 6px;
+            max-height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+        .post-figure.pf-full img { max-height: 420px; }
+        .post-figure figcaption {
+            font-size: 0.75rem;
+            color: var(--text-muted, #888);
+            margin-top: 0.4rem;
+            text-align: center;
+            font-style: italic;
+            line-height: 1.4;
+            white-space: normal;
+            overflow: visible;
+        }
+        .post-figure.pf-right figcaption,
+        .post-figure.pf-left figcaption { text-align: left; }
+        .post-clearfix { clear: both; }
+        @media (max-width: 600px) {
+            .post-figure.pf-right,
+            .post-figure.pf-left {
+                float: none;
+                width: 100%;
+                margin: 1.5rem 0;
+            }
+        }
 </style>
 </head>
 <body>
@@ -288,10 +333,11 @@
 <span class="post-date">May 7, 2026</span>  ·  Nightlife Guide  ·  7 min read
         </div>
 <div class="post-body">
-<figure class="post-figure" style="margin-top:0;">
-<img alt="Downtown Tulsa skyline near Boston Avenue" class="post-hero-img" loading="eager" src="https://upload.wikimedia.org/wikipedia/commons/c/c2/Downtown_Tulsa_Skyline.jpg"/>
-<figcaption>Photo: Jordan Michael Winn / CC0 Public Domain (Wikimedia Commons)</figcaption>
-</figure><p>Tulsa doesn't have a dozen gay bars. It has three — and all three are worth knowing. What makes the Tulsa scene work isn't sheer volume; it's that each bar has a genuine identity, a loyal crowd, and years of history behind it. Club Majestic is the dance club. The Tulsa Eagle is the leather and bear bar. Yellow Brick Road is the neighborhood spot. Together, they cover most of what queer nightlife needs to cover, and they've been doing it long enough to know how.</p>
+<figure class="post-figure pf-full" style="margin-top:0;">
+<img alt="Gay bars Tulsa Oklahoma downtown Boston Avenue nightlife LGBTQ scene" loading="eager" src="https://upload.wikimedia.org/wikipedia/commons/c/c2/Downtown_Tulsa_Skyline.jpg" style="max-height:460px;"/>
+<figcaption>Photo: Jordan Michael Winn / CC0 (Wikimedia Commons) — Club Majestic sits two blocks off this skyline at 124 N Boston Ave</figcaption>
+</figure>
+<div class="post-clearfix"></div><p>Tulsa doesn't have a dozen gay bars. It has three — and all three are worth knowing. What makes the Tulsa scene work isn't sheer volume; it's that each bar has a genuine identity, a loyal crowd, and years of history behind it. Club Majestic is the dance club. The Tulsa Eagle is the leather and bear bar. Yellow Brick Road is the neighborhood spot. Together, they cover most of what queer nightlife needs to cover, and they've been doing it long enough to know how.</p>
 <p>Here's everything you need to know about each one — who goes there, what to expect, the best nights to show up, and a few things the Google reviews won't tell you.</p>
 <h2>Club Majestic — The Flagship</h2>
 <div class="venue-callout">
@@ -304,9 +350,9 @@
 <div class="stat-row"><span class="stat-label">Best night</span><span class="stat-val">Friday and Saturday; special events on select weeknights</span></div>
 <div class="stat-row"><span class="stat-label">Crowd</span><span class="stat-val">Mixed gay/bi/trans/allies, all ages 21+, diverse across race and gender</span></div>
 <div class="stat-row"><span class="stat-label">Cover</span><span class="stat-val">Varies by night and event; check social media before going</span></div>
-</div><figure class="post-figure">
-<img alt="Woody Guthrie Center in Tulsa's Brady Arts District, near the Tulsa Eagle" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Woody_Guthrie_Center.jpg"/>
-<figcaption>Photo: Peter Greenberg / CC BY-SA 3.0 (Wikimedia Commons) — Brady Arts District, home of the Tulsa Eagle</figcaption>
+</div><figure class="post-figure pf-right">
+<img alt="Brady Arts District Tulsa 3rd Street gay bar Tulsa Eagle neighborhood" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Woody_Guthrie_Center_Tulsa_OK20220414_150921835.jpg"/>
+<figcaption>Photo: bobistraveling / CC BY 2.0 (Wikimedia Commons) — Brady Arts District, 3rd Street — the Tulsa Eagle is a short walk from here</figcaption>
 </figure>
 <p>Club Majestic is Tulsa's oldest and largest gay bar, and if you're only going to one, this is probably it. It sits in a real building in downtown Tulsa — not a converted strip mall, but an actual club space — with multiple rooms, a dance floor, bars on different levels, and enough room to actually move. The sound system is built for dancing and the DJs treat it accordingly.</p>
 <p>Friday and Saturday nights are the core experience. The crowd skews toward the dance floor but the bar areas fill up early with people who came to actually talk to each other — a balance that a lot of clubs get wrong, and Majestic mostly gets right. Drag shows happen regularly and the production quality tends to be higher than you'd expect from a mid-sized Oklahoma city. This is where you'll find the big Pride weekend parties, the themed nights, the anniversary bashes, and any touring performer who comes through Tulsa for the gay market.</p>
@@ -323,9 +369,9 @@
 <div class="stat-row"><span class="stat-label">Best night</span><span class="stat-val">Weekend nights; check their calendar for bear nights and events</span></div>
 <div class="stat-row"><span class="stat-label">Crowd</span><span class="stat-val">Leather, bears, muscle, and people who just like a good dive bar without attitude</span></div>
 <div class="stat-row"><span class="stat-label">Cover</span><span class="stat-val">Usually none or minimal; event nights vary</span></div>
-</div><figure class="post-figure">
-<img alt="Downtown Tulsa at night from Chandler Park" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Downtown_Tulsa_At_Night_From_Chandler_Park.jpg"/>
-<figcaption>Photo: Jordan Michael Winn / CC0 Public Domain (Wikimedia Commons) — Tulsa nights run late when there's somewhere to be</figcaption>
+</div><figure class="post-figure pf-right">
+<img alt="Tulsa Oklahoma nightlife downtown LGBTQ bars gay nightlife after dark" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Downtown_Tulsa_At_Night_From_Chandler_Park.jpg"/>
+<figcaption>Photo: Jordan Michael Winn / CC0 (Wikimedia Commons) — Tulsa after dark</figcaption>
 </figure>
 <p>The Eagle is a part of the national Eagle bar chain, which started in Chicago and spread to most major American cities. The Tulsa location has its own personality — it's smaller and more neighborhood-feeling than the chains in Chicago or Dallas, which is either a bug or a feature depending on what you want from a leather bar. The Arts District location means it sits in one of Tulsa's most walkable, interesting neighborhoods, adjacent to galleries, restaurants, and the kind of blocks that feel like a city working properly.</p>
 <p>The crowd at the Eagle skews toward bears, leather, and guys who like their bars without the pressure of a dance floor. But calling it strictly a leather bar undercounts it — on a given weekend night, you'll find a pretty broad cross-section of Tulsa's gay community there because it's the alternative to Majestic, and sometimes that's exactly what you're looking for. Darker. Louder in a different way. A pool table. No choreographed dance routines in your peripheral vision.</p>
@@ -341,9 +387,9 @@
 <div class="stat-row"><span class="stat-label">Best night</span><span class="stat-val">Karaoke nights; drag show nights; weekend happy hour</span></div>
 <div class="stat-row"><span class="stat-label">Crowd</span><span class="stat-val">Regulars, Cherry Street neighbors, community org crowd, bar-trivia people</span></div>
 <div class="stat-row"><span class="stat-label">Cover</span><span class="stat-val">Usually none for regular nights; special events vary</span></div>
-</div><figure class="post-figure">
-<img alt="Buildings in downtown Tulsa, Oklahoma" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/e/ea/Tulsa_Oklahoma_Downtown_Buildings.jpg"/>
-<figcaption>Photo: Tim Morgan / CC BY-SA 3.0 (Wikimedia Commons)</figcaption>
+</div><figure class="post-figure pf-full">
+<img alt="Tulsa Oklahoma downtown Cherry Street 15th Street gay bar Yellow Brick Road neighborhood" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/e/ea/Tulsa_Oklahoma_Downtown_Buildings.jpg"/>
+<figcaption>Photo: Tim Morgan / CC BY-SA 3.0 (Wikimedia Commons) — Tulsa's Cherry Street district, home of Yellow Brick Road</figcaption>
 </figure>
 <p>YBR is the neighborhood bar of Tulsa's gay scene, and neighborhood bars serve a function that dance clubs and leather bars don't: they're where the community actually knows each other. Yellow Brick Road on Cherry Street is colorful, friendly, and more interested in having a good Tuesday night than impressing anyone with its sound system. That's a compliment.</p>
 <p>Cherry Street is one of Tulsa's best neighborhoods — walkable, full of restaurants and coffee shops, with a genuine local-business feel. YBR fits right into it. The bar hosts karaoke nights that get legitimately rowdy, drag shows that range from polished to chaotic in a fun way, and regular events that bring out the same faces week after week. It's the kind of bar where you overhear conversations about Pride planning, charity fundraisers, and who's dating who in the community — which is exactly what a neighborhood bar is supposed to be.</p>

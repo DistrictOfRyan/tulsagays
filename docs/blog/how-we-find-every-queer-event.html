@@ -241,6 +241,51 @@
             display: block;
             margin-bottom: 2rem;
         }
+
+        .post-figure {
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+        .post-figure.pf-full { clear: both; }
+        .post-figure.pf-right {
+            float: right;
+            width: 46%;
+            margin: 0.25rem 0 1rem 1.5rem;
+        }
+        .post-figure.pf-left {
+            float: left;
+            width: 46%;
+            margin: 0.25rem 1.5rem 1rem 0;
+        }
+        .post-figure img {
+            width: 100%;
+            border-radius: 6px;
+            max-height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+        .post-figure.pf-full img { max-height: 420px; }
+        .post-figure figcaption {
+            font-size: 0.75rem;
+            color: var(--text-muted, #888);
+            margin-top: 0.4rem;
+            text-align: center;
+            font-style: italic;
+            line-height: 1.4;
+            white-space: normal;
+            overflow: visible;
+        }
+        .post-figure.pf-right figcaption,
+        .post-figure.pf-left figcaption { text-align: left; }
+        .post-clearfix { clear: both; }
+        @media (max-width: 600px) {
+            .post-figure.pf-right,
+            .post-figure.pf-left {
+                float: none;
+                width: 100%;
+                margin: 1.5rem 0;
+            }
+        }
 </style>
 <!-- Google Analytics 4 -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-3ZGBZH6554"></script>
@@ -314,10 +359,11 @@
             <span>Tulsa Gays</span>
 </div>
 <article class="post-body">
-<figure class="post-figure" style="margin-top:0;">
-<img alt="Aerial view of Tulsa, Oklahoma" class="post-hero-img" loading="eager" src="https://upload.wikimedia.org/wikipedia/commons/4/47/Tulsa%2C_Oklahoma.jpg"/>
-<figcaption>Photo: Caleb Long / CC BY-SA 2.5 (Wikimedia Commons) — Every corner of this city, every week</figcaption>
-</figure><p>
+<figure class="post-figure pf-full" style="margin-top:0;">
+<img alt="Tulsa Oklahoma downtown LGBTQ events weekly queer guide city coverage comprehensive" loading="eager" src="https://upload.wikimedia.org/wikipedia/commons/c/c2/Downtown_Tulsa_Skyline.jpg" style="max-height:460px;"/>
+<figcaption>Photo: Jordan Michael Winn / CC0 (Wikimedia Commons) — Every corner of this city, every week</figcaption>
+</figure>
+<div class="post-clearfix"></div><p>
                 If you have ever tried to find queer events in Tulsa on your own, you know exactly how this goes. You check Facebook and get three different things from three different groups. You check Eventbrite and find two listings from 2019 that never got taken down. You ask a friend who says "I think there's something at the Eagle tonight maybe?" and you still miss the drag show at Majestic because it was announced in a Slack workspace you didn't know existed. That is the specific, infuriating problem this site was built to solve, and we take it seriously.
             </p>
 <div class="pull-quote">
@@ -403,9 +449,9 @@
 <strong>Includes:</strong> Tulsa Remote #events, Gradient #events.
                     </div>
 </div>
-</div><figure class="post-figure">
-<img alt="Woody Guthrie Center, one of Tulsa's premier event venues" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Woody_Guthrie_Center_Tulsa_OK20220414_150921835.jpg"/>
-<figcaption>Photo: bobistraveling / CC BY 2.0 (Wikimedia Commons) — Venues like this are regular sources for the weekly guide</figcaption>
+</div><figure class="post-figure pf-right">
+<img alt="Gathering Place Tulsa Oklahoma event source LGBTQ community programming weekly calendar" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/6/65/Gathering_Place_-_45581648835.jpg"/>
+<figcaption>Photo: Paul Sableman / CC BY 2.0 (Wikimedia Commons) — Gathering Place alone generates dozens of events per season we track</figcaption>
 </figure>
 <h2>The Discovery Workflow</h2>
 <p>
@@ -501,9 +547,9 @@
 <line opacity="0.3" stroke="#9B1E5F" stroke-width="0.5" x1="560" x2="560" y1="470" y2="510"></line>
 </svg>
 <p class="flowchart-caption">The Monday morning discovery run, from trigger to publication</p>
-</div><figure class="post-figure">
-<img alt="Gathering Place park in Tulsa, site of many community events" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Tulsa%27s_Gathering_Place_-_46443394242.jpg"/>
-<figcaption>Photo: Paul Sableman / CC BY 2.0 (Wikimedia Commons) — Gathering Place alone generates dozens of events per season</figcaption>
+</div><figure class="post-figure pf-right">
+<img alt="Mayo Hotel Tulsa Oklahoma downtown venue event source LGBTQ community gathering" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Mayo_Hotel_Tulsa.jpg"/>
+<figcaption>Photo: Camerafiend / CC BY-SA 3.0 (Wikimedia Commons) — Venues like the Mayo Hotel are regular sources for the weekly guide</figcaption>
 </figure>
 <h2>Why Monday?</h2>
 <p>
@@ -514,9 +560,9 @@
 <p>
                 Monday morning puts the guide in your inbox (or your feed) right when you're doing the mental math on your week.
                 That's not an accident.
-            </p><figure class="post-figure">
-<img alt="Tulsa at night from Chandler Park" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Downtown_Tulsa_At_Night_From_Chandler_Park.jpg"/>
-<figcaption>Photo: Jordan Michael Winn / CC0 Public Domain (Wikimedia Commons) — Something is always happening</figcaption>
+            </p><figure class="post-figure pf-full">
+<img alt="Tulsa Oklahoma city skyline Arkansas River queer community events guide weekly coverage LGBTQ" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Tulsa_River_Skyline.jpg"/>
+<figcaption>Photo: Camerafiend / CC BY-SA 3.0 (Wikimedia Commons) — The whole city, tracked every Monday</figcaption>
 </figure>
 <h2>The Annual Anchors</h2>
 <p>

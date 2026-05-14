@@ -235,6 +235,51 @@
             display: block;
             margin-bottom: 2rem;
         }
+
+        .post-figure {
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+        .post-figure.pf-full { clear: both; }
+        .post-figure.pf-right {
+            float: right;
+            width: 46%;
+            margin: 0.25rem 0 1rem 1.5rem;
+        }
+        .post-figure.pf-left {
+            float: left;
+            width: 46%;
+            margin: 0.25rem 1.5rem 1rem 0;
+        }
+        .post-figure img {
+            width: 100%;
+            border-radius: 6px;
+            max-height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+        .post-figure.pf-full img { max-height: 420px; }
+        .post-figure figcaption {
+            font-size: 0.75rem;
+            color: var(--text-muted, #888);
+            margin-top: 0.4rem;
+            text-align: center;
+            font-style: italic;
+            line-height: 1.4;
+            white-space: normal;
+            overflow: visible;
+        }
+        .post-figure.pf-right figcaption,
+        .post-figure.pf-left figcaption { text-align: left; }
+        .post-clearfix { clear: both; }
+        @media (max-width: 600px) {
+            .post-figure.pf-right,
+            .post-figure.pf-left {
+                float: none;
+                width: 100%;
+                margin: 1.5rem 0;
+            }
+        }
 </style>
 </head>
 <body>
@@ -274,10 +319,11 @@
              ·  Travel Guide  ·  8 min read
         </div>
 <div class="post-body">
-<figure class="post-figure" style="margin-top:0;">
-<img alt="Tulsa skyline viewed from the Arkansas River" class="post-hero-img" loading="eager" src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Tulsa_River_Skyline.jpg"/>
-<figcaption>Photo: Camerafiend / CC BY-SA 3.0 (Wikimedia Commons)</figcaption>
-</figure><p>
+<figure class="post-figure pf-full" style="margin-top:0;">
+<img alt="Gay Tulsa travel guide LGBTQ friendly city Oklahoma Arkansas River skyline visit" loading="eager" src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Tulsa_River_Skyline.jpg" style="max-height:460px;"/>
+<figcaption>Photo: Camerafiend / CC BY-SA 3.0 (Wikimedia Commons) — Tulsa from the river — more than you'd expect</figcaption>
+</figure>
+<div class="post-clearfix"></div><p>
                 Let's acknowledge the elephant in the room: it's Oklahoma. You've seen the bumper stickers. You know about the legislation. You've probably typed "gay bars Tulsa" into Google with a mixture of hope and genuine skepticism, the way you'd search for vegan options at a Texas barbecue joint. Reasonable. Understandable. Also wrong.
             </p>
 <p>
@@ -292,9 +338,9 @@
             </p>
 <p>
                 That said, this is still Oklahoma. State-level politics are a mess right now, and certain parts of the Tulsa metro are just like any other mid-sized Southern city. You're not going to run into trouble walking through the Arts District holding hands. You might get a look at a suburban chain restaurant. Read the room like you would anywhere, and you'll be fine. Most of the time you'll be way more than fine.
-            </p><figure class="post-figure">
-<img alt="Gathering Place park along the Arkansas River in Tulsa" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/6/65/Gathering_Place_-_45581648835.jpg"/>
-<figcaption>Photo: Paul Sableman / CC BY 2.0 (Wikimedia Commons) — Gathering Place: 66 acres, free, and stunning</figcaption>
+            </p><figure class="post-figure pf-full">
+<img alt="Gathering Place Tulsa Oklahoma riverside park LGBTQ friendly free admission community events" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/6/65/Gathering_Place_-_45581648835.jpg"/>
+<figcaption>Photo: Paul Sableman / CC BY 2.0 (Wikimedia Commons) — Gathering Place: 66 acres on the Arkansas River, free, and genuinely world-class</figcaption>
 </figure>
 <h2>The Bars: Where Gay Tulsa Actually Comes Alive After Dark</h2>
 <p>
@@ -304,9 +350,9 @@
 <span class="venue-name"><a href="https://www.instagram.com/clubmajestic918/" rel="noopener" target="_blank">Club Majestic</a></span>
 <span class="venue-addr">124 N Boston Ave, Downtown Tulsa</span>
                 The flagship. Multiple bars, a real dance floor, top-tier drag shows, and theme nights that people plan their weekends around. If you're visiting Tulsa and you only go to one gay venue, make it this one on a Friday or Saturday night. Arrive after 10pm, wear something interesting, and tip your queens.
-            </div><figure class="post-figure">
-<img alt="Philbrook Museum of Art, housed in the former Waite Phillips mansion in Tulsa" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Philbrook_Museum_of_Art.jpg"/>
-<figcaption>Photo: Cwfordo / CC BY-SA 3.0 (Wikimedia Commons) — Philbrook Museum of Art</figcaption>
+            </div><figure class="post-figure pf-right">
+<img alt="Philbrook Museum of Art Tulsa Oklahoma LGBTQ friendly cultural destination Waite Phillips mansion" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/2/28/Philbrook_Museum_of_Art_entrance_Tulsa_Oklahoma_DSC_0897.jpg"/>
+<figcaption>Photo: Adavyd / CC BY 4.0 (Wikimedia Commons) — Philbrook Museum of Art, housed in a 1920s villa with 23 acres of gardens</figcaption>
 </figure>
 <div class="venue-callout">
 <span class="venue-name"><a href="https://www.instagram.com/tulsaeagle/" rel="noopener" target="_blank">Tulsa Eagle</a></span>
@@ -330,9 +376,9 @@
             </p>
 <p>
 <strong>The Tulsa Arts District</strong> (East 2nd to East 6th, roughly) is the cultural center of queer Tulsa. This is where you'll find Pony Coffee, Empire Slice House, Nothing's Left Brewing, Cabin Boys, Gypsy Coffee House, and a concentration of galleries and performance spaces that host queer events year-round. Walk around here on a weekend afternoon and you will feel it.
-            </p><figure class="post-figure">
-<img alt="Mayo Hotel in downtown Tulsa, Oklahoma" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Mayo_Hotel_Tulsa.jpg"/>
-<figcaption>Photo: Camerafiend / CC BY-SA 3.0 (Wikimedia Commons) — The historic Mayo Hotel, a landmark Tulsa stay</figcaption>
+            </p><figure class="post-figure pf-right">
+<img alt="Mayo Hotel downtown Tulsa Oklahoma LGBTQ travel accommodation historic Art Deco landmark" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Mayo_Hotel_Tulsa.jpg"/>
+<figcaption>Photo: Camerafiend / CC BY-SA 3.0 (Wikimedia Commons) — The Mayo Hotel — stay here if you want to feel the city's 1920s energy</figcaption>
 </figure>
 <p>
 <strong>Cherry Street</strong> (East 15th Street) is where you'll find YBR, Il Seme, and a run of restaurants, coffee shops, and vintage stores that could eat your entire afternoon without apology. This is the strip you want to know. The kind of neighborhood where you go for lunch and it's somehow 8pm.

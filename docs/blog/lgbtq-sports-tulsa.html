@@ -167,6 +167,51 @@
             display: block;
             margin-bottom: 2rem;
         }
+
+        .post-figure {
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+        .post-figure.pf-full { clear: both; }
+        .post-figure.pf-right {
+            float: right;
+            width: 46%;
+            margin: 0.25rem 0 1rem 1.5rem;
+        }
+        .post-figure.pf-left {
+            float: left;
+            width: 46%;
+            margin: 0.25rem 1.5rem 1rem 0;
+        }
+        .post-figure img {
+            width: 100%;
+            border-radius: 6px;
+            max-height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+        .post-figure.pf-full img { max-height: 420px; }
+        .post-figure figcaption {
+            font-size: 0.75rem;
+            color: var(--text-muted, #888);
+            margin-top: 0.4rem;
+            text-align: center;
+            font-style: italic;
+            line-height: 1.4;
+            white-space: normal;
+            overflow: visible;
+        }
+        .post-figure.pf-right figcaption,
+        .post-figure.pf-left figcaption { text-align: left; }
+        .post-clearfix { clear: both; }
+        @media (max-width: 600px) {
+            .post-figure.pf-right,
+            .post-figure.pf-left {
+                float: none;
+                width: 100%;
+                margin: 1.5rem 0;
+            }
+        }
 </style>
 <!-- Google Analytics 4 -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-3ZGBZH6554"></script>
@@ -240,10 +285,11 @@
             <span>Tulsa Gays</span>
 </div>
 <article class="post-body">
-<figure class="post-figure" style="margin-top:0;">
-<img alt="Kickball game in progress at a park on a sunny morning" class="post-hero-img" loading="eager" src="https://upload.wikimedia.org/wikipedia/commons/2/25/Sunday_morning_kickball_game_on_the_Active_Oval_at_Piedmont_Park_in_early_March.jpg"/>
-<figcaption>Photo: Marc Merlin / CC BY-SA 4.0 (Wikimedia Commons) — Queer kickball brings this exact energy every week</figcaption>
-</figure><p>
+<figure class="post-figure pf-full" style="margin-top:0;">
+<img alt="LGBTQ kickball league Tulsa Oklahoma queer sports outdoor recreation HotMess community team" loading="eager" src="https://upload.wikimedia.org/wikipedia/commons/2/25/Sunday_morning_kickball_game_on_the_Active_Oval_at_Piedmont_Park_in_early_March.jpg" style="max-height:460px;"/>
+<figcaption>Photo: Marc Merlin / CC BY-SA 4.0 (Wikimedia Commons) — HotMess kickball brings this exact energy every week in Tulsa</figcaption>
+</figure>
+<div class="post-clearfix"></div><p>
                 Here is the thing people consistently get wrong about the Tulsa queer scene: they think it starts and ends at the bar. Show up Friday, do your thing, go home, repeat. That's fine, that's a valid Friday night, but it's also the narrowest possible version of what this community actually is, and if that's all you've seen of it, you are missing the better part.
             </p>
 <p>
@@ -303,9 +349,9 @@
                     </div>
 <a class="league-link" href="https://www.facebook.com/groups/GreenCountryBears/" rel="noopener" target="_blank">Green Country Bears on Facebook</a>
 </div>
-</div><figure class="post-figure">
-<img alt="Interior of a bowling alley with colorful lanes" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/9/90/Sunset_Lanes_bowling_alley_-_Beaverton%2C_OR_%282015%29.jpg"/>
-<figcaption>Photo: Steve Morgan / CC BY-SA 3.0 (Wikimedia Commons) — Lambda bowling leagues have been a queer Tulsa staple for decades</figcaption>
+</div><figure class="post-figure pf-right">
+<img alt="LGBTQ bowling league Tulsa Oklahoma Lambda Unity queer community sports recreation" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/9/90/Sunset_Lanes_bowling_alley_-_Beaverton%2C_OR_%282015%29.jpg"/>
+<figcaption>Photo: Steve Morgan / CC BY-SA 3.0 (Wikimedia Commons) — Lambda bowling has been a queer Tulsa staple for decades</figcaption>
 </figure>
 <h2>Why Sports, Though?</h2>
 <p>
@@ -313,9 +359,9 @@
             </p>
 <p>
                 People in Tulsa have told me they'd been here two years and barely knew anyone. They joined a bowling league almost as a joke. Six months later those bowling people were their emergency contacts. It sounds like something from a motivational poster, and I apologize for that, but it keeps being true regardless of how it sounds.
-            </p><figure class="post-figure">
-<img alt="Gathering Place park in Tulsa, a popular outdoor recreation spot" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/6/65/Gathering_Place_-_45581648835.jpg"/>
-<figcaption>Photo: Paul Sableman / CC BY 2.0 (Wikimedia Commons) — Outdoor Tulsa venues host leagues and games all spring</figcaption>
+            </p><figure class="post-figure pf-full">
+<img alt="Gathering Place Tulsa Oklahoma outdoor recreation LGBTQ sports leagues fields Arkansas River park" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Tulsa%27s_Gathering_Place_-_46443394242.jpg"/>
+<figcaption>Photo: Paul Sableman / CC BY 2.0 (Wikimedia Commons) — Gathering Place and the riverside trail host dozens of outdoor league games per season</figcaption>
 </figure>
 <p>
                 Sports also give you a built-in calendar. Same night every week. You show up because your team is counting on you.
@@ -328,9 +374,9 @@
             </p>
 <p>
                 The point of any of this is not competition. The point is showing up consistently in the same room with the same people until you know their dogs' names and their drink orders and what city they moved here from. That's community, and gay sports leagues in Tulsa are one of the most reliable ways to build it.
-            </p><figure class="post-figure">
-<img alt="Tulsa skyline along the Arkansas River" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Tulsa_River_Skyline.jpg"/>
-<figcaption>Photo: Camerafiend / CC BY-SA 3.0 (Wikimedia Commons) — The river trail is prime territory for queer runners and walkers</figcaption>
+            </p><figure class="post-figure pf-right">
+<img alt="Tulsa Oklahoma Arkansas River trail running queer LGBTQ outdoor recreation community" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Tulsa_River_Skyline.jpg"/>
+<figcaption>Photo: Camerafiend / CC BY-SA 3.0 (Wikimedia Commons) — The river trail is prime territory for the queer running crowd</figcaption>
 </figure>
 <div class="pull-quote">
                 "Nothing to do in Tulsa? You're not looking hard enough."
