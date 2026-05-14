@@ -1,0 +1,51 @@
+name: TulsaGays Tuesday Reply Scraper
+
+# Fires Tue 9pm CT (Wed 02:00 UTC). Reads FB+IG comments on the day's
+# community-prompt post, auto-adds URLs to sources.json, queues bare names for
+# review. No social posting.
+#
+# Schedule is commented out until a manual workflow_dispatch run has confirmed
+# the script behaves correctly. To arm, uncomment the schedule block.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Fetch and parse comments only, do not write files"
+        required: false
+        type: boolean
+        default: true
+  # schedule:
+  #   - cron: '0 2 * * 3'
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run reply scraper
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "false" ]; then
+            python tools/run_tuesday_reply_scraper.py
+          else
+            python tools/run_tuesday_reply_scraper.py --dry-run
+          fi

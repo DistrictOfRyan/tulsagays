@@ -1,0 +1,51 @@
+name: TulsaGays Tuesday Community Prompt
+
+# Fires Tue 12pm CT (17:00 UTC). Image post asking the community for missing
+# venues, hidden gems, new openings, or last-minute event intel. Rotates 4
+# prompts. Image-only via Graph API /photos and /media.
+#
+# Schedule is commented out until a manual workflow_dispatch run has confirmed
+# the script posts what it should. To arm, uncomment the schedule block.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Generate image + log only, do not post or push"
+        required: false
+        type: boolean
+        default: true
+  # schedule:
+  #   - cron: '0 17 * * 2'
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run community prompt
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "false" ]; then
+            python tools/run_tuesday_community_prompt.py
+          else
+            python tools/run_tuesday_community_prompt.py --dry-run
+          fi
