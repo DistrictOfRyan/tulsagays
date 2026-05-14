@@ -215,6 +215,87 @@
                 margin: 1.5rem 0;
             }
         }
+
+        /* ── Article meta bar ── */
+        .article-meta-bar {
+            display: flex; flex-wrap: wrap; gap: 0.4rem 0.75rem;
+            font-size: 0.8rem; color: var(--text-muted,#888);
+            margin-bottom: 2rem; justify-content: center; align-items: center;
+        }
+        .meta-verified { color: #4ade80; }
+        .meta-divider { color: var(--text-muted,#888); }
+
+        /* ── Table of contents ── */
+        .toc-box {
+            background: var(--bg-card,#111); border-left: 3px solid var(--gold,#f59e0b);
+            padding: 1rem 1.25rem; margin: 0 0 2rem; font-size: 0.9rem;
+        }
+        .toc-label { font-weight: 700; color: var(--gold,#f59e0b); margin-bottom: 0.5rem; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
+        .toc-box ul { margin: 0; padding-left: 1rem; list-style: disc; }
+        .toc-box li { margin-bottom: 0.3rem; }
+        .toc-box a { color: var(--text-secondary,#ccc); border: none !important; }
+        .toc-box a:hover { color: var(--gold,#f59e0b); }
+
+        /* ── Google Maps ── */
+        .venue-maps { margin: 2.5rem 0; }
+        .venue-maps-title { font-family: 'Cinzel',serif; font-size: 1.1rem; color: var(--gold,#f59e0b); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(155,30,95,0.3); }
+        .venue-map-item { margin-bottom: 1.5rem; }
+        .venue-map-name { font-size: 0.85rem; color: var(--text-muted,#888); margin-bottom: 0.4rem; }
+
+        /* ── Social callout ── */
+        .social-callout {
+            background: var(--bg-card,#111); border: 1px solid rgba(155,30,95,0.2);
+            padding: 1rem 1.25rem; margin: 2rem 0; font-size: 0.9rem;
+        }
+        .social-callout-title { font-weight: 700; color: var(--gold,#f59e0b); margin-bottom: 0.6rem; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
+        .social-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.25rem; padding: 0.3rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .social-row:last-child { border-bottom: none; }
+        .social-name { color: var(--text-primary,#fff); font-weight: 600; }
+        .social-links a { color: var(--gold,#f59e0b); border: none !important; font-size: 0.85rem; }
+        .social-links a:hover { text-decoration: underline; }
+
+        /* ── Live events widget ── */
+        .live-events-block {
+            background: var(--bg-card,#111); border: 1px solid rgba(155,30,95,0.3);
+            padding: 1.25rem 1.5rem; margin: 2.5rem 0;
+        }
+        .lew-title { font-family: 'Cinzel',serif; font-size: 1rem; color: var(--gold,#f59e0b); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 0.75rem; }
+        .lew-event { display: flex; gap: 0.75rem; padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.88rem; }
+        .lew-event:last-child { border-bottom: none; }
+        .lew-day { color: var(--gold,#f59e0b); min-width: 40px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; padding-top: 0.1rem; }
+        .lew-name { color: var(--text-primary,#fff); flex: 1; }
+        .lew-venue { color: var(--text-muted,#888); font-size: 0.78rem; white-space: nowrap; }
+        .lew-loading, .lew-empty { color: var(--text-muted,#888); font-size: 0.85rem; }
+        .lew-more { display: inline-block; margin-top: 0.75rem; font-size: 0.8rem; color: var(--gold,#f59e0b); border: none !important; }
+
+        /* ── Newsletter CTA ── */
+        .newsletter-cta-block {
+            background: linear-gradient(135deg,#1a0a2e 0%,#0a0a1a 100%);
+            border: 1px solid rgba(155,30,95,0.4); padding: 1.5rem; text-align: center; margin: 2.5rem 0;
+        }
+        .ncta-title { font-family: 'Poiret One',sans-serif; font-size: 1.4rem; color: #FF1493; margin-bottom: 0.4rem; }
+        .ncta-sub { color: var(--text-muted,#888); font-size: 0.9rem; margin-bottom: 1rem; }
+        .ncta-btn { display: inline-block; background: #FF1493; color: #fff !important; padding: 0.6rem 1.4rem; font-family: 'Cinzel',serif; font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase; border: none !important; border-radius: 2px; }
+        .ncta-btn:hover { opacity: 0.85; }
+
+        /* ── Submit CTA ── */
+        .submit-cta-block {
+            background: var(--bg-card,#111); border-left: 3px solid #FF1493;
+            padding: 1rem 1.25rem; margin: 1.5rem 0; text-align: left;
+        }
+        .scta-title { font-weight: 700; color: var(--text-primary,#fff); margin-bottom: 0.25rem; }
+        .scta-sub { color: var(--text-muted,#888); font-size: 0.85rem; margin-bottom: 0.75rem; }
+        .scta-btn { display: inline-block; color: #FF1493 !important; font-size: 0.85rem; font-weight: 700; border: none !important; }
+
+        /* ── Related posts ── */
+        .related-posts { margin: 2.5rem 0; }
+        .related-label { font-family: 'Cinzel',serif; font-size: 0.8rem; color: var(--text-muted,#888); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.75rem; }
+        .related-card {
+            display: block; background: var(--bg-card,#111); border: 1px solid rgba(155,30,95,0.2);
+            padding: 0.85rem 1rem; margin-bottom: 0.5rem; text-decoration: none !important; border-left: 3px solid var(--gold,#f59e0b);
+        }
+        .related-card:hover { border-left-color: #FF1493; }
+        .related-title { color: var(--text-primary,#fff); font-size: 0.9rem; }
 </style>
 </head>
 <body>
@@ -254,7 +335,13 @@
                 </div>
 </div>
 <div class="post-body">
-<figure class="post-figure pf-full" style="margin-top:0;">
+<div class="article-meta-bar">
+<span class="meta-item">🕒 4 min read</span>
+<span class="meta-divider">·</span>
+<span class="meta-item">Published April 7, 2026</span>
+<span class="meta-divider">·</span>
+<span class="meta-item meta-verified">✓ Verified May 13, 2026</span>
+</div><figure class="post-figure pf-full" style="margin-top:0;">
 <img alt="Gilcrease Museum Tulsa Oklahoma free arts series UnCrease LGBTQ friendly cultural event community" loading="eager" src="https://upload.wikimedia.org/wikipedia/commons/d/d1/New_Gilcrease_Museum_rendering_in_Tulsa%2C_OK.jpg" style="max-height:460px;"/>
 <figcaption>Photo: Mara3229 / CC0 (Wikimedia Commons) — Gilcrease Museum, renovated and running one of Tulsa's best free arts programs</figcaption>
 </figure>
@@ -331,7 +418,45 @@
 <p>Looking for more events this week? We track 80+ sources every Monday to find every LGBTQ+ event in Tulsa, including community arts like this.</p>
 <a href="/">See This Week's Events</a>
 </div>
+<div class="live-events-block" id="live-events-widget">
+<p class="lew-title">🎉 What's Happening This Week</p>
+<div id="lew-list"><p class="lew-loading">Loading this week's events...</p></div>
+<a class="lew-more" href="/">See the full calendar at tulsagays.com →</a>
 </div>
+<script>
+(function(){
+    var w = document.getElementById('lew-list');
+    fetch('/data/events-current.json')
+        .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+        .then(function(events){
+            if (!events || !events.length) { w.innerHTML = '<p class="lew-empty">Check <a href="/">tulsagays.com</a> for this week's full list.</p>'; return; }
+            w.innerHTML = events.slice(0,5).map(function(e){
+                return '<div class="lew-event"><span class="lew-day">' + (e.day_short||e.date||'') + '</span><span class="lew-name">' + e.name + '</span><span class="lew-venue">' + (e.venue||'') + '</span></div>';
+            }).join('');
+        })
+        .catch(function(){ w.innerHTML = '<p class="lew-empty">See <a href="/">tulsagays.com</a> for this week's events.</p>'; });
+})();
+</script><div class="venue-maps">
+<h2 class="venue-maps-title">Find It</h2>
+<div class="venue-map-item">
+<p class="venue-map-name">Gilcrease Museum — 2100 N Gilcrease Museum Rd, Tulsa, OK 74127</p>
+<iframe allowfullscreen="" height="250" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Gilcrease+Museum+Tulsa+OK&amp;output=embed" style="border:0;border-radius:6px;display:block;" title="Map: Gilcrease Museum" width="100%"></iframe>
+</div>
+</div><div class="social-callout">
+<p class="social-callout-title">Follow Along</p>
+<div class="social-row"><span class="social-name">Gilcrease Museum</span><span class="social-links"><a href="https://instagram.com/gilcreasemuseum" rel="noopener" target="_blank">@gilcreasemuseum</a> • <a href="https://www.facebook.com/GilcreaseMuseum" rel="noopener" target="_blank">Facebook</a></span></div>
+</div><div class="newsletter-cta-block">
+<p class="ncta-title">Get it in your inbox</p>
+<p class="ncta-sub">Every Monday morning: the full Tulsa queer event calendar, delivered before you need it.</p>
+<a class="ncta-btn" href="/newsletter.html">Subscribe →</a>
+</div><div class="submit-cta-block">
+<p class="scta-title">Know something we don't?</p>
+<p class="scta-sub">Got an event, venue, or org we should be covering? Hit submit and we'll add it.</p>
+<a class="scta-btn" href="/submit.html">Submit an Event →</a>
+</div><div class="related-posts">
+<p class="related-label">Keep reading</p>
+<a class="related-card" href="date-night-queer-tulsa.html"><span class="related-title">Date Night Ideas for Queer Couples in Tulsa</span></a><a class="related-card" href="gay-tulsa-travel-guide.html"><span class="related-title">Gay Tulsa Travel Guide: Is Tulsa LGBTQ+ Friendly? (Yes. Here's Proof.)</span></a><a class="related-card" href="how-we-find-every-queer-event.html"><span class="related-title">How We Find Every Queer Event in Tulsa (So You Don't Have To)</span></a>
+</div></div>
 </article>
 </main>
 <footer style="text-align:center;padding:2rem;color:var(--text-muted);font-size:0.8rem;">

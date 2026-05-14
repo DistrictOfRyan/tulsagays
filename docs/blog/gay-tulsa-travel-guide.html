@@ -280,6 +280,87 @@
                 margin: 1.5rem 0;
             }
         }
+
+        /* ── Article meta bar ── */
+        .article-meta-bar {
+            display: flex; flex-wrap: wrap; gap: 0.4rem 0.75rem;
+            font-size: 0.8rem; color: var(--text-muted,#888);
+            margin-bottom: 2rem; justify-content: center; align-items: center;
+        }
+        .meta-verified { color: #4ade80; }
+        .meta-divider { color: var(--text-muted,#888); }
+
+        /* ── Table of contents ── */
+        .toc-box {
+            background: var(--bg-card,#111); border-left: 3px solid var(--gold,#f59e0b);
+            padding: 1rem 1.25rem; margin: 0 0 2rem; font-size: 0.9rem;
+        }
+        .toc-label { font-weight: 700; color: var(--gold,#f59e0b); margin-bottom: 0.5rem; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
+        .toc-box ul { margin: 0; padding-left: 1rem; list-style: disc; }
+        .toc-box li { margin-bottom: 0.3rem; }
+        .toc-box a { color: var(--text-secondary,#ccc); border: none !important; }
+        .toc-box a:hover { color: var(--gold,#f59e0b); }
+
+        /* ── Google Maps ── */
+        .venue-maps { margin: 2.5rem 0; }
+        .venue-maps-title { font-family: 'Cinzel',serif; font-size: 1.1rem; color: var(--gold,#f59e0b); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(155,30,95,0.3); }
+        .venue-map-item { margin-bottom: 1.5rem; }
+        .venue-map-name { font-size: 0.85rem; color: var(--text-muted,#888); margin-bottom: 0.4rem; }
+
+        /* ── Social callout ── */
+        .social-callout {
+            background: var(--bg-card,#111); border: 1px solid rgba(155,30,95,0.2);
+            padding: 1rem 1.25rem; margin: 2rem 0; font-size: 0.9rem;
+        }
+        .social-callout-title { font-weight: 700; color: var(--gold,#f59e0b); margin-bottom: 0.6rem; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
+        .social-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.25rem; padding: 0.3rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .social-row:last-child { border-bottom: none; }
+        .social-name { color: var(--text-primary,#fff); font-weight: 600; }
+        .social-links a { color: var(--gold,#f59e0b); border: none !important; font-size: 0.85rem; }
+        .social-links a:hover { text-decoration: underline; }
+
+        /* ── Live events widget ── */
+        .live-events-block {
+            background: var(--bg-card,#111); border: 1px solid rgba(155,30,95,0.3);
+            padding: 1.25rem 1.5rem; margin: 2.5rem 0;
+        }
+        .lew-title { font-family: 'Cinzel',serif; font-size: 1rem; color: var(--gold,#f59e0b); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 0.75rem; }
+        .lew-event { display: flex; gap: 0.75rem; padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.88rem; }
+        .lew-event:last-child { border-bottom: none; }
+        .lew-day { color: var(--gold,#f59e0b); min-width: 40px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; padding-top: 0.1rem; }
+        .lew-name { color: var(--text-primary,#fff); flex: 1; }
+        .lew-venue { color: var(--text-muted,#888); font-size: 0.78rem; white-space: nowrap; }
+        .lew-loading, .lew-empty { color: var(--text-muted,#888); font-size: 0.85rem; }
+        .lew-more { display: inline-block; margin-top: 0.75rem; font-size: 0.8rem; color: var(--gold,#f59e0b); border: none !important; }
+
+        /* ── Newsletter CTA ── */
+        .newsletter-cta-block {
+            background: linear-gradient(135deg,#1a0a2e 0%,#0a0a1a 100%);
+            border: 1px solid rgba(155,30,95,0.4); padding: 1.5rem; text-align: center; margin: 2.5rem 0;
+        }
+        .ncta-title { font-family: 'Poiret One',sans-serif; font-size: 1.4rem; color: #FF1493; margin-bottom: 0.4rem; }
+        .ncta-sub { color: var(--text-muted,#888); font-size: 0.9rem; margin-bottom: 1rem; }
+        .ncta-btn { display: inline-block; background: #FF1493; color: #fff !important; padding: 0.6rem 1.4rem; font-family: 'Cinzel',serif; font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase; border: none !important; border-radius: 2px; }
+        .ncta-btn:hover { opacity: 0.85; }
+
+        /* ── Submit CTA ── */
+        .submit-cta-block {
+            background: var(--bg-card,#111); border-left: 3px solid #FF1493;
+            padding: 1rem 1.25rem; margin: 1.5rem 0; text-align: left;
+        }
+        .scta-title { font-weight: 700; color: var(--text-primary,#fff); margin-bottom: 0.25rem; }
+        .scta-sub { color: var(--text-muted,#888); font-size: 0.85rem; margin-bottom: 0.75rem; }
+        .scta-btn { display: inline-block; color: #FF1493 !important; font-size: 0.85rem; font-weight: 700; border: none !important; }
+
+        /* ── Related posts ── */
+        .related-posts { margin: 2.5rem 0; }
+        .related-label { font-family: 'Cinzel',serif; font-size: 0.8rem; color: var(--text-muted,#888); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.75rem; }
+        .related-card {
+            display: block; background: var(--bg-card,#111); border: 1px solid rgba(155,30,95,0.2);
+            padding: 0.85rem 1rem; margin-bottom: 0.5rem; text-decoration: none !important; border-left: 3px solid var(--gold,#f59e0b);
+        }
+        .related-card:hover { border-left-color: #FF1493; }
+        .related-title { color: var(--text-primary,#fff); font-size: 0.9rem; }
 </style>
 </head>
 <body>
@@ -319,7 +400,26 @@
              ·  Travel Guide  ·  8 min read
         </div>
 <div class="post-body">
-<figure class="post-figure pf-full" style="margin-top:0;">
+<div class="article-meta-bar">
+<span class="meta-item">🕒 7 min read</span>
+<span class="meta-divider">·</span>
+<span class="meta-item">Published April 27, 2026</span>
+<span class="meta-divider">·</span>
+<span class="meta-item meta-verified">✓ Verified May 13, 2026</span>
+</div><nav aria-label="Table of contents" class="toc-box">
+<p class="toc-label">In this guide</p>
+<ul>
+<li><a href="#is-tulsa-gay-friendly-the-short-answer">Is Tulsa Gay-Friendly? The Short Answer</a></li>
+<li><a href="#the-bars-where-gay-tulsa-actually-comes-alive-after-dark">The Bars: Where Gay Tulsa Actually Comes Alive After Dark</a></li>
+<li><a href="#the-gayborhood-where-queer-tulsa-actually-lives">The Gayborhood: Where Queer Tulsa Actually Lives</a></li>
+<li><a href="#beyond-the-bars-daytime-queer-tulsa">Beyond the Bars: Daytime Queer Tulsa</a></li>
+<li><a href="#where-to-stay">Where to Stay</a></li>
+<li><a href="#tulsa-pride-plan-around-it-if-you-can">Tulsa Pride: Plan Around It If You Can</a></li>
+<li><a href="#what-to-watch-out-for">What to Watch Out For</a></li>
+<li><a href="#your-gay-tulsa-weekend-itinerary">Your Gay Tulsa Weekend Itinerary</a></li>
+<li><a href="#get-connected-before-you-arrive">Get Connected Before You Arrive</a></li>
+</ul>
+</nav><figure class="post-figure pf-full" style="margin-top:0;">
 <img alt="Gay Tulsa travel guide LGBTQ friendly city Oklahoma Arkansas River skyline visit" loading="eager" src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Tulsa_River_Skyline.jpg" style="max-height:460px;"/>
 <figcaption>Photo: Camerafiend / CC BY-SA 3.0 (Wikimedia Commons) — Tulsa from the river — more than you'd expect</figcaption>
 </figure>
@@ -332,7 +432,7 @@
 <p>
                 This guide is for anyone who's moving here, visiting, considering relocation, or just wants to know what to actually expect. Written by someone who lives here and can confirm: Tulsa's queer scene is the best thing about this city that most people outside it have never heard of.
             </p>
-<h2>Is Tulsa Gay-Friendly? The Short Answer</h2>
+<h2 id="is-tulsa-gay-friendly-the-short-answer">Is Tulsa Gay-Friendly? The Short Answer</h2>
 <p>
                 Yes. Downtown Tulsa, the Arts District, the Pearl District, Brookside, and Cherry Street are all reliably welcoming. The city voted overwhelmingly for non-discrimination ordinances. Its largest arts institutions actively program LGBTQ+ content. Its most beloved independent businesses are frequently queer-owned or queer-run.
             </p>
@@ -342,7 +442,7 @@
 <img alt="Gathering Place Tulsa Oklahoma riverside park LGBTQ friendly free admission community events" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/6/65/Gathering_Place_-_45581648835.jpg"/>
 <figcaption>Photo: Paul Sableman / CC BY 2.0 (Wikimedia Commons) — Gathering Place: 66 acres on the Arkansas River, free, and genuinely world-class</figcaption>
 </figure>
-<h2>The Bars: Where Gay Tulsa Actually Comes Alive After Dark</h2>
+<h2 id="the-bars-where-gay-tulsa-actually-comes-alive-after-dark">The Bars: Where Gay Tulsa Actually Comes Alive After Dark</h2>
 <p>
                 Three venues anchor Tulsa's gay nightlife, and all three are very different from each other, which is a gift.
             </p>
@@ -370,7 +470,7 @@
 <p>
                 Beyond these three, the broader Brookside and Arts District bar scene is reliably queer-friendly. <strong>St. Vitus Bar</strong> on South Boston has strong craft cocktails and a crowd that won't bat an eye at anything. <strong>Mercury Lounge</strong>, also on South Boston, pairs live music with a reliably queer crowd and makes for a genuinely great date night start. The city's nightlife is concentrated enough that a good Saturday night can take you through all of it.
             </p>
-<h2>The Gayborhood: Where Queer Tulsa Actually Lives</h2>
+<h2 id="the-gayborhood-where-queer-tulsa-actually-lives">The Gayborhood: Where Queer Tulsa Actually Lives</h2>
 <p>
                 Tulsa doesn't have a capital-G Gayborhood the way some cities do, but it has something arguably better: several overlapping zones where the queer community has deeply planted its flag.
             </p>
@@ -386,7 +486,7 @@
 <p>
 <strong>Brookside</strong> (South Peoria Ave and surrounding streets) is the adjacent residential neighborhood where queer residents have put down roots, along with St. Vitus, Mercury Lounge, and a cluster of bars and shops that feel genuinely lived-in. This is the neighborhood that feels most like a traditional gayborhood in terms of density.
             </p>
-<h2>Beyond the Bars: Daytime Queer Tulsa</h2>
+<h2 id="beyond-the-bars-daytime-queer-tulsa">Beyond the Bars: Daytime Queer Tulsa</h2>
 <p>
                 People visit gay bars. People who actually live in a city find the rest of it. Here's the rest of it.
             </p>
@@ -402,21 +502,21 @@
 <p>
 <strong><a href="https://www.magiccitybooks.com" rel="noopener" target="_blank">Magic City Books</a></strong> on East Archer has a strong LGBTQ+ section and the kind of independent bookstore energy that makes you spend money you didn't plan to spend. That's a feature, not a bug.
             </p>
-<h2>Where to Stay</h2>
+<h2 id="where-to-stay">Where to Stay</h2>
 <p>
                 Downtown Tulsa hotels put you within walking distance or a short ride from everything in the Arts District and a quick trip to Brookside. The <strong>Mayo Hotel</strong> is a restored 1925 skyscraper with a rooftop bar and an Art Deco interior that matches the city's general aesthetic perfectly. The <strong>Ambassador Hotel</strong> in midtown is smaller, boutique, and reliably gay-friendly. Airbnb options in the Arts District and Pearl District neighborhoods are plentiful and tend to be in charming older homes a short walk from everything.
             </p>
 <p>
                 None of Tulsa's major hotels are going to give you grief. Downtown is genuinely welcoming, and hospitality staff in this city are used to queer visitors, especially during Pride season.
             </p>
-<h2>Tulsa Pride: Plan Around It If You Can</h2>
+<h2 id="tulsa-pride-plan-around-it-if-you-can">Tulsa Pride: Plan Around It If You Can</h2>
 <p>
 <a href="https://www.tulsapride.org" rel="noopener" target="_blank">Tulsa Pride</a> typically happens in late June and is one of the largest Pride celebrations in the region. We're talking tens of thousands of attendees, a full festival with performances and community booths, and a city that collectively puts the rainbow flag out and means it for at least a week. If you have any flexibility in your travel timing, come in June.
             </p>
 <p>
                 OkEq runs programming throughout June as well, including film screenings, discussions, health events, and the kind of community calendar that makes you wonder how anyone has time for a day job.
             </p>
-<h2>What to Watch Out For</h2>
+<h2 id="what-to-watch-out-for">What to Watch Out For</h2>
 <p>
                 Honesty, because you deserve it: Oklahoma has had a rough few years politically. Legislation targeting transgender people has passed. Some businesses outside the core queer-friendly zones are less welcoming than others. Pride events have faced protests, though nothing that should deter you from attending.
             </p>
@@ -426,7 +526,7 @@
 <p>
                 You're going to be fine in Tulsa. Come with the same awareness you'd bring to any mid-sized American city, and you'll find a community that's genuinely happy to see you.
             </p>
-<h2>Your Gay Tulsa Weekend Itinerary</h2>
+<h2 id="your-gay-tulsa-weekend-itinerary">Your Gay Tulsa Weekend Itinerary</h2>
 <div class="itinerary-day">
 <h3>Friday Evening</h3>
 <ul>
@@ -453,7 +553,7 @@
 <li>Afternoon at <a href="https://www.philbrook.org" rel="noopener" target="_blank">Philbrook Museum</a> if you've got time before heading out</li>
 </ul>
 </div>
-<h2>Get Connected Before You Arrive</h2>
+<h2 id="get-connected-before-you-arrive">Get Connected Before You Arrive</h2>
 <p>
                 Follow <a href="https://instagram.com/tulsagays" rel="noopener" target="_blank">@tulsagays</a> on Instagram for the weekly event roundup. Every Monday we publish what's happening that week across 80+ community sources, so you'll know about drag shows, sports leagues, OkEq events, Pride programming, and everything in between before you even land at TUL.
             </p>
@@ -463,7 +563,49 @@
 <p>
                 Tulsa's queer community has been here for decades, building something real in a state that doesn't always make it easy. Come see what they built. You'll leave wanting to come back.
             </p>
+<div class="live-events-block" id="live-events-widget">
+<p class="lew-title">🎉 What's Happening This Week</p>
+<div id="lew-list"><p class="lew-loading">Loading this week's events...</p></div>
+<a class="lew-more" href="/">See the full calendar at tulsagays.com →</a>
 </div>
+<script>
+(function(){
+    var w = document.getElementById('lew-list');
+    fetch('/data/events-current.json')
+        .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+        .then(function(events){
+            if (!events || !events.length) { w.innerHTML = '<p class="lew-empty">Check <a href="/">tulsagays.com</a> for this week's full list.</p>'; return; }
+            w.innerHTML = events.slice(0,5).map(function(e){
+                return '<div class="lew-event"><span class="lew-day">' + (e.day_short||e.date||'') + '</span><span class="lew-name">' + e.name + '</span><span class="lew-venue">' + (e.venue||'') + '</span></div>';
+            }).join('');
+        })
+        .catch(function(){ w.innerHTML = '<p class="lew-empty">See <a href="/">tulsagays.com</a> for this week's events.</p>'; });
+})();
+</script><div class="venue-maps">
+<h2 class="venue-maps-title">Find It</h2>
+<div class="venue-map-item">
+<p class="venue-map-name">Gathering Place — 2650 S John Williams Way E, Tulsa, OK 74114</p>
+<iframe allowfullscreen="" height="250" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Gathering+Place+Tulsa+OK&amp;output=embed" style="border:0;border-radius:6px;display:block;" title="Map: Gathering Place" width="100%"></iframe>
+</div>
+<div class="venue-map-item">
+<p class="venue-map-name">Philbrook Museum of Art — 2727 S Rockford Rd, Tulsa, OK 74114</p>
+<iframe allowfullscreen="" height="250" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Philbrook+Museum+of+Art+Tulsa+OK&amp;output=embed" style="border:0;border-radius:6px;display:block;" title="Map: Philbrook Museum of Art" width="100%"></iframe>
+</div>
+</div><div class="social-callout">
+<p class="social-callout-title">Follow Along</p>
+<div class="social-row"><span class="social-name">Oklahomans for Equality</span><span class="social-links"><a href="https://instagram.com/okeqtulsa" rel="noopener" target="_blank">@okeqtulsa</a> • <a href="https://www.facebook.com/OKEqualityTulsa" rel="noopener" target="_blank">Facebook</a></span></div>
+</div><div class="newsletter-cta-block">
+<p class="ncta-title">Get it in your inbox</p>
+<p class="ncta-sub">Every Monday morning: the full Tulsa queer event calendar, delivered before you need it.</p>
+<a class="ncta-btn" href="/newsletter.html">Subscribe →</a>
+</div><div class="submit-cta-block">
+<p class="scta-title">Know something we don't?</p>
+<p class="scta-sub">Got an event, venue, or org we should be covering? Hit submit and we'll add it.</p>
+<a class="scta-btn" href="/submit.html">Submit an Event →</a>
+</div><div class="related-posts">
+<p class="related-label">Keep reading</p>
+<a class="related-card" href="gay-bars-tulsa.html"><span class="related-title">Gay Bars in Tulsa: The Complete Guide to LGBTQ+ Nightlife</span></a><a class="related-card" href="date-night-queer-tulsa.html"><span class="related-title">Date Night Ideas for Queer Couples in Tulsa</span></a><a class="related-card" href="new-to-tulsa-queer-starter-pack.html"><span class="related-title">New to Tulsa? Here's Your Queer Starter Pack</span></a>
+</div></div>
 <div class="post-cta">
 <p style="color:var(--text-muted);font-size:0.85rem;letter-spacing:1px;text-transform:uppercase;">What's happening this week?</p>
 <p style="color:var(--text-secondary);">We round up every LGBTQ+ event in Tulsa every Monday morning. Never miss a drag show, sports league, or community gathering again.</p>
