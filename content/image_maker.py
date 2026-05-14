@@ -1240,6 +1240,97 @@ def save_carousel(images: List[Image.Image], output_dir: str,
     return paths
 
 
+def make_engagement_slide(
+    headline: str,
+    body: str,
+    post_type: str = "community",   # "community" | "lastminute" | "spotlight"
+    subhead: Optional[str] = None,
+) -> Image.Image:
+    """Single 1080x1080 branded image for mid-week engagement posts.
+
+    post_type controls accent color:
+      community  -> Tuesday lavender
+      lastminute -> Wednesday gold
+      spotlight  -> Thursday rose
+    """
+    accent_map = {
+        "community":  DAY_ACCENTS["Tuesday"],    # #C0AEFF lavender
+        "lastminute": DAY_ACCENTS["Wednesday"],  # #FFD060 warm gold
+        "spotlight":  DAY_ACCENTS["Thursday"],   # #F0A0B0 rose
+    }
+    type_label_map = {
+        "community":  "COMMUNITY",
+        "lastminute": "LAST MINUTE",
+        "spotlight":  "SPOTLIGHT",
+    }
+    accent  = accent_map.get(post_type, NEON_PINK)
+    label   = type_label_map.get(post_type, "TULSA GAYS")
+
+    img  = Image.new("RGB", SIZE, BG)
+    draw = ImageDraw.Draw(img)
+
+    f_label   = _font("segoe-semi", 32)
+    f_tulsa   = _font("poiret", 88)
+    f_gays    = _font("poiret", 88)
+    f_head    = _font("poiret", 58)
+    f_sub     = _font("segoe-semi", 26)
+    f_body    = _font("segoe", 26)
+    f_footer  = _font("poiret", 28)
+
+    # top pink bar
+    _pink_bar(draw, 0, height=4)
+
+    y = 32
+
+    # TYPE LABEL (e.g. "COMMUNITY" or "LAST MINUTE")
+    draw.rectangle([(W - 320) // 2, y, (W + 320) // 2, y + 48],
+                   fill=accent)
+    label_w = _text_width(draw, label, f_label)
+    draw.text(((W - label_w) // 2, y + 8), label, font=f_label,
+              fill=BG)
+    y += 64
+
+    # TULSA / GAYS branding
+    y = _draw_centered(draw, "TULSA", y, f_tulsa, WHITE)
+    y += 2
+    y = _draw_centered(draw, "GAYS", y, f_gays, NEON_PINK)
+    y += 12
+
+    # thin accent bar
+    bar_w = 200
+    draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 3],
+                   fill=accent)
+    y += 24
+
+    # HEADLINE
+    y = _draw_wrapped(draw, clean_text(headline), y, f_head, WHITE,
+                      max_px=W - PAD * 2, max_lines=3, line_gap=8)
+    y += 16
+
+    # Optional subhead
+    if subhead:
+        y = _draw_wrapped(draw, clean_text(subhead), y, f_sub, accent,
+                          max_px=W - PAD * 2, max_lines=2, line_gap=6)
+        y += 12
+
+    # Divider
+    _thin_divider(draw, y)
+    y += 20
+
+    # BODY TEXT
+    y = _draw_wrapped(draw, clean_text(body), y, f_body, LIGHT_GRAY,
+                      max_px=W - PAD * 2, max_lines=6, line_gap=6)
+
+    # FOOTER
+    _pink_bar(draw, H - 4, height=4)
+    footer_text = "tulsagays.com"
+    fw = _text_width(draw, footer_text, f_footer)
+    draw.text(((W - fw) // 2, H - 52), footer_text, font=f_footer,
+              fill=GRAY)
+
+    return img
+
+
 # ── CLI test ──────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
