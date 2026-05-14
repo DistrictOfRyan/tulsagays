@@ -1,0 +1,1 @@
+[2026-05-14] scheduled-tasks MCP not connected in this session (mcp__scheduled-tasks__list_scheduled_tasks unavailable); register-new-tulsagays-tasks one-shot not run, tulsagays-wednesday-social still armed in cloud scheduler.
