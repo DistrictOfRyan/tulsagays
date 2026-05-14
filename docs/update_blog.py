@@ -284,8 +284,8 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tulsa Gays - Your Weekly LGBTQ+ Event Guide for Tulsa</title>
-    <meta name="description" content="Tulsa Gays is your weekly LGBTQ+ event guide for Tulsa, Oklahoma. Find queer events, pride happenings, drag shows, community gatherings, and more.">
-    <meta name="keywords" content="Tulsa LGBTQ events, Tulsa gay events, Tulsa pride, queer Tulsa, Tulsa drag shows, LGBTQ Oklahoma, Tulsa nightlife, Homo Hotel Happy Hour, OKEQ events">
+    <meta name="description" content="Tulsa Gays is your weekly LGBTQ+ event guide for Tulsa, Oklahoma. Find LGBTQIA+ events, pride happenings, drag shows, community gatherings, and more.">
+    <meta name="keywords" content="Tulsa LGBTQ events, Tulsa gay events, Tulsa pride, LGBTQIA+ Tulsa, Tulsa drag shows, LGBTQ Oklahoma, Tulsa nightlife, Homo Hotel Happy Hour, OKEQ events">
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="Tulsa Gays - Weekly LGBTQ+ Events">
     <meta property="og:description" content="Your weekly guide to LGBTQ+ events in Tulsa, Oklahoma. Community gatherings, nightlife, arts, and more.">

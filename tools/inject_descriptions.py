@@ -174,7 +174,7 @@ INJECTIONS = {
     ),
     "affirming": (
         "AFFIRMING at the Equality Center is a recovery-focused space built for LGBTQ+ people. "
-        "Walking into a recovery meeting where you don't have to explain or edit the queer parts "
+        "Walking into a recovery meeting where you don't have to explain or edit the LGBTQIA+ parts "
         "of your story is a fundamentally different experience, and this space was built to give "
         "exactly that. You don't have to be in crisis to come. "
         "Sometimes you just want to be in a room where people actually understand. "
@@ -199,7 +199,7 @@ INJECTIONS = {
     "okeq tulsa ttrpg": (
         "OKEQ is running a Tabletop RPG session at the Equality Center and this is the "
         "nerd-gay overlap event Tulsa didn't know it needed to put on a flyer. "
-        "TTRPGs and queer spaces have overlapped for decades because both are fundamentally about "
+        "TTRPGs and LGBTQIA+ spaces have overlapped for decades because both are fundamentally about "
         "building a world where you get to be exactly who you are, "
         "and the party has your back no matter what. "
         "New players welcome. Experienced players welcome. Just bring your character and your dice.",
@@ -253,13 +253,13 @@ INJECTIONS = {
         "The Lesbian Attachment and Communication Healing Intensive is the workshop that makes "
         "people send 'thank you for making me go to this' texts to the friend who dragged them. "
         "This is deep-work territory: attachment styles, communication patterns, and the specific "
-        "ways queer relationships develop their own beautiful and complicated dynamics. "
+        "ways LGBTQIA+ relationships develop their own beautiful and complicated dynamics. "
         "If you've ever thought 'I wish I understood myself better in relationships,' "
-        "this is the room for it. For lesbians and queer women. Come open. Leave changed.",
+        "this is the room for it. For lesbians and LGBTQIA+ women. Come open. Leave changed.",
 
         "The Lesbian Attachment and Communication Healing Intensive is the workshop your "
         "therapist has been low-key suggesting for six months. "
-        "Come open to it. Leave understanding yourself better. For lesbians and queer women.",
+        "Come open to it. Leave understanding yourself better. For lesbians and LGBTQIA+ women.",
     ),
     "art gallery exhibition - carrie": (
         "Carrie Sheley's gallery exhibition is up and this is the kind of local art show "
@@ -279,12 +279,12 @@ INJECTIONS = {
         "that genuinely welcomes you. Show up hungry. The food is excellent "
         "and the company is reliably good.",
 
-        "Elote is one of Tulsa's most queer-friendly spots and events there reflect it. "
+        "Elote is one of Tulsa's most LGBTQIA+-friendly spots and events there reflect it. "
         "Show up. The food is great and so is the crowd.",
     ),
     "drag sing along": (
         "Elote's Drag Sing Along is GAGA VS. MADONNA and yes, you have to pick a side. "
-        "Two of the biggest queer music icons in history, one stage, one drag host, "
+        "Two of the biggest LGBTQIA+ music icons in history, one stage, one drag host, "
         "and a room full of people who have OPINIONS. "
         "Sing every lyric you know. Tip the performer who does your favorite song. "
         "And if you're a Gaga girl at a Madonna night or vice versa, "
@@ -296,7 +296,7 @@ INJECTIONS = {
         "This is camp. Show up and participate fully.",
     ),
     "drag brunch": (
-        "Drag Brunch at Elote is the meal format that the queer community invented and "
+        "Drag Brunch at Elote is the meal format that the LGBTQIA+ community invented and "
         "perfected over several decades. Bottomless mimosas. Drag performances between courses. "
         "A room full of people who showed up specifically to be fabulous on a weekend morning. "
         "Reserve a spot. Dress like you tried. Tip generously. "
@@ -317,14 +317,14 @@ INJECTIONS = {
         "Get a spot near the stage. Bring tip money. Show up for the queens doing the work.",
     ),
     "pride bar crawl": (
-        "The Tulsa Pride Bar Crawl is the event where the entire queer community "
+        "The Tulsa Pride Bar Crawl is the event where the entire LGBTQIA+ community "
         "collectively takes over downtown and you just follow the energy. "
         "You will run into everyone you know and at least three people you've been meaning to text. "
         "Wear something that announces your presence. Start early. Pace yourself. "
         "This is the bar crawl where the route is less important than the crowd you're moving with. "
         "The best Pride bar crawl memory is always the unplanned part. Show up and let it happen.",
 
-        "Tulsa Pride Bar Crawl: the whole queer community moving through downtown together. "
+        "Tulsa Pride Bar Crawl: the whole LGBTQIA+ community moving through downtown together. "
         "Wear something memorable, pace yourself, and remember that the best memories are "
         "always the unplanned parts. Show up. Follow the energy.",
     ),
@@ -334,21 +334,21 @@ INJECTIONS = {
         "This event is specifically for and centered on Black LGBTQ+ people in the city, "
         "and showing up is how you participate in the community you say you care about. "
         "Come to celebrate, connect, and be present with one of the most important communities "
-        "in Tulsa's queer landscape.",
+        "in Tulsa's LGBTQIA+ landscape.",
 
         "Black. Queer. Proud. is the community gathering that the city needs and that "
         "Black LGBTQ+ Tulsans deserve. Show up. Be present. This matters.",
     ),
     "transformation conference": (
         "The Transformation Conference brings together people navigating gender identity, "
-        "transition, and queer community in a full conference format. "
+        "transition, and LGBTQIA+ community in a full conference format. "
         "Sessions, speakers, community connection, and the specific experience of being in "
         "a room where you don't have to explain anything before someone understands you. "
         "If this is your community, you already know why this matters. "
         "Register early. These conferences fill up. The people you'll meet here will become "
         "your people.",
 
-        "The Transformation Conference is the full-day queer community gathering "
+        "The Transformation Conference is the full-day LGBTQIA+ community gathering "
         "for people navigating gender and identity. Register early. "
         "The room you've been looking for is here.",
     ),

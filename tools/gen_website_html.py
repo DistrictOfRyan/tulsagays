@@ -115,7 +115,7 @@ def _flamingo_score(ev) -> int:
         return 2
     return 2  # 1 flamingo is reserved for truly exclusionary/corporate-only events
 
-_FL_LABELS = ['', 'Mostly straight', 'Gay-friendly', 'LGBTQ-friendly', 'Very queer', 'Super gay']
+_FL_LABELS = ['', 'Mostly straight', 'Gay-friendly', 'LGBTQ-friendly', 'Very LGBTQIA+', 'Super gay']
 
 def _flamingo_html(score: int) -> str:
     filled = '🦩' * score
@@ -394,7 +394,7 @@ _LEGEND_HTML = '''\
                 <span>🦩 Mostly straight</span>
                 <span>🦩🦩 Gay-friendly</span>
                 <span>🦩🦩🦩 LGBTQ-friendly</span>
-                <span>🦩🦩🦩🦩 Very queer</span>
+                <span>🦩🦩🦩🦩 Very LGBTQIA+</span>
                 <span>🦩🦩🦩🦩🦩 Super gay</span>
             </span>
         </div>'''

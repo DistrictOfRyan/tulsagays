@@ -51,7 +51,7 @@ _HOOK_TEMPLATES = [
     "ok tulsa {post_type} plans are HERE",
     "your {post_type} just got a whole lot gayer",
     "so uhh who's free {date_range}??",
-    "another week another slate of queer excellence",
+    "another week another slate of LGBTQIA+ excellence",
     "tulsa gays rise up -- {post_type} edition",
     "we did the homework so you dont have to",
     "POV: you actually go out this {post_type}",
@@ -136,7 +136,7 @@ def _build_events_block(events: list[dict]) -> str:
 _SYSTEM_PROMPT = """\
 You are the social media voice of Tulsa Gays, a local Instagram account that \
 posts LGBTQ+ event roundups for Tulsa, Oklahoma. You are NOT an AI assistant. \
-You are writing AS a member of the Tulsa queer community who genuinely cares \
+You are writing AS a member of the Tulsa LGBTQIA+ community who genuinely cares \
 about getting people out to events.
 
 VOICE & TONE RULES (critical -- follow these exactly):
@@ -395,7 +395,7 @@ def _rule_based_enrich(event: dict) -> str:
 
     if any(k in name for k in ["craft", "crochet", "knit", "stitch", "maker", "queer craft"]):
         return (f"You do not need to know what you're doing. Just show up{at_venue} with your hands and your personality. "
-                "Queer people creating things together is magic, and you'll leave with something to show for it.")
+                "LGBTQIA+ people creating things together is magic, and you'll leave with something to show for it.")
 
     if any(k in name for k in ["karaoke"]):
         return ("Get up there and sing something embarrassing. Nobody here is going to judge you, "
@@ -418,7 +418,7 @@ def _rule_based_enrich(event: dict) -> str:
     _venue_lower = (venue or "").lower()
     if any(b in _venue_lower for b in _true_bars) or any(b in name for b in _true_bars) or src in ("bars", "nightlife"):
         return (f"Get there{at_time}, order your drink, and start a conversation with whoever's at the bar next to you. "
-                "Tulsa's queer nightlife runs on community, and the community only stays strong when you show up.")
+                "Tulsa's LGBTQIA+ nightlife runs on community, and the community only stays strong when you show up.")
 
     if any(k in name for k in ["market", "art market", "art show", "art fair", "gallery"]):
         return (f"Bring cash. Budget a little more than you think you'll spend. Talk to the artists. Ask them about their work. "
@@ -436,11 +436,11 @@ def _rule_based_enrich(event: dict) -> str:
     _affirming_kws = [k.lower() for k in getattr(config, "AFFIRMING_VENUE_KEYWORDS_CITY", [])]
     if (any(k in name for k in ["unitarian", "church", "spiritual", "meditation"])
             or any(kw in name for kw in _affirming_kws)):
-        return (f"One of the most affirming spaces in Tulsa for queer people of faith and queer skeptics alike. "
+        return (f"One of the most affirming spaces in Tulsa for LGBTQIA+ people of faith and skeptics alike. "
                 "Walk in exactly as you are. You will feel it immediately.")
 
     if "bowling" in name:
-        return ("Queer bowling leagues are pure community gold. Show up even if you haven't bowled in years. "
+        return ("LGBTQIA+ bowling leagues are pure community gold. Show up even if you haven't bowled in years. "
                 "Nobody's judging your form. Everyone's glad you made it out.")
 
     if any(k in name for k in ["canasta", "card", "game night", "board game", "dungeons", "d&d", "dragons"]):
@@ -450,7 +450,7 @@ def _rule_based_enrich(event: dict) -> str:
     # Equality center / anchor LGBTQ+ org — config-driven (signature org source key + venue keyword)
     _sig_org_keys = {"okeq", "equality_center"} | {(_sig.get("source_key") or "").lower()} - {""}
     if src in _sig_org_keys or "equality center" in (venue or "").lower():
-        return (f"This space{at_venue} is the heartbeat of Tulsa's queer community. "
+        return (f"This space{at_venue} is the heartbeat of Tulsa's LGBTQIA+ community. "
                 "Walk in. Say hi to someone. Life genuinely gets better when you show up for your community.")
 
     return ("Put this on your calendar and actually go. "
@@ -492,7 +492,7 @@ def _fallback_caption(
     # Hook
     hooks = [
         f"your {post_type} plans just got gayer",
-        f"tulsa queer events for {date_range or 'this week'}",
+        f"tulsa lgbtqia+ events for {date_range or 'this week'}",
         f"stuff to do {date_range or 'this week'} -- gay edition",
     ]
     lines.append(random.choice(hooks).upper())
@@ -553,7 +553,7 @@ def _test():
             "date": "Friday, Apr 4",
             "time": "5:00 PM - 8:00 PM",
             "venue": "The Homo Hotel",
-            "description": "Weekly happy hour for the queer community. Cheap drinks, good vibes, great people.",
+            "description": "Weekly happy hour for the LGBTQIA+ community. Cheap drinks, good vibes, great people.",
             "url": "https://example.com/hhhh",
             "priority": 1,
             "source": "homo_hotel",

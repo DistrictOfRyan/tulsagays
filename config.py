@@ -11,10 +11,10 @@ if os.path.exists(_env_file):
             if _line and not _line.startswith("#") and "=" in _line:
                 _k, _v = _line.split("=", 1)
                 if _v.strip():
-                    # Always set from .env — overrides empty env vars (e.g. inherited shell vars)
+                    # Always set from .env â€” overrides empty env vars (e.g. inherited shell vars)
                     os.environ[_k.strip()] = _v.strip()
 
-# ── Paths ────────────────────────────────────────────────────────────────
+# â”€â”€ Paths â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(PROJECT_DIR, "data")
 EVENTS_DIR = os.path.join(DATA_DIR, "events")
@@ -23,14 +23,14 @@ BLOG_DIR = os.path.join(PROJECT_DIR, "blog")
 SOURCES_FILE = os.path.join(DATA_DIR, "sources.json")
 GROWTH_LOG = os.path.join(DATA_DIR, "growth_log.json")
 
-# ── API Keys (set via environment variables) ─────────────────────────────
-ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+# â”€â”€ API Keys (set via environment variables) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+ANTHROPIC_API_KEY = os.environ.get("SITES_ANTHROPIC_KEY", "")
 META_ACCESS_TOKEN = os.environ.get("META_ACCESS_TOKEN", "")
 META_IG_USER_ID = os.environ.get("META_IG_USER_ID", "")
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 TICKETMASTER_API_KEY = os.environ.get("TICKETMASTER_API_KEY", "")
 
-# ── Event Sources ────────────────────────────────────────────────────────
+# â”€â”€ Event Sources â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Priority: 1 = always feature, 2 = feature if good, 3 = only if special/slow week
 SOURCES = {
     "homo_hotel": {
@@ -38,7 +38,7 @@ SOURCES = {
         "url": "https://www.meetup.com/tulsa-4h-homo-hotel-happy-hour/",
         "priority": 1,  # ALWAYS TOP BILLING
         "type": "priority",
-        "description": "Monthly LGBTQIA+ social at rotating Tulsa hotel bars, 1st Friday 7pm. Benefits local queer charities. Meetup group has event listings.",
+        "description": "Monthly LGBTQIA+ social at rotating Tulsa hotel bars, 1st Friday 7pm. Benefits local LGBTQIA+ charities. Meetup group has event listings.",
     },
     "okeq": {
         "name": "Oklahomans for Equality (OKEQ)",
@@ -53,7 +53,7 @@ SOURCES = {
         "facebook": "https://www.facebook.com/TwistedArtsTulsa/",
         "priority": 1,
         "type": "priority",
-        "description": "LGBTQ+ art organization. Film festival, drag shows, queer performances, art events, Pride kickoff. Year-round programming.",
+        "description": "LGBTQ+ art organization. Film festival, drag shows, LGBTQIA+ performances, art events, Pride kickoff. Year-round programming.",
     },
     "all_souls": {
         "name": "All Souls Unitarian Church",
@@ -124,7 +124,7 @@ SOURCES = {
         "fallback_url": "https://www.s66tulsa.com/",
         "priority": 2,
         "type": "arts",
-        "description": "LGBTQIA+ nonprofit hosting dance parties, drag race watch parties, fashion shows, and multi-day festivals. s66tulsa.com ECONNREFUSED on 2026-04-09 and 2026-04-16 — use Instagram @studio.66_ for event listings.",
+        "description": "LGBTQIA+ nonprofit hosting dance parties, drag race watch parties, fashion shows, and multi-day festivals. s66tulsa.com ECONNREFUSED on 2026-04-09 and 2026-04-16 â€” use Instagram @studio.66_ for event listings.",
     },
     "lambda_bowling": {
         "name": "Lambda Bowling League",
@@ -192,7 +192,7 @@ SOURCES = {
         "contact": "Hannah Jackson",
         "priority": 2,
         "type": "community",
-        "description": "Monthly happy hour on the FIRST WEDNESDAY of each month for queer women and allies. Contact Hannah Jackson for details. Check FB group for venue/time.",
+        "description": "Monthly happy hour on the FIRST WEDNESDAY of each month for LGBTQIA+ women and allies. Contact Hannah Jackson for details. Check FB group for venue/time.",
         "recurring": "1st Wednesday monthly",
     },
     "wclub_tulsa": {
@@ -200,8 +200,8 @@ SOURCES = {
         "url": "https://www.facebook.com/share/18DoQE9Jb4/",
         "priority": 2,
         "type": "community",
-        "description": "Queer women's social club in Tulsa. Check admin profile for event listings and announcements.",
-        "notes": "Admin profile URL provided — check for event posts and group link",
+        "description": "LGBTQIA+ women's social club in Tulsa. Check admin profile for event listings and announcements.",
+        "notes": "Admin profile URL provided â€” check for event posts and group link",
     },
     "pflag_tulsa": {
         "name": "PFLAG Tulsa",
@@ -231,7 +231,7 @@ SOURCES = {
         "type": "arts",
         "description": "Monthly drag brunch (2nd Saturday), all ages, two seatings",
     },
-    # ── Affirming Churches (33 total) ────────────────────────────────────
+    # â”€â”€ Affirming Churches (33 total) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     # UCC
     "fellowship_ucc": {"name": "Fellowship Congregational UCC", "url": "https://ucctulsa.org/", "priority": 2, "type": "church", "description": "Open and Affirming, 2900 S Harvard Ave"},
     "community_hope_ucc": {"name": "Community of Hope UCC", "url": "", "priority": 3, "type": "church", "description": "UCC congregation, social justice focused, 2545 S Yale Ave"},
@@ -305,22 +305,22 @@ SOURCES = {
         "url": "https://www.tulsaartistfellowship.org/calendar/cqps",
         "priority": 2,
         "type": "arts",
-        "description": "Queer art exhibitions, fashion shows, film screenings",
+        "description": "LGBTQIA+ art exhibitions, fashion shows, film screenings",
     },
-    # ── Bars & Nightlife (expanded) ────────────────────────────────────
+    # â”€â”€ Bars & Nightlife (expanded) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "st_vitus": {
         "name": "St. Vitus",
         "url": "https://www.stvitustulsa.com",
         "priority": 3,
         "type": "bar",
-        "description": "Late-night electronic/techno club, queer-friendly, craft cocktails",
+        "description": "Late-night electronic/techno club, LGBTQIA+-friendly, craft cocktails",
     },
     "473_bar": {
         "name": "(473)",
         "url": "",
         "priority": 3,
         "type": "bar",
-        "description": "Queer-friendly bar in Kendall-Whittier, local beer, live music",
+        "description": "LGBTQIA+-friendly bar in Kendall-Whittier, local beer, live music",
     },
     "broadway_clubhouse": {
         "name": "The Broadway Clubhouse",
@@ -329,7 +329,7 @@ SOURCES = {
         "type": "bar",
         "description": "Theater community bar, proceeds support OkEq",
     },
-    # ── Drag (expanded) ───────────────────────────────────────────────
+    # â”€â”€ Drag (expanded) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "diva_royale": {
         "name": "Diva Royale Tulsa",
         "url": "https://www.divaroyale.com/dragquenshow-locations.html",
@@ -344,7 +344,7 @@ SOURCES = {
         "instagram": "https://www.instagram.com/tulsahouseofdrag/",
         "priority": 2,
         "type": "arts",
-        "description": "Tulsa drag scene landing page — show listings, performer directory, merch. tulsahouseofdrag.com ECONNREFUSED on 2026-04-16; use Facebook or Instagram @tulsahouseofdrag.",
+        "description": "Tulsa drag scene landing page â€” show listings, performer directory, merch. tulsahouseofdrag.com ECONNREFUSED on 2026-04-16; use Facebook or Instagram @tulsahouseofdrag.",
     },
     "dragnificent_majestic": {
         "name": "DRAGNIFICENT! at Club Majestic",
@@ -353,7 +353,7 @@ SOURCES = {
         "type": "arts",
         "description": "Every Thursday drag show hosted by Shanel Sterling",
     },
-    # ── Sports (expanded) ─────────────────────────────────────────────
+    # â”€â”€ Sports (expanded) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "pride_sports_kickball": {
         "name": "Pride Sports Tulsa / Gay Kickball",
         "url": "https://pridesportstulsa.leagueapps.com/leagues",
@@ -368,7 +368,7 @@ SOURCES = {
         "type": "sports",
         "description": "LGBTQ+ softball league",
     },
-    # ── Two-Spirit & Native LGBTQ+ ────────────────────────────────────
+    # â”€â”€ Two-Spirit & Native LGBTQ+ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "antss": {
         "name": "All Nations Two-Spirit Society",
         "url": "https://www.facebook.com/allnations2S/",
@@ -376,7 +376,7 @@ SOURCES = {
         "type": "priority",
         "description": "Indigenous Two-Spirit advocacy, annual festival, community events",
     },
-    # ── Trans Support ─────────────────────────────────────────────────
+    # â”€â”€ Trans Support â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "taco_ok": {
         "name": "Trans Advocacy Coalition of Oklahoma (TACO)",
         "url": "https://transadvocacyok.org/events",
@@ -391,7 +391,7 @@ SOURCES = {
         "type": "community",
         "description": "Every Wednesday 7-9pm at Equality Center for trans/intersex 18+",
     },
-    # ── Professional ──────────────────────────────────────────────────
+    # â”€â”€ Professional â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "equality_business_alliance": {
         "name": "Equality Business Alliance",
         "url": "https://okeq.org/eba/",
@@ -399,7 +399,7 @@ SOURCES = {
         "type": "community",
         "description": "LGBTQ+ business networking, last Thursday monthly 6-7:30pm",
     },
-    # ── Youth ─────────────────────────────────────────────────────────
+    # â”€â”€ Youth â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "okeq_youth": {
         "name": "OkEq Youth Programs",
         "url": "https://okeq.org/youth/",
@@ -430,15 +430,15 @@ SOURCES = {
         "type": "community",
         "description": "Nonprofit at 4th & Peoria with Rainbow Room, Pride Socials, community events. 15+ years serving Tulsa LGBTQ+ community.",
     },
-    # ── Book Clubs ────────────────────────────────────────────────────
+    # â”€â”€ Book Clubs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "queerlit_collective": {
         "name": "QueerLit Collective",
         "url": "https://www.facebook.com/queerlitcollective",
         "priority": 2,
         "type": "arts",
-        "description": "Library openings, banned book events, queer literature access",
+        "description": "Library openings, banned book events, LGBTQIA+ literature access",
     },
-    # ── Queer-friendly Businesses ─────────────────────────────────────
+    # â”€â”€ Queer-friendly Businesses â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "fulton_street_books": {
         "name": "Fulton Street Books & Coffee",
         "url": "",
@@ -451,9 +451,9 @@ SOURCES = {
         "url": "",
         "priority": 3,
         "type": "community",
-        "description": "Independent bookstore in Arts District, hosts queer author events",
+        "description": "Independent bookstore in Arts District, hosts LGBTQIA+ author events",
     },
-    # ── Theater & Film ────────────────────────────────────────────────
+    # â”€â”€ Theater & Film â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "tulsa_fringe": {
         "name": "Tulsa Fringe Festival",
         "url": "https://okeq.org/fringe/",
@@ -461,7 +461,7 @@ SOURCES = {
         "type": "arts",
         "description": "OkEq-produced boundary-pushing theater, comedy, dance, music",
     },
-    # ── Outdoor / Camping ─────────────────────────────────────────────
+    # â”€â”€ Outdoor / Camping â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "camp_willowswish": {
         "name": "Camp Willowswish",
         "url": "https://willowswish.org/",
@@ -469,7 +469,7 @@ SOURCES = {
         "type": "community",
         "description": "Annual September LGBTQ camping event at Lake Murray, since 1969",
     },
-    # ── Additional Aggregators ────────────────────────────────────────
+    # â”€â”€ Additional Aggregators â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "gayout_tulsa": {
         "name": "GayOut Tulsa",
         "url": "https://www.gayout.com/tulsa-ok-gay-events-hotspots-the-ultimate-guide",
@@ -484,28 +484,28 @@ SOURCES = {
         "type": "aggregator",
         "description": "Facebook community group where members post and share LGBTQ+ events happening in Tulsa. Good crowdsourced aggregator for events not listed elsewhere.",
     },
-    # ── New sources added 2026-04-20 ─────────────────────────────────────
+    # â”€â”€ New sources added 2026-04-20 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "lgbt_of_oklahoma_fb": {
         "name": "LGBT of Oklahoma (Facebook Group)",
         "url": "https://www.facebook.com/groups/673721549395149/",
         "priority": 2,
         "type": "aggregator",
-        "description": "Public Facebook group, 955 members. Statewide LGBTQ+ community group — filter for Tulsa-area events.",
+        "description": "Public Facebook group, 955 members. Statewide LGBTQ+ community group â€” filter for Tulsa-area events.",
     },
     "okc_lgbtq_events_fb": {
         "name": "OKC Area LGBTQ+ Events and Community Activities (Facebook Group)",
         "url": "https://www.facebook.com/groups/526396531335580/",
         "priority": 2,
         "type": "aggregator",
-        "description": "Public Facebook group, 14K members, 219 friends in group, 7+ posts/day. Covers OKC and statewide — filter for Tulsa events. High-volume source.",
+        "description": "Public Facebook group, 14K members, 219 friends in group, 7+ posts/day. Covers OKC and statewide â€” filter for Tulsa events. High-volume source.",
     },
-    # ── New sources added 2026-04-16 ─────────────────────────────────────
+    # â”€â”€ New sources added 2026-04-16 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "tulsa_pride_site": {
         "name": "Tulsa Pride (tulsapride.org)",
         "url": "https://tulsapride.org/",
         "priority": 1,
         "type": "priority",
-        "description": "Dedicated site for Tulsa Pride — a program of Oklahomans for Equality. Annual parade and festival (2nd Saturday in October), VIP tickets, parade applications, and lead-up events. Separate from okeq.org event calendar.",
+        "description": "Dedicated site for Tulsa Pride â€” a program of Oklahomans for Equality. Annual parade and festival (2nd Saturday in October), VIP tickets, parade applications, and lead-up events. Separate from okeq.org event calendar.",
     },
     "tulsa_lgbtq_nightlife_fb": {
         "name": "Tulsa's LGBT Nightlife (Facebook Group)",
@@ -514,7 +514,7 @@ SOURCES = {
         "type": "aggregator",
         "description": "Facebook group focused on LGBT nightlife in Tulsa. Members share bar events, club nights, and niche gatherings not listed on official venues. Good secondary crowdsourced check.",
     },
-    # ── Bars & Nightlife (EXPANDED) ───────────────────────────────────────
+    # â”€â”€ Bars & Nightlife (EXPANDED) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "dvl_tulsa": {
         "name": "DVL Club & Lounge",
         "url": "https://www.dvltulsa.com",
@@ -524,7 +524,7 @@ SOURCES = {
         "type": "bar",
         "description": "Woman-owned LGBTQ+ nightlife venue in Blue Dome District (302 S. Frankfort). Themed events, gay nights, ladies nights, EDM, dancing. Hours: Thu-Sat 4pm-2am. Happy hour 4pm-10pm.",
     },
-    # ── Wellness & Soundbaths ────────────────────────────────────────────────
+    # â”€â”€ Wellness & Soundbaths â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "nicholas_ray_bradford_soundbaths": {
         "name": "Nicholas Ray Bradford - Soundbaths & Wellness Events",
         "url": "https://www.facebook.com/nicholas.bradford.54",
@@ -581,7 +581,7 @@ SOURCES = {
         "type": "wellness",
         "description": "Free meditative experiences at Guthrie Green (117 N. Boston Ave). Free, all ages, first-come-first-serve. AARP hosts in partnership with Guthrie Green.",
     },
-    # ── Art Studios & Galleries ──────────────────────────────────────────────
+    # â”€â”€ Art Studios & Galleries â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "the_church_studio": {
         "name": "The Church Studio",
         "url": "https://www.thechurchstudio.com/events/",
@@ -645,7 +645,7 @@ SOURCES = {
         "type": "arts",
         "description": "Satellite location of Philbrook Museum of Art in Tulsa Arts District. Art exhibitions and cultural programs.",
     },
-    # ── Parks & Nature Events ────────────────────────────────────────────────
+    # â”€â”€ Parks & Nature Events â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "tulsa_park_recreation_events": {
         "name": "Tulsa Park and Recreation - Events & Programs",
         "url": "https://www.cityoftulsa.org/government/departments/park-and-recreation/",
@@ -674,7 +674,7 @@ SOURCES = {
         "type": "regional",
         "description": "Annual herbal festival in Sand Springs (April 18-19, 2026). 150+ vendors, medicinal/culinary/decorative herbs, food trucks, live music, family activities. Free admission.",
     },
-    # ── Regional Events & Aggregators ────────────────────────────────────────
+    # â”€â”€ Regional Events & Aggregators â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "visit_tulsa_events": {
         "name": "Visit Tulsa - Events & Cultural Calendar",
         "url": "https://www.visittulsa.com/events/",
@@ -717,7 +717,7 @@ SOURCES = {
         "type": "arts",
         "description": "Premier cultural venue. Broadway tours, Tulsa Ballet, Tulsa Symphony, performances, concerts, comedy. Chapman Music Hall and Williams Theatre.",
     },
-    # ── MAJOR EVENT AGGREGATORS & DIRECTORIES ──────────────────────────────
+    # â”€â”€ MAJOR EVENT AGGREGATORS & DIRECTORIES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "tulsago_events": {
         "name": "TulsaGo - Events in Tulsa",
         "url": "https://www.tulsago.com/experience",
@@ -775,14 +775,14 @@ SOURCES = {
         "type": "aggregator",
         "description": "Concert venue and event aggregator. Tulsa concert schedule and tickets.",
     },
-    # ── MAJOR CULTURAL VENUES & MUSIC HALLS ────────────────────────────────
+    # â”€â”€ MAJOR CULTURAL VENUES & MUSIC HALLS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "tulsa_artist_fellowship": {
         "name": "Tulsa Artist Fellowship / Flagship",
         "url": "https://www.tulsaartistfellowship.org/calendar",
         "website": "https://tulsaartistfellowship.org/flagship",
         "priority": 2,
         "type": "arts",
-        "description": "Flagship public space (112 N Boston Ave) — screenings, panels, lectures, artist talks, workshops, performances, radical cultural programming. Free and open to public.",
+        "description": "Flagship public space (112 N Boston Ave) â€” screenings, panels, lectures, artist talks, workshops, performances, radical cultural programming. Free and open to public.",
     },
     "greenwood_cultural_center": {
         "name": "Greenwood Cultural Center",
@@ -790,7 +790,7 @@ SOURCES = {
         "facebook": "https://www.facebook.com/GreenwoodCulturalCenter/",
         "priority": 2,
         "type": "arts",
-        "description": "Black Wall Street heritage site. Hosts film screenings, lectures, cultural events, radical cinema, community programming. Intersectional with queer community.",
+        "description": "Black Wall Street heritage site. Hosts film screenings, lectures, cultural events, radical cinema, community programming. Intersectional with the LGBTQIA+ community.",
     },
     "philbrook_museum": {
         "name": "Philbrook Museum of Art",
@@ -853,7 +853,7 @@ SOURCES = {
         "type": "music",
         "description": "State's only facility devoted to gospel, jazz, and blues musicians with OK ties. Sunday concerts 5-7pm.",
     },
-    # ── REMOTE WORK & COMMUNITY NETWORKS ───────────────────────────────────
+    # â”€â”€ REMOTE WORK & COMMUNITY NETWORKS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "tulsa_remote_events": {
         "name": "Tulsa Remote - #events-local Slack Channel",
         "url": "https://app.slack.com/client/TF1E6FCR5/CGV2YLJSG",
@@ -876,9 +876,9 @@ SOURCES = {
         "url": "https://tulsaremote.slack.com/archives/CGV2YLJSG",
         "priority": 1,
         "type": "community",
-        "description": "Private Slack channel within TulsaRemote. **REQUIRES LOGIN** — specifically focused on events and community activities. Described as 'a gold mine for events.'",
+        "description": "Private Slack channel within TulsaRemote. **REQUIRES LOGIN** â€” specifically focused on events and community activities. Described as 'a gold mine for events.'",
     },
-    # ── ADDITIONAL MUSIC & TICKETING PLATFORMS ─────────────────────────────
+    # â”€â”€ ADDITIONAL MUSIC & TICKETING PLATFORMS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "songkick_tulsa": {
         "name": "Songkick - Tulsa Concerts",
         "url": "https://www.songkick.com/metro-areas/1826-us-tulsa",
@@ -914,7 +914,7 @@ SOURCES = {
         "type": "aggregator",
         "description": "Major ticketing and event platform. Concerts, shows, festivals across Tulsa venues.",
     },
-    # ── WOMPA & CREATIVE COMMUNITY EVENTS ──────────────────────────────────
+    # â”€â”€ WOMPA & CREATIVE COMMUNITY EVENTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "wompa_tulsa": {
         "name": "WOMPA - Event Venue & Creative Community",
         "url": "https://app.wompatulsa.com/events-1/c/0",
@@ -924,7 +924,7 @@ SOURCES = {
         "type": "community",
         "description": "Major event venue & coworking in Tulsa. 6 event spaces. Hosts art markets, music festivals, weddings, retreats, performances. Wompa Bazaar (90+ vendors). All-ages events.",
     },
-    # ── MUSIC FESTIVALS & CARNEY FEST ─────────────────────────────────────
+    # â”€â”€ MUSIC FESTIVALS & CARNEY FEST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "carney_fest": {
         "name": "Carney Fest",
         "url": "https://carneyfest.com/",
@@ -967,7 +967,7 @@ SOURCES = {
         "type": "music",
         "description": "Major event venue hosting concerts, festivals, and large-scale entertainment.",
     },
-    # ── ELECTRONIC MUSIC & RAVES ───────────────────────────────────────────
+    # â”€â”€ ELECTRONIC MUSIC & RAVES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "bandsintown_electronic": {
         "name": "Bandsintown - Electronic Music Tulsa",
         "url": "https://www.bandsintown.com/c/tulsa-ok/all-dates/genre/electronic",
@@ -1024,7 +1024,7 @@ SOURCES = {
         "type": "aggregator",
         "description": "Electronic concerts and music events filtered by Tulsa area and electronic genre.",
     },
-    # ── New sources added 2026-05-11 ─────────────────────────────────────
+    # â”€â”€ New sources added 2026-05-11 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "tulsa_peoples_orchestra": {
         "name": "Tulsa People's Orchestra",
         "url": "",
@@ -1033,40 +1033,40 @@ SOURCES = {
         "type": "arts",
         "description": "Community orchestra hosting concerts, brunches, and performances at various Tulsa venues including The Vault.",
     },
-    # ── New sources added 2026-04-28 ─────────────────────────────────────
+    # â”€â”€ New sources added 2026-04-28 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "tulsa_isnt_boring": {
         "name": "Tulsa Isn't Boring (TimeTree Public Calendar)",
         "url": "https://timetreeapp.com/public_calendars/tulsa_isnt_boring",
         "priority": 1,
         "type": "aggregator",
-        "description": "Community-curated public calendar of Tulsa events published via TimeTree. Covers arts, culture, music, food, outdoor, and community events. High-quality curation — treat as a primary source.",
+        "description": "Community-curated public calendar of Tulsa events published via TimeTree. Covers arts, culture, music, food, outdoor, and community events. High-quality curation â€” treat as a primary source.",
     },
 }
 
-# ── Posting Schedule ─────────────────────────────────────────────────────
+# â”€â”€ Posting Schedule â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 WEEKDAY_POST_DAY = "monday"
 WEEKDAY_POST_HOUR = 9  # 9am CT
 WEEKEND_POST_DAY = "thursday"
 WEEKEND_POST_HOUR = 17  # 5pm CT
 
-# ── Instagram ────────────────────────────────────────────────────────────
+# â”€â”€ Instagram â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 IG_HANDLE = "tulsagays"
 IG_DISPLAY_NAME = "Tulsa Gays"
 IG_BIO = "Your weekly LGBTQ+ event guide for Tulsa \nEvents every Mon & Thu \nHomoHotelHappyHour"
 
-# ── Blog ─────────────────────────────────────────────────────────────────
+# â”€â”€ Blog â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 BLOG_URL = "https://www.tulsagays.com"
 GITHUB_REPO = "tulsagays/tulsagays.github.io"
 
-# ── Hashtags ─────────────────────────────────────────────────────────────
+# â”€â”€ Hashtags â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # 5 brand tags (existing followers) + 5 discovery tags (non-followers browsing
 # location/interest pages). Instagram now deprioritizes posts with 12+ hashtags,
 # so we keep the total at 10. Rotate from this pool; always include MUST_HAVE_HASHTAGS.
 HASHTAGS = [
     # Brand / community identity
-    "#TulsaGays", "#TulsaLGBTQ", "#QueerTulsa",
+    "#TulsaGays", "#TulsaLGBTQ", "#TulsaLGBTQIA",
     "#TulsaEvents", "#HomoHotelHappyHour",
-    # Discovery / location — reach non-followers browsing these tags
+    # Discovery / location â€” reach non-followers browsing these tags
     "#Tulsa", "#TulsaOklahoma", "#Oklahoma",
     "#VisitTulsa", "#OklahomaLGBTQ",
 ]
@@ -1074,10 +1074,10 @@ HASHTAGS = [
 # These three always appear on every post, no exceptions.
 MUST_HAVE_HASHTAGS = ["#TulsaGays", "#TulsaLGBTQ", "#HomoHotelHappyHour"]
 
-# ── Instagram handle map (source key → @handle) ──────────────────────────
+# â”€â”€ Instagram handle map (source key â†’ @handle) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # When an org's events appear in the weekly post, their handle gets mentioned
 # in the caption so they see it and can reshare. Add handles here as you
-# confirm them — only include handles you've verified are active and correct.
+# confirm them â€” only include handles you've verified are active and correct.
 SOURCE_IG_HANDLES = {
     # Confirmed from config.py instagram fields
     "dvl_tulsa":           "@dvltulsa",
@@ -1095,7 +1095,7 @@ SOURCE_IG_HANDLES = {
     # "all_souls_special": "@allsoulsuu",
 }
 
-# ── Self-Improvement ─────────────────────────────────────────────────────
+# â”€â”€ Self-Improvement â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 SEARCH_QUERIES = [
     "tulsa lgbtq events",
     "tulsa gay events this week",
@@ -1105,10 +1105,10 @@ SEARCH_QUERIES = [
     "tulsa lgbtq community",
 ]
 
-# ── City-specific filters and scoring ────────────────────────────────────
+# â”€â”€ City-specific filters and scoring â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # These data structures are CITY-SPECIFIC. Shared code (runner.py, image_maker.py,
 # gen_website_html.py, generator.py) reads from these. NEVER hardcode city values
-# in shared code — that breaks the sync pattern. See city-growth-playbook §15.5.
+# in shared code â€” that breaks the sync pattern. See city-growth-playbook Â§15.5.
 #
 # When scaffolding a new city, this section gets reset to empty/generic defaults.
 # Each city populates its own values during launch (Phase 3 source discovery).
@@ -1118,7 +1118,7 @@ SEARCH_QUERIES = [
 # Source keys (subset of SOURCES) considered always-LGBTQ.
 # Used by runner.py to decide whether an event needs the LGBTQ keyword filter.
 LGBTQ_SOURCES = {
-    # Generic — work for any city if those source modules exist
+    # Generic â€” work for any city if those source modules exist
     "recurring", "specific_orgs", "manual", "facebook_events",
     "aa_meetings", "community_groups", "qlist",
     # City-specific (Tulsa)
@@ -1129,16 +1129,16 @@ LGBTQ_SOURCES = {
     "circle_cinema", "philbrook_museum", "tulsa_arts_district",
     "tulsa_isnt_boring",
     "slack_events_local", "slack_unite_lgbtq_plus",
-    "wompa_tulsa",              # trusted community venue — all events relevant, no keyword filter
-    "tulsa_artist_fellowship",  # Flagship space — screenings, lectures, radical cultural events
-    "shambhala_tulsa",          # Shambhala Meditation Center — sound baths, meditation, workshops
-    "be_love_yoga",             # Be Love Yoga Studio — workshops, sound baths, kirtan
-    "open_eye_yoga",            # Open Eye Yoga (Brookside) — sound baths, special events
-    "yogaquest_tulsa",          # yogaQuest — workshops and wellness events
-    "the_sonic_ray",            # Nicholas Ray Bradford — sound bath meditation events
-    "updog_yoga_tulsa",         # Updog Yoga (415 E 12th St) — workshops, sound baths
-    "sana_meditation",          # Sana Meditation — mobile sound bath collective
-    "tulsa_yoga_meditation_center",  # Tulsa Yoga Meditation Center — workshops, Reiki, Ayurveda
+    "wompa_tulsa",              # trusted community venue â€” all events relevant, no keyword filter
+    "tulsa_artist_fellowship",  # Flagship space â€” screenings, lectures, radical cultural events
+    "shambhala_tulsa",          # Shambhala Meditation Center â€” sound baths, meditation, workshops
+    "be_love_yoga",             # Be Love Yoga Studio â€” workshops, sound baths, kirtan
+    "open_eye_yoga",            # Open Eye Yoga (Brookside) â€” sound baths, special events
+    "yogaquest_tulsa",          # yogaQuest â€” workshops and wellness events
+    "the_sonic_ray",            # Nicholas Ray Bradford â€” sound bath meditation events
+    "updog_yoga_tulsa",         # Updog Yoga (415 E 12th St) â€” workshops, sound baths
+    "sana_meditation",          # Sana Meditation â€” mobile sound bath collective
+    "tulsa_yoga_meditation_center",  # Tulsa Yoga Meditation Center â€” workshops, Reiki, Ayurveda
 }
 
 # Inclusive community partners (city-specific). Events from these orgs are welcome
@@ -1146,7 +1146,7 @@ LGBTQ_SOURCES = {
 # The runner checks name + description + URL for any of these strings.
 COMMUNITY_PARTNER_KEYWORDS = [
     "the sonic ray", "sonic ray", "sonicray",
-    # Tulsa venues with strong queer-welcoming reputations —
+    # Tulsa venues with strong queer-welcoming reputations â€”
     # any event mentioning these places bypasses strict keyword filter.
     "wompa",
     "philbrook",
@@ -1161,7 +1161,7 @@ COMMUNITY_PARTNER_KEYWORDS = [
     "living arts",
     "vanguard tulsa",
     "flagship", "tulsa artist fellowship",
-    # Wellness / meditation / yoga venues — special events (sound baths,
+    # Wellness / meditation / yoga venues â€” special events (sound baths,
     # workshops, kirtan, retreats) at these places are queer-welcoming.
     "shambhala", "shambhala meditation",
     "be love yoga", "beloveyoga",
@@ -1184,7 +1184,7 @@ NON_LGBTQ_BLOCKLIST_CITY = [
     "spe tulsa",
 ]
 
-# Address fragment → display business name. Used by clean_venue() in image_maker.py
+# Address fragment â†’ display business name. Used by clean_venue() in image_maker.py
 # and gen_website_html.py to display business names instead of raw street addresses.
 VENUE_NAME_MAP = {
     '302 south frankfort': 'DVL Club & Lounge',
@@ -1202,7 +1202,7 @@ VENUE_NAME_MAP = {
     '2224 w 51st':         'Zarrow Library',
 }
 
-# True gay bar venues — events at these always score 5 in flamingo scoring.
+# True gay bar venues â€” events at these always score 5 in flamingo scoring.
 # Use lowercase substrings (matched against venue field, after clean_venue).
 TRUE_GAY_BAR_VENUES = {
     'club majestic', 'tulsa eagle', 'yellow brick', 'majestic tulsa',
@@ -1210,7 +1210,7 @@ TRUE_GAY_BAR_VENUES = {
     'pump bar', '602 south lewis', '602 s. lewis', '602 s lewis',
 }
 
-# Queer-friendly venues (not exclusively gay) — events here default to 4 unless
+# Queer-friendly venues (not exclusively gay) â€” events here default to 4 unless
 # higher tier matches first.
 QUEER_FRIENDLY_VENUES = {
     'dvl', '302 south frankfort', '302 s. frankfort', '302 s frankfort', 'elote',
@@ -1221,7 +1221,7 @@ QUEER_FRIENDLY_VENUES = {
 LGBTQ_COMMUNITY_SOURCES = {"homo_hotel", "okeq", "recurring", "manual"}
 
 # Signature event configuration (the "HHHH" slot). City-specific.
-# If a city has no signature event yet, set "name_keywords": [] — EOTW logic will
+# If a city has no signature event yet, set "name_keywords": [] â€” EOTW logic will
 # skip directly to anchor cultural event or generic priority.
 SIGNATURE_EVENT = {
     "name": "Homo Hotel Happy Hour",
@@ -1262,7 +1262,7 @@ FOUR_FL_KEYWORDS_CITY = [
 ]
 
 
-# ── Helpers ──────────────────────────────────────────────────────────────
+# â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 def ensure_dirs():
     """Create data directories if they don't exist."""
     for d in [DATA_DIR, EVENTS_DIR]:

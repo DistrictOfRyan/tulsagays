@@ -61,7 +61,7 @@ FLAMINGO_LABELS = {
     1: "Mostly Straight",
     2: "Gay-Friendly",
     3: "Half Gay",
-    4: "Very Queer",
+    4: "Very LGBTQIA+",
     5: "Super Gay",
 }
 
@@ -493,7 +493,7 @@ def make_cover_slide(post_type: str, date_range: str,
 
     # ── Top branding block ────────────────────────────────────────────────
     y = 28
-    y = _draw_centered(draw, "YOUR QUEER WEEK IN TULSA", y, f_week_label, WHITE)
+    y = _draw_centered(draw, "YOUR LGBTQIA+ WEEK IN TULSA", y, f_week_label, WHITE)
     y += 6
     bar_accent_w = 180
     draw.rectangle([(W - bar_accent_w) // 2, y, (W + bar_accent_w) // 2, y + 3], fill=NEON_PINK)

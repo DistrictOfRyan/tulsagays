@@ -76,7 +76,7 @@ URGENCY_LINES = [
     lambda day, time, venue: f"{day} night. {time}{f' at {venue}' if venue else ''}. You will not find anything like this anywhere else in Tulsa.",
     lambda day, time, venue: f"One night{f' — {day} at {time}' if day and time else ''}. An intimate space. The kind of evening you actually remember.",
     lambda day, time, venue: f"{day} at {time}{f', {venue}' if venue else ''}. The room is small. The energy is not. Go.",
-    lambda day, time, venue: f"It's {day} at {time}{f' at {venue}' if venue else ''}. A room full of queer joy and no reason to be anywhere else.",
+    lambda day, time, venue: f"It's {day} at {time}{f' at {venue}' if venue else ''}. A room full of LGBTQIA+ joy and no reason to be anywhere else.",
     lambda day, time, venue: f"{day}. {time}{f'. {venue}' if venue else ''}. Be there or spend Friday hearing about it.",
     lambda day, time, venue: f"This is {day} at {time}{f' at {venue}' if venue else ''}. Intimate. Live. Unrepeatable. Go.",
 ]
@@ -90,7 +90,7 @@ FOMO_CLOSES = [
     "One night is not all you get. There's a whole week of this. Tap through.",
 ]
 
-HASHTAGS = "#TulsaGays #TulsaLGBTQ #QueerTulsa #TulsaEvents #HomoHotelHappyHour #Tulsa #TulsaOklahoma #Oklahoma #VisitTulsa #OklahomaLGBTQ"
+HASHTAGS = "#TulsaGays #TulsaLGBTQ #TulsaLGBTQIA #TulsaEvents #HomoHotelHappyHour #Tulsa #TulsaOklahoma #Oklahoma #VisitTulsa #OklahomaLGBTQ"
 
 # Instagram location ID for "Tulsa, Oklahoma" on Facebook/Instagram.
 # Adds a clickable location tag to every post — boosts local discovery.
