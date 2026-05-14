@@ -220,7 +220,7 @@ LIVE_EVENTS_WIDGET = """<div class="live-events-block" id="live-events-widget">
 <script>
 (function(){
     var w = document.getElementById('lew-list');
-    fetch('/data/events-current.json')
+    fetch('/events-current.json')
         .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
         .then(function(events){
             if (!events || !events.length) { w.innerHTML = '<p class="lew-empty">Check <a href="/">tulsagays.com</a> for this week\'s full list.</p>'; return; }
@@ -467,7 +467,7 @@ def write_events_current_json():
                 "day_short": day_short,
                 "time": e.get("time",""),
             })
-        out = ROOT / "docs" / "data" / "events-current.json"
+        out = ROOT / "docs" / "events-current.json"
         out.parent.mkdir(parents=True, exist_ok=True)
         with open(out, "w", encoding="utf-8") as f:
             json.dump(slim, f, indent=2)

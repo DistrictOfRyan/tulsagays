@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Lambda Bowling League",
+    "venue": "AMF Sheridan Lanes, 3121 S Sheridan Rd",
+    "date": "2026-05-11",
+    "day_short": "MON",
+    "time": "7:00 PM"
+  },
+  {
+    "name": "OKEQ Senior's",
+    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+    "date": "2026-05-12",
+    "day_short": "TUE",
+    "time": "10:00 AM"
+  },
+  {
+    "name": "HOPE Testing (Health Outreach, Prevention & Education)",
+    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+    "date": "2026-05-12",
+    "day_short": "TUE",
+    "time": "4:00 PM"
+  },
+  {
+    "name": "OSU Tulsa Queer Support Group",
+    "venue": "OSU Tulsa Campus, 700 N Greenwood Ave",
+    "date": "2026-05-12",
+    "day_short": "TUE",
+    "time": "6:00 PM"
+  },
+  {
+    "name": "EdQ (Educators for Equality)",
+    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+    "date": "2026-05-12",
+    "day_short": "TUE",
+    "time": "6:00 PM"
+  },
+  {
+    "name": "Tulsa Area Prime Timers",
+    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+    "date": "2026-05-12",
+    "day_short": "TUE",
+    "time": "7:00 PM"
+  },
+  {
+    "name": "OKEQ Health Clinic",
+    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+    "date": "2026-05-12",
+    "day_short": "TUE",
+    "time": "9:00 AM"
+  },
+  {
+    "name": "(Off-site) Fair Housing: Legal Aid Services of Oklahoma",
+    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+    "date": "2026-05-13",
+    "day_short": "WED",
+    "time": "12:00 PM"
+  }
+]
