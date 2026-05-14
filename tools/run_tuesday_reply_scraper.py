@@ -36,8 +36,8 @@ def _today_iso() -> str:
 
 
 def _engagement_log(week_key: str) -> Path:
-    data_dir = Path(config.DATA_DIR) if not isinstance(config.DATA_DIR, Path) else config.DATA_DIR
-    return data_dir / "posts" / week_key / "engagement_log.json"
+    """Read the engagement log from the committed docs/ path (matches social_lib)."""
+    return ROOT / "docs" / "posts" / week_key / "engagement_log.json"
 
 
 def _find_todays_prompt_post(week_key: str) -> dict | None:

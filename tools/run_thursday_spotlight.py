@@ -392,7 +392,7 @@ def main() -> int:
             "ig_post_id": ig_result.get("id"),
             "dry_run": args.dry_run,
         },
-        Path(config.DATA_DIR),
+        ROOT,
     )
     return 0
 

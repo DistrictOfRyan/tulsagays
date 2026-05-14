@@ -144,9 +144,14 @@ def get_ig_post_comments(cfg: dict[str, Any], ig_post_id: str) -> list[dict[str,
     return resp.get("data", [])
 
 
-def log_engagement_event(week_key: str, payload: dict[str, Any], data_dir: Path) -> Path:
-    """Append a row to data/posts/{week}/engagement_log.json (creating the list if absent)."""
-    log_dir = data_dir / "posts" / week_key
+def log_engagement_event(week_key: str, payload: dict[str, Any], repo_root: Path) -> Path:
+    """Append a row to docs/posts/{week}/engagement_log.json.
+
+    Lives under docs/ on purpose: data/ is gitignored, so anything written there
+    is invisible to subsequent GitHub Actions runs. docs/posts/ is committed and
+    served by Netlify, so cross-run state survives.
+    """
+    log_dir = repo_root / "docs" / "posts" / week_key
     log_dir.mkdir(parents=True, exist_ok=True)
     log_path = log_dir / "engagement_log.json"
     rows: list[dict[str, Any]] = []

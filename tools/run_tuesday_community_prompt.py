@@ -129,7 +129,7 @@ def main() -> int:
 
         subprocess.run(["git", "add", str(out_rel / img_name)], cwd=ROOT, check=True)
         subprocess.run(
-            ["git", "commit", "-m", f"tulsagays-tuesday-community-prompt: {week_key}"],
+            ["git", "commit", "-m", f"tulsagays-tuesday-community-prompt: {week_key} image"],
             cwd=ROOT,
             check=True,
         )
@@ -148,7 +148,7 @@ def main() -> int:
             print(f"WARN: Instagram post failed (keeping FB): {e}")
             ig_result = {"id": "failed", "error": str(e)}
 
-    log_engagement_event(
+    log_path = log_engagement_event(
         week_key,
         {
             "task": "tulsagays-tuesday-community-prompt",
@@ -161,8 +161,25 @@ def main() -> int:
             "ig_post_id": ig_result.get("id"),
             "dry_run": args.dry_run,
         },
-        config.DATA_DIR if isinstance(config.DATA_DIR, Path) else Path(config.DATA_DIR),
+        ROOT,
     )
+
+    if not args.dry_run:
+        import subprocess
+
+        subprocess.run(
+            ["git", "add", str(log_path.relative_to(ROOT))], cwd=ROOT, check=True
+        )
+        subprocess.run(
+            [
+                "git", "commit", "-m",
+                f"tulsagays-tuesday-community-prompt: {week_key} engagement log",
+            ],
+            cwd=ROOT,
+            check=True,
+        )
+        subprocess.run(["git", "push", "origin", "HEAD"], cwd=ROOT, check=True)
+
     print("done")
     return 0
 

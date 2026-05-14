@@ -57,12 +57,17 @@ def cmd_scrape():
     print(f"\nTotal events found: {len(events) if events else 0}")
 
     # Save Monday-baseline snapshot so mid-week tasks can detect new events.
-    # Snapshot is only (re)written when run on Monday — Wednesday/Thursday
-    # tasks read from this file to diff against the live events JSON.
+    # Written to both data/events/ (local) and docs/snapshots/ (committable
+    # path) so GitHub Actions runners that don't have data/ available — it's
+    # gitignored — can still diff against the snapshot.
     if datetime.now().weekday() == 0:
         try:
             week_key = config.current_week_key()
-            snap_path = os.path.join(config.EVENTS_DIR, f"{week_key}_monday_snapshot.json")
+            snap_filename = f"{week_key}_monday_snapshot.json"
+            snap_path = os.path.join(config.EVENTS_DIR, snap_filename)
+            docs_snap_dir = os.path.join(os.path.dirname(__file__), "docs", "snapshots")
+            os.makedirs(docs_snap_dir, exist_ok=True)
+            docs_snap_path = os.path.join(docs_snap_dir, snap_filename)
             live_path = os.path.join(config.EVENTS_DIR, f"{week_key}_all.json")
             if os.path.exists(live_path):
                 with open(live_path, "r", encoding="utf-8") as f:
@@ -77,9 +82,10 @@ def cmd_scrape():
                         for e in live_events if isinstance(e, dict)
                     }),
                 }
-                with open(snap_path, "w", encoding="utf-8") as f:
-                    json.dump(snapshot, f, indent=2, ensure_ascii=False)
-                print(f"Monday snapshot saved: {snap_path} ({snapshot['count']} events)")
+                for path in (snap_path, docs_snap_path):
+                    with open(path, "w", encoding="utf-8") as f:
+                        json.dump(snapshot, f, indent=2, ensure_ascii=False)
+                print(f"Monday snapshot saved: {snap_path} + {docs_snap_path} ({snapshot['count']} events)")
         except Exception as e:
             print(f"WARN: monday snapshot save failed: {e}")
 

@@ -98,16 +98,26 @@ def main() -> int:
 
     week_key = config.current_week_key()
     events_dir = Path(config.EVENTS_DIR)
-    snap_path = events_dir / f"{week_key}_monday_snapshot.json"
+
+    # Snapshot lives in docs/snapshots/ (committed) when written by main.py,
+    # data/events/ (gitignored) when run locally on William's PC. Live events
+    # JSON only exists in data/events/ on William's PC, so this task can only
+    # post when that's been committed too. Otherwise silent-skip.
+    snap_candidates = [
+        ROOT / "docs" / "snapshots" / f"{week_key}_monday_snapshot.json",
+        events_dir / f"{week_key}_monday_snapshot.json",
+    ]
+    snap_path = next((p for p in snap_candidates if p.exists()), None)
     live_path = events_dir / f"{week_key}_all.json"
 
-    if not snap_path.exists() or not live_path.exists():
+    if not snap_path or not live_path.exists():
         print(
-            f"Missing inputs (snap={snap_path.exists()} live={live_path.exists()}); "
-            "silent skip."
+            f"Missing inputs (snap_found={bool(snap_path)} "
+            f"live_exists={live_path.exists()}); silent skip."
         )
         return 0
 
+    print(f"snap_path={snap_path}  live_path={live_path}")
     with snap_path.open(encoding="utf-8") as f:
         snap = json.load(f)
     with live_path.open(encoding="utf-8") as f:
@@ -232,7 +242,7 @@ def main() -> int:
             "ig_post_id": ig_result.get("id"),
             "dry_run": args.dry_run,
         },
-        Path(config.DATA_DIR),
+        ROOT,
     )
     return 0
 
