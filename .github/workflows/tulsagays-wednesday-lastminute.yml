@@ -1,0 +1,52 @@
+name: TulsaGays Wednesday Last-Minute
+
+# Fires Wed 5pm CT (22:00 UTC). Diffs {week}_monday_snapshot.json against the
+# live events JSON. Posts a branded image only if a new event appeared in the
+# Thu-Sun window. Silent skip when nothing's new. Image-only via Graph API
+# /photos and /media. Replaces the retired text-only tulsagays-wednesday-social.
+#
+# Schedule is commented out until a manual workflow_dispatch run has confirmed
+# the script behaves correctly. To arm, uncomment the schedule block.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Generate image + log only, do not post or push"
+        required: false
+        type: boolean
+        default: true
+  schedule:
+    - cron: '0 22 * * 3'
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run last-minute task
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "false" ]; then
+            python tools/run_wednesday_lastminute.py
+          else
+            python tools/run_wednesday_lastminute.py --dry-run
+          fi

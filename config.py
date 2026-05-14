@@ -30,7 +30,12 @@ META_IG_USER_ID = os.environ.get("META_IG_USER_ID", "")
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 TICKETMASTER_API_KEY = os.environ.get("TICKETMASTER_API_KEY", "")
 
-# â”€â”€ Event Sources â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+TULSAGAYS_PAGE_ID = os.environ.get(“TULSAGAYS_PAGE_ID”, “1086906044497675”)
+TULSAGAYS_PAGE_ACCESS_TOKEN = os.environ.get(“TULSAGAYS_PAGE_ACCESS_TOKEN”, “”)
+HHHH_PAGE_ID = os.environ.get(“HHHH_PAGE_ID”, “”)
+HHHH_PAGE_ACCESS_TOKEN = os.environ.get(“HHHH_PAGE_ACCESS_TOKEN”, “”)
+
+# ── Event Sources ────────────────────────────────────────────────────────
 # Priority: 1 = always feature, 2 = feature if good, 3 = only if special/slow week
 SOURCES = {
     "homo_hotel": {

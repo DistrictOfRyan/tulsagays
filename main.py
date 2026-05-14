@@ -55,6 +55,82 @@ def cmd_scrape():
     from scraper.runner import main as run_scrapers
     events = run_scrapers()
     print(f"\nTotal events found: {len(events) if events else 0}")
+
+    # On Mondays, mirror the snapshot + full events JSON into docs/ so the
+    # GitHub Actions mid-week workflows (lastminute, spotlight) can read them.
+    # data/ is gitignored, so anything that lives only there is invisible to
+    # GHA runners. The git push at the bottom is best-effort: if the working
+    # tree is dirty or the remote is unreachable, the scrape still succeeds.
+    if datetime.now().weekday() == 0:
+        try:
+            week_key = config.current_week_key()
+            repo_root = os.path.dirname(os.path.abspath(__file__))
+            snap_filename = f"{week_key}_monday_snapshot.json"
+            full_filename = f"{week_key}_all.json"
+            snap_local = os.path.join(config.EVENTS_DIR, snap_filename)
+            docs_snap_dir = os.path.join(repo_root, "docs", "snapshots")
+            docs_data_dir = os.path.join(repo_root, "docs", "data", "events")
+            os.makedirs(docs_snap_dir, exist_ok=True)
+            os.makedirs(docs_data_dir, exist_ok=True)
+            docs_snap_path = os.path.join(docs_snap_dir, snap_filename)
+            docs_full_path = os.path.join(docs_data_dir, full_filename)
+            live_path = os.path.join(config.EVENTS_DIR, full_filename)
+
+            if os.path.exists(live_path):
+                with open(live_path, "r", encoding="utf-8") as f:
+                    payload = json.load(f)
+                live_events = payload.get("events", payload) if isinstance(payload, (dict, list)) else []
+                snapshot = {
+                    "captured_at": datetime.now().isoformat(timespec="seconds"),
+                    "week": week_key,
+                    "count": len(live_events),
+                    "event_keys": sorted({
+                        f"{e.get('date','')}|{(e.get('name','') or '').strip().lower()}|{(e.get('venue','') or '').strip().lower()}"
+                        for e in live_events if isinstance(e, dict)
+                    }),
+                }
+                for path in (snap_local, docs_snap_path):
+                    with open(path, "w", encoding="utf-8") as f:
+                        json.dump(snapshot, f, indent=2, ensure_ascii=False)
+                with open(docs_full_path, "w", encoding="utf-8") as f:
+                    json.dump(payload, f, ensure_ascii=False, indent=2)
+                print(
+                    f"Monday snapshot + events committed: "
+                    f"{docs_snap_path} + {docs_full_path} ({snapshot['count']} events)"
+                )
+
+                try:
+                    import subprocess
+
+                    subprocess.run(
+                        ["git", "add",
+                         os.path.relpath(docs_snap_path, repo_root),
+                         os.path.relpath(docs_full_path, repo_root)],
+                        cwd=repo_root, check=True,
+                    )
+                    diff = subprocess.run(
+                        ["git", "diff", "--cached", "--quiet"], cwd=repo_root
+                    )
+                    if diff.returncode != 0:
+                        subprocess.run(
+                            ["git", "commit", "-m",
+                             f"events: Monday snapshot + full week JSON ({week_key})"],
+                            cwd=repo_root, check=True,
+                        )
+                        subprocess.run(
+                            ["git", "pull", "--rebase", "origin", "main"],
+                            cwd=repo_root, check=False,
+                        )
+                        subprocess.run(
+                            ["git", "push", "origin", "HEAD:main"],
+                            cwd=repo_root, check=True,
+                        )
+                        print(f"events: pushed snapshot + {week_key}_all.json to main")
+                except Exception as e:
+                    print(f"WARN: git push of events data failed (non-fatal): {e}")
+        except Exception as e:
+            print(f"WARN: monday snapshot save failed: {e}")
+
     return events
 
 
@@ -520,6 +596,35 @@ def cmd_full_run():
     print("=" * 60)
 
 
+def cmd_post_hhhh():
+    """Post a caption (and optional images) to the HHHH Facebook Page.
+
+    Usage:
+        py main.py post-hhhh "caption text"
+        py main.py post-hhhh "caption text" path/to/img1.jpg path/to/img2.jpg
+    """
+    from posting.facebook import post_to_hhhh, FacebookPostError
+
+    if len(sys.argv) < 3:
+        print("Usage: py main.py post-hhhh <caption> [image_path ...]")
+        sys.exit(1)
+
+    caption = sys.argv[2]
+    image_paths = sys.argv[3:] or None
+
+    if not config.HHHH_PAGE_ID or not config.HHHH_PAGE_ACCESS_TOKEN:
+        print("ERROR: HHHH_PAGE_ID and HHHH_PAGE_ACCESS_TOKEN must be set in .env")
+        sys.exit(1)
+
+    try:
+        result = post_to_hhhh(caption, image_paths=image_paths)
+    except FacebookPostError as exc:
+        print(f"HHHH post failed: {exc}")
+        sys.exit(1)
+
+    print(f"Posted to HHHH Page. Response: {result}")
+
+
 def cmd_test():
     """Test run - scrape and generate without posting."""
     print("*" * 60)
@@ -594,6 +699,7 @@ if __name__ == "__main__":
         "generate-all": lambda: cmd_generate("all"),
         "post-weekday": lambda: cmd_post("weekday"),
         "post-weekend": lambda: cmd_post("weekend"),
+        "post-hhhh": cmd_post_hhhh,
         "update-blog": cmd_update_blog,
         "discover": cmd_discover,
         "report": cmd_report,

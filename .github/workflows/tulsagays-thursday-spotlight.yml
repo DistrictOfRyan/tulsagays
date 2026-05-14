@@ -1,0 +1,52 @@
+name: TulsaGays Thursday Spotlight
+
+# Fires Thu 12pm CT (17:00 UTC). Picks the top flamingo-score venue or event
+# this week (16-week no-repeat rule), writes a short blog article to
+# docs/blog/{slug}.html, prepends an index card, then posts the matching
+# branded image to FB + IG with a link back to the article.
+#
+# Schedule is commented out until a manual workflow_dispatch run has confirmed
+# the script behaves correctly. To arm, uncomment the schedule block.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Generate blog + image only, do not post or push"
+        required: false
+        type: boolean
+        default: true
+  schedule:
+    - cron: '0 17 * * 4'
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run thursday spotlight
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "false" ]; then
+            python tools/run_thursday_spotlight.py
+          else
+            python tools/run_thursday_spotlight.py --dry-run
+          fi

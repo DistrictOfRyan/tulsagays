@@ -1,3 +1,12 @@
+## [2026-05-14] Finish mid-week migration: HHHH posting, token cleanup, GHA scheduler fallback
+
+Original goal was to run register-new-tulsagays-tasks (the one-shot in claude-ops) and unregister tulsagays-wednesday-social. That step is blocked from this session because the scheduled-tasks MCP is not connected and the GitHub MCP scope is restricted to DistrictOfRyan/tulsagays, so claude-ops PR #23 cannot be merged and the SKILL.md contents cannot be read. Side fixes that could land in this repo did: added Graph API HHHH page posting (posting/facebook.py + post-hhhh CLI), added Playwright HHHH group posting (posting/group_post.py), moved the leaked Tulsa Gays page access token out of meta_api_config.json into TULSAGAYS_PAGE_ACCESS_TOKEN env var (rotate to invalidate the value still in git history), and scaffolded a GitHub Actions cron fallback for the four scheduled tasks (.github/workflows/scheduled-tulsagays-tasks.yml + tools/run_scheduled_task.py stubs).
+
+**Main artifact:** posting/facebook.py, posting/group_post.py, .github/workflows/scheduled-tulsagays-tasks.yml, tools/run_scheduled_task.py, .env.example, pending-william-actions.md, draft PR #6
+**Open items:** Rotate Tulsa Gays page token at Meta. Disarm tulsagays-wednesday-social in the cloud scheduler manually before next Wednesday. Run register-new-tulsagays-tasks from a session that has the scheduled-tasks MCP and claude-ops GitHub scope. Or, port the four SKILL.md handlers in tools/run_scheduled_task.py and configure GHA secrets to use the fallback scheduler. First-time Playwright setup on the posting machine: pip install playwright; playwright install chromium; python -m posting.group_post --setup.
+
+---
+
 ## [2026-05-13 23:45] Elevate tulsagays.com/blog - images, maps, live events, SEO, cross-links
 
 Added images (hero + 3 inline, mixed float layouts) to all 8 blog articles and thumbnails to blog index. All CC Wikimedia Commons with keyword-stuffed alt text. Then elevated every article with 7 upgrades: read time + verified badge, table of contents (long articles), Google Maps embeds (no API key), venue social callout boxes, live events widget (JS fetches /events-current.json updated every Monday), newsletter CTA, submit event CTA, related posts section. Created `tools/add_blog_images.py` and `tools/elevate_blog.py`. Monday SKILL now refreshes events-current.json after each post.
