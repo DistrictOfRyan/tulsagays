@@ -35,11 +35,12 @@ META_CFG_PATH = ROOT / "meta_api_config.json"
 with open(META_CFG_PATH, encoding="utf-8") as f:
     meta_cfg = json.load(f)
 
-PAGE_TOKEN = config.TULSAGAYS_PAGE_ACCESS_TOKEN or meta_cfg.get("page_access_token", "")
+PAGE_TOKEN = config.TULSAGAYS_PAGE_ACCESS_TOKEN
 if not PAGE_TOKEN:
     raise SystemExit(
-        "TULSAGAYS_PAGE_ACCESS_TOKEN is not set. Add it to .env "
-        "(see .env.example) and re-run."
+        "TulsaGays page token not found. config.py looked in env "
+        "TULSAGAYS_PAGE_ACCESS_TOKEN, ./meta_api_config.json, and "
+        "~/.claude/tulsagays/meta_api_config.json. Populate one of those."
     )
 PAGE_ID    = meta_cfg["page_id"]
 IG_ID      = meta_cfg["instagram_business_account_id"]

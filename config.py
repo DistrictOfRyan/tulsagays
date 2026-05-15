@@ -30,10 +30,39 @@ META_IG_USER_ID = os.environ.get("META_IG_USER_ID", "")
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 TICKETMASTER_API_KEY = os.environ.get("TICKETMASTER_API_KEY", "")
 
-TULSAGAYS_PAGE_ID = os.environ.get(“TULSAGAYS_PAGE_ID”, “1086906044497675”)
-TULSAGAYS_PAGE_ACCESS_TOKEN = os.environ.get(“TULSAGAYS_PAGE_ACCESS_TOKEN”, “”)
-HHHH_PAGE_ID = os.environ.get(“HHHH_PAGE_ID”, “”)
-HHHH_PAGE_ACCESS_TOKEN = os.environ.get(“HHHH_PAGE_ACCESS_TOKEN”, “”)
+TULSAGAYS_PAGE_ID = os.environ.get("TULSAGAYS_PAGE_ID", "1086906044497675")
+HHHH_PAGE_ID = os.environ.get("HHHH_PAGE_ID", "")
+HHHH_PAGE_ACCESS_TOKEN = os.environ.get("HHHH_PAGE_ACCESS_TOKEN", "")
+
+
+def _resolve_tulsagays_page_token():
+    """Find the TulsaGays page access token without forcing a manual refresh.
+
+    Order: env var → tulsagays/meta_api_config.json → claude-ops backup at
+    ~/.claude/tulsagays/meta_api_config.json. The placeholder string left by
+    the secret-rotation cleanup is treated as empty so the chain falls through.
+    """
+    placeholder = "MOVED_TO_ENV_TULSAGAYS_PAGE_ACCESS_TOKEN"
+    candidates = [os.environ.get("TULSAGAYS_PAGE_ACCESS_TOKEN", "").strip()]
+
+    for path in (
+        os.path.join(PROJECT_DIR, "meta_api_config.json"),
+        os.path.expanduser("~/.claude/tulsagays/meta_api_config.json"),
+    ):
+        try:
+            import json
+            with open(path, encoding="utf-8") as f:
+                candidates.append(str(json.load(f).get("page_access_token", "")).strip())
+        except (OSError, ValueError):
+            continue
+
+    for value in candidates:
+        if value and value != placeholder:
+            return value
+    return ""
+
+
+TULSAGAYS_PAGE_ACCESS_TOKEN = _resolve_tulsagays_page_token()
 
 # ── Event Sources ────────────────────────────────────────────────────────
 # Priority: 1 = always feature, 2 = feature if good, 3 = only if special/slow week
