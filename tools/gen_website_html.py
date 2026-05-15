@@ -214,11 +214,16 @@ def _parse_minutes(t):
     if not t:
         return 9999
     t = t.strip().upper()
-    # Extract first recognizable time from ranges like "6:00 PM - 8:00 PM",
-    # "Doors 9 PM, Show 10 PM", "10:00 AM and 11:15 AM"
-    m = re.search(r'(\d{1,2}:\d{2}\s*(?:AM|PM)|\b\d{1,2}\s+(?:AM|PM))\b', t)
+    # Normalize all Unicode spaces (narrow no-break, thin, hair, etc.) to ASCII space
+    import unicodedata
+    t = ''.join(' ' if unicodedata.category(c) == 'Zs' else c for c in t)
+    # Extract the FIRST recognizable time. No trailing  needed — re.search returns
+    # the leftmost match, so "6:30 PM8:00 PM18:3020:00" yields "6:30 PM" correctly.
+    m = re.search(r'\d{1,2}:\d{2}\s*(?:AM|PM)', t)
+    if not m:
+        m = re.search(r'\d{1,2}\s+(?:AM|PM)', t)
     if m:
-        t = m.group(1).strip()
+        t = m.group(0).strip()
     for fmt in ['%I:%M %p', '%H:%M', '%I:%M%p', '%I %p']:
         try:
             dt = datetime.strptime(t, fmt)
@@ -226,7 +231,6 @@ def _parse_minutes(t):
         except Exception:
             pass
     return 9998
-
 def time_sort_key(e):
     t = (e.get('time') or '').strip()
     return _parse_minutes(t)
@@ -372,21 +376,30 @@ def format_time(t):
         return None, None
     t_orig = t.strip()
     t = t_orig.upper()
-    # Extract start time from ranges like "6:00 PM - 8:00 PM", "Doors 9 PM, Show 10 PM"
-    m = re.search(r'(\d{1,2}:\d{2}\s*(?:AM|PM)|\b\d{1,2}\s+(?:AM|PM))\b', t)
+    # Normalize all Unicode spaces to ASCII space
+    import unicodedata
+    t = ''.join(' ' if unicodedata.category(c) == 'Zs' else c for c in t)
+    # Treat placeholder strings as untimed
+    if re.match(r'^check\b', t, re.I):
+        return None, None
+    # Extract the FIRST recognizable time. No trailing \b — leftmost re.search match
+    # handles concatenated output like "6:30 PM8:00 PM18:3020:00" correctly.
+    m = re.search(r'\d{1,2}:\d{2}\s*(?:AM|PM)', t)
+    if not m:
+        m = re.search(r'\b\d{1,2}\s+(?:AM|PM)', t)
     if m:
-        t = m.group(1).strip()
+        t = m.group(0).strip()
     for fmt in ['%I:%M %p', '%H:%M', '%I:%M%p', '%I %p']:
         try:
             dt = datetime.strptime(t, fmt)
             return dt.strftime('%I:%M').lstrip('0') or '12:00', dt.strftime('%p')
         except Exception:
             pass
+    # Only use split fallback if parts[1] is a real AM/PM token
     parts = t.split()
-    if len(parts) >= 2:
+    if len(parts) >= 2 and parts[1].upper() in ('AM', 'PM'):
         return parts[0], parts[1]
-    return t_orig, ''
-
+    return None, None
 _LEGEND_HTML = '''\
         <div class="flamingo-legend">
             <span class="flamingo-legend-title">Gay Score</span>
