@@ -1,0 +1,34 @@
+name: Localize Wikimedia images
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  localize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Download and rewrite
+        run: python tools/localize_wikimedia_images.py
+
+      - name: Commit and push if changed
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name 'github-actions[bot]'
+            git config user.email 'github-actions[bot]@users.noreply.github.com'
+            git add docs/blog/img/wikimedia docs
+            git commit -m "tools: localize Wikipedia Commons images"
+            git push
+          else
+            echo "No changes to commit."
+          fi
