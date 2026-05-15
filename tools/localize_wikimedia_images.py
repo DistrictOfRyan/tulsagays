@@ -46,18 +46,30 @@ def safe_filename(url: str) -> str:
 
 
 def download(url: str, dest: Path) -> tuple[bool, str]:
-    req = Request(url, headers={"User-Agent": USER_AGENT})
-    try:
-        with urlopen(req, timeout=30) as resp:
-            data = resp.read()
-        dest.write_bytes(data)
-        return True, f"{len(data)} bytes"
-    except HTTPError as e:
-        return False, f"HTTP {e.code}"
-    except URLError as e:
-        return False, f"URLError {e.reason}"
-    except Exception as e:  # noqa: BLE001
-        return False, f"{type(e).__name__}: {e}"
+    # Retry transient errors (429 throttle, 5xx, network blips) with
+    # exponential backoff. Wikimedia returns 429 readily on bursty traffic.
+    delays = [2, 5, 15, 30]
+    last_reason = "no attempt"
+    for attempt, delay in enumerate([0] + delays):
+        if delay:
+            time.sleep(delay)
+        req = Request(url, headers={"User-Agent": USER_AGENT})
+        try:
+            with urlopen(req, timeout=30) as resp:
+                data = resp.read()
+            dest.write_bytes(data)
+            return True, f"{len(data)} bytes (attempt {attempt + 1})"
+        except HTTPError as e:
+            last_reason = f"HTTP {e.code}"
+            if e.code in (429, 500, 502, 503, 504):
+                continue
+            return False, last_reason
+        except URLError as e:
+            last_reason = f"URLError {e.reason}"
+            continue
+        except Exception as e:  # noqa: BLE001
+            return False, f"{type(e).__name__}: {e}"
+    return False, last_reason
 
 
 def main() -> int:
@@ -86,7 +98,7 @@ def main() -> int:
         if ok:
             print(f"         -> {dest.name} ({info})", flush=True)
             url_to_local[url] = dest
-            time.sleep(0.5)  # be polite to Wikimedia
+            time.sleep(2)  # be polite to Wikimedia
         else:
             print(f"         FAILED: {info}", flush=True)
             failures.append((url, info))
