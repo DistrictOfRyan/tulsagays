@@ -1,5 +1,16 @@
 [
   {
+    "name": "Sound Bath Meditation",
+    "date": "2026-05-17",
+    "time": "10:30 AM",
+    "venue": "Shambhala Meditation Center of Tulsa",
+    "description": "An hour of sonic meditation with Nicholas Ray Bradford, gongs, Tibetan bowls, crystal harp, chimes, and more, with a tea ceremony to follow. Donation-based, give what you can. Sunday mornings rarely sound this good.",
+    "url": "https://thesonicray.com",
+    "source": "manual",
+    "priority": 2,
+    "source_note": "Submitted by Nicholas Bradford directly. Added 2026-05-13 via PR #2, re-added 2026-05-15 after W20 regeneration wiped it."
+  },
+  {
     "name": "The Tempest by Tulsa Shakespeare Company",
     "date": "2026-05-14",
     "time": "8:00 PM",
