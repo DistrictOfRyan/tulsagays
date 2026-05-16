@@ -55,7 +55,7 @@ Clean, bold, trendy. Poiret One font gives Art Deco DNA but the white+pink palet
 ### Cover Slide Taglines (rotate weekly on carousel)
 1. "Nothing to do in Tulsa? Sounds like a straight person problem."
 2. "There's only nothing to do in Tulsa if you're boring."
-3. "If you're bored in Tulsa, that's a you problem."
+3. "Bored in Tulsa? That's a straight-people problem."
 4. "You said there's nothing to do? Girl, keep up."
 5. "Boring people say Tulsa is boring. We stay booked."
 6. "Tulsa has nothing to do? You're just not invited to the right things."

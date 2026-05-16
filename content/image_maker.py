@@ -48,7 +48,7 @@ DAY_ACCENTS = {
 COVER_TAGLINES = [
     "Nothing to do in Tulsa? Sounds like a straight person problem.",
     "There's only nothing to do in Tulsa if you're boring.",
-    "If you're bored in Tulsa, that's a you problem.",
+    "Bored in Tulsa? That's a straight-people problem.",
     "You said there's nothing to do? Girl, keep up.",
     "Boring people say Tulsa is boring. We stay booked.",
     "Tulsa has nothing to do? You're just not invited to the right things.",
