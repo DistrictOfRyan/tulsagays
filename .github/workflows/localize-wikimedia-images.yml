@@ -1,0 +1,49 @@
+name: Localize Wikimedia images
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/localize-wikimedia-images.yml"
+      - "tools/localize_wikimedia_images.py"
+
+permissions:
+  contents: write
+
+jobs:
+  localize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Download and rewrite
+        run: python tools/localize_wikimedia_images.py
+
+      - name: Upload localized images as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: localized-wikimedia-images
+          path: |
+            docs/blog/img/wikimedia/
+            tools/wikimedia-localize-failures.txt
+          if-no-files-found: ignore
+
+      - name: Commit and push if changed
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name 'github-actions[bot]'
+            git config user.email 'github-actions[bot]@users.noreply.github.com'
+            git add docs/blog/img/wikimedia docs tools/wikimedia-localize-failures.txt 2>/dev/null || true
+            git commit -m "tools: localize Wikipedia Commons images"
+            git push || echo "::warning::Push rejected (likely branch protection). Localized files are uploaded as an artifact."
+          else
+            echo "No changes to commit."
+          fi
