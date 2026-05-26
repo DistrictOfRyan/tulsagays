@@ -55,7 +55,29 @@ COVER_TAGLINES = [
 ]
 
 SKIP_NAMES = {"event calendar", "events", "calendar", "untitled", "",
-              "map", "google calendar", "get your tickets", "upcoming events"}
+              "map", "google calendar", "get your tickets", "upcoming events",
+              "okeq health clinic"}
+
+# Substring patterns — any event whose name contains one of these is excluded.
+# Used by _is_garbage() in addition to the exact SKIP_NAMES match.
+SKIP_NAME_SUBSTRINGS = {
+    "zoom only",          # online-only events — never on slides
+    "hope testing",       # recurring HIV testing clinic
+    "health outreach",    # health outreach recurring services
+    "okeq health",        # any variant of the recurring clinic
+    "health clinic",      # any health clinic variant
+    "midweek meditation", # recurring online meditation
+    "shut up & write",    # productivity meetup, not a community highlight
+    "shut up and write",  # alt spelling
+    "girl scout",         # troop meetings — not a community highlight event
+    "lambda unity",       # LGBTQ AA meeting — valuable service, never featured
+    "raise your spiritual iq",  # generic self-help
+    "scrabble",           # board game night — not a highlighted event
+    "tabletop",           # generic tabletop gaming — recurring
+    "ttrpg",              # weekly tabletop RPG — recurring
+    "bowling league",     # recurring league — never a slide highlight
+    "bowling night",      # recurring bowling night
+}
 
 FLAMINGO_LABELS = {
     1: "Mostly Straight",
@@ -388,7 +410,11 @@ def _draw_wrapped(draw: ImageDraw.Draw, text: str, y: int,
                   max_px: int = W - PAD * 2,
                   max_lines: int = 3, line_gap: int = 6) -> int:
     """Draw word-wrapped centered text. Returns y after last line."""
-    lines = _wrap_to_width(draw, text, font, max_px)[:max_lines]
+    all_lines = _wrap_to_width(draw, text, font, max_px)
+    truncated = len(all_lines) > max_lines
+    lines = all_lines[:max_lines]
+    if truncated and lines:
+        lines[-1] = lines[-1].rstrip() + "..."
     for line in lines:
         y = _draw_centered(draw, line, y, font, fill)
         y += line_gap
@@ -418,7 +444,10 @@ def _watermark(draw: ImageDraw.Draw):
 
 def _is_garbage(event: Dict) -> bool:
     name = clean_text(event.get("name", "")).lower().strip()
-    return name in SKIP_NAMES or len(name) < 3
+    if name in SKIP_NAMES or len(name) < 3:
+        return True
+    # Also exclude events containing any skip substring (recurring clinics, zoom-only, etc.)
+    return any(sub in name for sub in SKIP_NAME_SUBSTRINGS)
 
 
 def _parse_event_time(time_str: str) -> int:
@@ -833,12 +862,12 @@ def make_day_slide(day_name: str, events: List[Dict],
     all_events = all_events[:4]  # cap at 4 events — guarantees no overflow
 
     # The first event in the original list is the featured/highlighted one.
-    # Sort all events chronologically, then find where the featured event landed.
+    # Always render featured event at the top (pink box), then sort the rest by time.
+    # This prevents deprioritized morning events from visually leading the slide.
     featured_event_obj = all_events[0] if all_events else None
-    all_events = sorted(all_events, key=lambda e: _parse_event_time(e.get("time", "")))
-    feat_idx = next(
-        (i for i, e in enumerate(all_events) if e is featured_event_obj), 0
-    )
+    rest = sorted(all_events[1:], key=lambda e: _parse_event_time(e.get("time", "")))
+    all_events = ([featured_event_obj] + rest) if featured_event_obj else rest
+    feat_idx = 0
 
     n      = len(all_events)
     accent = DAY_ACCENTS.get(day_name, GRAY)

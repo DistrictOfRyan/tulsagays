@@ -180,6 +180,19 @@ def _is_recurring(e):
     kw = _generic_kw + _city_partner_kw
     return any(k in name for k in kw)
 
+# Events that should never be featured as EOTW even if from LGBTQ sources
+_EOTW_INELIGIBLE_SUBSTRINGS = [
+    'health clinic', 'testing', 'hope testing', 'health outreach',
+    'senior', 'seniors', 'okeq senior', 'support group',
+    'zoom only', 'aa meeting', 'aa meetings', 'book club',
+    'meditation', 'sound bath', 'bowling',
+]
+
+def _is_eotw_ineligible(e):
+    """Return True for events that are boring/administrative and should never be EOTW."""
+    name = (e.get('name') or '').lower()
+    return any(kw in name for kw in _EOTW_INELIGIBLE_SUBSTRINGS)
+
 QUEER_PERFORMANCE_KEYWORDS = [
     'drag', 'drag show', 'drag bingo', 'drag brunch', 'drag queen', 'drag king',
     'cabaret', 'pride show', 'pride event', 'pride night', 'queer night',
@@ -279,9 +292,11 @@ all_flat = [e for day in DAYS for e in events_by_day[day]]
 hh = [e for e in all_flat if _is_homo_hotel(e)]
 council = [e for e in all_flat if _is_council_oak(e)]
 queer_perf = [e for e in all_flat if _is_queer_performance(e) and not _is_recurring(e)
-              and not _is_homo_hotel(e) and not _is_council_oak(e)]
+              and not _is_homo_hotel(e) and not _is_council_oak(e)
+              and not _is_eotw_ineligible(e)]
 specials = [e for e in all_flat if not _is_homo_hotel(e) and not _is_council_oak(e)
-            and not _is_queer_performance(e) and not _is_recurring(e)]
+            and not _is_queer_performance(e) and not _is_recurring(e)
+            and not _is_eotw_ineligible(e)]
 
 eotw = (hh[0] if hh else
         council[0] if council else

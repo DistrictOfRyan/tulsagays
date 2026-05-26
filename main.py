@@ -266,6 +266,10 @@ def cmd_generate(post_type="weekday"):
         "touchtunes",    # weekly Eagle promo, every Friday
         "ttrpg",         # weekly/recurring tabletop RPG sessions
         "tabletop",      # generic tabletop gaming — recurring
+        "hope testing",  # recurring 2nd/4th Tuesday HIV testing clinic
+        "health clinic", # recurring clinic appointments
+        "health outreach",  # recurring outreach services
+        "zoom only",     # online-only, not a real in-person recurring event
     }
     # These events should never appear in the top 3 — deprioritize to T6+
     _ALWAYS_DEPRIORITIZE = {
@@ -277,6 +281,11 @@ def cmd_generate(post_type="weekday"):
         "raise your spiritual iq",  # generic self-help
         "okeq senior",        # seniors program — important but never the featured event
         "girl scout",         # troop meetings — community but not a featured highlight
+        "hope testing",       # recurring HIV testing clinic — valuable service, never featured
+        "health outreach",    # recurring health outreach services
+        "okeq health",        # recurring clinic — never feature
+        "zoom only",          # online-only events — not in-person community events
+        "midweek meditation", # recurring online meditation
     }
     # These VENUES should never appear in the top 3 of any day or as EOTW
     _DEPRIORITIZE_VENUES = {

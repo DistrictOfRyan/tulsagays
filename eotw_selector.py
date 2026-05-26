@@ -120,6 +120,8 @@ _TRUSTED_LGBTQ_SRCS = {
     "black_queer_tulsa",
     "all_souls_special",
     "slack_unite_lgbtq_plus",
+    "okeq",               # Oklahomans for Equality — primary LGBTQ org, always trusted
+    "okeq_calendar",      # OKEQ calendar scraper
 }
 
 # Keywords that make an event explicitly LGBTQ-relevant for Tier 5.

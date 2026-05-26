@@ -100,9 +100,10 @@ HASHTAGS = "#TulsaGays #TulsaLGBTQ #TulsaLGBTQIA #TulsaEvents #HomoHotelHappyHou
 
 # Instagram location ID for "Tulsa, Oklahoma" on Facebook/Instagram.
 # Adds a clickable location tag to every post — boosts local discovery.
-# To find: GET graph.facebook.com/v25.0/search?type=place&q=Tulsa+Oklahoma&access_token={TOKEN}
-# Then set IG_LOCATION_ID to the numeric ID of the "Tulsa, Oklahoma" result.
-IG_LOCATION_ID = "213340757"  # Facebook place ID for Tulsa, Oklahoma
+# DISABLED: "213340757" was rejected by the API as invalid on 2026-05-25.
+# To re-enable: GET graph.facebook.com/v25.0/search?type=place&q=Tulsa+Oklahoma&access_token={TOKEN}
+# Find the correct numeric place ID and set it below.
+IG_LOCATION_ID = ""  # disabled until valid ID is confirmed
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -247,10 +248,33 @@ def load_caption() -> str:
 
 
 def get_slides() -> list[Path]:
-    """Return sorted list of slide PNGs for this week."""
+    """Return sorted list of slide PNGs for this week.
+
+    Supports both the legacy all__*.png naming and the current weekday__*.png
+    / weekend__*.png naming conventions. Blank day slides (no events, mostly
+    black, <30KB) are silently excluded — users don't need to swipe through
+    empty slides. The CTA/outro slide is always included if present (it's
+    always >=40KB due to text content).
+    """
     if not SLIDES_DIR.exists():
         return []
-    slides = sorted(SLIDES_DIR.glob("all__*.png"))
+    # Prefer weekday__*.png (current naming), fall back to all__*.png (legacy)
+    all_slides = sorted(SLIDES_DIR.glob("weekday__*.png"))
+    if not all_slides:
+        all_slides = sorted(SLIDES_DIR.glob("all__*.png"))
+
+    # Filter out intentionally blank day slides (mostly black canvas = tiny file)
+    # Threshold: < 30KB indicates a "no events" placeholder, not a real slide.
+    # Always keep the last slide (CTA/outro) regardless of size.
+    MIN_CONTENT_BYTES = 30 * 1024
+    slides = []
+    for i, slide in enumerate(all_slides):
+        is_last = (i == len(all_slides) - 1)
+        size = slide.stat().st_size
+        if size >= MIN_CONTENT_BYTES or is_last:
+            slides.append(slide)
+        else:
+            print(f"[skip] {slide.name} ({size // 1024}KB) — blank day slide, excluded from carousel")
     return slides
 
 
@@ -258,14 +282,19 @@ def validate_slides(slides: list[Path]) -> None:
     if not slides:
         sys.exit(f"ERROR: No slides found in {SLIDES_DIR}.\n"
                  f"Run: python main.py generate-all")
-    if len(slides) < 9:
-        sys.exit(f"ERROR: Only {len(slides)} slides found (need 9).\n"
+    # Minimum 2 slides for a carousel (Instagram requires >=2).
+    # Light weeks (Memorial Day, holiday weeks) may have fewer than 9 content slides
+    # after blank day slides are filtered out — that is expected, not an error.
+    if len(slides) < 2:
+        sys.exit(f"ERROR: Only {len(slides)} slides found (need at least 2 for a carousel).\n"
                  f"Run: python main.py generate-all")
     for s in slides:
         size = s.stat().st_size
-        if size < 30 * 1024:
-            sys.exit(f"ERROR: {s.name} is only {size // 1024}KB — likely corrupt or blank.\n"
+        if size < 15 * 1024:
+            sys.exit(f"ERROR: {s.name} is only {size // 1024}KB — likely corrupt.\n"
                      f"Re-generate slides: python main.py generate-all")
+    if len(slides) < 9:
+        print(f"[NOTE] {len(slides)} slides (light week — some days had no events)")
     print(f"[OK] {len(slides)} slides validated ({WEEK_KEY})")
 
 
