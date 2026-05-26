@@ -9,6 +9,7 @@ are baked into the system prompt so output never feels sterile or robotic.
 import sys
 import os
 import random
+import re
 import traceback
 from datetime import datetime
 
@@ -158,14 +159,23 @@ WORDS/PHRASES YOU MUST NEVER USE (these are AI tells):
 - "nestled", "embark", "comprehensive", "paramount"
 - Never use the word "community" more than once per post
 
-HOMO HOTEL HAPPY HOUR RULES:
-- This event is ALWAYS listed first, always gets the most hype
+HOMO HOTEL HAPPY HOUR RULES (only when HHHH is in the event list provided):
+- When HHHH appears in the events list, it goes first and gets the most hype
 - Describe it with genuine excitement each time but vary the wording
-- Its the signature weekly event -- treat it that way
+- Its the signature monthly event -- treat it that way when present
+- When HHHH is NOT in the events list (the user prompt will tell you), DO NOT
+  mention it, do not tease it, do not reference "next month" or "coming up".
+  Promote what's actually happening this week instead.
+
+EVENT FIDELITY RULES (absolute, no exceptions):
+- Only mention events from the list provided in the user prompt
+- Never invent event names, dates, venues, or details
+- Never pull events from memory of past weeks
+- If the events list is short, write a shorter caption — do not pad with fictional events
 
 FORMAT RULES:
 - First line is the hook -- short, punchy, makes people stop scrolling
-- Then Homo Hotel Happy Hour callout
+- Then the featured event (HHHH if present, otherwise the first event in the list)
 - Then 3-5 other events with date/time/venue on each
 - End with a call to action (tag a friend, save this, see you there, etc)
 - Hashtags go at the very end, separated by a blank line
@@ -197,7 +207,54 @@ def generate_post_caption(
             hashtags (list[str]) - hashtag list used
             category_events (dict) - events split by category
     """
-    category_events = categorize_events(events)
+    # HARD FILTER: pass events through eotw_selector skip rules AND restrict
+    # to the current Mon-Sun window before they reach the AI prompt. Without
+    # this, banned events (Club Majestic, source=recurring like Lambda Bowling,
+    # bowling leagues, support groups, health clinics, "open for business"
+    # business-hours announcements) and events from FUTURE weeks (HHHH on
+    # 2026-06-05 ending up in a W22 caption) end up in the post.
+    # eotw_selector.py is the single source of truth for skip rules.
+    from datetime import timedelta as _td
+    _today = datetime.now().date()
+    _week_monday = _today - _td(days=_today.weekday())
+    _week_sunday = _week_monday + _td(days=6)
+
+    def _in_current_week(e):
+        d = e.get("date", "")
+        if not d:
+            return False  # undated events excluded — we cannot trust them in a caption
+        try:
+            ed = datetime.strptime(d, "%Y-%m-%d").date()
+            return _week_monday <= ed <= _week_sunday
+        except ValueError:
+            return False
+
+    try:
+        from eotw_selector import _is_skip, _is_lgbtq
+        date_in = [e for e in events if _in_current_week(e)]
+        skip_filtered = [e for e in date_in if not _is_skip(e)]
+        # Sort LGBTQ events first so they get into the AI's attention budget
+        skip_filtered.sort(key=lambda e: (0 if _is_lgbtq(e) else 1))
+        events_for_caption = skip_filtered
+        # Check whether Homo Hotel Happy Hour is actually in this week's events
+        # so we can tell the AI NOT to fabricate it when it isn't.
+        hhhh_this_week = any(
+            "homo hotel" in (e.get("name") or "").lower()
+            for e in events_for_caption
+        )
+        print(f"[generator] Filtered {len(events)} -> {len(date_in)} in-week "
+              f"-> {len(skip_filtered)} after skip rules. HHHH this week: "
+              f"{hhhh_this_week}")
+    except Exception as _e:
+        print(f"[generator] WARNING: eotw_selector filter failed ({_e}); "
+              f"falling back to raw in-week events. CAPTION REVIEW MANDATORY.")
+        events_for_caption = [e for e in events if _in_current_week(e)]
+        hhhh_this_week = any(
+            "homo hotel" in (e.get("name") or "").lower()
+            for e in events_for_caption
+        )
+
+    category_events = categorize_events(events_for_caption)
     hashtags = _pick_hashtags()
     hashtag_str = " ".join(hashtags)
 
@@ -209,7 +266,20 @@ def generate_post_caption(
         date_range=date_range or "this week",
     )
 
-    events_text = _build_events_block(events)
+    events_text = _build_events_block(events_for_caption)
+
+    if hhhh_this_week:
+        hhhh_instruction = (
+            "Homo Hotel Happy Hour goes FIRST and gets the most love. Then pick "
+            "the 3-5 most interesting other events from the list."
+        )
+    else:
+        hhhh_instruction = (
+            "Homo Hotel Happy Hour is NOT this week. DO NOT mention it, do not "
+            "tease it, do not include it. Pick the 3-5 most interesting events "
+            "from the list and feature those instead. The first event in the "
+            "list is the highest-priority pick (it's already sorted)."
+        )
 
     user_prompt = f"""\
 Write an Instagram caption for the Tulsa Gays account.
@@ -219,25 +289,32 @@ Date range: {date_range or "this week"}
 Style this week: {fmt}
 Hook idea (riff on this, dont copy exactly): {hook_hint}
 
-Here are the events to feature:
+Here are the events to feature — ONLY mention events that appear in this list. \
+Do NOT invent events, do NOT pull from memory of past weeks, do NOT reference \
+events from other weeks even if you know about them:
 
 {events_text}
 
 Use these hashtags at the end (include all of them, separated by spaces):
 {hashtag_str}
 
-Remember: Homo Hotel Happy Hour goes FIRST and gets the most love. Then pick \
-the 3-5 most interesting other events. Dont just list everything -- curate it. \
-Add personality. Make people actually want to go.
+{hhhh_instruction} Don't just list everything -- curate it. Add personality. \
+Make people actually want to go. If an event is not in the list above, do not \
+mention it.
 """
 
-    # Try the API call, fall back to template if it fails
+    # Try the API call, fall back to template if it fails. Pass the
+    # ALREADY-FILTERED events to the fallback too — without this, fallback
+    # captions include banned events (Lambda Bowling, DRAGNIFICENT) and events
+    # from future weeks (HHHH on a future date).
     try:
         caption = _call_claude(user_prompt)
     except Exception as e:
         print(f"[generator] Claude API failed, using fallback: {e}")
         traceback.print_exc()
-        caption = _fallback_caption(events, post_type, date_range, hashtag_str)
+        caption = _fallback_caption(
+            events_for_caption, post_type, date_range, hashtag_str
+        )
 
     return {
         "caption": caption,
@@ -365,7 +442,35 @@ def _rule_based_enrich(event: dict) -> str:
         "verified providers", "events.tulsa.okstate.edu",
         "did you know that **", "this event is sold out this is not an official",
     ]
-    if existing and len(existing) > 80 and not any(a in existing.lower() for a in _scraper_artifacts):
+    # Strip OKEQ-style metadata prefix. Two patterns to handle:
+    #   "May 28, 2026 | 6:00 pm - 8:00 pm Dennis R. Neill Equality Center, 621 E 4th St, Tulsa, OK 74120, USA <real desc>"
+    #   "May 29, 2026 | 6:00 pm - 8:00 pm <real desc starts with real description>"
+    import re as _re
+    if existing:
+        # Step 1: strip leading "MMM DD, YYYY | TIME pm" header
+        _date_pat = _re.compile(
+            r'^[A-Za-z]+ \d{1,2}, \d{4}\s*\|\s*\d{1,2}:\d{2}\s*[ap]m'
+            r'(?:\s*-\s*\d{1,2}:\d{2}\s*[ap]m)?\s+',
+            _re.IGNORECASE,
+        )
+        cleaned = _date_pat.sub('', existing, count=1)
+        # Step 2: if leading text looks like an address (ends in USA), strip it
+        _addr_usa = _re.compile(r'^[^.!?]*?,?\s*USA\s+', _re.IGNORECASE)
+        cleaned2 = _addr_usa.sub('', cleaned, count=1)
+        if cleaned2 != cleaned:
+            cleaned = cleaned2
+        cleaned = cleaned.strip()
+        if cleaned and cleaned != existing:
+            existing = cleaned
+            event['description'] = cleaned
+    # OKEQ scraper descriptions are institutional copy-paste — force a William-voice
+    # rewrite if the event matches one of the rules below. Other sources keep their
+    # existing description if it's long enough.
+    _FORCE_REWRITE_SRCS = {"okeq", "okeq_calendar"}
+    _force_rewrite = src in _FORCE_REWRITE_SRCS
+    if (existing and len(existing) > 80
+            and not any(a in existing.lower() for a in _scraper_artifacts)
+            and not _force_rewrite):
         return existing  # already has a good description
 
     at_venue = f" at {venue}" if venue else ""
@@ -447,6 +552,28 @@ def _rule_based_enrich(event: dict) -> str:
         return (f"Step away from the screen and use your brain for something that actually requires other people. "
                 "Sit down next to a stranger, learn the rules, and talk trash. This is genuinely a great time.")
 
+    # Event-specific OKEQ rules — match BEFORE the generic OKEQ catch-all so
+    # MOREcolor / AFFIRMING / Positively Grateful / Broadway Clubhouse / TTRPG
+    # don't all share the same boilerplate description.
+    if "morecolor" in name:
+        return ("Allie Jensen Gallery transforms into one of Tulsa's best art receptions twice a year. "
+                "Twenty regional artists, sculpture to felted wool, painting to beaded medallions. "
+                "Show up early, talk to the artists, buy a piece if something speaks to you.")
+    if "affirming" in name and "spaces" not in name:
+        return ("AFFIRM is Cognitive Behavioral Therapy built specifically for LGBTQ+ youth. "
+                "Free, weekly, in the Wellness Room at the Equality Center. "
+                "If you know a young queer person who's struggling, this is the program.")
+    if "positively grateful" in name:
+        return ("HIV+ support runs on community, and this group has been holding it down every Friday for years. "
+                "Potluck format, wellness check-ins, real friendships. Bring a dish, leave with a few new numbers in your phone.")
+    if "broadway clubhouse" in name or "broadway club house" in name:
+        return ("Tulsa's monthly queer sing-along in the Lynn Riggs Theater at the Equality Center. "
+                "Bill Nelson and Jason Sirios on piano. Show tunes, libations, your people. "
+                "Last Sunday of every month. Skip the streaming queue and come sing.")
+    if "ttrpg" in name or "tabletop" in name:
+        return ("OKEQ's tabletop crew runs the friendliest game night in town. "
+                "Show up curious, get folded into a one-shot or a long campaign, walk out with a Discord invite. "
+                "Snacks provided. No D&D experience required.")
     # Equality center / anchor LGBTQ+ org — config-driven (signature org source key + venue keyword)
     _sig_org_keys = {"okeq", "equality_center"} | {(_sig.get("source_key") or "").lower()} - {""}
     if src in _sig_org_keys or "equality center" in (venue or "").lower():
@@ -464,16 +591,34 @@ _SCRAPER_ARTIFACTS = [
 ]
 
 
+_METADATA_PREFIX_PAT = re.compile(
+    r'^[A-Za-z]+ \d{1,2}, \d{4}\s*\|\s*\d{1,2}:\d{2}\s*[ap]m',
+    re.IGNORECASE,
+)
+
+
 def _is_scraper_artifact(desc: str) -> bool:
     d = desc.lower()
-    return any(a in d for a in _SCRAPER_ARTIFACTS)
+    if any(a in d for a in _SCRAPER_ARTIFACTS):
+        return True
+    # OKEQ-style "May 28, 2026 | 6:00 pm" metadata prefix counts as artifact
+    if _METADATA_PREFIX_PAT.match(desc.strip()):
+        return True
+    return False
+
+
+_FORCE_REWRITE_SOURCES = {"okeq", "okeq_calendar"}
 
 
 def _rule_based_enrich_all(events: list[dict]) -> list[dict]:
     """Apply rule-based enrichment to all events missing good or sassy descriptions."""
     for ev in events:
         existing = (ev.get("description") or "").strip()
-        if not existing or len(existing) < 60 or _is_scraper_artifact(existing):
+        src = (ev.get("source") or "").lower()
+        # Always re-enrich OKEQ events — their scraped descriptions are
+        # institutional copy-paste that doesn't match the brand voice.
+        if (not existing or len(existing) < 60 or _is_scraper_artifact(existing)
+                or src in _FORCE_REWRITE_SOURCES):
             ev["description"] = _rule_based_enrich(ev)
     return events
 
@@ -498,7 +643,8 @@ def _fallback_caption(
     lines.append(random.choice(hooks).upper())
     lines.append("")
 
-    # Find Homo Hotel event or fake it
+    # Find Homo Hotel event ONLY if it's actually in this week's filtered list.
+    # Do NOT fabricate it when absent — that put W23's HHHH in the W22 caption.
     hh_events = [e for e in events if "homo hotel" in (e.get("name") or "").lower()]
     if hh_events:
         hh = hh_events[0]
@@ -507,12 +653,9 @@ def _fallback_caption(
             lines.append(f"{hh['time']} @ {hh.get('venue', 'the usual spot')}")
         lines.append("you already know. be there.")
         lines.append("")
-    else:
-        lines.append("HOMO HOTEL HAPPY HOUR")
-        lines.append("the weekly tradition continues. you already know.")
-        lines.append("")
 
-    # Other events (up to 5)
+    # Other events (up to 5) — events are already pre-sorted LGBTQ-first by
+    # generate_post_caption(), so taking the top 5 gives us the most relevant.
     others = [e for e in events if "homo hotel" not in (e.get("name") or "").lower()]
     for ev in others[:5]:
         name = ev.get("name", "Event")

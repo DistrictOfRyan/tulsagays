@@ -62,21 +62,17 @@ SKIP_NAMES = {"event calendar", "events", "calendar", "untitled", "",
 # Used by _is_garbage() in addition to the exact SKIP_NAMES match.
 SKIP_NAME_SUBSTRINGS = {
     "zoom only",          # online-only events — never on slides
-    "hope testing",       # recurring HIV testing clinic
-    "health outreach",    # health outreach recurring services
-    "okeq health",        # any variant of the recurring clinic
-    "health clinic",      # any health clinic variant
-    "midweek meditation", # recurring online meditation
-    "shut up & write",    # productivity meetup, not a community highlight
-    "shut up and write",  # alt spelling
-    "girl scout",         # troop meetings — not a community highlight event
-    "lambda unity",       # LGBTQ AA meeting — valuable service, never featured
+    "hope testing",       # HIV testing clinic (privacy)
+    "okeq health",        # OKEQ health clinic (privacy)
+    "health clinic",      # any clinic variant (privacy)
+    "health outreach",    # outreach services (privacy)
+    "lambda unity",       # LGBTQ AA meeting (privacy)
+    "girl scout",         # troop meetings (kids)
     "raise your spiritual iq",  # generic self-help
-    "scrabble",           # board game night — not a highlighted event
-    "tabletop",           # generic tabletop gaming — recurring
-    "ttrpg",              # weekly tabletop RPG — recurring
-    "bowling league",     # recurring league — never a slide highlight
-    "bowling night",      # recurring bowling night
+    "sold out",           # already-unavailable events frustrate viewers
+    # NOTE: TTRPG, Shut Up & Write, scrabble, tabletop, bowling, midweek
+    # meditation, etc. are NOT skipped here — they're fine as filler events
+    # on day slides when the week is light on LGBTQ-headline programming.
 }
 
 FLAMINGO_LABELS = {
@@ -148,6 +144,11 @@ def clean_text(text: str) -> str:
         r'\U0001FA00-\U0001FA6F\U0001FA70-\U0001FAFF]+', '', text
     )
     text = text.replace('—', ',').replace('–', '-')  # em dash -> comma, en dash -> hyphen
+    # Strip raw markdown link syntax — scrapers occasionally leave it in
+    # descriptions like "**[Click here to learn more](https://...)**"
+    text = re.sub(r'\*+\[([^\]]+)\]\([^)]+\)\*+', r'\1', text)
+    text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
+    text = re.sub(r'\*+([^*]+)\*+', r'\1', text)
     return re.sub(r'\s+', ' ', text).strip()
 
 
@@ -258,6 +259,10 @@ _TWO_FL_KW = [
     'poetry', 'film', 'cinema', 'festival', 'cabaret', 'dance', 'live music',
     'cultural', 'brunch', 'karaoke', 'trivia', 'open mic', 'rooftop',
     'bingo', 'scavenger', 'sketch', 'craft', 'workshop', 'coffee',
+    # Known Tulsa queer-friendly venues (consistent 2-flamingo rating regardless
+    # of whether scraper captured "festival" in name vs. just the event title)
+    'mother road market', 'guthrie green', 'magic city books', 'foolish things',
+    '66 days of fun',
 ]
 
 def _flamingo_score(ev: dict) -> int:
@@ -266,31 +271,52 @@ def _flamingo_score(ev: dict) -> int:
     source  = ev.get('source', '')
     content = f"{name} {venue}"
 
-    # 5 — drag/pride spectacle, explicitly queer identity events, or any event at a gay bar
+    try:
+        from eotw_selector import _is_lgbtq_strict as _strict_lgbtq
+        is_strict_lgbtq = _strict_lgbtq(ev)
+    except Exception:
+        is_strict_lgbtq = False
+
+    # 5 — explicit queer-identity events. Any event with explicit identity
+    # keywords in the NAME (not description) is by definition a queer event
+    # and earns the top rating.
+    _IDENTITY_KW = (
+        'queer', 'lgbtq', 'lgbtqia',
+        'gay', 'lesbian', 'sapphic', 'dyke',
+        'trans ', 'transgender', 'nonbinary', 'non-binary', 'two-spirit',
+        'drag ', 'drag show', 'drag brunch', 'drag king', 'drag queen',
+        'pride ', 'pride night', 'pride event', 'pride party',
+        'homo hotel', 'hhhh',
+    )
+    if any(kw in name for kw in _IDENTITY_KW):
+        return 5
+    # 5 — city-specific named queer events / any event at a known gay bar
     if any(kw in content for kw in _FIVE_FL_KW):
         return 5
     if any(bar in venue for bar in _GAY_BAR_VENUES):
         return 5
-    # 4 — explicitly LGBTQ-focused orgs/spaces/events, or queer-friendly venues
-    if any(kw in content for kw in _FOUR_FL_KW):
-        return 4
-    if any(v in venue for v in _FOUR_VENUES):
-        return 4
-    # Events from LGBTQ-community-organizing sources (signature event, equality center, etc.) score 4
-    if source in _LGBTQ_COMMUNITY_SOURCES:
-        return 4
-    # 3 — LGBTQ community-organized but not explicitly identity events (community subset)
-    _community_subset = {s for s in _LGBTQ_COMMUNITY_SOURCES if s in ("recurring", "manual")}
-    if source in _community_subset and any(kw in content for kw in _COMMUNITY_KW):
-        return 3
-    # 3 — specific welcoming events that score above generic arts/culture
+
+    # 4 — trusted LGBTQ org or queer-friendly venue (strict LGBTQ gate prevents
+    # Tulsa Zoo / Mother Road from inheriting OKEQ-tier rating via description fuzz)
+    if is_strict_lgbtq:
+        if any(kw in content for kw in _FOUR_FL_KW):
+            return 4
+        if any(v in venue for v in _FOUR_VENUES):
+            return 4
+        if source in _LGBTQ_COMMUNITY_SOURCES and source != 'manual':
+            return 4
+
+    # 3 — affirming spaces: church/meditation/cultural venues that publicly welcome LGBTQ
     if any(kw in content for kw in _THREE_FL_KW):
         return 3
-    # 2 — gay-friendly arts/culture/entertainment
+
+    # 2 — gay-friendly cultural / arts / community events at non-affirming-specific venues
+    # (Mother Road Market, Magic City Books, Guthrie Green, etc.)
     if any(kw in content for kw in _TWO_FL_KW):
         return 2
-    # 2 — default; 1 flamingo is reserved for truly exclusionary/corporate-only events
-    return 2
+
+    # 1 — truly generic events with no LGBTQ angle (Memorial Day Run, suburban events)
+    return 1
 
 
 def format_date(date_str: str) -> str:
@@ -861,11 +887,12 @@ def make_day_slide(day_name: str, events: List[Dict],
         all_events.extend([e for e in also_happening if not _is_garbage(e)])
     all_events = all_events[:4]  # cap at 4 events — guarantees no overflow
 
-    # The first event in the original list is the featured/highlighted one.
-    # Always render featured event at the top (pink box), then sort the rest by time.
-    # This prevents deprioritized morning events from visually leading the slide.
+    # The first event is the featured/highlighted one (pink box at top).
+    # Preserve the upstream order from main.py's tier sort — LGBTQ events
+    # must stay grouped at the top, never split apart by a community filler
+    # event that happens to start earlier in the day.
     featured_event_obj = all_events[0] if all_events else None
-    rest = sorted(all_events[1:], key=lambda e: _parse_event_time(e.get("time", "")))
+    rest = all_events[1:]  # tier-sorted upstream; do NOT re-sort by time
     all_events = ([featured_event_obj] + rest) if featured_event_obj else rest
     feat_idx = 0
 

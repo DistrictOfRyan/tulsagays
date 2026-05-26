@@ -71,6 +71,43 @@ def _is_skip(e: Dict) -> bool:
     )
 
 
+# Hard-skip rules — events that never appear on slides at all, not just EOTW.
+# Smaller list than _is_skip — community resources at LGBTQ venues (TTRPG at
+# OKEQ, support groups, health clinics) ARE shown on day slides; they just
+# never lead a day or get featured as EOTW.
+_HARD_SKIP_SOURCES = {"aa_meetings", "bars"}
+
+_HARD_SKIP_NAME_FRAGMENTS = {
+    "aa meeting", "aa meetings",            # privacy
+    "drop-in therapy", "therapy session",   # therapy privacy
+    "touchtunes",                           # weekly Eagle bar promo
+    "happy hour!",                          # generic bar open-door (DVL etc.)
+    "leather night", "shenanigans",
+    "eagle bingo", "derby watch", "derby hat",
+    "mix and mingle",                       # straight networking
+    "open for business",                    # business-hours announcement
+    "raise your spiritual iq",              # generic self-help
+}
+
+# Venues hard-skipped per organizer policy (Club Majestic)
+_HARD_SKIP_VENUES = {"majestic", "124 n boston"}
+
+
+def _is_hard_skip(e: Dict) -> bool:
+    """Stricter blocklist for slides — only the truly banned categories.
+    Recurring OKEQ programming (TTRPG, support groups, health clinics)
+    can appear as filler events on day slides; they just can't be EOTW.
+    """
+    src   = (e.get("source")  or "").lower()
+    name  = (e.get("name")    or "").lower()
+    venue = (e.get("venue")   or "").lower()
+    return (
+        src in _HARD_SKIP_SOURCES
+        or any(frag in name  for frag in _HARD_SKIP_NAME_FRAGMENTS)
+        or any(v    in venue for v    in _HARD_SKIP_VENUES)
+    )
+
+
 # ---------------------------------------------------------------------------
 # Tier detectors
 # ---------------------------------------------------------------------------
@@ -160,6 +197,40 @@ def _is_lgbtq(e: Dict) -> bool:
         return True
     t = _text(e)
     return any(kw in t for kw in _LGBTQ_KW)
+
+
+# STRICT variant used by slide generator. Only matches:
+#   1. Trusted LGBTQ source, OR
+#   2. LGBTQ keyword in NAME or VENUE (NOT description — too many "affirming
+#      spaces for LGBTQIA+ people of faith" type matches that aren't LGBTQ events)
+_STRICT_LGBTQ_KW = {
+    "lgbtq", "lgbtqia", "queer", "gay", "lesbian", "trans",
+    "bisexual", "nonbinary", "non-binary", "sapphic", "dyke",
+    "pride", "rainbow", "homo hotel", "hhhh",
+    "drag", "two-spirit", "pflag",
+    "okeq", "oklahomans for equality", "equality center",
+    "dennis r. neill", "dennis r neill",
+    "council oak", "comc",
+    "gender outreach",
+    "broadway clubhouse",   # OKEQ social space
+    "queer crafters",
+    "morecolor",            # OKEQ art show
+    "equality business alliance", "eba",
+    "affirming",            # only matches in NAME, not description
+}
+
+
+def _is_lgbtq_strict(e: Dict) -> bool:
+    """Stricter LGBTQ check for slide generation. Source-trusted OR keyword
+    in name/venue only — NOT description, which lets too many "everyone
+    welcome including LGBTQIA+" community events sneak through.
+    """
+    if (e.get("source") or "").lower() in _TRUSTED_LGBTQ_SRCS:
+        return True
+    name = (e.get("name") or "").lower()
+    venue = (e.get("venue") or "").lower()
+    text = name + " " + venue
+    return any(kw in text for kw in _STRICT_LGBTQ_KW)
 
 
 # ---------------------------------------------------------------------------

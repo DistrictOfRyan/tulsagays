@@ -216,6 +216,19 @@ def cmd_generate(post_type="weekday"):
         category_events = _categorize_events(events)
 
     # Build events_by_day — only events within THIS week's Mon-Sun date range
+    # AND only events that pass eotw_selector._is_skip() (the single source of
+    # truth for banned events: Club Majestic, source=recurring, bowling
+    # leagues, support groups, health clinics, "open for business" hours
+    # announcements, etc.). Without this filter, banned events showed up on
+    # slides as #2/#3 (W22: EBA: Open for Business on Thursday).
+    try:
+        from eotw_selector import _is_skip as _eotw_is_skip
+    except Exception as _e:
+        print(f"WARNING: eotw_selector import failed ({_e}); slides will NOT "
+              f"filter banned events. Review every slide before posting.")
+        def _eotw_is_skip(_ev):
+            return False
+
     days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday",
                     "Friday", "Saturday", "Sunday"]
     events_by_day = {day: [] for day in days_of_week}
@@ -223,14 +236,28 @@ def cmd_generate(post_type="weekday"):
     _today = datetime.now().date()
     _week_monday = _today - timedelta(days=_today.weekday())
     _week_sunday = _week_monday + timedelta(days=6)
+    _skipped_count = 0
+    # LGBTQ-FIRST MODE: slides show 3 events per day, with LGBTQ events
+    # prioritized at the top. Community events fill remaining slots when
+    # the week is light on explicit LGBTQ programming. Only HARD-banned
+    # events (Club Majestic, AA, bar promos) are excluded — recurring
+    # OKEQ community programming (TTRPG, support groups, clinics) shows
+    # as filler at the bottom of day slides via the tier system.
+    try:
+        from eotw_selector import _is_hard_skip as _slide_skip
+    except ImportError:
+        _slide_skip = _eotw_is_skip
     for ev in events:
+        if _slide_skip(ev):
+            _skipped_count += 1
+            continue
         date_str = ev.get("date", "")
         if date_str:
             try:
                 dt = datetime.strptime(date_str, "%Y-%m-%d")
                 ev_date = dt.date()
                 if not (_week_monday <= ev_date <= _week_sunday):
-                    continue  # event is outside this week's range — skip
+                    continue
                 day_name = dt.strftime("%A")
                 if day_name in events_by_day:
                     events_by_day[day_name].append(ev)
@@ -238,6 +265,8 @@ def cmd_generate(post_type="weekday"):
                 no_date_events.append(ev)
         else:
             no_date_events.append(ev)
+    print(f"[slides] Filtered out {_skipped_count} banned/recurring events "
+          f"via eotw_selector._is_skip()")
     # Priority sort: LGBTQ non-bar non-recurring first, bars and non-LGBTQ last.
     # Within each tier, sort by actual time (AM/PM parsed correctly, untimed last).
     _BAR_VENUES = {"1338 e 3rd", "302 south frankfort", "302 s. frankfort",
@@ -321,9 +350,17 @@ def cmd_generate(post_type="weekday"):
         is_bar = (src == "bars"
                   or any(bv in venue for bv in _BAR_VENUES)
                   or any(bf in name  for bf in _BAR_NAME_FRAGMENTS))
-        is_lgbtq = (any(kw in combo for kw in _LGBTQ_KEYWORDS)
-                    or any(v in combo for v in _LGBTQ_VENUES)
-                    or src in _LGBTQ_SOURCES)
+        # Use strict eotw_selector check (name/venue only, no description),
+        # so events like "Zoolightful at Tulsa Zoo" and "Open Meditation"
+        # don't get tagged LGBTQ because their description mentions
+        # "affirming spaces for LGBTQIA+ people".
+        try:
+            from eotw_selector import _is_lgbtq_strict as _strict_lgbtq
+            is_lgbtq = _strict_lgbtq(e)
+        except Exception:
+            is_lgbtq = (any(kw in combo for kw in _LGBTQ_KEYWORDS)
+                        or any(v in combo for v in _LGBTQ_VENUES)
+                        or src in _LGBTQ_SOURCES)
         is_recurring = (src in _RECURRING_SOURCES
                         or any(kw in name for kw in _RECURRING_NAME_FRAGMENTS))
         is_deprioritized = (

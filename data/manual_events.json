@@ -63,5 +63,127 @@
     "description": "Tulsa Shakespeare Company presents The Tempest at the Equality Center, with a unique blend of traditional theatre and drag and an entirely LGBTQ+ cast, crew, and creative team. Six-night run May 14-16 and May 21-23, all shows at 8pm. Tickets at tulsashakespeare.com.",
     "url": "https://tulsashakespeare.com",
     "source_note": "Direct outreach from Ibrahim, board president of Tulsa Shakespeare Company (Slack message 2026-04-30 5:33pm)"
+  },
+  {
+    "name": "Musical Bikes Monday at Mother Road Market",
+    "date": "2026-05-25",
+    "time": "6:00 PM",
+    "venue": "Mother Road Market",
+    "description": "Bike culture meets good vibes at Mother Road Market for Musical Bikes Monday — part of the ongoing 66 Days of Fun festival. Cruise over on two wheels or just show up to appreciate the ones that do.",
+    "url": "https://motherroadmarket.com",
+    "source": "timetree",
+    "source_note": "Timetree 'Tulsa Isnt Boring' calendar — scraped manually 2026-05-25"
+  },
+  {
+    "name": "Maple Ridge Memorial Day Run (1M & 5K)",
+    "date": "2026-05-25",
+    "time": "8:00 AM",
+    "venue": "Maple Ridge Neighborhood",
+    "description": "Lace up and honor the holiday the right way — with a 1-mile or 5K run through the beautiful Maple Ridge neighborhood. All paces welcome. A great way to start Memorial Day before the cookouts commence.",
+    "url": "",
+    "source": "timetree",
+    "source_note": "Timetree 'Tulsa Isnt Boring' calendar — scraped manually 2026-05-25"
+  },
+  {
+    "name": "Monday Night Jazz at Vintage Wine Bar",
+    "date": "2026-05-25",
+    "time": "8:00 PM",
+    "venue": "Vintage Wine Bar",
+    "description": "Wrap up your Memorial Day evening with live jazz and a glass of something lovely at Vintage Wine Bar. This recurring Monday night series keeps the good times rolling from 8 to 11pm. No cover, just vibes.",
+    "url": "",
+    "source": "timetree",
+    "source_note": "Timetree 'Tulsa Isnt Boring' calendar — scraped manually 2026-05-25"
+  },
+  {
+    "name": "66 Days of Fun Festival at Mother Road Market",
+    "date": "2026-05-26",
+    "time": "11:00 AM",
+    "venue": "Mother Road Market",
+    "description": "The 66 Days of Fun festival continues at Mother Road Market with food vendors, local makers, and all the outdoor energy that makes this Tulsa's favorite weekly hangout. Come hungry, leave happy.",
+    "url": "https://motherroadmarket.com",
+    "source": "timetree",
+    "source_note": "Timetree 'Tulsa Isnt Boring' calendar — scraped manually 2026-05-25"
+  },
+  {
+    "name": "Crime Time with Magic City Books",
+    "date": "2026-05-26",
+    "time": "6:00 PM",
+    "venue": "Magic City Books",
+    "description": "Magic City Books hosts Crime Time — a reading and discussion event for fans of mysteries, thrillers, and all things deliciously dark. Grab a book and pull up a chair at one of Tulsa's most beloved indie bookstores.",
+    "url": "https://magiccitybooks.com",
+    "source": "timetree",
+    "source_note": "Timetree 'Tulsa Isnt Boring' calendar — scraped manually 2026-05-25"
+  },
+  {
+    "name": "66 Days of Fun: $5 Wednesday at Mother Road Market",
+    "date": "2026-05-27",
+    "time": "11:00 AM",
+    "venue": "Mother Road Market",
+    "description": "It's $5 Wednesday at the 66 Days of Fun festival! Five bucks gets you into Mother Road Market's midweek celebration featuring food trucks, vendors, and live entertainment. Best five dollars you'll spend all week.",
+    "url": "https://motherroadmarket.com",
+    "source": "timetree",
+    "source_note": "Timetree 'Tulsa Isnt Boring' calendar — scraped manually 2026-05-25"
+  },
+  {
+    "name": "Food Truck Wednesdays at Guthrie Green",
+    "date": "2026-05-27",
+    "time": "11:00 AM",
+    "venue": "Guthrie Green",
+    "description": "Guthrie Green's beloved Food Truck Wednesdays returns with a rotating lineup of local food trucks serving up everything from tacos to BBQ to bubble tea. Noon to 2pm, bring cash or card and an appetite.",
+    "url": "https://guthriegreen.com",
+    "source": "timetree",
+    "source_note": "Timetree 'Tulsa Isnt Boring' calendar — scraped manually 2026-05-25"
+  },
+  {
+    "name": "The Mother Road Dinner: 6 Courses, 6 Cities at NEFF Brewing",
+    "date": "2026-05-27",
+    "time": "6:30 PM",
+    "venue": "NEFF Brewing",
+    "description": "A culinary journey through Route 66 in six courses and six cities — all happening right at NEFF Brewing. This immersive dining event pairs local craft beer with flavors from across the historic highway. Ticketed event.",
+    "url": "",
+    "source": "timetree",
+    "source_note": "Timetree 'Tulsa Isnt Boring' calendar — scraped manually 2026-05-25"
+  },
+  {
+    "name": "Zoolightful: Dazzling Animal Lanterns at Tulsa Zoo",
+    "date": "2026-05-28",
+    "time": "6:00 PM",
+    "venue": "Tulsa Zoo",
+    "description": "Tulsa Zoo transforms after dark with hundreds of illuminated animal lanterns in this spectacular evening experience. Walk through Zoolightful's glowing wildlife displays from 6 to 9:30pm. Tickets required.",
+    "url": "https://tulsazoo.org",
+    "source": "timetree",
+    "source_note": "Timetree 'Tulsa Isnt Boring' calendar — scraped manually 2026-05-25"
+  },
+  {
+    "name": "Bingo at Saturn Room",
+    "date": "2026-05-28",
+    "time": "6:30 PM",
+    "venue": "Saturn Room",
+    "description": "Bingo night at Saturn Room — Tulsa's eclectic cocktail bar and music venue. Grab your dauber, order a drink, and let the good-natured chaos begin. Free to play, big on fun.",
+    "url": "",
+    "source": "timetree",
+    "source_note": "Timetree 'Tulsa Isnt Boring' calendar — scraped manually 2026-05-25"
+  },
+  {
+    "name": "Summer Solstice Sound Bath",
+    "date": "2026-06-21",
+    "time": "1:00 PM",
+    "venue": "Buddy LaFortune Community Center, 5202 South Hudson Avenue, Tulsa, OK 74135",
+    "description": "Sonic meditation honoring the summer solstice with Nicholas Ray Bradford. Guided breathwork plus gongs, Tibetan bowls, chimes, crystal harp, drums, and shakers. 24 floor mats plus 6 zero-gravity chairs for accessibility. Doors 12:45 PM. Free parking. Ages 12+.",
+    "url": "https://www.eventbrite.com/e/summer-solsticesound-bath-tickets-1990355499879",
+    "source": "manual",
+    "priority": 2,
+    "source_note": "Direct from Nicholas Ray Bradford's FB event 1148498248344634. Added 2026-05-26 for W25. Continues the relationship started with Sound Bath Meditation (PR #2)."
+  },
+  {
+    "name": "66 Days of Fun at Mother Road Market",
+    "date": "2026-05-31",
+    "time": "11:00 AM",
+    "venue": "Mother Road Market",
+    "description": "Sunday edition of the 66 Days of Fun festival at Mother Road Market. Food vendors, local makers, outdoor patio energy. Memorial Day weekend wind-down done right.",
+    "url": "https://motherroadmarket.com",
+    "source": "timetree",
+    "priority": 3,
+    "source_note": "Manually added 2026-05-26 to fill Sunday slide. Festival runs daily May 1 through July 5 2026."
   }
 ]
