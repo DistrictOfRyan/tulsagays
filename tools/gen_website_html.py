@@ -186,6 +186,7 @@ _EOTW_INELIGIBLE_SUBSTRINGS = [
     'senior', 'seniors', 'okeq senior', 'support group',
     'zoom only', 'aa meeting', 'aa meetings', 'book club',
     'meditation', 'sound bath', 'bowling',
+    'open for business',  # business-directory/open-shop announcements are not events
 ]
 
 def _is_eotw_ineligible(e):
@@ -287,20 +288,36 @@ for day in DAYS:
     events_by_day[day] = _dedup_events(events_by_day[day])
     events_by_day[day].sort(key=time_sort_key)
 
-# Find EOTW — priority: HH → Council Oak → Drag/Queer Performance → other specials
+# Find EOTW — priority: HH → Council Oak → Drag Shows → Other Queer Performance → other specials
+# Drag/performance keywords that should always beat community-org events for EOTW
+_DRAG_SHOW_KEYWORDS = [
+    'drag show', 'drag bingo', 'drag brunch', 'drag queen', 'drag king', 'drag race',
+    'drag night', 'drag perform', 'dragnificent', 'cabaret', 'burlesque',
+    'pride show', 'pride party', 'pride night', 'queer night', 'gay night',
+]
+
+def _is_drag_show(e):
+    """True if this is an actual drag/performance event (not just an LGBTQ org listing)."""
+    combined = ' '.join([(e.get('name') or ''), (e.get('venue') or '')]).lower()
+    return any(kw in combined for kw in _DRAG_SHOW_KEYWORDS)
+
 all_flat = [e for day in DAYS for e in events_by_day[day]]
 hh = [e for e in all_flat if _is_homo_hotel(e)]
 council = [e for e in all_flat if _is_council_oak(e)]
-queer_perf = [e for e in all_flat if _is_queer_performance(e) and not _is_recurring(e)
-              and not _is_homo_hotel(e) and not _is_council_oak(e)
-              and not _is_eotw_ineligible(e)]
+queer_perf_base = [e for e in all_flat if _is_queer_performance(e) and not _is_recurring(e)
+                   and not _is_homo_hotel(e) and not _is_council_oak(e)
+                   and not _is_eotw_ineligible(e)]
+# Drag shows and real performances first; community-org listings second
+drag_shows = [e for e in queer_perf_base if _is_drag_show(e)]
+other_queer_perf = [e for e in queer_perf_base if not _is_drag_show(e)]
 specials = [e for e in all_flat if not _is_homo_hotel(e) and not _is_council_oak(e)
             and not _is_queer_performance(e) and not _is_recurring(e)
             and not _is_eotw_ineligible(e)]
 
 eotw = (hh[0] if hh else
         council[0] if council else
-        queer_perf[0] if queer_perf else
+        drag_shows[0] if drag_shows else
+        other_queer_perf[0] if other_queer_perf else
         specials[0] if specials else None)
 eotw_key = (eotw.get('name', ''), eotw.get('date', '')) if eotw else None
 
