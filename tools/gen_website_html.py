@@ -180,34 +180,6 @@ def _is_recurring(e):
     kw = _generic_kw + _city_partner_kw
     return any(k in name for k in kw)
 
-# Events that should never be featured as EOTW even if from LGBTQ sources
-_EOTW_INELIGIBLE_SUBSTRINGS = [
-    'health clinic', 'testing', 'hope testing', 'health outreach',
-    'senior', 'seniors', 'okeq senior', 'support group',
-    'zoom only', 'aa meeting', 'aa meetings', 'book club',
-    'meditation', 'sound bath', 'bowling',
-    'open for business',  # business-directory/open-shop announcements are not events
-]
-
-def _is_eotw_ineligible(e):
-    """Return True for events that are boring/administrative and should never be EOTW."""
-    name = (e.get('name') or '').lower()
-    return any(kw in name for kw in _EOTW_INELIGIBLE_SUBSTRINGS)
-
-QUEER_PERFORMANCE_KEYWORDS = [
-    'drag', 'drag show', 'drag bingo', 'drag brunch', 'drag queen', 'drag king',
-    'cabaret', 'pride show', 'pride event', 'pride night', 'queer night',
-    'gay night', 'lgbtq+ night', 'twisted arts', 'okeq', 'rainbow',
-    'pride dance', 'pride party',
-]
-
-def _is_queer_performance(e):
-    combined = ' '.join([
-        (e.get('name') or ''), (e.get('description') or ''),
-        (e.get('venue') or ''), (e.get('source') or '')
-    ]).lower()
-    return any(kw in combined for kw in QUEER_PERFORMANCE_KEYWORDS)
-
 # Group events by day (only this week)
 events_by_day = defaultdict(list)
 for ev in events:
@@ -288,37 +260,16 @@ for day in DAYS:
     events_by_day[day] = _dedup_events(events_by_day[day])
     events_by_day[day].sort(key=time_sort_key)
 
-# Find EOTW — priority: HH → Council Oak → Drag Shows → Other Queer Performance → other specials
-# Drag/performance keywords that should always beat community-org events for EOTW
-_DRAG_SHOW_KEYWORDS = [
-    'drag show', 'drag bingo', 'drag brunch', 'drag queen', 'drag king', 'drag race',
-    'drag night', 'drag perform', 'dragnificent', 'cabaret', 'burlesque',
-    'pride show', 'pride party', 'pride night', 'queer night', 'gay night',
-]
-
-def _is_drag_show(e):
-    """True if this is an actual drag/performance event (not just an LGBTQ org listing)."""
-    combined = ' '.join([(e.get('name') or ''), (e.get('venue') or '')]).lower()
-    return any(kw in combined for kw in _DRAG_SHOW_KEYWORDS)
+# Find EOTW — use canonical eotw_selector.py (the single source of truth for all EOTW rules).
+# NEVER duplicate or override those rules here. eotw_selector enforces:
+#   - _SKIP_SOURCES (recurring, bars, aa_meetings)
+#   - _SKIP_VENUES (majestic, etc.)
+#   - _SKIP_NAME_FRAGMENTS (bowling, support groups, etc.)
+#   - Tier priority: HH → Council Oak → Drag → Queer Perf → Trusted LGBTQ → LGBTQ keywords
+from eotw_selector import select_eotw
 
 all_flat = [e for day in DAYS for e in events_by_day[day]]
-hh = [e for e in all_flat if _is_homo_hotel(e)]
-council = [e for e in all_flat if _is_council_oak(e)]
-queer_perf_base = [e for e in all_flat if _is_queer_performance(e) and not _is_recurring(e)
-                   and not _is_homo_hotel(e) and not _is_council_oak(e)
-                   and not _is_eotw_ineligible(e)]
-# Drag shows and real performances first; community-org listings second
-drag_shows = [e for e in queer_perf_base if _is_drag_show(e)]
-other_queer_perf = [e for e in queer_perf_base if not _is_drag_show(e)]
-specials = [e for e in all_flat if not _is_homo_hotel(e) and not _is_council_oak(e)
-            and not _is_queer_performance(e) and not _is_recurring(e)
-            and not _is_eotw_ineligible(e)]
-
-eotw = (hh[0] if hh else
-        council[0] if council else
-        drag_shows[0] if drag_shows else
-        other_queer_perf[0] if other_queer_perf else
-        specials[0] if specials else None)
+eotw = select_eotw(all_flat)
 eotw_key = (eotw.get('name', ''), eotw.get('date', '')) if eotw else None
 
 def _day_sort_key(e):

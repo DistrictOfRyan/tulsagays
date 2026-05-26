@@ -50,6 +50,7 @@ _SKIP_NAME_FRAGMENTS = {
     "eagle bingo",
     "derby watch",
     "derby hat",
+    "open for business",   # business-hours announcement, not a real event
 }
 
 _SKIP_VENUES = {
