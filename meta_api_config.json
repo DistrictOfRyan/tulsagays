@@ -13,16 +13,8 @@
     "date": "2026-05-25",
     "week_key": "2026-W22",
     "fb_post_id": "1086906044497675_122114289044853065",
-    "ig_post_id": "FAILED: IG carousel container failed: (#100) Param location_id is not a valid location page ID",
-    "photo_ids": [
-      "122114288780853065",
-      "122114288822853065",
-      "122114288864853065",
-      "122114288906853065",
-      "122114288954853065",
-      "122114288996853065"
-    ],
-    "note": "Weekly carousel 2026-W22. 9 slides."
+    "ig_post_id": "18229122751310758",
+    "note": "Corrected weekday carousel. 6 slides on IG (01-05+09)."
   },
   "page_access_token": "MOVED_TO_ENV_TULSAGAYS_PAGE_ACCESS_TOKEN",
   "page_token_expires": "never",
