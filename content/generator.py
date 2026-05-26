@@ -323,21 +323,67 @@ mention it.
     }
 
 
-def _call_claude(user_prompt: str) -> str:
-    """Send the prompt to Claude and return the caption text."""
-    client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
+def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "sonnet") -> str:
+    """Shell out to the local `claude -p` CLI for description generation.
+    Uses the Claude Code subscription instead of the API (avoids double-billing).
+    Returns empty string on failure so caller can fall back to rules.
 
+    The CLI takes a single prompt via stdin. Pass system + user merged with
+    a clear separator. Avoid leading bare "You are a ..." which trips the
+    CLI's context-length pre-check.
+    """
+    import subprocess, shutil
+    claude_bin = shutil.which("claude") or r"C:\Users\willi\.local\bin\claude"
+    if not claude_bin:
+        return ""
+    if system_prompt:
+        merged = f"<context>{system_prompt}</context>\n\n<request>\n{user_prompt}\n</request>"
+    else:
+        merged = user_prompt
+    # Run from a neutral cwd. From inside the tulsagays/ project, `claude -p`
+    # auto-loads project files and exceeds context. Use the user's home so it
+    # starts with a minimal session.
+    import os as _os
+    neutral_cwd = _os.path.expanduser("~")
+    try:
+        r = subprocess.run(
+            [claude_bin, "-p", "--model", model],
+            input=merged,
+            capture_output=True,
+            text=True,
+            timeout=120,
+            encoding="utf-8",
+            errors="replace",
+            cwd=neutral_cwd,
+        )
+        out = (r.stdout or "").strip()
+        # Sanity: if the CLI echoed a fixed-string error, treat as failure.
+        if not out or out.lower().startswith(("prompt is too long", "error:", "rate limit")):
+            return ""
+        return out
+    except Exception as e:
+        print(f"[generator] claude CLI fallback failed: {e}")
+        return ""
+
+
+def _call_claude(user_prompt: str) -> str:
+    """Send the prompt to Claude and return the caption text.
+    Prefers the local CLI (subscription credits) over the API (billable).
+    Falls back to API only if CLI fails AND a key is configured.
+    """
+    cli_out = _call_claude_cli(user_prompt, _SYSTEM_PROMPT)
+    if cli_out:
+        return cli_out
+    if not config.ANTHROPIC_API_KEY:
+        return ""  # caller will use rule-based fallback
+    client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
     message = client.messages.create(
         model="claude-sonnet-4-5",
         max_tokens=1200,
         system=_SYSTEM_PROMPT,
-        messages=[
-            {"role": "user", "content": user_prompt},
-        ],
+        messages=[{"role": "user", "content": user_prompt}],
     )
-    # Extract text from the response
-    text = message.content[0].text.strip()
-    return text
+    return message.content[0].text.strip()
 
 
 def enrich_event_descriptions(events: list[dict]) -> list[dict]:
@@ -350,11 +396,18 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
     if not events:
         return events
 
-    if not config.ANTHROPIC_API_KEY:
-        print("[generator] No API key — using rule-based enrichment")
+    # Try claude CLI first (subscription, no double-billing). Use API only if CLI
+    # unavailable AND a key is configured. Rule-based is the final fallback.
+    import shutil
+    use_cli = bool(shutil.which("claude")) or Path(r"C:\Users\willi\.local\bin\claude").exists()
+    client = None
+    if not use_cli and not config.ANTHROPIC_API_KEY:
+        print("[generator] No claude CLI and no API key — using rule-based enrichment")
         return _rule_based_enrich_all(events)
-
-    client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
+    if use_cli:
+        print("[generator] Enriching via claude CLI (subscription credits)")
+    else:
+        client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
     BATCH = 20
 
     # Only enrich events that need it
@@ -395,17 +448,24 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
         )
 
         try:
-            message = client.messages.create(
-                model="claude-sonnet-4-6",
-                max_tokens=1200,
-                system=(
-                    "You write event descriptions for TulsaGays.com, an LGBTQ+ community events guide. "
-                    "Casual, warm, specific. Sound like a local friend texting you about what to do this weekend. "
-                    "Never use em dashes. Never say 'vibrant community' or 'safe space' or 'don't miss out'."
-                ),
-                messages=[{"role": "user", "content": prompt}],
+            sys_prompt = (
+                "You write event descriptions for TulsaGays.com, an LGBTQ+ community events guide. "
+                "Casual, warm, specific. Sound like a local friend texting you about what to do this weekend. "
+                "Never use em dashes. Never say 'vibrant community' or 'safe space' or 'don't miss out'."
             )
-            response = message.content[0].text.strip()
+            if use_cli:
+                # Route through `claude -p` subprocess — subscription credits.
+                response = _call_claude_cli(prompt, sys_prompt, model="sonnet")
+                if not response:
+                    raise RuntimeError("claude CLI returned empty output")
+            else:
+                message = client.messages.create(
+                    model="claude-sonnet-4-6",
+                    max_tokens=1200,
+                    system=sys_prompt,
+                    messages=[{"role": "user", "content": prompt}],
+                )
+                response = message.content[0].text.strip()
             for line in response.split("\n"):
                 line = line.strip()
                 if not line or not line[0].isdigit():
@@ -551,6 +611,53 @@ def _rule_based_enrich(event: dict) -> str:
     if any(k in name for k in ["canasta", "card", "game night", "board game", "dungeons", "d&d", "dragons"]):
         return (f"Step away from the screen and use your brain for something that actually requires other people. "
                 "Sit down next to a stranger, learn the rules, and talk trash. This is genuinely a great time.")
+
+    # Mother Road Market — keep descriptions varied, not the same "summer-long festival" every day
+    if "$5 wednesday" in name and "mother road" in (venue.lower() + name):
+        return ("Five bucks for a midweek reset at Mother Road. Vendors, food trucks, live entertainment, "
+                "and the kind of crowd that makes you remember Tulsa actually rules. Best five dollars you'll spend this week.")
+    if "musical bikes" in name:
+        return ("Tulsa's most casual cycling crew rolls through Mother Road for Musical Bikes Monday. "
+                "Come on two wheels or just show up to watch. Either way, it's a vibe and a great way to start the week.")
+    if "66 days of fun" in name or "66 days" in name:
+        return ("Mother Road Market's summer-long festival keeps the patio busy with vendors, food, and Route 66 energy. "
+                "Drop in for an hour, leave with a full belly and a story.")
+
+    # Magic City Books — distinct vibe per event
+    if "crime time" in name or ("magic city books" in (venue.lower() + name) and "crime" in name):
+        return ("Mystery and thriller readers descend on Magic City Books for an evening of dark conversation. "
+                "Bring your weirdest book recommendation, leave with three new ones. Indie bookstore energy at its best.")
+    if "magic city books" in venue.lower():
+        return ("Magic City Books is Tulsa's queer-friendly indie bookstore and they pour everything into their author events. "
+                "Show up curious, leave with a signed copy and a new opinion.")
+
+    # Shambhala meditation — varied, not boilerplate affirming
+    if "shambhala" in venue.lower() or ("meditation" in name and "shambhala" in (venue.lower() + name)):
+        return ("Shambhala is genuinely one of the most welcoming meditation spaces in Tulsa, full stop. "
+                "No experience needed, no incense pressure, no weird vibes. Walk in, sit down, and let an hour of quiet do its work.")
+
+    # Memorial Day / holiday runs — short, energetic
+    if "memorial day" in name or ("run" in name and ("5k" in name or "1m" in name or "mile" in name)):
+        return ("Lace up and get out before the cookouts start. A neighborhood run is the cheapest, fastest way to feel "
+                "like you did something with your morning. All paces, all bodies, all welcome.")
+
+    # NEFF Brewing / curated dinner events — specific food event vibe
+    if "neff brewing" in venue.lower() or ("dinner" in name and "courses" in name):
+        return ("A six-course tasting paired with NEFF's craft brews. Ticketed, intimate, and unlike anything else "
+                "happening in Tulsa that night. If you've never done a curated tasting menu, this is the one.")
+
+    # Guthrie Green / outdoor green-space events
+    if "guthrie green" in venue.lower() and ("food truck" in name or "food trucks" in name):
+        return ("Guthrie Green's Food Truck Wednesdays is the kind of casual midweek hang that doesn't need planning. "
+                "Tacos, BBQ, bubble tea — pick a truck, grab a patch of grass, eat outside while you still can.")
+    if "guthrie green" in venue.lower():
+        return ("Guthrie Green is Tulsa's downtown front yard. Show up, find a spot, talk to whoever sits near you. "
+                "Public space done right.")
+
+    # Zoolightful / zoo events
+    if "zoolightful" in name or ("zoo" in venue.lower() and "lantern" in name):
+        return ("Tulsa Zoo after dark, lit up with hundreds of illuminated animal lanterns. Bring a date, "
+                "bring your camera, bring patience for the lines. Worth every minute.")
 
     # Event-specific OKEQ rules — match BEFORE the generic OKEQ catch-all so
     # MOREcolor / AFFIRMING / Positively Grateful / Broadway Clubhouse / TTRPG
