@@ -473,13 +473,14 @@ SOURCES = {
         "description": "Library openings, banned book events, LGBTQIA+ literature access",
     },
     # â”€â”€ Queer-friendly Businesses â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    "fulton_street_books": {
-        "name": "Fulton Street Books & Coffee",
-        "url": "",
-        "priority": 3,
-        "type": "community",
-        "description": "Community bookstore, BIPOC and marginalized authors, inclusive space",
-    },
+    # DEAD 2026-05-28: Fulton Street Books & Coffee PERMANENTLY CLOSED Oct 2025.
+    # "fulton_street_books": {
+    #     "name": "Fulton Street Books & Coffee",
+    #     "url": "",
+    #     "priority": 3,
+    #     "type": "community",
+    #     "description": "Community bookstore, BIPOC and marginalized authors, inclusive space",
+    # },
     "magic_city_books": {
         "name": "Magic City Books",
         "url": "",
@@ -490,7 +491,7 @@ SOURCES = {
     # â”€â”€ Theater & Film â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "tulsa_fringe": {
         "name": "Tulsa Fringe Festival",
-        "url": "https://okeq.org/fringe/",
+        "url": "https://tulsafringe.org/",
         "priority": 1,
         "type": "arts",
         "description": "OkEq-produced boundary-pushing theater, comedy, dance, music",
@@ -1075,6 +1076,40 @@ SOURCES = {
         "type": "aggregator",
         "description": "Community-curated public calendar of Tulsa events published via TimeTree. Covers arts, culture, music, food, outdoor, and community events. High-quality curation â€” treat as a primary source.",
     },
+    # -- New sources added 2026-05-28 (Thursday source discovery) --
+    "osu_tulsa": {
+        "name": "OSU-Tulsa Events Calendar",
+        "url": "https://events.tulsa.okstate.edu/",
+        "fallback_url": "https://tulsa.okstate.edu/calendar/",
+        "priority": 2,
+        "type": "community",
+        "description": "Oklahoma State University-Tulsa campus events calendar. Hosts a recurring Queer Support Group (Tuesdays 6pm at the Al Carlozzi Center for Counseling, open to LGBTQ+ adults statewide) plus campus cultural events. The 'osu_tulsa' key already exists in LGBTQ_SOURCES scoring; this entry wires it to a live source.",
+        "recurring": "Queer Support Group weekly Tuesdays 6pm CT",
+    },
+    "circles_lgbtq": {
+        "name": "Circles LGBTQ Friends",
+        "url": "https://circleslgbtq.org/",
+        "facebook": "https://www.facebook.com/groups/circleslgbtq/",
+        "priority": 2,
+        "type": "community",
+        "description": "Tulsa LGBTQ social organization (since 2022) for LGBTQ individuals, friends, and allies in Tulsa and surrounding areas. Recurring socials, activities, and friendship meetups. Check website CONNECT section and FB group for current event listings.",
+    },
+    "pump_bar_tulsa": {
+        "name": "The Pump Bar - Tulsa",
+        "url": "https://www.pumpbartulsa.com/",
+        "facebook": "https://www.facebook.com/pumpbartulsa/",
+        "priority": 3,
+        "type": "bar",
+        "description": "Gay-welcoming neighborhood bar (602 S Lewis) in a restored 1960s gas station. Theme nights and signature cocktails. Already in TRUE_GAY_BAR_VENUES + VENUE_NAME_MAP scoring; this formalizes it as a source. Feature only special/themed events.",
+    },
+    "tulsa_library_events": {
+        "name": "Tulsa City-County Library - Events",
+        "url": "https://events.tulsalibrary.org/events",
+        "fallback_url": "https://www.tulsalibrary.org/lgbt-resources",
+        "priority": 3,
+        "type": "community",
+        "description": "Tulsa City-County Library system events calendar. Hosts LGBTQ programming (Pride programs, author talks, book clubs) and maintains an LGBTQIA2S+ resources page. General calendar -- filter for LGBTQ-relevant programming.",
+    },
 }
 
 # â”€â”€ Posting Schedule â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -1160,6 +1195,7 @@ LGBTQ_SOURCES = {
     "council_oak", "hotmess_sports", "all_souls_special",
     "pflag_tulsa", "black_queer_tulsa", "freedom_oklahoma",
     "utulsa_pride", "osu_tulsa",
+    "circles_lgbtq",  # LGBTQ social org -- trust all events
     "circle_cinema", "philbrook_museum", "tulsa_arts_district",
     "tulsa_isnt_boring",
     "slack_events_local", "slack_unite_lgbtq_plus",
