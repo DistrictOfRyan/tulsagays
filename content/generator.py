@@ -61,8 +61,70 @@ _HOOK_TEMPLATES = [
     "bored? not anymore. {date_range} events below",
 ]
 
+# Engagement prompts rotated per caption
+ENGAGEMENT_PROMPTS = [
+    "Drop your plans in the comments 👇",
+    "Tag someone who needs to go to this! 👇",
+    "Who's going? 🙋 Drop it in the comments",
+    "Tag a friend who'd love this 👇",
+    "Comment below if you're going! 👇",
+]
+
+# Known Tulsa LGBTQ+ venue Instagram handles (case-insensitive substring match)
+# Longer keys are checked first so "tulsa eagle" wins over bare "eagle".
+VENUE_HANDLES = {
+    "tulsa eagle":            "@tulsaeagle",
+    "eagle":                  "@tulsaeagle",
+    "twisted arts":           "@twistedartstulsa",
+    "arts fellowship":        "@twistedartstulsa",
+    "taf":                    "@twistedartstulsa",
+    "soundpony":              "@soundponybar",
+    "cain's ballroom":        "@cainsballroom",
+    "cain's":                 "@cainsballroom",
+    "bok center":             "@bokcenter",
+    "bok":                    "@bokcenter",
+    "tulsa pac":              "@tulsapac",
+    "performing arts center": "@tulsapac",
+    "circle cinema":          "@circlecinematulsa",
+}
+
 
 # ── Helpers ─────────────────────────────────────────────────────────────────
+
+def _match_venue_handle(venue: str) -> str | None:
+    """Return the Instagram @handle for a known Tulsa venue, or None."""
+    if not venue:
+        return None
+    venue_lower = venue.lower()
+    for key in sorted(VENUE_HANDLES, key=len, reverse=True):
+        if key in venue_lower:
+            return VENUE_HANDLES[key]
+    return None
+
+
+def _inject_engagement(caption: str, venue_handles: list[str]) -> str:
+    """Insert venue @handles, engagement prompt, and save CTA before the hashtag block."""
+    paragraphs = re.split(r'\n\n+', caption.rstrip())
+    if not paragraphs:
+        return caption
+
+    last = paragraphs[-1].strip()
+    is_hashtag_block = bool(last) and all(w.startswith('#') for w in last.split())
+
+    engagement_lines = []
+    if venue_handles:
+        engagement_lines.append(" ".join(venue_handles))
+    engagement_lines.append(random.choice(ENGAGEMENT_PROMPTS))
+    engagement_lines.append("Save this for your weekend plans 🔖")
+    engagement_block = "\n".join(engagement_lines)
+
+    if is_hashtag_block:
+        new_paragraphs = paragraphs[:-1] + [engagement_block, last]
+    else:
+        new_paragraphs = paragraphs + [engagement_block]
+
+    return "\n\n".join(new_paragraphs)
+
 
 def _classify_event(event: dict) -> str:
     """Return a category string for a single event."""
@@ -315,6 +377,17 @@ mention it.
         caption = _fallback_caption(
             events_for_caption, post_type, date_range, hashtag_str
         )
+
+    # Collect venue @handles from this week's events and inject engagement elements
+    venue_handles = []
+    _seen_handles: set[str] = set()
+    for ev in events_for_caption:
+        handle = _match_venue_handle(ev.get("venue") or "")
+        if handle and handle not in _seen_handles:
+            _seen_handles.add(handle)
+            venue_handles.append(handle)
+
+    caption = _inject_engagement(caption, venue_handles)
 
     return {
         "caption": caption,
