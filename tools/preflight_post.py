@@ -190,6 +190,29 @@ def run(week_key=None):
             continue
         _check_desc(e, errors, warnings, is_eotw=False)
 
+    # ── HARNESS / INTERNAL MARKER LEAK (never let agent/system text post) ──
+    HARNESS_MARKERS = [
+        "SUPERVISOR_TASK_COMPLETE", "SUPERVISOR:", "system-reminder",
+        "</system-reminder>", "TASK_COMPLETE", "As an AI", "I cannot",
+        "assistant:", "<commentary>", "tool_use", "ANTHROPIC",
+    ]
+    def _scan_harness(text, where):
+        if not text:
+            return
+        for m in HARNESS_MARKERS:
+            if m.lower() in text.lower():
+                errors.append(f"[harness-leak] {where} contains internal marker '{m}' — must NEVER post")
+    for e in eotw + all_shown:
+        _scan_harness(e.get("description", ""), f"'{e.get('name')}' short")
+        _scan_harness(e.get("website_description", ""), f"'{e.get('name')}' long")
+    import glob as _g2
+    for cap_path in _g2.glob(os.path.join(post_dir, "*_post.json")):
+        try:
+            _scan_harness(json.load(open(cap_path, encoding="utf-8")).get("caption", ""),
+                          f"caption ({os.path.basename(cap_path)})")
+        except Exception:
+            pass
+
     # ── ANONYMITY (account must never reveal who runs it) ───────────────
     for e in eotw + all_shown:
         nm = e.get("name", "?")

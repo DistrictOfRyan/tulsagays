@@ -603,8 +603,12 @@ def main():
     slides = get_slides()
     validate_slides(slides)
 
-    # Step 2: Load caption
+    # Step 2: Load caption (strip any leaked harness/internal markers — these
+    # must NEVER reach a public post; preflight also hard-blocks them).
     caption = load_caption()
+    import re as _re
+    caption = _re.split(r'\s*(?:SUPERVISOR_TASK_COMPLETE|SUPERVISOR:|TASK_COMPLETE)\b.*$',
+                        caption, flags=_re.S)[0].rstrip()
     print(f"[OK] Caption loaded ({len(caption)} chars)")
 
     # Step 3: Host slides on tulsagays.com for IG public URLs
