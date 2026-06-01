@@ -602,6 +602,20 @@ def main():
     # Step 6: Save results
     save_results(fb_result, ig_post_id)
 
+    # Step 7: Create Facebook Events for top LGBTQ+ events of the week
+    if not DRY_RUN:
+        try:
+            from tools.create_fb_events import run_event_creation
+            _events_file = ROOT / "data" / "events" / f"{WEEK_KEY}_all.json"
+            _fb_events_list = []
+            if _events_file.exists():
+                with open(_events_file, encoding="utf-8") as _ef:
+                    _edata = json.load(_ef)
+                _fb_events_list = _edata if isinstance(_edata, list) else _edata.get("events", [])
+            run_event_creation(_fb_events_list, PAGE_ID, PAGE_TOKEN)
+        except Exception as _fb_e:
+            print(f"[FB Events] Step skipped due to error: {_fb_e}")
+
     # Summary
     print("\n" + "=" * 60)
     print("ALL DONE")
