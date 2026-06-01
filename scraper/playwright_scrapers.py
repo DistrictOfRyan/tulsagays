@@ -1546,6 +1546,78 @@ class TulsaPeoplesOrchestraScraper(PlaywrightBaseScraper):
         return events
 
 
+class GoogleEventsScraper(PlaywrightBaseScraper):
+    """Google Events aggregator (headless, no login) — the bulk-up source.
+
+    Google's events panel (ibp=htl;events) aggregates venue + community events
+    that individual venue calendars don't expose to scrapers (BOK, Cain's, TPAC,
+    Gathering Place, Guthrie Green, markets, comedy, etc.). One query per day of
+    the current Mon-Sun week pulls dozens of real Tulsa events. Loosened
+    relevance keeps the Tulsa-area ones; the featured selection still floats the
+    fun/queer picks; the website lists them all.
+    """
+    source_name = "google_events"
+    PRIORITY = 2
+    _JUNK_HEADINGS = {"all events", "events filters list", "details", "more events",
+                      "saved", "feedback", "learn more", "map"}
+
+    def scrape(self) -> List[Dict]:
+        from bs4 import BeautifulSoup
+        from datetime import datetime, timedelta
+        import re as _re
+        today = datetime.now().date()
+        monday = today - timedelta(days=today.weekday())
+        week = [monday + timedelta(days=i) for i in range(7)]
+        events, seen = [], set()
+        time_rx = _re.compile(
+            r'(\d{1,2}(?::\d{2})?\s*(?:[–\-]\s*\d{1,2}(?::\d{2})?)?\s*[AP]M)', _re.I)
+        for d in week:
+            q = f"events in tulsa {d.strftime('%B')} {d.day} {d.year}"
+            url = f"https://www.google.com/search?q={q.replace(' ','+')}&ibp=htl;events"
+            html = self.fetch_page_js(url, wait_for_selector=None, timeout=30000)
+            if not html:
+                continue
+            soup = BeautifulSoup(html, "html.parser")
+            dstr = d.strftime("%Y-%m-%d")
+            for h in soup.select("div[role='heading']"):
+                nm = h.get_text(" ", strip=True)
+                if not nm or len(nm) < 6 or nm.lower() in self._JUNK_HEADINGS:
+                    continue
+                key = (nm.lower()[:40], dstr)
+                if key in seen:
+                    continue
+                # climb to the card container for time/venue
+                card = h
+                for _ in range(4):
+                    if card.parent:
+                        card = card.parent
+                ctext = card.get_text(" \n ", strip=True)
+                tm = ""
+                tmatch = time_rx.search(ctext)
+                if tmatch:
+                    tm = tmatch.group(1).replace("–", "-").upper().replace(" ", " ")
+                # venue: a line that isn't the name/date/city/time
+                venue = ""
+                _btn = ("get tickets", "details", "directions", "save event", "save",
+                        "more sources", "more", "official site", "tickets", "share",
+                        "see web results", "interested", "going", "from $")
+                for line in [x.strip() for x in ctext.split("\n") if x.strip()]:
+                    low = line.lower()
+                    if (line != nm and "tulsa, ok" not in low and not time_rx.fullmatch(line)
+                            and not any(b == low or b in low for b in _btn)
+                            and not _re.match(r'^(mon|tue|wed|thu|fri|sat|sun|tomorrow|today|\d)', low)
+                            and 4 < len(line) < 60 and any(c.isalpha() for c in line)):
+                        venue = line
+                        break
+                seen.add(key)
+                events.append(self.make_event(
+                    name=nm, date=dstr, time=tm, venue=venue or "Tulsa, OK",
+                    description="", url=url, priority=self.PRIORITY,
+                ))
+        logger.info(f"[{self.source_name}] {len(events)} events across the week")
+        return events
+
+
 class VanguardScraper(PlaywrightBaseScraper):
     """The Vanguard — Tulsa live-music venue (Webflow site, .ec-col-item cards).
     A queer-friendly venue with shows most nights, so it fills weekday slates.
@@ -1598,6 +1670,7 @@ class VanguardScraper(PlaywrightBaseScraper):
 # ── Module-level entry point ───────────────────────────────────────────────────
 
 _PLAYWRIGHT_SCRAPERS = [
+    GoogleEventsScraper,
     VanguardScraper,
     FreedomOklahomaScraper,
     TulsaArtistFellowshipScraper,
