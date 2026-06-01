@@ -1078,7 +1078,138 @@ class WOMPAScraper(PlaywrightBaseScraper):
     DEFAULT_VENUE = "WOMPA, 108 N Boston Ave, Tulsa"
     PRIORITY = 1
 
+    # WOMPA's site (app.wompatulsa.com) is a GoodBarber app, NOT Wix. Events are
+    # served as JSON from the GoodBarber content API — far more reliable than
+    # scraping the JS-rendered DOM (the old Wix selectors never matched and the
+    # scraper silently returned 0 even when events existed). App id + events
+    # section id were extracted from the page's gb-app-state blob.
+    GOODBARBER_APP_ID = "3682793"
+    GOODBARBER_EVENTS_SECTION = "60857482"
+    GOODBARBER_API = (
+        "https://api.goodbarber.net/front/get_items/"
+        "{app}/{section}/?category_index=0"
+    )
+
     def scrape(self) -> List[Dict]:
+        """Fetch WOMPA events from the GoodBarber JSON API (with DOM fallback)."""
+        import requests as _requests
+        import html as _html
+        import re as _re
+        from datetime import datetime, timezone
+
+        headers = {
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/134.0.0.0 Safari/537.36"
+            ),
+            "Accept": "application/json",
+        }
+        url = self.GOODBARBER_API.format(
+            app=self.GOODBARBER_APP_ID, section=self.GOODBARBER_EVENTS_SECTION
+        )
+        raw_items: List[Dict] = []
+        pages = 0
+        try:
+            while url and pages < 5:
+                resp = _requests.get(url, headers=headers, timeout=20)
+                if resp.status_code != 200:
+                    logger.warning(
+                        f"[{self.source_name}] GoodBarber API status "
+                        f"{resp.status_code} for {url}"
+                    )
+                    break
+                data = resp.json()
+                items = data.get("items") or []
+                raw_items.extend(items)
+                pages += 1
+                url = data.get("next_page") if items else None
+        except Exception as e:
+            logger.error(
+                f"[{self.source_name}] GoodBarber API failed ({e}); "
+                "falling back to DOM scrape"
+            )
+            return self._scrape_dom_fallback()
+
+        if not raw_items:
+            logger.info(
+                f"[{self.source_name}] GoodBarber events section empty "
+                "(0 items); WOMPA has no events posted right now"
+            )
+            return []
+
+        logger.debug(
+            f"[{self.source_name}] GoodBarber first-item keys: "
+            f"{list(raw_items[0].keys())}"
+        )
+
+        def _strip(s) -> str:
+            return _html.unescape(_re.sub(r"<[^>]+>", " ", str(s or ""))).strip()
+
+        def _gb_date(val):
+            """GoodBarber dates: unix ts (s or ms) or ISO string -> (date, time)."""
+            if val in (None, "", 0, "0"):
+                return "", ""
+            try:
+                iv = int(float(val))
+                if iv > 10_000_000_000:  # milliseconds -> seconds
+                    iv //= 1000
+                dt = datetime.fromtimestamp(iv, tz=timezone.utc)
+                return dt.strftime("%Y-%m-%d"), dt.strftime("%H:%M")
+            except (ValueError, TypeError):
+                s = str(val)
+                if "T" in s:
+                    return _parse_iso_datetime(s)
+                return BaseScraper.parse_date_flexible(s), ""
+
+        events: List[Dict] = []
+        for it in raw_items:
+            name = _strip(it.get("title") or it.get("name"))
+            if not name or len(name) < 3:
+                continue
+
+            date_str, time_str = "", ""
+            for dk in ("startDate", "start_date", "date", "start",
+                       "beginDate", "timestamp", "when"):
+                if it.get(dk):
+                    date_str, time_str = _gb_date(it.get(dk))
+                    if date_str:
+                        break
+
+            venue = (it.get("placeName") or it.get("place_name")
+                     or it.get("address") or it.get("location"))
+            if isinstance(venue, dict):
+                venue = venue.get("address") or venue.get("name")
+            venue = _strip(venue) or self.DEFAULT_VENUE
+
+            description = _strip(
+                it.get("text") or it.get("content")
+                or it.get("subtitle") or it.get("description")
+            )[:500]
+
+            url_ = it.get("url") or it.get("link") or ""
+            if url_ and not str(url_).startswith("http"):
+                url_ = self.BASE_URL + str(url_)
+
+            events.append(self.make_event(
+                name=name,
+                date=date_str,
+                time=time_str,
+                venue=venue,
+                description=description,
+                url=url_,
+                priority=self.PRIORITY,
+            ))
+
+        # No LGBTQ filter — WOMPA is a trusted community venue, all events relevant
+        logger.info(
+            f"[{self.source_name}] Found {len(events)} events via "
+            "GoodBarber API (no filter applied)"
+        )
+        return events
+
+    def _scrape_dom_fallback(self) -> List[Dict]:
+        """Legacy DOM scrape (kept as a fallback if the API path fails)."""
         from bs4 import BeautifulSoup
 
         html = self.fetch_page_js(
