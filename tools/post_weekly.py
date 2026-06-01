@@ -1,5 +1,5 @@
 """
-Post the weekly carousel to Facebook and Instagram.
+Post the weekly carousel and Reels video to Facebook and Instagram.
 
 Usage:
     python tools/post_weekly.py              # post this week's slides
@@ -11,6 +11,7 @@ Steps:
   3. Post multi-image carousel to Facebook page (binary upload)
   4. Post carousel to Instagram (uses GitHub Pages public URLs)
   5. Save post IDs to meta_api_config.json and data/posts/{week}/post_results.json
+  6. Generate 15-second Reels video from top 3-5 events and post to Instagram
 """
 
 import json
@@ -545,6 +546,121 @@ def save_results(fb_result: dict, ig_post_id: str) -> None:
             print(f"[engagement] Tracking skipped: {_e}")
 
 
+# ── Reels pipeline ───────────────────────────────────────────────────────────
+
+def get_reel_events() -> list:
+    """Return top 3-5 this-week events formatted for make_reels_video."""
+    events_file = ROOT / "data" / "events" / f"{WEEK_KEY}_all.json"
+    if not events_file.exists():
+        return []
+
+    with open(events_file, encoding="utf-8") as f:
+        data = json.load(f)
+    events = data if isinstance(data, list) else data.get("events", [])
+
+    today        = datetime.now().date()
+    week_monday  = today - timedelta(days=today.weekday())
+    week_sunday  = week_monday + timedelta(days=6)
+
+    try:
+        from eotw_selector import _is_skip, _is_lgbtq
+        skip_fn  = _is_skip
+        lgbtq_fn = _is_lgbtq
+    except Exception:
+        skip_fn  = lambda e: False
+        lgbtq_fn = lambda e: True
+
+    in_week = []
+    for e in events:
+        d = e.get("date", "")
+        try:
+            ed = datetime.strptime(d, "%Y-%m-%d").date()
+            if week_monday <= ed <= week_sunday and not skip_fn(e):
+                in_week.append(e)
+        except Exception:
+            pass
+    in_week.sort(key=lambda e: (0 if lgbtq_fn(e) else 1))
+
+    reel_events = []
+    for e in in_week[:5]:
+        date_str = ""
+        try:
+            dt = datetime.strptime(e.get("date", ""), "%Y-%m-%d")
+            date_str = _format_date(e["date"])
+            if e.get("time"):
+                date_str += f"  ·  {e['time']}"
+        except Exception:
+            date_str = e.get("time", "")
+
+        venue = (e.get("venue") or "").split(",")[0].strip()
+        reel_events.append({
+            "name":       e.get("name", ""),
+            "venue":      venue,
+            "date_str":   date_str,
+            "image_path": e.get("image_path", ""),
+        })
+
+    return reel_events
+
+
+def post_reel_video(caption: str) -> str:
+    """Generate a Reels MP4, host on GitHub Pages, and post to Instagram."""
+    from content.reels_maker import make_reels_video
+    from posting.instagram import post_reel as _post_reel
+
+    reel_events = get_reel_events()
+    if not reel_events:
+        print("[Reel] No qualifying events found — skipping Reel post")
+        return ""
+
+    reel_out = SLIDES_DIR / "reel.mp4"
+    print(f"\n[Reel] Generating video for {len(reel_events)} event(s)...")
+    if not DRY_RUN:
+        actual_path = make_reels_video(reel_events, str(reel_out))
+        reel_out = Path(actual_path)
+        size_kb = reel_out.stat().st_size // 1024
+        print(f"[Reel] Video written: {reel_out.name} ({size_kb} KB)")
+        if reel_out.suffix == ".gif":
+            print("[Reel] WARNING: ffmpeg unavailable — GIF produced (not suitable for Reels API).")
+            print("[Reel]          Install ffmpeg to generate a proper MP4 for posting.")
+            return "SKIPPED_GIF_FALLBACK"
+
+    # Copy to docs/ for GitHub Pages hosting
+    DOCS_DIR.mkdir(parents=True, exist_ok=True)
+    dest = DOCS_DIR / reel_out.name
+    if not DRY_RUN:
+        shutil.copy2(reel_out, dest)
+
+    for cmd in [
+        ["git", "add", str(dest)],
+        ["git", "commit", "-m", f"reel: publish {WEEK_KEY} video"],
+        ["git", "push", "origin", "main"],
+    ]:
+        if not DRY_RUN:
+            r = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True)
+            if cmd[1] == "commit" and "nothing to commit" in (r.stdout + r.stderr):
+                print("[Reel] Video already committed.")
+            elif r.returncode != 0 and cmd[1] != "commit":
+                print(f"[Reel] WARN git {cmd[1]}: {r.stderr.strip()}")
+
+    if not DRY_RUN:
+        print("[Reel] Waiting 30s for GitHub Pages to deploy...")
+        time.sleep(30)
+
+    reel_url = f"{SITE_BASE}/{reel_out.name}"
+    print(f"[Reel] Public URL: {reel_url}")
+
+    if DRY_RUN:
+        print("[Reel] (dry run — skipping API post)")
+        return "dry_run_reel_id"
+
+    result   = _post_reel(video_path=reel_url, caption=caption,
+                          access_token=PAGE_TOKEN, ig_user_id=IG_ID)
+    reel_id  = result.get("id", "")
+    print(f"[OK] Instagram Reel posted: {reel_id}")
+    return reel_id
+
+
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 def main():
@@ -602,12 +718,21 @@ def main():
     # Step 6: Save results
     save_results(fb_result, ig_post_id)
 
+    # Step 7: Post Reels video (top 3-5 events, 15-second MP4)
+    reel_id = ""
+    try:
+        reel_id = post_reel_video(caption)
+    except Exception as e:
+        print(f"\n[WARN] Reel post failed: {e}")
+        print("       Carousel is live. Post the Reel manually or re-run after fixing the error.")
+
     # Summary
     print("\n" + "=" * 60)
     print("ALL DONE")
     print(f"  Week:      {WEEK_KEY}")
     print(f"  FB post:   {fb_result['post_id']}")
     print(f"  IG post:   {ig_post_id}")
+    print(f"  Reel:      {reel_id or 'not posted'}")
     print(f"  Photos:    {len(fb_result['photo_ids'])} uploaded to FB")
     print("=" * 60)
     print("\nNEXT STEP: Upload all 9 slides directly to each FB group (browser).")
