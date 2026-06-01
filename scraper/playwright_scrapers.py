@@ -1546,9 +1546,59 @@ class TulsaPeoplesOrchestraScraper(PlaywrightBaseScraper):
         return events
 
 
+class VanguardScraper(PlaywrightBaseScraper):
+    """The Vanguard — Tulsa live-music venue (Webflow site, .ec-col-item cards).
+    A queer-friendly venue with shows most nights, so it fills weekday slates.
+    """
+    source_name = "the_vanguard_tulsa"
+    BASE_URL = "https://www.thevanguardtulsa.com"
+    EVENTS_URL = "https://www.thevanguardtulsa.com/shows"
+    DEFAULT_VENUE = "The Vanguard, 222 N Main St, Tulsa, OK"
+
+    _MONTHS = ("January|February|March|April|May|June|July|August|September|"
+               "October|November|December")
+
+    def scrape(self) -> List[Dict]:
+        from bs4 import BeautifulSoup
+        import re as _re
+        html = self.fetch_page_js(self.EVENTS_URL, wait_for_selector=".ec-col-item", timeout=25000)
+        if not html:
+            return []
+        soup = BeautifulSoup(html, "html.parser")
+        date_rx = _re.compile(rf'({self._MONTHS})\s+(\d{{1,2}}),\s*(\d{{4}})')
+        events, seen = [], set()
+        for card in soup.select(".ec-col-item"):
+            text = card.get_text(" ", strip=True)
+            m = date_rx.search(text)
+            if not m:
+                continue
+            name = _re.sub(r'^[^A-Za-z0-9]+', '', text[:m.start()].strip())
+            if not name or len(name) < 2:
+                continue
+            try:
+                date = datetime.strptime(
+                    f"{m.group(1)} {m.group(2)} {m.group(3)}", "%B %d %Y"
+                ).strftime("%Y-%m-%d")
+            except ValueError:
+                continue
+            link = card.find("a", href=True)
+            href = link["href"] if link else ""
+            url = (self.BASE_URL + href) if href.startswith("/") else (href or self.EVENTS_URL)
+            key = (name.lower(), date)
+            if key in seen:
+                continue
+            seen.add(key)
+            events.append(self.make_event(
+                name=name, date=date, time="", venue=self.DEFAULT_VENUE,
+                description="", url=url, priority=2,
+            ))
+        return events
+
+
 # ── Module-level entry point ───────────────────────────────────────────────────
 
 _PLAYWRIGHT_SCRAPERS = [
+    VanguardScraper,
     FreedomOklahomaScraper,
     TulsaArtistFellowshipScraper,
     TwistedArtsScraper,

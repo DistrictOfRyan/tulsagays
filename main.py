@@ -363,8 +363,17 @@ def cmd_generate(post_type="weekday"):
                         or src in _LGBTQ_SOURCES)
         is_recurring = (src in _RECURRING_SOURCES
                         or any(kw in name for kw in _RECURRING_NAME_FRAGMENTS))
+        # Authoritative never-feature guard: the BROAD eotw skip list
+        # (health clinics, support groups, bowling, AA, sound baths, etc.).
+        # Anything matching it can never lead a day, regardless of source.
+        try:
+            from eotw_selector import _is_skip as _eotw_broad_skip
+            _never_feature = _eotw_broad_skip(e)
+        except Exception:
+            _never_feature = False
         is_deprioritized = (
-            any(kw in name for kw in _ALWAYS_DEPRIORITIZE)
+            _never_feature
+            or any(kw in name for kw in _ALWAYS_DEPRIORITIZE)
             or any(v in venue for v in _DEPRIORITIZE_VENUES)
         )
         # Cultural events float above generic events at the same tier
@@ -396,11 +405,99 @@ def cmd_generate(post_type="weekday"):
             tier = max(tier, 6)
         return (tier, sub_tier, minutes)
 
-    for day in days_of_week:
-        events_by_day[day].sort(key=_slide_priority)
+    # Fun / featured-worthy signals — the cool, inclusive, everyone-welcome stuff.
+    _FUN_KW = (
+        "drag", "party", "festival", "fest", "concert", "dance", "brunch",
+        "show", "crawl", "pride", "market", "comedy", "karaoke", "trivia",
+        "live music", "bingo", "mixer", "social", "cabaret", "disco", "ball",
+        "prom", "kickoff", "celebration", "rooftop", "go-go", "art crawl",
+        "happy hour", "night", "gala", "premiere", "screening", "open mic",
+    )
+    _AGGREGATOR_SRC = {"meetup", "extended_calendars", "eventbrite"}
 
-    # Deduplicate: collapse same-day events with the same name (or HHHH variants)
-    # into one record, merging the most complete venue/address/URL/description.
+    def _rebalance_featured(day_events):
+        """Pick the 3 BEST featured events per day, per William's rules:
+          - never service/recurring junk (therapy, clinics, support groups, AA,
+            girl scouts, bowling) in the featured 3;
+          - prefer FUN, one-off, inclusive events over weekly/recurring ones;
+          - keep generic non-LGBTQ aggregator noise out of the featured 3;
+          - aim for >=60% genuinely LGBTQ (>=2 of 3) when the day allows.
+        Events below the top 3 keep their priority order (still on the website).
+        """
+        if len(day_events) <= 1:
+            return day_events
+        try:
+            from eotw_selector import _is_lgbtq_strict, _is_skip
+        except Exception:
+            return day_events
+
+        def _recurring(e):
+            src = (e.get("source") or "").lower()
+            nm = (e.get("name") or "").lower()
+            return src in _RECURRING_SOURCES or any(f in nm for f in _RECURRING_NAME_FRAGMENTS)
+
+        # Clearly off-topic / spammy non-community noise — never featured.
+        _JUNK_KW = ("career", "blueprint", "investor", "founders", "real estate",
+                    "make money", "webinar", "mlm", "networking for", "side hustle",
+                    "crypto", "franchise", "sales training")
+
+        def _eligible(e):
+            # Hard-exclude services / girl scouts / therapy / AA / clinics.
+            if _is_skip(e) or e.get("never_feature"):
+                return False
+            combo = ((e.get("name") or "") + " " + (e.get("description") or "")).lower()
+            # Exclude clear off-topic business/seminar spam.
+            if not _is_lgbtq_strict(e) and any(k in combo for k in _JUNK_KW):
+                return False
+            # Everything else — LGBTQ events AND inclusive one-off community /
+            # cultural happenings (art, festivals, concerts, markets, etc.) — is
+            # featured-eligible. _rank still floats the fun, one-off picks up top.
+            return True
+
+        def _rank(e):
+            combo = ((e.get("name") or "") + " " + (e.get("description") or "")).lower()
+            lg = _is_lgbtq_strict(e)
+            rec = _recurring(e)
+            fun = any(k in combo for k in _FUN_KW)
+            # group 0 = fun one-off (best), 1 = lgbtq one-off, 2 = other one-off,
+            # 3 = recurring (only if a day is thin). Then lgbtq, then fun.
+            if fun and not rec:
+                g = 0
+            elif lg and not rec:
+                g = 1
+            elif not rec:
+                g = 2
+            else:
+                g = 3
+            return (g, 0 if lg else 1, 0 if fun else 1, _slide_priority(e))
+
+        # Only eligible (fun / one-off / inclusive, non-service) events ever
+        # reach the slide. Services/never-feature/aggregator-noise are dropped
+        # from the slide list entirely — they still appear on the website's
+        # full listing, just never on a carousel card.
+        eligible = [e for e in day_events if _eligible(e)]
+        feat_pool = sorted(eligible, key=_rank)
+        target = min(3, len(feat_pool))
+
+        # Aim for >=60% LGBTQ among the featured 3 when the day allows.
+        lg = [e for e in feat_pool if _is_lgbtq_strict(e)]
+        need = min(2, len(lg), target)
+        top, seen = [], set()
+        for e in lg[:need]:
+            top.append(e); seen.add(id(e))
+        for e in feat_pool:
+            if len(top) >= target:
+                break
+            if id(e) not in seen:
+                top.append(e); seen.add(id(e))
+        # Remaining eligible events keep their rank order behind the featured 3
+        # (they drive the "N more events" count). Services never appear here.
+        tail = [e for e in feat_pool if id(e) not in seen]
+        return top + tail
+
+    # Deduplicate FIRST (collapse same-event variants, incl. the combined
+    # Friday Pride Kickoff), THEN sort + select featured — so the featured 3 are
+    # 3 distinct events, not the same event twice.
     def _dedup_day(ev_list):
         def _norm(s):
             return re.sub(r'\W+', ' ', (s or '').lower()).strip()
@@ -414,8 +511,20 @@ def cmd_generate(post_type="weekday"):
         for ev in ev_list:
             name_norm = _norm(ev.get('name', ''))
             date = ev.get('date', '')
-            # Collapse all HHHH variants to a single bucket
-            if 'homo hotel' in name_norm or ('hhhh' in name_norm):
+            venue_norm = _norm(ev.get('venue', ''))
+            # Collapse all HHHH + co-hosted Pride Kickoff variants into one
+            # bucket. On the combined First-Friday Pride Kickoff date (6/5), the
+            # Tulsa Artist Fellowship First Fridays / Flagpole Go-Go events are
+            # the SAME night and fold into the one combined event.
+            _taf_first_friday = (
+                date == '2026-06-05'
+                and ('first friday' in name_norm or 'flagpole' in name_norm
+                     or 'go go' in name_norm
+                     or 'tulsa artist fellowship' in venue_norm
+                     or 'flagship' in venue_norm)
+            )
+            if ('homo hotel' in name_norm or 'hhhh' in name_norm
+                    or 'pride kickoff' in name_norm or _taf_first_friday):
                 key = ('__hhhh__', date)
             else:
                 key = (name_norm[:40], date)
@@ -426,6 +535,9 @@ def cmd_generate(post_type="weekday"):
             else:
                 idx = seen[key]
                 existing = result[idx]
+                # Keep the canonical "Pride Kickoff" name for the combined event.
+                if 'pride kickoff' in name_norm and 'pride kickoff' not in _norm(existing.get('name', '')):
+                    existing['name'] = ev.get('name', existing.get('name'))
                 new_venue = ev.get('venue') or ''
                 old_venue = existing.get('venue') or ''
                 # Always prefer venue that has a street address (has comma or digit)
@@ -448,6 +560,11 @@ def cmd_generate(post_type="weekday"):
         if before != after:
             print(f"  [dedup] {day}: {before} -> {after} events (collapsed {before - after} duplicates)")
 
+    # Now sort + pick the featured (fun, one-off, inclusive) events per day.
+    for day in days_of_week:
+        events_by_day[day].sort(key=_slide_priority)
+        events_by_day[day] = _rebalance_featured(events_by_day[day])
+
     # Validate: warn if any day has zero events (expected for some days)
     days_with_events = [d for d in days_of_week if events_by_day[d]]
     print(f"\nEvents per day: { {d: len(events_by_day[d]) for d in days_of_week} }")
@@ -458,10 +575,12 @@ def cmd_generate(post_type="weekday"):
     # Pre-select EOTW from deduplicated events_by_day so the cover uses
     # the merged record (correct venue/address) rather than raw category_events.
     _all_deduped = [e for d in days_of_week for e in events_by_day[d]]
-    from eotw_selector import select_eotw as _select_eotw
-    _preselected_eotw = _select_eotw(_all_deduped)
-    if _preselected_eotw:
-        print(f"  [eotw] {_preselected_eotw.get('name')} @ {_preselected_eotw.get('venue')}")
+    from eotw_selector import select_eotw_list as _select_eotw_list
+    _eotw_list = _select_eotw_list(_all_deduped, week_key=week_key)
+    _preselected_eotw = _eotw_list[0] if _eotw_list else None
+    if _eotw_list:
+        for _i, _ev in enumerate(_eotw_list):
+            print(f"  [eotw {_i+1}] {_ev.get('name')} @ {_ev.get('venue')} ({_ev.get('date')})")
     else:
         print("  [eotw] WARNING: No suitable LGBTQ event found for EOTW — cover slide will show generic fallback")
 
@@ -474,6 +593,7 @@ def cmd_generate(post_type="weekday"):
             category_events, post_type, date_range, logo_path,
             events_by_day=events_by_day,
             featured_event=_preselected_eotw,
+            featured_events=_eotw_list,
         )
         output_dir = os.path.join(config.DATA_DIR, "posts", week_key)
         os.makedirs(output_dir, exist_ok=True)
@@ -483,6 +603,50 @@ def cmd_generate(post_type="weekday"):
         blank_days = [d for d in days_of_week if not events_by_day[d]]
         if blank_days:
             print(f"NOTE: Blank slides for days with no events: {', '.join(blank_days)}")
+
+        # ── Emit slide manifest (exactly what each slide shows) for preflight ──
+        try:
+            from content.image_maker import _flamingo_score as _flscore
+        except Exception:
+            _flscore = lambda e: 0
+        def _featured_for_day(day):
+            evs = [e for e in events_by_day.get(day, [])]
+            # Mirror image_maker: promote any EOTW for this day to the front.
+            for feat in (_eotw_list or []):
+                hit = [e for e in evs if e.get("name") == feat.get("name")
+                       and e.get("date") == feat.get("date")]
+                if hit:
+                    evs = [hit[0]] + [e for e in evs if e is not hit[0]]
+            return evs[:3]
+        def _slim(e):
+            return {
+                "name": e.get("name", ""), "date": e.get("date", ""),
+                "time": e.get("time", ""), "venue": e.get("venue", ""),
+                "source": e.get("source", ""), "url": e.get("url", ""),
+                "description": e.get("description", ""),
+                "website_description": e.get("website_description", ""),
+                "flamingo": _flscore(e),
+                "never_feature": bool(e.get("never_feature")),
+                "lgbtq_relevant": bool(e.get("lgbtq_relevant")),
+            }
+        manifest = {
+            "week_key": week_key,
+            "post_type": post_type,
+            "date_range": date_range,
+            "eotw": [_slim(e) for e in (_eotw_list or [])],
+            "manual_eotw_keys": [m for m in []],  # filled below
+            "featured_by_day": {d: [_slim(e) for e in _featured_for_day(d)] for d in days_of_week},
+            "all_shown": [_slim(e) for d in days_of_week for e in events_by_day.get(d, [])],
+            "slide_count": len(image_paths),
+        }
+        try:
+            from eotw_selector import load_manual_eotw
+            manifest["manual_eotw_keys"] = load_manual_eotw(week_key)
+        except Exception:
+            pass
+        with open(os.path.join(output_dir, "slide_manifest.json"), "w", encoding="utf-8") as _mf:
+            json.dump(manifest, _mf, indent=2, ensure_ascii=False)
+        print(f"Wrote slide_manifest.json ({len(manifest['all_shown'])} shown events)")
     except Exception as e:
         print(f"Image generation failed: {e}")
         image_paths = []
@@ -504,7 +668,12 @@ def cmd_generate(post_type="weekday"):
         json.dump(post_data, f, indent=2)
 
     print(f"\nPost content saved to {post_file}")
-    print(f"\n--- CAPTION PREVIEW ---\n{caption[:500]}...")
+    # Encode-safe preview: Windows cp1252 consoles crash on emoji (rainbow, etc.).
+    _preview = f"\n--- CAPTION PREVIEW ---\n{caption[:500]}..."
+    try:
+        print(_preview)
+    except UnicodeEncodeError:
+        sys.stdout.buffer.write((_preview + "\n").encode("utf-8", "replace"))
     return post_data
 
 

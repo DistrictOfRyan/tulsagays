@@ -23,6 +23,7 @@ from scraper.base import BaseScraper
 logger = logging.getLogger(__name__)
 
 SEARCH_TERMS = [
+    # LGBTQ-first (highest priority for relevance/scoring)
     "lgbtq",
     "pride",
     "queer",
@@ -31,6 +32,15 @@ SEARCH_TERMS = [
     "trans",
     "rainbow",
     "sonic ray",  # The Sonic Ray — inclusive sound baths, community partner
+    # General "things to do" so EVERY day has fun options to feature. Loosened
+    # relevance keeps the Tulsa-area ones; featured selection still floats the
+    # queer/fun picks first and all of them land on the website.
+    "music",
+    "comedy",
+    "nightlife",
+    "performing-arts",
+    "food-and-drink",
+    "things-to-do",
 ]
 
 LGBTQ_KEYWORDS = [

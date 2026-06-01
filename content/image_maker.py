@@ -7,6 +7,7 @@ NOT the HHHH brand — no burnt orange, no rainbow bars, no gold deco lines.
 import re
 import sys
 import os
+import json
 import textwrap
 from datetime import datetime
 from typing import List, Dict, Optional, Tuple
@@ -23,6 +24,14 @@ FONTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 SIZE = (1080, 1080)
 W, H = SIZE
 PAD = 96  # side padding
+
+# Layout warnings collected during a carousel render (text overflow / collisions).
+# save_carousel() writes these to layout_report.json so the pre-post preflight
+# can hard-block on any overlapping/overflowing slide.
+_LAYOUT_WARNINGS: List[Dict] = []
+
+def _record_layout_issue(slide: str, issue: str):
+    _LAYOUT_WARNINGS.append({"slide": slide, "issue": issue})
 
 # ── Tulsa Gays Color Palette ──────────────────────────────────────────────
 BG            = (10, 10, 10)       # #0a0a0a — all slides
@@ -431,16 +440,57 @@ def _draw_centered(draw: ImageDraw.Draw, text: str, y: int,
     return y + (bbox[3] - bbox[1])
 
 
+def _split_sentences(text: str) -> List[str]:
+    """Split text into sentences, keeping the terminating punctuation."""
+    import re as _re
+    parts = _re.split(r"(?<=[.!?])\s+", clean_text(text).strip())
+    return [p.strip() for p in parts if p.strip()]
+
+
+def _fit_sentences(draw: ImageDraw.Draw, text: str,
+                   font: ImageFont.FreeTypeFont, max_px: int,
+                   max_lines: int) -> str:
+    """Return the longest run of WHOLE sentences from text that wraps to
+    <= max_lines. Never cuts mid-sentence. If even the first sentence is
+    too long, return that first sentence trimmed to whole words with a
+    clean trailing ellipsis (still never mid-word)."""
+    sentences = _split_sentences(text)
+    if not sentences:
+        return ""
+    kept = ""
+    for s in sentences:
+        candidate = (kept + " " + s).strip()
+        if len(_wrap_to_width(draw, candidate, font, max_px)) <= max_lines:
+            kept = candidate
+        else:
+            break
+    if kept:
+        return kept
+    # First sentence alone overflows — trim to whole words that fit, add ellipsis.
+    words = sentences[0].split()
+    trimmed = ""
+    for w in words:
+        candidate = (trimmed + " " + w).strip()
+        if len(_wrap_to_width(draw, candidate + "...", font, max_px)) <= max_lines:
+            trimmed = candidate
+        else:
+            break
+    return (trimmed + "...") if trimmed else sentences[0]
+
+
 def _draw_wrapped(draw: ImageDraw.Draw, text: str, y: int,
                   font: ImageFont.FreeTypeFont, fill: str,
                   max_px: int = W - PAD * 2,
                   max_lines: int = 3, line_gap: int = 6) -> int:
-    """Draw word-wrapped centered text. Returns y after last line."""
+    """Draw word-wrapped centered text. Returns y after last line.
+
+    When the text is too long for max_lines, trims back to whole sentences
+    (never a mid-sentence ellipsis) via _fit_sentences."""
     all_lines = _wrap_to_width(draw, text, font, max_px)
-    truncated = len(all_lines) > max_lines
+    if len(all_lines) > max_lines:
+        text = _fit_sentences(draw, text, font, max_px, max_lines)
+        all_lines = _wrap_to_width(draw, text, font, max_px)
     lines = all_lines[:max_lines]
-    if truncated and lines:
-        lines[-1] = lines[-1].rstrip() + "..."
     for line in lines:
         y = _draw_centered(draw, line, y, font, fill)
         y += line_gap
@@ -516,7 +566,8 @@ def _parse_event_time(time_str: str) -> int:
 def make_cover_slide(post_type: str, date_range: str,
                      featured_event: Optional[Dict] = None,
                      tagline: Optional[str] = None,
-                     upcoming_event: Optional[Dict] = None) -> Image.Image:
+                     upcoming_event: Optional[Dict] = None,
+                     featured_events: Optional[List[Dict]] = None) -> Image.Image:
     """Slide 1: Cover + Event of the Week.
     Top ~half: TULSA GAYS branding + date.
     Bottom half: featured event of the week with name, time, venue, pitch.
@@ -577,14 +628,66 @@ def make_cover_slide(post_type: str, date_range: str,
     _thin_divider(draw, y, margin=PAD, color="#333333")
     y += 34
 
-    # ── Event of the Week ─────────────────────────────────────────────────
-    if featured_event and not _is_garbage(featured_event):
+    # ── Event(s) of the Week ──────────────────────────────────────────────
+    _evlist = [e for e in (featured_events or []) if e and not _is_garbage(e)]
+    if not _evlist and featured_event and not _is_garbage(featured_event):
+        _evlist = [featured_event]
+    if len(_evlist) >= 2:
+        # Two Events of the Week — compact stacked cards (William's "both on
+        # the home page"). Sized to fit two cards above the footer; the flamingo
+        # legend is suppressed in this mode. Generous line_gap = no glyph overlap.
+        y = _draw_centered(draw, "TWO EVENTS OF THE WEEK", y, f_eotw_label, NEON_PINK)
+        y += 10
+        _f_name_lg = _font("poiret", 46)   # short names
+        _f_name_md = _font("poiret", 36)   # medium
+        _f_name_sm = _font("poiret", 30)   # long names (e.g. Council Oak Jukebox)
+        for _ev in _evlist[:2]:
+            _nm = clean_text(_ev.get("name", ""))
+            _vn = clean_venue(_ev.get("venue", ""))
+            _tm = _ev.get("time", "")
+            _dt = format_date(_ev.get("date", ""))
+            _pitch = (_ev.get("slide_description") or _ev.get("description")
+                      or _ev.get("website_description", ""))
+            _btop = y
+            _yy = y + 12
+            try:
+                _wl = datetime.strptime(_ev.get("date", ""), "%Y-%m-%d").strftime("%A").upper()
+            except Exception:
+                _wl = ""
+            if _wl:
+                _yy = _draw_centered(draw, _wl, _yy, f_eotw_label, WHITE); _yy += 12
+            _nf = _f_name_lg if len(_nm) <= 22 else (_f_name_md if len(_nm) <= 40 else _f_name_sm)
+            _yy = _draw_wrapped(draw, _nm, _yy, _nf, WHITE, max_px=W - 150, max_lines=2, line_gap=12)
+            _yy += 10
+            if _vn:
+                _yy = _draw_wrapped(draw, f"@ {_vn}", _yy, f_eotw_venue, NEON_PINK,
+                                    max_px=W - 160, max_lines=1, line_gap=4); _yy += 6
+            _dl = f"{_dt}  ·  {_tm}" if _dt and _tm else (_dt or _tm)
+            if _dl:
+                _yy = _draw_centered(draw, _dl, _yy, f_eotw_dt, GRAY); _yy += 6
+            _yy = _draw_flamingo_score(draw, _flamingo_score(_ev), W // 2, _yy, size=16)
+            if _pitch:
+                _yy = _draw_wrapped(draw, _pitch, _yy, f_eotw_pitch, LIGHT_GRAY,
+                                    max_px=W - 170, max_lines=2, line_gap=6); _yy += 4
+            _url = _ev.get("url", "")
+            if _url:
+                _du = re.sub(r'^https?://', '', _url).split("?")[0]
+                if len(_du) > 42: _du = _du[:42] + "..."
+                _lbl = "MORE INFO" if _is_signature_event({"name": _nm}) else "TICKETS"
+                _yy = _draw_centered(draw, f"{_lbl}  →  {_du}", _yy,
+                                     _font("segoe-semi", 19), NEON_PINK)
+            draw.rounded_rectangle([PAD - 22, _btop, W - PAD + 22, _yy + 12],
+                                   radius=12, outline=NEON_PINK, width=3)
+            y = _yy + 10
+    elif featured_event and not _is_garbage(featured_event):
         ev_name  = clean_text(featured_event.get("name", ""))
         ev_time  = featured_event.get("time", "")
         ev_venue = clean_venue(featured_event.get("venue", ""))
-        ev_desc  = (featured_event.get("website_description")
-                    or featured_event.get("slide_description")
-                    or featured_event.get("description", ""))
+        # Cover uses the SHORT pitch (the long website_description belongs on the
+        # website and overflows the cover's EOTW box / flamingo legend).
+        ev_desc  = (featured_event.get("slide_description")
+                    or featured_event.get("description")
+                    or featured_event.get("website_description", ""))
         ev_date  = format_date(featured_event.get("date", ""))
 
         eotw_box_top = y - 10
@@ -638,6 +741,16 @@ def make_cover_slide(post_type: str, date_range: str,
         y = _draw_wrapped(draw, tagline, y, f_eotw_pitch, LIGHT_GRAY,
                           max_px=W - 160, max_lines=3, line_gap=8)
 
+    # Overflow guard: in dual mode there is no legend (footer bar at H-100); in
+    # single mode the flamingo legend starts at H-255. If EOTW content runs past
+    # the safe limit, the cards collide with the legend/footer — record it so the
+    # preflight hard-blocks posting.
+    _safe_bottom = (H - 105) if len(_evlist) >= 2 else (H - 255)
+    if y > _safe_bottom:
+        _record_layout_issue("cover",
+            f"Event-of-the-Week content bottom {int(y)}px exceeds safe limit "
+            f"{_safe_bottom}px ({'dual' if len(_evlist) >= 2 else 'single'} mode) — text overlap risk")
+
     # ── Upcoming Featured Event ───────────────────────────────────────────────
     cover_footer_top = H - 76  # keep COMING UP content above the footer bar
     if upcoming_event and not _is_garbage(upcoming_event):
@@ -690,10 +803,12 @@ def make_cover_slide(post_type: str, date_range: str,
                 y = _draw_wrapped(draw, ticket_line, y, f_upc_link, NEON_PINK,
                                   max_px=W - 80, max_lines=2, line_gap=4)
 
-    # Gay scale legend — larger, centered, fixed above footer bar
-    scale_top = H - 255
-    _thin_divider(draw, scale_top, margin=PAD, color="#2a2a2a")
-    _draw_gay_scale(draw, scale_top + 12, font_size=16)
+    # Gay scale legend — fixed above footer bar. Suppressed in dual-EOTW mode,
+    # where two event cards need the full height (no room for the legend).
+    if len(_evlist) < 2:
+        scale_top = H - 255
+        _thin_divider(draw, scale_top, margin=PAD, color="#2a2a2a")
+        _draw_gay_scale(draw, scale_top + 12, font_size=16)
 
     # Footer — prominent TULSAGAYS.COM with "hundreds of events" call-to-action
     _pink_bar(draw, H - 100, height=2)
@@ -857,7 +972,8 @@ def _measure_events_height(draw, all_events: List[Dict], header_y: int,
         y += 42  # emoji row + label text + gaps
         # Pitch
         if ev_pitch:
-            pitch_list = _wrap_to_width(draw, ev_pitch, f_pitch, W - PAD * 2 - 40)[:pitch_max_lines]
+            _fit = _fit_sentences(draw, ev_pitch, f_pitch, W - PAD * 2 - 40, pitch_max_lines)
+            pitch_list = _wrap_to_width(draw, _fit, f_pitch, W - PAD * 2 - 40)[:pitch_max_lines]
             for pl in pitch_list:
                 y += _text_height(draw, pl, f_pitch) + 4
             y += 4
@@ -1017,7 +1133,8 @@ def make_day_slide(day_name: str, events: List[Dict],
 
             # Pitch
             if ev_pitch and y < content_bottom:
-                pitch_list = _wrap_to_width(draw, ev_pitch, f_pitch, W - PAD * 2 - 40)[:pitch_max_lines]
+                _fit = _fit_sentences(draw, ev_pitch, f_pitch, W - PAD * 2 - 40, pitch_max_lines)
+                pitch_list = _wrap_to_width(draw, _fit, f_pitch, W - PAD * 2 - 40)[:pitch_max_lines]
                 for pl in pitch_list:
                     if y >= content_bottom:
                         break
@@ -1135,11 +1252,24 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
                     logo_path: Optional[str] = None,
                     events_by_day: Optional[Dict[str, List[Dict]]] = None,
                     featured_event: Optional[Dict] = None,
-                    upcoming_event: Optional[Dict] = None) -> List[Image.Image]:
-    """Build full 10-slide carousel: Cover → Featured → Mon-Sun → CTA."""
+                    upcoming_event: Optional[Dict] = None,
+                    featured_events: Optional[List[Dict]] = None) -> List[Image.Image]:
+    """Build full carousel: Cover → (extra Featured slides) → Mon-Sun → CTA.
+
+    featured_events: optional list of 1+ Events of the Week. The first leads the
+    cover; any additional ones each get their own featured slide and lead their
+    own day. Back-compatible: if omitted, falls back to [featured_event]."""
     slides: List[Image.Image] = []
+    _LAYOUT_WARNINGS.clear()   # fresh layout-warning collection per render
     days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday",
                     "Friday", "Saturday", "Sunday"]
+
+    # Normalize the featured-event list (manual two-EOTW override aware).
+    _featured_list = [e for e in (featured_events or []) if e and not _is_garbage(e)]
+    if not _featured_list and featured_event and not _is_garbage(featured_event):
+        _featured_list = [featured_event]
+    if _featured_list:
+        featured_event = _featured_list[0]
 
     # Resolve featured event — priority order (configured per-city):
     # 1. Signature event (config.SIGNATURE_EVENT) — always wins if this week
@@ -1244,26 +1374,34 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
                     elif all_events_flat:
                         eotw = all_events_flat[0]
 
-    # Slide 1: Cover + Event of the Week combined
-    slides.append(make_cover_slide(post_type, date_range, featured_event=eotw,
-                                   upcoming_event=upcoming_event))
+    # The full set of events to feature/promote (cover + any extra EOTW).
+    _promote = _featured_list if _featured_list else ([eotw] if eotw else [])
 
-    # Slides 3-9: One per day
+    # Slide 1: Cover — both Events of the Week render on the cover itself
+    # (William's "both on the home page"), so no separate featured slides.
+    slides.append(make_cover_slide(post_type, date_range, featured_event=eotw,
+                                   upcoming_event=upcoming_event,
+                                   featured_events=_promote))
+
+    # Slides per day
     if events_by_day:
         for day in days_of_week:
             day_events = [e for e in events_by_day.get(day, [])
                           if not _is_garbage(e)]
-            # Ensure EOTW appears first on its own day slide
-            if eotw and day_events:
-                eotw_in_day = [e for e in day_events if e is eotw or (
-                    e.get("name") == (eotw.get("name") if eotw else None)
-                    and e.get("date") == (eotw.get("date") if eotw else None)
+            # Ensure each featured/EOTW event leads its own day slide.
+            for feat in _promote:
+                if not feat or not day_events:
+                    continue
+                feat_in_day = [e for e in day_events if e is feat or (
+                    e.get("name") == feat.get("name")
+                    and e.get("date") == feat.get("date")
                 )]
-                if eotw_in_day:
-                    day_events = [eotw_in_day[0]] + [
-                        e for e in day_events if e is not eotw_in_day[0]
-                        and not (e.get("name") == eotw_in_day[0].get("name")
-                                 and e.get("date") == eotw_in_day[0].get("date"))
+                if feat_in_day:
+                    lead = feat_in_day[0]
+                    day_events = [lead] + [
+                        e for e in day_events if e is not lead
+                        and not (e.get("name") == lead.get("name")
+                                 and e.get("date") == lead.get("date"))
                     ]
             slides.append(make_day_slide(day, day_events[:3], total_day_events=len(day_events)))
     else:
@@ -1293,6 +1431,18 @@ def save_carousel(images: List[Image.Image], output_dir: str,
         path = os.path.join(output_dir, f"{prefix}_{i:02d}.png")
         img.save(path, "PNG", optimize=True)
         paths.append(path)
+    # Persist any layout/overflow warnings collected during this render so the
+    # pre-post preflight can hard-block on overlapping slides. Write atomically
+    # (temp + replace) so a concurrent read/hook never sees a half-written file.
+    try:
+        _payload = json.dumps({"warnings": list(_LAYOUT_WARNINGS)}, indent=2, ensure_ascii=False)
+        _final = os.path.join(output_dir, "layout_report.json")
+        _tmp = _final + ".tmp"
+        with open(_tmp, "w", encoding="utf-8") as _lf:
+            _lf.write(_payload)
+        os.replace(_tmp, _final)
+    except Exception:
+        pass
     return paths
 
 

@@ -194,6 +194,38 @@ Events matching any of these fragments are treated as recurring (T5) and will ne
 
 ---
 
+## Description Voice & Featured Rules (locked 2026-06-01 by William)
+
+**Voice (every description):**
+- Sassy and fun: RuPaul meets Alicia Edwards (Abbott Elementary) with a warm Dolly Parton heart.
+- Job #1: encourage a shy gay introvert to actually GO. Then tell him how to have the best time.
+- Always end the long version with a concrete "best-time" tip tailored to the event type
+  (comedy -> grab an edible; networking -> go early, talk to one or two people; concert ->
+  catch the opener, post up near the bar; drag -> bring singles to tip).
+- NEVER discourage, hedge, mock, or put down an event. Every event gets a genuine warm reason to go.
+- No em dashes. No AI/corporate tells. Banned: "vibrant community", "safe space", "don't miss out",
+  "something for everyone", "whether you're".
+
+**Two description fields:**
+- `description` = short slide pitch (1 sentence, < ~150 chars, never truncated mid-sentence).
+- `website_description` = long, full-detail (3-5 sentences) for the website, which lists ALL events.
+- Authored by the LLM in `content/generator.py:enrich_event_descriptions` (S/L format).
+
+**Featured events (the day slides):**
+- Exactly 3 recommended events per day (`image_maker` `day_events[:3]`).
+- NEVER feature health services/clinics, AA, bowling leagues, recurring support groups
+  (enforced via the broad `eotw_selector._is_skip` guard in `main.py:_slide_priority`).
+- >= 60% of the featured 3 must be genuinely LGBTQ (>= 2 of 3), enforced by
+  `main.py:_rebalance_featured` using `eotw_selector._is_lgbtq_strict`.
+
+**Geographic filter:** Tulsa metro / Oklahoma only. Out-of-region events are dropped in
+`scraper/runner.py:_is_out_of_region` (fixed the "Iowa City" leak).
+
+**Event(s) of the Week:** normally one. A manual override file `data/manual_eotw.json`
+(keyed by week, e.g. `"2026-W23": [{"match": "...", "date": "..."}]`) pins one or TWO EOTW.
+Two-EOTW renders the first on the cover and each additional on its own featured slide,
+and each leads its own day. Selected by `eotw_selector.select_eotw_list`.
+
 ## Flamingo Scale Labels (canonical)
 
 Do not change these labels without updating `image_maker.py` > `FLAMINGO_LABELS`.

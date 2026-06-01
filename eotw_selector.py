@@ -16,15 +16,24 @@ NEVER EOTW — excluded unconditionally:
   health clinics, classes, sound baths), Club Majestic, and any non-LGBTQ event.
 """
 
+import json
+import os
 from datetime import datetime
 from typing import Dict, List, Optional
+
+_MANUAL_EOTW_PATH = os.path.join(os.path.dirname(__file__), "data", "manual_eotw.json")
 
 
 # ---------------------------------------------------------------------------
 # Exclusion rules
 # ---------------------------------------------------------------------------
 
-_SKIP_SOURCES = {"recurring", "aa_meetings", "bars"}
+# NOTE: "recurring" is intentionally NOT skipped wholesale — recurring.py holds
+# both services (excluded by the never_feature flag) AND fun weekly queer events
+# (drag shows, drag brunch, talent nights, socials) that William wants ALLOWED to
+# fill a day when one-offs run short. Services are still caught by never_feature
+# + the name/desc fragments below.
+_SKIP_SOURCES = {"aa_meetings"}
 
 _SKIP_NAME_FRAGMENTS = {
     "bowling league", "bowling night",
@@ -59,15 +68,36 @@ _SKIP_VENUES = {
 }
 
 
+# Service/recurring signals found in the DESCRIPTION (not the name). Catches
+# euphemistically-named OKEQ programming like "AFFIRMING" (a CBT therapy
+# program) and "Positively Grateful" (an HIV+ support group) that dodge the
+# name-based list but must never be featured/lead.
+_SKIP_DESC_FRAGMENTS = {
+    "support group", "hiv+ support", "hiv support",
+    "cognitive behavioral", "therapy-based", "cbt-based", "therapy session",
+    "health clinic", "hope testing", "drop-in therapy", "peer support",
+    "free testing", "testing clinic", "recovery group",
+}
+
+
 def _is_skip(e: Dict) -> bool:
-    """Return True if this event must never appear as EOTW."""
+    """Return True if this event must never appear as EOTW or lead a day.
+
+    Honors a persisted `never_feature` flag (set at scrape time from the RAW
+    description, before the LLM voice softens service language), then falls
+    back to name/venue/source/description keyword checks."""
+    if e.get("never_feature"):
+        return True
     src   = (e.get("source")  or "").lower()
     name  = (e.get("name")    or "").lower()
     venue = (e.get("venue")   or "").lower()
+    # Scan both the (possibly voiced) short description and the long one.
+    desc  = ((e.get("description") or "") + " " + (e.get("website_description") or "")).lower()
     return (
         src in _SKIP_SOURCES
         or any(frag in name  for frag in _SKIP_NAME_FRAGMENTS)
         or any(v    in venue for v    in _SKIP_VENUES)
+        or any(frag in desc  for frag in _SKIP_DESC_FRAGMENTS)
     )
 
 
@@ -327,3 +357,57 @@ def select_eotw(events_this_week: List[Dict]) -> Optional[Dict]:
     # Nothing qualifies — return None so the cover can show a graceful fallback.
     # DO NOT fall back to a random community event.
     return None
+
+
+# ---------------------------------------------------------------------------
+# Manual override + multi-EOTW support
+# ---------------------------------------------------------------------------
+
+def load_manual_eotw(week_key: Optional[str]) -> List[Dict]:
+    """Read data/manual_eotw.json and return the list of matcher dicts for
+    week_key, or []. Each matcher: {"match": "<name/source substring>",
+    "date": "YYYY-MM-DD" (optional)}. The file is keyed by week_key, e.g.
+    {"2026-W23": [{"match": "homo hotel"}, {"match": "council oak"}]}."""
+    if not week_key:
+        return []
+    try:
+        with open(_MANUAL_EOTW_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+    except (FileNotFoundError, ValueError):
+        return []
+    entry = data.get(week_key)
+    if isinstance(entry, list):
+        return [m for m in entry if isinstance(m, dict) and m.get("match")]
+    return []
+
+
+def select_eotw_list(events_this_week: List[Dict],
+                     week_key: Optional[str] = None) -> List[Dict]:
+    """Return an ordered list of Events of the Week (usually 1, sometimes 2+).
+
+    If data/manual_eotw.json pins events for this week_key, resolve those
+    against the week's events (in the order listed). Otherwise fall back to
+    the single auto-selected EOTW. Returns [] if nothing qualifies."""
+    manual = load_manual_eotw(week_key)
+    if manual:
+        resolved: List[Dict] = []
+        seen = set()
+        for m in manual:
+            frag = (m.get("match") or "").lower()
+            want_date = m.get("date")
+            cands = [
+                e for e in events_this_week
+                if frag in ((e.get("name") or "") + " " + (e.get("source") or "")).lower()
+            ]
+            if want_date:
+                dated = [e for e in cands if e.get("date") == want_date]
+                cands = dated or cands
+            if cands:
+                best = sorted(cands, key=_sort_key)[0]
+                if id(best) not in seen:
+                    resolved.append(best)
+                    seen.add(id(best))
+        if resolved:
+            return resolved
+    one = select_eotw(events_this_week)
+    return [one] if one else []

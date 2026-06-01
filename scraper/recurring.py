@@ -140,6 +140,29 @@ RECURRING = [
         "priority": 1,
     },
     {
+        # ARTSOK free outdoor concert series — every Tuesday in June, a fun
+        # all-ages summer-night staple that queer Tulsans turn out for. Real,
+        # verified (artsok.org / TulsaKids). Fills Tuesdays, which are otherwise
+        # bare. Lineup rotates; description stays evergreen.
+        "name": "Tuesdays in the Park Concert Series",
+        "day": "Tuesday",
+        "freq": "weekly",
+        "time": "7:00 PM - 9:00 PM",
+        "venue": "Central Park, 1500 S Main St, Broken Arrow",
+        "url": "https://www.artsok.org/",
+        "priority": 2,
+        "description": ("Free outdoor live music every Tuesday night this summer, with food trucks, "
+                        "raffles, and a easy come-as-you-are crowd. Pack a blanket, grab a taco from a "
+                        "truck, and post up near the stage before the band kicks off at 7."),
+        "website_description": ("Tuesdays in the Park is the free, all-ages summer concert series at Central "
+                        "Park in Broken Arrow, and it is one of those low-key gems that makes a weeknight "
+                        "feel like a tiny festival. Live music runs 7 to 9, with food trucks, raffle prizes, "
+                        "and a relaxed, friendly crowd spread out on the grass. No ticket, no dress code, just "
+                        "a good excuse to be outside with people. Best-time tip: bring a blanket or a low chair, "
+                        "show up around 6:45 to grab a spot and hit the food trucks before the line builds, and "
+                        "stay loose, this is a chatting-with-strangers kind of night."),
+    },
+    {
         "name": "Green Country Bears Monthly Meetup",
         "day": "Thursday",
         "freq": "2nd",

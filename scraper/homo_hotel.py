@@ -32,6 +32,11 @@ EVENT_DESCRIPTION = (
 )
 WEEKS_AHEAD = 4  # Generate events for the next N weeks
 
+# Dates handled by a special manual event (data/manual_events.json) — the
+# generic recurring HHHH is suppressed so the richer combined event wins.
+# 2026-06-05: HHHH x Twisted Arts Pride Kickoff at Tulsa Artist Fellowship.
+_SPECIAL_OVERRIDE_DATES = {"2026-06-05"}
+
 
 class HomoHotelScraper(BaseScraper):
     """Generate Homo Hotel Happy Hour recurring events.
@@ -72,6 +77,10 @@ class HomoHotelScraper(BaseScraper):
                 continue
 
             date_str = event_date.strftime("%Y-%m-%d")
+            # Skip dates covered by a richer special manual event.
+            if date_str in _SPECIAL_OVERRIDE_DATES:
+                logger.info(f"[homo_hotel] Skipping {date_str} — covered by special manual event")
+                continue
             friendly_date = event_date.strftime("%A, %B %d")
 
             events.append(self.make_event(

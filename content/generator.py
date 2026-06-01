@@ -411,10 +411,13 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
     BATCH = 20
 
     # Only enrich events that need it
+    # Enrich when the long website copy is missing, the short copy is empty, or
+    # the short copy is raw scraper junk. (A short-but-clean pitch alongside an
+    # existing website_description is left alone — both fields are already good.)
     needs_enrichment = [
         (i, e) for i, e in enumerate(events)
-        if not (e.get("description") or "").strip()
-        or len((e.get("description") or "").strip()) < 60
+        if not (e.get("website_description") or "").strip()
+        or not (e.get("description") or "").strip()
         or _is_scraper_artifact((e.get("description") or ""))
     ]
 
@@ -439,19 +442,37 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
             event_lines.append(line)
 
         prompt = (
-            "For each event below, write a 1-2 sentence description (under 160 chars) "
-            "that tells someone what this specific event IS, why it's worth going, "
-            "and what to expect. Be specific to this event — no generic 'come meet people' filler. "
-            "Warm, Tulsa queer community voice. Use any hint provided to be more specific.\n\n"
+            "For EACH event below, write TWO things:\n"
+            "  (S) a SHORT slide pitch — 1 punchy sentence, under 150 characters, that makes a "
+            "shy gay introvert WANT to go. End on a high note (no trailing ellipsis, no cut-off).\n"
+            "  (L) a LONG website description — 3 to 5 sentences, full detail. Say what the event "
+            "IS, why it's worth leaving the house for, and ALWAYS end with a concrete 'how to have "
+            "the best time' tip tailored to THIS event type. Examples of tips: comedy show -> grab "
+            "an edible beforehand; networking/mixer -> get there early and make yourself talk to "
+            "just one or two people; concert -> show up for the opener and post up near the bar; "
+            "drag show -> bring singles to tip the queens; gallery/art crawl -> start at the far "
+            "end and work back so you beat the crowd.\n\n"
+            "Use any hint provided to be specific to the real event. Never invent a price or a "
+            "lineup you weren't given.\n\n"
             "Events:\n" + "\n".join(event_lines) +
-            "\n\nReply with ONLY a numbered list. Format: 1. [description]"
+            "\n\nReply with ONLY this exact format, two lines per event, nothing else:\n"
+            "1S. [short pitch]\n1L. [long description]\n2S. [short pitch]\n2L. [long description]"
         )
 
         try:
             sys_prompt = (
-                "You write event descriptions for TulsaGays.com, an LGBTQ+ community events guide. "
-                "Casual, warm, specific. Sound like a local friend texting you about what to do this weekend. "
-                "Never use em dashes. Never say 'vibrant community' or 'safe space' or 'don't miss out'."
+                "You write event descriptions for TulsaGays.com, an LGBTQ+ community events guide in "
+                "Tulsa. Voice: RuPaul meets Alicia Edwards (Abbott Elementary) with a warm Dolly Parton "
+                "heart. Sassy, fun, encouraging, a little theatrical, genuinely kind. You are talking to "
+                "a gay introvert and your whole job is to lovingly get him off the couch and out the "
+                "door, then make sure he has the best possible time once he's there. "
+                "HARD RULES: Never discourage, hedge, mock, or put down an event in ANY way — every "
+                "event gets a genuine, warm reason to go. Never use em dashes. Never sound like AI or "
+                "corporate copy. Banned phrases: 'vibrant community', 'safe space', 'don't miss out', "
+                "'something for everyone', 'whether you're'. Write like a real, funny, loving friend. "
+                "ANONYMITY: this account is anonymous. NEVER reveal or hint at who runs it. No real "
+                "names, no 'I run this', no 'dm me', no personal signatures. Speak as the community, "
+                "always 'you' (the reader), never 'I' (the operator)."
             )
             if use_cli:
                 # Route through `claude -p` subprocess — subscription credits.
@@ -472,19 +493,62 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
                     continue
                 try:
                     dot_idx = line.index(".")
-                    num = int(line[:dot_idx]) - 1
+                    tag = line[:dot_idx].strip()          # e.g. "1S" or "1L"
+                    kind = tag[-1].upper() if tag and tag[-1].isalpha() else "S"
+                    num = int(tag.rstrip("SLsl")) - 1
                     desc = line[dot_idx + 1:].strip()
-                    if 0 <= num < len(batch):
+                    if 0 <= num < len(batch) and desc:
                         orig_idx = batch[num][0]
-                        events[orig_idx]["description"] = desc
+                        if kind == "L":
+                            events[orig_idx]["website_description"] = desc
+                        else:
+                            events[orig_idx]["description"] = desc
                 except (ValueError, IndexError):
                     continue
             print(f"[generator] Batch {batch_start//BATCH + 1} done ({len(batch)} events)")
         except Exception as e:
-            print(f"[generator] Batch enrichment failed: {e} — applying rule-based to this batch")
-            for _, ev in batch:
-                if not (ev.get("description") or "").strip():
-                    ev["description"] = _rule_based_enrich(ev)
+            print(f"[generator] Batch enrichment failed: {e}")
+            # Fallback chain: if the CLI failed but an API key is configured,
+            # try the SDK before dropping to rule-based copy (keeps the voice).
+            response = None
+            if config.ANTHROPIC_API_KEY:
+                try:
+                    print("[generator] Retrying batch via Anthropic API (SITES key)")
+                    _client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
+                    message = _client.messages.create(
+                        model="claude-sonnet-4-6",
+                        max_tokens=2000,
+                        system=sys_prompt,
+                        messages=[{"role": "user", "content": prompt}],
+                    )
+                    response = message.content[0].text.strip()
+                except Exception as e2:
+                    print(f"[generator] API fallback also failed: {e2}")
+                    response = None
+            if response:
+                for line in response.split("\n"):
+                    line = line.strip()
+                    if not line or not line[0].isdigit():
+                        continue
+                    try:
+                        dot_idx = line.index(".")
+                        tag = line[:dot_idx].strip()
+                        kind = tag[-1].upper() if tag and tag[-1].isalpha() else "S"
+                        num = int(tag.rstrip("SLsl")) - 1
+                        desc = line[dot_idx + 1:].strip()
+                        if 0 <= num < len(batch) and desc:
+                            orig_idx = batch[num][0]
+                            if kind == "L":
+                                events[orig_idx]["website_description"] = desc
+                            else:
+                                events[orig_idx]["description"] = desc
+                    except (ValueError, IndexError):
+                        continue
+            else:
+                print("[generator] Applying rule-based copy to this batch")
+                for _, ev in batch:
+                    if not (ev.get("description") or "").strip():
+                        ev["description"] = _rule_based_enrich(ev)
 
     return events
 

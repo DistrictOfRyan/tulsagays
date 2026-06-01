@@ -576,6 +576,29 @@ def main():
             sys.exit(1)
         print(f"[OK] Content approved ({_approval.get('approved_at', 'timestamp unknown')})")
 
+    # Step 0.5: Hard PREFLIGHT gate — verify events, text fit, descriptions,
+    # links. Blocks posting on any error. Runs even in dry-run (report only).
+    try:
+        from tools.preflight_post import run as _preflight_run
+    except Exception:
+        try:
+            import preflight_post as _pf  # when run from tools/
+            _preflight_run = _pf.run
+        except Exception:
+            _preflight_run = None
+    if _preflight_run is not None:
+        _pf_ok = _preflight_run(WEEK_KEY)
+        if not _pf_ok and not DRY_RUN:
+            print(
+                "\n[STOP] Pre-post preflight FAILED — see the blocking errors above\n"
+                "       and preflight_status.json. Post ABORTED."
+            )
+            sys.exit(1)
+        if not _pf_ok and DRY_RUN:
+            print("[DRY RUN] Preflight failed — a real post would be BLOCKED here.")
+    else:
+        print("[WARN] preflight_post unavailable — skipping verification (NOT recommended)")
+
     # Step 1: Validate slides
     slides = get_slides()
     validate_slides(slides)

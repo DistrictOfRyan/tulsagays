@@ -223,13 +223,106 @@ def _is_lgbtq_relevant(event: Dict) -> bool:
     return False
 
 
+# ── Geographic filter ──────────────────────────────────────────────────────
+# Tulsa metro / Oklahoma markers. If any appear in an event's location fields,
+# the event is in-region and kept regardless of other-state matches.
+_OK_MARKERS = (
+    "tulsa", "oklahoma", ", ok", " ok ", " ok,",
+    "broken arrow", "owasso", "jenks", "bixby", "sand springs", "sapulpa",
+    "claremore", "catoosa", "glenpool", "skiatook", "collinsville",
+    "okmulgee", "muskogee", "wagoner", "coweta", "okc", "stillwater", "norman",
+)
+
+# Full names of all other 49 states + DC (no "oklahoma").
+_OTHER_STATE_NAMES = (
+    "alabama", "alaska", "arizona", "arkansas", "california", "colorado",
+    "connecticut", "delaware", "florida", "georgia", "hawaii", "idaho",
+    "illinois", "indiana", "iowa", "kansas", "kentucky", "louisiana", "maine",
+    "maryland", "massachusetts", "michigan", "minnesota", "mississippi",
+    "missouri", "montana", "nebraska", "nevada", "new hampshire", "new jersey",
+    "new mexico", "new york", "north carolina", "north dakota", "ohio",
+    "oregon", "pennsylvania", "rhode island", "south carolina", "south dakota",
+    "tennessee", "texas", "utah", "vermont", "virginia", "washington",
+    "west virginia", "wisconsin", "wyoming",
+)
+
+# ", ST ZIP" pattern for every state abbreviation except OK. Requires a comma
+# and a following ZIP/space so prose like ", in person" never matches.
+_OTHER_STATE_ABBR_RE = re.compile(
+    r",\s*(al|ak|az|ar|ca|co|ct|de|fl|ga|hi|id|il|in|ia|ks|ky|la|me|md|ma|mi|"
+    r"mn|ms|mo|mt|ne|nv|nh|nj|nm|ny|nc|nd|oh|or|pa|ri|sc|sd|tn|tx|ut|vt|va|wa|"
+    r"wv|wi|wy|dc)\b(\s+\d|\s*$)",
+    re.IGNORECASE,
+)
+
+
+# Services / recurring programming that must NEVER be featured or lead a day
+# (they still appear on the website). Detected from RAW name + description at
+# scrape time, before the LLM voice softens the language, and persisted as a
+# `never_feature` flag the selection logic reads.
+_NEVER_FEATURE_SIGNALS = (
+    "support group", "aa meeting", "lgbtq+ aa", "bowling league",
+    "health clinic", "hope testing", "drop-in therapy", "therapy session",
+    "cognitive behavioral", "therapy-based", "dialectical behavioral", "dbt",
+    "behavioral therapy", "group therapy", "hiv+ support", "hiv support",
+    "peer support", "smart recovery", "recovery meeting", "monthly meeting",
+    "girl scout", "shut up & write", "raise your spiritual iq", "mix and mingle",
+    "ttrpg", "free testing", "guiding right", "okeq senior", "okeq health",
+    "sunday service", "sunday services", "open meditation", "drop-in",
+)
+
+
+def _is_never_feature(event: Dict) -> bool:
+    text = ((event.get("name") or "") + " " + (event.get("description") or "")).lower()
+    return any(sig in text for sig in _NEVER_FEATURE_SIGNALS)
+
+
+# Clear non-community SPAM — dropped even though we otherwise keep Tulsa-area
+# community/cultural events. (Career/investor/MLM/webinar/job-fair noise.)
+_SPAM_NOISE_KW = (
+    "career blueprint", "project manager", "investor", "founders |",
+    "real estate", "make money", "webinar", "mlm", "side hustle", "crypto",
+    "franchise", "sales training", "networking for", "passive income",
+    "business opportunity", "hiring event", "job fair", "biggest community",
+    "investors founders",
+)
+
+
+def _is_spam_noise(event: Dict) -> bool:
+    text = ((event.get("name") or "") + " " + (event.get("description") or "")).lower()
+    return any(sig in text for sig in _SPAM_NOISE_KW)
+
+
+def _location_text(event: Dict) -> str:
+    return " ".join([
+        event.get("venue", "") or "",
+        event.get("address", "") or "",
+        event.get("city", "") or "",
+        event.get("location", "") or "",
+    ]).lower()
+
+
+def _is_out_of_region(event: Dict) -> bool:
+    """True if the event is clearly outside the Tulsa metro / Oklahoma."""
+    loc = _location_text(event).strip()
+    if not loc:
+        return False  # no location info — cannot judge, keep it
+    if any(m in loc for m in _OK_MARKERS):
+        return False  # explicitly Oklahoma/Tulsa metro
+    if any(s in loc for s in _OTHER_STATE_NAMES):
+        return True
+    if _OTHER_STATE_ABBR_RE.search(loc):
+        return True
+    return False
+
+
 def apply_quality_filters(events: List[Dict]) -> List[Dict]:
     """Apply all quality filters and annotate each event with lgbtq_relevant."""
     monday, sunday = _get_week_range()
     filtered = []
     removed_counts = {
         "no_name": 0, "junk_name": 0, "out_of_week": 0,
-        "non_lgbtq_blocklist": 0, "not_lgbtq_relevant": 0,
+        "non_lgbtq_blocklist": 0, "not_lgbtq_relevant": 0, "out_of_region": 0,
     }
 
     for event in events:
@@ -255,20 +348,34 @@ def apply_quality_filters(events: List[Dict]) -> List[Dict]:
                 logger.debug(f"[filter] Out-of-week removed: '{name}' on {date_str}")
                 continue
 
+        # Filter 3b: out-of-region (not Tulsa metro / Oklahoma)
+        if _is_out_of_region(event):
+            removed_counts["out_of_region"] += 1
+            logger.info(f"[filter] Out-of-region removed: '{name}' (loc={_location_text(event)[:60]})")
+            continue
+
         # Filter 4: non-LGBTQ blocklist — blocks matching events from ANY source
         if _is_clearly_not_lgbtq(event):
             removed_counts["non_lgbtq_blocklist"] += 1
             logger.info(f"[filter] Non-LGBTQ blocklist removed: '{name}' (source={source})")
             continue
 
-        # Annotate LGBTQ relevance
+        # Annotate LGBTQ relevance + never-feature (computed from RAW text now,
+        # before enrichment softens service language).
         event["lgbtq_relevant"] = _is_lgbtq_relevant(event)
+        if _is_never_feature(event):
+            event["never_feature"] = True
 
-        # Filter 5: events from non-trusted sources must have LGBTQ keywords
+        # Filter 5: keep genuine Tulsa community/cultural events even without
+        # LGBTQ keywords — they populate the WEBSITE (William: all events you
+        # find go on the website) and the featured-candidate pool. Only clear
+        # non-community SPAM (career/investor/MLM/job-fair) is dropped here.
         if source not in LGBTQ_SOURCES and not event["lgbtq_relevant"]:
-            removed_counts["not_lgbtq_relevant"] += 1
-            logger.info(f"[filter] Not LGBTQ-relevant removed: '{name}' (source={source})")
-            continue
+            if _is_spam_noise(event):
+                removed_counts["not_lgbtq_relevant"] += 1
+                logger.info(f"[filter] Spam/non-community removed: '{name}' (source={source})")
+                continue
+            event["community_event"] = True   # kept, not LGBTQ-specific
 
         filtered.append(event)
 
@@ -276,6 +383,7 @@ def apply_quality_filters(events: List[Dict]) -> List[Dict]:
         f"[filter] Removed: {removed_counts['no_name']} no-name, "
         f"{removed_counts['junk_name']} junk-name, "
         f"{removed_counts['out_of_week']} out-of-week, "
+        f"{removed_counts['out_of_region']} out-of-region, "
         f"{removed_counts['non_lgbtq_blocklist']} non-LGBTQ blocklist, "
         f"{removed_counts['not_lgbtq_relevant']} not LGBTQ-relevant"
     )

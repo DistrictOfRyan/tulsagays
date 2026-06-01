@@ -94,6 +94,58 @@ class BaseScraper:
             "source": self.source_name,
         }
 
+    def _extract_json_ld_from_soup(self, soup, venue_default: str = "",
+                                   priority: int = 2) -> List[Dict]:
+        """Extract schema.org Event items from JSON-LD <script> blocks.
+
+        Shared helper so every scraper (ticketing, venues, etc.) can pull
+        structured event data. Handles bare arrays, single objects, and
+        @graph wrappers. Returns a list of standardized event dicts."""
+        import json as _json
+        events: List[Dict] = []
+        for script in soup.find_all("script", type="application/ld+json"):
+            try:
+                raw = script.string or script.get_text() or ""
+                if not raw.strip():
+                    continue
+                data = _json.loads(raw)
+            except Exception:
+                continue
+            # Flatten arrays and @graph wrappers into a list of candidate items.
+            if isinstance(data, list):
+                items = data
+            elif isinstance(data, dict) and isinstance(data.get("@graph"), list):
+                items = data["@graph"]
+            else:
+                items = [data]
+            for item in items:
+                if not isinstance(item, dict):
+                    continue
+                itype = item.get("@type", "")
+                if isinstance(itype, list):
+                    itype = next((t for t in itype if "Event" in str(t)), "")
+                if "Event" not in str(itype):
+                    continue
+                name = (item.get("name") or "").strip()
+                if not name:
+                    continue
+                start = item.get("startDate", "") or ""
+                date_str = start[:10] if start else ""
+                time_str = start.split("T")[1][:5] if "T" in start else ""
+                location = item.get("location", {})
+                venue = venue_default
+                if isinstance(location, dict):
+                    venue = location.get("name", venue_default) or venue_default
+                elif isinstance(location, str):
+                    venue = location or venue_default
+                description = (item.get("description") or "")[:500]
+                url = item.get("url", "") or ""
+                events.append(self.make_event(
+                    name=name, date=date_str, time=time_str, venue=venue,
+                    description=description, url=url, priority=priority,
+                ))
+        return events
+
     def scrape(self) -> List[Dict]:
         """Override in subclasses. Must return a list of event dicts."""
         raise NotImplementedError("Subclasses must implement scrape()")
