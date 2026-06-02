@@ -86,23 +86,25 @@ FB_GROUPS = [
      "type": "general", "post": True, "moderated": False,
      "notes": "Huge general Tulsa events group. Went LIVE 2026-06-01."},
 
-    # ---- From the legacy SKILL.md rotation (membership not re-verified 2026-06-01;
-    #      blaster logs gracefully if the Page can't post). ----
-    {"name": "Black Queer Tulsa", "id": "436526440885847", "members": None,
-     "type": "lgbtq", "post": True, "moderated": None,
-     "notes": "From legacy rotation. Verify membership."},
-    {"name": "Oklahoma Lesbian Friends", "id": "649753022551343", "members": None,
-     "type": "lgbtq", "post": True, "moderated": None,
-     "notes": "From legacy rotation. Verify membership."},
-    {"name": "Oklahoma House of Drag", "id": "418182474119895", "members": None,
-     "type": "lgbtq", "post": True, "moderated": None,
-     "notes": "From legacy rotation. Verify membership."},
+    # ---- Legacy-rotation groups, validated live 2026-06-01 ----
+    {"name": "Oklahoma House of Drag", "id": "418182474119895", "members": 852,
+     "type": "lgbtq", "post": True, "moderated": False,
+     "notes": "Public; Page posts go LIVE without joining. Went LIVE 2026-06-01."},
     {"name": "Interesting Things To Do In Tulsa", "id": "InterestingThingsToDoInTulsa",
-     "members": 72000, "type": "general", "post": True, "moderated": None,
-     "notes": "72K general Tulsa group, huge reach. From legacy rotation."},
-    {"name": "Tulsa Events", "id": "114530202225051", "members": None,
-     "type": "general", "post": True, "moderated": None,
-     "notes": "From legacy rotation. Verify membership."},
+     "members": 73200, "type": "general", "post": True, "moderated": True,
+     "notes": "73K, huge reach. Moderated. Pending 2026-06-01."},
+    {"name": "Tulsa Events", "id": "114530202225051", "members": 6500,
+     "type": "general", "post": True, "moderated": True,
+     "notes": "6.5K general Tulsa. Moderated. Pending 2026-06-01."},
+
+    # ---- Skipped: BLOCK Page accounts entirely (would need a personal
+    #      profile -> forbidden by the anonymity rule). Verified 2026-06-01. ----
+    {"name": "Black Queer (Tulsa)", "id": "436526440885847", "members": 368,
+     "type": "lgbtq", "post": False, "moderated": None,
+     "notes": "'This group doesn't allow Pages to join.' Cannot post as the Page."},
+    {"name": "Oklahoma Lesbian Friends", "id": "649753022551343", "members": 441,
+     "type": "lgbtq", "post": False, "moderated": None,
+     "notes": "'This group doesn't allow Pages to join.' Cannot post as the Page."},
 
     # ---- Skipped: low relevance / wrong format / our own channel ----
     {"name": "Homo(sexual) Hotel Happy Hour (4H)", "id": "homohotelhappyhour",
