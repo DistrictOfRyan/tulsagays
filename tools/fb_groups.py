@@ -86,6 +86,24 @@ FB_GROUPS = [
      "type": "general", "post": True, "moderated": False,
      "notes": "Huge general Tulsa events group. Went LIVE 2026-06-01."},
 
+    # ---- From the legacy SKILL.md rotation (membership not re-verified 2026-06-01;
+    #      blaster logs gracefully if the Page can't post). ----
+    {"name": "Black Queer Tulsa", "id": "436526440885847", "members": None,
+     "type": "lgbtq", "post": True, "moderated": None,
+     "notes": "From legacy rotation. Verify membership."},
+    {"name": "Oklahoma Lesbian Friends", "id": "649753022551343", "members": None,
+     "type": "lgbtq", "post": True, "moderated": None,
+     "notes": "From legacy rotation. Verify membership."},
+    {"name": "Oklahoma House of Drag", "id": "418182474119895", "members": None,
+     "type": "lgbtq", "post": True, "moderated": None,
+     "notes": "From legacy rotation. Verify membership."},
+    {"name": "Interesting Things To Do In Tulsa", "id": "InterestingThingsToDoInTulsa",
+     "members": 72000, "type": "general", "post": True, "moderated": None,
+     "notes": "72K general Tulsa group, huge reach. From legacy rotation."},
+    {"name": "Tulsa Events", "id": "114530202225051", "members": None,
+     "type": "general", "post": True, "moderated": None,
+     "notes": "From legacy rotation. Verify membership."},
+
     # ---- Skipped: low relevance / wrong format / our own channel ----
     {"name": "Homo(sexual) Hotel Happy Hour (4H)", "id": "homohotelhappyhour",
      "members": None, "type": "lgbtq", "post": False, "moderated": None,
