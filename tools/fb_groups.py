@@ -90,6 +90,12 @@ FB_GROUPS = [
     {"name": "Oklahoma House of Drag", "id": "418182474119895", "members": 852,
      "type": "lgbtq", "post": True, "moderated": False,
      "notes": "Public; Page posts go LIVE without joining. Went LIVE 2026-06-01."},
+    {"name": "Stand Up and Shop Local - Support Tulsa Small Business",
+     "id": "200597954582833", "members": 84500,
+     "type": "general", "post": True, "moderated": True,
+     "notes": "84.5K Tulsa small-biz support group; LGBTQ events are on-topic as they "
+              "drive venue foot traffic. Moderated. Pending 2026-06-02. "
+              "Use venue-centric caption angle (tulsagays.com drives foot traffic)."},
     {"name": "Interesting Things To Do In Tulsa", "id": "InterestingThingsToDoInTulsa",
      "members": 73200, "type": "general", "post": True, "moderated": True,
      "notes": "73K, huge reach. Moderated. Pending 2026-06-01."},
