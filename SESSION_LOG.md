@@ -1,3 +1,12 @@
+## [2026-06-02] TulsaGays full automation + HELM helmforclaude.com launch
+
+Rebuilt the TulsaGays Monday pipeline end to end: fixed the SUPERVISOR_TASK_COMPLETE caption leak on IG (delete boost, edit, re-boost $9/3d) and FB (Graph API), built a self-driving FB group blast system (posting/group_blast.py + tools/fb_groups.py + tools/group_caption.py), posted to 17 groups as the Tulsa Gays Page (6 live, 11 pending), and saved browser auth for hands-off Monday automation. Also rewrote the WOMPA scraper from broken Wix selectors to the GoodBarber JSON API. Separately: set up helmforclaude.com (DNS + GitHub Pages custom domain + fixed stale links), posted HELM to Reddit r/SideProject, and left 3 IH comments to unlock the new account for posting.
+
+**Main artifact:** posting/group_blast.py, tools/fb_groups.py, tools/group_caption.py, scraper/playwright_scrapers.py (WOMPA fix), tools/preflight_post.py + tools/post_weekly.py (harness-marker durable fix). helmforclaude.com live.
+**Open items:** IH post pending account unlock (check 2026-06-04+)
+
+---
+
 ## [2026-05-14] Finish mid-week migration: HHHH posting, token cleanup, GHA scheduler fallback
 
 Original goal was to run register-new-tulsagays-tasks (the one-shot in claude-ops) and unregister tulsagays-wednesday-social. That step is blocked from this session because the scheduled-tasks MCP is not connected and the GitHub MCP scope is restricted to DistrictOfRyan/tulsagays, so claude-ops PR #23 cannot be merged and the SKILL.md contents cannot be read. Side fixes that could land in this repo did: added Graph API HHHH page posting (posting/facebook.py + post-hhhh CLI), added Playwright HHHH group posting (posting/group_post.py), moved the leaked Tulsa Gays page access token out of meta_api_config.json into TULSAGAYS_PAGE_ACCESS_TOKEN env var (rotate to invalidate the value still in git history), and scaffolded a GitHub Actions cron fallback for the four scheduled tasks (.github/workflows/scheduled-tulsagays-tasks.yml + tools/run_scheduled_task.py stubs).
