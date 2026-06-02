@@ -29,9 +29,13 @@ from config import SOURCES, EVENTS_DIR
 # Constants
 # ---------------------------------------------------------------------------
 TIMEOUT = 10
+# Use a browser-like UA: a self-identifying bot UA gets 403/406 from anti-bot
+# sites (Songkick, AXS, sometimes Ticketmaster/BOK), producing false-positive
+# "dead source" flags every run. The real scraper fetches as a browser, so the
+# health check should probe the same way to reflect true reachability.
 USER_AGENT = (
-    "Mozilla/5.0 (compatible; TulsaGays-HealthCheck/1.0; "
-    "+https://www.tulsagays.com)"
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 )
 PENDING_ACTIONS_PATH = os.path.join(
     os.path.expanduser("~"), ".claude", "pending-william-actions.md"
@@ -76,7 +80,11 @@ def check_url(url: str) -> dict:
     Attempt a HEAD request, fall back to GET on failure.
     Returns a dict with: status, code, final_url, note.
     """
-    headers = {"User-Agent": USER_AGENT}
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+    }
     result = {"url": url, "status": None, "code": None, "final_url": None, "note": ""}
 
     # Try HEAD first
@@ -86,12 +94,11 @@ def check_url(url: str) -> dict:
         result["final_url"] = resp.url
         if resp.status_code < 400:
             result["status"] = "OK"
-        elif resp.status_code == 405:
-            # Server does not allow HEAD - fall through to GET
-            pass
         else:
-            result["status"] = "ERROR"
-            result["note"] = f"HTTP {resp.status_code}"
+            # HEAD is unreliable: many sites reject it with 403/405/406 while
+            # serving GET fine. Leave status unset so the GET fallback below
+            # makes the authoritative call before we declare an ERROR.
+            pass
     except requests.exceptions.ConnectionError:
         result["status"] = "DEAD"
         result["note"] = "connection refused / DNS failure"
@@ -105,8 +112,10 @@ def check_url(url: str) -> dict:
         result["status"] = "ERROR"
         result["note"] = str(exc)[:120]
 
-    # Fall back to GET if HEAD failed or returned 405
-    if result["status"] is None or result["code"] == 405:
+    # Fall back to GET whenever HEAD did not conclusively succeed (any HTTP
+    # >=400 left status unset). Connection/timeout errors set a terminal status
+    # above and are NOT retried here, to avoid doubling wall-clock on dead hosts.
+    if result["status"] is None:
         try:
             resp = requests.get(
                 url, headers=headers, timeout=TIMEOUT,
@@ -118,6 +127,13 @@ def check_url(url: str) -> dict:
             result["final_url"] = resp.url
             if resp.status_code < 400:
                 result["status"] = "OK"
+            elif resp.status_code in (401, 403, 406, 429):
+                # Server is up but refusing automated clients (anti-bot /
+                # auth wall). This is materially different from a 404/410:
+                # the URL is fine, the site just blocks bots. Bucketed
+                # separately so "HTTP ERRORS" stays a fix-the-URL signal.
+                result["status"] = "BLOCKED"
+                result["note"] = f"HTTP {resp.status_code} (anti-bot / auth wall)"
             else:
                 result["status"] = "ERROR"
                 result["note"] = f"HTTP {resp.status_code}"
@@ -276,6 +292,7 @@ def build_summary_lines(results: list, week_file: str) -> list:
 
     dead = [r for r in results if r["status"] in ("DEAD", "TIMEOUT", "REDIRECT_LOOP")]
     errors = [r for r in results if r["status"] == "ERROR"]
+    blocked = [r for r in results if r["status"] == "BLOCKED"]
     no_url = [r for r in results if r["status"] == "NO_URL"]
     zero_events = [
         r for r in results
@@ -290,6 +307,7 @@ def build_summary_lines(results: list, week_file: str) -> list:
         f"{len(zero_events)} reachable but 0 events last week, "
         f"{len(dead)} dead/timeout, "
         f"{len(errors)} HTTP errors, "
+        f"{len(blocked)} blocked (anti-bot), "
         f"{len(no_url)} no URL configured, "
         f"{len(skipped)} skipped (FB/Slack/IG)"
     )
@@ -305,8 +323,16 @@ def build_summary_lines(results: list, week_file: str) -> list:
 
     if errors:
         lines.append("")
-        lines.append("HTTP ERRORS:")
+        lines.append("HTTP ERRORS (broken URL -- fix or retire):")
         for r in sorted(errors, key=lambda x: x["priority"]):
+            lines.append(
+                f"  - {r['name']} [{r['key']}] P{r['priority']}: {r['note']}"
+            )
+
+    if blocked:
+        lines.append("")
+        lines.append("BLOCKED -- anti-bot / auth wall (URL fine, needs browser; low-priority):")
+        for r in sorted(blocked, key=lambda x: x["priority"]):
             lines.append(
                 f"  - {r['name']} [{r['key']}] P{r['priority']}: {r['note']}"
             )
