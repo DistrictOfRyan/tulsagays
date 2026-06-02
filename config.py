@@ -38,26 +38,49 @@ HHHH_PAGE_ACCESS_TOKEN = os.environ.get("HHHH_PAGE_ACCESS_TOKEN", "")
 def _resolve_tulsagays_page_token():
     """Find the TulsaGays page access token without forcing a manual refresh.
 
-    Order: env var → tulsagays/meta_api_config.json → claude-ops backup at
-    ~/.claude/tulsagays/meta_api_config.json. The placeholder string left by
-    the secret-rotation cleanup is treated as empty so the chain falls through.
+    Order:
+      1. env var TULSAGAYS_PAGE_ACCESS_TOKEN (set persistently by the restore helper)
+      2. ~/.credentials/tulsagays_page_token.txt  <-- canonical secret store, off the
+         synced drive. This is where rotation puts the token; reading it here is what
+         keeps the task from going dark when the env var didn't propagate. (The 2026-06
+         outage was exactly this: token was in this file but nothing read it.)
+      3. meta_api_config.json (project, then claude-ops backup) — legacy; now holds a
+         placeholder so the secret stays off the synced drive.
+
+    The placeholder string and any token listed in
+    ~/.credentials/meta_revoked_tokens.txt are treated as empty, so a leaked/rotated
+    token can never be silently served again.
     """
+    import json
     placeholder = "MOVED_TO_ENV_TULSAGAYS_PAGE_ACCESS_TOKEN"
+
+    revoked = set()
+    try:
+        with open(os.path.expanduser("~/.credentials/meta_revoked_tokens.txt"), encoding="utf-8") as f:
+            revoked = {ln.strip() for ln in f if ln.strip()}
+    except OSError:
+        pass
+
     candidates = [os.environ.get("TULSAGAYS_PAGE_ACCESS_TOKEN", "").strip()]
+
+    try:
+        with open(os.path.expanduser("~/.credentials/tulsagays_page_token.txt"), encoding="utf-8") as f:
+            candidates.append(f.read().strip())
+    except OSError:
+        pass
 
     for path in (
         os.path.join(PROJECT_DIR, "meta_api_config.json"),
         os.path.expanduser("~/.claude/tulsagays/meta_api_config.json"),
     ):
         try:
-            import json
             with open(path, encoding="utf-8") as f:
                 candidates.append(str(json.load(f).get("page_access_token", "")).strip())
         except (OSError, ValueError):
             continue
 
     for value in candidates:
-        if value and value != placeholder:
+        if value and value != placeholder and value not in revoked:
             return value
     return ""
 
