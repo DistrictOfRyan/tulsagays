@@ -62,25 +62,23 @@
             <div class="diamond-sep"><div class="diamond"></div></div>
             <p class="form-intro">Get Tulsa's queer events delivered to your inbox every week. No spam. No algorithms. Just your community's calendar, straight to you.</p>
 
-            <form action="https://formspree.io/f/mykogbrb" method="POST">
+            <!-- Posts straight to Kit (form 9410973). No secret key in the page;
+                 Kit handles the double-opt-in confirmation email + list storage. -->
+            <form id="nl-form" action="https://app.convertkit.com/forms/9410973/subscriptions" method="POST">
 
                 <!-- Honeypot anti-spam field -->
                 <div class="honey-field" aria-hidden="true">
-                    <input type="text" name="_honey" tabindex="-1" autocomplete="off">
+                    <input type="text" name="hp_email" tabindex="-1" autocomplete="off">
                 </div>
-
-                <!-- Subject override so newsletter signups are easy to spot in Gmail -->
-                <input type="hidden" name="_subject" value="Newsletter Signup - Tulsa Gays">
-                <input type="hidden" name="_next" value="https://www.tulsagays.com/newsletter-thanks.html">
 
                 <div class="form-group">
                     <label for="email">Email Address <span style="color:var(--peacock)">*</span></label>
-                    <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email">
+                    <input type="email" id="email" name="email_address" required placeholder="you@example.com" autocomplete="email">
                 </div>
 
                 <div class="form-group">
                     <label for="first_name">First Name</label>
-                    <input type="text" id="first_name" name="first_name" placeholder="What should we call you?">
+                    <input type="text" id="first_name" name="fields[first_name]" placeholder="What should we call you?">
                 </div>
 
                 <button type="submit" class="submit-btn">Sign Me Up</button>
@@ -99,6 +97,36 @@
             <p style="font-size:0.75em;opacity:0.55;margin-top:0.5em">&copy; 2026 Tulsa Gays&#8482; &middot; Homo Hotel Happy Hour&#8482;</p>
         </div>
     </footer>
+
+    <script>
+    // Submit to Kit via fetch so we control the redirect (Kit returns JSON,
+    // not a redirect). Honeypot-guarded. Falls back to a normal POST if JS
+    // somehow fails mid-flight.
+    (function(){
+        var form = document.getElementById('nl-form');
+        if (!form) return;
+        form.addEventListener('submit', function(e){
+            e.preventDefault();
+            var hp = form.querySelector('input[name="hp_email"]');
+            if (hp && hp.value) { return; } // bot trap — silently drop
+            var btn = form.querySelector('.submit-btn');
+            var email = (form.querySelector('input[name="email_address"]') || {}).value || '';
+            var first = (form.querySelector('input[name="fields[first_name]"]') || {}).value || '';
+            var orig = btn ? btn.textContent : '';
+            if (btn) { btn.disabled = true; btn.textContent = 'Signing you up...'; }
+            var body = new URLSearchParams();
+            body.append('email_address', email);
+            if (first) body.append('fields[first_name]', first);
+            fetch(form.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: body })
+                .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+                .then(function(){ window.location.href = '/newsletter-thanks.html'; })
+                .catch(function(){
+                    if (btn) { btn.disabled = false; btn.textContent = orig; }
+                    alert('Hmm, that did not go through. Please try again in a moment.');
+                });
+        });
+    })();
+    </script>
 
 </body>
 </html>
