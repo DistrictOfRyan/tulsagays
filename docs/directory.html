@@ -309,6 +309,42 @@
             font-family: 'Cinzel', serif;
         }
 
+        /* ── Featured Partners ──────────────────────────────────────────── */
+        .featured-partners-section {
+            margin: 0 0 28px 0;
+            padding: 20px 0 0 0;
+        }
+        .featured-partners-label {
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+            font-family: 'Cinzel', serif;
+        }
+        .biz-card.featured-partner {
+            border: 1px solid rgba(155, 30, 95, 0.45);
+            background: rgba(155, 30, 95, 0.06);
+            position: relative;
+        }
+        .biz-card.featured-partner:hover {
+            border-color: rgba(155, 30, 95, 0.7);
+            background: rgba(155, 30, 95, 0.1);
+        }
+        .featured-partner-badge {
+            display: inline-block;
+            font-size: 0.6rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 2px 7px;
+            background: var(--gold);
+            color: #fff;
+            margin-left: 8px;
+            vertical-align: middle;
+            font-weight: 700;
+        }
+        .featured-partner .biz-name a { color: var(--text-primary); }
+
         /* ── No Results ──────────────────────────────────────────────────── */
         .no-results {
             display: none;
@@ -460,6 +496,21 @@
         <div class="no-results" id="noResults">
             <p>We searched every corner. Even the sketchy ones.</p>
             <p>Nothing matched that search. Know a business that should be here? <a href="#submit-business">Submit it above.</a></p>
+        </div>
+
+        <!-- ══ FEATURED PARTNERS ═══════════════════════════════════════════ -->
+        <!-- Businesses listed here are paying Featured Partners ($50–75/mo).
+             To add a partner: copy the biz-card.featured-partner block below.
+             Contact: hello@tulsagays.com -->
+        <div class="featured-partners-section" id="featuredPartners" style="display:none">
+            <div class="featured-partners-label">Featured Partners</div>
+            <!-- FEATURED PARTNER SLOTS — populate when first sponsors sign on
+            <div class="biz-card featured-partner">
+                <div class="biz-name"><a href="URL" target="_blank" rel="noopener">Business Name</a> <span class="featured-partner-badge">Featured</span></div>
+                <div class="biz-address">Address · Neighborhood</div>
+                <div class="biz-desc">Description here (2–3 sentences, sassy Tulsa Gays voice).</div>
+            </div>
+            -->
         </div>
 
         <!-- ══ CATEGORY SECTIONS ════════════════════════════════════════════ -->
@@ -1242,6 +1293,16 @@
             btn.disabled = false;
             btn.textContent = 'Submit Business';
         });
+    })();
+    </script>
+
+    <script>
+    // Show featured partners section only when real partner cards are present.
+    (function(){
+        var fp = document.getElementById('featuredPartners');
+        if (!fp) return;
+        var realCards = fp.querySelectorAll('.biz-card.featured-partner');
+        if (realCards.length > 0) fp.style.display = '';
     })();
     </script>
 
