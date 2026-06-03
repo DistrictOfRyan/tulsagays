@@ -1216,6 +1216,8 @@ LGBTQ_SOURCES = {
     # City-specific (Tulsa)
     "okeq", "okeq_calendar", "homo_hotel", "twisted_arts",
     "council_oak", "hotmess_sports", "all_souls_special",
+    "studio_66",  # @studio.66_ — LGBTQIA+ nonprofit / roving events collective
+
     "pflag_tulsa", "black_queer_tulsa", "freedom_oklahoma",
     "utulsa_pride", "osu_tulsa",
     "circles_lgbtq",  # LGBTQ social org -- trust all events

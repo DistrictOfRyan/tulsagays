@@ -32,6 +32,7 @@ from scraper import (
     ticketing_sites,
     timetree_scraper,
     slack_browser_scraper,
+    studio66,
 )
 
 logger = logging.getLogger(__name__)
@@ -586,6 +587,7 @@ def run_all_scrapers() -> List[Dict]:
         ("aa_meetings", aa_meetings.scrape),
         ("qlist", qlist.scrape),
         ("community_groups", community_groups.scrape),
+        ("studio_66", studio66.scrape),  # @studio.66_ IG via authenticated instagrapi session
         ("churches", churches.scrape),
         ("bars", bars.scrape),
         ("tulsa_arts_district", tulsa_arts_district.scrape),

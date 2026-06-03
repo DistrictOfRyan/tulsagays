@@ -25,7 +25,9 @@ class CommunityGroupsScraper(BaseScraper):
     # ── Websites to scrape ─────────────────────────────────────────────
     SOURCES = {
         "black_queer_tulsa": "https://www.blackqueertulsa.org/",
-        "studio_66": "https://www.s66tulsa.com/",
+        # studio_66 moved to its own scraper (scraper/studio66.py) — reads @studio.66_
+        # via the authenticated instagrapi session. s66tulsa.com is a dead domain
+        # (NXDOMAIN), so the old website fetch only produced DNS errors every run.
         "elote_events": "https://www.elotetulsa.com/events",
         "green_country_bears": "https://greencountrybears.com/",
         "pflag_tulsa": "https://tulsapflag.org/",
