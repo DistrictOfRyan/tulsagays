@@ -280,6 +280,35 @@ def esc(s):
         return ''
     return str(s).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
 
+SITE = 'https://www.tulsagays.com'
+
+def _slugify_js(s):
+    """Mirror the client-side _slugify() in docs/index.html EXACTLY so the
+    static card ids match the per-event share-page filenames and the
+    ?event= deep-link scroll."""
+    s = (s or '').lower()
+    s = re.sub(r'[^a-z0-9]+', '-', s)
+    s = re.sub(r'^-+|-+$', '', s)
+    return s[:60]
+
+_slug_counts = {}
+def _card_id(name, date, hour):
+    """Reproduce the JS card-id scheme (event- prefix + dedup suffix), called
+    in DOM order so ids are stable and collision-free."""
+    # JS reads the rendered .event-time textContent — empty when there is no
+    # time-col — so a falsy hour must contribute nothing (not the literal
+    # "None"/"none"), keeping Python ids identical to the client-side scheme.
+    base = 'event-' + _slugify_js(f'{name}-{date}-{hour or ""}')
+    if base in _slug_counts:
+        _slug_counts[base] += 1
+        return f'{base}-{_slug_counts[base]}'
+    _slug_counts[base] = 1
+    return base
+
+# Collected per-event data for /e/<id>.html share pages: dicts with keys
+# id, name, desc, when, venue, url
+_share_pages = []
+
 _DOMAIN_LABELS = {
     'eventbrite.com': 'Eventbrite',
     'facebook.com': 'Facebook',
@@ -454,8 +483,12 @@ for day in DAYS_ORDERED:
             fl_html = _flamingo_html(fl_score)
             ev_date_iso = ev.get('date', '')
 
+            # Stable id (matches the JS slug scheme) so shares deep-link AND
+            # the per-event /e/<id>.html share page filename lines up.
+            card_id = _card_id(ev_name, ev_date_iso, hour)
+
             lines.append('')
-            lines.append(f'                <div class="{card_cls}"{pink_style} data-date="{ev_date_iso}">')
+            lines.append(f'                <div class="{card_cls}"{pink_style} id="{card_id}" data-date="{ev_date_iso}">')
             if hour:
                 lines.append(f'                    <div class="event-time-col">')
                 lines.append(f'                        <div class="event-time" style="color:{time_color}">{esc(hour)}</div>')
@@ -473,17 +506,19 @@ for day in DAYS_ORDERED:
             lines.append(f'                        <div class="event-flamingo">{fl_html}</div>')
             if desc:
                 lines.append(f'                        <div class="event-description">{esc(desc)}</div>')
+            # ── Exactly ONE link per card (consistency fix) ──────────────
+            # Previously: events with multiple source_urls rendered 2+ links
+            # while events with no url rendered 0 ("2 on some, none on others").
+            # Now every card shows a single link. If we have an external
+            # source, link straight to it; otherwise link to the event's own
+            # /e/<id>.html detail page so no card is ever link-less.
             source_urls = ev.get('source_urls') or []
-            if len(source_urls) > 1:
-                # Multiple sources: render a small button for each unique URL
-                for _su in source_urls:
-                    if not _su:
-                        continue
-                    _lbl = esc(_url_label(_su))
-                    lines.append(f'                        <a href="{esc(_su)}" class="event-link event-link-source" target="_blank" rel="noopener">{_lbl} &rarr;</a>')
-            elif url:
-                link_lbl = esc(ev_name[:50]) + ' &rarr;' if len(ev_name) > 50 else esc(ev_name) + ' &rarr;'
-                lines.append(f'                        <a href="{esc(url)}" class="event-link" target="_blank" rel="noopener">{link_lbl}</a>')
+            best_url = next((u for u in source_urls if u), '') or url
+            if best_url:
+                link_lbl = (esc(ev_name[:50]) + '…' if len(ev_name) > 50 else esc(ev_name)) + ' &rarr;'
+                lines.append(f'                        <a href="{esc(best_url)}" class="event-link" target="_blank" rel="noopener">{link_lbl}</a>')
+            else:
+                lines.append(f'                        <a href="/e/{card_id}.html" class="event-link">Event details &rarr;</a>')
             # Share button (#9)
             _raw_venue = _clean_venue(ev.get('venue', '') or '') or _clean_venue(location)
             _share_parts = [ev_name]
@@ -503,6 +538,26 @@ for day in DAYS_ORDERED:
                          f'aria-label="Share this event">&#8599; Tell Your Gays</button>')
             lines.append(f'                    </div>')
             lines.append(f'                </div>')
+
+            # Collect data for this event's /e/<id>.html share page (gives FB
+            # the real event title/description instead of generic homepage OG).
+            _when_bits = []
+            if ev_date_iso:
+                try:
+                    _wd = datetime.strptime(ev_date_iso, '%Y-%m-%d')
+                    _when_bits.append(_wd.strftime('%A, %B ') + str(_wd.day))
+                except Exception:
+                    pass
+            if hour:
+                _when_bits.append(f'{hour} {ampm}'.strip() if ampm else hour)
+            _share_pages.append({
+                'id': card_id,
+                'name': ev_name,
+                'desc': desc,
+                'when': ' · '.join(_when_bits),
+                'venue': _clean_venue(ev.get('venue', '') or '') or _clean_venue(location),
+                'url': best_url,
+            })
 
     lines.append(f'            </div>')
     lines.append(f'        </section>')
@@ -599,3 +654,104 @@ with open(_idx_path, 'w', encoding='utf-8') as _f:
     _f.write(_html2)
 print(f"Updated date range: {_week_start} — {_week_end}")
 print(f"Updated EOTW banner: {eotw.get('name') if eotw else 'none'}")
+
+
+# ── Per-event share pages: docs/e/<id>.html ────────────────────────────────
+# Static GitHub Pages can't vary OG tags by ?query param, so each event gets
+# its own tiny page carrying real og:title / og:description / og:image. The
+# "Tell Your Gays" share button (and link-less cards) point here, so a
+# Facebook share shows the ACTUAL event, and humans land on a real on-site
+# event page (traffic stays on tulsagays.com).
+def _trunc(s, n):
+    s = ' '.join((s or '').split())
+    return s if len(s) <= n else s[:n - 1].rstrip() + '…'
+
+def _render_event_page(p):
+    _id = p['id']
+    _name = p['name']
+    _url = SITE + '/e/' + _id + '.html'
+    _deep = SITE + '/?event=' + _id
+    _img = SITE + '/images/og-event.png'
+    _lead = '. '.join([b for b in (p.get('when'), p.get('venue')) if b])
+    _full = (_lead + '. ' if _lead else '') + (p.get('desc') or '')
+    _og_desc = _trunc(_full, 300)
+    _meta_desc = _trunc(_full, 160)
+    _title = _trunc(_name, 90) + ' — Tulsa Gays'
+    _src_btn = (f'<a class="ev-btn" href="{esc(p["url"])}" target="_blank" rel="noopener">Get tickets / more info &rarr;</a>'
+                if p.get('url') else '')
+    _when_html = f'<p class="ev-when">{esc(p["when"])}</p>' if p.get('when') else ''
+    _venue_html = f'<p class="ev-venue">{esc(p["venue"])}</p>' if p.get('venue') else ''
+    _desc_html = f'<p class="ev-desc">{esc(p["desc"])}</p>' if p.get('desc') else ''
+    return f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(_title)}</title>
+<meta name="description" content="{esc(_meta_desc)}">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{esc(_deep)}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Tulsa Gays">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="{esc(_trunc(_name, 90))}">
+<meta property="og:description" content="{esc(_og_desc)}">
+<meta property="og:url" content="{esc(_url)}">
+<meta property="og:image" content="{_img}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Tulsa Gays — LGBTQ+ Event Guide">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{esc(_trunc(_name, 90))}">
+<meta name="twitter:description" content="{esc(_meta_desc)}">
+<meta name="twitter:image" content="{_img}">
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/style.css">
+<style>
+.ev-wrap{{max-width:680px;margin:0 auto;padding:48px 24px 64px}}
+.ev-eyebrow{{color:var(--gold);font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px}}
+.ev-name{{color:var(--text-primary);font-size:2rem;line-height:1.15;margin:0 0 14px}}
+.ev-when{{color:var(--gold);font-weight:700;margin:0 0 4px}}
+.ev-venue{{color:var(--text-secondary);margin:0 0 22px}}
+.ev-desc{{color:var(--text-secondary);line-height:1.7;margin:0 0 28px}}
+.ev-btn{{display:inline-block;background:var(--gold);color:#fff;padding:12px 22px;border-radius:8px;font-weight:700;text-decoration:none;margin:0 14px 12px 0}}
+.ev-btn.alt{{background:transparent;border:1px solid var(--gold);color:var(--gold)}}
+.ev-foot{{margin-top:36px;color:var(--text-muted);font-size:.85rem}}
+.ev-foot a{{color:var(--gold)}}
+</style>
+</head>
+<body>
+<div class="ev-wrap">
+<div class="ev-eyebrow">Tulsa Gays · LGBTQ+ Event</div>
+<h1 class="ev-name">{esc(_name)}</h1>
+{_when_html}
+{_venue_html}
+{_desc_html}
+{_src_btn}
+<a class="ev-btn alt" href="{esc(_deep)}">See it on the full calendar &rarr;</a>
+<p class="ev-foot">Found via <a href="/">tulsagays.com</a> — every LGBTQ+ event in Tulsa, every week. <a href="/newsletter.html">Get the newsletter &rarr;</a></p>
+</div>
+</body>
+</html>
+'''
+
+_e_dir = os.path.join(os.path.dirname(_idx_path), 'e')
+os.makedirs(_e_dir, exist_ok=True)
+# Clear stale pages from previous weeks so /e/ only holds current events.
+for _old in os.listdir(_e_dir):
+    if _old.endswith('.html'):
+        try:
+            os.remove(os.path.join(_e_dir, _old))
+        except OSError:
+            pass
+_written = 0
+for _p in _share_pages:
+    if not _p.get('id'):
+        continue
+    try:
+        with open(os.path.join(_e_dir, _p['id'] + '.html'), 'w', encoding='utf-8') as _ef:
+            _ef.write(_render_event_page(_p))
+        _written += 1
+    except OSError:
+        pass
+print(f"Wrote {_written} per-event share pages to docs/e/")
