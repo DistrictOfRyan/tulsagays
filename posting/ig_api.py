@@ -35,7 +35,9 @@ CHAT_ID = "6202804878"
 LIKE_CAP = 5
 REPLY_CAP = 8
 FOLLOW_SEEDS = ["homohotelhappyhour", "tulsaeagle", "okeq"]
-AUTO_FOLLOW = False          # follows stay assisted unless flipped on
+AUTO_FOLLOW = True           # enabled by William 2026-06-02 (against recommendation)
+FOLLOW_CAP = 3               # per-RUN cap - outbound follows are the #1 IG ban trigger
+DAILY_FOLLOW_CAP = 6         # per-DAY ceiling across all 3 scheduled runs (anti-ban)
 MIN_DELAY, MAX_DELAY = 25, 80
 
 
@@ -52,9 +54,26 @@ def _pace() -> None:
 
 def _load_state() -> dict:
     try:
-        return json.loads(STATE_FILE.read_text(encoding="utf-8"))
+        s = json.loads(STATE_FILE.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
-        return {"replied": [], "liked": []}
+        s = {}
+    s.setdefault("replied", [])
+    s.setdefault("liked", [])
+    s.setdefault("follows_by_day", {})   # {"YYYY-MM-DD": count} - enforces DAILY_FOLLOW_CAP
+    return s
+
+
+def _follows_remaining_today(state: dict) -> int:
+    today = datetime.now().strftime("%Y-%m-%d")
+    used = state.get("follows_by_day", {}).get(today, 0)
+    return max(0, DAILY_FOLLOW_CAP - used)
+
+
+def _record_follow(state: dict) -> None:
+    today = datetime.now().strftime("%Y-%m-%d")
+    state.setdefault("follows_by_day", {})
+    state["follows_by_day"][today] = state["follows_by_day"].get(today, 0) + 1
+    _save_state(state)
 
 
 def _save_state(s: dict) -> None:
@@ -168,7 +187,14 @@ def do_likes(cl, state: dict, max_likes: int) -> int:
     return liked
 
 
-def prepare_follows(cl) -> int:
+def prepare_follows(cl, state: dict) -> int:
+    # Respect the per-day ceiling first so 3 scheduled runs/day can't over-follow.
+    run_budget = FOLLOW_CAP
+    if AUTO_FOLLOW:
+        run_budget = min(FOLLOW_CAP, _follows_remaining_today(state))
+        if run_budget <= 0:
+            log(f"follow skipped: daily cap {DAILY_FOLLOW_CAP} already reached today")
+            return 0
     candidates = {}
     for seed in FOLLOW_SEEDS:
         try:
@@ -183,13 +209,15 @@ def prepare_follows(cl) -> int:
     items = list(candidates.items())[:15]
     if AUTO_FOLLOW:
         followed = 0
-        for uname, _ in items[:5]:
+        for uname, _ in items[:run_budget]:
             try:
                 cl.user_follow(cl.user_id_from_username(uname))
                 followed += 1
+                _record_follow(state)
+                log(f"followed @{uname} ({followed}/{run_budget}, daily {DAILY_FOLLOW_CAP - _follows_remaining_today(state)}/{DAILY_FOLLOW_CAP})")
                 _pace()
-            except Exception:
-                pass
+            except Exception as e:
+                log(f"follow @{uname} failed: {type(e).__name__} {str(e)[:80]}")
         log(f"auto-followed {followed}")
         return followed
     FOLLOW_LIST_OUT.parent.mkdir(parents=True, exist_ok=True)
@@ -214,7 +242,7 @@ def run(mode: str = "engage", max_likes: int = LIKE_CAP) -> int:
         if mode in ("like", "engage"):
             summary.append(f"{do_likes(cl, state, max_likes)} likes")
         if mode in ("prepare-follows", "engage"):
-            n = prepare_follows(cl)
+            n = prepare_follows(cl, state)
             summary.append(f"{n} follows" if AUTO_FOLLOW else f"{n} follow candidates")
     except Exception as e:
         return _degrade(f"engage error: {type(e).__name__} {str(e)[:120]}")
