@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "city": "Tulsa",
+  "generated": "2026-06-04",
+  "license": "Free to use with attribution to tulsagays.com",
+  "coverage": {
+    "coverage_pct": 94.4,
+    "covered": 34,
+    "total": 36,
+    "gaps": 2
+  },
+  "source_count": 222,
+  "event_count": 8,
+  "events": [
+    {
+      "name": "PROJECTION PUBLIC ART SERIES: 'UNTITLED' TATYANA FAZLALIZADEH",
+      "date": "2026-06-01",
+      "time": "10:00 AM",
+      "venue": "Flagship / Tulsa Artist Fellowship, 112 N Boston Ave",
+      "url": null
+    },
+    {
+      "name": "Making Friends As An Adult is HARD",
+      "date": "2026-06-01",
+      "time": "11:00 PM",
+      "venue": "Meetup Tulsa",
+      "url": null
+    },
+    {
+      "name": "Greenwood Rising Resilience Leadership Luncheon with Russel L. Honoré",
+      "date": "2026-06-01",
+      "time": "11:30 AM",
+      "venue": "The Vista at 21",
+      "url": null
+    },
+    {
+      "name": "Lambda Bowling League",
+      "date": "2026-06-01",
+      "time": "7:00 PM",
+      "venue": "AMF Sheridan Lanes, 3121 S Sheridan Rd",
+      "url": null
+    },
+    {
+      "name": "Monday Movie Night at the Tulsa Eagle",
+      "date": "2026-06-01",
+      "time": "7:00 PM",
+      "venue": "Tulsa Eagle, 1338 E 3rd St, Tulsa, OK",
+      "url": null
+    },
+    {
+      "name": "Gaymer Night at the Tulsa Eagle",
+      "date": "2026-06-01",
+      "time": "8:00 PM",
+      "venue": "Tulsa Eagle, 1338 E 3rd St, Tulsa, OK",
+      "url": null
+    },
+    {
+      "name": "Highly Suspect in Concert",
+      "date": "2026-06-02",
+      "time": "",
+      "venue": "The Tulsa Theater, 105 W Reconciliation Way, Tulsa, OK",
+      "url": null
+    },
+    {
+      "name": "OKEQ Senior's",
+      "date": "2026-06-02",
+      "time": "10:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": null
+    }
+  ]
+}

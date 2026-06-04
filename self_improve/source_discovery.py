@@ -35,69 +35,125 @@ logger = logging.getLogger(__name__)
 
 
 # ── Query bank for the weekly WebSearch reasoning pass ───────────────────────
-# Grouped so the task can cover every flavor of "gay group in Tulsa", including
-# the categories William called out explicitly (craft clubs at churches, sound
-# baths, meditations). The task runs these through WebSearch, then validates and
-# records finds as candidates.
-SEARCH_SEEDS = {
+# Templated by {city} so the SAME engine works for any city (Rung 5: city-
+# cloning). Categories cover every flavor of "gay group", including the ones
+# William called out (craft clubs at churches, sound baths, meditations).
+# {city}-templated generic queries below; per-city named-venue extras live in
+# CITY_SPECIFIC_SEEDS so a new city needs zero code changes, just an optional
+# extras list.
+SEED_TEMPLATES = {
     "core_orgs": [
-        "Tulsa LGBTQ organizations list",
-        "Tulsa queer community groups 2026",
-        "Tulsa gay social club Facebook group",
-        "Tulsa lesbian group meetup",
-        "Tulsa trans support group",
-        "Tulsa nonbinary community Tulsa",
-        "Tulsa bi+ pan community group",
-        "Tulsa two-spirit indigenous queer group",
-        "Black queer Tulsa group",
-        "Tulsa Latinx LGBTQ group",
+        "{city} LGBTQ organizations list",
+        "{city} queer community groups 2026",
+        "{city} gay social club Facebook group",
+        "{city} lesbian group meetup",
+        "{city} trans support group",
+        "{city} nonbinary community",
+        "{city} bi+ pan community group",
+        "{city} two-spirit indigenous queer group",
+        "Black queer {city} group",
+        "{city} Latinx LGBTQ group",
     ],
     "affinity_hobby": [
-        "Tulsa LGBTQ craft club",
-        "Fellowship Congregational Church Tulsa craft club events",
-        "Tulsa queer book club",
-        "Tulsa gay board game night",
-        "Tulsa LGBTQ hiking outdoors group",
-        "Tulsa queer climbing group",
-        "Tulsa gay sports league kickball volleyball",
-        "Tulsa LGBTQ choir band ensemble",
-        "Tulsa queer crafternoon knitting",
-        "Tulsa rainbow run club",
+        "{city} LGBTQ craft club",
+        "{city} affirming church craft club events",
+        "{city} queer book club",
+        "{city} gay board game night",
+        "{city} LGBTQ hiking outdoors group",
+        "{city} queer climbing group",
+        "{city} gay sports league kickball volleyball",
+        "{city} LGBTQ choir band ensemble",
+        "{city} queer crafternoon knitting",
+        "{city} rainbow run club",
     ],
     "wellness": [
-        "Tulsa sound bath events",
-        "Tulsa meditation events open to public",
-        "Tulsa breathwork workshop",
-        "Tulsa reiki community event",
-        "Tulsa yoga community class queer-friendly",
-        "Tulsa queer wellness group",
-        "Tulsa grief support LGBTQ",
+        "{city} sound bath events",
+        "{city} meditation events open to public",
+        "{city} breathwork workshop",
+        "{city} reiki community event",
+        "{city} yoga community class queer-friendly",
+        "{city} queer wellness group",
+        "{city} grief support LGBTQ",
     ],
     "venues_churches": [
-        "Tulsa affirming church events calendar",
-        "Tulsa open and affirming congregation events",
-        "Fellowship Congregational Church Tulsa events",
-        "All Souls Unitarian Tulsa events",
-        "Tulsa Metropolitan Community Church events",
-        "Tulsa Pride Center events",
-        "Dennis R. Neill Equality Center calendar",
+        "{city} affirming church events calendar",
+        "{city} open and affirming congregation events",
+        "{city} Metropolitan Community Church events",
+        "{city} Unitarian Universalist events",
+        "{city} Pride center events",
+        "{city} LGBTQ equality center calendar",
     ],
     "nightlife_arts": [
-        "Tulsa drag show calendar 2026",
-        "Tulsa queer art opening events",
-        "Tulsa LGBTQ open mic poetry",
-        "Tulsa gay bar events calendar",
-        "Tulsa burlesque cabaret queer",
+        "{city} drag show calendar 2026",
+        "{city} queer art opening events",
+        "{city} LGBTQ open mic poetry",
+        "{city} gay bar events calendar",
+        "{city} burlesque cabaret queer",
+    ],
+}
+
+# Per-city named-venue seeds (the things you only know by local knowledge).
+# Adding a new city = add a key here (optional). No code changes required.
+CITY_SPECIFIC_SEEDS = {
+    "Tulsa": [
+        "Fellowship Congregational Church Tulsa craft club events",
+        "All Souls Unitarian Tulsa events",
+        "Dennis R. Neill Equality Center calendar",
+        "Council Oak Men's Chorale Tulsa",
+        "Black Queer Tulsa events",
     ],
 }
 
 
-def all_seed_queries():
-    """Flatten SEARCH_SEEDS into a single ordered list of query strings."""
+def seed_queries_for_city(city="Tulsa"):
+    """Return the category->queries dict for any city. City-agnostic engine."""
+    out = {cat: [q.format(city=city) for q in tmpl] for cat, tmpl in SEED_TEMPLATES.items()}
+    extras = CITY_SPECIFIC_SEEDS.get(city)
+    if extras:
+        out["local_named"] = list(extras)
+    return out
+
+
+# Default Tulsa bank (back-compat: existing callers use SEARCH_SEEDS).
+SEARCH_SEEDS = seed_queries_for_city("Tulsa")
+
+
+def all_seed_queries(city="Tulsa"):
+    """Flatten the seed bank for ``city`` into a single ordered list."""
     out = []
-    for group in SEARCH_SEEDS.values():
+    for group in seed_queries_for_city(city).values():
         out.extend(group)
     return out
+
+
+def city_census_template(city, state):
+    """Generate a blank census skeleton for a NEW city.
+
+    Returns the universal categories every city has (pride org, affirming
+    churches, gay bars, wellness, etc.) as TODO stubs a local can fill. This is
+    what build-city seeds when cloning the engine to a new market.
+    """
+    cats = [
+        ("pride", "event", f"{city} Pride"),
+        ("equality_center", "org", f"{city} LGBTQ center / equality center"),
+        ("pflag", "org", f"PFLAG {city}"),
+        ("affirming_church_1", "church", f"{city} affirming/UCC congregation"),
+        ("mcc", "church", f"Metropolitan Community Church {city}"),
+        ("uu", "church", f"Unitarian Universalist {city}"),
+        ("gay_bar_1", "bar", f"{city} gay bar"),
+        ("lesbian_bar", "bar", f"{city} lesbian/queer-women bar"),
+        ("drag_collective", "org", f"{city} drag collective"),
+        ("queer_wellness", "wellness", f"{city} meditation/sound-bath space"),
+        ("trans_support", "org", f"{city} trans support group"),
+        ("youth", "org", f"{city} LGBTQ youth org"),
+    ]
+    return {
+        "_comment": f"AUTO-GENERATED census skeleton for {city}, {state}. "
+                    f"Fill in real names/aliases per stub, then run coverage_report.",
+        "city": city, "state": state,
+        "orgs": [{"id": cid, "name": "TODO: " + hint, "type": typ,
+                  "aliases": [], "note": "stub - fill in"} for cid, typ, hint in cats],
+    }
 
 
 # ── Venue normalization ──────────────────────────────────────────────────────
