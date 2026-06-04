@@ -1,3 +1,12 @@
+## [2026-06-03] TulsaGays sharing fix + newsletter pipeline + monetization ceiling climb
+
+Fixed two live bugs on tulsagays.com: event cards now show exactly 1 source link (was 0-2), and Facebook sharing now shows the actual event name/description instead of generic homepage (per-event /e/<slug>.html pages with real OG tags). Wired the newsletter pipeline end-to-end for the first time: signup form feeds Kit directly, 3 stranded signups imported (4 active), Pride week newsletter staged as broadcast 24416150, anonymity gate added to prevent sending from name-revealing Gmail address. Climbed the monetization ceiling (10 autonomous rungs): Featured Partner directory infrastructure, rate card + pitch templates + media kit, subscriber milestone alerts, weekly stats digest, newsletter archive page, homepage subscribe CTA, sitemap updated. Everything committed and deployed (commits 06a0ab3 through 48ea9fd).
+
+**Main artifact:** docs/e/ (57 per-event share pages), newsletter.html (Kit-wired), Kit broadcast 24416150, tools/inject_featured_partners.py, tools/check_subscriber_milestones.py, tools/weekly_stats_digest.py, tools/gen_newsletter_archive.py, docs/issues/, plans/tulsagays-dns-unblock.md
+**Open items:** William to do 10-min DNS setup at Namecheap + Kit (plans/tulsagays-dns-unblock.md), then send broadcast 24416150. Gmail IMAP token expired needs re-auth.
+
+---
+
 ## [2026-06-02] TulsaGays full automation + HELM helmforclaude.com launch
 
 Rebuilt the TulsaGays Monday pipeline end to end: fixed the SUPERVISOR_TASK_COMPLETE caption leak on IG (delete boost, edit, re-boost $9/3d) and FB (Graph API), built a self-driving FB group blast system (posting/group_blast.py + tools/fb_groups.py + tools/group_caption.py), posted to 17 groups as the Tulsa Gays Page (6 live, 11 pending), and saved browser auth for hands-off Monday automation. Also rewrote the WOMPA scraper from broken Wix selectors to the GoodBarber JSON API. Separately: set up helmforclaude.com (DNS + GitHub Pages custom domain + fixed stale links), posted HELM to Reddit r/SideProject, and left 3 IH comments to unlock the new account for posting.
