@@ -23,6 +23,7 @@ from typing import List, Dict, Optional, Tuple
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
 from scraper.playwright_scrapers import PlaywrightBaseScraper, _parse_iso_datetime
+from scraper import dynamic_sources as _dyn
 
 logger = logging.getLogger(__name__)
 
@@ -98,6 +99,12 @@ LGBTQ_KEYWORDS = [
     "rainbow", "dyke", "nonbinary", "non-binary", "gender", "equality",
     "affirming", "inclusive", "homo", "sapphic",
 ]
+
+# Merge in any pages/groups discovered + promoted by the weekly source-growth
+# engine (data/dynamic_sources.json). Hardcoded lists above are the stable core;
+# these grow week over week. De-duped so a re-promotion is a no-op.
+PAGE_URLS = _dyn.merge_unique(PAGE_URLS, _dyn.fb_page_urls())
+GROUP_URLS = _dyn.merge_unique(GROUP_URLS, _dyn.fb_group_urls())
 
 
 def _get_week_range(week_offset: int = 0) -> Tuple[datetime, datetime]:

@@ -41,6 +41,7 @@ from typing import List, Dict, Optional, Tuple
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from scraper.base import BaseScraper
+from scraper import dynamic_sources as _dyn
 
 logger = logging.getLogger(__name__)
 
@@ -139,6 +140,10 @@ SITES: List[Tuple[str, str, str, bool]] = [
     ("https://www.cherrystreetfarmersmarket.com/events/", "Cherry Street Farmers Market", "neighborhood", False),
     ("https://www.tulsafarmersmarket.org/events/", "Tulsa Farmers' Market", "neighborhood", False),
 ]
+
+# Merge in calendar sites discovered + promoted by the weekly source-growth
+# engine (data/dynamic_sources.json). De-duped by URL.
+SITES = _dyn.merge_unique(SITES, _dyn.calendar_sites())
 
 
 class ExtendedCalendarsScraper(BaseScraper):
