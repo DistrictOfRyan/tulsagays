@@ -472,6 +472,14 @@ SOURCES = {
         "description": "LGBTQ+ youth programs: weekly Coffee House, LGBTQ Support Group (ages 13-20), Out and About community activities, Pride Prom. Drop-in center at 311 S Madison Ave.",
         "recurring": "Weekly Coffee House; LGBTQ support group for ages 13-20",
     },
+    "amplify_tulsa_lgbtq": {
+        "name": "Amplify Tulsa - LGBTQ+ Youth",
+        "url": "https://amplifytulsa.org/resources/youth/lgbtq/",
+        "priority": 3,
+        "type": "community",
+        "description": "Tulsa youth org (1601 S Main St) with a 2SLGBTQ+ youth resource hub and Events page; routes to partner programs (YST, CampFire Green Country). Directory-style, occasional own events.",
+        "recurring": "Occasional youth events; mostly a resource/partner directory",
+    },
     "queer_night_tulsa": {
         "name": "Queer Night Tulsa",
         "url": "https://www.instagram.com/queernight.tulsa/",
@@ -804,6 +812,13 @@ SOURCES = {
         "priority": 1,
         "type": "media",
         "description": "Tulsa World newspaper events calendar. Breaking news, local events, entertainment, community activities.",
+    },
+    "tulsa_flyer": {
+        "name": "Tulsa Flyer",
+        "url": "https://tulsaflyer.org/",
+        "priority": 3,
+        "type": "media",
+        "description": "Tulsa local news/culture outlet that actively covers the queer scene (e.g. Yellow Brick Road lesbian-bar feature, June 2026). Editorial/news source for LGBTQ+ event coverage; manual review, not auto-scrape.",
     },
     "eventbrite_tulsa": {
         "name": "Eventbrite - Tulsa Events",
@@ -1272,6 +1287,28 @@ COMMUNITY_PARTNER_KEYWORDS = [
     # rather than a fixed venue/recurring entry. FB page also in PAGE_URLS.
     "tulsa winds",
 ]
+
+# Merge in venue/org keywords discovered + promoted by the weekly source-growth
+# engine (data/dynamic_sources.json). Read inline (not via scraper.*) to keep
+# config import-light. A missing/corrupt file is ignored — never breaks config.
+def _load_dynamic_partner_keywords():
+    import json as _json
+    _path = os.path.join(DATA_DIR, "dynamic_sources.json")
+    if not os.path.exists(_path):
+        return []
+    try:
+        with open(_path, "r", encoding="utf-8") as _f:
+            _data = _json.load(_f)
+        _kw = []
+        for _e in _data.get("partner_keywords", []) or []:
+            _k = (_e.get("kw") or "").strip().lower()
+            if _k and _k not in COMMUNITY_PARTNER_KEYWORDS:
+                _kw.append(_k)
+        return _kw
+    except Exception:
+        return []
+
+COMMUNITY_PARTNER_KEYWORDS = COMMUNITY_PARTNER_KEYWORDS + _load_dynamic_partner_keywords()
 
 # City-specific blocklist additions. Combined with the generic blocklist in runner.py.
 # Use lowercase substrings. Generic blocklist (sports/oil/non-LGBTQ-religious) lives in
