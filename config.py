@@ -1267,6 +1267,10 @@ COMMUNITY_PARTNER_KEYWORDS = [
     "tulsa yoga meditation center",
     "tulsa peoples orchestra", "people's orchestra", "peoples orchestra",
     "the vault",
+    # Tulsa Winds — queer-welcoming event-based ensemble. Venue changes monthly
+    # (has played YBR, the lesbian bar), so trust the NAME wherever it surfaces
+    # rather than a fixed venue/recurring entry. FB page also in PAGE_URLS.
+    "tulsa winds",
 ]
 
 # City-specific blocklist additions. Combined with the generic blocklist in runner.py.

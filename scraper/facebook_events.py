@@ -64,6 +64,7 @@ PAGE_URLS = [
     "https://www.facebook.com/TwistedArtsTulsa/events",
     "https://www.facebook.com/queerlitcollective/events",
     "https://www.facebook.com/CouncilOakMensChorus/events",
+    "https://www.facebook.com/TulsaWinds/events",          # Tulsa Winds — event-based ensemble, venue moves monthly (plays YBR etc.)
     # Community orgs
     "https://www.facebook.com/allnations2S/events",          # All Nations Two-Spirit Society
     "https://www.facebook.com/tulsalambdaleague/events",     # Lambda Bowling
