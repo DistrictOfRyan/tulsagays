@@ -170,7 +170,12 @@ def load_recent_event_sources() -> dict:
     except Exception:
         return {}
 
-    events = data.get("events", [])
+    # *_all.json is a flat list of event dicts. Stay tolerant of an older
+    # {"events": [...]} wrapper shape just in case.
+    if isinstance(data, dict):
+        events = data.get("events", [])
+    else:
+        events = data
     counts = {}
     for evt in events:
         src = evt.get("source", "").strip()
