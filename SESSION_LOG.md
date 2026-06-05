@@ -1,3 +1,12 @@
+## [2026-06-04] Tulsa Winds/YBR/QWC scrape + source-growth engine + 3 ceiling climbs
+
+Wired Tulsa Winds (event-based, moving venue), YBR, and QWC into the scraper (commit 6a75614). Built a weekly self-improving source-growth engine that mines recurring venues + web-discovers new queer groups and auto-promotes strong sources into the live scraper via data/dynamic_sources.json (never edits .py), Sunday 8am task (commits 8bc44ac, 9ce86a2). Then climbed three ladders with /ceiling: the source-growth engine (lifecycle/census/coverage/feed, true ceiling), the revenue ladder (sales infra: prospect list, pipeline tracker, reader-revenue kit; Rungs 5-6 blocked on LLC/capital, commit f92c24e), and - after William asked for an unblocked ladder - the Answer Engine: 6 schema-rich /guides/ pages + 21 /org/ entity-profile pages + GEO llms.txt + weekly refresh_seo + live IndexNow ping (HTTP 202), all autonomous, zero blockers (commit 4a59af1). Also caught + scrubbed a live anonymity leak (William's name in public llms.txt).
+
+**Main artifact:** tools/gen_topic_pages.py, tools/gen_org_profiles.py, tools/refresh_seo.py, tools/indexnow_ping.py, tools/promote_sources.py, tools/coverage_report.py, scraper/dynamic_sources.py, tulsa_queer_org_census.json, docs/guides/, docs/org/, drafts/sponsor-prospect-list.md
+**Open items:** Revenue ladder blocked on William (LLC, payment rails, hello@ email, Ko-fi, Kit API key refresh) - queued in pending-william-actions.md
+
+---
+
 ## [2026-06-03] TulsaGays sharing fix + newsletter pipeline + monetization ceiling climb
 
 Fixed two live bugs on tulsagays.com: event cards now show exactly 1 source link (was 0-2), and Facebook sharing now shows the actual event name/description instead of generic homepage (per-event /e/<slug>.html pages with real OG tags). Wired the newsletter pipeline end-to-end for the first time: signup form feeds Kit directly, 3 stranded signups imported (4 active), Pride week newsletter staged as broadcast 24416150, anonymity gate added to prevent sending from name-revealing Gmail address. Climbed the monetization ceiling (10 autonomous rungs): Featured Partner directory infrastructure, rate card + pitch templates + media kit, subscriber milestone alerts, weekly stats digest, newsletter archive page, homepage subscribe CTA, sitemap updated. Everything committed and deployed (commits 06a0ab3 through 48ea9fd).
