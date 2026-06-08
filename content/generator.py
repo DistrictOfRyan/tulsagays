@@ -481,7 +481,7 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
                     raise RuntimeError("claude CLI returned empty output")
             else:
                 message = client.messages.create(
-                    model="claude-sonnet-4-6",
+                    model="claude-sonnet-4-5",
                     max_tokens=1200,
                     system=sys_prompt,
                     messages=[{"role": "user", "content": prompt}],
@@ -516,7 +516,7 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
                     print("[generator] Retrying batch via Anthropic API (SITES key)")
                     _client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
                     message = _client.messages.create(
-                        model="claude-sonnet-4-6",
+                        model="claude-sonnet-4-5",
                         max_tokens=2000,
                         system=sys_prompt,
                         messages=[{"role": "user", "content": prompt}],
@@ -549,6 +549,18 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
                 for _, ev in batch:
                     if not (ev.get("description") or "").strip():
                         ev["description"] = _rule_based_enrich(ev)
+
+    # FINAL GUARANTEE: no two events share a description. Rule-based copy gives
+    # same-category events identical text (the 2026-06-08 repeat embarrassment);
+    # this pass rewrites any duplicate uniquely + on-voice, regardless of which
+    # enrichment path ran. Defensive: never let it break generation.
+    try:
+        from tools.dedupe_descriptions import dedupe as _dedupe
+        _fixed = _dedupe(events)
+        if _fixed.get("short") or _fixed.get("long"):
+            print(f"[generator] de-duped repeated descriptions: {_fixed}")
+    except Exception as _e:
+        print(f"[generator] dedupe pass skipped: {_e}")
 
     return events
 

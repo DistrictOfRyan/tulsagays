@@ -228,6 +228,28 @@ def run(week_key=None):
         on_slide = (e.get("name"), e.get("date")) in featured_names
         _check_desc(e, errors, warnings, is_eotw=False, posted=on_slide)
 
+    # ── DUPLICATE COPY (the 2026-06-08 embarrassment: 6 slides shared the same
+    # "Put this on your calendar and actually go..." fallback line). A repeated
+    # description on the carousel is a hard defect — block it. tools/
+    # dedupe_descriptions.py resolves dups before this runs, so this is a
+    # structural backstop, not the primary fix.
+    def _norm(s):
+        return re.sub(r"\s+", " ", (s or "").strip().lower())
+    posted_events = list(eotw) + [e for e in featured_all]
+    for field, label in (("description", "short"), ("website_description", "long")):
+        seen = {}
+        for e in posted_events:
+            key = _norm(e.get(field))
+            if not key or len(key) < 25:
+                continue
+            if key in seen:
+                errors.append(
+                    f"[duplicate] {label} copy is reused on slides: "
+                    f"'{seen[key]}' and '{e.get('name')}' share the same text "
+                    f"— run tools/dedupe_descriptions.py")
+            else:
+                seen[key] = e.get("name")
+
     # ── HARNESS / INTERNAL MARKER LEAK (never let agent/system text post) ──
     HARNESS_MARKERS = [
         "SUPERVISOR_TASK_COMPLETE", "SUPERVISOR:", "system-reminder",
