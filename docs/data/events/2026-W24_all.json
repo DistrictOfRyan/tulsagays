@@ -1,0 +1,3151 @@
+{
+  "week": "2026-W24",
+  "generated_at": "2026-06-08T06:23:33.904550",
+  "total_events": 214,
+  "events": [
+    {
+      "name": "Homo Hotel Happy Hour",
+      "date": "2026-07-03",
+      "time": "6:00 PM - 8:00 PM",
+      "venue": "Homo Hotel",
+      "description": "Tulsa's queerest happy hour is a First Friday tradition. The Homo Hotel opens its doors for an evening of community, conversation, and cocktails. Whether you're new to Tulsa or a longtime local, this is THE place to kick off your weekend with your LGBTQ+ family. All are welcome - bring a friend, make a friend, be yourself. No cover, just vibes.\n\nThis Friday, July 03 - don't miss it!",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "homo_hotel",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Lambda Bowling League",
+      "date": "2026-06-08",
+      "time": "7:00 PM",
+      "venue": "AMF Sheridan Lanes, 3121 S Sheridan Rd",
+      "description": "",
+      "url": "https://www.facebook.com/groups/4177858394",
+      "source_urls": [
+        "https://www.facebook.com/groups/4177858394"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "OSU Tulsa Queer Support Group",
+      "date": "2026-06-09",
+      "time": "6:00 PM",
+      "venue": "OSU Tulsa Campus, 700 N Greenwood Ave",
+      "description": "",
+      "url": "https://events.tulsa.okstate.edu",
+      "source_urls": [
+        "https://events.tulsa.okstate.edu"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Gender Outreach Support Group",
+      "date": "2026-06-10",
+      "time": "7:00 PM - 9:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "",
+      "url": "https://okeq.org",
+      "source_urls": [
+        "https://okeq.org",
+        "https://okeq.org/transgender-support/"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Re-Elect Laura Bellis: Pride-Season Celebration (Tulsa City Council, District 4)",
+      "date": "2026-06-11",
+      "time": "6:00 PM - 7:30 PM",
+      "venue": "Tulsa (location provided upon RSVP)",
+      "description": "City Councilor Laura Bellis throws a Pride-season party to keep District 4 in pro-equality hands, backed by a whole roster of community co-hosts. Suggested 27 dollars, a nod to the 27th anniversary of Tulsa's first Pride parade. RSVP for the address.",
+      "website_description": "Laura Bellis is the kind of local leader who actually shows up for queer Tulsa, and this Pride-season celebration is your invitation to help keep her on the Tulsa City Council representing District Four. It is a warm, easy room full of community co-hosts, all there to support candidates committed to protecting human rights for every Tulsan. The suggested minimum donation is a sweet 27 dollars, honoring the 27th anniversary of Tulsa's first Pride parade, and the location is shared once you RSVP through the ActBlue link. Best-time tip for the shy ones: RSVP early so you get the address, then roll in right at 6 while the crowd is still small and easy to work, introduce yourself to one of the co-hosts, and you will have three new friends before the speeches even start. Showing up for an ally like this is one of the most useful nights you can give the community.",
+      "url": "https://secure.actblue.com/donate/lzb",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "DRAGNIFICENT! Drag Show",
+      "date": "2026-06-11",
+      "time": "Doors 9 PM, Show 10 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "",
+      "url": "https://downtowntulsa.com/do/dragnificent-at-club-majestic-1",
+      "source_urls": [
+        "https://downtowntulsa.com/do/dragnificent-at-club-majestic-1"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Rainbow Harvest: Free Farmers Market",
+      "date": "2026-06-13",
+      "time": "1:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "Free produce, zero judgment, and a whole lot of queer neighbors filling their tote bags at the Equality Center. Roll in between 1 and 4, grab what you need, and stay for the company. Pre-register so they know to expect you.",
+      "website_description": "Rainbow Harvest is the Equality Center's free farmers market, and it is exactly the kind of low-key, big-hearted Saturday a shy introvert can actually handle. No cover, no pressure, just fresh groceries handed out from 1 to 4 PM and a crowd of LGBTQIA+ folks and allies who genuinely want you there. Pre-register at the form so the volunteers can pack enough for everyone, then show up, fill a bag, and let yourself be part of the neighborhood. Best-time tip: come right at 1 when the produce is fullest and the line is shortest, say hi to a volunteer, and you will leave with groceries and probably a new face you recognize next week.",
+      "url": "https://forms.gle/WXMVSfEJpav4Lg4p8",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Elote Drag Brunch",
+      "date": "2026-06-13",
+      "time": "11:00 AM and 1:30 PM (two seatings)",
+      "venue": "Elote Cafe & Catering, 514 S Boston Ave",
+      "description": "",
+      "url": "https://www.eventbrite.com/o/elote-cafe-catering-17620608823",
+      "source_urls": [
+        "https://www.eventbrite.com/o/elote-cafe-catering-17620608823",
+        "https://www.elotetulsa.com/events"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Melanin Pride Yoga in the Park",
+      "date": "2026-06-14",
+      "time": "11:00 AM - 12:00 PM",
+      "venue": "Tulsa (location by DM, see @upflykai)",
+      "description": "Celebrate Pride in flow with KLASSIC's Melanin Pride Yoga in the Park, a Black queer outdoor session in the summer sun. Bring your own mat, they handle the water and snacks. Text or DM INFO to 918-888-6842 for the spot.",
+      "website_description": "KLASSIC brings Black queer Tulsa a gorgeous way to mark Pride with Melanin Pride Yoga in the Park, an open-air flow built around community, melanin, and joy. Bring a mat and an open heart; water and snacks are provided, and the exact park location comes when you text or DM INFO to 918-888-6842. Best-time tip: message ahead for the location, arrive a few minutes early to claim a soft patch of grass, and let a morning of breath and sunshine set the tone for your whole weekend.",
+      "url": "https://www.instagram.com/p/DZNfphtss4k/",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "The Pride Era Drag Bingo",
+      "date": "2026-06-14",
+      "time": "3:00 PM",
+      "venue": "Bricktown Comedy Club Tulsa",
+      "description": "Oklahomans for Equality presents The Pride Era Drag Bingo with Porsche Lynn, Shanel Sterling, and Iman Scott. Doors at 2, show at 3, dab those cards and let the queens run the room. 18+ with ID.",
+      "website_description": "Oklahomans for Equality turns bingo into a full drag spectacle with The Pride Era Drag Bingo at Bricktown Comedy Club, hosted by Porsche Lynn with Shanel Sterling and Iman Scott bringing the looks and the laughs. Doors open at 2 with the show at 3, and yes, you can actually win while the queens work the room. It is 18+ with valid ID, with premium front-row and general admission seating, and showroom guests grab at least two food or drink items. Best-time tip: buy online before prices jump at the door, get there near doors at 2 to snag a good table, and keep a dauber in each hand because these rounds move fast.",
+      "url": "https://bricktowntulsa.com/shows/371667",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Sunday Showdown Open Talent Night",
+      "date": "2026-06-14",
+      "time": "Doors 9 PM, Show 11 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "",
+      "url": "https://qlist.app/events/Tulsa/The-Sunday-Showdown-Open-Talent-Night-at-Club-Majestic/16808",
+      "source_urls": [
+        "https://qlist.app/events/Tulsa/The-Sunday-Showdown-Open-Talent-Night-at-Club-Majestic/16808"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Game Changer Soccer Camp",
+      "date": "2026-06-08",
+      "time": "9:00 AM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/game-changer-soccer-camp-tickets-1988268584860",
+      "source_urls": [
+        "https://www.eventbrite.com/e/game-changer-soccer-camp-tickets-1988268584860"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "2026 Pinto World Championship",
+      "date": "2026-06-08",
+      "time": "",
+      "venue": "Jun 8 – 20",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Information and Tickets",
+      "date": "2026-06-08",
+      "time": "",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Music Sandwiched In Featuring Shelby Eicher",
+      "date": "2026-06-08",
+      "time": "12:10 - 12:50 PM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Band Camp",
+      "date": "2026-06-08",
+      "time": "",
+      "venue": "UTulsa Calendar - The University of Tulsa",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Rock 101 Camp",
+      "date": "2026-06-08",
+      "time": "10:00 AM",
+      "venue": "School of Rock",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Full Day Camp",
+      "date": "2026-06-08",
+      "time": "10:30 AM",
+      "venue": "Active.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Unraveled: Fiber Arts Club",
+      "date": "2026-06-08",
+      "time": "1:30 - 3:30 PM",
+      "venue": "Events Time.ly",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Banned Book Club",
+      "date": "2026-06-08",
+      "time": "7 - 8 PM",
+      "venue": "Events at Tulsa City-County Library - Tulsa Library",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Classic Rock Rewind Camp",
+      "date": "2026-06-08",
+      "time": "9:00 AM",
+      "venue": "School of Rock",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Fairy Door",
+      "date": "2026-06-08",
+      "time": "7 - 9 PM",
+      "venue": "Pinotspalette.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Teen Time: Gaming",
+      "date": "2026-06-08",
+      "time": "4 - 5 PM",
+      "venue": "Events at Tulsa City-County Library - Communico",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Bubble Stage Show With Dustin Reudelhuber",
+      "date": "2026-06-08",
+      "time": "11:30 AM",
+      "venue": "Hardesty Regional Library, 8316 E 93rd St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Cloud Blooms",
+      "date": "2026-06-08",
+      "time": "7 - 9 PM",
+      "venue": "Pinot's Palette, 300 Riverwalk Terrace #160",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Music & More Connection With Katherine Battenberg",
+      "date": "2026-06-08",
+      "time": "2 - 3 PM",
+      "venue": "Herman & Kate Kaiser Library, 5202 S Hudson Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Trade Routes Commander Night",
+      "date": "2026-06-08",
+      "time": "7 - 11 PM",
+      "venue": "Trade Routes, 5625 E 41st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Citizenship 101",
+      "date": "2026-06-08",
+      "time": "10:30 - 11:45 AM",
+      "venue": "Kendall-Whittier Library, 21 S Lewis Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Pint-Size Polka With Mike Schneider",
+      "date": "2026-06-08",
+      "time": "11:00 AM",
+      "venue": "Jenks Library, 523 W B St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Dino Diamond Painting",
+      "date": "2026-06-08",
+      "time": "4 - 5 PM",
+      "venue": "Maxwell Park Library, 1313 N Canton Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Open Meditation - Tues.",
+      "date": "2026-06-08",
+      "time": "6:30 PM",
+      "venue": "Shambhala Tulsa, 5001 S Fulton Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "never_feature": true,
+      "community_event": true
+    },
+    {
+      "name": "Stamp Making With Artist Candacee White",
+      "date": "2026-06-08",
+      "time": "4 - 5 PM",
+      "venue": "Jenks Library, 523 W B St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Build A Reader Storytime: Babies",
+      "date": "2026-06-08",
+      "time": "10:00 - 10:20 AM",
+      "venue": "Hardesty Regional Library, 8316 E 93rd St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+8+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Tulsa Area Prime Timers",
+      "date": "2026-06-09",
+      "time": "7:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "Monthly social for mature gay and bisexual men (21+). Great conversation, welcoming community.",
+      "url": "https://okeq.org/okeq-events/tulsa-area-prime-timers/",
+      "source_urls": [
+        "https://okeq.org",
+        "https://okeq.org/okeq-events/tulsa-area-prime-timers/"
+      ],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Tuesdays in the Park Concert Series",
+      "date": "2026-06-09",
+      "time": "7:00 PM - 9:00 PM",
+      "venue": "Central Park, 1500 S Main St, Broken Arrow",
+      "description": "",
+      "url": "https://www.artsok.org/",
+      "source_urls": [
+        "https://www.artsok.org/"
+      ],
+      "priority": 2,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Route 66 – The First 100 Years (Centennial Speaker Series)",
+      "date": "2026-06-09",
+      "time": "1:00 PM",
+      "venue": "OSU Tulsa Campus, 700 N Greenwood Ave",
+      "description": "Join the 100th birthday celebration of Route 66 with authors, historians, researchers, and advocates sharing their stories and expertise. This unique webinar series will deepen your understanding and appreciation of the nation’s beloved Mother Road. Discover why Route 66 holds such an important place in American life historically, currently and into Route 66's second century.\n\n \n\nThe speaker series will be hosted virtually, taking place on the second Tuesday of each month at 1pm Central during t",
+      "url": "https://events.tulsa.okstate.edu/event/route-66-on-the-first-100-years-centennial-speaker-series",
+      "source_urls": [
+        "https://events.tulsa.okstate.edu/event/route-66-on-the-first-100-years-centennial-speaker-series"
+      ],
+      "priority": 2,
+      "source": "osu_tulsa",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "WOMEN'S Online Support Group [Europe-based time zones]",
+      "date": "2026-06-09",
+      "time": "5:00 PM",
+      "venue": "",
+      "description": "**GO TO EVENTBRITE FOR LINK TO MEETING:**\nRecovering from Religion EUROPE BASED WOMEN'S VIRTUAL Support Group Tickets\\, Multiple Dates \\| Eventbrite\n\nThis is an RfR-wide event, not tied to any particular local chapter.\n\n\\*NOTE: This meeting is solely for individuals who identify as female, non-binar",
+      "url": "https://www.meetup.com/oklahoma-chapter/events/313700811/",
+      "source_urls": [
+        "https://www.meetup.com/oklahoma-chapter/events/313700811/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "OKCREI Real Estate Investor Happy Hour 🍻",
+      "date": "2026-06-09",
+      "time": "11:00 PM",
+      "venue": "Prairie Artisan Ales",
+      "description": "**OKCREI Real Estate Investor Happy Hour 🍻**\n*\\(Every 2nd Tuesday \\| 6–8 PM\\)*\n\nJoin Oklahoma Real Estate Investors (OKCREI) for a laid-back Investor Happy Hour—no stage, no slides, just real conversations with like-minded investors. Come & go as you need; the vibe is casual and welcoming, and it’s all about the conversation.\n\nWe’re meeting at Prairie Artisan Ales (Prairie OKC Taproom) — Prairie’s OKC taproom is located at 8th Street Market near downtown OKC and features beers brewed on site wit",
+      "url": "https://www.meetup.com/okcrealestateinvestors/events/314788885/",
+      "source_urls": [
+        "https://www.meetup.com/okcrealestateinvestors/events/314788885/"
+      ],
+      "priority": 2,
+      "source": "extended_calendars",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "2026 June Small Business Workshop ...",
+      "date": "2026-06-09",
+      "time": "9:00 - 10:30 AM",
+      "venue": "City of Owasso, 200 S Main St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Information and Tickets",
+      "date": "2026-06-09",
+      "time": "",
+      "venue": "Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Fitness on the Green – YMCA Yoga (in Fly Loft)",
+      "date": "2026-06-09",
+      "time": "6 - 7 PM",
+      "venue": "Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "TULSA—TCDP Happy Hour",
+      "date": "2026-06-09",
+      "time": "5:30 - 7:30 PM",
+      "venue": "TimeTree",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Wichita Wind Surge At Tulsa Drillers",
+      "date": "2026-06-09",
+      "time": "",
+      "venue": "Green Country Tourism",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Randy Brumley",
+      "date": "2026-06-09",
+      "time": "12 - 1 PM",
+      "venue": "Spotify.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Rose District Farmers Market",
+      "date": "2026-06-09",
+      "time": "4 - 8 PM",
+      "venue": "Events Time.ly",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Find Your Tulsa: A Community Event to Help You...",
+      "date": "2026-06-09",
+      "time": "6 - 8 PM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Heartland Harmony Dulcimer Club",
+      "date": "2026-06-09",
+      "time": "6 - 8 PM",
+      "venue": "Events at Tulsa City-County Library - Communico",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "The Meat and Cheese Show Invades Vintage Wine Bar...",
+      "date": "2026-06-09",
+      "time": "6:30 - 8:30 PM",
+      "venue": "Van The Wine Man",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Community Conversation: North Tulsa",
+      "date": "2026-06-09",
+      "time": "5:30 - 7:00 PM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Stretch and Flow",
+      "date": "2026-06-09",
+      "time": "6:00 - 7:15 PM",
+      "venue": "Yoga Time, 6705 E 81st St #170",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Suite Sensation – Live Music Competition",
+      "date": "2026-06-09",
+      "time": "6 - 8 PM",
+      "venue": "Suite Shots, 600 Riverwalk Terrace",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Buttercream and BINGO!",
+      "date": "2026-06-09",
+      "time": "6 - 8 PM",
+      "venue": "All Things Cake, 6808 S Memorial Dr #230",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Messy Art Club: Prehistoric Paintings",
+      "date": "2026-06-09",
+      "time": "6 - 7 PM",
+      "venue": "Zarrow Regional Library, 2224 W 51st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "EMSA Summer Storytime",
+      "date": "2026-06-09",
+      "time": "",
+      "venue": "May 18 – Jun 9",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Pint-Size Polka With Mike Schneider",
+      "date": "2026-06-09",
+      "time": "12 - 1 PM",
+      "venue": "Glenpool Library, 730 E 141st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Duno-Logah: Exciting Folktales From Native America",
+      "date": "2026-06-09",
+      "time": "2 - 3 PM",
+      "venue": "Collinsville Public Library, 1223 W Main St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Build A Reader Storytime: Toddlers",
+      "date": "2026-06-09",
+      "time": "11:00 - 11:20 AM",
+      "venue": "Hardesty Regional Library, 8316 E 93rd St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tuesday Morning Birders",
+      "date": "2026-06-09",
+      "time": "8:00 AM",
+      "venue": "LaFortune Park Golf Course, 5501 S Yale Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "A Monet Afternoon",
+      "date": "2026-06-09",
+      "time": "7 - 9 PM",
+      "venue": "Pinot's Palette, 300 Riverwalk Terrace #160",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+9+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Open Meditation – Tues.",
+      "date": "2026-06-09",
+      "time": "6:30 PM",
+      "venue": "Shambhala Meditation Center of Tulsa",
+      "description": "",
+      "url": "https://tulsa.shambhala.org/event/807442-open-meditation-tues",
+      "source_urls": [
+        "https://tulsa.shambhala.org/event/807442-open-meditation-tues"
+      ],
+      "priority": 2,
+      "source": "shambhala_tulsa",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Dave & Buster’s – Tulsa In Tulsa | Discover...",
+      "date": "2026-06-10",
+      "time": "1:30 PM",
+      "venue": "Dave & Buster's Tulsa, 6812 S 105th E Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Information and Tickets",
+      "date": "2026-06-10",
+      "time": "",
+      "venue": "Spotify.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Mack Geiger",
+      "date": "2026-06-10",
+      "time": "7:30 - 10:30 PM",
+      "venue": "Spotify.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Open Mic Night",
+      "date": "2026-06-10",
+      "time": "7:00 PM",
+      "venue": "Bricktown Comedy Club Tulsa",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Tulsa Coin Show",
+      "date": "2026-06-10",
+      "time": "2:00 PM",
+      "venue": "Visit Tulsa",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Burst into Bloom",
+      "date": "2026-06-10",
+      "time": "7 - 9 PM",
+      "venue": "Pinotspalette.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Christian Death with Gene Loves Jezebel",
+      "date": "2026-06-10",
+      "time": "8 - 11 PM",
+      "venue": "Spotify.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+        "https://www.thevanguardtulsa.com/shows/christian-death-gene-loves-jezebel-descartes-a-kant-black-season-witch-10-jun"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Wichita Wind Surge At Tulsa Drillers",
+      "date": "2026-06-10",
+      "time": "12:05 - 1:05 PM",
+      "venue": "Fox 23",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "✨ 2nd Quarter | 918 She Connects Lunch Networking...",
+      "date": "2026-06-10",
+      "time": "12:00 - 1:30 PM",
+      "venue": "✨ 2nd Quarter | 918 She Connects Lunch Networking Event ✨",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Greg Warren at Tulsa Loony Bin",
+      "date": "2026-06-10",
+      "time": "7:00 - 8:30 PM",
+      "venue": "Loonybincomedy.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "ZooLIGHTful",
+      "date": "2026-06-10",
+      "time": "7 - 10 PM",
+      "venue": "Facebook",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Classic Reads",
+      "date": "2026-06-10",
+      "time": "6 - 7 PM",
+      "venue": "Schusterman-Benson Library, 3333 E 32nd Pl",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "TexHoma–Oklahoma Optimist Qualifier",
+      "date": "2026-06-10",
+      "time": "",
+      "venue": "Page Belcher Golf Course, 6666 S Union Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "RedFork Arts Foundry Tulsa Creators Camp 2026",
+      "date": "2026-06-10",
+      "time": "",
+      "venue": "Josh Stout Gallery, 2609 W 40th Pl",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "TULSA—Queerlit Turns 2",
+      "date": "2026-06-10",
+      "time": "5:30 PM",
+      "venue": "Heirloom Rustic Ales, 2113 E Admiral Blvd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Full Cup Book Club",
+      "date": "2026-06-10",
+      "time": "10 - 11 AM",
+      "venue": "Martin Regional Library, 2601 S Garnett Rd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Community Luncheon – Coral Class",
+      "date": "2026-06-10",
+      "time": "11:45 AM",
+      "venue": "Little Light House, 5120 E 36th St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Bixby Book Club",
+      "date": "2026-06-10",
+      "time": "2 - 3 PM",
+      "venue": "Bixby Library, 20 E Breckenridge Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Tabletop Gaming Guild",
+      "date": "2026-06-10",
+      "time": "3:30 - 5:00 PM",
+      "venue": "Judy Z. Kishner Library, 10150 N Cincinnati Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Chill Beading",
+      "date": "2026-06-10",
+      "time": "4:00 - 5:30 PM",
+      "venue": "Herman & Kate Kaiser Library, 5202 S Hudson Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+10+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Midweek Meditation (Zoom only)",
+      "date": "2026-06-10",
+      "time": "12:00 PM",
+      "venue": "Shambhala Meditation Center of Tulsa",
+      "description": "",
+      "url": "https://tulsa.shambhala.org/event/867649-midweek-meditation-zoom-only",
+      "source_urls": [
+        "https://tulsa.shambhala.org/event/867649-midweek-meditation-zoom-only"
+      ],
+      "priority": 2,
+      "source": "shambhala_tulsa",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Queer Crafters Club",
+      "date": "2026-06-11",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "Bring your half-finished cross-stitch, your glue gun, or absolutely nothing but yourself. Queer Crafters Club is two hours of making things and making friends, Thursday night at the Equality Center. Beginners and total chaos-crafters equally welcome.",
+      "website_description": "Queer Crafters Club is the gentlest possible excuse to leave the house on a Thursday. From 6 to 8 PM at the Dennis R. Neill Equality Center, LGBTQIA+ crafters of every skill level gather to knit, paint, bead, glue, and gossip. You do not need to be good at anything, and you do not even need to bring a project, there is usually a spare set of supplies and a spare seat at the table. Best-time tip: walk in around 6 when folks are still setting up, claim a chair next to whoever looks friendliest, and let the small talk happen over a craft instead of forced eye contact. It recurs most Thursdays, so if this one sneaks up on you, there is always next week.",
+      "url": "https://okeq.org/event-calendar/",
+      "priority": 2,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Green Country Bears Monthly Meetup",
+      "date": "2026-06-11",
+      "time": "7:00 PM",
+      "venue": "Restaurant (varies, check website)",
+      "description": "Monthly dinner meetup for bears and friends. Chill vibes, good food, friendly crowd.",
+      "url": "https://greencountrybears.com/",
+      "source_urls": [
+        "https://greencountrybears.com",
+        "https://greencountrybears.com/"
+      ],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Regional Economic Leadership Forum",
+      "date": "2026-06-11",
+      "time": "11:30 AM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/regional-economic-leadership-forum-tickets-1990536047903",
+      "source_urls": [
+        "https://www.eventbrite.com/e/regional-economic-leadership-forum-tickets-1990536047903"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Cocktail Class - Prince",
+      "date": "2026-06-11",
+      "time": "6:30 - 8:30 PM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.eventbrite.com/e/cocktail-class-prince-tickets-1983325079703",
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Honoring our full selves:Being Black,LGBTIA+&Religious Trauma",
+      "date": "2026-06-11",
+      "time": "11:00 PM",
+      "venue": "",
+      "description": "**We will be highlighting and honoring those in the LGBTQIA+ Community during PRIDE MONTH!!!**\n\nFor many Black survivors of religious trauma, identity has not always been something we were free to explore or fully express.\nFor those who identify as LGBTQIA+, this experience can be even more complex—",
+      "url": "https://www.meetup.com/blackrtrn/events/314613288/",
+      "source_urls": [
+        "https://www.meetup.com/blackrtrn/events/314613288/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Social Hour",
+      "date": "2026-06-11",
+      "time": "12:00 AM",
+      "venue": "",
+      "description": "*We Are Building Friendships & Community… Near & Far*\n**Join our growing circle of friends for our weekly Chat & Check-in**\n***\\*Link sent to your inbox 1hr before. Please review full event details)***\n\nGet to know others in our community, share experiences, challenges and successes of our weeks.\n\nA",
+      "url": "https://www.meetup.com/queer-social-curated-events-for-lgbtq-people-southern/events/314901066/",
+      "source_urls": [
+        "https://www.meetup.com/queer-social-curated-events-for-lgbtq-people-southern/events/314901066/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Thursday Night Trivia @ Anthem Brewery",
+      "date": "2026-06-11",
+      "time": "11:30 PM",
+      "venue": "Anthem Brewing Co.",
+      "description": "🍻 Trivia Night @ Anthem Brewing! 🧠\n\nJoin us for a fun night of drinks, laughs, and trivia at Anthem Brewing!\n\n📍 Anthem Brewing\n🕡 Meet-up Time: 6:30 PM\n🧠 Trivia Starts: 7:00 PM\n\nWhether you’re a trivia master or just coming for a good time, everyone is welcome. We’ll meet up before trivia begins so we can grab seats and get organized.\n\nIf this event gets a great turnout, we’d love to make trivia a regular thing either weekly or bi-weekly!\n\nCome solo, bring a friend, and let’s see if we can bring",
+      "url": "https://www.meetup.com/we-should-totally-hang-out-okc/events/315041480/",
+      "source_urls": [
+        "https://www.meetup.com/we-should-totally-hang-out-okc/events/315041480/"
+      ],
+      "priority": 2,
+      "source": "extended_calendars",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "SK8 DATE | June",
+      "date": "2026-06-11",
+      "time": "7 - 9 PM",
+      "venue": "B.C. Franklin Park, 1118 N Osage Dr",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Information and Tickets",
+      "date": "2026-06-11",
+      "time": "",
+      "venue": "Spotify.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Buckethead",
+      "date": "2026-06-11",
+      "time": "7:30 - 10:15 PM",
+      "venue": "Spotify.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Kevin Nealon",
+      "date": "2026-06-11",
+      "time": "7 - 10 PM",
+      "venue": "Visit Tulsa",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tulsa Coin Show",
+      "date": "2026-06-11",
+      "time": "10:00 AM",
+      "venue": "ANACS",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "2026 Summer Concert Series, presented by Mythic Press",
+      "date": "2026-06-11",
+      "time": "7 - 9 PM",
+      "venue": "Jenks Riverwalk",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Trivia with Sondra at Inner Circle Vodka Bar",
+      "date": "2026-06-11",
+      "time": "8:00 - 9:30 PM",
+      "venue": "Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Philbrook Day of Play",
+      "date": "2026-06-11",
+      "time": "9:00 AM",
+      "venue": "Events Time.ly",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Hot Toast Music Company",
+      "date": "2026-06-11",
+      "time": "2 - 3 PM",
+      "venue": "rooms-landing - Tulsa City County Library - Tulsa Library",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Living Hollow | Ghost in the Atlantic | Who Will Know",
+      "date": "2026-06-11",
+      "time": "9:00 PM",
+      "venue": "Prekindle",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Good Vibes and Live Music",
+      "date": "2026-06-11",
+      "time": "6:30 - 8:30 PM",
+      "venue": "Tulsa, OK",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Hourglass Wine Dinner",
+      "date": "2026-06-11",
+      "time": "6:22 - 11:59 PM",
+      "venue": "Polo Grill, 2038 Utica Square",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Common Ground",
+      "date": "2026-06-11",
+      "time": "6:30 - 8:30 PM",
+      "venue": "Four. Seven. Three. (473), 2224 E Admiral Blvd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "\"Mostly Jokes\" | Aaron Foster | Stand Up Comedy",
+      "date": "2026-06-11",
+      "time": "7:00 - 8:30 PM",
+      "venue": "Belafonte, 306 S Phoenix Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Fitness on the Green – Barre3",
+      "date": "2026-06-11",
+      "time": "6 - 7 PM",
+      "venue": "Guthrie Green, 111 E Reconciliation Wy",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "PONY-OKE W/ KRONK at Soundpony",
+      "date": "2026-06-11",
+      "time": "10 - 11 PM",
+      "venue": "Soundpony Lounge, 409 N Main St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "After the Prowl",
+      "date": "2026-06-11",
+      "time": "7:00 - 9:30 PM",
+      "venue": "Pinot's Palette, 212 S Main St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Anatomy of a Ransomware",
+      "date": "2026-06-11",
+      "time": "3 - 5 PM",
+      "venue": "HoganTaylor LLP, 2222 S Utica Pl #200",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "New Monthly Show! “The New Kidz” Showtime 11 PM –...",
+      "date": "2026-06-11",
+      "time": "11:00 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Outdoor Family Games",
+      "date": "2026-06-11",
+      "time": "2:30 - 3:30 PM",
+      "venue": "Kendall-Whittier Library, 21 S Lewis Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+11+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Exploring the Nondual Path in Dangerous Times",
+      "date": "2026-06-11",
+      "time": "7:00 PM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/exploring-the-nondual-path-in-dangerous-times-tickets-1985774780825",
+      "source_urls": [
+        "https://www.eventbrite.com/e/exploring-the-nondual-path-in-dangerous-times-tickets-1985774780825"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tulsa Brotherhood Breakfast with Seth Swindall",
+      "date": "2026-06-12",
+      "time": "6:45 AM",
+      "venue": "Church on the Move Tulsa",
+      "description": "The pastor of COTM West joins us in June!",
+      "url": "https://www.eventbrite.com/e/tulsa-brotherhood-breakfast-with-seth-swindall-tickets-1988862240500",
+      "source_urls": [
+        "https://www.eventbrite.com/e/tulsa-brotherhood-breakfast-with-seth-swindall-tickets-1988862240500"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "WTS Oklahoma Golf Tourney",
+      "date": "2026-06-12",
+      "time": "10:30 AM",
+      "venue": "600 Riverwalk Terrace",
+      "description": "Annual Scholarship Fundraiser",
+      "url": "https://www.eventbrite.com/e/wts-oklahoma-golf-tourney-tickets-1986166738180",
+      "source_urls": [
+        "https://www.eventbrite.com/e/wts-oklahoma-golf-tourney-tickets-1986166738180"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "OK So, Tulsa Story Slam: TULSA TIME",
+      "date": "2026-06-12",
+      "time": "7:00 PM",
+      "venue": "Living Arts of Tulsa",
+      "description": "Once a month we come together and hear people tell TRUE (funny, serious, sad, harrowing, interesting) stories about their lives.",
+      "url": "https://www.eventbrite.com/e/ok-so-tulsa-story-slam-tulsa-time-tickets-1984911310161",
+      "source_urls": [
+        "https://www.eventbrite.com/e/ok-so-tulsa-story-slam-tulsa-time-tickets-1984911310161"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Caffeinated Adventures",
+      "date": "2026-06-12",
+      "time": "12:00 AM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.meetup.com/oklahomaatheists/events/314847936/",
+      "source_urls": [
+        "https://www.meetup.com/oklahomaatheists/events/314847936/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Kevin Nealon",
+      "date": "2026-06-12",
+      "time": "7:00 PM",
+      "venue": "Loony Bin Comedy Club - Tulsa",
+      "description": "Tulsa Events lists ticket options for Kevin Nealon at Loony Bin Comedy Club - Tulsa in Tulsa, OK. Ticket options may be available from verified providers.",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "extended_calendars",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Hot Rod Power Tour 2026 Day Five",
+      "date": "2026-06-12",
+      "time": "11:00 AM",
+      "venue": "Tulsa Raceway Park, 3101 N Garnett Rd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Information and Tickets",
+      "date": "2026-06-12",
+      "time": "",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Stained Glass Event - Ladies Night Out",
+      "date": "2026-06-12",
+      "time": "6:30 - 9:30 PM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Dancing Queen Night at Tulsa Botanic Garden — Wine...",
+      "date": "2026-06-12",
+      "time": "6 - 9 PM",
+      "venue": "Van The Wine Man",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Bizarre Underground June 12th",
+      "date": "2026-06-12",
+      "time": "6:30 - 9:00 PM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Brad Upton",
+      "date": "2026-06-12",
+      "time": "7 - 10 PM",
+      "venue": "Spotify.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "The Centennial Supper Club- Celebrating Rt. 66...",
+      "date": "2026-06-12",
+      "time": "7PM",
+      "venue": "The Meat and Cheese Show",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "2026 Legislative Wrap-Up Breakfast",
+      "date": "2026-06-12",
+      "time": "8 - 9 AM",
+      "venue": "Owasso Chamber of Commerce",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Shine On Women’s Retreat",
+      "date": "2026-06-12",
+      "time": "6:00 PM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Jeffrey Baldinger",
+      "date": "2026-06-12",
+      "time": "9:30 PM",
+      "venue": "Loonybincomedy.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Pie Night at Antoinette Bakery & Cafe",
+      "date": "2026-06-12",
+      "time": "5 - 9 PM",
+      "venue": "Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Live music at Duet Restaurant from 6:30-9:30p",
+      "date": "2026-06-12",
+      "time": "5 - 10 PM",
+      "venue": "Duet, 108 N Detroit Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "NABJ-Tulsa and AASA Present \"Black Ink and Beyond\"",
+      "date": "2026-06-12",
+      "time": "6 - 8 PM",
+      "venue": "Thomas K. McKeon Center for Creativity, 910 S Boston Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Black Widows",
+      "date": "2026-06-12",
+      "time": "",
+      "venue": "Mercury Lounge, 1747 S Boston Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Caroline Parker",
+      "date": "2026-06-12",
+      "time": "7:00 - 9:30 PM",
+      "venue": "Hard Rock Hotel And Casino Tulsa, 777 W Cherokee St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Family Splash Event at Miller Swim School - Jenks, OK",
+      "date": "2026-06-12",
+      "time": "3 - 6 PM",
+      "venue": "Miller Swim School - Jenks, 525 W 91st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Cox Movie Night: \"Cars\" 20th Anniversary",
+      "date": "2026-06-12",
+      "time": "6 - 9 PM",
+      "venue": "Gathering Place, 2650 S John Williams Way",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Dance to the Music of DJ Konnect + Hoe You Think...",
+      "date": "2026-06-12",
+      "time": "",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Botox and Dermal Fillers Course – Tulsa",
+      "date": "2026-06-12",
+      "time": "",
+      "venue": "Marriott Tulsa Hotel Southern Hills, 1902 E 71st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Secret Gardens",
+      "date": "2026-06-12",
+      "time": "7 - 11 PM",
+      "venue": "The Whittier Bar, 2405 E Admiral Blvd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Annual National Painted Soda Bottle Collectors...",
+      "date": "2026-06-12",
+      "time": "6 - 10 PM",
+      "venue": "Hampton Inn & Suites Tulsa/Central, 3418 S 79th E Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+12+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Vanguard Boiler Club Presents RAVE ON MAIN (18+)",
+      "date": "2026-06-12",
+      "time": "",
+      "venue": "The Vanguard, 222 N Main St, Tulsa, OK",
+      "description": "",
+      "url": "https://www.thevanguardtulsa.com/shows/vanguard-boiler-club-presents-rave-on-main-18-12-jun",
+      "source_urls": [
+        "https://www.thevanguardtulsa.com/shows/vanguard-boiler-club-presents-rave-on-main-18-12-jun"
+      ],
+      "priority": 2,
+      "source": "the_vanguard_tulsa",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Drag Brunch Presented by Elote",
+      "date": "2026-06-13",
+      "time": "11:00 AM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.eventbrite.com/e/drag-sing-along-presented-by-elote-tickets-1988242480782",
+        "https://www.eventbrite.com/e/drag-brunch-presented-by-elote-tickets-1976646183946",
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Tulsa Pride Bar Crawl",
+      "date": "2026-06-13",
+      "time": "4 - 10 PM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.eventbrite.com/e/tulsa-pride-bar-crawl-tickets-1730741346959",
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Late Lunch / Drinks at The Collective",
+      "date": "2026-06-13",
+      "time": "6:00 PM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.meetup.com/oklahoma-city-gay-meetup/events/314855224/",
+      "source_urls": [
+        "https://www.meetup.com/oklahoma-city-gay-meetup/events/314855224/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Merriment at Tiny Bubbles Pizza and Wine Bar!",
+      "date": "2026-06-13",
+      "time": "10:00 PM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.meetup.com/just-the-gals-50-ish/events/314668869/",
+      "source_urls": [
+        "https://www.meetup.com/just-the-gals-50-ish/events/314668869/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Kevin Nealon",
+      "date": "2026-06-13",
+      "time": "6 - 9 PM",
+      "venue": "Tulsa Loony Bin Comedy Club, 6808 S Memorial Dr",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tulsa’s Legendary Midnight Drags - June 13, 2026",
+      "date": "2026-06-13",
+      "time": "",
+      "venue": "Tulsa Raceway Park, 3101 N Garnett Rd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Information and Tickets",
+      "date": "2026-06-13",
+      "time": "",
+      "venue": "Bricktown Comedy Club Tulsa",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Rachel Scanlon",
+      "date": "2026-06-13",
+      "time": "3 - 6 PM",
+      "venue": "Bricktown Comedy Club Tulsa",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Kat Hasty",
+      "date": "2026-06-13",
+      "time": "7:30 - 9:00 PM",
+      "venue": "Spotify.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "27th Annual All-Black Towns Tour",
+      "date": "2026-06-13",
+      "time": "7:00 AM",
+      "venue": "Evvnt.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Dead Metal Society",
+      "date": "2026-06-13",
+      "time": "8 - 11 PM",
+      "venue": "Thevanguardtulsa.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+        "https://www.thevanguardtulsa.com/shows/dead-metal-society-13-jun"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Spartan Demo Day | Tulsa Flight Facility",
+      "date": "2026-06-13",
+      "time": "10:00 AM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Adam Carolla",
+      "date": "2026-06-13",
+      "time": "6 - 9 PM",
+      "venue": "Bricktown Comedy Club Tulsa - Seat Engine",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "BINGO After Dark",
+      "date": "2026-06-13",
+      "time": "8 - 11 PM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Hats n Chats- Maskoff",
+      "date": "2026-06-13",
+      "time": "11:00 AM",
+      "venue": "Broken Arrow, OK",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Die Young [TX]",
+      "date": "2026-06-13",
+      "time": "7 - 11 PM",
+      "venue": "Mass Movement Community Arts, 1217 E Admiral Blvd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Candlelight: The Soundtrack of the 60´s",
+      "date": "2026-06-13",
+      "time": "6:30 - 7:30 PM",
+      "venue": "German American Society-Tulsa, 1429 Terrace Dr",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "June AHCA Show",
+      "date": "2026-06-13",
+      "time": "9:00 AM",
+      "venue": "All Round Equine, 20322 US-75",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Get Leppard",
+      "date": "2026-06-13",
+      "time": "",
+      "venue": "The Shrine, 112 E 18th St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tulsa Antiques and Bottle Club’s 48th Annual...",
+      "date": "2026-06-13",
+      "time": "8:00 AM",
+      "venue": "SageNet Center, Tulsa Expo Center, 4145 E 21st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Paula Atherton Live At The High Note Jazz and Blues!",
+      "date": "2026-06-13",
+      "time": "8:00 - 9:30 PM",
+      "venue": "The High Note, 321 E Reconciliation Wy",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Pie Night at Antoinette Bakery & Cafe",
+      "date": "2026-06-13",
+      "time": "5 - 9 PM",
+      "venue": "Antoinette Bakery & Cafe, 207 N Main St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Jeffrey Baldinger",
+      "date": "2026-06-13",
+      "time": "6:00 PM",
+      "venue": "Tulsa Loony Bin Comedy Club, 6808 S Memorial Dr",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+13+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "SCORES FOR MOVING AT ASSEMBLY",
+      "date": "2026-06-13",
+      "time": "7:00 PM8:00 PM19:0020:00",
+      "venue": "Flagship / Tulsa Artist Fellowship, 112 N Boston Ave",
+      "description": "Scores for Moving at Assemblyis an improvisational dance performance by choreographerMaree ReMaliathat activates the public sculptureAssemblyby Richard Zimmermanin the Plaza of the Americas.",
+      "url": "https://www.tulsaartistfellowship.org/calendar/scores-for-moving-at-assembly",
+      "source_urls": [
+        "https://www.tulsaartistfellowship.org/calendar/scores-for-moving-at-assembly"
+      ],
+      "priority": 2,
+      "source": "tulsa_artist_fellowship",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Second Saturday Half Day Practice",
+      "date": "2026-06-13",
+      "time": "9:00 AM",
+      "venue": "Shambhala Meditation Center of Tulsa",
+      "description": "",
+      "url": "https://tulsa.shambhala.org/event/807591-second-saturday-half-day-practice",
+      "source_urls": [
+        "https://tulsa.shambhala.org/event/807591-second-saturday-half-day-practice"
+      ],
+      "priority": 2,
+      "source": "shambhala_tulsa",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "All Souls Unitarian Sunday Services",
+      "date": "2026-06-14",
+      "time": "10:00 AM and 11:15 AM",
+      "venue": "All Souls Unitarian Church, 2952 S Peoria Ave",
+      "description": "",
+      "url": "https://allsoulschurch.org",
+      "source_urls": [
+        "https://allsoulschurch.org"
+      ],
+      "priority": 2,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Gender Queer",
+      "date": "2026-06-14",
+      "time": "6:00 PM",
+      "venue": "",
+      "description": "Gender Queer by Maia Kobabe",
+      "url": "https://www.meetup.com/comicsanimations/events/314769197/",
+      "source_urls": [
+        "https://www.meetup.com/comicsanimations/events/314769197/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Drag Bingo",
+      "date": "2026-06-14",
+      "time": "3 - 6 PM",
+      "venue": "Stillwater Radio",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Campari Loves Gin Competition Tulsa - OKC Sunday...",
+      "date": "2026-06-14",
+      "time": "4 - 8 PM",
+      "venue": "Valkyrie, 13 E Reconciliation Wy",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Information and Tickets",
+      "date": "2026-06-14",
+      "time": "",
+      "venue": "Spotify.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Art Garfunkel",
+      "date": "2026-06-14",
+      "time": "6:30 - 8:00 PM",
+      "venue": "Spotify.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Fitness on the Green – Zumba with Ariane",
+      "date": "2026-06-14",
+      "time": "10:30 - 11:30 AM",
+      "venue": "in 6 days",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Rosé Day at Vintage Wine Bar  — Wine Tastings ...",
+      "date": "2026-06-14",
+      "time": "11:30 AM",
+      "venue": "Van The Wine Man",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Family Splash Event at Miller Swim School - Tulsa...",
+      "date": "2026-06-14",
+      "time": "2 - 4 PM",
+      "venue": "Family Splash Event at Miller Swim School - Tulsa South",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Oklahoma Reptile Show",
+      "date": "2026-06-14",
+      "time": "10:00 AM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Gravehuffer, Graveripper, & more TBA",
+      "date": "2026-06-14",
+      "time": "8:00 PM",
+      "venue": "Spotify.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "The Christi Show: Featuring Ms Shirleen at Tulsa...",
+      "date": "2026-06-14",
+      "time": "6 - 9 PM",
+      "venue": "The Christi Show: Featuring Ms Shirleen at Tulsa Loony Bin",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tulsa Drillers vs. Wichita Wind Surge",
+      "date": "2026-06-14",
+      "time": "1 - 2 PM",
+      "venue": "ONEOK Field, 201 N Elgin Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Sunday Song Swap with at The Hunt Club",
+      "date": "2026-06-14",
+      "time": "5 - 8 PM",
+      "venue": "The Hunt Club, 224 N Main St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Lil' Shop of Horrors",
+      "date": "2026-06-14",
+      "time": "9:30 - 11:59 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Raw Honey Mountain Apples - at the Mercury Lounge...",
+      "date": "2026-06-14",
+      "time": "",
+      "venue": "Mercury Lounge, 1747 S Boston Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Bright Futures, A Fundraising Brunch for Community...",
+      "date": "2026-06-14",
+      "time": "12 - 4 PM",
+      "venue": "Four. Seven. Three. (473), 2224 E Admiral Blvd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Reel Lit Boob Club: If Beale Street Could Talk at...",
+      "date": "2026-06-14",
+      "time": "4:30 - 5:30 PM",
+      "venue": "Magic City Books, 221 E Archer St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "The Crucible",
+      "date": "2026-06-14",
+      "time": "2:00 PM",
+      "venue": "Broken Arrow Community Playhouse, 1800 S Main St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "4th & 5th Grade Sunset Bible Camp",
+      "date": "2026-06-14",
+      "time": "",
+      "venue": "Mannford, OK",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Sunday SIP",
+      "date": "2026-06-14",
+      "time": "",
+      "venue": "Dave & Buster's Tulsa, 6812 S 105th E Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "“A Dozen Loops: The Radical Voice of Woody...",
+      "date": "2026-06-14",
+      "time": "12 - 6 PM",
+      "venue": "Woody Guthrie Center, 102 E Reconciliation Wy",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+14+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "PROXIMITY SESSIONS: TATYANA FAZLALIZADEH x LE’ANDRA LESEUR",
+      "date": "2026-06-14",
+      "time": "10:00 AM10:00",
+      "venue": "Flagship / Tulsa Artist Fellowship, 112 N Boston Ave",
+      "description": "Hosted atLynn & Lorraine, an evolving residency format initiated by Tatyana Fazlalizadeh,Proximity Sessionscenters cross-disciplinary exchange, research-driven practice, and site-responsive inquiry. This inaugural session unfolds in collaboration with theTulsa Artist Fellowshipand joinsUpstate Art Weekend(Thursday, June 25 – Monday, June 29, 2026).",
+      "url": "https://www.tulsaartistfellowship.org/calendar/lynn-lorraine-proximity-sessions-tatyana-fazlalizadeh-x-leandra-leseur",
+      "source_urls": [
+        "https://www.tulsaartistfellowship.org/calendar/lynn-lorraine-proximity-sessions-tatyana-fazlalizadeh-x-leandra-leseur"
+      ],
+      "priority": 2,
+      "source": "tulsa_artist_fellowship",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "PRIDE at Elote",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/pride-at-elote-tickets-1991217238362",
+      "source_urls": [
+        "https://www.eventbrite.com/e/pride-at-elote-tickets-1991217238362"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Miss Gay Oklahoma America",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/miss-gay-oklahoma-america-tickets-1990147876873",
+      "source_urls": [
+        "https://www.eventbrite.com/e/miss-gay-oklahoma-america-tickets-1990147876873"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Namastreet Yoga 2026",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/namastreet-yoga-2026-tickets-1989108976494",
+      "source_urls": [
+        "https://www.eventbrite.com/e/namastreet-yoga-2026-tickets-1989108976494"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "An Evening With David Sedaris",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/an-evening-with-david-sedaris-tickets-1987791513928",
+      "source_urls": [
+        "https://www.eventbrite.com/e/an-evening-with-david-sedaris-tickets-1987791513928"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Keyland: Knuckle Sandwich Album Release Show",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/keyland-knuckle-sandwich-album-release-show-tickets-1987338635356",
+      "source_urls": [
+        "https://www.eventbrite.com/e/keyland-knuckle-sandwich-album-release-show-tickets-1987338635356"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tulsa Speed Dating for Singles Age 20s/30s â¥ Broken Arrow OK at Laurannae",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/tulsa-speed-dating-for-singles-age-20s30s-broken-arrow-ok-at-laurannae-tickets-1989101289502",
+      "source_urls": [
+        "https://www.eventbrite.com/e/tulsa-speed-dating-for-singles-age-20s30s-broken-arrow-ok-at-laurannae-tickets-1989101289502"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "JimsTeenth Cookout",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/jimsteenth-cookout-tickets-1990345682515",
+      "source_urls": [
+        "https://www.eventbrite.com/e/jimsteenth-cookout-tickets-1990345682515"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "HUGE KIDSâ SALE-JBF BA â¢ JULY 10-12 (PRESALE JULY 9)",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/huge-kids-sale-jbf-ba-july-10-12-presale-july-9-tickets-1989163470487",
+      "source_urls": [
+        "https://www.eventbrite.com/e/huge-kids-sale-jbf-ba-july-10-12-presale-july-9-tickets-1989163470487"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "MOM Conference (Multifaceted Overflowing Maven)",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/mom-conference-multifaceted-overflowing-maven-tickets-1980628918412",
+      "source_urls": [
+        "https://www.eventbrite.com/e/mom-conference-multifaceted-overflowing-maven-tickets-1980628918412"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Community Presale â¢ JULY  9 â¢ DONâT MISS THIS SALE!",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/community-presale-july-9-dont-miss-this-sale-tickets-1989163461460",
+      "source_urls": [
+        "https://www.eventbrite.com/e/community-presale-july-9-dont-miss-this-sale-tickets-1989163461460"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "GCW presents \"The Tussle in Tulsa\"",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/gcw-presents-the-tussle-in-tulsa-tickets-1990112263352",
+      "source_urls": [
+        "https://www.eventbrite.com/e/gcw-presents-the-tussle-in-tulsa-tickets-1990112263352"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Prop Swappers of Tulsa Monthly meet up @ GUTHRIE GREEN",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/prop-swappers-of-tulsa-monthly-meet-up-guthrie-green-tickets-1981881705532",
+      "source_urls": [
+        "https://www.eventbrite.com/e/prop-swappers-of-tulsa-monthly-meet-up-guthrie-green-tickets-1981881705532"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "TFA CAMP ARCHITECTURE 2026:  DREAM HOUSE DESIGN (WEEK 2)",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/tfa-camp-architecture-2026-dream-house-design-week-2-tickets-1983388838407",
+      "source_urls": [
+        "https://www.eventbrite.com/e/tfa-camp-architecture-2026-dream-house-design-week-2-tickets-1983388838407"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Rewired Together: Education Summit",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/rewired-together-education-summit-tickets-1986085613534",
+      "source_urls": [
+        "https://www.eventbrite.com/e/rewired-together-education-summit-tickets-1986085613534"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "TULSA: WORSHIP WERK! - CHRISTIAN HIP-HOP CLASS",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/tulsa-worship-werk-christian-hip-hop-class-tickets-1990258974168",
+      "source_urls": [
+        "https://www.eventbrite.com/e/tulsa-worship-werk-christian-hip-hop-class-tickets-1990258974168"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "INNER CIRCLE DRAG SHOW",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/inner-circle-drag-show-tickets-1979909993087",
+      "source_urls": [
+        "https://www.eventbrite.com/e/inner-circle-drag-show-tickets-1979909993087"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Swiftball Tulsa,OK",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/swiftball-tulsaok-tickets-1976426292244",
+      "source_urls": [
+        "https://www.eventbrite.com/e/swiftball-tulsaok-tickets-1976426292244"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "In-Person CAPM Exam Prep Course in Tulsa",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/in-person-capm-exam-prep-course-in-tulsa-tickets-1985761475027",
+      "source_urls": [
+        "https://www.eventbrite.com/e/in-person-capm-exam-prep-course-in-tulsa-tickets-1985761475027"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "CISSP Certification Training Course in Jenks, OK",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/cissp-certification-training-course-in-jenks-ok-tickets-1979969150027",
+      "source_urls": [
+        "https://www.eventbrite.com/e/cissp-certification-training-course-in-jenks-ok-tickets-1979969150027"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Gun Drawing 300 Black Out",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/gun-drawing-300-black-out-tickets-1976231161603",
+      "source_urls": [
+        "https://www.eventbrite.com/e/gun-drawing-300-black-out-tickets-1976231161603"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "CISSP Certification | ISCÂ² Exam Preparation Program in Jenks, OK",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/cissp-certification-isc2-exam-preparation-program-in-jenks-ok-tickets-1980710997914",
+      "source_urls": [
+        "https://www.eventbrite.com/e/cissp-certification-isc2-exam-preparation-program-in-jenks-ok-tickets-1980710997914"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Black. Queer. proud.",
+      "date": "",
+      "time": "",
+      "venue": "Various locations in Tulsa",
+      "description": "",
+      "url": "https://www.blackqueertulsa.org/events",
+      "source_urls": [
+        "https://www.blackqueertulsa.org/events",
+        "https://www.blackqueertulsa.org/black-queer-proud-2024"
+      ],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "our parTners",
+      "date": "",
+      "time": "",
+      "venue": "Various locations in Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "stay connected!",
+      "date": "",
+      "time": "",
+      "venue": "Various locations in Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "WEEKLY EVENTS:",
+      "date": "",
+      "time": "",
+      "venue": "Elote Cafe & Catering",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "UPCOMING EVENTS",
+      "date": "",
+      "time": "",
+      "venue": "Elote Cafe & Catering",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "(map)",
+      "date": "",
+      "time": "",
+      "venue": "Elote Cafe & Catering",
+      "description": "",
+      "url": "http://maps.google.com?q=514 South Boston Avenue Tulsa, OK, 74103 United States",
+      "source_urls": [
+        "http://maps.google.com?q=514 South Boston Avenue Tulsa, OK, 74103 United States"
+      ],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Get Your Tickets!",
+      "date": "",
+      "time": "",
+      "venue": "Elote Cafe & Catering",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/drag-brunch-presented-by-elote-tickets-1976646183946?aff=oddtdtcreator",
+      "source_urls": [
+        "https://www.eventbrite.com/e/drag-brunch-presented-by-elote-tickets-1976646183946?aff=oddtdtcreator",
+        "https://www.eventbrite.com/e/drag-sing-along-presented-by-elote-tickets-1988242480782?aff=oddtdtcreator"
+      ],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Lambda Unity Group (LGBTQ+ AA Meeting)",
+      "date": "2026-06-10",
+      "time": "Check listing for time",
+      "venue": "Fellowship Congregational Church, Tulsa",
+      "description": "",
+      "url": "https://aaoklahoma.org/meetings/lambda-unity/",
+      "source_urls": [
+        "https://aaoklahoma.org/meetings/lambda-unity/"
+      ],
+      "priority": 3,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Route 66 Birthday: Cars Movie Nights",
+      "date": "2026-06-12",
+      "time": "Evening",
+      "venue": "Philbrook Museum & Gathering Place, Tulsa",
+      "description": "Celebrate the Mother Road's 100th with outdoor screenings of Cars at Philbrook and Gathering Place.",
+      "website_description": "As part of the Route 66 Centennial, Tulsa marks the Mother Road's birthday with outdoor screenings of Cars, both at Philbrook's Films on the Lawn and at Gathering Place. Bring a blanket and settle in under the stars.",
+      "url": "https://www.tulsapeople.com/about-town/route-66-centennial-events-in-tulsa-and-surrounding-areas/article_098457f8-0335-496f-ba71-29c6b1ef0f72.html",
+      "priority": 3,
+      "source": "major_tulsa",
+      "lgbtq_relevant": true
+    }
+  ]
+}
