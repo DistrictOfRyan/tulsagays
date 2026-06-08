@@ -131,6 +131,34 @@ try:
 except Exception as _e:
     print(f"[warn] description enrichment skipped: {_e}")
 
+# Hard de-dup on the EXACT field the cards render (website_description or
+# description fallback). Rule-based templates give same-category events identical
+# copy (2026-06-08: 21 cards shared one line). This guarantees no two cards show
+# the same blurb. Operates on the rendered field so it can't be bypassed.
+try:
+    import os as _os2, sys as _sys2
+    _sys2.path.insert(0, _os2.path.dirname(_os2.path.dirname(_os2.path.abspath(__file__))))
+    from tools.dedupe_descriptions import _unique_desc as _uq, _norm as _nm
+    _seen2, _fixed2 = {}, 0
+    for _ev in events:
+        _fld = 'website_description' if (_ev.get('website_description') or '').strip() else 'description'
+        _key2 = _nm(_ev.get(_fld))
+        if not _key2 or len(_key2) < 25:
+            continue
+        if _key2 in _seen2:
+            for _s in range(1, 50):
+                _cand2 = _uq(_ev, f'web{_s}', long=(_fld == 'website_description'))
+                if _nm(_cand2) not in _seen2:
+                    _ev[_fld] = _cand2
+                    _seen2[_nm(_cand2)] = 1
+                    _fixed2 += 1
+                    break
+        else:
+            _seen2[_key2] = 1
+    print(f"[dedupe] website cards: {_fixed2} duplicate blurbs rewritten unique")
+except Exception as _e:
+    print(f"[warn] website dedupe skipped: {_e}")
+
 today = datetime.now().date()
 week_monday = today - timedelta(days=today.weekday())
 week_sunday = week_monday + timedelta(days=6)
@@ -269,6 +297,35 @@ for day in DAYS:
 from eotw_selector import select_eotw
 
 all_flat = [e for day in DAYS for e in events_by_day[day]]
+
+# FINAL de-dup, immediately before render, on the EXACT events the cards iterate
+# and the EXACT field they show (website_description or description). Same-
+# category rule-based templates repeat (2026-06-08: 21 cards shared one line);
+# this is the last gate before HTML so nothing downstream can re-introduce a dup.
+try:
+    import os as _osd, sys as _sysd
+    _sysd.path.insert(0, _osd.path.dirname(_osd.path.dirname(_osd.path.abspath(__file__))))
+    from tools.dedupe_descriptions import _unique_desc as _uqd, _norm as _nmd
+    _seend, _fixedd = {}, 0
+    for _evd in all_flat:
+        _fldd = 'website_description' if (_evd.get('website_description') or '').strip() else 'description'
+        _kd = _nmd(_evd.get(_fldd))
+        if not _kd or len(_kd) < 25:
+            continue
+        if _kd in _seend:
+            for _sd in range(1, 60):
+                _cd = _uqd(_evd, f'card{_sd}', long=(_fldd == 'website_description'))
+                if _nmd(_cd) not in _seend:
+                    _evd[_fldd] = _cd
+                    _seend[_nmd(_cd)] = 1
+                    _fixedd += 1
+                    break
+        else:
+            _seend[_kd] = 1
+    print(f"[dedupe] final card pass: {_fixedd} duplicate blurbs rewritten")
+except Exception as _ed:
+    print(f"[warn] final card dedupe skipped: {_ed}")
+
 eotw = select_eotw(all_flat)
 eotw_key = (eotw.get('name', ''), eotw.get('date', '')) if eotw else None
 

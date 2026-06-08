@@ -803,6 +803,15 @@ def _rule_based_enrich_all(events: list[dict]) -> list[dict]:
         if (not existing or len(existing) < 60 or _is_scraper_artifact(existing)
                 or src in _FORCE_REWRITE_SOURCES):
             ev["description"] = _rule_based_enrich(ev)
+    # Guarantee uniqueness: the rule-based templates give same-category events
+    # IDENTICAL copy (the 2026-06-08 repeat embarrassment — 21 cards shared one
+    # line on the website). Dedupe before returning so every caller (website via
+    # gen_website_html AND slide fallback) renders unique, on-voice blurbs.
+    try:
+        from tools.dedupe_descriptions import dedupe as _dedupe
+        _dedupe(events)
+    except Exception:
+        pass
     return events
 
 
