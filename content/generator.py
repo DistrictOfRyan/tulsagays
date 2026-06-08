@@ -408,7 +408,9 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
         print("[generator] Enriching via claude CLI (subscription credits)")
     else:
         client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
-    BATCH = 20
+    # Smaller batches = a partial CLI failure strands fewer events on rule-based
+    # fallback (Rung 2 reliability). Was 20.
+    BATCH = 10
 
     # Only enrich events that need it
     # Enrich when the long website copy is missing, the short copy is empty, or
@@ -476,9 +478,13 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
             )
             if use_cli:
                 # Route through `claude -p` subprocess — subscription credits.
+                # Retry once on empty (nested CLI is flaky under concurrency).
                 response = _call_claude_cli(prompt, sys_prompt, model="sonnet")
                 if not response:
-                    raise RuntimeError("claude CLI returned empty output")
+                    print("[generator] CLI empty, retrying batch once...")
+                    response = _call_claude_cli(prompt, sys_prompt, model="sonnet")
+                if not response:
+                    raise RuntimeError("claude CLI returned empty output (after retry)")
             else:
                 message = client.messages.create(
                     model="claude-sonnet-4-5",

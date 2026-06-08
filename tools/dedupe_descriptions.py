@@ -77,7 +77,16 @@ def _unique_desc(e, salt, long=False):
         return opener
     where = WHERE[_h(seed + "w", len(WHERE))].format(
         at_venue=at_venue, at_venue_cap=at_venue_cap, at_time=at_time).strip()
-    closer = CLOSERS[_h(seed + "c", len(CLOSERS))]
+    # Rung 3: prefer a venue-tailored "best-time" tip as the closer; fall back to
+    # the generic encouraging closer pool only when no venue match.
+    closer = ""
+    try:
+        from tools.venue_tips import tip_for as _tip
+        closer = _tip(e)
+    except Exception:
+        closer = ""
+    if not closer:
+        closer = CLOSERS[_h(seed + "c", len(CLOSERS))]
     return f"{opener} {where} {closer}".replace("  ", " ").strip()
 
 

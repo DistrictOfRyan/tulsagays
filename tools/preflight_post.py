@@ -61,6 +61,29 @@ ARTIFACT_PATTERNS = [
 VOICE_MARKERS = ("you", "your", "honey", "baby", "sweetheart", "girl",
                  "darling", "go ", "get ")  # second-person / encouraging cues
 
+# Signatures of TEMPLATED / fallback copy (rule-based templates + dedupe pool
+# openers). On a FEATURED slide these read as filler, not the hand-written
+# RuPaul x Dolly voice — flag them (warning) so the Monday voice-pass rewrites
+# them. Not a hard block (dedupe already guarantees uniqueness); a quality nudge.
+TEMPLATE_SIGNATURES = [
+    "put this on your calendar and actually go",
+    "the people in that room are your people",
+    "arrive before it starts. find a spot",
+    "clear your calendar, because",
+    "here is your permission slip",
+    "nobody ever regretted going to",
+    "if you do one thing this week",
+    "is calling and the answer is yes",
+    "do future-you a favor",
+    "treat yourself to",
+    "stop scrolling and go be among your people",
+]
+
+
+def _looks_templated(text):
+    low = (text or "").strip().lower()
+    return any(sig in low for sig in TEMPLATE_SIGNATURES)
+
 # ── Anonymity policy ────────────────────────────────────────────────────────
 # The account is ANONYMOUS — nothing posted may reveal who runs it. Block any
 # operator name or "I run this account" style self-identification.
@@ -146,6 +169,19 @@ def _check_desc(ev, errors, warnings, is_eotw=False, posted=True):
             if rx.search(txt):
                 sink.append(f"[voice] {tag} '{name}' {field} looks like raw scraper text / junk")
                 break
+    # Voice-quality nudge: a posted (slide/EOTW) event leaning on templated
+    # fallback copy should be rewritten by the Monday voice-pass.
+    if posted and _looks_templated(short):
+        warnings.append(f"[voice-quality] {tag} '{name}' uses templated/fallback copy "
+                        f"— rewrite in the RuPaul x Dolly voice (Monday STEP 2.1)")
+    # Rung 4: channel length contracts (slide-safe short, substantive EOTW long).
+    if posted:
+        try:
+            from tools.channel_copy import contract_violations
+            for v in contract_violations(ev, is_eotw=is_eotw):
+                warnings.append(f"[channel-contract] {v}")
+        except Exception:
+            pass
     if len(short) > 240:
         warnings.append(f"[voice] {tag} '{name}' short desc is {len(short)} chars (long for a slide)")
     if is_eotw:
@@ -235,7 +271,15 @@ def run(week_key=None):
     # structural backstop, not the primary fix.
     def _norm(s):
         return re.sub(r"\s+", " ", (s or "").strip().lower())
-    posted_events = list(eotw) + [e for e in featured_all]
+    # Dedupe the posted set by event identity first, so the EOTW (which appears
+    # in both `eotw` and `featured_all`) is never compared against itself.
+    posted_events, _seen_ids = [], set()
+    for e in list(eotw) + list(featured_all):
+        _eid = (e.get("name"), e.get("date"), e.get("time"))
+        if _eid in _seen_ids:
+            continue
+        _seen_ids.add(_eid)
+        posted_events.append(e)
     for field, label in (("description", "short"), ("website_description", "long")):
         seen = {}
         for e in posted_events:
