@@ -256,6 +256,28 @@ def run(dry_run=False, headed=False, week=None):
         ctx = b.new_context(storage_state=str(AUTH_PATH))
         page = ctx.new_page()
 
+        # AUTH PRE-CHECK: detect an expired session up front and fail LOUDLY,
+        # instead of silently erroring "composer not found" on all 17 groups
+        # (which is exactly how the 2026-06-08 silent failure looked). Writes a
+        # flag the Monday agent / keepalive read to alert William for re-auth.
+        page.goto("https://www.facebook.com/", wait_until="domcontentloaded")
+        _names = {c["name"] for c in ctx.cookies()}
+        _login_form = False
+        try:
+            _login_form = page.locator('input[name="email"]').count() > 0
+        except Exception:
+            pass
+        if "c_user" not in _names or _login_form:
+            b.close()
+            try:
+                (ROOT / "data" / "GROUP_AUTH_DEAD.flag").write_text(
+                    datetime.now(timezone.utc).isoformat(), encoding="utf-8")
+            except Exception:
+                pass
+            raise SystemExit(
+                "AUTH_DEAD: Facebook group session is logged out — 0 groups posted. "
+                "Re-auth (2 min): python tools/capture_group_auth.py")
+
         if not _switch_to_page(page):
             b.close()
             raise SystemExit("Could not confirm 'acting as Tulsa Gays Page'. "

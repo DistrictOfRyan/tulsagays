@@ -392,16 +392,32 @@ def post_fb_carousel(slides: list[Path], caption: str) -> dict:
         return {"post_id": "dry_run_post_id", "photo_ids": photo_ids}
 
     attached = json.dumps([{"media_fbid": pid} for pid in photo_ids])
-    resp = requests.post(
-        f"{API_BASE}/{PAGE_ID}/feed",
-        data={"message": caption, "attached_media": attached, "access_token": PAGE_TOKEN},
-        timeout=60,
-    )
-    data = resp.json()
-    if "error" in data:
-        raise RuntimeError(f"FB post failed: {data['error'].get('message')}")
+    # The 9-photo attached_media /feed call intermittently returns FB's transient
+    # "Please reduce the amount of data you're asking for, then retry your
+    # request" (error code 1/2). Photos are already uploaded, so retry ONLY the
+    # post-creation call with backoff — no duplicate uploads. FB returns the new
+    # post id on success, so a retry after a true error cannot double-post.
+    data = {}
+    last_err = None
+    for attempt, delay in enumerate((0, 8, 20, 40), start=1):
+        if delay:
+            print(f"     [FB] transient error, retry {attempt-1} in {delay}s...")
+            time.sleep(delay)
+        resp = requests.post(
+            f"{API_BASE}/{PAGE_ID}/feed",
+            data={"message": caption, "attached_media": attached, "access_token": PAGE_TOKEN},
+            timeout=60,
+        )
+        data = resp.json()
+        if "id" in data:
+            break
+        last_err = data.get("error", {})
+        code = last_err.get("code")
+        # Retry only the known-transient codes; fail fast on real errors.
+        if code not in (1, 2) and "reduce the amount of data" not in (last_err.get("message") or "").lower():
+            raise RuntimeError(f"FB post failed: {last_err.get('message')}")
     if "id" not in data:
-        raise RuntimeError(f"FB post returned no ID: {data}")
+        raise RuntimeError(f"FB post failed after retries: {last_err}")
 
     post_id = data["id"]
     print(f"[OK] Facebook post: https://www.facebook.com/{post_id}")

@@ -26,6 +26,17 @@ import re
 import sys
 from datetime import date, datetime
 
+# Windows scheduled tasks / cp1252 consoles can't encode the emoji and special
+# chars that appear in event names and report lines. Without this, the report
+# print() raises UnicodeEncodeError and crashes the whole gate (and any caller
+# such as post_weekly.py) instead of returning a clean pass/fail. errors=replace
+# keeps the gate alive on any console.
+for _stream in ("stdout", "stderr"):
+    try:
+        getattr(sys, _stream).reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 _this = os.path.dirname(os.path.abspath(__file__))
 _root = os.path.dirname(_this)
 if _root not in sys.path:
@@ -101,25 +112,39 @@ def _week_range(week_key):
         return mon, date.fromordinal(mon.toordinal() + 6)
 
 
-def _check_desc(ev, errors, warnings, is_eotw=False):
+def _check_desc(ev, errors, warnings, is_eotw=False, posted=True):
+    # "posted" = this event appears on a carousel slide (featured) or is an EOTW,
+    # i.e. it actually goes out in the FB/IG post. Website-only filler events
+    # (scraped civic/community items that only populate the full site list, never
+    # a slide) are gated leniently: their copy gaps are WARNINGS, not hard blocks,
+    # so a thin farmers-market listing can't stop the whole week's post. Anonymity
+    # and harness-leak leaks are STILL hard-gated for every event in the dedicated
+    # loops below — those protect the published site too, not just the slides.
+    sink = errors if posted else warnings
     name = ev.get("name", "?")
     short = (ev.get("description") or "").strip()
     longd = (ev.get("website_description") or "").strip()
     tag = "EOTW" if is_eotw else "event"
+    # SHORT description is rendered onto the carousel slide -> it IS posted to
+    # FB/IG, so hard-gate it for slide/EOTW events.
     if not short:
-        errors.append(f"[desc] {tag} '{name}' has NO short description")
+        sink.append(f"[desc] {tag} '{name}' has NO short description")
+    # LONG (website_description) only ever appears on the website, never in the
+    # FB/IG post. Gate only what's posted: hard-block a missing long desc only
+    # for the EOTW hero (held to a high bar); everyone else is a warning.
     if not longd:
-        errors.append(f"[desc] {tag} '{name}' has NO website (long) description")
+        (errors if is_eotw else warnings).append(
+            f"[desc] {tag} '{name}' has NO website (long) description")
     for field, txt in (("short", short), ("long", longd)):
         low = txt.lower()
         if "—" in txt or " - - " in txt:
-            errors.append(f"[voice] {tag} '{name}' {field} contains an em dash")
+            sink.append(f"[voice] {tag} '{name}' {field} contains an em dash")
         for p in BANNED_PHRASES:
             if p in low:
-                errors.append(f"[voice] {tag} '{name}' {field} uses banned phrase '{p}'")
+                sink.append(f"[voice] {tag} '{name}' {field} uses banned phrase '{p}'")
         for rx in ARTIFACT_PATTERNS:
             if rx.search(txt):
-                errors.append(f"[voice] {tag} '{name}' {field} looks like raw scraper text / junk")
+                sink.append(f"[voice] {tag} '{name}' {field} looks like raw scraper text / junk")
                 break
     if len(short) > 240:
         warnings.append(f"[voice] {tag} '{name}' short desc is {len(short)} chars (long for a slide)")
@@ -167,6 +192,15 @@ def run(week_key=None):
             featured_all.append(e)
             if e.get("never_feature"):
                 errors.append(f"[events] {day} features a never-feature/service event: '{e.get('name')}'")
+            # Quality guards (insurance behind tools/clean_event_data.py): a
+            # featured event is on a slide, so flag artifacts that should have
+            # been cleaned. Warnings, not blocks, so they never death-spiral.
+            _nm = e.get("name", "")
+            if "—" in _nm or "–" in _nm:
+                warnings.append(f"[quality] featured '{_nm}' title still has an em dash — run clean_event_data.py")
+            _u = (e.get("url") or "")
+            if re.search(r"google\.[a-z.]+/search|bing\.com/search|/search\?", _u, re.I):
+                warnings.append(f"[quality] featured '{_nm}' has a placeholder search URL — run clean_event_data.py")
             d = e.get("date", "")
             try:
                 dd = datetime.strptime(d, "%Y-%m-%d").date()
@@ -182,13 +216,17 @@ def run(week_key=None):
             warnings.append(f"[events] only {pct:.0%} of featured events are clearly LGBTQ (target >=60%)")
 
     # ── DESCRIPTIONS / VOICE ────────────────────────────────────────────
+    # "gate only what's posted": featured (slide) events + EOTW are hard-gated;
+    # website-only filler events are gated as warnings (see _check_desc).
     eotw_names = {(e.get("name"), e.get("date")) for e in eotw}
+    featured_names = {(e.get("name"), e.get("date")) for e in featured_all}
     for e in eotw:
-        _check_desc(e, errors, warnings, is_eotw=True)
+        _check_desc(e, errors, warnings, is_eotw=True, posted=True)
     for e in all_shown:
         if (e.get("name"), e.get("date")) in eotw_names:
             continue
-        _check_desc(e, errors, warnings, is_eotw=False)
+        on_slide = (e.get("name"), e.get("date")) in featured_names
+        _check_desc(e, errors, warnings, is_eotw=False, posted=on_slide)
 
     # ── HARNESS / INTERNAL MARKER LEAK (never let agent/system text post) ──
     HARNESS_MARKERS = [
@@ -205,13 +243,35 @@ def run(week_key=None):
     for e in eotw + all_shown:
         _scan_harness(e.get("description", ""), f"'{e.get('name')}' short")
         _scan_harness(e.get("website_description", ""), f"'{e.get('name')}' long")
+    # Captions: the Monday post is a claude-tier task that is itself told to emit
+    # SUPERVISOR_TASK_COMPLETE, so that marker periodically leaks onto the END of
+    # the generated caption. Hard-blocking the whole week's post on it is brittle
+    # (post_weekly.py also strips markers at post time). So here we SELF-HEAL: cut
+    # the trailing marker block, write the cleaned caption back, and warn. Only if
+    # a marker survives the scrub (i.e. embedded mid-caption contamination, which
+    # is genuinely unsafe) do we hard-error.
     import glob as _g2
     for cap_path in _g2.glob(os.path.join(post_dir, "*_post.json")):
         try:
-            _scan_harness(json.load(open(cap_path, encoding="utf-8")).get("caption", ""),
-                          f"caption ({os.path.basename(cap_path)})")
+            cdata = json.load(open(cap_path, encoding="utf-8"))
         except Exception:
-            pass
+            continue
+        cap = cdata.get("caption")
+        if not isinstance(cap, str) or not cap:
+            continue
+        cleaned = re.split(
+            r"\s*(?:SUPERVISOR_TASK_COMPLETE|SUPERVISOR:|TASK_COMPLETE)\b.*$",
+            cap, flags=re.S)[0].rstrip()
+        if cleaned != cap:
+            cdata["caption"] = cleaned
+            try:
+                json.dump(cdata, open(cap_path, "w", encoding="utf-8"),
+                          ensure_ascii=False, indent=2)
+                warnings.append(f"[harness-leak] caption ({os.path.basename(cap_path)}) "
+                                f"had a trailing internal marker — auto-scrubbed before post")
+            except Exception:
+                pass
+        _scan_harness(cleaned, f"caption ({os.path.basename(cap_path)})")
 
     # ── ANONYMITY (account must never reveal who runs it) ───────────────
     for e in eotw + all_shown:
