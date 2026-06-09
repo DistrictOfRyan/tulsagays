@@ -164,18 +164,34 @@ def _post_to_group(page, group, caption):
             res["status"] = "skipped"; res["error"] = "not acting as Page (anonymity guard)"
             return res
 
-        # Type caption.
+        # Type caption. FB's group composer textbox varies; try several selectors
+        # and give the dialog a moment to mount it (the 4 "textbox not found"
+        # failures on 2026-06-08 were the dialog not yet rendering the box).
         typed = False
-        for sel in ('div[role="dialog"] [contenteditable="true"]',
-                    '[role="textbox"][contenteditable="true"]'):
-            try:
-                box = page.locator(sel).first
-                box.click(timeout=4000)
-                box.type(caption, delay=8)
-                typed = True
+        page.wait_for_timeout(1200)
+        textbox_sels = (
+            'div[role="dialog"] div[contenteditable="true"][role="textbox"]',
+            'div[role="dialog"] [contenteditable="true"]',
+            'div[role="textbox"][contenteditable="true"]',
+            'div[aria-label^="Write something"][contenteditable="true"]',
+            'div[aria-label*="Create a public post"][contenteditable="true"]',
+            'div[aria-label*="on your mind"][contenteditable="true"]',
+            '[contenteditable="true"]',
+        )
+        for attempt in range(2):
+            for sel in textbox_sels:
+                try:
+                    box = page.locator(sel).first
+                    box.wait_for(state="visible", timeout=3000)
+                    box.click(timeout=3000)
+                    box.type(caption, delay=6)
+                    typed = True
+                    break
+                except Exception:
+                    continue
+            if typed:
                 break
-            except Exception:
-                continue
+            page.wait_for_timeout(1500)  # let the dialog finish mounting, retry once
         if not typed:
             res["status"] = "error"; res["error"] = "textbox not found"; return res
 
