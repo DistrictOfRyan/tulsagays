@@ -707,6 +707,71 @@ if eotw:
         flags=re.DOTALL,
     )
 
+# 3. Event structured data (schema.org/Event ItemList) on the INDEXABLE homepage
+#    — makes the week's events eligible for Google event rich-results and AI
+#    citation (the per-event /e/ pages are noindex, so this is where SEO value
+#    lives). nextlevel Rung 3: Discovery Layer.
+def _iso_start(date_str, time_str):
+    if not date_str:
+        return None
+    m = re.search(r'(\d{1,2})(?::(\d{2}))?\s*([ap]\.?m\.?)', (time_str or ''), re.I)
+    if m:
+        h = int(m.group(1)) % 12
+        if m.group(3).lower().startswith('p'):
+            h += 12
+        return f"{date_str}T{h:02d}:{int(m.group(2) or 0):02d}:00-05:00"
+    return date_str  # date-only startDate is valid
+
+_events_ld = []
+for _ev in all_flat:
+    _d = _ev.get('date', '')
+    if not re.match(r'^\d{4}-\d{2}-\d{2}$', _d or ''):
+        continue
+    _venue = (_ev.get('venue') or '').split(',')[0].strip()
+    _slug = _slugify(f"{_ev.get('name','')}-{_d}-{_ev.get('time','')}") if '_slugify' in dir() else None
+    _obj = {
+        "@type": "Event",
+        "name": _ev.get('name', '')[:110],
+        "startDate": _iso_start(_d, _ev.get('time', '')),
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "location": {
+            "@type": "Place",
+            "name": _venue or "Tulsa, OK",
+            "address": {"@type": "PostalAddress", "addressLocality": "Tulsa",
+                        "addressRegion": "OK", "addressCountry": "US"},
+        },
+        "organizer": {"@type": "Organization", "name": "Tulsa Gays", "url": SITE},
+        "image": SITE + "/images/og-event.png",
+    }
+    _desc = (_ev.get('website_description') or _ev.get('description') or '').strip()
+    if _desc:
+        _obj["description"] = ' '.join(_desc.split())[:300]
+    _u = (_ev.get('url') or '').strip()
+    if _u.startswith('http'):
+        _obj["url"] = _u
+    _events_ld.append(_obj)
+
+if _events_ld:
+    _itemlist = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": f"LGBTQ+ Events in Tulsa — {_week_start} to {_week_end}",
+        "itemListElement": [
+            {"@type": "ListItem", "position": _i + 1, "item": _o}
+            for _i, _o in enumerate(_events_ld)
+        ],
+    }
+    _ld_block = ('<!-- EVENTS-JSONLD-START -->\n<script type="application/ld+json">'
+                 + json.dumps(_itemlist, ensure_ascii=False)
+                 + '</script>\n<!-- EVENTS-JSONLD-END -->')
+    if '<!-- EVENTS-JSONLD-START -->' in _html2:
+        _html2 = re.sub(r'<!-- EVENTS-JSONLD-START -->.*?<!-- EVENTS-JSONLD-END -->',
+                        lambda _: _ld_block, _html2, flags=re.DOTALL)
+    else:
+        _html2 = _html2.replace('</head>', _ld_block + '\n</head>', 1)
+    print(f"Injected schema.org/Event ItemList ({len(_events_ld)} events) into index.html")
+
 with open(_idx_path, 'w', encoding='utf-8') as _f:
     _f.write(_html2)
 print(f"Updated date range: {_week_start} — {_week_end}")
