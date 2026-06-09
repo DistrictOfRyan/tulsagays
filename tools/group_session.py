@@ -21,6 +21,24 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 AUTH_PATH = ROOT / "data" / "fb_group_auth.json"
+PROFILE_DIR = ROOT / "data" / "fb_auto_profile"
+
+
+def _use_profile():
+    return PROFILE_DIR.exists() and any(PROFILE_DIR.iterdir())
+
+
+def _open_ctx(pw, headless=True):
+    """Open the durable persistent real-Chrome profile if set up, else a
+    storage_state context. Returns (browser_or_ctx, context, page-less)."""
+    if _use_profile():
+        ctx = pw.chromium.launch_persistent_context(
+            str(PROFILE_DIR), channel="chrome", headless=headless,
+            args=["--no-first-run", "--no-default-browser-check"])
+        return ctx, ctx
+    b = pw.chromium.launch(headless=headless)
+    ctx = b.new_context(storage_state=str(AUTH_PATH)) if AUTH_PATH.exists() else b.new_context()
+    return b, ctx
 
 
 def _check(page_ctx):
@@ -35,18 +53,16 @@ def _check(page_ctx):
 
 
 def is_logged_in(state_path=AUTH_PATH, timeout_s=45):
-    """Headless: True if the saved session is still a logged-in FB account."""
-    state_path = Path(state_path)
-    if not state_path.exists():
+    """Headless: True if the saved session/profile is still a logged-in FB account."""
+    if not _use_profile() and not Path(state_path).exists():
         return False
     try:
         from playwright.sync_api import sync_playwright
     except Exception:
         return False
     with sync_playwright() as pw:
-        b = pw.chromium.launch(headless=True)
+        b, ctx = _open_ctx(pw, headless=True)
         try:
-            ctx = b.new_context(storage_state=str(state_path))
             pg = ctx.new_page()
             pg.goto("https://www.facebook.com/", wait_until="domcontentloaded",
                     timeout=timeout_s * 1000)
@@ -67,32 +83,33 @@ def is_logged_in(state_path=AUTH_PATH, timeout_s=45):
 
 
 def refresh(state_path=AUTH_PATH, timeout_s=45):
-    """Headless: touch FB with the saved session and re-save rotated cookies.
-    Returns True if still logged in (and re-saved), False if dead."""
-    state_path = Path(state_path)
-    if not state_path.exists():
+    """Headless: touch FB to keep the session warm. With the persistent profile,
+    simply visiting FB extends the login (FB treats it like a returning browser).
+    With a storage_state, re-saves the rotated cookies. Returns True if logged in."""
+    if not _use_profile() and not Path(state_path).exists():
         return False
     try:
         from playwright.sync_api import sync_playwright
     except Exception:
         return False
     with sync_playwright() as pw:
-        b = pw.chromium.launch(headless=True)
+        b, ctx = _open_ctx(pw, headless=True)
         try:
-            ctx = b.new_context(storage_state=str(state_path))
             pg = ctx.new_page()
             pg.goto("https://www.facebook.com/", wait_until="domcontentloaded",
                     timeout=timeout_s * 1000)
             ok, _ = _check(ctx)
             if ok:
-                # Visit one more authenticated surface so FB extends the session,
-                # then persist the rotated cookies.
+                # Visit one more authenticated surface so FB extends the session.
                 try:
                     pg.goto("https://www.facebook.com/bookmarks/pages/",
                             wait_until="domcontentloaded", timeout=timeout_s * 1000)
                 except Exception:
                     pass
-                ctx.storage_state(path=str(state_path))
+                # Persistent profile auto-saves cookies on close; only a
+                # storage_state context needs an explicit re-save.
+                if not _use_profile() and Path(state_path).exists():
+                    ctx.storage_state(path=str(state_path))
             return ok
         except Exception:
             return False

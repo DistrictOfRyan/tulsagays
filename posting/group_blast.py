@@ -247,14 +247,29 @@ def run(dry_run=False, headed=False, week=None):
 
     _ensure_pw()
     from playwright.sync_api import sync_playwright
-    if not AUTH_PATH.exists():
-        raise SystemExit(f"No auth at {AUTH_PATH}. Run: python -m posting.group_blast --setup")
+    PROFILE_DIR = ROOT / "data" / "fb_auto_profile"
+    use_profile = PROFILE_DIR.exists() and any(PROFILE_DIR.iterdir())
+    if not use_profile and not AUTH_PATH.exists():
+        raise SystemExit("No FB session. Set up the persistent profile once via "
+                         "tools/fb_profile_login.py, or run --setup for a storage_state.")
 
     results = []
     with sync_playwright() as pw:
-        b = pw.chromium.launch(headless=not headed)
-        ctx = b.new_context(storage_state=str(AUTH_PATH))
-        page = ctx.new_page()
+        if use_profile:
+            # DURABLE PATH (2026-06-08): a dedicated, persistent REAL-Chrome profile
+            # logged into FB once. FB trusts real Chrome and the login persists for
+            # months; the daily keepalive keeps it warm. No expiring storage_state
+            # snapshot, no app-bound-encryption capture problem. This is what makes
+            # the weekly group blast run unattended without a manual re-login.
+            ctx = pw.chromium.launch_persistent_context(
+                str(PROFILE_DIR), channel="chrome", headless=not headed,
+                args=["--no-first-run", "--no-default-browser-check"])
+            b = ctx  # ctx.close() tears the whole persistent context down
+            page = ctx.pages[0] if ctx.pages else ctx.new_page()
+        else:
+            b = pw.chromium.launch(headless=not headed)
+            ctx = b.new_context(storage_state=str(AUTH_PATH))
+            page = ctx.new_page()
 
         # AUTH PRE-CHECK: detect an expired session up front and fail LOUDLY,
         # instead of silently erroring "composer not found" on all 17 groups

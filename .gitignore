@@ -1,6 +1,10 @@
 __pycache__/
 *.pyc
 .env
-data/
+data/*
 !data/manual_events.json
+!data/major_tulsa_events.json
 logo/tulsa_skyline_source.jpg
+data/fb_auto_profile/
+data/fb_group_auth.json
+data/GROUP_AUTH_DEAD.flag
