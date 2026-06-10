@@ -1,0 +1,796 @@
+{
+  "week": "2026-W22",
+  "generated_at": "2026-05-25T20:39:52.635368",
+  "total_events": 61,
+  "events": [
+    {
+      "name": "Homo Hotel Happy Hour",
+      "date": "2026-06-05",
+      "time": "6:00 PM - 8:00 PM",
+      "venue": "Homo Hotel",
+      "description": "Tulsa's queerest happy hour is a First Friday tradition. The Homo Hotel opens its doors for an evening of community, conversation, and cocktails. Whether you're new to Tulsa or a longtime local, this is THE place to kick off your weekend with your LGBTQ+ family. All are welcome - bring a friend, make a friend, be yourself. No cover, just vibes.\n\nThis Friday, June 05 - don't miss it!",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "homo_hotel",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "66 Days of Fun Festival at Mother Road Market",
+      "date": "2026-05-25",
+      "time": "11:00 AM",
+      "venue": "Mother Road Market",
+      "description": "Tulsa's summer-long outdoor festival rolls on at Mother Road Market with vendors, food, live entertainment, and good vibes all week. Free to browse, $5 entry for special programming. The Route 66 spirit is alive and very much thriving.",
+      "url": "https://motherroadmarket.com",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Musical Bikes Monday at Mother Road Market",
+      "date": "2026-05-25",
+      "time": "6:00 PM",
+      "venue": "Mother Road Market",
+      "description": "Bike culture meets good vibes at Mother Road Market for Musical Bikes Monday — part of the ongoing 66 Days of Fun festival. Cruise over on two wheels or just show up to appreciate the ones that do.",
+      "url": "https://motherroadmarket.com",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Maple Ridge Memorial Day Run (1M & 5K)",
+      "date": "2026-05-25",
+      "time": "8:00 AM",
+      "venue": "Maple Ridge Neighborhood",
+      "description": "Lace up and honor the holiday the right way — with a 1-mile or 5K run through the beautiful Maple Ridge neighborhood. All paces welcome. A great way to start Memorial Day before the cookouts commence.",
+      "url": "",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Monday Night Jazz at Vintage Wine Bar",
+      "date": "2026-05-25",
+      "time": "8:00 PM",
+      "venue": "Vintage Wine Bar",
+      "description": "Wrap up your Memorial Day evening with live jazz and a glass of something lovely at Vintage Wine Bar. This recurring Monday night series keeps the good times rolling from 8 to 11pm. No cover, just vibes.",
+      "url": "",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Lambda Bowling League",
+      "date": "2026-05-25",
+      "time": "7:00 PM",
+      "venue": "AMF Sheridan Lanes, 3121 S Sheridan Rd",
+      "description": "",
+      "url": "https://www.facebook.com/groups/4177858394",
+      "source_urls": [
+        "https://www.facebook.com/groups/4177858394"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "66 Days of Fun Festival at Mother Road Market",
+      "date": "2026-05-26",
+      "time": "11:00 AM",
+      "venue": "Mother Road Market",
+      "description": "The 66 Days of Fun festival continues at Mother Road Market with food vendors, local makers, and all the outdoor energy that makes this Tulsa's favorite weekly hangout. Come hungry, leave happy.",
+      "url": "https://motherroadmarket.com",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Crime Time with Magic City Books",
+      "date": "2026-05-26",
+      "time": "6:00 PM",
+      "venue": "Magic City Books",
+      "description": "Magic City Books hosts Crime Time — a reading and discussion event for fans of mysteries, thrillers, and all things deliciously dark. Grab a book and pull up a chair at one of Tulsa's most beloved indie bookstores.",
+      "url": "https://magiccitybooks.com",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "OSU Tulsa Queer Support Group",
+      "date": "2026-05-26",
+      "time": "6:00 PM",
+      "venue": "OSU Tulsa Campus, 700 N Greenwood Ave",
+      "description": "",
+      "url": "https://events.tulsa.okstate.edu",
+      "source_urls": [
+        "https://events.tulsa.okstate.edu"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "OKEQ Health Clinic",
+      "date": "2026-05-26",
+      "time": "9:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 26, 2026 | 9:00 am - 4:00 pm Open 9:00 a.m. - 4:00 p.m. by appointment only. Please call 918-938-6537 to set up an appointment.",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "OKEQ Senior's",
+      "date": "2026-05-26",
+      "time": "10:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 26, 2026 | 10:00 am - 12:00 pm Dennis R. Neill Equality Center, 621 E 4th St, Tulsa, OK 74120, USA OKEQ Seniors is a daytime program for LGBTQ+ elders. The program supports LGBT elders and meets every Tuesday morning at 10:00 am at the Dennis R. Neill Equality Center. Together with its members and allies, OKEQ Seniors works towards ensuring a high quality of life for older LGBT adults, advocat",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "HOPE Testing (Health Outreach, Prevention & Education)",
+      "date": "2026-05-26",
+      "time": "4:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 26, 2026 | 4:00 pm - 6:00 pm Dennis R. Neill Equality Center, 621 E 4th St, Tulsa, OK 74120, USA 2nd & 4th Tuesday, Free HIV Testing with HOPE Testing at The Dennis R. Neill Equality Center 🏳️‍⚧️🪶❤️🧡💛💚💙💜🤍🩷🩵🤎🖤🪶🏳️‍🌈 H.O.P.E. (Health Outreach, Prevention and Education) Testing Clinic provides free HIV testing at the Equality Center 2nd & 4th Tuesdays from 4:00 - 6:00 pm in the OKEQ Health Clinic.",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "66 Days of Fun: $5 Wednesday at Mother Road Market",
+      "date": "2026-05-27",
+      "time": "11:00 AM",
+      "venue": "Mother Road Market",
+      "description": "It's $5 Wednesday at the 66 Days of Fun festival! Five bucks gets you into Mother Road Market's midweek celebration featuring food trucks, vendors, and live entertainment. Best five dollars you'll spend all week.",
+      "url": "https://motherroadmarket.com",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Food Truck Wednesdays at Guthrie Green",
+      "date": "2026-05-27",
+      "time": "11:00 AM",
+      "venue": "Guthrie Green",
+      "description": "Guthrie Green's beloved Food Truck Wednesdays returns with a rotating lineup of local food trucks serving up everything from tacos to BBQ to bubble tea. Noon to 2pm, bring cash or card and an appetite.",
+      "url": "https://guthriegreen.com",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "The Mother Road Dinner: 6 Courses, 6 Cities at NEFF Brewing",
+      "date": "2026-05-27",
+      "time": "6:30 PM",
+      "venue": "NEFF Brewing",
+      "description": "A culinary journey through Route 66 in six courses and six cities — all happening right at NEFF Brewing. This immersive dining event pairs local craft beer with flavors from across the historic highway. Ticketed event.",
+      "url": "",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Gender Outreach Support Group",
+      "date": "2026-05-27",
+      "time": "7:00 PM - 9:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "",
+      "url": "https://okeq.org",
+      "source_urls": [
+        "https://okeq.org",
+        "https://okeq.org/transgender-support/"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "OKEQ Health Clinic",
+      "date": "2026-05-27",
+      "time": "9:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 27, 2026 | 9:00 am - 4:00 pm Appointments need to be made 24 hours prior to your requested appointment time. We currently accept Blue Cross and Blue Shield and offer a self-pay option. At the moment, we are only able to see patients who are 18 and older. If you want to start or transfer services, please call 918-938-6537 to set up an appointment or use the link below.﻿ ﻿ SCHEDULE APPOINTMENT",
+      "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor",
+      "source_urls": [
+        "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "66 Days of Fun at Mother Road Market",
+      "date": "2026-05-28",
+      "time": "11:00 AM",
+      "venue": "Mother Road Market",
+      "description": "Thursday edition of the 66 Days of Fun festival at Mother Road Market. Local vendors, food, drinks, and outdoor hangout energy. Drop in anytime and make it your afternoon.",
+      "url": "https://motherroadmarket.com",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Zoolightful: Dazzling Animal Lanterns at Tulsa Zoo",
+      "date": "2026-05-28",
+      "time": "6:00 PM",
+      "venue": "Tulsa Zoo",
+      "description": "Tulsa Zoo transforms after dark with hundreds of illuminated animal lanterns in this spectacular evening experience. Walk through Zoolightful's glowing wildlife displays from 6 to 9:30pm. Tickets required.",
+      "url": "https://tulsazoo.org",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Bingo at Saturn Room",
+      "date": "2026-05-28",
+      "time": "6:30 PM",
+      "venue": "Saturn Room",
+      "description": "Bingo night at Saturn Room — Tulsa's eclectic cocktail bar and music venue. Grab your dauber, order a drink, and let the good-natured chaos begin. Free to play, big on fun.",
+      "url": "",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "DRAGNIFICENT! Drag Show",
+      "date": "2026-05-28",
+      "time": "Doors 9 PM, Show 10 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "",
+      "url": "https://downtowntulsa.com/do/dragnificent-at-club-majestic-1",
+      "source_urls": [
+        "https://downtowntulsa.com/do/dragnificent-at-club-majestic-1"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "OKEQ Health Clinic",
+      "date": "2026-05-28",
+      "time": "9:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 28, 2026 | 9:00 am - 12:00 pm Appointments need to be made 24 hours prior to your requested appointment time. We currently accept Blue Cross and Blue Shield and offer a self-pay option. At the moment, we are only able to see patients who are 18 and older. If you want to start or transfer services, please call 918-938-6537 to set up an appointment or use the link below.﻿ ﻿ SCHEDULE APPOINTMENT",
+      "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor",
+      "source_urls": [
+        "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "EBA: Open for Business",
+      "date": "2026-05-28",
+      "time": "5:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 28, 2026 | 5:00 pm - 7:00 pm",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Queer Crafters Club",
+      "date": "2026-05-28",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 28, 2026 | 6:00 pm - 8:00 pm Dennis R. Neill Equality Center, 621 E 4th St, Tulsa, OK 74120, USA Bring your own craft night! Come craft with the queer community. Our focus is to build on togetherness while we craft in our own mediums! You can find us in the Gallery on Thursdays at the Equality Center.",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Girl Scout Troop 7484",
+      "date": "2026-05-28",
+      "time": "6:30 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 28, 2026 | 6:30 pm - 7:30 pm Wellness Room Come be part of something special with ! We welcome all girls, trans, and nonbinary youth to join our vibrant community. Every Thursday at 6:30 PM, we meet to build friendships, develop new skills, and have fun together. Whether you're looking for adventure, learning, or a supportive community, we’ve got a place for you! Want to learn more or get invo",
+      "url": "https://okeq.orgmailto:t.marler@cox.net",
+      "source_urls": [
+        "https://okeq.orgmailto:t.marler@cox.net"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Free Drop-In Therapy Sessions",
+      "date": "2026-05-29",
+      "time": "9:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 29, 2026 | 9:00 am - 5:00 pm Low barrier, NO COST drop in therapy sessions available only for those aged 18+ at The Dennis R. Neill Equality Center. Call or text 918-205-4018 to schedule or just drop in during open hours. About Tifany Oslin, LMSW Tifany Oslin (she/her) is a Licensed Master Social Worker providing affirming mental-health support for individuals navigating identity, trauma, and",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "OKEQ Health Clinic",
+      "date": "2026-05-29",
+      "time": "1:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 29, 2026 | 1:00 pm - 4:00 pm Appointments need to be made 24 hours prior to your requested appointment time. We currently accept Blue Cross and Blue Shield and offer a self-pay option. At the moment, we are only able to see patients who are 18 and older. If you want to start or transfer services, please call 918-938-6537 to set up an appointment or use the link below.﻿ ﻿ SCHEDULE APPOINTMENT",
+      "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor",
+      "source_urls": [
+        "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "AFFIRMING",
+      "date": "2026-05-29",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 29, 2026 | 6:00 pm - 7:00 pm Wellness Room We are thrilled to share the news that AFFIRM, a Cognitive Behavioral Therapy-based program, is now available through Oklahomans for Equality. This program is specifically designed to support LGBTQ+ youth in managing stress and promoting overall well-being The AFFIRM practice models were developed in collaboration with LGBTQ+ youth and adult community",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "MOREcolor Reception",
+      "date": "2026-05-29",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 29, 2026 | 6:00 pm - 8:00 pm MOREcolor 2026 is back at Allie Jensen Memorial Art Gallery, featuring 20 regional artists working across sculpture, painting, photography, textiles, and mixed media. Featuring work by: Carrie Silverhorn (digital mixed media), Maria A. Trester (acrylic), Lexie Tafoya (beaded medallions), Liz Cousins (photography), Taylor Painter-Wolfe (handmade felted wool), Sharon",
+      "url": "https://okeq.org/art-gallery/",
+      "source_urls": [
+        "https://okeq.org/art-gallery/"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Positively Grateful",
+      "date": "2026-05-29",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 29, 2026 | 6:00 pm - 8:00 pm Event Center Are you HIV+?, Looking for support, friends, or someone to talk to? Join  an HIV+ Support Group that meets every Friday. Join  for potluck meals, receive wellness tips, find support, raise awareness, and more! All are welcome!",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "TTRPG Social",
+      "date": "2026-05-30",
+      "time": "1:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 30, 2026 | 1:00 pm - 4:00 pm The OKEQ  Mixer is all about connection, creativity, and having a good time together. Bring your love for tabletop games (or your curiosity!) and meet folks to start a campaign or jump into a one-shot. 🎲 All experience levels welcome. Snacks provided. Good conversations guaranteed. OKEQ TTRPG",
+      "url": "https://www.facebook.com/groups/288619645194465/",
+      "source_urls": [
+        "https://www.facebook.com/groups/288619645194465/"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Sunday Showdown Open Talent Night",
+      "date": "2026-05-31",
+      "time": "Doors 9 PM, Show 11 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "",
+      "url": "https://qlist.app/events/Tulsa/The-Sunday-Showdown-Open-Talent-Night-at-Club-Majestic/16808",
+      "source_urls": [
+        "https://qlist.app/events/Tulsa/The-Sunday-Showdown-Open-Talent-Night-at-Club-Majestic/16808"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Broadway Clubhouse",
+      "date": "2026-05-31",
+      "time": "6:30 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "May 31, 2026 | 6:30 pm - 9:30 pm Tulsa's Monthly Sing Along event in the Lynn Riggs Theater with Bill Nelson and Jason Sirios. Join us the last Sunday of every month for fun, music, and libations.",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Data Jam: Decoding the Labor Market (JOLTS Edition)",
+      "date": "2026-05-26",
+      "time": "11:00 PM",
+      "venue": "3N - 7N Event Space",
+      "description": "**Ready to dive into the pulse of the American workforce?** Join us for a hands-on Data Jam where we trade headlines for hard data. Whether you're a seasoned data scientist, a policy wonk, or just curious about why everyone is talking about \"The Great Reshuffle,\" this event is for you.\n\n**The Mission**\n\nThe **Job Openings and Labor Turnover Survey (JOLTS)** is one of the most influential economic indicators in the US. In this session, we’ll move beyond the surface-level reports to uncover the st",
+      "url": "https://www.meetup.com/tulsa-web-devs/events/314796407/",
+      "source_urls": [
+        "https://www.meetup.com/tulsa-web-devs/events/314796407/"
+      ],
+      "priority": 2,
+      "source": "extended_calendars",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Open Meditation – Tues.",
+      "date": "2026-05-26",
+      "time": "6:30 PM",
+      "venue": "Shambhala Meditation Center of Tulsa",
+      "description": "",
+      "url": "https://tulsa.shambhala.org/event/807440-open-meditation-tues",
+      "source_urls": [
+        "https://tulsa.shambhala.org/event/807440-open-meditation-tues"
+      ],
+      "priority": 2,
+      "source": "shambhala_tulsa",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Midweek Meditation (Zoom only)",
+      "date": "2026-05-27",
+      "time": "12:00 PM",
+      "venue": "Shambhala Meditation Center of Tulsa",
+      "description": "",
+      "url": "https://tulsa.shambhala.org/event/818782-midweek-meditation-zoom-only",
+      "source_urls": [
+        "https://tulsa.shambhala.org/event/818782-midweek-meditation-zoom-only"
+      ],
+      "priority": 2,
+      "source": "shambhala_tulsa",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Shut Up & Write!® at Handmade Broken Arrow",
+      "date": "2026-05-28",
+      "time": "11:00 PM",
+      "venue": "Foolish Things Coffee",
+      "description": "**[Click here to learn more about Shut Up & Write!®](https://www.shutupwrite.com/event/id2vk31DYO00)**\n\nSUAW hosts free in-person and online writing events for writers all over the world. Our goal is to ensure that every writer, regardless of genre or skill level, has access to the community, accountability, and resources they need to achieve their personal writing goals. Our events use our proven formula: a few minutes of introductions, an hour of focused writing, and a final check-in to share",
+      "url": "https://www.meetup.com/shutupandwritetulsa/events/314903278/",
+      "source_urls": [
+        "https://www.meetup.com/shutupandwritetulsa/events/314903278/"
+      ],
+      "priority": 2,
+      "source": "extended_calendars",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Equality Business Alliance Networking Mixer",
+      "date": "2026-05-28",
+      "time": "6:00 PM - 7:30 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "Monthly LGBTQ+ business networking mixer. Make connections, build community, grow your business.",
+      "url": "https://okeq.org/eba/",
+      "source_urls": [
+        "https://okeq.org/eba/"
+      ],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Flights and Bites",
+      "date": "2026-05-29",
+      "time": "11:00 PM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.meetup.com/tulsa-shenanigans-society/events/314531124/",
+      "source_urls": [
+        "https://www.meetup.com/tulsa-shenanigans-society/events/314531124/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Ian Lara",
+      "date": "2026-05-29",
+      "time": "7:00 PM",
+      "venue": "Loony Bin Comedy Club - Tulsa",
+      "description": "Tulsa Events lists ticket options for Ian Lara at Loony Bin Comedy Club - Tulsa in Tulsa, OK. Ticket options may be available from verified providers.",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "extended_calendars",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Shut Up & Write!® at Foolish Things",
+      "date": "2026-05-30",
+      "time": "3:30 PM",
+      "venue": "Foolish Things Coffee",
+      "description": "**[Click here to learn more about Shut Up & Write!®](https://www.shutupwrite.com)**\n\nSUAW hosts free in-person and online writing events for writers all over the world. Our goal is to ensure that every writer, regardless of genre or skill level, has access to the community, accountability, and resou",
+      "url": "https://www.meetup.com/shutupandwritetulsa/events/313916350/",
+      "source_urls": [
+        "https://www.meetup.com/shutupandwritetulsa/events/313916350/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Ian Lara",
+      "date": "2026-05-30",
+      "time": "6:00 PM",
+      "venue": "Loony Bin Comedy Club - Tulsa",
+      "description": "Tulsa Events lists ticket options for Ian Lara at Loony Bin Comedy Club - Tulsa in Tulsa, OK. Ticket options may be available from verified providers.",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "extended_calendars",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "All Souls Unitarian Sunday Services",
+      "date": "2026-05-31",
+      "time": "10:00 AM and 11:15 AM",
+      "venue": "All Souls Unitarian Church, 2952 S Peoria Ave",
+      "description": "",
+      "url": "https://allsoulschurch.org",
+      "source_urls": [
+        "https://allsoulschurch.org"
+      ],
+      "priority": 2,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "🌿SOLD OUT Leaf It to Luck: Bingo Day",
+      "date": "2026-05-31",
+      "time": "6:00 PM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.meetup.com/tulsa-shenanigans-society/events/314400927/",
+      "source_urls": [
+        "https://www.meetup.com/tulsa-shenanigans-society/events/314400927/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Pride Drag Lunch",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/pride-drag-lunch-tickets-1988739261667",
+      "source_urls": [
+        "https://www.eventbrite.com/e/pride-drag-lunch-tickets-1988739261667"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Drag Sing-Along Presented by Elote",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/drag-sing-along-presented-by-elote-tickets-1988242480782",
+      "source_urls": [
+        "https://www.eventbrite.com/e/drag-sing-along-presented-by-elote-tickets-1988242480782",
+        "https://www.eventbrite.com/e/drag-brunch-presented-by-elote-tickets-1976646183946"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Miss Gay Oklahoma America",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/miss-gay-oklahoma-america-tickets-1990147876873",
+      "source_urls": [
+        "https://www.eventbrite.com/e/miss-gay-oklahoma-america-tickets-1990147876873"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Flywheel Presents: Big Ride 2026",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/flywheel-presents-big-ride-2026-tickets-1983053067106",
+      "source_urls": [
+        "https://www.eventbrite.com/e/flywheel-presents-big-ride-2026-tickets-1983053067106"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Greenwood Rising Resilience Leadership Luncheon with Russel L. Honoré",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/greenwood-rising-resilience-leadership-luncheon-with-russel-l-honore-tickets-1986337361519",
+      "source_urls": [
+        "https://www.eventbrite.com/e/greenwood-rising-resilience-leadership-luncheon-with-russel-l-honore-tickets-1986337361519"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Podcast Launch Workshop for Faith Based Entrepreneurs and Ministry Leaders",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/podcast-launch-workshop-for-faith-based-entrepreneurs-and-ministry-leaders-tickets-1989703936034",
+      "source_urls": [
+        "https://www.eventbrite.com/e/podcast-launch-workshop-for-faith-based-entrepreneurs-and-ministry-leaders-tickets-1989703936034"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "INNER CIRCLE DRAG SHOW",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/inner-circle-drag-show-tickets-1979909993087",
+      "source_urls": [
+        "https://www.eventbrite.com/e/inner-circle-drag-show-tickets-1979909993087"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Swiftball A drag through the Eras",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/swiftball-a-drag-through-the-eras-tickets-1976426292244",
+      "source_urls": [
+        "https://www.eventbrite.com/e/swiftball-a-drag-through-the-eras-tickets-1976426292244"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Tulsa Pride Bar Crawl",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/tulsa-pride-bar-crawl-tickets-1730741346959",
+      "source_urls": [
+        "https://www.eventbrite.com/e/tulsa-pride-bar-crawl-tickets-1730741346959"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Black. Queer. proud.",
+      "date": "",
+      "time": "",
+      "venue": "Various locations in Tulsa",
+      "description": "",
+      "url": "https://www.blackqueertulsa.org/events",
+      "source_urls": [
+        "https://www.blackqueertulsa.org/events",
+        "https://www.blackqueertulsa.org/black-queer-proud-2024"
+      ],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "our parTners",
+      "date": "",
+      "time": "",
+      "venue": "Various locations in Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "stay connected!",
+      "date": "",
+      "time": "",
+      "venue": "Various locations in Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "WEEKLY EVENTS:",
+      "date": "",
+      "time": "",
+      "venue": "Elote Cafe & Catering",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "UPCOMING EVENTS",
+      "date": "",
+      "time": "",
+      "venue": "Elote Cafe & Catering",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "(map)",
+      "date": "",
+      "time": "",
+      "venue": "Elote Cafe & Catering",
+      "description": "",
+      "url": "http://maps.google.com?q=514 South Boston Avenue Tulsa, OK, 74103 United States",
+      "source_urls": [
+        "http://maps.google.com?q=514 South Boston Avenue Tulsa, OK, 74103 United States"
+      ],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Get Your Tickets!",
+      "date": "",
+      "time": "",
+      "venue": "Elote Cafe & Catering",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/drag-brunch-presented-by-elote-tickets-1976646183946?aff=oddtdtcreator",
+      "source_urls": [
+        "https://www.eventbrite.com/e/drag-brunch-presented-by-elote-tickets-1976646183946?aff=oddtdtcreator"
+      ],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Lambda Unity Group (LGBTQ+ AA Meeting)",
+      "date": "2026-05-27",
+      "time": "Check listing for time",
+      "venue": "Fellowship Congregational Church, Tulsa",
+      "description": "",
+      "url": "https://aaoklahoma.org/meetings/lambda-unity/",
+      "source_urls": [
+        "https://aaoklahoma.org/meetings/lambda-unity/"
+      ],
+      "priority": 3,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+==================================================
+GENERATING ALL CONTENT
+==================================================
+
+Enriching event descriptions...
+[generator] Enriching via claude CLI (subscription credits)
+[generator] Enriching 55 of 56 events via Claude API
+[generator] claude CLI fallback failed: Command '['C:\\Users\\willi\\.local\\bin\\claude.EXE', '-p', '--model', 'sonnet']' timed out after 120 seconds
+[generator] Batch enrichment failed: claude CLI returned empty output — applying rule-based to this batch
+[generator] claude CLI fallback failed: Command '['C:\\Users\\willi\\.local\\bin\\claude.EXE', '-p', '--model', 'sonnet']' timed out after 120 seconds
+[generator] Batch enrichment failed: claude CLI returned empty output — applying rule-based to this batch
+[generator] claude CLI fallback failed: Command '['C:\\Users\\willi\\.local\\bin\\claude.EXE', '-p', '--model', 'sonnet']' timed out after 120 seconds
+[generator] Batch enrichment failed: claude CLI returned empty output — applying rule-based to this batch
+Enriched 56 events with compelling descriptions
+Enriched descriptions saved to C:\Users\willi\tulsagays\data\events\2026-W23_all.json
+
+Generating caption...
+[generator] Filtered 56 -> 43 in-week -> 22 after skip rules. HHHH this week: True
+Caption generated (1390 chars)
+[slides] Filtered out 5 banned/recurring events via eotw_selector._is_skip()
+
+Events per day: {'Monday': 3, 'Tuesday': 4, 'Wednesday': 5, 'Thursday': 8, 'Friday': 7, 'Saturday': 7, 'Sunday': 4}
+  [eotw 1] Pride Kickoff: Homo Hotel Happy Hour x Twisted Arts @ Tulsa Artist Fellowship, 109 MLK Jr Blvd, Tulsa, OK (2026-06-05)
+
+Generating carousel images...
+Generated 9 carousel slides
+
+Post content saved to C:\Users\willi\tulsagays\data\posts\2026-W23\all_post.json
+Traceback (most recent call last):
+  File "C:\Users\willi\tulsagays\main.py", line 805, in <module>
+    commands[command]()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\willi\tulsagays\main.py", line 793, in <lambda>
+    "generate-all": lambda: cmd_generate("all"),
+                            ~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\willi\tulsagays\main.py", line 555, in cmd_generate
+    print(f"\n--- CAPTION PREVIEW ---\n{caption[:500]}...")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\willi\AppData\Local\Python\pythoncore-3.14-64\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f308' in position 72: character maps to <undefined>

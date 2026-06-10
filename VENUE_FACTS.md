@@ -105,6 +105,34 @@ as NEEDS VERIFICATION, either verify it or omit the address entirely.
 
 ---
 
+## Affirming Faith Communities
+
+Source of truth: Oklahomans for Equality Faith directory (okeq.org/faith). All addresses below
+verified against OkEq's published list June 2026. OkEq frames these as "welcoming and inclusive
+faith communities who respect and value the LGBTQ community." Communities marked * on OkEq's list
+can officiate same-sex weddings.
+
+| Venue | Address | Status | Notes |
+|---|---|---|---|
+| Fellowship Congregational Church, UCC | 2900 S Harvard Ave, Tulsa OK 74114 | OPEN | Open & Affirming statement adopted 1995. Pastor Christopher Moore. (918) 747-7777. ucctulsa.org. Officiates same-sex weddings. |
+| All Souls Unitarian Church | 2952 S Peoria Ave, Tulsa | OPEN | Largest UU congregation in the US. Founded 1921. "Love Beyond Belief." allsoulschurch.org. Officiates same-sex weddings. |
+| College Hill Presbyterian Church | 712 S Columbia Ave, Tulsa OK 74104 | OPEN | More Light Presbyterian (PCUSA). Across from University of Tulsa. (918) 592-5800. collegehilltulsa.org. Officiates same-sex weddings. |
+| St. Dunstan's Episcopal Church | 5635 E 71st St, Tulsa OK 74136 | OPEN | Marches in the Pride parade each June. Sunday Holy Communion 10am. (918) 492-7140. stduntulsa.org. |
+| Boston Avenue United Methodist Church | 1301 S Boston Ave, Tulsa | OPEN | Historic Art Deco landmark (1929). Listed by OkEq as a welcoming community. bostonavenue.org. |
+| Trinity Episcopal Church | 501 S Cincinnati Ave, Tulsa | OPEN | Downtown. Officiates same-sex weddings. trinitytulsa.org. |
+| Hope Unitarian Church | 8432 S Sheridan Ave, Tulsa | OPEN | South Tulsa UU congregation. hopeuu.org. Officiates same-sex weddings. |
+| Temple Israel | 2004 E 22nd Pl, Tulsa | OPEN | Reform Jewish congregation. templetulsa.com. Officiates same-sex weddings. |
+| Congregation B'nai Emunah | 1719 S Owasso Ave, Tulsa | OPEN | Conservative Jewish synagogue ("the Synagogue"). tulsagogue.com. Officiates same-sex weddings. |
+| Church of the Restoration, UU | 1314 N Greenwood Ave, Tulsa | OPEN | Unitarian Universalist congregation in the historic Greenwood District. |
+| Fellowship Lutheran Church ELCA | 6727 S Sheridan Rd, Tulsa | OPEN | Reconciling-in-Christ ELCA congregation. flctulsa.org. |
+| University United Methodist Church | 500 S College Ave, Tulsa | OPEN | uumctulsa.org. Listed by OkEq as welcoming. |
+
+Note: do not overclaim a specific national-program status (Reconciling, More Light, Open & Affirming)
+for a congregation unless it is named above. For any Tulsa congregation not on this list, point readers
+to the live OkEq Faith directory rather than asserting its stance.
+
+---
+
 ## Known Errors to Avoid
 
 - **Eagle + YBR same building or same street**: FALSE. They are in completely different neighborhoods. Eagle = 1338 E 3rd St (Arts District). YBR = 2630 E 15th St (Cherry Street). Do not pair them as neighbors or say they share a complex.

@@ -27,12 +27,14 @@ from scraper import (
     churches,
     bars,
     manual_input,
+    major_events,
     tulsa_arts_district,
     facebook_events,
     ticketing_sites,
     timetree_scraper,
     slack_browser_scraper,
     studio66,
+    instagram_orgs,
 )
 
 logger = logging.getLogger(__name__)
@@ -574,7 +576,8 @@ def run_all_scrapers() -> List[Dict]:
 
     # Ordered by importance/reliability
     scrapers = [
-        ("manual_input", manual_input.scrape),  # Always first — manually curated, priority=1
+        ("manual_input", manual_input.scrape),  # Always first — manually curated, priority honored (default 1)
+        ("major_events", major_events.scrape),  # Marquee Tulsa civic events (Tulsa Tough, Route 66 centennial, State Fair, Oktoberfest...) — website coverage, priority 3
         ("recurring", recurring.scrape),
         ("okeq_calendar", okeq_calendar.scrape),
         ("twisted_arts", twisted_arts.scrape),
@@ -588,6 +591,7 @@ def run_all_scrapers() -> List[Dict]:
         ("qlist", qlist.scrape),
         ("community_groups", community_groups.scrape),
         ("studio_66", studio66.scrape),  # @studio.66_ IG via authenticated instagrapi session
+        ("instagram_orgs", instagram_orgs.scrape),  # IG-only orgs: KLASSIC (@upflykai), Goff Center (@goff_fest)
         ("churches", churches.scrape),
         ("bars", bars.scrape),
         ("tulsa_arts_district", tulsa_arts_district.scrape),

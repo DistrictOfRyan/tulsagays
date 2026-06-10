@@ -1,0 +1,30 @@
+
+--- CAPTION PREVIEW ---
+your week just got so gay it needs its own area code 🏳️‍🌈
+
+and we're kicking it off with something we've genuinely been waiting for. **Homo Hotel Happy Hour x Twisted Arts** is happening — the first-ever collab between two of Tulsa's most beloved queer institutions. Friday June 5, 5-9 PM at Tulsa Artist Fellowship (109 MLK Jr Blvd). Avery Marshall plays live at 7, a nine-queen drag show hits at 8, and the whole thing is FREE. like, actually free. we are obsessed and you need to be there.
+
+here's...
+==================================================
+GENERATING ALL CONTENT
+==================================================
+
+Enriching event descriptions...
+[generator] Enriching via claude CLI (subscription credits)
+[generator] Enriching 0 of 57 events via Claude API
+Enriched 57 events with compelling descriptions
+Enriched descriptions saved to C:\Users\willi\tulsagays\data\events\2026-W23_all.json
+
+Generating caption...
+[generator] Filtered 57 -> 44 in-week -> 18 after skip rules. HHHH this week: True
+Caption generated (1686 chars)
+[slides] Filtered out 5 banned/recurring events via eotw_selector._is_skip()
+
+Events per day: {'Monday': 3, 'Tuesday': 4, 'Wednesday': 5, 'Thursday': 8, 'Friday': 7, 'Saturday': 8, 'Sunday': 4}
+  [eotw 1] Pride Kickoff: Homo Hotel Happy Hour x Twisted Arts @ Tulsa Artist Fellowship, 109 MLK Jr Blvd, Tulsa, OK (2026-06-05)
+  [eotw 2] Council Oak Men's Chorale: Jukebox - Songs You Know & Love @  (2026-06-06)
+
+Generating carousel images...
+Generated 9 carousel slides
+
+Post content saved to C:\Users\willi\tulsagays\data\posts\2026-W23\all_post.json

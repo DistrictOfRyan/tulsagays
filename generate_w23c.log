@@ -1,0 +1,29 @@
+
+--- CAPTION PREVIEW ---
+okay so who's actually free ALL of this week 👀
+
+because Jun 5 alone is reason enough. Homo Hotel Happy Hour just linked up with Twisted Arts for the FIRST. TIME. EVER. Two queer Tulsa institutions, one free party at Tulsa Artist Fellowship on MLK. Avery Marshall live at 7. A nine-queen drag show at 8. Free entry the whole night. 5-9 PM. obsessed with this one.
+
+And if you pull up at 6, First Fridays is already going at the same spot — open studios, Pride collab, drag on the rooftop. Make it a wh...
+==================================================
+GENERATING ALL CONTENT
+==================================================
+
+Enriching event descriptions...
+[generator] Enriching via claude CLI (subscription credits)
+[generator] Enriching 0 of 56 events via Claude API
+Enriched 56 events with compelling descriptions
+Enriched descriptions saved to C:\Users\willi\tulsagays\data\events\2026-W23_all.json
+
+Generating caption...
+[generator] Filtered 56 -> 43 in-week -> 16 after skip rules. HHHH this week: True
+Caption generated (1215 chars)
+[slides] Filtered out 5 banned/recurring events via eotw_selector._is_skip()
+
+Events per day: {'Monday': 3, 'Tuesday': 4, 'Wednesday': 5, 'Thursday': 8, 'Friday': 7, 'Saturday': 7, 'Sunday': 4}
+  [eotw 1] Pride Kickoff: Homo Hotel Happy Hour x Twisted Arts @ Tulsa Artist Fellowship, 109 MLK Jr Blvd, Tulsa, OK (2026-06-05)
+
+Generating carousel images...
+Generated 9 carousel slides
+
+Post content saved to C:\Users\willi\tulsagays\data\posts\2026-W23\all_post.json

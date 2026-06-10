@@ -1,3 +1,12 @@
+## [2026-06-09 14:18] Add Laura Bellis June 11 event + DM tip intake tool
+
+Added the Re-Elect Laura Bellis Pride-season event (Thu Jun 11 2026, 6-7:30pm, ActBlue RSVP) to manual_events.json in site voice - confirmed it made this week's W24 deck and posted (FB id 1086906044497675_122116428344853065). Then built tools/add_tip.py: a paste-in DM tip intake (William chose paste-in + review-first over Meta auto-read). Parses IG/FB DM text into a pending queue, reviewer writes voice copy, approve promotes into manual_events.json. Never auto-publishes; requires name+date+description, blocks em dashes, dedups. Selftest + live end-to-end verified. Documented in tulsagays-domain-expertise skill.
+
+**Main artifact:** tools/add_tip.py (commit 9c10630), data/manual_events.json
+**Open items:** none - Bellis confirmed posted; auto-read of DMs (Meta App Review path) deferred unless William wants it later
+
+---
+
 ## [2026-06-04] Tulsa Winds/YBR/QWC scrape + source-growth engine + 3 ceiling climbs
 
 Wired Tulsa Winds (event-based, moving venue), YBR, and QWC into the scraper (commit 6a75614). Built a weekly self-improving source-growth engine that mines recurring venues + web-discovers new queer groups and auto-promotes strong sources into the live scraper via data/dynamic_sources.json (never edits .py), Sunday 8am task (commits 8bc44ac, 9ce86a2). Then climbed three ladders with /ceiling: the source-growth engine (lifecycle/census/coverage/feed, true ceiling), the revenue ladder (sales infra: prospect list, pipeline tracker, reader-revenue kit; Rungs 5-6 blocked on LLC/capital, commit f92c24e), and - after William asked for an unblocked ladder - the Answer Engine: 6 schema-rich /guides/ pages + 21 /org/ entity-profile pages + GEO llms.txt + weekly refresh_seo + live IndexNow ping (HTTP 202), all autonomous, zero blockers (commit 4a59af1). Also caught + scrubbed a live anonymity leak (William's name in public llms.txt).

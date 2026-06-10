@@ -72,6 +72,8 @@ PAGE_URLS = [
     "https://www.facebook.com/queerwomenscollectivetulsa/events",
     "https://www.facebook.com/p/Urban-Lgbt-Tulsa-inc-100085937172262/events",
     "https://www.facebook.com/people/Tulsa-House-of-Drag/61557097803540/events",
+    "https://www.facebook.com/PINT.inc/events",              # Paws In Need Tulsa — rescue adoption/fundraiser events (FB-only; Wix site has no calendar)
+    "https://www.facebook.com/PawsInNeedAuction/events",     # Paws In Need Tulsa AUCTION page — PINT runs fundraiser auctions from a separate FB page (e.g. 6/17 auction)
 ]
 
 # ── Tulsa LGBTQ+ Facebook group event tabs ─────────────────────────────────────

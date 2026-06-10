@@ -183,6 +183,30 @@ SOURCES = {
         "type": "arts",
         "description": "LGBTQIA+ nonprofit hosting dance parties, drag race watch parties, fashion shows, and multi-day festivals. s66tulsa.com ECONNREFUSED on 2026-04-09 and 2026-04-16 â€” use Instagram @studio.66_ for event listings.",
     },
+    "klassic": {
+        "name": "KLASSIC. (@upflykai)",
+        "url": "https://www.instagram.com/upflykai/",
+        "priority": 1,
+        "type": "priority",
+        "description": "Black queer Tulsa events collective. Roving Pride/community events (e.g. Melanin Pride Yoga in the Park). Instagram-only (no website). Scraped via scraper/instagram_orgs.py (@upflykai).",
+    },
+    "goff_center": {
+        "name": "Goff Center / Goff Fest (@goff_fest)",
+        "url": "https://goff-fest.com/events/",
+        "instagram": "https://www.instagram.com/goff_fest/",
+        "priority": 2,
+        "type": "arts",
+        "description": "Celebrates the legacy of gay architect Bruce Goff. Annual June festival (tours, screenings, lectures, live performances) plus an Annual Pride Celebration and Bruce Goff's Birthday Bash. Scraped via goff-fest.com (extended_calendars, plain HTML) + Instagram @goff_fest (instagram_orgs.py).",
+    },
+    "paws_in_need": {
+        "name": "Paws In Need Tulsa (PINT)",
+        "url": "https://www.facebook.com/PINT.inc/events",
+        "website": "https://www.pawsinneedtulsa.com/",
+        "auction_url": "https://www.facebook.com/PawsInNeedAuction/events",
+        "priority": 2,
+        "type": "community",
+        "description": "Volunteer-run Tulsa animal rescue (since 2019). Adoption events, fundraisers, and 'yappy hour' style community meetups. Wix website has no event calendar, so events are scraped from TWO Facebook page event tabs (facebook_events.py PAGE_URLS): @PINT.inc and the dedicated @PawsInNeedAuction page where PINT runs its fundraiser auctions. Org name trusted in COMMUNITY_PARTNER_KEYWORDS so events pass the relevance filter.",
+    },
     "lambda_bowling": {
         "name": "Lambda Bowling League",
         "url": "https://okeq.org/okeq-events/lambda-bowling-league/",
@@ -1232,6 +1256,8 @@ LGBTQ_SOURCES = {
     "okeq", "okeq_calendar", "homo_hotel", "twisted_arts",
     "council_oak", "hotmess_sports", "all_souls_special",
     "studio_66",  # @studio.66_ — LGBTQIA+ nonprofit / roving events collective
+    "klassic",      # @upflykai — Black queer Tulsa events collective (Melanin Pride Yoga, etc.)
+    "goff_center",  # @goff_fest / goff-fest.com — Bruce Goff queer cultural legacy + Pride programming
 
     "pflag_tulsa", "black_queer_tulsa", "freedom_oklahoma",
     "utulsa_pride", "osu_tulsa",
@@ -1286,6 +1312,15 @@ COMMUNITY_PARTNER_KEYWORDS = [
     # (has played YBR, the lesbian bar), so trust the NAME wherever it surfaces
     # rather than a fixed venue/recurring entry. FB page also in PAGE_URLS.
     "tulsa winds",
+    # KLASSIC (@upflykai) — Black queer events collective. Roving venues, so trust
+    # the org/event names wherever they surface (IG, FB groups, aggregators).
+    "klassic", "upflykai", "melanin pride", "melanin pride yoga",
+    # Goff Center / Goff Fest (@goff_fest) — celebrates gay architect Bruce Goff;
+    # programming includes an Annual Pride Celebration. Bash is at Spotlight Theater.
+    "goff", "bruce goff", "goff fest", "goff center", "goff-fest", "spotlight theater",
+    # Paws In Need Tulsa (PINT, @PINT.inc) — rescue adoption/fundraiser events.
+    # Use the full org name (NOT bare "pint" — that matches beer pints / pint nights).
+    "paws in need", "paws in need tulsa", "pawsinneed", "pint.inc", "pint inc",
 ]
 
 # Merge in venue/org keywords discovered + promoted by the weekly source-growth

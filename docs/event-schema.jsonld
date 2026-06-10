@@ -1,0 +1,226 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "LGBTQ+ Events in Tulsa, Oklahoma This Week",
+  "description": "This week's LGBTQ+ events, drag shows, bar nights, and community gatherings in Tulsa, Oklahoma, updated weekly by Tulsa Gays.",
+  "url": "https://www.tulsagays.com/",
+  "numberOfItems": 8,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "Event",
+        "name": "PROJECTION PUBLIC ART SERIES: 'UNTITLED' TATYANA FAZLALIZADEH",
+        "startDate": "2026-06-01T10:00:00-05:00",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Place",
+          "name": "Flagship / Tulsa Artist Fellowship",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Tulsa",
+            "addressRegion": "OK",
+            "addressCountry": "US",
+            "streetAddress": "112 N Boston Ave"
+          }
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "Tulsa Gays",
+          "url": "https://www.tulsagays.com"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "Event",
+        "name": "Making Friends As An Adult is HARD",
+        "startDate": "2026-06-01T23:00:00-05:00",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Place",
+          "name": "Meetup Tulsa",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Tulsa",
+            "addressRegion": "OK",
+            "addressCountry": "US"
+          }
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "Tulsa Gays",
+          "url": "https://www.tulsagays.com"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "Event",
+        "name": "Greenwood Rising Resilience Leadership Luncheon with Russel L. Honoré",
+        "startDate": "2026-06-01T11:30:00-05:00",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Place",
+          "name": "The Vista at 21",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Tulsa",
+            "addressRegion": "OK",
+            "addressCountry": "US"
+          }
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "Tulsa Gays",
+          "url": "https://www.tulsagays.com"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@type": "Event",
+        "name": "Lambda Bowling League",
+        "startDate": "2026-06-01T19:00:00-05:00",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Place",
+          "name": "AMF Sheridan Lanes",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Tulsa",
+            "addressRegion": "OK",
+            "addressCountry": "US",
+            "streetAddress": "3121 S Sheridan Rd"
+          }
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "Tulsa Gays",
+          "url": "https://www.tulsagays.com"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "item": {
+        "@type": "Event",
+        "name": "Monday Movie Night at the Tulsa Eagle",
+        "startDate": "2026-06-01T19:00:00-05:00",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Place",
+          "name": "Tulsa Eagle",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Tulsa",
+            "addressRegion": "OK",
+            "addressCountry": "US",
+            "streetAddress": "1338 E 3rd St"
+          }
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "Tulsa Gays",
+          "url": "https://www.tulsagays.com"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "item": {
+        "@type": "Event",
+        "name": "Gaymer Night at the Tulsa Eagle",
+        "startDate": "2026-06-01T20:00:00-05:00",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Place",
+          "name": "Tulsa Eagle",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Tulsa",
+            "addressRegion": "OK",
+            "addressCountry": "US",
+            "streetAddress": "1338 E 3rd St"
+          }
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "Tulsa Gays",
+          "url": "https://www.tulsagays.com"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "item": {
+        "@type": "Event",
+        "name": "Highly Suspect in Concert",
+        "startDate": "2026-06-02",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Place",
+          "name": "The Tulsa Theater",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Tulsa",
+            "addressRegion": "OK",
+            "addressCountry": "US",
+            "streetAddress": "105 W Reconciliation Way"
+          }
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "Tulsa Gays",
+          "url": "https://www.tulsagays.com"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "item": {
+        "@type": "Event",
+        "name": "OKEQ Senior's",
+        "startDate": "2026-06-02T10:00:00-05:00",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Place",
+          "name": "Dennis R. Neill Equality Center",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Tulsa",
+            "addressRegion": "OK",
+            "addressCountry": "US",
+            "streetAddress": "621 E 4th St"
+          }
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "Tulsa Gays",
+          "url": "https://www.tulsagays.com"
+        }
+      }
+    }
+  ]
+}
+</script>

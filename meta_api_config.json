@@ -10,21 +10,22 @@
   "quirk": "me/accounts NOW returns pages (fixed). Still querying by page_id directly as fallback.",
   "last_updated": "2026-05-13",
   "last_post": {
-    "date": "2026-06-01",
-    "week_key": "2026-W23",
-    "fb_post_id": "dry_run_post_id",
-    "ig_post_id": "dry_run_ig_id",
+    "date": "2026-06-08",
+    "week_key": "2026-W24",
+    "fb_post_id": "1086906044497675_122116428344853065",
+    "ig_post_id": "17975312628022035",
     "photo_ids": [
-      "dry_run_1",
-      "dry_run_2",
-      "dry_run_3",
-      "dry_run_4",
-      "dry_run_5",
-      "dry_run_6",
-      "dry_run_7",
-      "dry_run_8"
+      "122116427918853065",
+      "122116427960853065",
+      "122116428002853065",
+      "122116428056853065",
+      "122116428110853065",
+      "122116428152853065",
+      "122116428206853065",
+      "122116428260853065",
+      "122116428308853065"
     ],
-    "note": "Weekly carousel 2026-W23. 9 slides."
+    "note": "Weekly carousel 2026-W24. 9 slides."
   },
   "page_access_token": "MOVED_TO_ENV_TULSAGAYS_PAGE_ACCESS_TOKEN",
   "page_token_expires": "never",

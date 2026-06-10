@@ -130,6 +130,10 @@ SITES: List[Tuple[str, str, str, bool]] = [
 
     # LGBTQ+ SPECIFIC (return ALL events, no keyword filter)
     ("https://tulsapride.org/events/", "Tulsa Pride", "lgbtq", True),
+    # Goff Center / Goff Fest — celebrates gay architect Bruce Goff's legacy;
+    # programming includes an Annual Pride Celebration. Plain-HTML events page,
+    # reliable backup to the @goff_fest Instagram scraper.
+    ("https://goff-fest.com/events/", "Goff Center / Goff Fest", "lgbtq", True),
 
     # TICKETING / AGGREGATORS
     ("https://seatgeek.com/tulsa-oklahoma-tickets", "SeatGeek Tulsa", "ticketing", False),

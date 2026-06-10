@@ -71,14 +71,27 @@ def scrape() -> List[Dict]:
             logger.warning("[manual_input] Skipping entry %d — missing 'name'", i)
             continue
 
+        # Honor an explicit priority when the curator set one (e.g. a community
+        # fundraiser at priority 2, or filler at priority 3). Only default to 1
+        # — "always rank high" — when no priority is declared. Forcing every
+        # manual event to 1 used to silently override the author's intent and
+        # push non-EOTW community items into the featured/lead slots.
+        try:
+            priority = int(item.get("priority")) if item.get("priority") not in (None, "") else 1
+        except (TypeError, ValueError):
+            priority = 1
+
         event = {
             "name": name,
             "date": (item.get("date") or "").strip(),
             "time": (item.get("time") or "").strip(),
             "venue": (item.get("venue") or "").strip(),
             "description": (item.get("description") or "").strip(),
+            # Long-form copy for the website (slides use the short description).
+            # Preserved so curated entries can carry full detail end-to-end.
+            "website_description": (item.get("website_description") or "").strip(),
             "url": (item.get("url") or "").strip(),
-            "priority": 1,  # Manually curated events always rank high
+            "priority": priority,
             "source": "manual",
         }
 

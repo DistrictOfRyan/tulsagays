@@ -1,0 +1,1293 @@
+{
+  "week": "2026-W23",
+  "generated_at": "2026-06-01T12:41:35.567767",
+  "total_events": 90,
+  "events": [
+    {
+      "name": "Lambda Bowling League",
+      "date": "2026-06-01",
+      "time": "7:00 PM",
+      "venue": "AMF Sheridan Lanes, 3121 S Sheridan Rd",
+      "description": "",
+      "url": "https://www.facebook.com/groups/4177858394",
+      "source_urls": [
+        "https://www.facebook.com/groups/4177858394"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "OSU Tulsa Queer Support Group",
+      "date": "2026-06-02",
+      "time": "6:00 PM",
+      "venue": "OSU Tulsa Campus, 700 N Greenwood Ave",
+      "description": "",
+      "url": "https://events.tulsa.okstate.edu",
+      "source_urls": [
+        "https://events.tulsa.okstate.edu"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "OKEQ Health Clinic",
+      "date": "2026-06-02",
+      "time": "9:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 2, 2026 | 9:00 am - 4:00 pm Open 9:00 a.m. - 4:00 p.m. by appointment only. Please call 918-938-6537 to set up an appointment.",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "OKEQ Senior's",
+      "date": "2026-06-02",
+      "time": "10:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 2, 2026 | 10:00 am - 12:00 pm Dennis R. Neill Equality Center, 621 E 4th St, Tulsa, OK 74120, USA OKEQ Seniors is a daytime program for LGBTQ+ elders. The program supports LGBT elders and meets every Tuesday morning at 10:00 am at the Dennis R. Neill Equality Center. Together with its members and allies, OKEQ Seniors works towards ensuring a high quality of life for older LGBT adults, advocat",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Gender Outreach Support Group",
+      "date": "2026-06-03",
+      "time": "7:00 PM - 9:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "",
+      "url": "https://okeq.org",
+      "source_urls": [
+        "https://okeq.org",
+        "https://okeq.org/transgender-support/"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Queer Women's Collective",
+      "date": "2026-06-03",
+      "time": "Evening",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "",
+      "url": "https://www.facebook.com/queerwomenscollectivetulsa",
+      "source_urls": [
+        "https://www.facebook.com/queerwomenscollectivetulsa",
+        "https://www.facebook.com/queerwomenscollectivetulsa/"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "OKEQ Health Clinic",
+      "date": "2026-06-03",
+      "time": "9:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 3, 2026 | 9:00 am - 4:00 pm Appointments need to be made 24 hours prior to your requested appointment time. We currently accept Blue Cross and Blue Shield and offer a self-pay option. At the moment, we are only able to see patients who are 18 and older. If you want to start or transfer services, please call 918-938-6537 to set up an appointment or use the link below.﻿ ﻿ SCHEDULE APPOINTMENT",
+      "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor",
+      "source_urls": [
+        "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Smart Recovery Meetings",
+      "date": "2026-06-03",
+      "time": "6:30 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 3, 2026 | 6:30 pm - 8:00 pm Dennis R. Neill Equality Center, 621 E 4th St, Tulsa, OK 74120, USA Smart Recovery is the leading, evidence informed approach to overcoming addictive behaviors and leading a balanced life. SMART is stigma-free and emphasizes self empowerment every 1st and 3rd Wednesday at Oklahomans for Equality starting at 6:30pm for more information email joseph.nowicki@va.gov ww",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Tulsa Leather Community (TLC) Oklahoma",
+      "date": "2026-06-03",
+      "time": "6:30 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 3, 2026 | 6:30 pm - 8:30 pm Wellness Room Tulsa Leather Community (TLC) Oklahoma \"A group for the education and support for those wanting to know more about the Leather lifestyle or those who are already living the Leather way of life.\"",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "DRAGNIFICENT! Drag Show",
+      "date": "2026-06-04",
+      "time": "Doors 9 PM, Show 10 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "",
+      "url": "https://downtowntulsa.com/do/dragnificent-at-club-majestic-1",
+      "source_urls": [
+        "https://downtowntulsa.com/do/dragnificent-at-club-majestic-1"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Relationships Outside the Box",
+      "date": "2026-06-04",
+      "time": "7:00 PM - 8:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "",
+      "url": "https://okeq.org/okeq-events/relationships-outside-the-box",
+      "source_urls": [
+        "https://okeq.org/okeq-events/relationships-outside-the-box"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "OKEQ Health Clinic",
+      "date": "2026-06-04",
+      "time": "9:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 4, 2026 | 9:00 am - 12:00 pm Appointments need to be made 24 hours prior to your requested appointment time. We currently accept Blue Cross and Blue Shield and offer a self-pay option. At the moment, we are only able to see patients who are 18 and older. If you want to start or transfer services, please call 918-938-6537 to set up an appointment or use the link below.﻿ ﻿ SCHEDULE APPOINTMENT",
+      "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor",
+      "source_urls": [
+        "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Guiding Right Inc. Testing",
+      "date": "2026-06-04",
+      "time": "3:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 4, 2026 | 3:00 pm - 6:00 pm Join Guiding Right Inc. for FREE HIV and Hepatitis-C testing and prevention at the OKEQ Health Clinic every 1st and 3rd Thursday of the month from 3:00–6:00 PM at the Dennis R. Neill Equality Center. Services include free HIV testing, free Hepatitis-C testing, prevention supplies, and gift card incentives for participants.",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Queer Crafters Club",
+      "date": "2026-06-04",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 4, 2026 | 6:00 pm - 8:00 pm Dennis R. Neill Equality Center, 621 E 4th St, Tulsa, OK 74120, USA Bring your own craft night! Come craft with the queer community. Our focus is to build on togetherness while we craft in our own mediums! You can find us in the Gallery on Thursdays at the Equality Center.",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Girl Scout Troop 7484",
+      "date": "2026-06-04",
+      "time": "6:30 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 4, 2026 | 6:30 pm - 7:30 pm Wellness Room Come be part of something special with ! We welcome all girls, trans, and nonbinary youth to join our vibrant community. Every Thursday at 6:30 PM, we meet to build friendships, develop new skills, and have fun together. Whether you're looking for adventure, learning, or a supportive community, we’ve got a place for you! Want to learn more or get invo",
+      "url": "https://okeq.orgmailto:t.marler@cox.net",
+      "source_urls": [
+        "https://okeq.orgmailto:t.marler@cox.net"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Pride Kickoff: HHHH x Twisted Arts x Tulsa Artist Fellowship",
+      "date": "2026-06-05",
+      "time": "5:00 PM - 9:00 PM",
+      "venue": "Tulsa Artist Fellowship, 109 MLK Jr Blvd, Tulsa, OK",
+      "description": "Cancel your plans to do nothing, baby. The Tulsa Artist Fellowship First Friday goes full Pride with Homo Hotel Happy Hour and Twisted Arts, drag at 8, and a fat zero-dollar cover.",
+      "url": "https://www.meetup.com/tulsa-4h-homo-hotel-happy-hour/events/314695267/",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Council Oak Men's Chorale: Jukebox - Songs You Know & Love",
+      "date": "2026-06-05",
+      "time": "",
+      "venue": "",
+      "description": "A gay men's chorus going OFF on the songs you already love, from Sister Act to Disney to the pop you scream in the car. Coolest singalong in town, two nights only.",
+      "url": "https://www.counciloak.org/concerts",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Homo Hotel Happy Hour (4H)",
+      "date": "2026-06-05",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 5, 2026 | 6:00 pm - 8:00 pm 4H: Homo Hotel Happy Hour is a rotating monthly LGBTQIA+ happy hour that supports our community and local hotels. We meet on the first Friday of each month at 7 pm the event is open to everyone. Each month we \"take over\" a different hotel bar... no special setup, just great company, drink specials, and a portion of proceeds benefiting local queer charities. Join us",
+      "url": "https://www.facebook.com/groups/homohotelhappyhour/",
+      "source_urls": [
+        "https://www.meetup.com/homo-hotel-happy-hour/",
+        "https://www.facebook.com/groups/homohotelhappyhour/"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Free Drop-In Therapy Sessions",
+      "date": "2026-06-05",
+      "time": "9:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 5, 2026 | 9:00 am - 5:00 pm Low barrier, NO COST drop in therapy sessions available only for those aged 18+ at The Dennis R. Neill Equality Center. Call or text 918-205-4018 to schedule or just drop in during open hours. About Tifany Oslin, LMSW Tifany Oslin (she/her) is a Licensed Master Social Worker providing affirming mental-health support for individuals navigating identity, trauma, and",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "(Closed) OKEQ Health Clinic",
+      "date": "2026-06-05",
+      "time": "1:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 5, 2026 | 1:00 pm - 4:00 pm Appointments need to be made 24 hours prior to your requested appointment time. We currently accept Blue Cross and Blue Shield and offer a self-pay option. At the moment, we are only able to see patients who are 18 and older. If you want to start or transfer services, please call 918-938-6537 to set up an appointment or use the link below.﻿ ﻿ SCHEDULE APPOINTMENT",
+      "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor",
+      "source_urls": [
+        "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "AFFIRMING",
+      "date": "2026-06-05",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 5, 2026 | 6:00 pm - 7:00 pm Wellness Room We are thrilled to share the news that AFFIRM, a Cognitive Behavioral Therapy-based program, is now available through Oklahomans for Equality. This program is specifically designed to support LGBTQ+ youth in managing stress and promoting overall well-being The AFFIRM practice models were developed in collaboration with LGBTQ+ youth and adult community",
+      "url": "",
+      "source_urls": [
+        "https://allevents.in/tulsa/affirming/200030161427332"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Positively Grateful",
+      "date": "2026-06-05",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 5, 2026 | 6:00 pm - 8:00 pm Event Center Are you HIV+?, Looking for support, friends, or someone to talk to? Join  an HIV+ Support Group that meets every Friday. Join  for potluck meals, receive wellness tips, find support, raise awareness, and more! All are welcome!",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "2026 Pride Kickoff",
+      "date": "2026-06-05",
+      "time": "5:00 PM",
+      "venue": "Tulsa Artist Fellowship Rooftop109 MLK Jr Blvd",
+      "description": "Join Twisted Arts, Tulsa Artist Fellowship, and community partners for Pride Kickoff, a vibrant First Friday celebration to kick off Pride Month the right way. This free community...",
+      "url": "https://twistedfest.org/2026pride/",
+      "source_urls": [
+        "https://twistedfest.org/2026pride/"
+      ],
+      "priority": 1,
+      "source": "twisted_arts",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Council Oak Men's Chorale: Jukebox - Songs You Know & Love",
+      "date": "2026-06-06",
+      "time": "",
+      "venue": "",
+      "description": "A gay men's chorus tearing through the songs you already love, Sister Act to Disney to car-radio pop. Missed night one? Night two is your second shot at it.",
+      "url": "https://www.counciloak.org/concerts",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "PFLAG Tulsa Monthly Meeting",
+      "date": "2026-06-06",
+      "time": "7:00 PM",
+      "venue": "110 S Hartford Ave, Tulsa",
+      "description": "",
+      "url": "https://pflag.org/chapter/pflag-tulsa",
+      "source_urls": [
+        "https://pflag.org/chapter/pflag-tulsa",
+        "https://tulsapflag.org/"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "OKEQ Tulsa TTRPGs",
+      "date": "2026-06-06",
+      "time": "12:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "June 6, 2026 | 12:00 pm - 6:00 pm Wellness Room/Library Are you a fan of tabletop role-playing games? If so, you won't want to miss Tulsa's TTRPGs 🧙🏾‍♂️👹🧝🏼🧌🪄🧚🏻‍♀️ Meet new people, make friends, learn about our store partners, and play your favorite games. Don't miss out on this exciting event! Contact us at okeqtulsattrpg@gmail.com to learn more! We can't wait to see you there! 🏳️‍⚧️🧡💛💚💙💜🤍🤎🖤🏳️‍🌈 T",
+      "url": "https://okeq.orgmailto:okeqtulsattrpg@gmail.com",
+      "source_urls": [
+        "https://okeq.orgmailto:okeqtulsattrpg@gmail.com"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Sunday Showdown Open Talent Night",
+      "date": "2026-06-07",
+      "time": "Doors 9 PM, Show 11 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "",
+      "url": "https://qlist.app/events/Tulsa/The-Sunday-Showdown-Open-Talent-Night-at-Club-Majestic/16808",
+      "source_urls": [
+        "https://qlist.app/events/Tulsa/The-Sunday-Showdown-Open-Talent-Night-at-Club-Majestic/16808"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Greenwood Rising Resilience Leadership Luncheon with Russel L. Honoré",
+      "date": "2026-06-01",
+      "time": "11:30 AM",
+      "venue": "The Vista at 21",
+      "description": "Please join us as General Honoré imparts lessons on leadership and resilience.",
+      "url": "https://www.eventbrite.com/e/greenwood-rising-resilience-leadership-luncheon-with-russel-l-honore-tickets-1986337361519",
+      "source_urls": [
+        "https://www.eventbrite.com/e/greenwood-rising-resilience-leadership-luncheon-with-russel-l-honore-tickets-1986337361519"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Making Friends As An Adult is HARD",
+      "date": "2026-06-01",
+      "time": "11:00 PM",
+      "venue": "Meetup Tulsa",
+      "description": "Back by popular demand!!\n\nMaking friends was easy when we were younger. You saw the same people every day. You had built in structure. You didn’t overthink it.\nAs adults, it feels different.\n\nYou can be socially capable and still feel socially disconnected.\n\nYou can attend events and still not get invited back. You can meet interesting people and never move beyond small talk.\n\nThis workshop is designed to change that.\n\nIn this 60 minute session, you will learn the practical mechanics behind buil",
+      "url": "https://www.meetup.com/iwanttodothatchicago/events/314573208/",
+      "source_urls": [
+        "https://www.meetup.com/iwanttodothatchicago/events/314573208/"
+      ],
+      "priority": 2,
+      "source": "extended_calendars",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "PROJECTION PUBLIC ART SERIES: 'UNTITLED' TATYANA FAZLALIZADEH",
+      "date": "2026-06-01",
+      "time": "10:00 AM10:00",
+      "venue": "Flagship / Tulsa Artist Fellowship, 112 N Boston Ave",
+      "description": "Tulsa Artist Fellowship announcesProjection,a new rotating public art series conceived, curated, and directed by artistTatyana Fazlalizadehon the exterior wall of the Fellowship’s studio building in Tulsa, Oklahoma.",
+      "url": "https://www.tulsaartistfellowship.org/calendar/projection-untitled-tatyana-fazlalizadeh",
+      "source_urls": [
+        "https://www.tulsaartistfellowship.org/calendar/projection-untitled-tatyana-fazlalizadeh"
+      ],
+      "priority": 2,
+      "source": "tulsa_artist_fellowship",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Open Meditation – Tues.",
+      "date": "2026-06-02",
+      "time": "6:30 PM",
+      "venue": "Shambhala Meditation Center of Tulsa",
+      "description": "",
+      "url": "https://tulsa.shambhala.org/event/807441-open-meditation-tues",
+      "source_urls": [
+        "https://tulsa.shambhala.org/event/807441-open-meditation-tues"
+      ],
+      "priority": 2,
+      "source": "shambhala_tulsa",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Bodysnatcher",
+      "date": "2026-06-03",
+      "time": "",
+      "venue": "The Vanguard, 222 N Main St, Tulsa, OK",
+      "description": "",
+      "url": "https://www.thevanguardtulsa.com/shows/bodysnatcher-03-jun",
+      "source_urls": [
+        "https://www.thevanguardtulsa.com/shows/bodysnatcher-03-jun"
+      ],
+      "priority": 2,
+      "source": "the_vanguard_tulsa",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Dialectical Behavioral Therapy (DBT) 3-Day Core Skills Training",
+      "date": "2026-06-04",
+      "time": "9:00 AM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/dialectical-behavioral-therapy-dbt-3-day-core-skills-training-registration-1986957275699",
+      "source_urls": [
+        "https://www.eventbrite.com/e/dialectical-behavioral-therapy-dbt-3-day-core-skills-training-registration-1986957275699"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Summer Sippin Series: Patio Edition 🍻☀️😎",
+      "date": "2026-06-04",
+      "time": "11:00 PM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.meetup.com/tulsa-area-women-get-up-and-get-out/events/313984492/",
+      "source_urls": [
+        "https://www.meetup.com/tulsa-area-women-get-up-and-get-out/events/313984492/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Shut Up & Write!® at Handmade Broken Arrow",
+      "date": "2026-06-04",
+      "time": "11:00 PM",
+      "venue": "Handmade",
+      "description": "**[Click here to learn more about Shut Up & Write!®](https://www.shutupwrite.com/event/id2vk31DYO00)**\n\nSUAW hosts free in-person and online writing events for writers all over the world. Our goal is to ensure that every writer, regardless of genre or skill level, has access to the community, accoun",
+      "url": "https://www.meetup.com/shutupandwritetulsa/events/314809899/",
+      "source_urls": [
+        "https://www.meetup.com/shutupandwritetulsa/events/314809899/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "never_feature": true,
+      "community_event": true
+    },
+    {
+      "name": "Gray Day by Eric O'Neil",
+      "date": "2026-06-04",
+      "time": "11:00 PM",
+      "venue": "Albert G's Bar-B-Q",
+      "description": "Eric O’Neill, cybersecurity expert and former FBI “ghost” tells the thrilling story of how he helped take down notorious FBI mole Robert Hanssen, the first Russian cyber spy.\nA tension-packed stew of power, paranoia, and psychological manipulation, *Gray Day* is also a cautionary tale of how the Uni",
+      "url": "https://www.meetup.com/feisty-and-fifty-book-club-for-men-and-women-over-50/events/314913432/",
+      "source_urls": [
+        "https://www.meetup.com/feisty-and-fifty-book-club-for-men-and-women-over-50/events/314913432/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Join Biggest Community | Investors Founders | Tulsa | Online",
+      "date": "2026-06-04",
+      "time": "5:00 PM",
+      "venue": "Tulsa",
+      "description": "Please reserve your spot by registering on the below link :\n\n**Reserve**\nhttps://www.eventbrite.com/e/join-biggest-community-investors-founders-tulsa-online-tickets-1988618879601?aff=meetup\n\n**QUESTIONS ?**\nPls Reach out to;\nRidhi - +971504724873 ( WhatsApp Only)",
+      "url": "https://www.meetup.com/investor/events/314804636/",
+      "source_urls": [
+        "https://www.meetup.com/investor/events/314804636/"
+      ],
+      "priority": 2,
+      "source": "extended_calendars",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "HHHH Pride Kickoff — Fifth Anniversary",
+      "date": "2026-06-05",
+      "time": "10:00 PM",
+      "venue": "Tulsa Artist Fellowship",
+      "description": "Something this good has never happened before. For the first time ever, Twisted Arts and Homo Hotel Happy Hour are joining forces to kick off Tulsa Pride... and we're doing it famously!\n\nJoin us First Friday of June (June 5) at the Tulsa Artist Fellowship, 109 MLK Jr Blvd. Doors at 5, live music fro",
+      "url": "https://www.meetup.com/tulsa-4h-homo-hotel-happy-hour/events/314695267/",
+      "source_urls": [
+        "https://www.meetup.com/tulsa-4h-homo-hotel-happy-hour/events/314695267/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "In the Folk Tradition: Music + Poetry w Anna La Mare + Quinn Carver Johnson",
+      "date": "2026-06-05",
+      "time": "",
+      "venue": "Positive Space Tulsa",
+      "description": "",
+      "url": "https://allevents.in/tulsa/in-the-folk-tradition-music-poetry-w-anna-la-mare-quinn-carver-johnson/100001989978983709",
+      "source_urls": [
+        "https://allevents.in/tulsa/in-the-folk-tradition-music-poetry-w-anna-la-mare-quinn-carver-johnson/100001989978983709"
+      ],
+      "priority": 2,
+      "source": "community_calendars",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Little Image",
+      "date": "2026-06-05",
+      "time": "",
+      "venue": "The Vanguard, 222 N Main St, Tulsa, OK",
+      "description": "",
+      "url": "https://www.thevanguardtulsa.com/shows/little-image-05-jun",
+      "source_urls": [
+        "https://www.thevanguardtulsa.com/shows/little-image-05-jun"
+      ],
+      "priority": 2,
+      "source": "the_vanguard_tulsa",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "FIRST FRIDAYS: JUNE 2026",
+      "date": "2026-06-05",
+      "time": "6:00 PM9:00 PM18:0021:00",
+      "venue": "Flagship / Tulsa Artist Fellowship, 112 N Boston Ave",
+      "description": "First Fridays returns with open studios, exhibitions, and live programming across Tulsa Artist Fellowship. This month features our annualPride collaboration with Twisted Arts and the Center for Queer Prairie Studies, including rooftop music and drag performances starting at 8 PM.",
+      "url": "https://www.tulsaartistfellowship.org/calendar/first-fridays/june-2026",
+      "source_urls": [
+        "https://www.tulsaartistfellowship.org/calendar/first-fridays/june-2026"
+      ],
+      "priority": 2,
+      "source": "tulsa_artist_fellowship",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "FLAGPOLE GO-GO PARTY",
+      "date": "2026-06-05",
+      "time": "11:00 PM23:00",
+      "venue": "Flagship / Tulsa Artist Fellowship, 112 N Boston Ave",
+      "description": "Join us asMiguel Bracelitransforms his studio into a queer nightclub withStudio 66, featuring gogos, pole dancers, music, and movement. Through dance and celebration,Flagpole Gogo Partyreclaims charged symbols and reimagines gathering as a site of joy, resistance, and collective release. This late-night performance includes mature content and is recommended for audiences ages 21 and older.",
+      "url": "https://www.tulsaartistfellowship.org/calendar/flagpole-gogo-party",
+      "source_urls": [
+        "https://www.tulsaartistfellowship.org/calendar/flagpole-gogo-party"
+      ],
+      "priority": 2,
+      "source": "tulsa_artist_fellowship",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Pride Drag Lunch",
+      "date": "2026-06-06",
+      "time": "12:30 PM",
+      "venue": "107 N Armstrong St",
+      "description": "Experience an afternoon you won't forget at Sunny Rae's second monthly drag event.",
+      "url": "https://www.eventbrite.com/e/pride-drag-lunch-tickets-1988739261667",
+      "source_urls": [
+        "https://www.eventbrite.com/e/pride-drag-lunch-tickets-1988739261667"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Flywheel Presents: Big Ride 2026",
+      "date": "2026-06-06",
+      "time": "7:30 PM",
+      "venue": "Flywheel Field (Walk right up from the Cains through the overpass to 501 N. Main)",
+      "description": "A ONE-DAY EVENT CELEBRATING MUSIC, FOOD, ART, AND TECH IN DOWNTOWN TULSA.\nSIT BACK, RELAX, AND ENJOY THE RIDE. ***21+ EVENT***",
+      "url": "https://www.eventbrite.com/e/flywheel-presents-big-ride-2026-tickets-1983053067106",
+      "source_urls": [
+        "https://www.eventbrite.com/e/flywheel-presents-big-ride-2026-tickets-1983053067106"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Vegetarian Society of Tulsa Monthly Potluck",
+      "date": "2026-06-06",
+      "time": "5:00 PM",
+      "venue": "Martin East Regional Library",
+      "description": "Come Join Us For our Most Popular type of Meetup! Sample a variety of plant based recipes and mingle with fellow Vegans and Vegetarians. You'll enjoy getting to know like-minded people and you'll love the food.\n\nBring a VEGAN or VEGETARIAN dish to share with the group.\n\nRemember to bring your own DR",
+      "url": "https://www.meetup.com/vegetarian-society-of-tulsa/events/310400040/",
+      "source_urls": [
+        "https://www.meetup.com/vegetarian-society-of-tulsa/events/310400040/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Men of Color Meeting Up",
+      "date": "2026-06-06",
+      "time": "2:30 PM",
+      "venue": "Chick-fil-A, 1660 E 13th St, Tulsa,",
+      "description": "Come chill and network. No RSVP required just show up. A space for fathers, brothers, and uncles to connect and grow — whether you just moved to the Tulsa area or have called it home your whole life.\nIf you're looking for an in-person friend group, a network, or a barbershop-style discussion with me",
+      "url": "https://www.meetup.com/boyz-2-men-n-the-hood/events/314867511/",
+      "source_urls": [
+        "https://www.meetup.com/boyz-2-men-n-the-hood/events/314867511/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Shut Up & Write!® at Foolish Things",
+      "date": "2026-06-06",
+      "time": "3:30 PM",
+      "venue": "Foolish Things Coffee",
+      "description": "**[Click here to learn more about Shut Up & Write!®](https://www.shutupwrite.com)**\n\nSUAW hosts free in-person and online writing events for writers all over the world. Our goal is to ensure that every writer, regardless of genre or skill level, has access to the community, accountability, and resou",
+      "url": "https://www.meetup.com/shutupandwritetulsa/events/314831922/",
+      "source_urls": [
+        "https://www.meetup.com/shutupandwritetulsa/events/314831922/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "RAINBOW RESILIENCE:  A Kickoff to PRIDE 2026",
+      "date": "2026-06-06",
+      "time": "",
+      "venue": "Dennis R Neill Equality Center",
+      "description": "",
+      "url": "https://allevents.in/tulsa/rainbow-resilience-a-kickoff-to-pride-2026/200030042524220",
+      "source_urls": [
+        "https://allevents.in/tulsa/rainbow-resilience-a-kickoff-to-pride-2026/200030042524220"
+      ],
+      "priority": 2,
+      "source": "community_calendars",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "EZ BAND",
+      "date": "2026-06-06",
+      "time": "",
+      "venue": "The Vanguard, 222 N Main St, Tulsa, OK",
+      "description": "",
+      "url": "https://www.thevanguardtulsa.com/shows/ez-band-06-jun",
+      "source_urls": [
+        "https://www.thevanguardtulsa.com/shows/ez-band-06-jun"
+      ],
+      "priority": 2,
+      "source": "the_vanguard_tulsa",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "All Souls Unitarian Sunday Services",
+      "date": "2026-06-07",
+      "time": "10:00 AM and 11:15 AM",
+      "venue": "All Souls Unitarian Church, 2952 S Peoria Ave",
+      "description": "",
+      "url": "https://allsoulschurch.org",
+      "source_urls": [
+        "https://allsoulschurch.org"
+      ],
+      "priority": 2,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "May Meeting",
+      "date": "2026-06-07",
+      "time": "6:00 PM",
+      "venue": "Poppi’s Spa + Lounge",
+      "description": "At this meeting we can rejuvenate our bodies and spirits while supporting a locally owned business. Lounge passes are $40 for two hours and can be reserved online or in person. Price includes access to the infrared sauna, salt room, and color therapy pod. Upgrades such as body scrubs, facials, etc.",
+      "url": "https://www.meetup.com/tulsa-book-club-meetup/events/314971375/",
+      "source_urls": [
+        "https://www.meetup.com/tulsa-book-club-meetup/events/314971375/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Women's Veterans Day Kickoff Event",
+      "date": "2026-06-07",
+      "time": "7:00 PM",
+      "venue": "Coffee Bunker",
+      "description": "## Join Us for the Women's Veterans Day Kickoff Event!\n\nStop by for an afternoon dedicated to honoring, connecting, and empowering women veterans in our community as we kick off Women’s Veterans Day month together.\nThis veteran-led event is designed to create a welcoming space for women veterans to",
+      "url": "https://www.meetup.com/lady-veterans-unite-meetup-group/events/314806729/",
+      "source_urls": [
+        "https://www.meetup.com/lady-veterans-unite-meetup-group/events/314806729/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Raise Your Spiritual IQ! Spiritual Discussion- Reinvent Yourself Spiritually",
+      "date": "2026-06-07",
+      "time": "7:00 PM",
+      "venue": "Martin Regional Library",
+      "description": "**Moving Past the Past**\n***Breaking free from karma and reincarnation***\n\n*\"The primal seed for each incarnation exists under the umbrella of destiny, which we also call past-life karma.\".....fate governs the conditions at birth; free will allows a choice as to how to move beyond them.\" -Harold Kle",
+      "url": "https://www.meetup.com/tulsa-spiritual-experiences-meetup/events/314799429/",
+      "source_urls": [
+        "https://www.meetup.com/tulsa-spiritual-experiences-meetup/events/314799429/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "BRUCE GOFF BIRTHDAY BASH",
+      "date": "2026-06-07",
+      "time": "12:00 PM6:00 PM12:0018:00",
+      "venue": "Flagship / Tulsa Artist Fellowship, 112 N Boston Ave",
+      "description": "Join theGoff Center for the Continuous Presentat the Spotlight Theater forBruce Goff’s annual Birthday Bash,a family-friendlySaint Francis Tulsa Toughwatch party honoring visionary architect Bruce Goff.",
+      "url": "https://www.tulsaartistfellowship.org/calendar/2026-goff-birthday-bash",
+      "source_urls": [
+        "https://www.tulsaartistfellowship.org/calendar/2026-goff-birthday-bash"
+      ],
+      "priority": 2,
+      "source": "tulsa_artist_fellowship",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "First Sunday Cafe",
+      "date": "2026-06-07",
+      "time": "10:00 AM",
+      "venue": "Shambhala Meditation Center of Tulsa",
+      "description": "",
+      "url": "https://tulsa.shambhala.org/event/807580-first-sunday-cafe",
+      "source_urls": [
+        "https://tulsa.shambhala.org/event/807580-first-sunday-cafe"
+      ],
+      "priority": 2,
+      "source": "shambhala_tulsa",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Open Meditation – Tues.",
+      "date": "2026-06-07",
+      "time": "6:30 PM",
+      "venue": "Shambhala Meditation Center of Tulsa",
+      "description": "",
+      "url": "https://tulsa.shambhala.org/event/866911-open-meditation-tues",
+      "source_urls": [
+        "https://tulsa.shambhala.org/event/866911-open-meditation-tues"
+      ],
+      "priority": 2,
+      "source": "shambhala_tulsa",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Drag Sing-Along Presented by Elote",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/drag-sing-along-presented-by-elote-tickets-1988242480782",
+      "source_urls": [
+        "https://www.eventbrite.com/e/drag-sing-along-presented-by-elote-tickets-1988242480782",
+        "https://www.eventbrite.com/e/drag-brunch-presented-by-elote-tickets-1976646183946"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Miss Gay Oklahoma America",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/miss-gay-oklahoma-america-tickets-1990147876873",
+      "source_urls": [
+        "https://www.eventbrite.com/e/miss-gay-oklahoma-america-tickets-1990147876873"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Namastreet Yoga 2026",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/namastreet-yoga-2026-tickets-1989108976494",
+      "source_urls": [
+        "https://www.eventbrite.com/e/namastreet-yoga-2026-tickets-1989108976494"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tulsa Brotherhood Breakfast with Seth Swindall",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/tulsa-brotherhood-breakfast-with-seth-swindall-tickets-1988862240500",
+      "source_urls": [
+        "https://www.eventbrite.com/e/tulsa-brotherhood-breakfast-with-seth-swindall-tickets-1988862240500"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "An Evening With David Sedaris",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/an-evening-with-david-sedaris-tickets-1987791513928",
+      "source_urls": [
+        "https://www.eventbrite.com/e/an-evening-with-david-sedaris-tickets-1987791513928"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Keyland: Knuckle Sandwich Album Release Show",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/keyland-knuckle-sandwich-album-release-show-tickets-1987338635356",
+      "source_urls": [
+        "https://www.eventbrite.com/e/keyland-knuckle-sandwich-album-release-show-tickets-1987338635356"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "OK So, Tulsa Story Slam: TULSA TIME",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/ok-so-tulsa-story-slam-tulsa-time-tickets-1984911310161",
+      "source_urls": [
+        "https://www.eventbrite.com/e/ok-so-tulsa-story-slam-tulsa-time-tickets-1984911310161"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "TFA CAMP ARCHITECTURE 2026:  DREAM HOUSE DESIGN (WEEK 2)",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/tfa-camp-architecture-2026-dream-house-design-week-2-tickets-1983388838407",
+      "source_urls": [
+        "https://www.eventbrite.com/e/tfa-camp-architecture-2026-dream-house-design-week-2-tickets-1983388838407"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Cocktail Class: PRINCE",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/cocktail-class-prince-tickets-1983325079703",
+      "source_urls": [
+        "https://www.eventbrite.com/e/cocktail-class-prince-tickets-1983325079703"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "GCW presents \"The Tussle in Tulsa\"",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/gcw-presents-the-tussle-in-tulsa-tickets-1990112263352",
+      "source_urls": [
+        "https://www.eventbrite.com/e/gcw-presents-the-tussle-in-tulsa-tickets-1990112263352"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Prop Swappers of Tulsa Monthly meet up @ GUTHRIE GREEN",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/prop-swappers-of-tulsa-monthly-meet-up-guthrie-green-tickets-1981881705532",
+      "source_urls": [
+        "https://www.eventbrite.com/e/prop-swappers-of-tulsa-monthly-meet-up-guthrie-green-tickets-1981881705532"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Tulsa Speed Dating for Singles Age 20s/30s ♥ Broken Arrow OK at Laurannae",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/tulsa-speed-dating-for-singles-age-20s30s-broken-arrow-ok-at-laurannae-tickets-1989101289502",
+      "source_urls": [
+        "https://www.eventbrite.com/e/tulsa-speed-dating-for-singles-age-20s30s-broken-arrow-ok-at-laurannae-tickets-1989101289502"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Rewired Together: Education Summit",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/rewired-together-education-summit-tickets-1986085613534",
+      "source_urls": [
+        "https://www.eventbrite.com/e/rewired-together-education-summit-tickets-1986085613534"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Little House Fan Event & Dinner - Tulsa, OK - Saturday, June 20, 2026",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/little-house-fan-event-dinner-tulsa-ok-saturday-june-20-2026-tickets-1986078374883",
+      "source_urls": [
+        "https://www.eventbrite.com/e/little-house-fan-event-dinner-tulsa-ok-saturday-june-20-2026-tickets-1986078374883"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Game Changer Soccer Camp",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/game-changer-soccer-camp-tickets-1988268584860",
+      "source_urls": [
+        "https://www.eventbrite.com/e/game-changer-soccer-camp-tickets-1988268584860"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "3rd Annual Edison Eagles Touchdown Club Golf Tournament",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/3rd-annual-edison-eagles-touchdown-club-golf-tournament-tickets-1987075767110",
+      "source_urls": [
+        "https://www.eventbrite.com/e/3rd-annual-edison-eagles-touchdown-club-golf-tournament-tickets-1987075767110"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "HUGE KIDS’ SALE-JBF BA • JULY 10-12 (PRESALE JULY 9)",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/huge-kids-sale-jbf-ba-july-10-12-presale-july-9-tickets-1989163470487",
+      "source_urls": [
+        "https://www.eventbrite.com/e/huge-kids-sale-jbf-ba-july-10-12-presale-july-9-tickets-1989163470487"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Regional Economic Leadership Forum",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/regional-economic-leadership-forum-tickets-1990536047903",
+      "source_urls": [
+        "https://www.eventbrite.com/e/regional-economic-leadership-forum-tickets-1990536047903"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Reinvention & Identity After 40",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/reinvention-identity-after-40-tickets-1988615320957",
+      "source_urls": [
+        "https://www.eventbrite.com/e/reinvention-identity-after-40-tickets-1988615320957"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "INNER CIRCLE DRAG SHOW",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/inner-circle-drag-show-tickets-1979909993087",
+      "source_urls": [
+        "https://www.eventbrite.com/e/inner-circle-drag-show-tickets-1979909993087"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Swiftball A drag through the Eras",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/swiftball-a-drag-through-the-eras-tickets-1976426292244",
+      "source_urls": [
+        "https://www.eventbrite.com/e/swiftball-a-drag-through-the-eras-tickets-1976426292244"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "In-Person CAPM Exam Prep Course in Tulsa",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/in-person-capm-exam-prep-course-in-tulsa-tickets-1981479762309",
+      "source_urls": [
+        "https://www.eventbrite.com/e/in-person-capm-exam-prep-course-in-tulsa-tickets-1981479762309"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "CISSP Certification Training Course in Jenks, OK",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/cissp-certification-training-course-in-jenks-ok-tickets-1979969150027",
+      "source_urls": [
+        "https://www.eventbrite.com/e/cissp-certification-training-course-in-jenks-ok-tickets-1979969150027"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "CISSP Certification | ISC² Exam Preparation Program in Jenks, OK",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/cissp-certification-isc2-exam-preparation-program-in-jenks-ok-tickets-1980710997914",
+      "source_urls": [
+        "https://www.eventbrite.com/e/cissp-certification-isc2-exam-preparation-program-in-jenks-ok-tickets-1980710997914"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tulsa Pride Bar Crawl",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/tulsa-pride-bar-crawl-tickets-1730741346959",
+      "source_urls": [
+        "https://www.eventbrite.com/e/tulsa-pride-bar-crawl-tickets-1730741346959"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Gun Drawing 300 Black Out",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/gun-drawing-300-black-out-tickets-1976231161603",
+      "source_urls": [
+        "https://www.eventbrite.com/e/gun-drawing-300-black-out-tickets-1976231161603"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Black. Queer. proud.",
+      "date": "",
+      "time": "",
+      "venue": "Various locations in Tulsa",
+      "description": "",
+      "url": "https://www.blackqueertulsa.org/events",
+      "source_urls": [
+        "https://www.blackqueertulsa.org/events",
+        "https://www.blackqueertulsa.org/black-queer-proud-2024"
+      ],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "our parTners",
+      "date": "",
+      "time": "",
+      "venue": "Various locations in Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "stay connected!",
+      "date": "",
+      "time": "",
+      "venue": "Various locations in Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "WEEKLY EVENTS:",
+      "date": "",
+      "time": "",
+      "venue": "Elote Cafe & Catering",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "UPCOMING EVENTS",
+      "date": "",
+      "time": "",
+      "venue": "Elote Cafe & Catering",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "(map)",
+      "date": "",
+      "time": "",
+      "venue": "Elote Cafe & Catering",
+      "description": "",
+      "url": "http://maps.google.com?q=514 South Boston Avenue Tulsa, OK, 74103 United States",
+      "source_urls": [
+        "http://maps.google.com?q=514 South Boston Avenue Tulsa, OK, 74103 United States"
+      ],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Get Your Tickets!",
+      "date": "",
+      "time": "",
+      "venue": "Elote Cafe & Catering",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/drag-brunch-presented-by-elote-tickets-1976646183946?aff=oddtdtcreator",
+      "source_urls": [
+        "https://www.eventbrite.com/e/drag-brunch-presented-by-elote-tickets-1976646183946?aff=oddtdtcreator"
+      ],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Lambda Unity Group (LGBTQ+ AA Meeting)",
+      "date": "2026-06-03",
+      "time": "Check listing for time",
+      "venue": "Fellowship Congregational Church, Tulsa",
+      "description": "",
+      "url": "https://aaoklahoma.org/meetings/lambda-unity/",
+      "source_urls": [
+        "https://aaoklahoma.org/meetings/lambda-unity/"
+      ],
+      "priority": 3,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    }
+  ]
+}
