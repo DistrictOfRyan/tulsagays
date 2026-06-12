@@ -251,6 +251,61 @@ def run(week_key=None):
         if pct < 0.60:
             warnings.append(f"[events] only {pct:.0%} of featured events are clearly LGBTQ (target >=60%)")
 
+    # ── SANITY (the W24 'Owasso city council' class of nonsense) ───────────
+    # Re-apply the sanity drop rules to what is about to POST: a featured/EOTW
+    # event matching a drop rule is a hard block; website-shown junk warns.
+    try:
+        from tools.sanity_check_events import rules_pass as _sanity_rules
+        _, _dropped, _ = _sanity_rules([dict(e) for e in eotw + featured_all])
+        for _e, _r in _dropped:
+            errors.append(f"[sanity] featured/EOTW event is off-topic junk ({_r}): '{_e.get('name')}'")
+        _, _dropped2, _ = _sanity_rules([dict(e) for e in all_shown])
+        _featured_keys = {(e.get("name"), e.get("date")) for e in eotw + featured_all}
+        for _e, _r in _dropped2:
+            if (_e.get("name"), _e.get("date")) not in _featured_keys:
+                warnings.append(f"[sanity] shown event is off-topic junk ({_r}): '{_e.get('name')}'")
+        # Surface scrape-time sanity flags (implausible times, truncated names)
+        for _e in eotw + featured_all:
+            for _f in _e.get("sanity_flags") or []:
+                warnings.append(f"[sanity] featured '{_e.get('name')}': {_f}")
+    except Exception as _ex:
+        warnings.append(f"[sanity] could not run sanity rules: {_ex}")
+    _sanity_report = os.path.join(config.DATA_DIR, "events", f"{week_key}_sanity_report.json")
+    if not os.path.exists(_sanity_report):
+        warnings.append("[sanity] no sanity report for this week — "
+                        "run tools/sanity_check_events.py after the scrape")
+
+    # ── WEBSITE COPY VOICE (W24 shipped 165/214 templated pool one-liners) ──
+    # When enrichment fails wholesale, the dedupe pool fills the whole site
+    # with "Do future-you a favor..." filler. Measure the templated ratio
+    # across the week's full event file: >40% means enrichment died — block
+    # and re-run it; >10% is a warning for the Monday voice pass.
+    try:
+        _all_path = os.path.join(config.DATA_DIR, "events", f"{week_key}_all.json")
+        with open(_all_path, encoding="utf-8") as _af:
+            _all_data = json.load(_af)
+        _all_events = _all_data.get("events", []) if isinstance(_all_data, dict) else _all_data
+        if _all_events:
+            _tpl = sum(
+                1 for e in _all_events
+                if _looks_templated(e.get("description"))
+                or _looks_templated(e.get("website_description")))
+            _ratio = _tpl / len(_all_events)
+            if _ratio > 0.40:
+                errors.append(
+                    f"[voice] {_tpl}/{len(_all_events)} ({_ratio:.0%}) website descriptions are "
+                    f"templated pool filler — enrichment failed; re-run "
+                    f"`python main.py generate-all` (or content.generator.enrich_event_descriptions) "
+                    f"before posting")
+            elif _ratio > 0.10:
+                warnings.append(
+                    f"[voice] {_tpl}/{len(_all_events)} ({_ratio:.0%}) website descriptions are "
+                    f"templated filler — rewrite the worst in the Monday voice pass")
+    except FileNotFoundError:
+        warnings.append(f"[voice] no {week_key}_all.json — cannot check website copy")
+    except Exception as _ve:
+        warnings.append(f"[voice] website copy check failed: {_ve}")
+
     # ── DESCRIPTIONS / VOICE ────────────────────────────────────────────
     # "gate only what's posted": featured (slide) events + EOTW are hard-gated;
     # website-only filler events are gated as warnings (see _check_desc).

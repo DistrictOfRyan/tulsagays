@@ -186,6 +186,24 @@ def cmd_generate(post_type="weekday"):
         print("No events found for this period.")
         return None
 
+    # Sanity rules (defense-in-depth): the scraper sanitizes before saving,
+    # but late additions (Wednesday last-minute, manual injects) re-enter via
+    # these files. Drop off-topic junk before it costs enrichment calls or
+    # reaches a slide. Rules only — fast, deterministic, idempotent.
+    try:
+        from tools.sanity_check_events import rules_pass as _sanity_rules
+        events, _dropped, _ = _sanity_rules(events)
+        if _dropped:
+            print(f"[sanity] dropped {len(_dropped)} off-topic/junk events before generation:")
+            for _e, _r in _dropped:
+                print(f"  - [{_r}] {(_e.get('name') or '')[:60]}")
+    except Exception as _ex:
+        print(f"[sanity] rules pass skipped: {_ex}")
+
+    if not events:
+        print("No events left after sanity rules.")
+        return None
+
     date_range = get_date_range(post_type)
 
     # Enrich events with exciting descriptions
@@ -217,10 +235,10 @@ def cmd_generate(post_type="weekday"):
 
     # Build events_by_day — only events within THIS week's Mon-Sun date range
     # AND only events that pass eotw_selector._is_skip() (the single source of
-    # truth for banned events: Club Majestic, source=recurring, bowling
-    # leagues, support groups, health clinics, "open for business" hours
-    # announcements, etc.). Without this filter, banned events showed up on
-    # slides as #2/#3 (W22: EBA: Open for Business on Thursday).
+    # truth for banned events: bowling leagues, support groups, health
+    # clinics, AA, "open for business" hours announcements, etc.). Without
+    # this filter, banned events showed up on slides as #2/#3 (W22: EBA:
+    # Open for Business on Thursday).
     try:
         from eotw_selector import _is_skip as _eotw_is_skip
     except Exception as _e:
@@ -240,7 +258,7 @@ def cmd_generate(post_type="weekday"):
     # LGBTQ-FIRST MODE: slides show 3 events per day, with LGBTQ events
     # prioritized at the top. Community events fill remaining slots when
     # the week is light on explicit LGBTQ programming. Only HARD-banned
-    # events (Club Majestic, AA, bar promos) are excluded — recurring
+    # events (AA privacy, generic weekly bar promos) are excluded — recurring
     # OKEQ community programming (TTRPG, support groups, clinics) shows
     # as filler at the bottom of day slides via the tier system.
     try:
@@ -316,11 +334,10 @@ def cmd_generate(post_type="weekday"):
         "zoom only",          # online-only events — not in-person community events
         "midweek meditation", # recurring online meditation
     }
-    # These VENUES should never appear in the top 3 of any day or as EOTW
-    _DEPRIORITIZE_VENUES = {
-        "majestic",           # Club Majestic — per organizer/site policy, never feature
-        "124 n boston",       # Club Majestic address fallback
-    }
+    # Venue-level deprioritization REMOVED 2026-06-12 (William): Majestic and
+    # other gay-bar special events are featurable. Weekly bar filler is still
+    # held back by the recurring/never-feature rules above.
+    _DEPRIORITIZE_VENUES = set()
     # Cultural/entertainment events get a sub-tier boost so they float above
     # generic T5 events even when their start time is later
     _CULTURAL_KEYWORDS = {
@@ -330,12 +347,26 @@ def cmd_generate(post_type="weekday"):
     }
 
     def _parse_time_minutes(t):
+        # Range-aware START extraction: '6 - 10 PM' means 6 PM (the start
+        # inherits the end's meridiem). The old split-then-parse failed on the
+        # bare '6' and sorted the event as untimed.
         if not t:
             return 9999
-        t = t.split("-")[0].split("–")[0].strip()
+        import re as _re
+        import unicodedata as _ud
+        t = ''.join(' ' if _ud.category(c) == 'Zs' else c for c in t.strip().upper())
+        t = _re.sub(r'[‐‑‒–—―−]', '-', t)
+        m = _re.search(r'(\d{1,2}(?::\d{2})?)\s*(AM|PM)?', t)
+        if not m:
+            return 9999
+        num, mer = m.group(1), m.group(2)
+        if not mer:
+            m2 = _re.search(r'(?<![A-Z])(AM|PM)(?![A-Z])', t[m.end():])
+            mer = m2.group(1) if m2 else None
+        tok = f"{num} {mer}" if mer else num
         for fmt in ("%I:%M %p", "%I %p", "%H:%M"):
             try:
-                dt_parsed = datetime.strptime(t, fmt)
+                dt_parsed = datetime.strptime(tok, fmt)
                 return dt_parsed.hour * 60 + dt_parsed.minute
             except ValueError:
                 continue

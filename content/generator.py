@@ -323,7 +323,8 @@ mention it.
     }
 
 
-def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "sonnet") -> str:
+def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "sonnet",
+                     timeout: int = 300) -> str:
     """Shell out to the local `claude -p` CLI for description generation.
     Uses the Claude Code subscription instead of the API (avoids double-billing).
     Returns empty string on failure so caller can fall back to rules.
@@ -346,12 +347,15 @@ def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "so
     import os as _os
     neutral_cwd = _os.path.expanduser("~")
     try:
+        # timeout default raised 120 -> 300 (2026-06-12): W23/W24 enrichment
+        # batches timed out at 120s, fell back to rule-based templates, and
+        # shipped 165 pool-filler descriptions to the website.
         r = subprocess.run(
             [claude_bin, "-p", "--model", model],
             input=merged,
             capture_output=True,
             text=True,
-            timeout=120,
+            timeout=timeout,
             encoding="utf-8",
             errors="replace",
             cwd=neutral_cwd,

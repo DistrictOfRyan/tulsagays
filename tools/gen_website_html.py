@@ -223,28 +223,47 @@ for ev in events:
     except Exception:
         pass
 
+def _extract_start_time(t):
+    """Return the START time token of a time string as 'H:MM AM/PM' (or None).
+
+    Critical: in ranges like '9:00 - 10:30 AM' or '6 - 10 PM' the AM/PM only
+    appears on the END time. The old regex required the meridiem to be attached
+    to the match, so it grabbed the END time and the website displayed events
+    at their end time (W24: a 6-10 PM convention showed as 10 PM, a 9-10:30 AM
+    workshop as 10:30 AM). Here the FIRST numeric token wins and inherits the
+    first AM/PM that appears after it in the string.
+    """
+    if not t:
+        return None
+    import unicodedata
+    t = ''.join(' ' if unicodedata.category(c) == 'Zs' else c for c in t.strip().upper())
+    t = re.sub('[‐‑‒–—―−]', '-', t)
+    m = re.search(r'(\d{1,2}(?::\d{2})?)\s*(AM|PM)?', t)
+    if not m:
+        return None
+    num, mer = m.group(1), m.group(2)
+    if not mer:
+        m2 = re.search(r'(?<![A-Z])(AM|PM)(?![A-Z])', t[m.end():])
+        mer = m2.group(1) if m2 else None
+    return (num + ' ' + mer) if mer else num
+
+
 def _parse_minutes(t):
-    """Convert time string to minutes since midnight. Extracts start time from ranges."""
+    """Convert time string to minutes since midnight. Extracts START time from ranges."""
     if not t:
         return 9999
-    t = t.strip().upper()
-    # Normalize all Unicode spaces (narrow no-break, thin, hair, etc.) to ASCII space
-    import unicodedata
-    t = ''.join(' ' if unicodedata.category(c) == 'Zs' else c for c in t)
-    # Extract the FIRST recognizable time. No trailing  needed — re.search returns
-    # the leftmost match, so "6:30 PM8:00 PM18:3020:00" yields "6:30 PM" correctly.
-    m = re.search(r'\d{1,2}:\d{2}\s*(?:AM|PM)', t)
-    if not m:
-        m = re.search(r'\d{1,2}\s+(?:AM|PM)', t)
-    if m:
-        t = m.group(0).strip()
-    for fmt in ['%I:%M %p', '%H:%M', '%I:%M%p', '%I %p']:
+    tok = _extract_start_time(t)
+    if not tok:
+        return 9998
+    for fmt in ['%I:%M %p', '%H:%M', '%I %p']:
         try:
-            dt = datetime.strptime(t, fmt)
+            dt = datetime.strptime(tok, fmt)
             return dt.hour * 60 + dt.minute
         except Exception:
             pass
     return 9998
+
+
 def time_sort_key(e):
     t = (e.get('time') or '').strip()
     return _parse_minutes(t)
@@ -443,29 +462,21 @@ def _extract_address(raw: str) -> str:
 def format_time(t):
     if not t:
         return None, None
-    t_orig = t.strip()
-    t = t_orig.upper()
-    # Normalize all Unicode spaces to ASCII space
-    import unicodedata
-    t = ''.join(' ' if unicodedata.category(c) == 'Zs' else c for c in t)
     # Treat placeholder strings as untimed
-    if re.match(r'^check\b', t, re.I):
+    if re.match(r'^check', t.strip(), re.I):
         return None, None
-    # Extract the FIRST recognizable time. No trailing \b — leftmost re.search match
-    # handles concatenated output like "6:30 PM8:00 PM18:3020:00" correctly.
-    m = re.search(r'\d{1,2}:\d{2}\s*(?:AM|PM)', t)
-    if not m:
-        m = re.search(r'\b\d{1,2}\s+(?:AM|PM)', t)
-    if m:
-        t = m.group(0).strip()
-    for fmt in ['%I:%M %p', '%H:%M', '%I:%M%p', '%I %p']:
+    # Use the range-aware START extractor (shared with _parse_minutes) so a
+    # '9:00 - 10:30 AM' event displays as 9:00 AM, never its end time.
+    tok = _extract_start_time(t)
+    if not tok:
+        return None, None
+    for fmt in ['%I:%M %p', '%H:%M', '%I %p']:
         try:
-            dt = datetime.strptime(t, fmt)
+            dt = datetime.strptime(tok, fmt)
             return dt.strftime('%I:%M').lstrip('0') or '12:00', dt.strftime('%p')
         except Exception:
             pass
-    # Only use split fallback if parts[1] is a real AM/PM token
-    parts = t.split()
+    parts = tok.split()
     if len(parts) >= 2 and parts[1].upper() in ('AM', 'PM'):
         return parts[0], parts[1]
     return None, None

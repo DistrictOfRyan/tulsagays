@@ -12,8 +12,14 @@ Priority tiers (hard order, non-negotiable):
 Within each tier, secondary sort: Fri-Sun > Mon-Thu, has URL, richer description.
 
 NEVER EOTW — excluded unconditionally:
-  Bar events, bowling leagues, AA meetings, recurring weekly events (support groups,
-  health clinics, classes, sound baths), Club Majestic, and any non-LGBTQ event.
+  Bowling leagues, AA meetings, recurring weekly services (support groups,
+  health clinics, classes, sound baths), generic weekly bar promos, and any
+  non-LGBTQ event.
+
+NOTE (2026-06-12, William): the blanket Club Majestic venue ban is REMOVED.
+Special one-off events at Majestic / the Eagle (e.g. Lil' Shop of Horrors)
+are featurable and EOTW-eligible. Weekly recurring bar programming still
+never auto-wins EOTW — _sort_key deprioritizes source=recurring within tiers.
 """
 
 import json
@@ -62,10 +68,9 @@ _SKIP_NAME_FRAGMENTS = {
     "open for business",   # business-hours announcement, not a real event
 }
 
-_SKIP_VENUES = {
-    "majestic",            # Club Majestic — per organizer policy, never feature
-    "124 n boston",        # Club Majestic address fallback
-}
+# Venue-level bans REMOVED 2026-06-12 (William): Majestic/Eagle special events
+# are featurable. Keep the set so callers don't break; leave it empty.
+_SKIP_VENUES = set()
 
 
 # Service/recurring signals found in the DESCRIPTION (not the name). Catches
@@ -119,8 +124,8 @@ _HARD_SKIP_NAME_FRAGMENTS = {
     "raise your spiritual iq",              # generic self-help
 }
 
-# Venues hard-skipped per organizer policy (Club Majestic)
-_HARD_SKIP_VENUES = {"majestic", "124 n boston"}
+# Venue hard-skips REMOVED 2026-06-12 (William reversed the Majestic policy).
+_HARD_SKIP_VENUES = set()
 
 
 def _is_hard_skip(e: Dict) -> bool:
@@ -270,10 +275,15 @@ def _is_lgbtq_strict(e: Dict) -> bool:
 def _sort_key(e: Dict) -> tuple:
     """
     Secondary sort within a tier (ascending = better):
-      1. Weekend (Fri-Sun) before weekday
-      2. Has a URL (ticketed/specific) before no URL
-      3. Richer description (longer = more substance)
+      1. One-off events before weekly recurring (a special like Lil' Shop of
+         Horrors must beat DRAGNIFICENT-every-Thursday now that bar venues
+         are EOTW-eligible)
+      2. Weekend (Fri-Sun) before weekday
+      3. Has a URL (ticketed/specific) before no URL
+      4. Richer description (longer = more substance)
     """
+    recurring_score = 1 if (e.get("source") or "").lower() == "recurring" else 0
+
     date_str = e.get("date") or ""
     try:
         dt = datetime.strptime(date_str, "%Y-%m-%d")
@@ -284,7 +294,7 @@ def _sort_key(e: Dict) -> tuple:
     url_score  = 0 if e.get("url") else 1
     desc_score = -(len(e.get("description") or ""))  # negate — longer is better
 
-    return (day_score, url_score, desc_score)
+    return (recurring_score, day_score, url_score, desc_score)
 
 
 # ---------------------------------------------------------------------------

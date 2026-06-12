@@ -51,29 +51,47 @@ except ImportError:
 # ── Constants ────────────────────────────────────────────────────────────────
 SIMILARITY_THRESHOLD = 0.75
 
-# Generic LGBTQ keywords (universal — same across cities).
+# Explicit LGBTQ identity terms — matched with WORD BOUNDARIES. The old
+# substring check marked dozens of generic events "LGBTQ-relevant" every week:
+# 'bi' fired inside 'bingo'/'exhibit', 'trans' inside 'transform', and generic
+# cultural words like 'workshop' made an Owasso small-business workshop count
+# as an LGBTQ event (W24).
+_LGBTQ_IDENTITY_TERMS = [
+    "lgbtq", "lgbtqia", "lgbt", "queer", "gay", "gays", "lesbian", "bi",
+    "bisexual", "trans", "transgender", "nonbinary", "non-binary", "drag",
+    "pride", "rainbow", "dyke", "sapphic", "two-spirit", "twospirit", "homo",
+    "equality", "affirming", "pflag", "gender",
+]
+_LGBTQ_IDENTITY_RX = re.compile(
+    r"(?<![a-z0-9])(" + "|".join(re.escape(t) for t in _LGBTQ_IDENTITY_TERMS) + r")(?![a-z0-9])",
+    re.IGNORECASE,
+)
+
+# Queer-coded event types: reliably draw queer crowds even without explicit
+# LGBTQ branding. Substring match is fine for these multi-char phrases.
 LGBTQ_KEYWORDS = [
-    # Explicit identity
-    "lgbtq", "queer", "gay", "lesbian", "bi", "trans", "drag", "pride",
-    "rainbow", "dyke", "nonbinary", "non-binary", "gender", "equality",
-    "affirming", "inclusive", "homo", "sapphic", "two-spirit", "twospirit",
-    # Queer-adjacent / community-coded: events that reliably draw queer crowds
-    # even without explicit LGBTQ branding
     "oddities", "curiosities",          # Oddities & Curiosities touring market
     "burlesque", "cabaret",             # queer performance traditions
-    "feminist", "radical",              # progressive cultural events
-    "night market", "art market", "bazaar", "market",  # queer-popular market formats
     "wiz",                              # The Wiz (Black/queer cultural touchstone)
-    "greenwood", "black wall street",   # Black cultural events (intersectional)
     "boots riley",                      # radical filmmaker, queer community following
-    # Cultural event types — these are table stakes for community relevance
-    # at arts venues; the venue list (COMMUNITY_PARTNER_KEYWORDS) does the curation
-    "screening", "film festival", "documentary",   # film culture
-    "exhibition", "opening reception", "art opening",  # art openings
-    "workshop", "panel discussion", "panel", "lecture",  # community learning
-    "fundraiser", "benefit show", "benefit concert",     # community support
-    "cultural festival", "heritage",                     # cultural programming
-    "open mic", "poetry",                                # alternative performance
+    "gender outreach",
+]
+
+# Generic community/cultural signals — these KEEP an event (the website lists
+# all real Tulsa community events) but mark it community_event, NOT
+# lgbtq_relevant. They used to live in LGBTQ_KEYWORDS, which inflated the
+# LGBTQ counts feeding the content gate, the >=60% featured-LGBTQ target, and
+# the EOTW pool.
+COMMUNITY_CULTURE_KEYWORDS = [
+    "feminist", "radical",
+    "night market", "art market", "bazaar", "market",
+    "greenwood", "black wall street",
+    "screening", "film festival", "documentary",
+    "exhibition", "opening reception", "art opening",
+    "workshop", "panel discussion", "panel", "lecture",
+    "fundraiser", "benefit show", "benefit concert",
+    "cultural festival", "heritage",
+    "open mic", "poetry",
 ]
 
 # Generic non-LGBTQ blocklist — sports, oil/gas, mass non-LGBTQ religious events.
@@ -101,6 +119,12 @@ JUNK_NAMES = {
     "learn more", "view all", "see more", "load more", "rsvp",
     "register", "sign up", "donate", "subscribe", "contact us",
     "home", "about", "menu", "calendar", "events", "back",
+    # Google Events card artifacts (W24 shipped three "Information and Tickets" cards)
+    "information and tickets", "information and tickets ...",
+    "get directions", "tickets & info", "more information", "event details",
+    # Org-site navigation text that scrapes as "events" (community_groups)
+    "weekly events", "upcoming events", "stay connected", "our partners",
+    "event application", "event calendar", "get your tickets",
 }
 
 # Compose city-specific values from config (with safe fallbacks for new-city scaffolds).
@@ -180,7 +204,12 @@ def _is_junk_name(name: str) -> bool:
     """Return True if the name is clearly navigation/UI text, not an event."""
     if not name or len(name) < 5:
         return True
-    if name.lower().strip() in JUNK_NAMES:
+    low = name.lower().strip()
+    if low in JUNK_NAMES:
+        return True
+    # Punctuation variants: "(map)", "Get Your Tickets!", "WEEKLY EVENTS:"
+    stripped = re.sub(r"[^a-z0-9& ]", "", low).strip()
+    if stripped in JUNK_NAMES:
         return True
     if len(name) > 200:
         return True
@@ -210,7 +239,10 @@ def _is_clearly_not_lgbtq(event: Dict) -> bool:
 
 
 def _is_lgbtq_relevant(event: Dict) -> bool:
-    """Return True if this event is LGBTQ-relevant or from a community partner org."""
+    """Return True if this event is genuinely LGBTQ-relevant (trusted source,
+    identity term with word boundaries, or queer-coded event type). Generic
+    cultural events and partner-venue events are handled separately — they are
+    KEPT but classified community_event, not LGBTQ."""
     source = event.get("source", "")
     if source in LGBTQ_SOURCES:
         return True
@@ -219,11 +251,25 @@ def _is_lgbtq_relevant(event: Dict) -> bool:
         event.get("description", ""),
         event.get("url", ""),
     ]).lower()
+    if _LGBTQ_IDENTITY_RX.search(combined):
+        return True
     if any(kw in combined for kw in LGBTQ_KEYWORDS):
         return True
+    return False
+
+
+def _is_community_keeper(event: Dict) -> bool:
+    """Genuine Tulsa community/cultural event or queer-welcoming partner venue —
+    keep on the website even without LGBTQ relevance."""
+    combined = " ".join([
+        event.get("name", ""),
+        event.get("description", ""),
+        event.get("venue", ""),
+        event.get("url", ""),
+    ]).lower()
     if any(kw in combined for kw in COMMUNITY_PARTNER_KEYWORDS):
         return True
-    return False
+    return any(kw in combined for kw in COMMUNITY_CULTURE_KEYWORDS)
 
 
 # ── Geographic filter ──────────────────────────────────────────────────────
@@ -290,10 +336,58 @@ _SPAM_NOISE_KW = (
     "investors founders",
 )
 
+# Civic / government / business-networking noise — W24 shipped an Owasso city
+# small-business workshop and a Chamber of Commerce legislative breakfast.
+# These never belong on an LGBTQ+ community events guide. Applied only to
+# events that are NOT lgbtq_relevant, so a "Pride Night at City Hall" or an
+# LGBTQ chamber mixer still passes.
+_CIVIC_NOISE_KW = (
+    "city council", "council meeting", "town hall meeting", "school board",
+    "planning commission", "board of adjustment", "county commission",
+    "city commission", "chamber of commerce", "legislative wrap-up",
+    "legislative breakfast", "legislative update", "small business workshop",
+    "business workshop", "lunch and learn", "lunch & learn", "ribbon cutting",
+    "rotary club", "kiwanis", "toastmasters", "economic development",
+    "homeowners association", "hoa meeting", "brotherhood breakfast",
+)
+_CIVIC_VENUE_KW = (
+    "chamber of commerce", "city hall", "city of owasso", "city of broken arrow",
+    "city of bixby", "city of jenks", "city of sand springs", "city of sapulpa",
+)
+
+# Children's / library-kids programming — real events, wrong audience for the
+# site (W24 listed baby storytimes, Teen Time: Gaming, kids' day camps).
+_KIDS_NOISE_KW = (
+    "storytime", "story time", "toddlers", "babies", "teen time",
+    "kids camp", "day camp", "summer camp", "vacation bible school",
+    "pint-size", "build a reader", "kids club", "children's program",
+)
+
+# Mainstream pro/minor-league sports game listings. Only applied to
+# non-LGBTQ events, so "Pride Night at the Drillers" still passes.
+_MAINSTREAM_SPORTS_KW = (
+    "tulsa drillers", "wind surge", "fc tulsa", "tulsa oilers",
+    "tulsa roughnecks", "at tulsa drillers", "vs. tulsa",
+)
+
 
 def _is_spam_noise(event: Dict) -> bool:
     text = ((event.get("name") or "") + " " + (event.get("description") or "")).lower()
     return any(sig in text for sig in _SPAM_NOISE_KW)
+
+
+def _is_offtopic_noise(event: Dict) -> tuple:
+    """(True, reason) when a non-LGBTQ event is civic/government, kids-library,
+    or mainstream-sports noise that makes no sense on the site."""
+    text = ((event.get("name") or "") + " " + (event.get("description") or "")).lower()
+    venue = (event.get("venue") or "").lower()
+    if any(kw in text for kw in _CIVIC_NOISE_KW) or any(kw in venue for kw in _CIVIC_VENUE_KW):
+        return True, "civic/government/business-networking"
+    if any(kw in text for kw in _KIDS_NOISE_KW):
+        return True, "children's programming"
+    if any(kw in text or kw in venue for kw in _MAINSTREAM_SPORTS_KW):
+        return True, "mainstream sports game"
+    return False, ""
 
 
 def _location_text(event: Dict) -> str:
@@ -371,12 +465,19 @@ def apply_quality_filters(events: List[Dict]) -> List[Dict]:
 
         # Filter 5: keep genuine Tulsa community/cultural events even without
         # LGBTQ keywords — they populate the WEBSITE (William: all events you
-        # find go on the website) and the featured-candidate pool. Only clear
-        # non-community SPAM (career/investor/MLM/job-fair) is dropped here.
+        # find go on the website) and the featured-candidate pool. Drop clear
+        # non-community SPAM (career/investor/MLM/job-fair) AND off-topic noise
+        # (civic/government meetings, kids' library programming, mainstream
+        # sports games — the W24 "Owasso city council" class of nonsense).
         if source not in LGBTQ_SOURCES and not event["lgbtq_relevant"]:
             if _is_spam_noise(event):
                 removed_counts["not_lgbtq_relevant"] += 1
                 logger.info(f"[filter] Spam/non-community removed: '{name}' (source={source})")
+                continue
+            offtopic, reason = _is_offtopic_noise(event)
+            if offtopic:
+                removed_counts["not_lgbtq_relevant"] += 1
+                logger.info(f"[filter] Off-topic removed ({reason}): '{name}' (source={source})")
                 continue
             event["community_event"] = True   # kept, not LGBTQ-specific
 
@@ -491,31 +592,81 @@ def ensure_signature_event(events: List[Dict]) -> List[Dict]:
 ensure_homo_hotel = ensure_signature_event
 
 
+_UNICODE_DASHES = "‐‑‒–—―−"  # ‐‑‒–—―−
+_TIME_TOKEN_RX = re.compile(r"^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?$", re.IGNORECASE)
+
+
+def _clean_time_text(t: str) -> str:
+    """Normalize unicode whitespace (thin/narrow no-break spaces from Google
+    Events) to ASCII space and unicode dashes to '-'. Google emits times like
+    '6 - 10 PM' which the old ASCII-only parsing missed entirely."""
+    import unicodedata
+    t = "".join(" " if unicodedata.category(c) == "Zs" else c for c in t)
+    for d in _UNICODE_DASHES:
+        t = t.replace(d, "-")
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def _parse_time_token(tok: str, meridiem_hint: str = None):
+    """Parse '6', '6:30', '6 PM', '18:30' -> (hour24, minute) or None.
+    A bare number is only accepted when a meridiem hint is supplied (i.e. it
+    came from a range like '6 - 10 PM' whose other side carries the AM/PM)."""
+    m = _TIME_TOKEN_RX.match(tok.strip())
+    if not m:
+        return None
+    h, mins = int(m.group(1)), int(m.group(2) or 0)
+    mer = (m.group(3) or meridiem_hint or "").upper()
+    if mins > 59:
+        return None
+    if mer:
+        if not 1 <= h <= 12:
+            return None
+        if mer == "PM" and h != 12:
+            h += 12
+        elif mer == "AM" and h == 12:
+            h = 0
+    else:
+        # No meridiem anywhere: only accept unambiguous 24h with minutes ("19:00")
+        if m.group(2) is None or not 0 <= h <= 23:
+            return None
+    return h, mins
+
+
+def _fmt_12h(hm) -> str:
+    return datetime(2000, 1, 1, hm[0], hm[1]).strftime("%I:%M %p").lstrip("0")
+
+
 def _normalize_time_str(t: str) -> str:
-    """Convert any time string to 12-hour AM/PM format (e.g. '19:00' -> '7:00 PM')."""
-    t = t.strip()
-    # Handle ranges like "7:00 PM - 9:00 PM" — normalize just the first part
-    first = t.split(" - ")[0].split(" to ")[0].strip()
-    for fmt in ["%I:%M %p", "%I:%M%p", "%H:%M", "%I %p"]:
-        try:
-            dt = datetime.strptime(first.upper(), fmt)
-            result = dt.strftime("%I:%M %p").lstrip("0")
-            # Preserve range suffix if present
-            if " - " in t:
-                end = t.split(" - ", 1)[1].strip()
-                # Normalize end time too
-                for efmt in ["%I:%M %p", "%I:%M%p", "%H:%M", "%I %p"]:
-                    try:
-                        edt = datetime.strptime(end.upper(), efmt)
-                        end = edt.strftime("%I:%M %p").lstrip("0")
-                        break
-                    except Exception:
-                        pass
-                return f"{result} - {end}"
-            return result
-        except Exception:
-            pass
-    return t  # Return as-is if unparseable
+    """Convert any scraped time string to canonical 12-hour AM/PM format.
+
+    Handles the formats that previously broke downstream display:
+      '6 - 10 PM'  -> '6:00 PM - 10:00 PM'  (unicode spaces, shared meridiem)
+      '9:00 - 10:30 AM'           -> '9:00 AM - 10:30 AM'
+      '19:00'                     -> '7:00 PM'
+    The old code split only on ASCII ' - ', so unicode-dash ranges fell through
+    unparsed and the website's display regex then grabbed the only AM/PM-tagged
+    token: the END time (soda-bottle convention at '6 - 10 PM' rendered as 10 PM).
+    Unparseable strings (e.g. 'Doors 9 PM, Show 10 PM') are returned unchanged."""
+    raw = t.strip()
+    cleaned = _clean_time_text(raw)
+    parts = re.split(r"\s*(?:-|\bto\b)\s*", cleaned, maxsplit=1, flags=re.IGNORECASE)
+    if len(parts) == 2:
+        start_s, end_s = parts[0].strip(), parts[1].strip()
+        sm = _TIME_TOKEN_RX.match(start_s)
+        em = _TIME_TOKEN_RX.match(end_s)
+        # In shorthand ranges the side missing AM/PM inherits the other side's
+        # ('6 - 10 PM' means 6 PM; '9:00 AM - 1' means 1 AM is wrong but unseen)
+        end_hint = em.group(3).upper() if (em and em.group(3)) else None
+        start_hint = sm.group(3).upper() if (sm and sm.group(3)) else None
+        start = _parse_time_token(start_s, meridiem_hint=end_hint)
+        end = _parse_time_token(end_s, meridiem_hint=start_hint)
+        if start and end:
+            return f"{_fmt_12h(start)} - {_fmt_12h(end)}"
+        if start:
+            return f"{_fmt_12h(start)} - {end_s}" if end_s else _fmt_12h(start)
+        return raw
+    single = _parse_time_token(parts[0])
+    return _fmt_12h(single) if single else raw
 
 
 # ── Save ─────────────────────────────────────────────────────────────────────
@@ -799,8 +950,20 @@ def main():
         if raw_t:
             ev["time"] = _normalize_time_str(raw_t)
 
-    # 6. Save results
+    # 5c. Sanity checker — quarantines off-topic/junk/implausible events the
+    # keyword filters missed (2026-W24 shipped Owasso civic meetings, kids
+    # storytimes, and end-time-as-start-time renders). Runs BEFORE save so the
+    # _all/_weekday/_weekend splits are all written clean. Uses an LLM verdict
+    # pass when available; NEVER allowed to break the scrape itself.
     week_key = get_week_key()
+    try:
+        from tools.sanity_check_events import sanitize as _sanitize
+        sorted_events, _sanity_report = _sanitize(sorted_events, week_key, use_llm=True)
+    except Exception as exc:
+        logger.error(f"[sanity] checker failed (saving unsanitized output): {exc}",
+                     exc_info=True)
+
+    # 6. Save results
     paths = save_results(sorted_events, week_key)
 
     logger.info(f"\nResults saved for week {week_key}:")

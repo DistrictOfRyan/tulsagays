@@ -34,8 +34,8 @@ ARTICLE_META = {
         ],
         "socials": [
             {"name": "Club Majestic", "ig": "clubmajestictulsa", "fb": "https://www.facebook.com/clubmajestictulsa"},
-            {"name": "Tulsa Eagle", "ig": "tulsaeagleok", "fb": "https://www.facebook.com/tulsaeagle"},
-            {"name": "Yellow Brick Road", "ig": "ybrtulsa", "fb": "https://www.facebook.com/YBRTulsa"},
+            {"name": "Tulsa Eagle", "ig": "tulsaeagle", "fb": "https://www.facebook.com/tulsaeagle"},
+            {"name": "Yellow Brick Road", "ig": "tulsaybr", "fb": "https://www.facebook.com/YBRTulsa"},
         ],
         "related": ["gay-tulsa-travel-guide", "date-night-queer-tulsa", "new-to-tulsa-queer-starter-pack"],
         "toc": True,

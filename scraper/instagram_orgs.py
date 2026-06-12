@@ -88,6 +88,33 @@ ORGS: List[Dict] = [
         "blurb": "Goff Center / Goff Fest. Architecture, art, and Pride programming "
                  "celebrating Tulsa's queer cultural legacy. Details on Instagram @goff_fest.",
     },
+    # Gay bars (added 2026-06-12). Their websites are DNS-dead; IG is the only
+    # place they announce events. W24 missed every Eagle/Majestic Pride event
+    # because nothing scraped them.
+    {
+        "username": "tulsaeagle",
+        "source_name": "tulsa_eagle_ig",
+        "default_venue": "Tulsa Eagle, 1338 E 3rd St",
+        "priority": 2,
+        "blurb": "Tulsa Eagle, Tulsa's levi-leather LGBTQ+ bar. "
+                 "Details on Instagram @tulsaeagle.",
+    },
+    {
+        "username": "clubmajestictulsa",
+        "source_name": "club_majestic_ig",
+        "default_venue": "Club Majestic, 124 N Boston Ave",
+        "priority": 2,
+        "blurb": "Club Majestic, Tulsa's flagship LGBTQ+ nightclub downtown. "
+                 "Details on Instagram @clubmajestictulsa.",
+    },
+    {
+        "username": "tulsaybr",
+        "source_name": "ybr_ig",
+        "default_venue": "Yellow Brick Road, 2630 E 15th St",
+        "priority": 2,
+        "blurb": "Yellow Brick Road, Oklahoma's lesbian bar. "
+                 "Details on Instagram @tulsaybr.",
+    },
 ]
 
 

@@ -1258,6 +1258,9 @@ LGBTQ_SOURCES = {
     "studio_66",  # @studio.66_ — LGBTQIA+ nonprofit / roving events collective
     "klassic",      # @upflykai — Black queer Tulsa events collective (Melanin Pride Yoga, etc.)
     "goff_center",  # @goff_fest / goff-fest.com — Bruce Goff queer cultural legacy + Pride programming
+    "tulsa_eagle_ig",    # @tulsaeagleok — Eagle events are only announced on IG (site DNS-dead)
+    "club_majestic_ig",  # @clubmajestictulsa — Majestic specials (the Lil' Shop of Horrors class)
+    "ybr_ig",            # @ybrtulsa — Yellow Brick Road (lesbian bar), IG-only events
 
     "pflag_tulsa", "black_queer_tulsa", "freedom_oklahoma",
     "utulsa_pride", "osu_tulsa",
