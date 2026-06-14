@@ -1,71 +1,71 @@
 {
   "schema_version": "1.0",
   "city": "Tulsa",
-  "generated": "2026-06-04",
+  "generated": "2026-06-14",
   "license": "Free to use with attribution to tulsagays.com",
   "coverage": {
-    "coverage_pct": 94.4,
-    "covered": 34,
+    "coverage_pct": 97.2,
+    "covered": 35,
     "total": 36,
-    "gaps": 2
+    "gaps": 1
   },
-  "source_count": 222,
+  "source_count": 236,
   "event_count": 8,
   "events": [
     {
-      "name": "PROJECTION PUBLIC ART SERIES: 'UNTITLED' TATYANA FAZLALIZADEH",
-      "date": "2026-06-01",
-      "time": "10:00 AM",
-      "venue": "Flagship / Tulsa Artist Fellowship, 112 N Boston Ave",
-      "url": null
-    },
-    {
-      "name": "Making Friends As An Adult is HARD",
-      "date": "2026-06-01",
-      "time": "11:00 PM",
-      "venue": "Meetup Tulsa",
-      "url": null
-    },
-    {
-      "name": "Greenwood Rising Resilience Leadership Luncheon with Russel L. Honoré",
-      "date": "2026-06-01",
-      "time": "11:30 AM",
-      "venue": "The Vista at 21",
-      "url": null
-    },
-    {
-      "name": "Lambda Bowling League",
-      "date": "2026-06-01",
-      "time": "7:00 PM",
-      "venue": "AMF Sheridan Lanes, 3121 S Sheridan Rd",
-      "url": null
-    },
-    {
-      "name": "Monday Movie Night at the Tulsa Eagle",
-      "date": "2026-06-01",
-      "time": "7:00 PM",
-      "venue": "Tulsa Eagle, 1338 E 3rd St, Tulsa, OK",
-      "url": null
-    },
-    {
-      "name": "Gaymer Night at the Tulsa Eagle",
-      "date": "2026-06-01",
-      "time": "8:00 PM",
-      "venue": "Tulsa Eagle, 1338 E 3rd St, Tulsa, OK",
-      "url": null
-    },
-    {
-      "name": "Highly Suspect in Concert",
-      "date": "2026-06-02",
+      "name": "2026 Pinto World Championship",
+      "date": "2026-06-08",
       "time": "",
-      "venue": "The Tulsa Theater, 105 W Reconciliation Way, Tulsa, OK",
+      "venue": "Jun 8 – 20",
       "url": null
     },
     {
-      "name": "OKEQ Senior's",
-      "date": "2026-06-02",
+      "name": "Information and Tickets",
+      "date": "2026-06-08",
+      "time": "",
+      "venue": "Eventbrite.com",
+      "url": null
+    },
+    {
+      "name": "Band Camp",
+      "date": "2026-06-08",
+      "time": "",
+      "venue": "UTulsa Calendar - The University of Tulsa",
+      "url": null
+    },
+    {
+      "name": "Rock 101 Camp",
+      "date": "2026-06-08",
       "time": "10:00 AM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "venue": "School of Rock",
+      "url": null
+    },
+    {
+      "name": "Build A Reader Storytime: Babies",
+      "date": "2026-06-08",
+      "time": "10:00 - 10:20 AM",
+      "venue": "Hardesty Regional Library, 8316 E 93rd St",
+      "url": null
+    },
+    {
+      "name": "Full Day Camp",
+      "date": "2026-06-08",
+      "time": "10:30 AM",
+      "venue": "Active.com",
+      "url": null
+    },
+    {
+      "name": "Citizenship 101",
+      "date": "2026-06-08",
+      "time": "10:30 - 11:45 AM",
+      "venue": "Kendall-Whittier Library, 21 S Lewis Ave",
+      "url": null
+    },
+    {
+      "name": "Pint-Size Polka With Mike Schneider",
+      "date": "2026-06-08",
+      "time": "11:00 AM",
+      "venue": "Jenks Library, 523 W B St",
       "url": null
     }
   ]
