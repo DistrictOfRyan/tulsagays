@@ -66,6 +66,8 @@ _SKIP_NAME_FRAGMENTS = {
     "derby watch",
     "derby hat",
     "open for business",   # business-hours announcement, not a real event
+    "okeq closed",         # org-closure notice (e.g. "OKEQ Closed") — not an event
+    "office closed", "center closed", "closed today", "closed for the",
 }
 
 # Venue-level bans REMOVED 2026-06-12 (William): Majestic/Eagle special events
@@ -217,7 +219,23 @@ def _text(e: Dict) -> str:
     ]).lower()
 
 
+# Car "drag racing" / "drag strip" events keep tripping the LGBTQ "drag"
+# keyword (e.g. "Fun Friday Drags Night @ Tulsa Raceway Park", "Motorama at the
+# Drag Strip - Car Show"). They are NOT queer events — never let them count as
+# LGBTQ, earn flamingos, or get featured. (William 2026-06-15: feature gay ones.)
+_DRAG_RACING_KW = (
+    "drag strip", "drag racing", "drag race", "dragway", "dragster",
+    "raceway", "speedway", "motorama", "motorsport", "nhra", "car show",
+)
+
+
+def _is_drag_racing(e: Dict) -> bool:
+    return any(kw in _text(e) for kw in _DRAG_RACING_KW)
+
+
 def _is_drag(e: Dict) -> bool:
+    if _is_drag_racing(e):
+        return False
     t = _text(e)
     return any(kw in t for kw in _DRAG_KW)
 
@@ -230,6 +248,8 @@ def _is_queer_perf(e: Dict) -> bool:
 def _is_lgbtq(e: Dict) -> bool:
     if (e.get("source") or "").lower() in _TRUSTED_LGBTQ_SRCS:
         return True
+    if _is_drag_racing(e):
+        return False
     t = _text(e)
     return any(kw in t for kw in _LGBTQ_KW)
 
@@ -242,7 +262,12 @@ _STRICT_LGBTQ_KW = {
     "lgbtq", "lgbtqia", "queer", "gay", "lesbian", "trans",
     "bisexual", "nonbinary", "non-binary", "sapphic", "dyke",
     "pride", "rainbow", "homo hotel", "hhhh",
-    "drag", "two-spirit", "pflag",
+    # Specific drag-PERFORMANCE phrases only — never the bare token "drag",
+    # which substring-matched "DRAGon Paper Craft" (a kids' library craft) and
+    # car "drag racing". (William 2026-06-15: feature gay ones.)
+    "drag show", "drag queen", "drag king", "drag brunch", "drag night",
+    "drag bingo", "drag ball", "drag pageant", "drag revue", "drag performance",
+    "dragnificent", "drags", "two-spirit", "pflag",
     "okeq", "oklahomans for equality", "equality center",
     "dennis r. neill", "dennis r neill",
     "council oak", "comc",
@@ -262,10 +287,26 @@ def _is_lgbtq_strict(e: Dict) -> bool:
     """
     if (e.get("source") or "").lower() in _TRUSTED_LGBTQ_SRCS:
         return True
+    if _is_drag_racing(e):
+        return False
     name = (e.get("name") or "").lower()
     venue = (e.get("venue") or "").lower()
+    # Events at Tulsa's gay bars / queer venues ARE gay events even without a
+    # keyword in the title (e.g. "Monday Movie Night" at the Tulsa Eagle).
+    if any(sig in venue for sig in _GAY_VENUE_SIGNATURES):
+        return True
     text = name + " " + venue
     return any(kw in text for kw in _STRICT_LGBTQ_KW)
+
+
+# Tulsa gay bars / queer venues — by address and name. An event here counts as
+# LGBTQ even if the title is neutral. (Eagle, Club Majestic, DVL.)
+_GAY_VENUE_SIGNATURES = (
+    "1338 e 3rd", "tulsa eagle",
+    "124 n boston", "club majestic",
+    "302 s frankfort", "302 south frankfort", "302 s. frankfort",
+    "dennis r. neill", "dennis r neill", "equality center",
+)
 
 
 # ---------------------------------------------------------------------------

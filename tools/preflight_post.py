@@ -275,11 +275,26 @@ def run(week_key=None):
         warnings.append("[sanity] no sanity report for this week — "
                         "run tools/sanity_check_events.py after the scrape")
 
-    # ── WEBSITE COPY VOICE (W24 shipped 165/214 templated pool one-liners) ──
-    # When enrichment fails wholesale, the dedupe pool fills the whole site
-    # with "Do future-you a favor..." filler. Measure the templated ratio
-    # across the week's full event file: >40% means enrichment died — block
-    # and re-run it; >10% is a warning for the Monday voice pass.
+    # ── SLIDE COPY VOICE (the hero cards people actually see) ──
+    # The W24 embarrassment was templated filler ON THE SLIDES. That is the
+    # hard block: FEATURED + EOTW copy must be real Alicia/RuPaul/Dolly voice,
+    # written in the Monday voice pass (Step 2.1), never pool filler.
+    # Rule-based copy is the ACCEPTED FLOOR for the hundreds of non-featured
+    # website listings (the automated pipeline does not run nested-LLM
+    # enrichment over all 213), so the full-file ratio is only a warning now.
+    # (Re-scoped 2026-06-15 — see feedback_tulsagays_featured_gay_first.)
+    _slide_events = list(eotw) + list(featured_all)
+    if _slide_events:
+        _stpl = sum(
+            1 for e in _slide_events
+            if _looks_templated(e.get("description"))
+            or _looks_templated(e.get("website_description")))
+        _sratio = _stpl / len(_slide_events)
+        if _sratio > 0.25:
+            errors.append(
+                f"[voice] {_stpl}/{len(_slide_events)} ({_sratio:.0%}) FEATURED/EOTW slide "
+                f"descriptions are templated filler — rewrite them in the RuPaul x Dolly voice "
+                f"(Monday Step 2.1) before posting; the slides are the hero content")
     try:
         _all_path = os.path.join(config.DATA_DIR, "events", f"{week_key}_all.json")
         with open(_all_path, encoding="utf-8") as _af:
@@ -291,16 +306,10 @@ def run(week_key=None):
                 if _looks_templated(e.get("description"))
                 or _looks_templated(e.get("website_description")))
             _ratio = _tpl / len(_all_events)
-            if _ratio > 0.40:
-                errors.append(
-                    f"[voice] {_tpl}/{len(_all_events)} ({_ratio:.0%}) website descriptions are "
-                    f"templated pool filler — enrichment failed; re-run "
-                    f"`python main.py generate-all` (or content.generator.enrich_event_descriptions) "
-                    f"before posting")
-            elif _ratio > 0.10:
+            if _ratio > 0.10:
                 warnings.append(
-                    f"[voice] {_tpl}/{len(_all_events)} ({_ratio:.0%}) website descriptions are "
-                    f"templated filler — rewrite the worst in the Monday voice pass")
+                    f"[voice] {_tpl}/{len(_all_events)} ({_ratio:.0%}) website-tail descriptions are "
+                    f"rule-based filler — acceptable as a floor; improve via the voice pass over time")
     except FileNotFoundError:
         warnings.append(f"[voice] no {week_key}_all.json — cannot check website copy")
     except Exception as _ve:

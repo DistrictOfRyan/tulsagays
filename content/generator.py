@@ -400,6 +400,22 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
     if not events:
         return events
 
+    import os, time as _time
+    # RELIABILITY (2026-06-15): the nested `claude -p` enrichment hangs/stacks
+    # (~300s per batch x ~21 batches => >1 hr) and silently blew past the Monday
+    # post window. Two guards make weekly automation safe:
+    #   1) TULSAGAYS_RULE_ENRICH=1 forces the fast, deterministic rule-based path
+    #      (scheduled runs set this; the orchestrating agent rewrites only the
+    #      featured/EOTW blurbs in-voice afterward, in-context, no nested CLI).
+    #   2) TULSAGAYS_ENRICH_BUDGET_S caps total CLI wall-clock; once spent, every
+    #      remaining batch uses rule-based so generation can never stall the post.
+    # See feedback_headless_background_yield_trap + feedback_nested_claude_cli_prompt_size.
+    if os.environ.get("TULSAGAYS_RULE_ENRICH", "").strip().lower() in ("1", "true", "yes"):
+        print("[generator] TULSAGAYS_RULE_ENRICH set — fast rule-based enrichment (no nested claude CLI)")
+        return _rule_based_enrich_all(events)
+    _budget_s = int(os.environ.get("TULSAGAYS_ENRICH_BUDGET_S", "240"))
+    _enrich_start = _time.monotonic()
+
     # Try claude CLI first (subscription, no double-billing). Use API only if CLI
     # unavailable AND a key is configured. Rule-based is the final fallback.
     import shutil
@@ -464,6 +480,18 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
             "\n\nReply with ONLY this exact format, two lines per event, nothing else:\n"
             "1S. [short pitch]\n1L. [long description]\n2S. [short pitch]\n2L. [long description]"
         )
+
+        # RELIABILITY: once the flaky nested CLI has burned its wall-clock budget,
+        # stop calling it — every remaining batch gets fast rule-based copy so slide
+        # generation can never stall past the Monday post window.
+        if use_cli and (_time.monotonic() - _enrich_start) > _budget_s:
+            print(f"[generator] CLI enrichment budget ({_budget_s}s) exceeded — rule-based for remaining events")
+            use_cli = False
+        if not use_cli and client is None:
+            for _, ev in batch:
+                if not (ev.get("description") or "").strip() or _is_scraper_artifact(ev.get("description") or ""):
+                    ev["description"] = _rule_based_enrich(ev)
+            continue
 
         try:
             sys_prompt = (

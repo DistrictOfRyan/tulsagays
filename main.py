@@ -206,18 +206,25 @@ def cmd_generate(post_type="weekday"):
 
     date_range = get_date_range(post_type)
 
-    # Enrich events with exciting descriptions
-    print("\nEnriching event descriptions...")
-    try:
-        from content.generator import enrich_event_descriptions
-        events = enrich_event_descriptions(events)
-        print(f"Enriched {len(events)} events with compelling descriptions")
-        # Save enriched descriptions back to JSON so website and other tools use them
-        with open(events_file, "w", encoding="utf-8") as _f:
-            json.dump(events, _f, ensure_ascii=False, indent=2)
-        print(f"Enriched descriptions saved to {events_file}")
-    except Exception as e:
-        print(f"Event enrichment skipped: {e}")
+    # Enrich events with exciting descriptions.
+    # TULSAGAYS_SKIP_ENRICH=1 renders slides straight from the copy already in
+    # {week}_all.json WITHOUT re-enriching — this is the Step 2.1 path: the agent
+    # hand-writes the featured/EOTW blurbs in-voice, saves them, then re-renders
+    # so the enricher (which force-rewrites OKEQ copy) can't clobber the rewrites.
+    if os.environ.get("TULSAGAYS_SKIP_ENRICH", "").strip().lower() in ("1", "true", "yes"):
+        print("\nTULSAGAYS_SKIP_ENRICH set — rendering from existing copy (no re-enrichment)")
+    else:
+        print("\nEnriching event descriptions...")
+        try:
+            from content.generator import enrich_event_descriptions
+            events = enrich_event_descriptions(events)
+            print(f"Enriched {len(events)} events with compelling descriptions")
+            # Save enriched descriptions back to JSON so website and other tools use them
+            with open(events_file, "w", encoding="utf-8") as _f:
+                json.dump(events, _f, ensure_ascii=False, indent=2)
+            print(f"Enriched descriptions saved to {events_file}")
+        except Exception as e:
+            print(f"Event enrichment skipped: {e}")
 
     # Generate caption
     print("\nGenerating caption...")
@@ -443,6 +450,21 @@ def cmd_generate(post_type="weekday"):
         "live music", "bingo", "mixer", "social", "cabaret", "disco", "ball",
         "prom", "kickoff", "celebration", "rooftop", "go-go", "art crawl",
         "happy hour", "night", "gala", "premiere", "screening", "open mic",
+        # adult-appealing cultural/nightlife signals (so author talks, album
+        # releases, comedy, tastings, pop-ups surface over kids' library hours)
+        "an evening with", "author", "reading", "in conversation", "book signing",
+        "album release", "album", "ep release", "improv", "stand-up", "standup",
+        "tasting", "pop up", "pop-up", "movie night", "film", "exhibit",
+        "opening reception", "art opening", "burlesque", "variety", "talent",
+    )
+    # Kids' / daytime-library / family filler — real events, but they belong on
+    # the website list, NOT in the featured slots over adult-appealing events.
+    _KIDS_FILLER_KW = (
+        "dino", "dinosaur", "pet rock", "weather show", "story time", "storytime",
+        "toddler", "preschool", "baby", "kids", "children", "kid-friendly",
+        "make and take", "corn husk", "corn-husk", "balloon-twisting",
+        "balloon twisting", "bubble stage", "teen craft", "inspyral circus",
+        "lego", "family fun", "homeschool", "sensory",
     )
     _AGGREGATOR_SRC = {"meetup", "extended_calendars", "eventbrite"}
 
@@ -476,7 +498,9 @@ def cmd_generate(post_type="weekday"):
             # Hard-exclude services / girl scouts / therapy / AA / clinics.
             if _is_skip(e) or e.get("never_feature"):
                 return False
-            combo = ((e.get("name") or "") + " " + (e.get("description") or "")).lower()
+            # Classify on NAME + VENUE, never the generated description — so writing
+            # voice copy can't reshuffle which events get featured (stable selection).
+            combo = ((e.get("name") or "") + " " + (e.get("venue") or "")).lower()
             # Exclude clear off-topic business/seminar spam.
             if not _is_lgbtq_strict(e) and any(k in combo for k in _JUNK_KW):
                 return False
@@ -486,21 +510,23 @@ def cmd_generate(post_type="weekday"):
             return True
 
         def _rank(e):
-            combo = ((e.get("name") or "") + " " + (e.get("description") or "")).lower()
+            # Classify on NAME + VENUE, never the generated description — so writing
+            # voice copy can't reshuffle which events get featured (stable selection).
+            combo = ((e.get("name") or "") + " " + (e.get("venue") or "")).lower()
             lg = _is_lgbtq_strict(e)
             rec = _recurring(e)
             fun = any(k in combo for k in _FUN_KW)
-            # group 0 = fun one-off (best), 1 = lgbtq one-off, 2 = other one-off,
-            # 3 = recurring (only if a day is thin). Then lgbtq, then fun.
-            if fun and not rec:
-                g = 0
-            elif lg and not rec:
-                g = 1
-            elif not rec:
-                g = 2
-            else:
-                g = 3
-            return (g, 0 if lg else 1, 0 if fun else 1, _slide_priority(e))
+            kids = any(k in combo for k in _KIDS_FILLER_KW)
+            # GAY-FIRST (William 2026-06-15: "feature gay ones"), then keep kids'/
+            # daytime-library filler OUT of the featured slots in favor of real
+            # adult-appealing events, then one-off before recurring, then fun.
+            return (
+                0 if lg else 1,            # 1) gay events lead, always
+                1 if kids else 0,          # 2) kids/library filler sinks below adult events
+                1 if rec else 0,           # 3) one-off before weekly/recurring
+                0 if fun else 1,           # 4) fun, leave-the-house events first
+                _slide_priority(e),        # 5) existing tier/time tiebreak
+            )
 
         # Only eligible (fun / one-off / inclusive, non-service) events ever
         # reach the slide. Services/never-feature/aggregator-noise are dropped
@@ -510,11 +536,14 @@ def cmd_generate(post_type="weekday"):
         feat_pool = sorted(eligible, key=_rank)
         target = min(3, len(feat_pool))
 
-        # Aim for >=60% LGBTQ among the featured 3 when the day allows.
+        # FEATURE GAY EVENTS FIRST (William 2026-06-15). Fill every featured slot
+        # with genuinely LGBTQ events when the day has them; only backfill with
+        # inclusive community events when there aren't enough gay events that day.
         lg = [e for e in feat_pool if _is_lgbtq_strict(e)]
-        need = min(2, len(lg), target)
         top, seen = [], set()
-        for e in lg[:need]:
+        for e in lg:
+            if len(top) >= target:
+                break
             top.append(e); seen.add(id(e))
         for e in feat_pool:
             if len(top) >= target:
