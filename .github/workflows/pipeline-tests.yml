@@ -1,0 +1,30 @@
+name: pipeline-tests
+
+# Regression gate: runs the verify suite on every push/PR that touches pipeline
+# code, so the 2026-06-15 hardening (gay-first featuring, drag classification,
+# venue portability, sponsor slot, etc.) can never silently regress.
+on:
+  push:
+    paths:
+      - "config.py"
+      - "main.py"
+      - "eotw_selector.py"
+      - "run_weekly.py"
+      - "verify_all.py"
+      - "content/**"
+      - "tools/**"
+      - "posting/**"
+      - "tests/**"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run verify_all (syntax gate + regression suite)
+        run: python verify_all.py

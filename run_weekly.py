@@ -123,6 +123,9 @@ def run_pre():
 
 def run_post(dry=False):
     print(f"### WEEKLY POST-PHASE :: {WEEK} (dry={dry}) ###", flush=True)
+    # 0. Code-integrity gate — compile + regression suite. A broken change (a
+    #    classification/selection regression) must never reach a live post.
+    step("Verify code integrity (verify_all)", [PY, "verify_all.py"], timeout=180)
     # 1. Preflight HARD GATE — enforces voice pass done, gay-first, links, no junk.
     step("Preflight gate", [PY, "tools/preflight_post.py"], timeout=300)
     # 2. Write the approval gate (preflight passed).

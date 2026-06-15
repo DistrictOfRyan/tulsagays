@@ -57,8 +57,35 @@ def is_placeholder(url):
     return bool(url) and bool(PLACEHOLDER_URL.search(url))
 
 
+def _norm(s):
+    return re.sub(r"\s+", " ", (s or "").lower()).strip(" -\n")
+
+
+def is_venue_artifact(name, venue):
+    """True if the venue field is really just the event name echoed back (a
+    scraper artifact, e.g. event 'Starlight Concert Band - Above and Below' with
+    venue 'Starlight Concert Band -'), NOT a real venue. Conservative: only fires
+    when the venue has no real-venue signal (no street address, no venue-type word)
+    AND it mirrors the name. Blanking a wrong venue beats showing a garbage one."""
+    n, v = _norm(name), _norm(venue)
+    if not v or not n:
+        return False
+    # real venues have an address (digit/comma) or a venue-type word -> keep them
+    if any(c.isdigit() for c in v) or "," in v:
+        return False
+    VENUE_WORDS = ("library", "center", "centre", "church", "bar", "club", "lounge",
+                   "theater", "theatre", "park", "hall", "gallery", "museum", "cafe",
+                   "coffeehouse", "brewery", "pub", "market", "studio", "house", "room",
+                   "school", "university", "stadium", "arena", "venue", "district",
+                   "eagle", "majestic", "vanguard", "guthrie")
+    if any(w in v for w in VENUE_WORDS):
+        return False
+    # artifact when the venue is a leading fragment of the name (or equal)
+    return n.startswith(v) or v.startswith(n) or v == n
+
+
 def clean_events(events):
-    changed = {"titles": [], "urls_blanked": []}
+    changed = {"titles": [], "urls_blanked": [], "venues_blanked": []}
     for e in events:
         nm = e.get("name", "")
         new_nm, did = clean_title(nm)
@@ -72,6 +99,11 @@ def clean_events(events):
             if isinstance(e.get("source_urls"), list):
                 e["source_urls"] = [u for u in e["source_urls"] if not is_placeholder(u)]
             changed["urls_blanked"].append({"name": e.get("name"), "was": url})
+        # venue-as-event-name artifact (the "@ Starlight Concert Band -" bug)
+        vn = e.get("venue", "")
+        if is_venue_artifact(e.get("name", ""), vn):
+            e["venue"] = ""
+            changed["venues_blanked"].append({"name": e.get("name"), "was": vn})
     return changed
 
 
