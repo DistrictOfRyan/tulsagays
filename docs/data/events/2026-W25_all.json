@@ -1,7 +1,7 @@
 {
   "week": "2026-W25",
-  "generated_at": "2026-06-15T08:33:57.072420",
-  "total_events": 213,
+  "generated_at": "2026-06-15T10:28:01.123839",
+  "total_events": 214,
   "events": [
     {
       "name": "Homo Hotel Happy Hour",
@@ -183,7 +183,7 @@
       "source": "okeq",
       "lgbtq_relevant": true,
       "sanity_flags": [
-        "LLM wanted to drop (protected source): internal board/governance meeting, not a community event"
+        "LLM wanted to drop (protected source): Board meeting, not a community event"
       ]
     },
     {
@@ -213,8 +213,20 @@
       "lgbtq_relevant": true,
       "never_feature": true,
       "sanity_flags": [
-        "LLM wanted to drop (protected source): children-only programming (Girl Scouts)"
+        "LLM wanted to drop (protected source): Children-only Girl Scout troop meeting"
       ]
+    },
+    {
+      "name": "Noche Latina: Latin Night at the Tulsa Eagle",
+      "date": "2026-06-19",
+      "time": "10:00 PM",
+      "venue": "Tulsa Eagle, 1338 E 3rd St, Tulsa, OK",
+      "description": "La rumba mas hot de Tulsa lands at the Eagle. DJ Bleiz spins reggaeton, dembow, y mas, with drink specials all night. 10pm en adelante, no te lo pierdas.",
+      "website_description": "The Tulsa Eagle turns up the heat with Noche Latina, the bar's Latin Night and easily the hottest rumba in town. Live DJ Bleiz runs the booth all night with reggaeton, dembow, and more, there are drink specials to keep you moving, and the floor stays open from 10pm onward. It is a loud, joyful, everyone-welcome night to dance off the week. Best-time tip for the shy ones: get there a little after 10 while the floor is filling in, grab one of the drink specials, and let the first reggaeton track do the rest, nobody at the Eagle is watching how you dance.",
+      "url": "https://www.instagram.com/tulsaeagle/",
+      "priority": 1,
+      "source": "manual",
+      "lgbtq_relevant": true
     },
     {
       "name": "OKEQ Closed but the Clinic will be OPEN!",
@@ -228,7 +240,7 @@
       "source": "okeq",
       "lgbtq_relevant": true,
       "sanity_flags": [
-        "LLM: confusing name format (unclear if operational notice or actual event)"
+        "LLM wanted to drop (protected source): Informational notice, not an event"
       ]
     },
     {
@@ -244,7 +256,7 @@
       "lgbtq_relevant": true,
       "never_feature": true,
       "sanity_flags": [
-        "LLM wanted to drop (protected source): explicitly marked as cancelled"
+        "LLM wanted to drop (protected source): Explicitly marked cancelled"
       ]
     },
     {
@@ -315,7 +327,7 @@
       "source": "okeq",
       "lgbtq_relevant": true,
       "sanity_flags": [
-        "LLM wanted to drop (protected source): operational notice (center closure), not an event"
+        "LLM wanted to drop (protected source): Informational notice (closure), not an event"
       ]
     },
     {
@@ -333,7 +345,7 @@
       "lgbtq_relevant": true,
       "never_feature": true,
       "sanity_flags": [
-        "LLM wanted to drop (protected source): explicitly marked as cancelled"
+        "LLM wanted to drop (protected source): Explicitly marked cancelled"
       ]
     },
     {
@@ -450,7 +462,10 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
-      "community_event": true
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Venue is website URL (Eventbrite.com) instead of real location; event name indicates Maestro Tulsa"
+      ]
     },
     {
       "name": "Happy Hour with Free Pool at Caz’s Pub",
@@ -480,7 +495,10 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
-      "community_event": true
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Venue field is website URL (Pinotspalette.com) instead of real address"
+      ]
     },
     {
       "name": "Morning Mocha",
@@ -495,7 +513,10 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
-      "community_event": true
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Name (Morning Mocha) implausibly scheduled at 7:00 PM; venue field is website URL"
+      ]
     },
     {
       "name": "CRIMSON LOVE ALBUM RELEASE",
@@ -558,21 +579,6 @@
       "community_event": true
     },
     {
-      "name": "Dino Discovery",
-      "date": "2026-06-15",
-      "time": "2:00 PM - 4:00 PM",
-      "venue": "Owasso Library, 314 E 5th Ave Ste 202",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+June+15+2026&ibp=htl;events",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+June+15+2026&ibp=htl;events"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true
-    },
-    {
       "name": "Trade Routes Commander Night",
       "date": "2026-06-15",
       "time": "7:00 PM - 11:00 PM",
@@ -607,21 +613,6 @@
       "date": "2026-06-15",
       "time": "7:00 PM - 8:30 PM",
       "venue": "Jackalope Comedy Theater, SoBA District, 3406 S Yale Ave",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+June+15+2026&ibp=htl;events",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+June+15+2026&ibp=htl;events"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true
-    },
-    {
-      "name": "2 News Weather Show!",
-      "date": "2026-06-15",
-      "time": "2:00 PM - 3:00 PM",
-      "venue": "Rieger Memorial Library, 116 N Broadway",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+June+15+2026&ibp=htl;events",
       "source_urls": [
@@ -676,7 +667,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: name appears truncated (ends with hyphen/dash)"
+        "LLM: Name and venue both appear truncated/garbled; venue shows only 'Starlight Concert Band -'"
       ]
     },
     {
@@ -694,7 +685,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: 6:00 AM start is implausible for Bedazzled Cakes event; venue is website, not real location"
+        "LLM: 6:00 AM is implausibly early for a community event; venue is website URL"
       ]
     },
     {
@@ -712,7 +703,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: time ending at 11:59 PM is suspicious/truncated; venue 'Van The Wine Man' is unclear"
+        "LLM: Time ends at 11:59 PM (oddly specific/implausible end time)"
       ]
     },
     {
@@ -730,7 +721,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: venue listed as Ticketleap.com (ticketing service), not real venue location"
+        "LLM: Venue is Ticketleap.com (ticket platform), not a real venue location"
       ]
     },
     {
@@ -765,7 +756,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: name truncated with ellipsis",
         "truncated name (ends with ellipsis — Google Events cut it off)"
       ]
     },
@@ -785,24 +775,6 @@
       "community_event": true
     },
     {
-      "name": "Tulsa-OSU-Tulsa Conference Center/North Hall",
-      "date": "2026-06-16",
-      "time": "10:30 AM",
-      "venue": "OSU-Tulsa Conference Center, 700 N Greenwood Ave",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+June+16+2026&ibp=htl;events",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+June+16+2026&ibp=htl;events"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: name repetitive/garbled; unclear what event actually is"
-      ]
-    },
-    {
       "name": "Teen Craft Time",
       "date": "2026-06-16",
       "time": "2:00 PM - 4:00 PM",
@@ -818,10 +790,10 @@
       "community_event": true
     },
     {
-      "name": "Punch (Card) Party",
+      "name": "Tuesday Morning Birders",
       "date": "2026-06-16",
-      "time": "5:30 PM - 6:30 PM",
-      "venue": "Collinsville Public Library, 1223 W Main St",
+      "time": "8:00 AM",
+      "venue": "LaFortune Park Golf Course, 5501 S Yale Ave",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+June+16+2026&ibp=htl;events",
       "source_urls": [
@@ -863,6 +835,36 @@
       "community_event": true
     },
     {
+      "name": "Punch (Card) Party",
+      "date": "2026-06-16",
+      "time": "5:30 PM - 6:30 PM",
+      "venue": "Collinsville Public Library, 1223 W Main St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+16+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+16+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Rose District Farmers Market",
+      "date": "2026-06-16",
+      "time": "4:00 PM - 8:00 PM",
+      "venue": "Rose District Plaza, 418 S Main St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+16+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+16+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
       "name": "AMERICA AT 250: RITUAL, RHYTHM, AND REMEMBRANCE",
       "date": "2026-06-16",
       "time": "7:00 PM8:30 PM19:0020:30",
@@ -876,7 +878,7 @@
       "source": "tulsa_artist_fellowship",
       "lgbtq_relevant": true,
       "sanity_flags": [
-        "LLM: time format corrupted/garbled (7:00 PM8:30 PM19:0020:30)"
+        "LLM: Time field corrupted: '7:00 PM8:30 PM19:0020:30' (data scraping error)"
       ]
     },
     {
@@ -894,24 +896,9 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: 11:00 PM start time is implausible for culinary tour",
+        "LLM: 11:00 PM is implausibly late for a culinary tour; no venue listed",
         "missing venue"
       ]
-    },
-    {
-      "name": "2026 June Business Over Breakfast",
-      "date": "2026-06-17",
-      "time": "8:00 AM - 9:00 AM",
-      "venue": "Twisted Tee Golf, 314 E 5th Ave #207",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true
     },
     {
       "name": "Inspyral Circus Jam at Guthrie Green",
@@ -929,10 +916,10 @@
       "community_event": true
     },
     {
-      "name": "Open Mic Comedy Night at The Hunt Club – sign up...",
+      "name": "Parker Millsap",
       "date": "2026-06-17",
-      "time": "8:00 PM - 9:00 PM",
-      "venue": "Tulsa Arts District",
+      "time": "8:00 PM - 11:00 PM",
+      "venue": "Thevanguardtulsa.com",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events",
       "source_urls": [
@@ -941,10 +928,7 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "truncated name (ends with ellipsis — Google Events cut it off)"
-      ]
+      "community_event": true
     },
     {
       "name": "Jurassic Marathon",
@@ -977,10 +961,43 @@
       "community_event": true
     },
     {
-      "name": "Parker Millsap",
+      "name": "Open Mic Comedy Night at The Hunt Club – sign up...",
       "date": "2026-06-17",
-      "time": "8:00 PM - 11:00 PM",
-      "venue": "Thevanguardtulsa.com",
+      "time": "8:00 PM - 9:00 PM",
+      "venue": "Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "truncated name (ends with ellipsis — Google Events cut it off)"
+      ]
+    },
+    {
+      "name": "Open Mic Night",
+      "date": "2026-06-17",
+      "time": "7:00 PM",
+      "venue": "Bricktown Comedy Club Tulsa - Seat Engine",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "The Greenhouse",
+      "date": "2026-06-17",
+      "time": "5:30 PM - 6:30 PM",
+      "venue": "Events at Tulsa City-County Library - Tulsa Library",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events",
       "source_urls": [
@@ -1006,15 +1023,14 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: name truncated with ellipsis",
         "truncated name (ends with ellipsis — Google Events cut it off)"
       ]
     },
     {
-      "name": "Open Mic Night",
+      "name": "Alaire Thomas at Tulsa Loony Bin",
       "date": "2026-06-17",
-      "time": "7:00 PM",
-      "venue": "Bricktown Comedy Club Tulsa - Seat Engine",
+      "time": "7:00 PM - 10:00 PM",
+      "venue": "Stubhub.com",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events",
       "source_urls": [
@@ -1029,7 +1045,7 @@
       "name": "Teen Lounge",
       "date": "2026-06-17",
       "time": "4:00 PM - 6:00 PM",
-      "venue": "Events at Tulsa City-County Library - Tulsa Library",
+      "venue": "Tulsa City County Library, 400 Civic Center",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events",
       "source_urls": [
@@ -1044,7 +1060,7 @@
       "name": "Elizabeth Strout Book Club: The Things We Never...",
       "date": "2026-06-17",
       "time": "6:30 PM - 7:30 PM",
-      "venue": "Tulsa Arts District",
+      "venue": "Magic City Books, 221 E Archer St",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events",
       "source_urls": [
@@ -1055,39 +1071,8 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: name truncated with ellipsis",
         "truncated name (ends with ellipsis — Google Events cut it off)"
       ]
-    },
-    {
-      "name": "Alaire Thomas at Tulsa Loony Bin",
-      "date": "2026-06-17",
-      "time": "7:00 PM - 10:00 PM",
-      "venue": "Tulsa Loony Bin Comedy Club, 6808 S Memorial Dr",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true
-    },
-    {
-      "name": "The Greenhouse",
-      "date": "2026-06-17",
-      "time": "5:30 PM - 6:30 PM",
-      "venue": "Tulsa City County Library, 400 Civic Center",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true
     },
     {
       "name": "Mid America Route 66 Nationals",
@@ -1103,6 +1088,24 @@
       "source": "google_events",
       "lgbtq_relevant": false,
       "community_event": true
+    },
+    {
+      "name": "ONE DAY • ONE HOUR • ONE DECISION AT A TIME   Book...",
+      "date": "2026-06-17",
+      "time": "6:00 PM - 7:30 PM",
+      "venue": "Alpha Grill BBQ, 6670 S Lewis Ave #102",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "truncated name (ends with ellipsis — Google Events cut it off)"
+      ]
     },
     {
       "name": "Film In Oklahoma",
@@ -1136,29 +1139,10 @@
       "community_event": true
     },
     {
-      "name": "ONE DAY • ONE HOUR • ONE DECISION AT A TIME   Book...",
+      "name": "Balloon-Twisting Workshop With Joe Coover",
       "date": "2026-06-17",
-      "time": "6:00 PM - 7:30 PM",
-      "venue": "Alpha Grill BBQ, 6670 S Lewis Ave #102",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: name truncated with ellipsis",
-        "truncated name (ends with ellipsis — Google Events cut it off)"
-      ]
-    },
-    {
-      "name": "All Thumbs Knitters",
-      "date": "2026-06-17",
-      "time": "12:30 PM - 2:30 PM",
-      "venue": "Collinsville Public Library, 1223 W Main St",
+      "time": "11:30 AM",
+      "venue": "Charles Page Library, 551 E 4th St",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events",
       "source_urls": [
@@ -1170,10 +1154,10 @@
       "community_event": true
     },
     {
-      "name": "Balloon-Twisting Workshop With Joe Coover",
+      "name": "All Thumbs Knitters",
       "date": "2026-06-17",
-      "time": "11:30 AM",
-      "venue": "Charles Page Library, 551 E 4th St",
+      "time": "12:30 PM - 2:30 PM",
+      "venue": "Collinsville Public Library, 1223 W Main St",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+June+17+2026&ibp=htl;events",
       "source_urls": [
@@ -1422,7 +1406,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: name truncated with ellipsis",
+        "LLM: Name truncated ('...'); venue is Ticketleap.com (ticket platform, not real address)",
         "truncated name (ends with ellipsis — Google Events cut it off)"
       ]
     },
@@ -1441,7 +1425,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: name truncated with ellipsis",
         "truncated name (ends with ellipsis — Google Events cut it off)"
       ]
     },
@@ -1490,7 +1473,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: name truncated with ellipsis",
         "truncated name (ends with ellipsis — Google Events cut it off)"
       ]
     },
@@ -1630,7 +1612,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: name garbled format; 11:00 PM is implausible start time for Broadway musical",
+        "LLM: Name truncated ('Sisserou's Caribbean Rest'); 11:00 PM is implausibly late for dinner before theater",
         "missing venue"
       ]
     },
@@ -1649,7 +1631,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: 10:30 PM is quite late for card game (implausible timing)",
+        "LLM: 10:30 PM is implausibly late for card games; no venue listed",
         "missing venue"
       ]
     },
@@ -1752,7 +1734,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: name truncated with ellipsis; appears to duplicate #108 on different date",
         "truncated name (ends with ellipsis — Google Events cut it off)"
       ]
     },
@@ -1848,10 +1829,7 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: event name too vague/unclear; venue is Stubhub.com (ticketing service, not real location)"
-      ]
+      "community_event": true
     },
     {
       "name": "Barron Ryan",
@@ -1866,10 +1844,7 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: event name too vague/unclear; venue is Spotify.com (music service, not real location)"
-      ]
+      "community_event": true
     },
     {
       "name": "Summer Sunset Date Night",
@@ -1916,7 +1891,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: name truncated with ellipsis",
+        "LLM: Name appears garbled/truncated with ellipsis ('Interstellar Fellar ...')",
         "truncated name (ends with ellipsis — Google Events cut it off)"
       ]
     },
@@ -1963,10 +1938,7 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing time; 'Stuffie Sleepover' name ambiguous (unclear if children-only)"
-      ]
+      "community_event": true
     },
     {
       "name": "Ryan Sickler @ The Loony Bin Comedy Club -- Tulsa",
@@ -1981,10 +1953,7 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing time; appears to be legitimate comedy show but time field empty"
-      ]
+      "community_event": true
     },
     {
       "name": "Freak Juice & friends",
@@ -2076,6 +2045,39 @@
       "community_event": true
     },
     {
+      "name": "2026 Tulsa Juneteenth Festival VIP Experience",
+      "date": "2026-06-20",
+      "time": "3:00 PM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/2026-tulsa-juneteenth-festival-vip-experience-tickets-1991281651022",
+      "source_urls": [
+        "https://www.eventbrite.com/e/2026-tulsa-juneteenth-festival-vip-experience-tickets-1991281651022"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "INNER CIRCLE DRAG SHOW",
+      "date": "2026-06-20",
+      "time": "2:00 PM - 4:30 PM",
+      "venue": "Inner Circle Tulsa, 410 N Main St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.eventbrite.com/e/inner-circle-drag-show-tickets-1979909993087",
+        "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true
+    },
+    {
       "name": "Your Social Summer Starts Here 🍻🎳 20% Off for NEW Bowlers!",
       "date": "2026-06-20",
       "time": "12:00 AM",
@@ -2091,7 +2093,7 @@
       "never_feature": true,
       "community_event": true,
       "sanity_flags": [
-        "LLM: missing venue, implausible midnight time for bowling social",
+        "LLM: time implausible (12:00 AM for bowling event)",
         "missing venue"
       ]
     },
@@ -2115,7 +2117,7 @@
       "name": "Ryan Sickler",
       "date": "2026-06-20",
       "time": "8:30 PM - 11:30 PM",
-      "venue": "RateYourSeats.com",
+      "venue": "Tulsa Loony Bin Comedy Club, 6808 S Memorial Dr",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events",
       "source_urls": [
@@ -2124,10 +2126,7 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: venue is ticketing site (RateYourSeats.com), not actual venue"
-      ]
+      "community_event": true
     },
     {
       "name": "Saturday Board Games at the Library",
@@ -2229,7 +2228,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: truncated/garbled name ('Visit Convention Site'), likely duplicate of 164"
+        "LLM: name truncated ('Visit Convention Site...'), possible duplicate of 168"
       ]
     },
     {
@@ -2245,28 +2244,7 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: venue is ticketing site (Eventbrite.com), not actual venue"
-      ]
-    },
-    {
-      "name": "Time Travelers Vintage Expo",
-      "date": "2026-06-20",
-      "time": "10:00 AM",
-      "venue": "Showpass.com",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: venue is ticketing site (Showpass.com), not actual venue"
-      ]
+      "community_event": true
     },
     {
       "name": "Day Shift - The Daytime Party",
@@ -2283,8 +2261,23 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: implausible time (5pm for 'Day Shift' daytime party), venue is ticketing site"
+        "LLM: evening party (5-8 PM) named 'Day Shift'; missing real venue (StubHub listed)"
       ]
+    },
+    {
+      "name": "Time Travelers Vintage Expo",
+      "date": "2026-06-20",
+      "time": "10:00 AM",
+      "venue": "Showpass.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
     },
     {
       "name": "Britton Emert",
@@ -2300,24 +2293,6 @@
       "source": "google_events",
       "lgbtq_relevant": false,
       "community_event": true
-    },
-    {
-      "name": "Tulsa NostalgiaCon!",
-      "date": "2026-06-20",
-      "time": "10:00 AM",
-      "venue": "Tulsacomiccon.com",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: venue is website (Tulsacomiccon.com) not actual venue; duplicate of 159"
-      ]
     },
     {
       "name": "Motorama at the Drag Strip - Car Show, Drag...",
@@ -2337,10 +2312,10 @@
       ]
     },
     {
-      "name": "Pie Night at Antoinette Bakery & Cafe",
+      "name": "Tulsa NostalgiaCon!",
       "date": "2026-06-20",
-      "time": "5:00 PM - 9:00 PM",
-      "venue": "Tulsa Arts District",
+      "time": "10:00 AM",
+      "venue": "Tulsacomiccon.com",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events",
       "source_urls": [
@@ -2366,14 +2341,29 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: vague name ('Kennedy'), venue is ticketing site (Stubhub.com)"
+        "LLM: name truncated ('Kennedy' alone); missing real venue (StubHub listed)"
       ]
     },
     {
       "name": "June 20th Vegan Dinner 7pm",
       "date": "2026-06-20",
       "time": "7:00 PM",
-      "venue": "The Meat and Cheese Show, 1306 E 11th St Ste H",
+      "venue": "The Meat and Cheese Show",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Pie Night at Antoinette Bakery & Cafe",
+      "date": "2026-06-20",
+      "time": "5:00 PM - 9:00 PM",
+      "venue": "Antoinette Bakery & Cafe, 207 N Main St",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events",
       "source_urls": [
@@ -2397,10 +2387,7 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: time mismatch: name says '6:30-9:30p' but listed as '5:00-10:00 PM'"
-      ]
+      "community_event": true
     },
     {
       "name": "SHE HATES ME NOT + TAKER",
@@ -2452,21 +2439,6 @@
       "community_event": true
     },
     {
-      "name": "Tulsa Night Live",
-      "date": "2026-06-20",
-      "time": "",
-      "venue": "Jackalope Comedy Theater, SoBA District, 3406 S Yale Ave",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true
-    },
-    {
       "name": "JAYY WICK (LIVE) w/ Special Guest Celtixx, Vanilla...",
       "date": "2026-06-20",
       "time": "7:00 PM",
@@ -2481,8 +2453,24 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
+        "LLM: name truncated ('Vanilla...')",
         "truncated name (ends with ellipsis — Google Events cut it off)"
       ]
+    },
+    {
+      "name": "Tulsa Night Live",
+      "date": "2026-06-20",
+      "time": "",
+      "venue": "Jackalope Comedy Theater, SoBA District, 3406 S Yale Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
     },
     {
       "name": "Day of Zen with Tulsa Zen Sangha June 2026 —...",
@@ -2499,25 +2487,8 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
+        "LLM: name truncated ('—...')",
         "truncated name (ends with ellipsis — Google Events cut it off)"
-      ]
-    },
-    {
-      "name": "2026 Pinto World Championship",
-      "date": "2026-06-20",
-      "time": "",
-      "venue": "Jun 8 – 20",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+June+20+2026&ibp=htl;events"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: odd venue data (date range instead of venue), missing time"
       ]
     },
     {
@@ -2532,7 +2503,10 @@
       ],
       "priority": 2,
       "source": "yogaquest_tulsa",
-      "lgbtq_relevant": true
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM: malformed time ('8:00 AM9:00 AM' missing dash)"
+      ]
     },
     {
       "name": "Summer Solstice Sound Bath",
@@ -2614,7 +2588,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: implausible midnight time for social meetup, missing venue",
+        "LLM: time implausible (12:00 AM for drinking/networking meetup)",
         "missing venue"
       ]
     },
@@ -2733,7 +2707,7 @@
       "source": "facebook_events",
       "lgbtq_relevant": true,
       "sanity_flags": [
-        "LLM: year mismatch in name ('2024 MEETUP' for 2026 event)"
+        "LLM: event title says '2024' but date is 2026; stale/mismatched"
       ]
     },
     {
@@ -2765,7 +2739,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: truncated name (...), unclear if paid professional training camp",
+        "LLM: State of Oklahoma college golf camp (likely youth/training program); name truncated",
         "truncated name (ends with ellipsis — Google Events cut it off)"
       ]
     },
@@ -2842,10 +2816,7 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: likely duplicate of 191 (Crimson Love album release same night)"
-      ]
+      "community_event": true
     },
     {
       "name": "Drum Circle with Leslie Brown",
@@ -2892,6 +2863,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
+        "LLM: name truncated ('Electronic Dance...'); missing time",
         "truncated name (ends with ellipsis — Google Events cut it off)"
       ]
     },
@@ -2955,7 +2927,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: same event name as 162 ('Day Shift'), consecutive days, possible duplicate or recurring"
+        "LLM: likely duplicate of 164 (same event name/time, different date); implausible evening party named 'Day Shift'"
       ]
     },
     {
@@ -2988,6 +2960,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
+        "LLM: name truncated ('—...'); missing time",
         "truncated name (ends with ellipsis — Google Events cut it off)"
       ]
     },
@@ -3021,7 +2994,7 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: likely duplicate of 191/197 (Crimson Love event, same night/venue)"
+        "LLM: likely duplicate of 193/200 (Crimson Love album release at The Vanguard, same date)"
       ]
     },
     {
@@ -3036,7 +3009,10 @@
       ],
       "priority": 2,
       "source": "yogaquest_tulsa",
-      "lgbtq_relevant": true
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM: malformed time ('2:00 PM3:00 PM' missing dash)"
+      ]
     },
     {
       "name": "Summer Solstice Meditation",
@@ -3050,25 +3026,9 @@
       ],
       "priority": 2,
       "source": "yogaquest_tulsa",
-      "lgbtq_relevant": true
-    },
-    {
-      "name": "Unapologetic: A Post-Summer Solstice Virtual Retreat",
-      "date": "",
-      "time": "",
-      "venue": "",
-      "description": "",
-      "url": "https://www.eventbrite.com/e/unapologetic-a-post-summer-solstice-virtual-retreat-tickets-1989843781315",
-      "source_urls": [
-        "https://www.eventbrite.com/e/unapologetic-a-post-summer-solstice-virtual-retreat-tickets-1989843781315"
-      ],
-      "priority": 2,
-      "source": "eventbrite",
-      "lgbtq_relevant": false,
-      "community_event": true,
+      "lgbtq_relevant": true,
       "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue)",
-        "missing venue"
+        "LLM: malformed time ('6:00 PM7:15 PM' missing dash)"
       ]
     },
     {
@@ -3085,7 +3045,6 @@
       "source": "eventbrite",
       "lgbtq_relevant": true,
       "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue)",
         "missing venue"
       ]
     },
@@ -3104,7 +3063,6 @@
       "source": "eventbrite",
       "lgbtq_relevant": true,
       "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue)",
         "missing venue"
       ]
     },
@@ -3122,7 +3080,6 @@
       "source": "eventbrite",
       "lgbtq_relevant": true,
       "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue)",
         "missing venue"
       ]
     },
@@ -3141,26 +3098,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue)",
-        "missing venue"
-      ]
-    },
-    {
-      "name": "GCW presents \"The Tussle in Tulsa\"",
-      "date": "",
-      "time": "",
-      "venue": "",
-      "description": "",
-      "url": "https://www.eventbrite.com/e/gcw-presents-the-tussle-in-tulsa-tickets-1990112263352",
-      "source_urls": [
-        "https://www.eventbrite.com/e/gcw-presents-the-tussle-in-tulsa-tickets-1990112263352"
-      ],
-      "priority": 2,
-      "source": "eventbrite",
-      "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue)",
         "missing venue"
       ]
     },
@@ -3179,7 +3116,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: missing date and time",
         "missing venue"
       ]
     },
@@ -3198,7 +3134,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue)",
         "missing venue"
       ]
     },
@@ -3217,7 +3152,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue)",
         "missing venue"
       ]
     },
@@ -3236,7 +3170,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue)",
         "missing venue"
       ]
     },
@@ -3255,7 +3188,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue)",
         "missing venue"
       ]
     },
@@ -3274,44 +3206,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue)",
-        "missing venue"
-      ]
-    },
-    {
-      "name": "On Navigating Intersectional Identities (Livestream)",
-      "date": "",
-      "time": "",
-      "venue": "",
-      "description": "",
-      "url": "https://www.eventbrite.com/e/on-navigating-intersectional-identities-livestream-tickets-1986677473804",
-      "source_urls": [
-        "https://www.eventbrite.com/e/on-navigating-intersectional-identities-livestream-tickets-1986677473804"
-      ],
-      "priority": 2,
-      "source": "eventbrite",
-      "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue)",
-        "missing venue"
-      ]
-    },
-    {
-      "name": "INNER CIRCLE DRAG SHOW",
-      "date": "",
-      "time": "",
-      "venue": "",
-      "description": "",
-      "url": "https://www.eventbrite.com/e/inner-circle-drag-show-tickets-1979909993087",
-      "source_urls": [
-        "https://www.eventbrite.com/e/inner-circle-drag-show-tickets-1979909993087"
-      ],
-      "priority": 2,
-      "source": "eventbrite",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue)",
         "missing venue"
       ]
     },
@@ -3330,7 +3224,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue)",
         "missing venue"
       ]
     },
@@ -3349,7 +3242,95 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: missing all critical fields (date, time, venue), unclear event type",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Messages from Over the Rainbow with Susan Allen Medium",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/messages-from-over-the-rainbow-with-susan-allen-medium-tickets-1989066093229",
+      "source_urls": [
+        "https://www.eventbrite.com/e/messages-from-over-the-rainbow-with-susan-allen-medium-tickets-1989066093229"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "HOMECOMING Afro/Caribbean Flag & Jersey Bashment",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/homecoming-afrocaribbean-flag-jersey-bashment-tickets-1991430757002",
+      "source_urls": [
+        "https://www.eventbrite.com/e/homecoming-afrocaribbean-flag-jersey-bashment-tickets-1991430757002"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Adult Prom Into the Garden",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/adult-prom-into-the-garden-tickets-1989798330370",
+      "source_urls": [
+        "https://www.eventbrite.com/e/adult-prom-into-the-garden-tickets-1989798330370"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "The OutPouring of Oklahoma 2026",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/the-outpouring-of-oklahoma-2026-tickets-1988766017695",
+      "source_urls": [
+        "https://www.eventbrite.com/e/the-outpouring-of-oklahoma-2026-tickets-1988766017695"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Sea Ray Showcase | MarineMax Grand Lake",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/sea-ray-showcase-marinemax-grand-lake-tickets-1982460802627",
+      "source_urls": [
+        "https://www.eventbrite.com/e/sea-ray-showcase-marinemax-grand-lake-tickets-1982460802627"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
         "missing venue"
       ]
     },
@@ -3383,7 +3364,6 @@
       "lgbtq_relevant": true,
       "never_feature": true,
       "sanity_flags": [
-        "LLM: event date 2026-06-17 before guide week starts 2026-06-20",
         "non-time time field: 'Check listing for time'"
       ]
     }
