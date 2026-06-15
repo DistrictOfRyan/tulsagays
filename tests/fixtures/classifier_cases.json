@@ -1,0 +1,29 @@
+{
+  "_comment": "Golden classification cases — frozen expected verdicts for the gay/skip classifiers. Any change to eotw_selector that flips one of these fails the suite. Add a row whenever a new edge case is found in the wild.",
+  "cases": [
+    {"name": "Fun Friday Drags Night", "venue": "Tulsa Raceway Park", "lgbtq_strict": false, "skip": false, "why": "car drag racing, not queer"},
+    {"name": "Motorama at the Drag Strip - Car Show", "venue": "StubHub", "lgbtq_strict": false, "skip": false, "why": "car event"},
+    {"name": "NHRA Spring Nationals", "venue": "Tulsa Raceway Park", "lgbtq_strict": false, "skip": false, "why": "drag racing"},
+    {"name": "Dragon Paper Craft", "venue": "Kendall-Whittier Library", "lgbtq_strict": false, "skip": false, "why": "'dragon' substring, kids craft"},
+    {"name": "Dragonfly Yoga", "venue": "Guthrie Green", "lgbtq_strict": false, "skip": false, "why": "'dragon' substring"},
+    {"name": "Dragon Boat Festival", "venue": "Riverside", "lgbtq_strict": false, "skip": false, "why": "'dragon' substring"},
+    {"name": "DRAGNIFICENT!", "venue": "Club Majestic", "lgbtq_strict": true, "skip": false, "why": "real drag show"},
+    {"name": "Benefit Drag Show", "venue": "Tulsa Eagle", "lgbtq_strict": true, "skip": false, "why": "real drag show"},
+    {"name": "Drag Queen Story Hour", "venue": "Central Library", "lgbtq_strict": true, "skip": false, "why": "drag queen"},
+    {"name": "Drag Brunch", "venue": "Some Restaurant", "lgbtq_strict": true, "skip": false, "why": "drag brunch"},
+    {"name": "Monday Movie Night", "venue": "1338 E 3rd St", "lgbtq_strict": true, "skip": false, "why": "Tulsa Eagle by address"},
+    {"name": "Trivia Night", "venue": "Tulsa Eagle", "lgbtq_strict": true, "skip": false, "why": "gay venue, neutral title"},
+    {"name": "Karaoke Brunch", "venue": "302 South Frankfort", "lgbtq_strict": true, "skip": false, "why": "DVL gay venue"},
+    {"name": "All Rise Happy Hour", "venue": "Dennis R. Neill Equality Center", "lgbtq_strict": true, "skip": false, "why": "LGBTQ org center"},
+    {"name": "Trivia Night", "venue": "The Boom, 2218 NW 39th, OKC", "lgbtq_strict": false, "skip": false, "why": "OKC bar not in Tulsa config (portability)"},
+    {"name": "Pride Month Empowerment Circle", "venue": "", "lgbtq_strict": true, "skip": false, "why": "pride keyword"},
+    {"name": "Queer Crafters Club", "venue": "Equality Center", "lgbtq_strict": true, "skip": false, "why": "queer + org venue"},
+    {"name": "OKEQ Closed", "venue": "Dennis R. Neill Equality Center", "lgbtq_strict": true, "skip": true, "why": "closure notice — gay venue but never featured"},
+    {"name": "Gender Outreach Support Group", "venue": "Equality Center", "lgbtq_strict": true, "skip": true, "why": "support group — never featured"},
+    {"name": "Lambda Unity Group (LGBTQ+ AA Meeting)", "venue": "Fellowship Congregational", "lgbtq_strict": true, "skip": true, "why": "AA meeting"},
+    {"name": "OKEQ Health Clinic", "venue": "Equality Center", "lgbtq_strict": true, "skip": true, "why": "health clinic"},
+    {"name": "Bingo Night", "venue": "Pratt Library", "lgbtq_strict": false, "skip": false, "why": "general community"},
+    {"name": "Native Culture Make and Take: Corn-Husk Dolls", "venue": "Pratt Library", "lgbtq_strict": false, "skip": false, "why": "general community"},
+    {"name": "An Evening With David Sedaris", "venue": "Magic City Books", "lgbtq_strict": false, "skip": false, "why": "author event, not venue/keyword gay (featured via appeal, not gay-tag)"}
+  ]
+}

@@ -130,6 +130,66 @@ def test_venue_artifact():
           is_venue_artifact("Story Time", "Pratt Library") is False)
 
 
+def test_classifier_golden():
+    print("golden classification cases (frozen verdicts):")
+    fx = os.path.join(ROOT, "tests", "fixtures", "classifier_cases.json")
+    if not os.path.exists(fx):
+        print("  [skip] no fixture")
+        return
+    cases = json.load(open(fx, encoding="utf-8"))["cases"]
+    bad = 0
+    for c in cases:
+        e = ev(c["name"], c.get("venue", ""))
+        got_lg = bool(es._is_lgbtq_strict(e))
+        got_sk = bool(es._is_skip(e))
+        if got_lg != c["lgbtq_strict"] or got_sk != c["skip"]:
+            bad += 1
+            print(f"  [FAIL] {c['name'][:40]!r}: lgbtq {got_lg} (want {c['lgbtq_strict']}), "
+                  f"skip {got_sk} (want {c['skip']})")
+    check(f"all {len(cases)} golden classification cases match", bad == 0, f"{bad} mismatched")
+
+
+def test_classifier_fuzz():
+    print("classifier property/fuzz (generated matrix):")
+    # Property 1: ANY car-racing context is never gay, regardless of prefix.
+    racing_ctx = ["drag strip", "drag racing", "raceway", "speedway", "motorama", "dragway"]
+    prefixes = ["Friday", "Annual", "Summer", "Big", "Pride", "Tulsa", "Fun"]
+    p1 = all(not es._is_lgbtq_strict(ev(f"{p} {r} night", "Speedway Park"))
+             for p in prefixes for r in racing_ctx)
+    check("property: no racing-context event is ever classified gay", p1)
+    # Property 2: 'dragon'/'dragonfly' words never trip the gay 'drag' path.
+    p2 = all(not es._is_lgbtq_strict(ev(f"{w} {p}", "Some Library"))
+             for w in ["Dragon", "Dragonfly", "Dragons", "Dragonboat"] for p in ["Craft", "Story", "Club"])
+    check("property: 'dragon*' words never classify gay", p2)
+    # Property 3: real drag-performance phrases always classify gay (any venue).
+    p3 = all(es._is_lgbtq_strict(ev(f"Weekly {d}", v))
+             for d in ["Drag Show", "Drag Brunch", "Drag Queen Bingo", "Drag King Revue"]
+             for v in ["Anywhere", "Some Bar", ""])
+    check("property: real drag-performance phrases always classify gay", p3)
+    # Property 4: neutral title at ANY configured gay venue classifies gay.
+    p4 = all(es._is_lgbtq_strict(ev("Open Night", sig)) for sig in getattr(config, "GAY_VENUE_SIGNATURES", ()))
+    check("property: neutral title at every config gay-venue classifies gay", p4)
+
+
+def test_quality_trend():
+    print("quality-trend guard:")
+    p = os.path.join(ROOT, "data", "description_scores.jsonl")
+    if not os.path.exists(p):
+        print("  [skip] no description_scores.jsonl yet (populated as weeks run)")
+        return
+    rows = [json.loads(l) for l in open(p, encoding="utf-8") if l.strip()]
+    if not rows:
+        print("  [skip] scores file empty")
+        return
+    last = rows[-1]
+    avg = last.get("avg") or last.get("average") or last.get("avg_score")
+    if avg is None:
+        print("  [skip] latest row has no avg score field")
+        return
+    # Floor guard: a catastrophic drop (avg < 40/100) means enrichment/voice broke.
+    check(f"latest weekly voice-score avg >= 40 (was {avg})", float(avg) >= 40)
+
+
 def main():
     print("=== TulsaGays pipeline regression suite ===")
     test_classifier()
@@ -137,6 +197,9 @@ def main():
     test_manifest_invariants()
     test_sponsor_slot_safe()
     test_venue_artifact()
+    test_classifier_golden()
+    test_classifier_fuzz()
+    test_quality_trend()
     print()
     if FAILS:
         print(f"[X] {len(FAILS)} FAILED: {', '.join(FAILS)}")
