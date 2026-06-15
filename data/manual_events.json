@@ -437,5 +437,18 @@
     "source": "manual",
     "source_note": "OKEQ event-calendar scrape (Sunday W24 staging, 2026-06-07). Weekly recurring Thu at the Equality Center; candidate to promote to a recurring source later.",
     "priority": 2
+  },
+  {
+    "name": "Noche Latina: Latin Night at the Tulsa Eagle",
+    "date": "2026-06-19",
+    "time": "10:00 PM",
+    "venue": "Tulsa Eagle, 1338 E 3rd St, Tulsa, OK",
+    "description": "La rumba mas hot de Tulsa lands at the Eagle. DJ Bleiz spins reggaeton, dembow, y mas, with drink specials all night. 10pm en adelante, no te lo pierdas.",
+    "website_description": "The Tulsa Eagle turns up the heat with Noche Latina, the bar's Latin Night and easily the hottest rumba in town. Live DJ Bleiz runs the booth all night with reggaeton, dembow, and more, there are drink specials to keep you moving, and the floor stays open from 10pm onward. It is a loud, joyful, everyone-welcome night to dance off the week. Best-time tip for the shy ones: get there a little after 10 while the floor is filling in, grab one of the drink specials, and let the first reggaeton track do the rest, nobody at the Eagle is watching how you dance.",
+    "url": "https://www.instagram.com/tulsaeagle/",
+    "source": "manual",
+    "priority": 1,
+    "lgbtq_relevant": true,
+    "source_note": "Added 2026-06-15 per William (event flyer he sent). Tulsa Eagle Latin Night, Fri Jun 19 2026, 10pm onward, 1338 E 3rd St. Live DJ Bleiz; reggaeton/dembow; drink specials. Flyer text: 'NOCHE LATINA - La rumba mas HOT de Tulsa / VIERNES 19 DE JUNIO / LATIN NIGHT 10PM EN ADELANTE / LIVE DJ BLEIZ / TULSA EAGLE BAR'."
   }
 ]
