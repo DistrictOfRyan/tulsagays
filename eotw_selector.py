@@ -27,6 +27,11 @@ import os
 from datetime import datetime
 from typing import Dict, List, Optional
 
+try:
+    import config as _config  # city-specific knobs (GAY_VENUE_SIGNATURES, etc.)
+except Exception:
+    _config = None
+
 _MANUAL_EOTW_PATH = os.path.join(os.path.dirname(__file__), "data", "manual_eotw.json")
 
 
@@ -291,9 +296,12 @@ def _is_lgbtq_strict(e: Dict) -> bool:
         return False
     name = (e.get("name") or "").lower()
     venue = (e.get("venue") or "").lower()
-    # Events at Tulsa's gay bars / queer venues ARE gay events even without a
-    # keyword in the title (e.g. "Monday Movie Night" at the Tulsa Eagle).
-    if any(sig in venue for sig in _GAY_VENUE_SIGNATURES):
+    # Events at the city's gay bars / queer venues / LGBTQ org center ARE gay
+    # events even without a keyword in the title (e.g. "Monday Movie Night" at the
+    # Eagle). City-specific: read config.GAY_VENUE_SIGNATURES so a new city stays
+    # portable; fall back to the Tulsa list if config is unavailable.
+    _sigs = getattr(_config, "GAY_VENUE_SIGNATURES", None) or _GAY_VENUE_SIGNATURES
+    if any(sig in venue for sig in _sigs):
         return True
     text = name + " " + venue
     return any(kw in text for kw in _STRICT_LGBTQ_KW)

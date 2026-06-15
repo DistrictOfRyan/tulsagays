@@ -1390,6 +1390,17 @@ QUEER_FRIENDLY_VENUES = {
     'dvl', '302 south frankfort', '302 s. frankfort', '302 s frankfort', 'elote',
 }
 
+# Venue name/address fragments where ANY event counts as LGBTQ even with a neutral
+# title (e.g. "Monday Movie Night" at the Eagle). City-specific: this is the single
+# source of truth the shared slide/EOTW code reads (eotw_selector._is_lgbtq_strict),
+# so a new city stays portable by populating its own here. Includes gay bars, queer-
+# friendly venues, AND the city's LGBTQ org/community center. (2026-06-15)
+GAY_VENUE_SIGNATURES = (
+    "1338 e 3rd", "tulsa eagle", "club majestic", "124 n boston",
+    "302 s frankfort", "302 south frankfort", "302 s. frankfort", "dvl",
+    "dennis r. neill", "dennis r neill", "equality center", "oklahomans for equality",
+)
+
 # Source keys that are LGBTQ-community-organized. Events from these sources matching
 # COMMUNITY_KW score 3 minimum. Subset of LGBTQ_SOURCES.
 LGBTQ_COMMUNITY_SOURCES = {"homo_hotel", "okeq", "recurring", "manual"}

@@ -632,6 +632,28 @@ for day in DAYS_ORDERED:
 
 result = '\n'.join(lines)
 
+# Optional weekly SPONSOR credit (monetization slot, 2026-06-15). Renders ONLY if
+# data/sponsor.json exists with a name — otherwise a no-op, so the default site is
+# unchanged until a sponsor is signed. Anonymity-safe: credits a sponsor OF the
+# guide, never the operator. Pairs with drafts/sponsor/tulsagays_sponsor_onepager.md.
+_sponsor_html = ''
+try:
+    _sp_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'sponsor.json')
+    if os.path.exists(_sp_path):
+        _sp = json.load(open(_sp_path, encoding='utf-8'))
+        _spname = (_sp.get('name') or '').strip()
+        if _spname:
+            _spurl = (_sp.get('url') or '').strip()
+            _credit = f'<a href="{_spurl}" target="_blank" rel="noopener">{_spname}</a>' if _spurl else _spname
+            _sponsor_html = (
+                '        <section class="sponsor-credit" style="text-align:center;'
+                'margin:1.2rem auto;font-size:0.95rem;opacity:0.85;">'
+                f'This week’s guide is brought to you by {_credit} \U0001f49c'
+                '</section>\n')
+except Exception:
+    _sponsor_html = ''
+result = _sponsor_html + result
+
 # Auto-inject into docs/index.html between the first day comment and </main>
 _idx_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'docs', 'index.html')
 with open(_idx_path, encoding='utf-8') as _f:

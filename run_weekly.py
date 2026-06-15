@@ -160,6 +160,11 @@ def run_post(dry=False):
     # 7. Log distribution metrics.
     step("Distribution metrics", [PY, "tools/distribution_metrics.py"],
          timeout=120, required=False)
+    # 7b. Stage the weekly email newsletter as a DRAFT (community channel). Never
+    #     auto-broadcasts — send_newsletter.py without --send only stages a Kit
+    #     draft for William to review and send. (Deepen-Tulsa rung, 2026-06-15.)
+    step("Stage newsletter draft (no send)", [PY, "tools/send_newsletter.py"],
+         timeout=180, required=False)
     # 8. SUCCESS GATE — prove FB/IG actually posted (fail loud if not).
     step("Success gate: post", [PY, "tools/postrun_verify.py", "--phase", "post"],
          timeout=120)
