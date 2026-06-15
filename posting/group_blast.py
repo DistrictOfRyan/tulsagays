@@ -131,12 +131,15 @@ def _composer_is_page(page) -> bool:
     return PAGE_NAME.lower() in txt.lower()
 
 
-def _post_to_group(page, group, caption):
-    """Post caption to one group as the Page. Returns a result dict."""
+def _post_to_group(page, group, image_paths):
+    """Upload the weekly carousel GRAPHICS (the 9 slides) to one group AS the
+    Tulsa Gays Page. GRAPHICS ONLY — never a text/caption post (William's hard
+    rule, 2026-06-15). Every Playwright op is bounded so a single group can never
+    silently wedge the whole run. Returns a result dict."""
     url = get_group_url(group)
     res = {"name": group["name"], "id": group["id"], "url": url}
     try:
-        page.goto(url, wait_until="domcontentloaded")
+        page.goto(url, wait_until="domcontentloaded", timeout=30000)
         page.wait_for_timeout(2500)
 
         # Open composer.
@@ -152,10 +155,9 @@ def _post_to_group(page, group, caption):
                 continue
         if not opened:
             res["status"] = "error"; res["error"] = "composer not found"; return res
-
         page.wait_for_timeout(1500)
 
-        # ANONYMITY GATE: must be acting as the Page.
+        # ANONYMITY GATE: must be acting as the Page, else SKIP (never expose Ryan).
         if not _composer_is_page(page):
             try:
                 page.keyboard.press("Escape")
@@ -164,53 +166,46 @@ def _post_to_group(page, group, caption):
             res["status"] = "skipped"; res["error"] = "not acting as Page (anonymity guard)"
             return res
 
-        # Type caption. FB's group composer textbox varies; try several selectors
-        # and give the dialog a moment to mount it (the 4 "textbox not found"
-        # failures on 2026-06-08 were the dialog not yet rendering the box).
-        typed = False
-        page.wait_for_timeout(1200)
-        textbox_sels = (
-            'div[role="dialog"] div[contenteditable="true"][role="textbox"]',
-            'div[role="dialog"] [contenteditable="true"]',
-            'div[role="textbox"][contenteditable="true"]',
-            'div[aria-label^="Write something"][contenteditable="true"]',
-            'div[aria-label*="Create a public post"][contenteditable="true"]',
-            'div[aria-label*="on your mind"][contenteditable="true"]',
-            '[contenteditable="true"]',
-        )
-        for attempt in range(2):
-            for sel in textbox_sels:
-                try:
-                    box = page.locator(sel).first
-                    box.wait_for(state="visible", timeout=3000)
-                    box.click(timeout=3000)
-                    box.type(caption, delay=6)
-                    typed = True
-                    break
-                except Exception:
-                    continue
-            if typed:
+        # GRAPHICS ONLY: reveal the photo input (click Photo/video), then push the
+        # 9 slide files onto the hidden <input type=file>. No caption is typed.
+        for sel in ('div[aria-label="Photo/video"]',
+                    'div[role="button"]:has-text("Photo/video")',
+                    'div[aria-label*="Photo"][role="button"]'):
+            try:
+                page.locator(sel).first.click(timeout=4000)
                 break
-            page.wait_for_timeout(1500)  # let the dialog finish mounting, retry once
-        if not typed:
-            res["status"] = "error"; res["error"] = "textbox not found"; return res
+            except Exception:
+                continue
+        page.wait_for_timeout(1200)
+        uploaded = False
+        for sel in ('div[role="dialog"] input[type="file"][accept*="image"]',
+                    'div[role="dialog"] input[type="file"]',
+                    'input[type="file"][accept*="image"]',
+                    'input[type="file"]'):
+            try:
+                page.locator(sel).first.set_input_files(image_paths, timeout=8000)
+                uploaded = True
+                break
+            except Exception:
+                continue
+        if not uploaded:
+            res["status"] = "error"; res["error"] = "photo input not found (graphics upload failed)"; return res
 
-        # Dismiss hashtag autocomplete so it doesn't eat the Post click.
+        # Wait (bounded) for the slide thumbnails to finish processing.
         try:
-            page.keyboard.press("Escape")
-            page.wait_for_timeout(600)
+            page.wait_for_selector(
+                'div[role="dialog"] img[src*="scontent"], div[role="dialog"] img[src^="blob:"]',
+                timeout=25000)
         except Exception:
             pass
+        page.wait_for_timeout(4000)
 
-        # Let the tulsagays.com link card generate.
-        page.wait_for_timeout(3500)
-
-        # Submit.
+        # Submit the graphics-only post.
         submitted = False
         for sel in ('div[role="dialog"] div[aria-label="Post"]',
                     'div[aria-label="Post"][role="button"]'):
             try:
-                page.locator(sel).first.click(timeout=4000)
+                page.locator(sel).first.click(timeout=5000)
                 submitted = True
                 break
             except Exception:
@@ -226,7 +221,7 @@ def _post_to_group(page, group, caption):
             body = ""
         if "your post is pending" in body or "awaiting admin approval" in body:
             res["status"] = "pending"
-        elif "tulsagays.com" in body or "comment as tulsa gays" in body:
+        elif "comment as tulsa gays" in body:
             res["status"] = "live"
         else:
             res["status"] = "submitted"   # posted but couldn't confirm state
@@ -240,6 +235,14 @@ def _post_to_group(page, group, caption):
 def run(dry_run=False, headed=False, week=None):
     week = week or _current_week()
     caption = build_group_caption(week)
+    # GRAPHICS ONLY (William's hard rule, 2026-06-15): the group post is the 9
+    # carousel slides, never a text/caption post. Validate they exist up front.
+    post_dir = ROOT / "data" / "posts" / week
+    image_paths = [str(post_dir / f"all__{i:02d}.png") for i in range(1, 10)]
+    missing = [p for p in image_paths if not Path(p).exists()]
+    if missing and not dry_run:
+        raise SystemExit(f"GRAPHICS MISSING: {len(missing)}/9 slides not in {post_dir} "
+                         f"— generate the carousel before blasting.")
     targets = get_post_targets()
     now = datetime.now(timezone.utc)
     recent = _recent_posts_by_group()
@@ -315,8 +318,20 @@ def run(dry_run=False, headed=False, week=None):
                              "Aborting (anonymity guard). Re-run --setup if login expired.")
         print(f"\n[ok] acting as {PAGE_NAME}\n")
 
+        # Bounded ops so a single group can never wedge the whole run (the
+        # recurring silent 15-min hang). Plus a hard wall-clock cap on the loop.
+        page.set_default_timeout(20000)
+        page.set_default_navigation_timeout(35000)
+        loop_deadline = time.monotonic() + 600   # 10 min hard cap
+
         for i, g in enumerate(plan):
-            r = _post_to_group(page, g, caption)
+            if time.monotonic() > loop_deadline:
+                print("  [aborted]  10-min wall-clock cap hit — stopping (no silent hang)")
+                results.append({"name": g["name"], "id": g["id"], "status": "error",
+                                "error": "run wall-clock cap hit before this group",
+                                "at": datetime.now(timezone.utc).isoformat()})
+                break
+            r = _post_to_group(page, g, image_paths)
             r["at"] = datetime.now(timezone.utc).isoformat()
             results.append(r)
             print(f"  [{r['status']:9}] {g['name']}"
