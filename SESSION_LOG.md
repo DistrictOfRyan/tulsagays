@@ -1,3 +1,12 @@
+## [2026-06-15 14:30] W24 quality overhaul - sanity checker, time fix, Majestic unban, bar IG sources, voice reliability
+
+Fixed everything William flagged in the W24 site review. Built tools/sanity_check_events.py (rules + chunked-haiku LLM verdicts) wired into scrape (pre-save), generate, and preflight - quarantines civic/chamber meetings (Owasso city council class), kids programming, sports games, cert courses, junk names; flags implausible times + truncated/mojibake names; manual + LGBTQ-source events can never be LLM-dropped. Fixed unicode thin-space time ranges ("6 - 10 PM" rendered END as start - that is why soda-bottle conv showed 10pm) in scraper normalizer + website format_time/_parse_minutes + slide sorter. Reworked relevance: word-boundary LGBTQ matching ("bi" no longer fires in "bingo"), generic cultural words mark community_event not lgbtq_relevant, civic/kids/sports off-topic drops. Removed Majestic/Eagle venue bans (William reversed policy) so one-off bar specials like Lil Shop of Horrors are featurable/EOTW-eligible; recurring weeklies sort last in tiers. Added IG scrapers for @tulsaeagle, @clubmajestictulsa, @tulsaybr (sites DNS-dead). Voice: enrichment CLI timeout 120->300s (every W23/W24 batch had timed out -> 165 templated pool fillers); preflight now hard-blocks >40% templated website copy. This week's data/docs untouched per William; all changes take effect next run.
+
+**Main artifact:** commit 9c8d586 - tools/sanity_check_events.py + scraper/runner.py + eotw_selector.py + content/generator.py + tools/preflight_post.py + gen_website_html.py + scraper/instagram_orgs.py + config.py + main.py
+**Open items:** none - all 6 tasks verified (filter replay, time tests, EOTW eligibility, live IG fetch, sanity dry-run, enrichment batch, preflight block all confirmed). W25 Monday run already picked up the new code.
+
+---
+
 ## [2026-06-09 14:18] Add Laura Bellis June 11 event + DM tip intake tool
 
 Added the Re-Elect Laura Bellis Pride-season event (Thu Jun 11 2026, 6-7:30pm, ActBlue RSVP) to manual_events.json in site voice - confirmed it made this week's W24 deck and posted (FB id 1086906044497675_122116428344853065). Then built tools/add_tip.py: a paste-in DM tip intake (William chose paste-in + review-first over Meta auto-read). Parses IG/FB DM text into a pending queue, reviewer writes voice copy, approve promotes into manual_events.json. Never auto-publishes; requires name+date+description, blocks em dashes, dedups. Selftest + live end-to-end verified. Documented in tulsagays-domain-expertise skill.
