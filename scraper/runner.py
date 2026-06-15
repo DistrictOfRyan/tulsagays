@@ -860,6 +860,21 @@ KEY_VENUE_SOURCES = getattr(config, "KEY_VENUE_SOURCES", {
     "studio_66": "Studio 66 (@studio.66_)",
 })
 
+# ── Flagship upcoming-event hold ──────────────────────────────────────────────
+# The weekly site only shows the current Mon–Sun window, so a flagship event
+# announced weeks early (Pride, an anniversary, a festival, a big touring drag
+# show) would otherwise be dropped by the current-week filter and forgotten by
+# the time its week arrives. We persist such FUTURE events to a small ledger and
+# resurface them when their week comes around — even if the source stopped
+# posting by then. Conservative by design: only genuinely juicy events qualify,
+# so the current-week roundup is never polluted with far-off listings.
+UPCOMING_LEDGER = os.path.join(getattr(config, "DATA_DIR", "data"), "upcoming_events.json")
+FLAGSHIP_LOOKAHEAD_WEEKS = 8
+_FLAGSHIP_KEYWORDS = (
+    "pride", "anniversary", "festival", "pageant", "ball ", "block party",
+    "grand opening", "headliner", "world tour", "drag brunch", "homo hotel",
+)
+
 
 def _write_pending_action(message: str, week_key: str) -> None:
     """Append a timestamped entry to pending-william-actions.md."""
@@ -905,6 +920,94 @@ def _warn_missing_key_venues(events: List[Dict], week_key: str) -> None:
         logger.error(f"[key-venue] Could not write pending action: {exc}")
 
 
+# ── Flagship upcoming-event hold helpers ──────────────────────────────────────
+
+def _ledger_key(event: Dict) -> tuple:
+    return (_normalize(event.get("name", "")), (event.get("date") or "").strip())
+
+
+def _load_upcoming() -> List[Dict]:
+    try:
+        with open(UPCOMING_LEDGER, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, list) else []
+    except (OSError, json.JSONDecodeError):
+        return []
+
+
+def _save_upcoming(ledger: List[Dict]) -> None:
+    try:
+        config.ensure_dirs()
+        with open(UPCOMING_LEDGER, "w", encoding="utf-8") as f:
+            json.dump(ledger, f, indent=2, ensure_ascii=False)
+    except OSError as exc:
+        logger.error("[upcoming] could not save ledger: %s", exc)
+
+
+def _prune_past(ledger: List[Dict]) -> List[Dict]:
+    today = datetime.now().strftime("%Y-%m-%d")
+    return [e for e in ledger if (e.get("date") or "") >= today]
+
+
+def _is_flagship_future(event: Dict, sunday: datetime, horizon: datetime) -> bool:
+    """A juicy event dated AFTER this week but within the lookahead horizon:
+    priority-1, a key-venue event, or a flagship-keyword match."""
+    date_str = event.get("date", "")
+    if not date_str:
+        return False
+    try:
+        dt = datetime.strptime(date_str[:10], "%Y-%m-%d")
+    except ValueError:
+        return False
+    if not (sunday < dt <= horizon):
+        return False
+    if int(event.get("priority", 99)) <= 1:
+        return True
+    if (event.get("source") or "") in KEY_VENUE_SOURCES:
+        return True
+    text = ((event.get("name") or "") + " " + (event.get("description") or "")).lower()
+    return any(kw in text for kw in _FLAGSHIP_KEYWORDS)
+
+
+def manage_upcoming(raw_events: List[Dict]) -> List[Dict]:
+    """Harvest flagship FUTURE events into the ledger and resurface any that have
+    now entered the current week. Returns the resurfaced events to merge into the
+    pool (they then flow through the normal filter/dedup path). Never raises into
+    the caller — the run continues even if the ledger is unreadable."""
+    monday, sunday = _get_week_range()
+    horizon = sunday + timedelta(weeks=FLAGSHIP_LOOKAHEAD_WEEKS)
+    ledger = _prune_past(_load_upcoming())
+    seen = {_ledger_key(e) for e in ledger}
+
+    harvested = 0
+    for ev in raw_events:
+        if _is_flagship_future(ev, sunday, horizon):
+            key = _ledger_key(ev)
+            if key not in seen:
+                stored = dict(ev)
+                stored["from_upcoming_ledger"] = True
+                ledger.append(stored)
+                seen.add(key)
+                harvested += 1
+
+    resurfaced = []
+    for e in ledger:
+        try:
+            dt = datetime.strptime((e.get("date") or "")[:10], "%Y-%m-%d")
+        except ValueError:
+            continue
+        if monday <= dt <= sunday:
+            ev = dict(e)
+            ev["resurfaced_from_upcoming"] = True
+            resurfaced.append(ev)
+
+    _save_upcoming(ledger)
+    if harvested or resurfaced:
+        logger.info("[upcoming] harvested %d future flagship event(s); resurfaced %d "
+                    "due this week (ledger now %d)", harvested, len(resurfaced), len(ledger))
+    return resurfaced
+
+
 def main():
     """Main entry point: run all scrapers, filter, deduplicate, sort, save."""
     start_time = datetime.now()
@@ -924,6 +1027,17 @@ def main():
     # 1. Run all scrapers
     raw_events = run_all_scrapers()
     logger.info(f"\nTotal raw events: {len(raw_events)}")
+
+    # 1b. Flagship upcoming-event hold: remember juicy FUTURE events (Pride,
+    # anniversaries, festivals, key-venue/priority-1) so a thing announced weeks
+    # early is never dropped, and resurface any whose week has now arrived.
+    try:
+        resurfaced = manage_upcoming(raw_events)
+        if resurfaced:
+            raw_events.extend(resurfaced)
+            logger.info(f"Re-injected {len(resurfaced)} flagship event(s) due this week")
+    except Exception as exc:
+        logger.error(f"[upcoming] hold step failed (non-fatal): {exc}", exc_info=True)
 
     # 2. Apply quality filters (junk names, out-of-week dates, lgbtq_relevant annotation)
     filtered_events = apply_quality_filters(raw_events)
