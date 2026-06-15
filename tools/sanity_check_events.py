@@ -55,6 +55,7 @@ from scraper.runner import (  # noqa: E402
     _parse_time_token,
     _TIME_TOKEN_RX,
 )
+from eotw_selector import _is_youth_nongay  # noqa: E402  under-18 non-gay screen
 
 
 # ── Rules: garbled / truncated names ─────────────────────────────────────────
@@ -139,6 +140,12 @@ def rules_pass(events: list) -> tuple:
         # here so manual/late additions and stale files get the same standard.
         if _is_junk_name(name):
             dropped.append((ev, "junk/navigation name"))
+            continue
+        # Under-18 programming that isn't explicitly LGBTQ — removed from the guide
+        # (e.g. a pet-rock class / storytime at the library). Queer youth events are
+        # protected by the LGBTQ check inside _is_youth_nongay. (William 2026-06-15)
+        if _is_youth_nongay(ev):
+            dropped.append((ev, "youth/under-18 programming (not LGBTQ)"))
             continue
         if not _is_lgbtq_relevant(ev):
             if _is_spam_noise(ev):

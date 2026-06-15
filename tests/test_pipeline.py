@@ -208,6 +208,33 @@ def test_featured_selection_golden():
           f"drifted days: {drift}")
 
 
+def test_youth_screen():
+    print("youth/under-18 non-gay screen:")
+    yn = es._is_youth_nongay
+    # under-18 programming, not gay -> screened OUT
+    for n in ["Adopt a Pet Rock", "Dino Discovery", "Toddler Storytime",
+              "Balloon-Twisting Workshop With Joe Coover", "Teen Craft Time",
+              "Native Culture Make and Take: Corn-Husk Dolls", "2 News Weather Show!"]:
+        check(f"DROP youth: {n[:34]}", yn(ev(n)) is True)
+    # explicitly-gay youth programming -> PROTECTED (kept)
+    for n, v in [("Drag Queen Story Hour", "Central Library"),
+                 ("Queer Youth Group", "Equality Center"),
+                 ("GSA Teen Meetup", "Dennis R. Neill")]:
+        check(f"KEEP queer youth: {n[:30]}", yn(ev(n, v)) is False)
+    # adult events -> never screened as youth
+    for n, v in [("David Sedaris", "Magic City Books"), ("Pride Day Bingo", "Tulsa Eagle"),
+                 ("Saturday Board Games at the Library", "Central Library")]:
+        check(f"KEEP adult: {n[:30]}", yn(ev(n, v)) is False)
+
+
+def test_gpra_source_registered():
+    print("GPRA source wired:")
+    ds = os.path.join(ROOT, "data", "dynamic_sources.json")
+    if os.path.exists(ds):
+        blob = open(ds, encoding="utf-8").read().lower()
+        check("Great Plains Rodeo registered in dynamic_sources", "great plains rodeo" in blob)
+
+
 def main():
     print("=== TulsaGays pipeline regression suite ===")
     test_classifier()
@@ -219,6 +246,8 @@ def main():
     test_classifier_fuzz()
     test_quality_trend()
     test_featured_selection_golden()
+    test_youth_screen()
+    test_gpra_source_registered()
     print()
     if FAILS:
         print(f"[X] {len(FAILS)} FAILED: {', '.join(FAILS)}")

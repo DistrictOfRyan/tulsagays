@@ -211,6 +211,9 @@ _LGBTQ_KW = {
     "pride", "rainbow", "equality",
     "homo", "sapphic", "affirming",
     "gender outreach",
+    # Great Plains Rodeo Association — Oklahoma's IGRA gay rodeo. Their events
+    # (rodeo, fundraisers, socials) are explicitly LGBTQ even with neutral titles.
+    "great plains rodeo", "gay rodeo", "igra",
 }
 
 
@@ -280,6 +283,7 @@ _STRICT_LGBTQ_KW = {
     "broadway clubhouse",   # OKEQ social space
     "queer crafters",
     "morecolor",            # OKEQ art show
+    "great plains rodeo", "gay rodeo", "igra",   # Oklahoma's IGRA gay rodeo (GPRA)
     "equality business alliance", "eba",
     "affirming",            # only matches in NAME, not description
 }
@@ -315,6 +319,42 @@ _GAY_VENUE_SIGNATURES = (
     "302 s frankfort", "302 south frankfort", "302 s. frankfort",
     "dennis r. neill", "dennis r neill", "equality center",
 )
+
+
+# Under-18 / kids programming signals. Events matching these are geared at minors
+# and are DROPPED from the guide unless the event is explicitly LGBTQ (William
+# 2026-06-15: "things geared for people under 18 that aren't explicitly gay should
+# be removed" — e.g. a pet-rock class at the library). Queer youth programming
+# (drag story hour, GSA, queer teen group) is protected by the _is_lgbtq check.
+_YOUTH_KW = (
+    "kids", "kid-friendly", "for kids", "children", "childrens", "children's",
+    "toddler", "babies", "baby ", "infant", "preschool", "pre-k", "prek",
+    "kindergarten", "elementary", "story time", "storytime", "story hour",
+    "puppet", "lego", "sensory", "homeschool", "home school", "petting zoo",
+    "pet rock", "dino", "dinosaur", "make and take", "corn husk", "corn-husk",
+    "balloon twist", "bubble show", "bubble stage", "tween", "scout troop",
+    "girl scout", "boy scout", "cub scout", "4-h", "summer reading",
+    "reading buddies", "craft time", "kids' ", "youth craft", "teen craft",
+    "family storytime", "family fun day", "weather show", "junior ranger",
+)
+
+
+def _is_youth_nongay(e: Dict) -> bool:
+    """True if the event is geared at under-18s AND is NOT explicitly LGBTQ.
+    Such events are screened OUT of the guide entirely (not just unfeatured).
+    Anything that reads LGBTQ (broad _is_lgbtq OR a strict/source signal OR the
+    lgbtq_relevant flag) is protected — queer youth programming stays."""
+    if _is_lgbtq(e) or _is_lgbtq_strict(e) or e.get("lgbtq_relevant"):
+        return False
+    # Match the NAME (+venue) only, not the description — a youth program announces
+    # itself in its title ("Pet Rock Class", "Toddler Storytime"). Matching the
+    # description over-drops adult events that merely mention "kids menu" / "family".
+    # Normalize punctuation so "Balloon-Twisting", "Corn-Husk", "Pre-K" still match.
+    import re as _re
+    t = (e.get("name") or "") + " " + (e.get("venue") or "")
+    t = _re.sub(r"[^a-z0-9 ]+", " ", t.lower())
+    t = _re.sub(r"\s+", " ", t)
+    return any(kw.replace("-", " ") in t for kw in _YOUTH_KW)
 
 
 # ---------------------------------------------------------------------------

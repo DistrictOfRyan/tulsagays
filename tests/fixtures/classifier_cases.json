@@ -24,6 +24,8 @@
     {"name": "OKEQ Health Clinic", "venue": "Equality Center", "lgbtq_strict": true, "skip": true, "why": "health clinic"},
     {"name": "Bingo Night", "venue": "Pratt Library", "lgbtq_strict": false, "skip": false, "why": "general community"},
     {"name": "Native Culture Make and Take: Corn-Husk Dolls", "venue": "Pratt Library", "lgbtq_strict": false, "skip": false, "why": "general community"},
-    {"name": "An Evening With David Sedaris", "venue": "Magic City Books", "lgbtq_strict": false, "skip": false, "why": "author event, not venue/keyword gay (featured via appeal, not gay-tag)"}
+    {"name": "An Evening With David Sedaris", "venue": "Magic City Books", "lgbtq_strict": false, "skip": false, "why": "author event, not venue/keyword gay (featured via appeal, not gay-tag)"},
+    {"name": "Great Plains Rodeo Fundraiser", "venue": "", "lgbtq_strict": true, "skip": false, "why": "GPRA = Oklahoma's IGRA gay rodeo"},
+    {"name": "Gay Rodeo Watch Party", "venue": "Club Majestic", "lgbtq_strict": true, "skip": false, "why": "gay rodeo keyword + gay venue"}
   ]
 }
