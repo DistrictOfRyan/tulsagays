@@ -847,6 +847,19 @@ PENDING_ACTIONS_PATH = os.path.join(
 LGBTQ_DATED_MINIMUM = 8
 PRIMARY_SOURCE_MINIMUM = 3
 
+# Venues that must be covered every week. If one of these trusted sources
+# returns 0 events, that is almost always a silent scrape failure (rate-limited
+# IG endpoint, renamed handle, dead site), not a genuinely empty week. The
+# content gate only halts when the WHOLE pool is thin, so the main gay bars can
+# quietly drop out while other sources fill the quota — this catches exactly
+# that. Override per-city via config.KEY_VENUE_SOURCES.
+KEY_VENUE_SOURCES = getattr(config, "KEY_VENUE_SOURCES", {
+    "tulsa_eagle_ig": "Tulsa Eagle (@tulsaeagle)",
+    "club_majestic_ig": "Club Majestic (@clubmajestictulsa)",
+    "ybr_ig": "Yellow Brick Road (@tulsaybr)",
+    "studio_66": "Studio 66 (@studio.66_)",
+})
+
 
 def _write_pending_action(message: str, week_key: str) -> None:
     """Append a timestamped entry to pending-william-actions.md."""
@@ -858,6 +871,38 @@ def _write_pending_action(message: str, week_key: str) -> None:
         logger.warning(f"[content-gate] Written to pending-william-actions.md")
     except Exception as exc:
         logger.error(f"[content-gate] Could not write pending action: {exc}")
+
+
+def _warn_missing_key_venues(events: List[Dict], week_key: str) -> None:
+    """Loud, NON-halting alert when a must-cover venue returns 0 events.
+
+    Distinct from the content gate (which only fires when the whole pool is
+    thin). This is the 'don't silently skip the gay bar' safety net: if the
+    Eagle/Majestic/YBR/Studio 66 contributed nothing, flag it so a juicy event
+    behind a rate-limited IG endpoint or a renamed handle gets caught and can be
+    added by hand, rather than vanishing."""
+    present = {(e.get("source") or "") for e in events}
+    missing = {src: label for src, label in KEY_VENUE_SOURCES.items() if src not in present}
+    if not missing:
+        return
+    labels = ", ".join(sorted(missing.values()))
+    msg = (
+        f"{len(missing)} key venue(s) returned 0 events this week: {labels}. "
+        "Likely a silent scrape failure (rate-limited IG endpoint, renamed "
+        "handle, or dead site), not a genuinely empty week. Check the venue's "
+        "Instagram directly and add anything live to data/manual_events.json, "
+        "then re-run the scraper."
+    )
+    logger.warning("[key-venue] %s", msg)
+    print(f"\n*** KEY VENUE ALERT ***\n{msg}\n")
+    try:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+        entry = (f"\n## [{timestamp}] TulsaGays key venue(s) silent — {week_key}\n"
+                 f"- {msg}\n")
+        with open(PENDING_ACTIONS_PATH, "a", encoding="utf-8") as f:
+            f.write(entry)
+    except Exception as exc:
+        logger.error(f"[key-venue] Could not write pending action: {exc}")
 
 
 def main():
@@ -907,6 +952,10 @@ def main():
                 "[SLACK] ZERO Slack events found. slack_browser_needed.flag not present — "
                 "slack_browser_scraper may have failed silently. Check data/slack_events_browser.json."
             )
+
+    # 4.5b. Key-venue zero-event alert — surfaces a silent gay-bar scrape miss
+    # (the "don't skip the juicy events" guard) even when the content gate passes.
+    _warn_missing_key_venues(unique_events, get_week_key())
 
     # 4.6. LGBTQ content quality gate — halt if event pool is too thin to produce a good post
     lgbtq_dated = [

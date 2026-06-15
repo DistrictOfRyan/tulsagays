@@ -93,6 +93,10 @@ ORGS: List[Dict] = [
     # because nothing scraped them.
     {
         "username": "tulsaeagle",
+        # The Eagle's handle has been documented both ways (config comment says
+        # @tulsaeagleok). Try both so a rename/typo never silently zeroes the
+        # main gay bar — the W24 Pride miss class of failure.
+        "alt_usernames": ["tulsaeagleok"],
         "source_name": "tulsa_eagle_ig",
         "default_venue": "Tulsa Eagle, 1338 E 3rd St",
         "priority": 2,
@@ -101,6 +105,7 @@ ORGS: List[Dict] = [
     },
     {
         "username": "clubmajestictulsa",
+        "alt_usernames": ["majestictulsa", "clubmajestic"],
         "source_name": "club_majestic_ig",
         "default_venue": "Club Majestic, 124 N Boston Ave",
         "priority": 2,
@@ -109,6 +114,7 @@ ORGS: List[Dict] = [
     },
     {
         "username": "tulsaybr",
+        "alt_usernames": ["ybrtulsa"],
         "source_name": "ybr_ig",
         "default_venue": "Yellow Brick Road, 2630 E 15th St",
         "priority": 2,
@@ -124,6 +130,10 @@ class InstagramOrgScraper(BaseScraper):
     def __init__(self, org: Dict):
         super().__init__()
         self.username = org["username"]
+        # Primary handle first, then any documented alternates. Every fetch path
+        # walks this list until one returns posts, so a renamed/mistyped handle
+        # degrades to the alternate instead of a silent 0 events.
+        self.usernames = [org["username"]] + [u for u in org.get("alt_usernames", []) if u]
         self.source_name = org["source_name"]
         self.default_venue = org.get("default_venue", f"Tulsa (see @{org['username']})")
         self.priority = int(org.get("priority", 2))
@@ -168,27 +178,39 @@ class InstagramOrgScraper(BaseScraper):
     def _fetch_public(self) -> List[Dict]:
         """Read recent posts via Instagram's public web-profile JSON.
 
-        No login / session / credentials. Returns a list of
-        {caption, url, posted_on} dicts, or [] on any failure.
+        Walks every candidate handle (primary + alts) and returns the first that
+        yields captioned posts, so a renamed/mistyped handle never silently
+        zeroes the venue. No login / session / credentials.
         """
+        for user in self.usernames:
+            posts = self._fetch_public_one(user)
+            if posts:
+                if user != self.username:
+                    logger.info("[%s] primary @%s returned nothing — used alt handle @%s",
+                                self.source_name, self.username, user)
+                return posts
+        return []
+
+    def _fetch_public_one(self, user: str) -> List[Dict]:
+        """Fetch one handle's recent captioned posts, or [] on any failure."""
         import requests
         headers = {
             "User-Agent": _UA,
             "X-IG-App-ID": IG_WEB_APP_ID,
             "Accept": "*/*",
-            "Referer": self.profile_url,
+            "Referer": f"https://www.instagram.com/{user}/",
         }
         try:
-            r = requests.get(WEB_PROFILE_URL.format(user=self.username),
+            r = requests.get(WEB_PROFILE_URL.format(user=user),
                              headers=headers, timeout=20)
         except Exception as e:
-            logger.warning("[%s] public profile request failed: %s %s",
-                           self.source_name, type(e).__name__, str(e)[:120])
+            logger.warning("[%s] @%s public profile request failed: %s %s",
+                           self.source_name, user, type(e).__name__, str(e)[:120])
             return []
         if r.status_code != 200:
-            logger.warning("[%s] public profile HTTP %s (logged-out endpoint may be "
-                           "rate-limited) — will try session fallback",
-                           self.source_name, r.status_code)
+            logger.warning("[%s] @%s public profile HTTP %s (logged-out endpoint may be "
+                           "rate-limited) — will try next handle / session fallback",
+                           self.source_name, user, r.status_code)
             return []
         try:
             user = (r.json().get("data", {}) or {}).get("user") or {}
@@ -225,26 +247,32 @@ class InstagramOrgScraper(BaseScraper):
         cl = self._client()
         if cl is None:
             return []
-        try:
-            uid = cl.user_id_from_username(self.username)
-            medias = cl.user_medias(uid, amount=POSTS_TO_SCAN)
-        except Exception as e:
-            logger.warning("[%s] session fetch failed: %s %s",
-                           self.source_name, type(e).__name__, str(e)[:160])
-            return []
-        posts = []
-        for m in medias:
-            caption = (getattr(m, "caption_text", "") or "").strip()
-            if not caption:
+        for user in self.usernames:
+            try:
+                uid = cl.user_id_from_username(user)
+                medias = cl.user_medias(uid, amount=POSTS_TO_SCAN)
+            except Exception as e:
+                logger.warning("[%s] @%s session fetch failed: %s %s",
+                               self.source_name, user, type(e).__name__, str(e)[:160])
                 continue
-            code = getattr(m, "code", None)
-            post_url = f"https://www.instagram.com/p/{code}/" if code else self.profile_url
-            taken = getattr(m, "taken_at", None)
-            posted_on = taken.strftime("%Y-%m-%d") if isinstance(taken, datetime) else ""
-            posts.append({"caption": caption, "url": post_url, "posted_on": posted_on})
-        logger.info("[%s] session fallback returned %d captioned posts",
-                    self.source_name, len(posts))
-        return posts
+            posts = []
+            for m in medias:
+                caption = (getattr(m, "caption_text", "") or "").strip()
+                if not caption:
+                    continue
+                code = getattr(m, "code", None)
+                post_url = f"https://www.instagram.com/p/{code}/" if code else self.profile_url
+                taken = getattr(m, "taken_at", None)
+                posted_on = taken.strftime("%Y-%m-%d") if isinstance(taken, datetime) else ""
+                posts.append({"caption": caption, "url": post_url, "posted_on": posted_on})
+            if posts:
+                if user != self.username:
+                    logger.info("[%s] session: primary @%s empty — used alt @%s",
+                                self.source_name, self.username, user)
+                logger.info("[%s] session fallback returned %d captioned posts",
+                            self.source_name, len(posts))
+                return posts
+        return []
 
     def _client(self):
         if not SETTINGS_FILE.exists():
