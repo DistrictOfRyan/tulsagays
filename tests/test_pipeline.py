@@ -190,6 +190,24 @@ def test_quality_trend():
     check(f"latest weekly voice-score avg >= 40 (was {avg})", float(avg) >= 40)
 
 
+def test_featured_selection_golden():
+    print("featured-selection golden (W25 lineup anchor):")
+    gp = os.path.join(ROOT, "tests", "golden", "2026-W25_featured.json")
+    man_path = os.path.join(ROOT, "data", "posts", "2026-W25", "slide_manifest.json")
+    if not (os.path.exists(gp) and os.path.exists(man_path)):
+        print("  [skip] golden or W25 manifest absent")
+        return
+    golden = json.load(open(gp, encoding="utf-8"))["featured_by_day"]
+    man = json.load(open(man_path, encoding="utf-8"))["featured_by_day"]
+    cur = {d: [e.get("name") for e in evs] for d, evs in man.items()}
+    # Only meaningful while the W25 fixture data is in place; compares the exact
+    # featured lineup so a selection-logic change that silently reorders/drops the
+    # shipped W25 cards is caught. (Drift on a fresh scrape is expected — re-snapshot.)
+    drift = [d for d in golden if cur.get(d) != golden[d]]
+    check("W25 featured lineup matches golden snapshot", not drift,
+          f"drifted days: {drift}")
+
+
 def main():
     print("=== TulsaGays pipeline regression suite ===")
     test_classifier()
@@ -200,6 +218,7 @@ def main():
     test_classifier_golden()
     test_classifier_fuzz()
     test_quality_trend()
+    test_featured_selection_golden()
     print()
     if FAILS:
         print(f"[X] {len(FAILS)} FAILED: {', '.join(FAILS)}")
