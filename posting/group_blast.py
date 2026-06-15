@@ -322,7 +322,7 @@ def run(dry_run=False, headed=False, week=None):
         # recurring silent 15-min hang). Plus a hard wall-clock cap on the loop.
         page.set_default_timeout(20000)
         page.set_default_navigation_timeout(35000)
-        loop_deadline = time.monotonic() + 600   # 10 min hard cap
+        loop_deadline = time.monotonic() + 1200   # 20 min hard cap (fits all ~17 groups in one pass; still bounded so it can never silently hang)
 
         for i, g in enumerate(plan):
             if time.monotonic() > loop_deadline:

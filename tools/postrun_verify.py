@@ -72,6 +72,21 @@ def _post_checks(week, data_dir):
     last = wk_rows[-1]
     if not (last.get("fb_posted") or last.get("ig_posted") or last.get("groups_live")):
         errs.append(f"{week} distribution row shows no successful FB/IG/group delivery: {last}")
+    # Website freshness: docs/index.html must show THIS week's date range (the
+    # 2026-06-15 run left the homepage a week stale because Step 3 never ran).
+    try:
+        from datetime import datetime, timedelta
+        idx = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "docs", "index.html")
+        html = open(idx, encoding="utf-8", errors="replace").read()
+        # Build "Month D" for this guide week's Monday and Sunday (e.g. "June 15").
+        y, w = int(week[:4]), int(week.split("-W")[1])
+        monday = datetime.strptime(f"{y}-W{w:02d}-1", "%G-W%V-%u")
+        toks = [monday.strftime("%B %-d") if os.name != "nt" else monday.strftime("%B ") + str(monday.day),
+                (monday + timedelta(days=6)).strftime("%B ") + str((monday + timedelta(days=6)).day)]
+        if not any(t in html for t in toks):
+            errs.append(f"docs/index.html does not show this week ({' / '.join(toks)}) — website was not refreshed (run gen_website_html.py)")
+    except Exception:
+        pass
     return errs
 
 
