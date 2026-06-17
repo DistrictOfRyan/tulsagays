@@ -1,0 +1,32 @@
+[
+  {
+    "username": "adirosecreates",
+    "user_id": "35203577084",
+    "followed": true,
+    "status": "followed"
+  },
+  {
+    "username": "seerut618",
+    "user_id": "6727440990",
+    "followed": false,
+    "status": "follow_returned_false"
+  },
+  {
+    "username": "ginger_ale_miller",
+    "user_id": "33160278",
+    "followed": false,
+    "status": "follow_returned_false"
+  },
+  {
+    "username": "darkskinmiah_777",
+    "user_id": "60640419094",
+    "followed": true,
+    "status": "followed"
+  },
+  {
+    "username": "molly_ec09",
+    "user_id": "18546527",
+    "followed": true,
+    "status": "followed"
+  }
+]

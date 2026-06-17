@@ -20,8 +20,9 @@ as NEEDS VERIFICATION, either verify it or omit the address entirely.
 | Mercury Lounge | 1747 S Boston Ave, Brookside | OPEN | Live music venue. Queer-friendly crowd. |
 | Studio 66 | No fixed address | OPEN | Roving queer events collective. Produces shows at rotating venues. Follow @studio.66_ on Instagram for locations. Do NOT publish a street address. |
 | MixCo | Former location: Downtown Tulsa | **PERMANENTLY CLOSED** | Confirmed closed Yelp Feb 2026. Space now occupied by restaurant Rosa. Do not recommend. |
-| Lefty's on Greenwood | Historic Greenwood District | OPEN | Restaurant and bar with drag shows. Address unverified — do not publish a street number. |
+| Lefty's on Greenwood | 10 N Greenwood Ave, Tulsa OK 74120 | **NEEDS VERIFICATION (likely closed)** | See detailed note below. Yelp marks CLOSED (March 2026). Do NOT recommend until reopening confirmed. |
 | Starlite Lounge | 1902 E 11th St | OPEN | Route 66 dive bar. Verified Yelp Feb 2026. Tue-Sun 5pm-2am (Sun from 2pm). |
+| Lefty's on Greenwood | 10 N Greenwood Ave, Tulsa OK 74120 | **NEEDS VERIFICATION (likely closed)** | Yelp marks CLOSED (updated March 2026). A March 2026 forum post mentions "long overdue maintenance," so closure may be temporary, but it cannot be confirmed open. Historic Greenwood District (across from ONEOK Field), NOT Brookside. Do NOT recommend as a current destination until reopening is confirmed. |
 
 ---
 
@@ -61,7 +62,8 @@ as NEEDS VERIFICATION, either verify it or omit the address entirely.
 | Roosevelt's | 1551 E 15th St, Cherry Street | OPEN | Bar/gastropub. No confirmed "rooftop" — do not describe as a rooftop bar or place at "6th and Peoria." |
 | Burn Co. Barbecue | 1738 S Boston Ave (CLOSED); 500 Riverwalk Ter, Jenks (OPEN) | TULSA LOCATION CLOSED | Do NOT recommend the Tulsa location. Jenks only. |
 | Il Seme | Cherry Street (E 15th St area) | OPEN | Queer-owned Italian. Address unverified — do not publish street number. Book ahead. |
-| Elote | Address unverified | OPEN | Mexican and Southwestern. Drag brunch. Do not publish street number. |
+| Elote Cafe & Catering | 514 S Boston Ave, Tulsa OK 74103 (Deco District, downtown) | OPEN | Mexican and Southwestern. Hosts Oklahoma's longest-running Drag Brunch, every 2nd Saturday, two shows (11am & 1:30pm), all ages welcome (21+ for bartop/champagne). Puffy tacos + mimosas. Verified elotetulsa.com + visittulsa.com June 2026. |
+| Dilly Diner | 402 E 2nd St, Tulsa OK 74120 (Blue Dome District) | OPEN | All-day diner: breakfast, brunch, dinner, bakery. McNellie's Group. Welcoming downtown spot. Verified Yelp June 2026. (918) 938-6382. |
 | FarmBar | 1740 S Boston Ave, Brookside | OPEN | Farm-to-table. Verified Yelp April 2026. Tue-Sat 5-9pm. |
 | East Village Bohemian Pizza | 818 E 3rd St, Arts District | OPEN | Verified Yelp April 2026. Previous listing at 1309 E 15th was incorrect. |
 | Empire Slice House | 417 N Main St, Arts District | OPEN | NY-style pizza. Verified Yelp April 2026. Previous listing at 1307 E 3rd was incorrect. |
@@ -156,4 +158,4 @@ Format for new entries:
 | Venue Name | Full Address or "Address unverified" | OPEN / PERMANENTLY CLOSED / NEEDS VERIFICATION | Notes |
 ```
 
-Last updated: 2026-04-29
+Last updated: 2026-06-17 (verified Elote drag-brunch address 514 S Boston Ave; added Dilly Diner; flagged Lefty's on Greenwood as likely closed per Yelp March 2026)
