@@ -500,10 +500,19 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
                 "heart. Sassy, fun, encouraging, a little theatrical, genuinely kind. You are talking to "
                 "a gay introvert and your whole job is to lovingly get him off the couch and out the "
                 "door, then make sure he has the best possible time once he's there. "
+                "CRAFT (every time): open with a SPECIFIC sensory image of THIS event (a look, a "
+                "sound, a moment), sprinkle drag-mother terms of endearment (honey, sugar, darling, "
+                "baby), land one witty line, and close with a concrete BEST-TIME tip (when to arrive, "
+                "where to stand, what to bring). Hand-written for that one event, never a template. "
+                "NEVER waste a line on empty cheerleading: a bare 'make sure to go', 'you won't regret "
+                "it', 'put it on your calendar', or 'these are your people' is FORBIDDEN. Every sentence "
+                "must carry a specific, useful, or funny detail. "
                 "HARD RULES: Never discourage, hedge, mock, or put down an event in ANY way — every "
                 "event gets a genuine, warm reason to go. Never use em dashes. Never sound like AI or "
                 "corporate copy. Banned phrases: 'vibrant community', 'safe space', 'don't miss out', "
-                "'something for everyone', 'whether you're'. Write like a real, funny, loving friend. "
+                "'something for everyone', 'whether you're', 'make sure to go', 'actually go', "
+                "'you will thank yourself', 'zero excuses'. Write like a real, funny, loving friend "
+                "who happens to talk like Dolly hosting Drag Race. "
                 "ANONYMITY: this account is anonymous. NEVER reveal or hint at who runs it. No real "
                 "names, no 'I run this', no 'dm me', no personal signatures. Speak as the community, "
                 "always 'you' (the reader), never 'I' (the operator)."
@@ -603,6 +612,86 @@ def enrich_event_descriptions(events: list[dict]) -> list[dict]:
     return events
 
 
+def _pick(seed: str, options: list[str]) -> str:
+    """Deterministically pick one variant by a stable hash of the event name, so
+    same-category events don't all read identically but a given event is stable run
+    to run. (Math.random would break reproducibility; a name hash gives free variety.)"""
+    if not options:
+        return ""
+    import hashlib
+    h = int(hashlib.md5((seed or "x").encode("utf-8")).hexdigest(), 16)
+    return options[h % len(options)]
+
+
+# RuPaul x Dolly Parton x Alicia Edwards voice bank. Each line: a specific sensory hook,
+# real sass + Southern warmth, and a "best-time" tip baked in. NO generic "go!" filler,
+# no "your people", no "put it on your calendar". Variants keep the feed from repeating.
+_VOICE_BANK = {
+    "drag": [
+        "Honey, these queens did not beat that face for you to lurk in the back. "
+        "Get to the rail, bring your singles, and tip like you mean it. Come early for the "
+        "looks, stay late for when they stop being polite.",
+        "Darling, this is the closest thing Tulsa has to church. Front row, fresh dollar "
+        "bills, and a gasp ready in your throat. The opening number warms you up, but the "
+        "late set is where the wigs and the inhibitions both come off.",
+    ],
+    "brunch": [
+        "Put on the outfit that makes you feel a little expensive and order the mimosa like "
+        "it owes you money. This crowd treats brunch as a competitive sport of compliments, "
+        "so grab a seat where you can talk to the table next to you. Arrive hungry and nosy.",
+        "Eggs are optional, the gossip is mandatory, baby. Dress like you tried, tip your "
+        "server like a Parton, and let the bottomless pours do the introductions. Roll in "
+        "right at the start before the good tables go.",
+    ],
+    "dance": [
+        "Wear something you can sweat through, sugar, because a chair is not in your future. "
+        "Get on that floor in the first twenty minutes, before your nerves start negotiating, "
+        "and do not you dare leave before the DJ's last song.",
+        "This is your sign to move like nobody's filming, honey. The floor fills up by "
+        "eleven, so get loose early and let the bass do your overthinking for you.",
+    ],
+    "bar": [
+        "Pull up to the bar, order something with a little sparkle, and say hi to whoever's "
+        "beside you like y'all go way back. Tulsa's queer nightlife runs on exactly that "
+        "kind of nerve. Earlier is for real conversation, later is for delicious chaos.",
+        "Belly up, tip your bartender like a tithe, and let the room do its thing, darling. "
+        "Slow at first, electric by midnight. Go before you talk yourself into staying in.",
+    ],
+    "karaoke": [
+        "Pick something gloriously embarrassing and commit to the bit, baby. Nobody in this "
+        "room is judging, and the brave soul who signs up first always has the best night. "
+        "Get your name on the list early so you go before the catalog fills up.",
+    ],
+    "trivia": [
+        "Round up some strangers, name your team something that'll make the host blush, and "
+        "play like there's rent on the line, honey. Show up fifteen minutes early to claim a "
+        "good table and a fighting chance.",
+    ],
+    "comedy": [
+        "Sit close enough to be in danger, laugh from your belly, and chat up the folks beside "
+        "you at the break. Live comedy in a small room hits different, sugar. Get there early "
+        "for the seats the comics actually look at.",
+    ],
+    "market": [
+        "Bring cash and a little more willpower than usual, because the artists here are "
+        "talented and you are weak, darling. Talk to the makers, ask about the work, and go "
+        "early while the good pieces are still on the table.",
+    ],
+    "music": [
+        "Get there before the first note, find your spot, and let yourself feel something for "
+        "once, honey. Tulsa's live music is criminally underrated. Early gets you close; close "
+        "gets you a story.",
+    ],
+    "default": [
+        "This one's got your name on it, sugar. Walk in like you own a little piece of the "
+        "place, because tonight you do. Show up near the start so you catch the good part "
+        "before the crowd does.",
+        "Consider this your formal invitation to leave the couch, darling. Roll in early, say "
+        "yes to the first thing that sounds fun, and let the night surprise you.",
+    ],
+}
+
+
 def _rule_based_enrich(event: dict) -> str:
     """Generate a sassy, action-oriented pitch that makes people want to go."""
     name = (event.get("name") or "").lower()
@@ -651,8 +740,7 @@ def _rule_based_enrich(event: dict) -> str:
     at_time  = f" at {time}" if time else ""
 
     if any(k in name for k in ["dragnificent", "drag show", "drag night", "drag brunch", "drag queen", "drag king", "drag performer"]):
-        return (f"Go. Put the phone away, get to the front, and tip the queens. "
-                "You will absolutely lose your mind in the best possible way, and you will thank yourself for not staying home.")
+        return _pick(name, _VOICE_BANK["drag"])
 
     # Anchor cultural event (Council Oak Men's Chorale slot) — config-driven
     _anchor = getattr(config, "ANCHOR_CULTURAL_EVENT", None) or {}
@@ -669,43 +757,35 @@ def _rule_based_enrich(event: dict) -> str:
                 "You will leave with at least three new friends and a story worth telling.")
 
     if "brunch" in name or "boozy brunch" in name:
-        return (f"Dress like you tried. Order the thing you normally wouldn't. Talk to the table next to you. "
-                "Brunch with this crowd is a full event, not just a meal, and you will regret skipping it.")
+        return _pick(name, _VOICE_BANK["brunch"])
 
     if any(k in name for k in ["craft", "crochet", "knit", "stitch", "maker", "queer craft"]):
         return (f"You do not need to know what you're doing. Just show up{at_venue} with your hands and your personality. "
                 "LGBTQIA+ people creating things together is magic, and you'll leave with something to show for it.")
 
     if any(k in name for k in ["karaoke"]):
-        return ("Get up there and sing something embarrassing. Nobody here is going to judge you, "
-                "and you will feel incredible afterward. The person who goes first always has the most fun.")
+        return _pick(name, _VOICE_BANK["karaoke"])
 
     if any(k in name for k in ["trivia", "quiz"]):
-        return (f"Make a team with strangers. Name it something that will get a reaction. Talk trash, play hard, and buy a round when you win. "
-                "This is a room full of people who would love to meet you if you'd stop overthinking it.")
+        return _pick(name, _VOICE_BANK["trivia"])
 
     if any(k in name for k in ["comedy", "comedian", "loony bin", "standup", "stand-up"]) or "comedy" in venue.lower():
-        return (f"Sit close to the front. Laugh out loud when it's funny. Talk to the people next to you during the break. "
-                "Live comedy in an intimate room hits different, and you have literally zero excuses to not go.")
+        return _pick(name, _VOICE_BANK["comedy"])
 
     if any(k in name for k in ["rave", "broadway rave", "dance", "dj ", "w/dj", "latin night", "dance party"]):
-        return (f"Wear something you can move in, because you WILL be dancing. "
-                "Leave your self-consciousness at the door, get on the floor in the first 20 minutes, and do not leave before midnight.")
+        return _pick(name, _VOICE_BANK["dance"])
 
     # True gay bar match — config-driven (city's gay bar venue list)
     _true_bars = getattr(config, "TRUE_GAY_BAR_VENUES", set())
     _venue_lower = (venue or "").lower()
     if any(b in _venue_lower for b in _true_bars) or any(b in name for b in _true_bars) or src in ("bars", "nightlife"):
-        return (f"Get there{at_time}, order your drink, and start a conversation with whoever's at the bar next to you. "
-                "Tulsa's LGBTQIA+ nightlife runs on community, and the community only stays strong when you show up.")
+        return _pick(name, _VOICE_BANK["bar"])
 
     if any(k in name for k in ["market", "art market", "art show", "art fair", "gallery"]):
-        return (f"Bring cash. Budget a little more than you think you'll spend. Talk to the artists. Ask them about their work. "
-                "This is where Tulsa's creative community lives, and it's better than anything you'd find scrolling at home.")
+        return _pick(name, _VOICE_BANK["market"])
 
     if any(k in name for k in ["concert", "live music", "music night", "performance"]):
-        return (f"Arrive before it starts. Find a spot. Put the phone away. "
-                "Live music in Tulsa is genuinely underrated and you are going to feel something if you actually let yourself be present for it.")
+        return _pick(name, _VOICE_BANK["music"])
 
     if any(k in name for k in ["support group", "healing", "chronic", "wellness"]):
         return (f"You don't have to have it together to walk in. That's literally the whole point. "
@@ -801,8 +881,39 @@ def _rule_based_enrich(event: dict) -> str:
         return (f"This space{at_venue} is the heartbeat of Tulsa's LGBTQIA+ community. "
                 "Walk in. Say hi to someone. Life genuinely gets better when you show up for your community.")
 
-    return ("Put this on your calendar and actually go. "
-            "The people in that room are your people, and you'll only know that if you show up.")
+    return _pick(name, _VOICE_BANK["default"])
+
+
+def _rule_based_website_description(event: dict, short: str) -> str:
+    """Longer site copy in the same voice: the short pitch plus a concrete logistics
+    beat (day / time / venue) so the website isn't templated filler. Distinct from the
+    short slide line so the two fields never read identically."""
+    import datetime as _dt
+    venue = (event.get("venue") or "").split(",")[0].strip()
+    time = (event.get("time") or "").strip()
+    date = (event.get("date") or "").strip()
+    weekday = ""
+    if date:
+        try:
+            weekday = _dt.datetime.strptime(date, "%Y-%m-%d").strftime("%A")
+        except ValueError:
+            weekday = ""
+    detail_bits = []
+    if weekday:
+        detail_bits.append(f"It's a {weekday} thing")
+    if time:
+        detail_bits.append(f"doors around {time}" if not detail_bits else f"around {time}")
+    if venue:
+        detail_bits.append(f"over at {venue}")
+    detail = ", ".join(detail_bits).strip()
+    closer = _pick((event.get("name") or "") + "L", [
+        "Put on the look, bring a friend or bring your nerve, and let Tulsa show you a good time.",
+        "Dress how it makes you feel, roll in a little early, and thank yourself later, sugar.",
+        "Bring your whole personality. That's the only ticket this town really checks.",
+    ])
+    if detail:
+        return f"{short} {detail[0].upper() + detail[1:]}. {closer}"
+    return f"{short} {closer}"
 
 
 _SCRAPER_ARTIFACTS = [
@@ -841,6 +952,12 @@ def _rule_based_enrich_all(events: list[dict]) -> list[dict]:
         if (not existing or len(existing) < 60 or _is_scraper_artifact(existing)
                 or src in _FORCE_REWRITE_SOURCES):
             ev["description"] = _rule_based_enrich(ev)
+        # Long site copy: fill it (in voice) whenever it's missing or is scraper junk,
+        # so the website stops shipping templated filler (preflight blocks >40% filler).
+        wd = (ev.get("website_description") or "").strip()
+        if not wd or _is_scraper_artifact(wd) or src in _FORCE_REWRITE_SOURCES:
+            ev["website_description"] = _rule_based_website_description(
+                ev, ev.get("description", ""))
     # Guarantee uniqueness: the rule-based templates give same-category events
     # IDENTICAL copy (the 2026-06-08 repeat embarrassment — 21 cards shared one
     # line on the website). Dedupe before returning so every caller (website via

@@ -40,7 +40,9 @@ TEMPLATE_SIGS = [
     "do future-you a favor", "treat yourself to",
 ]
 BANNED = ["vibrant community", "safe space", "don't miss out", "something for everyone",
-          "whether you're", "whether you are", "nestled"]
+          "whether you're", "whether you are", "nestled",
+          "make sure to go", "actually go", "put this on your calendar",
+          "you will thank yourself", "zero excuses"]
 VOICE = ["you", "your", "go ", "get ", "honey", "girl", "darling", "show up"]
 
 

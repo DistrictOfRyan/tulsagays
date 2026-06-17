@@ -1,4 +1,21 @@
 {
   "_note": "Add paying Featured Partners here. The directory generator reads this file and injects cards into the Featured Partners section. Each entry requires: name, url, description (2-3 sentences, Tulsa Gays voice), tier (community|partner|pride), monthly_fee, active (true/false). Address is optional.",
-  "partners": []
+  "partners": [],
+  "_tiers": {
+    "community": {
+      "fee": 25
+    },
+    "partner": {
+      "fee": 150
+    },
+    "pride": {
+      "fee": 400
+    },
+    "a_la_carte": {
+      "newsletter_slot": 100,
+      "ig_spotlight": 75,
+      "event_boost": 50
+    },
+    "_synced_with": "data/sponsorship_rate_card.md + docs/sponsor.html"
+  }
 }

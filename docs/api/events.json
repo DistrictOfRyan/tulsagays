@@ -1,0 +1,82 @@
+{
+  "api_version": "1",
+  "city": "Tulsa, OK",
+  "publisher": "Tulsa Gays",
+  "generated_at": "2026-06-17T14:48:01Z",
+  "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
+  "count": 8,
+  "events": [
+    {
+      "name": "Native Culture Make and Take: Corn-Husk Dolls",
+      "date": "2026-06-15",
+      "time": "2:00 PM - 3:00 PM",
+      "venue": "Pratt Library, 3219 S 113th Ave W",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Music & More Connection With Katherine Battenberg",
+      "date": "2026-06-15",
+      "time": "2:00 PM - 3:00 PM",
+      "venue": "Judy Z. Kishner Library, 10150 N Cincinnati Ave",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Happy Hour with Free Pool at Caz’s Pub",
+      "date": "2026-06-15",
+      "time": "2:00 PM - 6:00 PM",
+      "venue": "Tulsa Arts District",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Adopt a Pet Rock",
+      "date": "2026-06-15",
+      "time": "2:30 PM - 4:30 PM",
+      "venue": "Hardesty Regional Library, 8316 E 93rd St",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Watercolor Painting With Artist Candacee White",
+      "date": "2026-06-15",
+      "time": "3:00 PM - 4:00 PM",
+      "venue": "Collinsville Public Library, 1223 W Main St",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "An Evening With David Sedaris",
+      "date": "2026-06-15",
+      "time": "6:30 PM",
+      "venue": "Magic City Books",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Lambda Bowling League",
+      "date": "2026-06-15",
+      "time": "7:00 PM",
+      "venue": "AMF Sheridan Lanes, 3121 S Sheridan Rd",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "MONDAY MOVIE NIGHT",
+      "date": "2026-06-15",
+      "time": "7:00 PM",
+      "venue": "1338 E 3rd St, Tulsa, OK",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    }
+  ]
+}

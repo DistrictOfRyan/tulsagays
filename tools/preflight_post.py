@@ -50,6 +50,11 @@ BANNED_PHRASES = [
     "something for everyone", "whether you're", "whether you are",
     "nestled", "look no further", "let yourself feel things",
     "come one come all", "fun for all ages",
+    # Flat motivational filler (William 2026-06-17: "wasted space", "too generic").
+    "make sure to go", "make sure you go", "actually go", "be sure to go",
+    "put this on your calendar", "put it on your calendar",
+    "you will thank yourself", "zero excuses", "no excuses not to",
+    "you'll only know that if you show up", "your people, and",
 ]
 ARTIFACT_PATTERNS = [
     re.compile(r"^\s*\w+\s+\d{1,2},\s*\d{4}\s*\|"),     # "June 5, 2026 | 6:00 pm ..."

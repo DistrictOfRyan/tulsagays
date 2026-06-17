@@ -1,3 +1,12 @@
+## [2026-06-17 10:15] TulsaGays community-tip pipeline + voice engine + ceiling climb
+
+Built end-to-end community event-tip ingestion (official Graph API collectors + instagrapi DM bridge, flyer/link site enrichment, guardrailed auto-reply, spotlight self-promo footer), rebuilt the description voice engine (Dolly/RuPaul variant bank + banned-filler guards across generator/preflight/editor), rewrote the 5 live queued tips in voice, and ran /ceiling on both nextlevel ladders to the wall (sponsor page + rate card, public events API, OKC replication scaffold, editorial policy/calendar, membership concept).
+
+**Main artifact:** tools/ingest_dm_tips.py + scraper/dm_sources.py + scraper/dm_instagrapi.py + tools/enrich_tip_links.py; docs/sponsor.html; docs/api/events.json
+**Open items:** instagrapi re-auth (2FA), Meta App Review submit, sign sponsors, OKC domain+OAuth, billing processor - all in pending-william-actions.md
+
+---
+
 ## [2026-06-15 14:30] W24 quality overhaul - sanity checker, time fix, Majestic unban, bar IG sources, voice reliability
 
 Fixed everything William flagged in the W24 site review. Built tools/sanity_check_events.py (rules + chunked-haiku LLM verdicts) wired into scrape (pre-save), generate, and preflight - quarantines civic/chamber meetings (Owasso city council class), kids programming, sports games, cert courses, junk names; flags implausible times + truncated/mojibake names; manual + LGBTQ-source events can never be LLM-dropped. Fixed unicode thin-space time ranges ("6 - 10 PM" rendered END as start - that is why soda-bottle conv showed 10pm) in scraper normalizer + website format_time/_parse_minutes + slide sorter. Reworked relevance: word-boundary LGBTQ matching ("bi" no longer fires in "bingo"), generic cultural words mark community_event not lgbtq_relevant, civic/kids/sports off-topic drops. Removed Majestic/Eagle venue bans (William reversed policy) so one-off bar specials like Lil Shop of Horrors are featurable/EOTW-eligible; recurring weeklies sort last in tiers. Added IG scrapers for @tulsaeagle, @clubmajestictulsa, @tulsaybr (sites DNS-dead). Voice: enrichment CLI timeout 120->300s (every W23/W24 batch had timed out -> 165 templated pool fillers); preflight now hard-blocks >40% templated website copy. This week's data/docs untouched per William; all changes take effect next run.
