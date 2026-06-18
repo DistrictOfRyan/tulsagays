@@ -37,7 +37,13 @@ class BaseScraper:
             "User-Agent": ua,
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Language": "en-US,en;q=0.9",
-            "Accept-Encoding": "gzip, deflate, br",
+            # Only advertise encodings we can actually decode. No Brotli decoder
+            # (brotli/brotlicffi) is installed, so requesting "br" causes any
+            # Brotli-serving site to return undecodable bytes -> the scraper
+            # parses garbage and silently yields 0 events (e.g. qlist served a
+            # 29KB blob instead of the real 191KB page). gzip/deflate are always
+            # decodable by requests' bundled support.
+            "Accept-Encoding": "gzip, deflate",
         })
 
     def _random_delay(self):

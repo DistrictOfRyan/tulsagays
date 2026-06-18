@@ -1,3 +1,12 @@
+## [2026-06-18 13:10] TulsaGays feed audit - fix 3 silently-broken scrapers + systemic Brotli bug
+
+Audited every scraper module by actually running it (URL-reachability checks miss silent failures). Fixed TimeTree (dead .ics -> JSON API + CSRF + RRULE recurrence expansion, 0->19), qlist (guessed CSS selectors matched nothing -> real .cluster-event parser, 0->11 LGBTQ events), and a SYSTEMIC bug in base.py: the session advertised Accept-Encoding br with no Brotli decoder installed, so any Brotli-serving site returned undecodable bytes -> 0 events, no error (qlist got 29KB junk vs 191KB real). Dropped br; it revived qlist and Tulsa Arts District's HTML path. Rewrote TAD to the Events Calendar REST API (1683 events on cold call) but burned the IP into a WAF block via testing - live verify deferred to Monday scrape, logged in pending-actions.
+
+**Main artifact:** scraper/base.py, scraper/timetree_scraper.py, scraper/qlist.py, scraper/tulsa_arts_district.py
+**Open items:** Confirm TAD on next clean Monday scrape (WAF block was self-inflicted). Optional: TICKETMASTER_API_KEY to enable ticketing feed.
+
+---
+
 ## [2026-06-17 10:15] TulsaGays community-tip pipeline + voice engine + ceiling climb
 
 Built end-to-end community event-tip ingestion (official Graph API collectors + instagrapi DM bridge, flyer/link site enrichment, guardrailed auto-reply, spotlight self-promo footer), rebuilt the description voice engine (Dolly/RuPaul variant bank + banned-filler guards across generator/preflight/editor), rewrote the 5 live queued tips in voice, and ran /ceiling on both nextlevel ladders to the wall (sponsor page + rate card, public events API, OKC replication scaffold, editorial policy/calendar, membership concept).

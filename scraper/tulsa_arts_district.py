@@ -3,7 +3,9 @@
 import sys
 import os
 import re
+import html
 import logging
+from datetime import datetime, timedelta
 from typing import List, Dict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -14,21 +16,32 @@ logger = logging.getLogger(__name__)
 
 
 class TulsaArtsDistrictScraper(BaseScraper):
-    """Scrape events from thetulsaartsdistrict.org/events/list/."""
+    """Scrape events from thetulsaartsdistrict.org.
+
+    The site runs The Events Calendar (WordPress). The /events/list/ page now
+    renders event cards client-side via AJAX, so the static HTML carries empty
+    tribe-events templates (parsing it yields 0). The plugin's REST API
+    (/wp-json/tribe/events/v1/events) returns the real data, so that is the
+    primary path; the HTML selectors remain as a fallback.
+    """
 
     source_name = "tulsa_arts_district"
 
     BASE_URL = "https://thetulsaartsdistrict.org"
     EVENTS_URL = "https://thetulsaartsdistrict.org/events/list/"
+    API_URL = "https://thetulsaartsdistrict.org/wp-json/tribe/events/v1/events"
 
     def scrape(self) -> List[Dict]:
-        events = []
+        # Primary: The Events Calendar REST API.
+        events = self._scrape_api()
+        if events:
+            return events
 
+        # Fallback: HTML parsing (kept in case the API is ever disabled).
         soup = self.fetch_page(self.EVENTS_URL)
         if soup:
             events = self._extract_events(soup)
 
-        # Try base events page if list view didn't work
         if not events:
             self._random_delay()
             soup = self.fetch_page(self.BASE_URL + "/events/")
@@ -36,6 +49,75 @@ class TulsaArtsDistrictScraper(BaseScraper):
                 events = self._extract_events(soup)
 
         return events
+
+    def _scrape_api(self) -> List[Dict]:
+        """Pull this-week events from the tribe/events/v1 REST API.
+
+        The endpoint's `start_date`/`end_date` query params trip the site's
+        WAF (403), so we request upcoming events undated (the API returns them
+        ascending from today) and filter to the current Mon-Sun week here.
+        """
+        today = datetime.now()
+        monday = today - timedelta(days=today.weekday())
+        sunday = monday + timedelta(days=6)
+        mon_s, sun_s = monday.strftime("%Y-%m-%d"), sunday.strftime("%Y-%m-%d")
+
+        data = self.fetch_json(self.API_URL, params={"per_page": 50, "page": 1})
+        if not data or not isinstance(data, dict):
+            return []
+
+        events = []
+        for item in data.get("events", []):
+            start = (item.get("start_date", "") or "")[:10]
+            if not (mon_s <= start <= sun_s):
+                continue
+            try:
+                ev = self._parse_api_event(item)
+                if ev:
+                    events.append(ev)
+            except Exception as e:  # pragma: no cover - defensive
+                logger.debug(f"[{self.source_name}] API event skipped: {e}")
+
+        logger.info(f"[{self.source_name}] API: {len(events)} this-week events "
+                    f"(scanned {len(data.get('events', []))} upcoming)")
+        return events
+
+    @staticmethod
+    def _clean(text: str) -> str:
+        """Unescape HTML entities and strip tags from an API string field."""
+        if not text:
+            return ""
+        text = re.sub(r"<[^>]+>", " ", text)
+        return html.unescape(text).strip()
+
+    def _parse_api_event(self, item: Dict) -> Dict | None:
+        name = self._clean(item.get("title", ""))
+        if not name or len(name) < 3:
+            return None
+
+        raw_start = item.get("start_date", "") or ""  # "YYYY-MM-DD HH:MM:SS"
+        date_str = raw_start[:10]
+        time_str = ""
+        if not item.get("all_day") and len(raw_start) >= 16:
+            try:
+                dt = datetime.strptime(raw_start[:19], "%Y-%m-%d %H:%M:%S")
+                time_str = dt.strftime("%I:%M %p").lstrip("0")
+            except ValueError:
+                time_str = ""
+
+        venue = ""
+        v = item.get("venue")
+        if isinstance(v, dict):
+            venue = self._clean(v.get("venue", ""))
+        venue = venue or "Tulsa Arts District"
+
+        desc = self._clean(item.get("excerpt") or item.get("description") or "")[:500]
+        url = item.get("url", "") or self.EVENTS_URL
+
+        return self.make_event(
+            name=name, date=date_str, time=time_str,
+            venue=venue, description=desc, url=url, priority=2,
+        )
 
     def _extract_events(self, soup) -> List[Dict]:
         """Extract events from the Tulsa Arts District events page.
