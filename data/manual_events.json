@@ -450,5 +450,31 @@
     "priority": 1,
     "lgbtq_relevant": true,
     "source_note": "Added 2026-06-15 per William (event flyer he sent). Tulsa Eagle Latin Night, Fri Jun 19 2026, 10pm onward, 1338 E 3rd St. Live DJ Bleiz; reggaeton/dembow; drink specials. Flyer text: 'NOCHE LATINA - La rumba mas HOT de Tulsa / VIERNES 19 DE JUNIO / LATIN NIGHT 10PM EN ADELANTE / LIVE DJ BLEIZ / TULSA EAGLE BAR'."
+  },
+  {
+    "name": "LGBTQ+ Social at DVL",
+    "date": "2026-06-18",
+    "time": "",
+    "venue": "DVL Club & Lounge, 302 S Frankfort Ave, Tulsa, OK (Blue Dome District)",
+    "description": "DVL throws open the Blue Dome doors for an LGBTQ+ social, the woman-owned queer spot where the cocktails are themed and the dance floor finds you. Roll in after work and let the night build around you.",
+    "website_description": "DVL Club & Lounge, the woman-owned LGBTQ+ bar in Tulsa's Blue Dome District, hosts an LGBTQ+ social this Thursday, the easy come-as-you-are queer night out that asks nothing of you but showing up. Themed drinks, a friendly room, and a back space made for dancing. Doors open at 4 with happy hour running until 10, so you can ease in early before the crowd lands. Best-time tip for the shy ones: come during happy hour while the room is still mellow, post up at the bar where the bartenders will chat you up, and you will have found your people by the time the music gets loud.",
+    "url": "https://www.dvltulsa.com",
+    "source": "manual",
+    "priority": 1,
+    "lgbtq_relevant": true,
+    "source_note": "Added 2026-06-18 per William's direct tip (operator). DVL LGBTQ+ social Thu Jun 18 2026, 302 S Frankfort Ave. Exact start time not published on dvltulsa.com (JS-only calendar) or IG at capture; DVL Thursday hours are 4pm-2am, happy hour 4-10pm. Confirm time if a flyer surfaces. DVL also wired as a standing source this session (facebook_events.py + instagram_orgs @dvltulsa / dvl_ig)."
+  },
+  {
+    "name": "Pride Anthem Drag Sing-Along at Elote",
+    "date": "2026-06-20",
+    "time": "6:00 PM - 8:00 PM",
+    "venue": "Elote Cafe & Catering, 514 S Boston Ave, Tulsa, OK",
+    "description": "Grab the mic and let it RIP, honey. Karma Eclectic hosts a Pride anthem drag sing-along at Elote, all glitter, camp, and pure queer joy. Belt the diva number you scream in the car and let the room carry you.",
+    "website_description": "Elote turns its dining room into a karaoke cathedral for the Pride Anthem Drag Sing-Along, hosted by the one and only Karma Eclectic. Think every gay anthem you know by heart, dramatic lip syncs, real vocal moments, and a room full of people who genuinely want you to grab the mic. It runs 6 to 8 on Saturday night, it is glitter and camp and zero judgment, and tickets are on Eventbrite. Best-time tip for the shy ones: get there right at 6 while the song list is wide open, put your name down before the nerves talk you out of it, and pick the anthem you already know every word to, this crowd will sing the bridge right along with you.",
+    "url": "https://www.elotetulsa.com/events",
+    "source": "manual",
+    "priority": 1,
+    "lgbtq_relevant": true,
+    "source_note": "Added 2026-06-18 per William. Verified live from elotetulsa.com/events JSON feed: 'Pride Anthem Drag Sing-Along: June 20th', Sat Jun 20 2026 6-8pm, hosted by Karma Eclectic, tickets via Eventbrite. Elote site scraping fixed this session (Squarespace JSON feed) so future Elote one-offs are caught automatically."
   }
 ]

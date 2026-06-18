@@ -66,6 +66,33 @@ RECURRING = [
         "priority": 1,
     },
     {
+        # Karma Eclectic's weekly drag bingo at the Saturn Room tiki bar. Verified
+        # via saturnroom.com ("bingo every Thursday night at 6:30") and the Tulsa
+        # Arts District event listing for "Karma Eclectic's Drag Bingo Bongo at
+        # Saturn Room." Added 2026-06-18 per William so Saturn Room is always
+        # surfaced (it was scraped by nothing before this). If a given Thursday is
+        # ever a non-drag bingo night, it is still a fun, queer-friendly one-off.
+        "name": "Drag Bingo Bongo at Saturn Room",
+        "day": "Thursday",
+        "freq": "weekly",
+        "time": "6:30 PM",
+        "venue": "Saturn Room, 209 N Boulder Ave",
+        "url": "https://www.saturnroom.com/",
+        "priority": 1,
+        "description": ("Daubers up, darling. Karma Eclectic runs drag bingo at the Saturn Room "
+                        "every Thursday, a tiki cocktail in one hand and a bingo card in the other, "
+                        "with a drag host keeping the whole room honest. Free to play, big on chaos."),
+        "website_description": ("Saturn Room, that gloriously over-the-top downtown tiki bar, hands the "
+                        "mic to Karma Eclectic every Thursday for drag bingo, and it is exactly the "
+                        "low-stakes, high-camp weeknight a shy gay can actually handle. Order something "
+                        "with an umbrella in it, grab a card, and let the drag host carry the room "
+                        "through round after round. Bingo starts at 6:30, it is free to play, and this is "
+                        "the friendly kind of crowd that cheers when a total stranger wins. Best-time tip "
+                        "for the shy ones: get there a little before 6:30 to claim a seat near the action, "
+                        "order one tiki drink to give your hands something to do, and say yes when the "
+                        "person two seats down starts trash-talking the caller."),
+    },
+    {
         "name": "Sunday Showdown Open Talent Night",
         "day": "Sunday",
         "freq": "weekly",

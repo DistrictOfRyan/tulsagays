@@ -40,13 +40,22 @@ class CommunityGroupsScraper(BaseScraper):
         "queerlit_collective": "https://www.facebook.com/queerlitcollective",
     }
 
+    # Squarespace event collections serve a clean JSON feed at ?format=json. The
+    # generic HTML scraper below could only pull "Get Your Tickets!" / "(map)"
+    # junk off Elote's JS-rendered page (every real event silently dropped), so
+    # these sources route through _scrape_squarespace_json instead. (2026-06-18)
+    SQUARESPACE_JSON_SOURCES = {"elote_events"}
+
     def scrape(self) -> List[Dict]:
         events = []
 
         # Scrape websites that have event listings
         for source_key, url in self.SOURCES.items():
             try:
-                source_events = self._scrape_source(source_key, url)
+                if source_key in self.SQUARESPACE_JSON_SOURCES:
+                    source_events = self._scrape_squarespace_json(source_key, url)
+                else:
+                    source_events = self._scrape_source(source_key, url)
                 events.extend(source_events)
             except Exception as e:
                 logger.error(f"[community_groups] Failed scraping {source_key}: {e}")
@@ -108,6 +117,59 @@ class CommunityGroupsScraper(BaseScraper):
                 logger.debug(f"[community_groups] Parse error in {source_key}: {e}")
 
         self._random_delay()
+        return events
+
+    def _scrape_squarespace_json(self, source_key: str, url: str) -> List[Dict]:
+        """Pull events from a Squarespace events collection via its JSON feed.
+
+        Squarespace exposes every events page as JSON at ?format=json, with an
+        'upcoming' array of items carrying a real title and a startDate (epoch
+        milliseconds). This is far more reliable than scraping the JS-rendered
+        HTML, which yielded only navigation/button junk for Elote. Degrades to
+        [] on any failure (never crashes the run). The runner still applies the
+        current-week date gate, so far-future items drop out naturally."""
+        data = self.fetch_json(url, params={"format": "json"})
+        if not data:
+            logger.warning("[community_groups] %s JSON feed empty/unreachable", source_key)
+            return []
+
+        items = data.get("upcoming") or data.get("items") or []
+        venue = self._venue_for_source(source_key)
+        base = "https://" + url.split("/")[2] if "//" in url else ""
+        events: List[Dict] = []
+        for it in items:
+            if not isinstance(it, dict):
+                continue
+            import html as _html
+            title = _html.unescape((it.get("title") or "").strip())
+            if not title or len(title) < 5:
+                continue
+            date_str, time_str = "", ""
+            ts = it.get("startDate")
+            if ts:
+                try:
+                    dt = datetime.fromtimestamp(int(ts) / 1000)
+                    date_str = dt.strftime("%Y-%m-%d")
+                    # Portable 12h format (Windows lacks %-I); drop any leading zero.
+                    time_str = dt.strftime("%I:%M %p").lstrip("0")
+                except (ValueError, OverflowError, OSError):
+                    date_str, time_str = "", ""
+            full = it.get("fullUrl") or ""
+            if full.startswith("/"):
+                ev_url = base + full
+            elif full.startswith("http"):
+                ev_url = full
+            else:
+                ev_url = url
+            events.append(self.make_event(
+                name=title,
+                date=date_str,
+                time=time_str,
+                venue=venue,
+                url=ev_url,
+                priority=2,
+            ))
+        logger.info("[community_groups] %s Squarespace JSON: %d events", source_key, len(events))
         return events
 
     def _get_recurring_events(self) -> List[Dict]:

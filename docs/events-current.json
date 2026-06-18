@@ -1,45 +1,10 @@
 [
   {
-    "name": "Native Culture Make and Take: Corn-Husk Dolls",
-    "venue": "Pratt Library, 3219 S 113th Ave W",
+    "name": "Paint n' Sip",
+    "venue": "Shared by Brandon Wickett",
     "date": "2026-06-15",
     "day_short": "MON",
-    "time": "2:00 PM - 3:00 PM"
-  },
-  {
-    "name": "Music & More Connection With Katherine Battenberg",
-    "venue": "Judy Z. Kishner Library, 10150 N Cincinnati Ave",
-    "date": "2026-06-15",
-    "day_short": "MON",
-    "time": "2:00 PM - 3:00 PM"
-  },
-  {
-    "name": "Happy Hour with Free Pool at Caz\u2019s Pub",
-    "venue": "Tulsa Arts District",
-    "date": "2026-06-15",
-    "day_short": "MON",
-    "time": "2:00 PM - 6:00 PM"
-  },
-  {
-    "name": "Adopt a Pet Rock",
-    "venue": "Hardesty Regional Library, 8316 E 93rd St",
-    "date": "2026-06-15",
-    "day_short": "MON",
-    "time": "2:30 PM - 4:30 PM"
-  },
-  {
-    "name": "Watercolor Painting With Artist Candacee White",
-    "venue": "Collinsville Public Library, 1223 W Main St",
-    "date": "2026-06-15",
-    "day_short": "MON",
-    "time": "3:00 PM - 4:00 PM"
-  },
-  {
-    "name": "An Evening With David Sedaris",
-    "venue": "Magic City Books",
-    "date": "2026-06-15",
-    "day_short": "MON",
-    "time": "6:30 PM"
+    "time": ""
   },
   {
     "name": "Lambda Bowling League",
@@ -49,10 +14,45 @@
     "time": "7:00 PM"
   },
   {
-    "name": "MONDAY MOVIE NIGHT",
-    "venue": "1338 E 3rd St, Tulsa, OK",
+    "name": "Monday Night Jazz",
+    "venue": "Vintage Wine Bar",
     "date": "2026-06-15",
     "day_short": "MON",
-    "time": "7:00 PM"
+    "time": "8:00 PM"
+  },
+  {
+    "name": "CRIMSON LOVE ALBUM RELEASE",
+    "venue": "Thevanguardtulsa.com",
+    "date": "2026-06-15",
+    "day_short": "MON",
+    "time": "8:00 PM - 11:00 PM"
+  },
+  {
+    "name": "BILLY RAY CYRUS",
+    "venue": "Hard Rock Hotel And Casino Tulsa, 777 W Cherokee St",
+    "date": "2026-06-15",
+    "day_short": "MON",
+    "time": "8:00 PM - 9:30 PM"
+  },
+  {
+    "name": "OKEQ Senior's",
+    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+    "date": "2026-06-16",
+    "day_short": "TUE",
+    "time": "10:00 AM"
+  },
+  {
+    "name": "Summer Movies @ Circle Cinema",
+    "venue": "Events Time.ly",
+    "date": "2026-06-16",
+    "day_short": "TUE",
+    "time": "1:30 PM - 3:00 PM"
+  },
+  {
+    "name": "OSU Tulsa Queer Support Group",
+    "venue": "OSU Tulsa Campus, 700 N Greenwood Ave",
+    "date": "2026-06-16",
+    "day_short": "TUE",
+    "time": "6:00 PM"
   }
 ]

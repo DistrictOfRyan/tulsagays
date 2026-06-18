@@ -1261,6 +1261,7 @@ LGBTQ_SOURCES = {
     "tulsa_eagle_ig",    # @tulsaeagle (verified active, ~1.5k followers) — Eagle events are IG-only (site DNS-dead)
     "club_majestic_ig",  # @clubmajestictulsa (verified) — Majestic specials (the Lil' Shop of Horrors class)
     "ybr_ig",            # @tulsaybr (verified active) — Yellow Brick Road (lesbian bar), IG-only events
+    "dvl_ig",            # @dvltulsa — woman-owned LGBTQ+ bar (Blue Dome); site calendar is JS-only, IG carries events
 
     "pflag_tulsa", "black_queer_tulsa", "freedom_oklahoma",
     "utulsa_pride", "osu_tulsa",

@@ -467,11 +467,18 @@ def write_events_current_json():
                 "day_short": day_short,
                 "time": e.get("time",""),
             })
-        out = ROOT / "docs" / "events-current.json"
-        out.parent.mkdir(parents=True, exist_ok=True)
-        with open(out, "w", encoding="utf-8") as f:
-            json.dump(slim, f, indent=2)
-        print(f"[ok] events-current.json written ({len(slim)} events)")
+        # Write BOTH paths: the blog-article widget fetches /events-current.json
+        # (docs root) while the main calendar widget fetches /data/events-current.json.
+        # Historically only the root path was written, so the main page served stale
+        # data indefinitely. Write both so the live widget is always current. (2026-06-18)
+        out_paths = [ROOT / "docs" / "events-current.json",
+                     ROOT / "docs" / "data" / "events-current.json"]
+        for out in out_paths:
+            out.parent.mkdir(parents=True, exist_ok=True)
+            with open(out, "w", encoding="utf-8") as f:
+                json.dump(slim, f, indent=2)
+        print(f"[ok] events-current.json written ({len(slim)} events) -> "
+              f"{', '.join(str(p.relative_to(ROOT)) for p in out_paths)}")
     except Exception as e:
         print(f"[WARN] Could not write events-current.json: {e}")
 

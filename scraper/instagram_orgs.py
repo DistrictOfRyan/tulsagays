@@ -121,6 +121,18 @@ ORGS: List[Dict] = [
         "blurb": "Yellow Brick Road, Oklahoma's lesbian bar. "
                  "Details on Instagram @tulsaybr.",
     },
+    {
+        # DVL Club & Lounge (added 2026-06-18). Woman-owned LGBTQ+ bar in the
+        # Blue Dome District. Its dvltulsa.com calendar is JS-rendered (unreadable
+        # by the static scraper); FB events are wired in facebook_events.py, and
+        # this IG path adds a second, durable feed for its queer socials/parties.
+        "username": "dvltulsa",
+        "source_name": "dvl_ig",
+        "default_venue": "DVL Club & Lounge, 302 S Frankfort Ave",
+        "priority": 1,
+        "blurb": "DVL Club & Lounge, the woman-owned LGBTQ+ bar in Tulsa's Blue "
+                 "Dome District. Details on Instagram @dvltulsa.",
+    },
 ]
 
 
