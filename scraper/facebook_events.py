@@ -61,6 +61,7 @@ PAGE_URLS = [
     "https://www.facebook.com/YBRTulsa/events",
     "https://www.facebook.com/clubmajestictulsa/events",
     "https://www.facebook.com/dvltulsa/events",
+    "https://www.facebook.com/innercircletulsa/events",     # Inner Circle Vodka Bar (410 N Main, Arts District) - frequent drag shows hosted by Shanel Sterling
     # Arts & culture
     "https://www.facebook.com/TwistedArtsTulsa/events",
     "https://www.facebook.com/queerlitcollective/events",

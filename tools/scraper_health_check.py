@@ -31,6 +31,7 @@ import argparse
 import json
 import logging
 import os
+import subprocess
 import sys
 import time
 from datetime import datetime
@@ -44,6 +45,8 @@ logging.disable(logging.CRITICAL)  # scrapers are noisy; the guard speaks for th
 HEALTH_FILE = ROOT / "data" / "scraper_health.json"
 # Vault action inbox (syncs to Obsidian + dashboard + Telegram digest).
 PENDING_ACTIONS = Path(r"C:\Users\willi\.claude\pending-william-actions.md")
+# Chief-of-staff brief submitter - folds onto the Desktop TODAY.html dashboard.
+SUBMIT_BRIEF = Path(r"C:\Users\willi\.claude\chief-of-staff\submit_brief.py")
 
 OK, JUNK, DEAD, SKIP = "OK", "JUNK", "DEAD", "SKIP"
 
@@ -234,6 +237,48 @@ def _alert_regressions(regressions: list, now: str):
     return True
 
 
+def _push_dashboard(regressions: list, now: str) -> bool:
+    """Surface NEW breakage + open blocked-on-William items on the TODAY
+    dashboard, per William's rule that anything blocked on him must appear there
+    so it gets fixed when he is around. Best-effort; never raises."""
+    try:
+        sys.path.insert(0, str(ROOT))
+        from tools import blocked_items
+        blocked = blocked_items.open_items()
+    except Exception:
+        blocked = []
+    if not regressions and not blocked:
+        return False
+    if not SUBMIT_BRIEF.exists():
+        return False
+    lines = []
+    if regressions:
+        lines.append(f"{len(regressions)} scraper source(s) newly broke:")
+        for r in regressions:
+            lines.append(f"  - {r['source']} -> {r['status']} ({r.get('url','')})")
+    if blocked:
+        lines.append("")
+        lines.append(f"Blocked on you ({len(blocked)} - need your hands):")
+        for b in blocked:
+            lines.append(f"  - {b['item']} ({b.get('reason','')})")
+    lines.append("")
+    lines.append("Full report: tulsagays/data/scraper_health.json. "
+                 "Resolve a block: python tools/blocked_items.py resolve --match \"...\"")
+    body = "\n".join(lines)
+    subject = "TulsaGays scrapers: "
+    subject += (f"{len(regressions)} newly broken" if regressions else "items blocked on you")
+    try:
+        subprocess.run(
+            [sys.executable, str(SUBMIT_BRIEF), "--task", "tulsagays-scraper-health",
+             "--subject", subject, "--body", body,
+             "--priority", "high" if regressions else "med"],
+            capture_output=True, text=True, timeout=60,
+        )
+        return True
+    except Exception:
+        return False
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--full", action="store_true", help="also run slow aggregators")
@@ -254,8 +299,11 @@ def main():
 
     _write_health(results, now)
     alerted = False
-    if regressions and not args.no_alert:
-        alerted = _alert_regressions(regressions, now)
+    if not args.no_alert:
+        if regressions:
+            alerted = _alert_regressions(regressions, now)
+        # Surface new breakage AND any open blocked-on-William items on TODAY.
+        _push_dashboard(regressions, now)
 
     if args.json:
         print(json.dumps({"checked_at": now,

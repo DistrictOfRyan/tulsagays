@@ -1297,6 +1297,7 @@ COMMUNITY_PARTNER_KEYWORDS = [
     "tulsa pac", "performing arts center",
     "expo square",
     "cain's ballroom", "cainsballroom",
+    "inner circle vodka", "inner circle tulsa", "icvodkabar",  # vodka bar (410 N Main), frequent drag nights hosted by Shanel Sterling
     "guthrie green",
     "living arts",
     "vanguard tulsa",

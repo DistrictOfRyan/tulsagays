@@ -1,0 +1,26 @@
+[
+  {
+    "id": "find-taco-ok-s-new-website-transadvocacyok-org-w",
+    "item": "Find TACO OK's new website (transadvocacyok.org was hijacked into a gambling site)",
+    "reason": "domain hijacked, scraper retired; org's real new home unknown",
+    "source": "community_groups/taco_ok",
+    "since": "2026-06-18",
+    "status": "open"
+  },
+  {
+    "id": "decide-whether-to-wire-tulsa-city-county-library",
+    "item": "Decide whether to wire Tulsa City-County Library JSON feed (1054 events, mostly non-LGBTQ)",
+    "reason": "json strategy is built; needs your go/no-go since most events are storytimes/book clubs",
+    "source": "rendered_sites/Tulsa City-County Library",
+    "since": "2026-06-18",
+    "status": "open"
+  },
+  {
+    "id": "re-check-tulsa-pride-council-oak-goff-fest-sites",
+    "item": "Re-check Tulsa Pride, Council Oak, Goff Fest sites when they publish 2026 dates",
+    "reason": "sites are live but list no events yet (seasonal); revive specs when dates post",
+    "source": "rendered_sites",
+    "since": "2026-06-18",
+    "status": "open"
+  }
+]
