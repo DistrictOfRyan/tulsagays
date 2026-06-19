@@ -1,0 +1,92 @@
+{
+  "_comment": "Auto-grown by the weekly source-growth engine (tools/promote_sources.py). High-confidence Tulsa queer/queer-welcoming sources are appended here automatically; the scrapers merge these with their hardcoded lists at load time. Safe to hand-edit. Do not delete keys.",
+  "fb_pages": [
+    {
+      "url": "https://www.facebook.com/stvitustulsa/events",
+      "name": "St. Vitus",
+      "added": "2026-06-19",
+      "via": "web-search"
+    }
+  ],
+  "fb_groups": [],
+  "calendars": [
+    {
+      "url": "https://www.counciloak.org/concerts",
+      "name": "Council Oak Mens Chorale",
+      "category": "arts",
+      "added": "2026-06-14",
+      "via": "weekly-search:Tulsa LGBTQ choir"
+    },
+    {
+      "url": "https://allsoulschurch.org/category/events/community-events",
+      "name": "All Souls Unitarian Church (Tulsa)",
+      "category": "church",
+      "added": "2026-06-14",
+      "via": "weekly-search:Tulsa UU/MCC events"
+    },
+    {
+      "url": "https://www.greatplainsrodeo.org/",
+      "name": "Great Plains Rodeo Association (Oklahoma gay rodeo, IGRA)",
+      "category": "lgbtq",
+      "added": "2026-06-15",
+      "via": "william:add GPRA gay rodeo; scrape Tulsa-area activities"
+    }
+  ],
+  "partner_keywords": [
+    {
+      "kw": "great plains rodeo",
+      "name": "Great Plains Rodeo Association (gay rodeo)",
+      "added": "2026-06-15",
+      "via": "william:GPRA"
+    },
+    {
+      "kw": "gay rodeo",
+      "name": "Gay Rodeo (IGRA / GPRA)",
+      "added": "2026-06-15",
+      "via": "william:GPRA"
+    },
+    {
+      "kw": "dennis r. neill equality center",
+      "name": "Dennis R. Neill Equality Center",
+      "added": "2026-06-14",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "loony bin comedy club - tulsa",
+      "name": "Loony Bin Comedy Club - Tulsa",
+      "added": "2026-06-14",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "mother road market",
+      "name": "Mother Road Market",
+      "added": "2026-06-14",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "loud & queer",
+      "name": "Loud & Queer Fest",
+      "added": "2026-06-14",
+      "via": "weekly-search:gap Loud & Queer Fest"
+    },
+    {
+      "kw": "queer crafters",
+      "name": "Queer Crafters Club",
+      "added": "2026-06-14",
+      "via": "weekly-search:Tulsa LGBTQ craft club"
+    },
+    {
+      "kw": "fellowship congregational",
+      "name": "Fellowship Congregational UCC",
+      "added": "2026-06-14",
+      "via": "weekly-search:Fellowship Congregational UCC"
+    },
+    {
+      "kw": "st. vitus",
+      "name": "St. Vitus",
+      "added": "2026-06-19",
+      "via": "web-search"
+    }
+  ],
+  "retired": []
+}
