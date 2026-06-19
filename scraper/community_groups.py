@@ -32,10 +32,11 @@ class CommunityGroupsScraper(BaseScraper):
         "green_country_bears": "https://greencountrybears.com/",
         "pflag_tulsa": "https://tulsapflag.org/",
         "council_oak_chorus": "https://www.counciloak.org/concerts",
-        "taco_ok": "https://transadvocacyok.org/events",
+        # taco_ok RETIRED 2026-06-18: transadvocacyok.org was hijacked and now
+        # serves an Indonesian gambling site ("Agen5000"). Do not fetch.
         "hotmess_sports": "https://www.hotmesssports.com/tulsa",
         "pride_sports": "https://pridesportstulsa.leagueapps.com/leagues",
-        "tulsa_house_of_drag": "https://www.tulsahouseofdrag.com/",
+        # tulsa_house_of_drag RETIRED 2026-06-18: tulsahouseofdrag.com is NXDOMAIN.
         "diva_royale": "https://www.divaroyale.com/dragquenshow-locations.html",
         "queerlit_collective": "https://www.facebook.com/queerlitcollective",
     }

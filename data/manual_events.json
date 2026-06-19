@@ -476,5 +476,18 @@
     "priority": 1,
     "lgbtq_relevant": true,
     "source_note": "Added 2026-06-18 per William. Verified live from elotetulsa.com/events JSON feed: 'Pride Anthem Drag Sing-Along: June 20th', Sat Jun 20 2026 6-8pm, hosted by Karma Eclectic, tickets via Eventbrite. Elote site scraping fixed this session (Squarespace JSON feed) so future Elote one-offs are caught automatically."
+  },
+  {
+    "name": "Great Plains Rodeo (Oklahoma Gay Rodeo)",
+    "date": "2026-08-07",
+    "time": "",
+    "venue": "Oklahoma City (Great Plains Rodeo Association, IGRA)",
+    "description": "Boots, buckles, and a whole lot of queer cowboy energy. The Great Plains Rodeo is Oklahoma's IGRA-sanctioned gay rodeo, three days of real rodeo, camp, and community. Road-trip worthy, darling.",
+    "website_description": "The Great Plains Rodeo is Oklahoma's gay rodeo, sanctioned by the International Gay Rodeo Association, and it is exactly the gloriously specific queer Americana you did not know you needed. Three days of barrel racing, bull riding, drag, dancing, and the friendliest boots-and-buckles crowd in the region, all in Oklahoma City the weekend of August 7 to 9. It is an easy road trip from Tulsa and worth every mile. Best-time tip for the shy ones: go for the Saturday daytime events when the grandstand is relaxed and folks love to explain what is happening, then stay for the evening social where the real community magic happens.",
+    "url": "https://www.greatplainsrodeo.org/",
+    "source": "manual",
+    "priority": 1,
+    "lgbtq_relevant": true,
+    "source_note": "Added 2026-06-18 (scraper repair campaign). Great Plains Rodeo Association, IGRA-sanctioned Oklahoma gay rodeo, weekend of Aug 7-9 2026 in OKC (confirmed via greatplainsrodeo.org weekend schedule). Site is a Wix prose page with no scrapable event structure, so captured manually. Re-verify exact dates closer to the event."
   }
 ]

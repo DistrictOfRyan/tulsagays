@@ -1,6 +1,7 @@
 """Base scraper class with common functionality for all Tulsa Gays scrapers."""
 
 import random
+import re
 import time
 import logging
 from datetime import datetime
@@ -119,14 +120,29 @@ class BaseScraper:
                 continue
             # Flatten arrays and @graph wrappers into a list of candidate items.
             if isinstance(data, list):
-                items = data
+                items = list(data)
             elif isinstance(data, dict) and isinstance(data.get("@graph"), list):
-                items = data["@graph"]
+                items = list(data["@graph"])
             else:
                 items = [data]
+            # Some pages nest the real Event list under a container node's
+            # mainEntity / itemListElement (e.g. a WebPage or ItemList wrapper).
+            # Pull those nested events up so they aren't silently dropped.
+            for node in list(items):
+                if not isinstance(node, dict):
+                    continue
+                for key in ("mainEntity", "itemListElement"):
+                    nested = node.get(key)
+                    if isinstance(nested, list):
+                        items.extend(n for n in nested if isinstance(n, dict))
+                    elif isinstance(nested, dict):
+                        items.append(nested)
             for item in items:
                 if not isinstance(item, dict):
                     continue
+                # itemListElement often wraps the event in a ListItem.item
+                if "Event" not in str(item.get("@type", "")) and isinstance(item.get("item"), dict):
+                    item = item["item"]
                 itype = item.get("@type", "")
                 if isinstance(itype, list):
                     itype = next((t for t in itype if "Event" in str(t)), "")
@@ -182,6 +198,9 @@ class BaseScraper:
             "%A, %b %d, %Y",
             "%B %d",
             "%b %d",
+            "%a, %b %d",
+            "%A, %b %d",
+            "%a, %B %d",
         ]
         for fmt in formats:
             try:
@@ -192,4 +211,19 @@ class BaseScraper:
                 return dt.strftime("%Y-%m-%d")
             except ValueError:
                 continue
+        # Last resort: pull a "Mon DD[, YYYY]" token out of a noisier string
+        # (e.g. "Jul 09 8PM", "Fri, Jun 19  |  Doors 7pm"). Many cards glue the
+        # time onto the date in one element, which the exact formats above reject.
+        m = re.search(
+            r"(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s*(\d{1,2})"
+            r"(?:[a-z]{0,2})?(?:,?\s*(20\d\d))?",
+            date_str, re.I)
+        if m:
+            mon, day, yr = m.group(1), m.group(2), m.group(3)
+            yr = yr or str(datetime.now().year)
+            try:
+                dt = datetime.strptime(f"{mon} {day} {yr}", "%b %d %Y")
+                return dt.strftime("%Y-%m-%d")
+            except ValueError:
+                pass
         return date_str

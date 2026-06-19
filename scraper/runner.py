@@ -35,6 +35,7 @@ from scraper import (
     slack_browser_scraper,
     studio66,
     instagram_orgs,
+    rendered_sites,
 )
 
 logger = logging.getLogger(__name__)
@@ -738,6 +739,7 @@ def run_all_scrapers() -> List[Dict]:
         ("homo_hotel", homo_hotel.scrape),
         ("community_calendars", community_calendars.scrape),
         ("extended_calendars", extended_calendars.scrape),
+        ("rendered_sites", rendered_sites.scrape),  # JS-rendered venue calendars (Playwright + per-site specs) - revives Philbrook/Cain's/BOK/Hard Rock/etc. that extended_calendars saw as empty shells
         ("aa_meetings", aa_meetings.scrape),
         ("qlist", qlist.scrape),
         ("community_groups", community_groups.scrape),

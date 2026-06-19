@@ -112,6 +112,35 @@ def _probe_extended_calendars() -> list:
     return out
 
 
+def _probe_rendered_sites() -> list:
+    """Per-spec health for the config-driven rendered-site scraper (Playwright).
+    Each enabled spec is run individually so one breaking (e.g. Cain's changes
+    its DOM) is flagged on its own, not hidden in a module-level total."""
+    from scraper.rendered_sites import RenderedSitesScraper, _load_specs
+    s = RenderedSitesScraper()
+    out = []
+    try:
+        for spec in _load_specs():
+            if spec.get("strategy") == "dead" or not spec.get("enabled", True):
+                continue
+            t0 = time.time()
+            try:
+                ev = s._scrape_spec(spec)
+                dated = sum(1 for e in ev if _is_dated(e))
+                out.append({"source": f"rendered_sites/{spec['name']}", "url": spec.get("url", ""),
+                            "raw": len(ev), "dated": dated,
+                            "status": _classify(len(ev), dated),
+                            "secs": round(time.time() - t0, 1)})
+            except Exception as e:
+                out.append({"source": f"rendered_sites/{spec['name']}", "url": spec.get("url", ""),
+                            "raw": 0, "dated": 0, "status": DEAD,
+                            "error": f"{type(e).__name__}: {str(e)[:80]}",
+                            "secs": round(time.time() - t0, 1)})
+    finally:
+        s._close_browser()
+    return out
+
+
 def _probe_module(name: str, fn) -> dict:
     """Run a module-level scrape() and classify by dated yield."""
     t0 = time.time()
@@ -166,6 +195,7 @@ def run(full: bool = False, quick: bool = False) -> list:
     results = []
     results += _probe_community_groups()
     results += _probe_extended_calendars()
+    results += _probe_rendered_sites()
     if not quick:
         results += _module_level_checks(full)
     return results
