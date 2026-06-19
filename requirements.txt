@@ -8,3 +8,7 @@ schedule>=1.2.0
 python-dateutil>=2.8.0
 jinja2>=3.1.0
 feedparser>=6.0.0
+# IG private-API client. Pinned to a current release: a stale instagrapi runs old
+# endpoints against live Instagram and gets stuck on unresolvable challenges (the
+# 2.8.2 bloks-challenge wall, 2026-06-19). Keep this reasonably current.
+instagrapi>=2.16.11
