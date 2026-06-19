@@ -22,5 +22,37 @@
     "source": "rendered_sites",
     "since": "2026-06-18",
     "status": "open"
+  },
+  {
+    "id": "launch-a-2nd-city-okc-for-the-queer-local-graph",
+    "item": "Launch a 2nd city (OKC) for the Queer Local Graph",
+    "reason": "infra is ready (city-parametrized discovery + city-agnostic specs + events API + OKC config); launch needs a domain ($), Meta OAuth for the new IG/FB, and your go decision",
+    "source": "build-city / multi-city",
+    "since": "2026-06-19",
+    "status": "open"
+  },
+  {
+    "id": "lexington-gays-meta-oauth-link-ig-thebarcomplex-",
+    "item": "Lexington Gays: Meta OAuth (link IG @thebarcomplex-style page + regenerate FB token)",
+    "reason": "FB token is from May (likely expired), Instagram not linked; social posting needs your Graph API Explorer clicks",
+    "source": "lexingtongays",
+    "since": "2026-06-19",
+    "status": "resolved"
+  },
+  {
+    "id": "lexington-gays-refresh-meta-token-confirmed-expi",
+    "item": "Lexington Gays: refresh Meta token (CONFIRMED expired 2026-05-13) + link IG",
+    "reason": "Graph API error 190/463 verified 2026-06-19: page token for FB page 61589147379825 expired May 13. Social posting + auto DM/comment ingest are dead until you re-auth via Graph API Explorer (app 1468075241636760) and link Instagram. Walk-through available via /guideme.",
+    "source": "lexingtongays",
+    "since": "2026-06-19",
+    "status": "resolved"
+  },
+  {
+    "id": "lexington-gays-link-an-instagram-business-accoun",
+    "item": "Lexington Gays: link an Instagram Business account (@lexingtongays) to the FB page for IG posting",
+    "reason": "FB token is now refreshed + working (FB posting + FB-comment ingest live). IG posting/comment-ingest still needs an IG Business account linked to FB page 1147768485077353 (IG app -> Settings -> Connect to Facebook -> Lexington Gays). Then re-run capture_meta_creds.py.",
+    "source": "lexingtongays",
+    "since": "2026-06-19",
+    "status": "open"
   }
 ]
