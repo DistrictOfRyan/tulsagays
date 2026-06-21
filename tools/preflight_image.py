@@ -68,8 +68,20 @@ def _download(url: str) -> str:
     return path
 
 
+_NO_ALERT_SIGNALS = ("tests/fixtures", "tests\\fixtures", "_diag_", "selftest",
+                     "tofu_weekend_live", "clean_weekend_ref")
+
+
 def _alert(src: str, reason: str) -> None:
-    """Record a BLOCK so William sees it and it isn't silent."""
+    """Record a BLOCK so William sees it and it isn't silent.
+
+    Selftests / regression runs gate KNOWN-BAD fixtures on purpose; those must
+    NOT spam the Action Inbox (they did on 2026-06-21 — 19 false 'BLOCKED'
+    entries). Skip alerting when the source is a test fixture / diagnostic image,
+    or when TULSAGAYS_QA_SILENT is set. Real production sources still alert."""
+    low = str(src).lower()
+    if os.environ.get("TULSAGAYS_QA_SILENT") or any(s in low for s in _NO_ALERT_SIGNALS):
+        return
     stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     try:
         with open(PENDING, "a", encoding="utf-8") as f:
