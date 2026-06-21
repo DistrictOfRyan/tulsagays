@@ -293,9 +293,26 @@ def validate_slides(slides: list[Path]) -> None:
         if size < 15 * 1024:
             sys.exit(f"ERROR: {s.name} is only {size // 1024}KB — likely corrupt.\n"
                      f"Re-generate slides: python main.py generate-all")
+    # PIXEL GATE (added 2026-06-20): every carousel slide must pass the graphic QA
+    # gate (tofu/blank/resolution) before it can be hosted+posted. image_maker
+    # routes emoji to the color font so slides are normally clean, but this is the
+    # defense-in-depth backstop that makes a cheap/broken slide unpostable.
+    try:
+        from tools.preflight_image import preflight as _pf
+    except Exception:
+        from preflight_image import preflight as _pf  # when run from tools/
+    bad = []
+    for s in slides:
+        v = _pf(str(s))
+        if not v["ok"]:
+            bad.append(f"{s.name}: {v['reason']}")
+    if bad:
+        sys.exit("ERROR: carousel slide(s) FAILED graphic QA — refusing to post:\n   "
+                 + "\n   ".join(bad)
+                 + "\n   Re-generate slides: python main.py generate-all")
     if len(slides) < 9:
         print(f"[NOTE] {len(slides)} slides (light week — some days had no events)")
-    print(f"[OK] {len(slides)} slides validated ({WEEK_KEY})")
+    print(f"[OK] {len(slides)} slides validated + graphic-QA clean ({WEEK_KEY})")
 
 
 def host_slides_for_ig(slides: list[Path]) -> list[str]:

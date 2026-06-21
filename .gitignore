@@ -8,3 +8,6 @@ logo/tulsa_skyline_source.jpg
 data/fb_auto_profile/
 data/fb_group_auth.json
 data/GROUP_AUTH_DEAD.flag
+
+# Graphic approval registry must be version-controlled (William sign-offs)
+!data/approved_assets.json

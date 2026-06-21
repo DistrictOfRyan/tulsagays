@@ -60,15 +60,35 @@ def wait_for_public_url(url: str, timeout_s: int = 90, poll_s: int = 5) -> None:
     raise RuntimeError(f"Public URL never became live: {url} (last status: {last_status})")
 
 
+def _gate_image(image_url: str) -> None:
+    """HARD pixel-QA gate. Downloads the exact bytes Meta will fetch and refuses
+    to post a tofu/blank/broken graphic. This is the control that would have
+    stopped the 2026-06-20 cheap "boxes with X's" weekend image. Fail-CLOSED on
+    a genuine block; if the gate itself errors (e.g. preflight import broken) it
+    logs and allows, so a tooling bug never silently kills every post."""
+    try:
+        from tools.preflight_image import assert_postable
+    except Exception:
+        try:
+            from preflight_image import assert_postable  # when run from tools/
+        except Exception as e:
+            print(f"[social_lib] WARNING: image preflight unavailable ({e}) — posting ungated")
+            return
+    assert_postable(image_url)  # raises RuntimeError on a real block
+
+
 def post_facebook_photo(
     cfg: dict[str, Any], image_url: str, caption: str, dry_run: bool = False
 ) -> dict[str, Any]:
     """POST /{page_id}/photos with an image URL and caption.
 
     Never falls back to /feed. If this errors, callers should NOT post text-only.
+    Every image is pixel-QA'd first (tofu/blank/resolution) — a broken graphic
+    raises before any network call.
     """
     if dry_run:
         return {"id": "dry_run_fb_id", "dry_run": True, "would_post": {"image_url": image_url}}
+    _gate_image(image_url)
     resp = requests.post(
         f"{API_BASE}/{cfg['page_id']}/photos",
         data={
@@ -87,9 +107,14 @@ def post_facebook_photo(
 def post_instagram_photo(
     cfg: dict[str, Any], image_url: str, caption: str, dry_run: bool = False
 ) -> dict[str, Any]:
-    """Two-step IG image post: create container, then publish."""
+    """Two-step IG image post: create container, then publish.
+
+    Every image is pixel-QA'd first — a tofu/blank/broken graphic raises before
+    any network call, so it can never reach Instagram.
+    """
     if dry_run:
         return {"id": "dry_run_ig_id", "dry_run": True, "would_post": {"image_url": image_url}}
+    _gate_image(image_url)
     ig_id = cfg["instagram_business_account_id"]
 
     container = requests.post(

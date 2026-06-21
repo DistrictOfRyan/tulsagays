@@ -14,7 +14,7 @@ as NEEDS VERIFICATION, either verify it or omit the address entirely.
 |---|---|---|---|
 | Club Majestic | 124 N Boston Ave, Downtown Tulsa | OPEN | Flagship LGBTQ+ nightclub. Drag shows, DJs, theme nights. |
 | Tulsa Eagle | 1338 E 3rd St, Tulsa OK 74120 | OPEN | Leather/bear bar. Arts District neighborhood (E 3rd St), NOT Cherry Street, NOT Brookside. |
-| Yellow Brick Road (YBR) | 2630 E 15th St, Cherry Street area | OPEN | Cherry Street neighborhood (E 15th St). Separate venue from the Eagle — different street, different neighborhood. NOT in Brookside. |
+| Yellow Brick Road (YBR) | 2630 E 15th St, Cherry Street area | OPEN | Tulsa's ONLY lesbian bar and one of the last in the US (reopened June 2023 after a 2022 fire). INCLUSIVE — everyone is welcome, not just women; the gay-guy crowd skews away from it but shouldn't. FEATURE YBR whenever an event surfaces, and frame it as a welcoming spot for the whole community. Cherry Street neighborhood (E 15th St). Separate venue from the Eagle — different street, different neighborhood. NOT in Brookside. |
 | The Fur Shop | 1218 E 4th St | **PERMANENTLY CLOSED** | Do not recommend or describe as open. Do not reference Pony Coffee as being inside The Fur Shop. |
 | St. Vitus Bar | 1707 S Boston Ave, Brookside | OPEN | Neighborhood cocktail bar. Reliably queer-friendly. |
 | Mercury Lounge | 1747 S Boston Ave, Brookside | OPEN | Live music venue. Queer-friendly crowd. |

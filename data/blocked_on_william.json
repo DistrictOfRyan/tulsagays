@@ -54,5 +54,13 @@
     "source": "lexingtongays",
     "since": "2026-06-19",
     "status": "open"
+  },
+  {
+    "id": "repair-tulsagays-scraper-source-tulsa-farmers-ma",
+    "item": "Repair TulsaGays scraper source: Tulsa Farmers' Market",
+    "reason": "auto-repair could not re-derive a working extraction; needs a human look",
+    "source": "rendered_sites/Tulsa Farmers' Market",
+    "since": "2026-06-20",
+    "status": "open"
   }
 ]
