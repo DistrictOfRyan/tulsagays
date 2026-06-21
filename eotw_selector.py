@@ -318,6 +318,9 @@ _GAY_VENUE_SIGNATURES = (
     "124 n boston", "club majestic",
     "302 s frankfort", "302 south frankfort", "302 s. frankfort",
     "dennis r. neill", "dennis r neill", "equality center",
+    # Yellow Brick Road — Tulsa's only lesbian bar, inclusive/everyone-welcome.
+    # (William 2026-06-21: feature more YBR.) Mirrors config.GAY_VENUE_SIGNATURES.
+    "yellow brick", "ybr", "2630 e 15th",
 )
 
 

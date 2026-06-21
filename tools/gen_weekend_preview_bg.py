@@ -109,6 +109,18 @@ def main():
         return 1
     os.replace(tmp, OUT)
     print(f"[OK] wrote {OUT} — tofu-clean ({verdict['reason']})")
+
+    # Rung 3: a regenerated asset must be SEEN by William before it can post.
+    # Route it through the human-eyes-on gate (Telegram photo + veto window)
+    # instead of any script silently self-approving it. (2026-06-20)
+    try:
+        import request_visual_approval as rva
+        r = rva.request(OUT, key="weekend-preview-bg", channel="Saturday weekend preview",
+                        caption_preview="New weekend-preview background regenerated.")
+        print(f"[gate] visual approval requested: {r.get('stage')} ok={r.get('ok')}")
+    except Exception as e:
+        print(f"[gate] WARNING: could not request visual approval ({e}); "
+              f"asset is tofu-clean but NOT yet human-seen.")
     return 0
 
 

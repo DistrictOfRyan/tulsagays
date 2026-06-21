@@ -31,6 +31,24 @@ _last_post_time: Optional[datetime] = None
 MIN_POST_INTERVAL_HOURS = 4
 
 
+def _gate(image_srcs) -> None:
+    """HARD graphic gate (William 2026-06-21). Refuse to publish a tofu / blank /
+    broken image. For remote URLs the gate downloads the exact bytes Meta will
+    fetch and QA's those. Fail-CLOSED on a real block (raises); fail-OPEN if the
+    gate tooling itself is unavailable, so a tooling bug never kills every post."""
+    if not image_srcs:
+        return
+    try:
+        from tools.preflight_image import gate_images
+    except Exception:
+        try:
+            from preflight_image import gate_images
+        except Exception as e:
+            logger.warning("image preflight unavailable (%s) — posting ungated", e)
+            return
+    gate_images([str(s) for s in image_srcs])
+
+
 # ---------------------------------------------------------------------------
 # Logging helper
 # ---------------------------------------------------------------------------
@@ -318,6 +336,7 @@ def post_carousel(
     if len(image_paths) > 10:
         raise ValueError("Carousel supports a maximum of 10 images.")
 
+    _gate(image_paths)
     _enforce_rate_limit()
     _humanize_pre_post_delay()
 
@@ -383,6 +402,7 @@ def post_single_image(
     access_token = access_token or config.META_ACCESS_TOKEN
     ig_user_id = ig_user_id or config.META_IG_USER_ID
 
+    _gate([image_path])
     _enforce_rate_limit()
     _humanize_pre_post_delay()
 

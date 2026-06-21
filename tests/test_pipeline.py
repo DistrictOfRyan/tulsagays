@@ -235,6 +235,90 @@ def test_gpra_source_registered():
         check("Great Plains Rodeo registered in dynamic_sources", "great plains rodeo" in blob)
 
 
+def test_graphic_gate():
+    """Lock in the 2026-06-21 fix: a cheap 'boxes with X's' (tofu) graphic must
+    be structurally un-postable. Every low-level posting primitive must DEFINE a
+    _gate AND CALL it, and the gate must block the known-bad fixture and pass the
+    clean one. Regresses the bug where the Saturday IG image shipped ungated."""
+    print("graphic gate (tofu / broken-image) locks:")
+    fx = os.path.join(ROOT, "tests", "fixtures")
+    bad = os.path.join(fx, "tofu_weekend_live.png")
+    good = os.path.join(fx, "clean_weekend_ref.png")
+
+    # detector + shared chokepoint
+    try:
+        from tools.preflight_image import gate_images
+        import tools.detect_tofu as dt
+        check("detector flags the known-bad tofu fixture",
+              os.path.exists(bad) and not dt.scan_image(bad)["clean"])
+        check("detector passes the known-good fixture",
+              os.path.exists(good) and dt.scan_image(good)["clean"])
+        raised = False
+        try:
+            gate_images([bad])
+        except RuntimeError:
+            raised = True
+        check("gate_images raises on the bad image", raised)
+        try:
+            gate_images([good]); ok = True
+        except Exception:
+            ok = False
+        check("gate_images passes the clean image", ok)
+    except Exception as e:
+        check("gate tooling importable", False, str(e))
+
+    # every posting primitive must DEFINE _gate AND CALL it (call site present)
+    primitives = {
+        "posting/facebook.py": "posting.facebook",
+        "posting/instagram.py": "posting.instagram",
+        "posting/group_post.py": "posting.group_post",
+        "posting/group_blast.py": "posting.group_blast",
+    }
+    for relpath, modname in primitives.items():
+        src = open(os.path.join(ROOT, relpath), encoding="utf-8").read()
+        has_def = "def _gate(" in src
+        # >=1 call beyond the definition itself
+        has_call = src.count("_gate(") >= 2
+        check(f"{relpath} defines AND calls _gate", has_def and has_call,
+              f"def={has_def} call={has_call}")
+        try:
+            mod = __import__(modname, fromlist=["_gate"])
+            r = False
+            try:
+                mod._gate([bad])
+            except RuntimeError:
+                r = True
+            check(f"{modname}._gate blocks the bad image", r)
+        except Exception as e:
+            check(f"{modname} importable for gate check", False, str(e))
+
+
+def test_ybr_highlighting():
+    """Lock in William 2026-06-21 + VENUE_FACTS.md: Yellow Brick Road events must
+    be featured (any event at YBR counts as LGBTQ even with a neutral title) and
+    framed as inclusive / everyone-welcome."""
+    print("YBR highlighting (feature + inclusive framing):")
+    check("YBR in config.GAY_VENUE_SIGNATURES",
+          any("yellow brick" in s or s == "ybr" for s in getattr(config, "GAY_VENUE_SIGNATURES", ())))
+    check("neutral-title YBR event is featurable",
+          es._is_lgbtq_strict({"name": "Karaoke Night", "venue": "Yellow Brick Road, 2630 E 15th St"}) is True)
+    check("YBR Pub event is featurable",
+          es._is_lgbtq_strict({"name": "Dance Night", "venue": "YBR Pub"}) is True)
+    check("a random sports bar is still NOT gay",
+          es._is_lgbtq_strict({"name": "Trivia", "venue": "Some Sports Bar"}) is False)
+    try:
+        import content.generator as g
+        out = g._apply_ybr_inclusive_note([{"name": "Karaoke", "venue": "Yellow Brick Road",
+                                            "description": "Friday karaoke."}])
+        check("YBR description gains inclusive framing",
+              "everyone is welcome" in out[0]["description"].lower())
+        non = g._apply_ybr_inclusive_note([{"name": "Trivia", "venue": "Sports Bar",
+                                            "description": "Pub trivia."}])
+        check("non-YBR description untouched", non[0]["description"] == "Pub trivia.")
+    except Exception as e:
+        check("inclusive-note helper importable", False, str(e))
+
+
 def main():
     print("=== TulsaGays pipeline regression suite ===")
     test_classifier()
@@ -248,6 +332,8 @@ def main():
     test_featured_selection_golden()
     test_youth_screen()
     test_gpra_source_registered()
+    test_graphic_gate()
+    test_ybr_highlighting()
     print()
     if FAILS:
         print(f"[X] {len(FAILS)} FAILED: {', '.join(FAILS)}")

@@ -31,6 +31,7 @@ sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 
 import graphic_qa  # noqa: E402
+import heal_asset  # noqa: E402
 
 PENDING = r"C:\Users\willi\.claude\pending-william-actions.md"
 
@@ -74,15 +75,31 @@ def main() -> int:
             continue
         try:
             v = graphic_qa.qa_image(tmp)
-            if not v["ok"]:
-                problems.append(f"{url}: LIVE bytes FAIL graphic QA — {v['reason']}")
             approved_sha = (reg.get(rel) or {}).get("sha256")
-            if approved_sha and approved_sha != live_sha:
+            drifted = bool(approved_sha) and approved_sha != live_sha
+
+            # SELF-HEAL: a broken (QA-fail) live asset auto-rebuilds clean before
+            # we escalate. The deploy (commit/push of the regenerated local file)
+            # still flows through the normal weekly commit; the heal guarantees the
+            # local source of truth is clean so the next deploy serves a good image.
+            healed_note = ""
+            if not v["ok"]:
+                h = heal_asset.heal(rel)
+                if h["healed"]:
+                    healed_note = f" — SELF-HEALED locally ({h['reason']}); commit+deploy to refresh the live URL"
+                    print(f"[HEAL] {rel} regenerated clean; live URL still stale until next deploy")
+                else:
+                    problems.append(
+                        f"{url}: LIVE bytes FAIL graphic QA — {v['reason']}; "
+                        f"AUTO-HEAL could not fix it ({h['reason']})")
+                # Either way the LIVE bytes are still bad until deploy — flag it.
+                problems.append(f"{url}: LIVE bytes FAIL graphic QA — {v['reason']}{healed_note}")
+            if drifted:
                 problems.append(
                     f"{url}: LIVE bytes DRIFTED from the approved asset "
                     f"(live sha {live_sha[:12]}… != approved {approved_sha[:12]}…) "
                     f"— the deployed file is not the one William signed off on")
-            tag = "OK" if v["ok"] and (not approved_sha or approved_sha == live_sha) else "PROBLEM"
+            tag = "OK" if v["ok"] and not drifted else "PROBLEM"
             print(f"[{tag}] {url} — qa_ok={v['ok']} live_sha={live_sha[:12]}…")
         finally:
             if os.path.exists(tmp):

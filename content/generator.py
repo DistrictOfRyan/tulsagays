@@ -390,7 +390,50 @@ def _call_claude(user_prompt: str) -> str:
     return message.content[0].text.strip()
 
 
+_YBR_VENUE_SIGS = ("yellow brick", "ybr", "2630 e 15")
+_YBR_INCLUSIVE_TAG = (
+    "Yellow Brick Road is Tulsa's only lesbian bar and one of the last in the US, "
+    "and everyone is welcome. The gay-guy crowd tends to skip it, but it's an "
+    "inclusive home for the whole community."
+)
+# Signals that the description already conveys YBR's everyone-welcome nature, so
+# we don't double up on the inclusive framing.
+_YBR_INCLUSIVE_SIGNALS = ("everyone", "everybody", "inclusive", "whole community",
+                          "all welcome", "welcome", "lesbian bar")
+
+
+def _is_ybr_event(e: dict) -> bool:
+    venue = (e.get("venue") or "").lower()
+    name = (e.get("name") or "").lower()
+    return any(sig in venue or sig in name for sig in _YBR_VENUE_SIGS)
+
+
+def _apply_ybr_inclusive_note(events: list[dict]) -> list[dict]:
+    """William 2026-06-21 + VENUE_FACTS.md: any YBR event must be framed as a
+    welcoming spot for the WHOLE community (gay guys included), not just women.
+    Deterministic post-pass so it applies no matter which enrichment path ran and
+    never depends on the LLM remembering. Idempotent: skips events whose copy
+    already conveys inclusivity."""
+    for e in events or []:
+        if not _is_ybr_event(e):
+            continue
+        for field in ("description", "website_description"):
+            txt = (e.get(field) or "").strip()
+            if not txt:
+                continue
+            if any(sig in txt.lower() for sig in _YBR_INCLUSIVE_SIGNALS):
+                continue  # already inclusive — don't pile on
+            e[field] = f"{txt} {_YBR_INCLUSIVE_TAG}".strip()
+    return events
+
+
 def enrich_event_descriptions(events: list[dict]) -> list[dict]:
+    """Public entrypoint: enrich, then guarantee YBR events carry the inclusive
+    'everyone's welcome' framing on every return path."""
+    return _apply_ybr_inclusive_note(_enrich_event_descriptions_impl(events))
+
+
+def _enrich_event_descriptions_impl(events: list[dict]) -> list[dict]:
     """Use Claude to generate event-specific descriptions for every event.
 
     Processes all events in batches of 20. Only enriches events that are

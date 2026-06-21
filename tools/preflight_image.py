@@ -130,6 +130,18 @@ def assert_postable(src: str, require_approved: bool = False) -> dict:
     return v
 
 
+def gate_images(srcs, require_approved: bool = False) -> None:
+    """Gate a list of image paths/URLs before posting.
+
+    Raises RuntimeError on the FIRST real block (tofu / blank / broken /
+    under-resolution). Callers MUST let it propagate so the post aborts. This is
+    the single chokepoint every low-level posting primitive routes through, so a
+    cheap "boxes with X's" graphic cannot ship no matter which path posts it.
+    """
+    for s in srcs:
+        assert_postable(str(s), require_approved=require_approved)
+
+
 def _selftest() -> int:
     fx = os.path.join(ROOT, "tests", "fixtures")
     bad = os.path.join(fx, "tofu_weekend_live.png")

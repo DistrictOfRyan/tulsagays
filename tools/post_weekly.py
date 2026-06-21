@@ -313,6 +313,23 @@ def validate_slides(slides: list[Path]) -> None:
     if len(slides) < 9:
         print(f"[NOTE] {len(slides)} slides (light week — some days had no events)")
     print(f"[OK] {len(slides)} slides validated + graphic-QA clean ({WEEK_KEY})")
+    # APPROVAL ARTIFACT (added 2026-06-20): emit the visual contact sheet so the
+    # review/approval request carries a single image of every graphic (green=pass,
+    # red=blocked). Best-effort — never blocks posting.
+    try:
+        from tools.graphic_contact_sheet import build_sheet as _sheet
+    except Exception:
+        try:
+            from graphic_contact_sheet import build_sheet as _sheet
+        except Exception:
+            _sheet = None
+    if _sheet is not None:
+        try:
+            res = _sheet(str(SLIDES_DIR))
+            if res.get("out"):
+                print(f"[OK] approval contact sheet -> {res['out']} ({res['reason']})")
+        except Exception as _e:
+            print(f"[WARN] contact sheet skipped: {_e}")
 
 
 def host_slides_for_ig(slides: list[Path]) -> list[str]:

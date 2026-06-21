@@ -45,6 +45,24 @@ PACE_SECONDS = 25          # gap between posts (spam-safety)
 PAGE_NAME = "Tulsa Gays"
 
 
+def _gate(image_paths) -> None:
+    """HARD graphic gate (William 2026-06-21). Refuse to blast tofu / blank /
+    broken slides into any group. Run ONCE up front: if the 9 slides are broken,
+    abort the whole blast before touching a single group. Fail-CLOSED on a real
+    block (raises); fail-OPEN if the gate tooling is unavailable."""
+    if not image_paths:
+        return
+    try:
+        from tools.preflight_image import gate_images
+    except Exception:
+        try:
+            from preflight_image import gate_images
+        except Exception as e:
+            print(f"[gate] WARNING: image preflight unavailable ({e}) - blasting ungated")
+            return
+    gate_images([str(p) for p in image_paths])
+
+
 # ───────────────────────── auth / ledger helpers ──────────────────────────
 def _ensure_pw():
     try:
@@ -243,6 +261,8 @@ def run(dry_run=False, headed=False, week=None):
     if missing and not dry_run:
         raise SystemExit(f"GRAPHICS MISSING: {len(missing)}/9 slides not in {post_dir} "
                          f"— generate the carousel before blasting.")
+    if not dry_run:
+        _gate(image_paths)  # abort the whole blast if any slide is tofu/broken
     targets = get_post_targets()
     now = datetime.now(timezone.utc)
     recent = _recent_posts_by_group()

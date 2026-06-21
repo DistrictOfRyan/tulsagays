@@ -1401,6 +1401,10 @@ GAY_VENUE_SIGNATURES = (
     "1338 e 3rd", "tulsa eagle", "club majestic", "124 n boston",
     "302 s frankfort", "302 south frankfort", "302 s. frankfort", "dvl",
     "dennis r. neill", "dennis r neill", "equality center", "oklahomans for equality",
+    # Yellow Brick Road — Tulsa's only lesbian bar, INCLUSIVE (everyone welcome).
+    # William 2026-06-21: find + feature more YBR events; gay guys underuse it but
+    # shouldn't. Any event here counts as LGBTQ even with a neutral title.
+    "yellow brick", "ybr", "2630 e 15th",
 )
 
 # Source keys that are LGBTQ-community-organized. Events from these sources matching

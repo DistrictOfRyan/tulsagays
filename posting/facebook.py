@@ -39,6 +39,23 @@ def _require(value: str, name: str) -> str:
     return value
 
 
+def _gate(image_paths) -> None:
+    """HARD graphic gate (William 2026-06-21). Refuse to upload a tofu / blank /
+    broken image. Fail-CLOSED on a real block (raises), fail-OPEN if the gate
+    tooling itself is unavailable, so a tooling bug never silently kills posting."""
+    if not image_paths:
+        return
+    try:
+        from tools.preflight_image import gate_images
+    except Exception:
+        try:
+            from preflight_image import gate_images  # when tools/ is on the path
+        except Exception as e:
+            logger.warning("image preflight unavailable (%s) — posting ungated", e)
+            return
+    gate_images([str(p) for p in image_paths])
+
+
 def _upload_photo(
     page_id: str,
     access_token: str,
@@ -83,6 +100,7 @@ def post_to_page(
     for p in paths:
         if not p.exists():
             raise FacebookPostError(f"image not found: {p}")
+    _gate(paths)
 
     if not paths:
         url = f"{GRAPH_API_BASE}/{page_id}/feed"

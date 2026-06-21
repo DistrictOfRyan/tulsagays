@@ -87,6 +87,23 @@ def setup_auth():
     print(f"Saved auth state to {AUTH_PATH}")
 
 
+def _gate(image_paths) -> None:
+    """HARD graphic gate (William 2026-06-21). Refuse to upload a tofu / blank /
+    broken image. Fail-CLOSED on a real block (raises); fail-OPEN if the gate
+    tooling is unavailable, so a tooling bug never silently kills posting."""
+    if not image_paths:
+        return
+    try:
+        from tools.preflight_image import gate_images
+    except Exception:
+        try:
+            from preflight_image import gate_images
+        except Exception as e:
+            print(f"[gate] WARNING: image preflight unavailable ({e}) - posting ungated")
+            return
+    gate_images([str(p) for p in image_paths])
+
+
 def post_to_group(message: str, image_paths=None):
     """Post a message (and optional images) to the configured FB group."""
     _ensure_playwright()
@@ -104,6 +121,7 @@ def post_to_group(message: str, image_paths=None):
     for p in image_paths:
         if not Path(p).exists():
             raise SystemExit(f"image not found: {p}")
+    _gate(image_paths)
 
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True)
