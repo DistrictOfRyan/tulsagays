@@ -1125,9 +1125,33 @@ def _desc_workshop(ev, score):
     )
 
 
+def _ybr_inclusive_note(ev) -> str:
+    """The line William wants on every YBR event (2026-06-20): YBR is Tulsa's only
+    lesbian bar AND it's for everybody, the gay guys included. People don't know
+    that, and they should. Returns '' for non-YBR venues."""
+    blob = f"{ev.get('venue','')} {ev.get('name','')} {ev.get('source','')}".lower()
+    if "yellow brick" in blob or ev.get("source") == "ybr_ig" or " ybr" in f" {blob}":
+        return (
+            "Quick PSA, because too many people get this wrong: Yellow Brick Road is "
+            "Tulsa's only lesbian bar and one of the last left in the country, and it "
+            "is absolutely for everybody. The gay guys skip it and they shouldn't, the "
+            "welcome mat is out for the whole community. Pull up to the cave. "
+        )
+    return ""
+
+
 def _desc_bar(ev, score):
     n = ev.get('name', '')
     v = ev.get('venue', '')
+    note = _ybr_inclusive_note(ev)
+    if note:
+        return (
+            f"{n} at {v}. " + note +
+            "Some nights are about the event and some are simply about having somewhere "
+            "to be and a reason to be there. The drinks are cheaper early, the crowd is "
+            "loose and open, and the bar to showing up is low enough that you will "
+            "actually do it. Show up. The room is better when you're in it."
+        )
     return (
         f"{n} at {v if v else 'a local bar'}. Some nights are about the event and some "
         "nights are simply about having somewhere to be and a reason to be there, and "
@@ -1143,6 +1167,16 @@ def _desc_bar(ev, score):
 def _desc_gay_bar(ev, score):
     n = ev.get('name', '')
     v = ev.get('venue', '')
+    note = _ybr_inclusive_note(ev)
+    if note:
+        return (
+            f"{n} at {v}. " + note +
+            "Gay bars are the physical proof that we exist and that we deserve a room "
+            "that belongs to us without asterisks, and YBR holds that down for the "
+            "girls and for anyone who walks in with respect. The bartenders know the "
+            "regulars, the music is better than you expect, and the night is better "
+            "with more of us in it. Show up."
+        )
     return (
         f"{n} at {v if v else 'the bar'}. Gay bars are not just bars. They are the "
         "physical proof that we exist, that we have always existed, and that we deserve "

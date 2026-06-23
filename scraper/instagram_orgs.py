@@ -117,9 +117,14 @@ ORGS: List[Dict] = [
         "alt_usernames": ["ybrtulsa"],
         "source_name": "ybr_ig",
         "default_venue": "Yellow Brick Road, 2630 E 15th St",
-        "priority": 2,
-        "blurb": "Yellow Brick Road, Oklahoma's lesbian bar. "
-                 "Details on Instagram @tulsaybr.",
+        # priority 1 (top tier, 2026-06-20 per William): YBR is Tulsa's only lesbian
+        # bar and one of the last in the US — under-loved by the gay-guy crowd, so we
+        # FEATURE it and frame it as a welcome-all space every chance we get.
+        "priority": 1,
+        "blurb": "Yellow Brick Road is Tulsa's only lesbian bar and one of the last "
+                 "left in the whole country, and here's the thing the boys keep "
+                 "missing: everyone is welcome at the cave, not just the girls. Roll "
+                 "up, the whole community is invited. Details on Instagram @tulsaybr.",
     },
     {
         # DVL Club & Lounge (added 2026-06-18). Woman-owned LGBTQ+ bar in the
@@ -174,6 +179,57 @@ class InstagramOrgScraper(BaseScraper):
         name = _EMOJI_RX.sub("", name)                    # drop emoji/symbols
         name = re.sub(r"#\w+", "", name)                  # drop trailing hashtags
         return re.sub(r"\s+", " ", name).strip(" ,-")
+
+    # Event-type cues → a clean display label. Ordered: first match wins, so list
+    # the more specific phrases before the generic ones. Lets the regex path emit
+    # "Dance Party at YBR" instead of the raw hype header "HEADS UP". (2026-06-20)
+    _EVENT_TYPE_CUES = [
+        ("drag brunch", "Drag Brunch"), ("drag show", "Drag Show"),
+        ("drag", "Drag Night"),
+        ("b&b", "B&B Dance Party"), ("dance party", "Dance Party"),
+        ("dance floor", "Dance Party"), ("dance", "Dance Night"),
+        ("talent", "Talent Night"), ("open mic", "Open Mic"),
+        ("karaoke", "Karaoke Night"), ("bingo", "Bingo Night"),
+        ("trivia", "Trivia Night"), ("watch party", "Watch Party"),
+        ("happy hour", "Happy Hour"), ("brunch", "Drag Brunch"),
+        ("tea party", "Tea Party"), ("tea time", "Tea Time"),
+        ("class", "Craft Class"), ("market", "Market"),
+        ("fundraiser", "Fundraiser"), ("pride", "Pride Party"),
+        ("party", "Party"), ("show", "Live Show"),
+    ]
+    # Lines that are pure hype banners, never the real event name.
+    _HYPE_RX = re.compile(
+        r"^\W*(heads?\s*up|this\s+(mon|tues?|wed|thurs?|fri|sat|sun)\w*|tonight|"
+        r"tomorrow|today|come\s+(get|on)|reminder|now\s+open|attention|psa|"
+        r"this\s+week(end)?|next\s+(week|sun\w*|sat\w*)|mark\s+your)\W*$", re.I)
+
+    @classmethod
+    def _venue_short(cls, venue: str) -> str:
+        """First clause of a venue string ('Yellow Brick Road, 2630 ...' -> 'YBR')."""
+        head = (venue or "").split(",")[0].strip()
+        if "yellow brick" in head.lower():
+            return "YBR"
+        return head
+
+    @classmethod
+    def _derive_event_name(cls, caption: str, venue: str) -> str:
+        """Turn a bar caption into a presentable event name.
+
+        Prefers an event-type cue ('Dance Party at YBR') over the raw first line,
+        because bar posts open with an emoji hype banner ('HEADS UP', 'THIS
+        SATURDAY'), not the event title. Falls back to the first non-hype line.
+        """
+        low = caption.lower()
+        venue_short = cls._venue_short(venue)
+        for cue, label in cls._EVENT_TYPE_CUES:
+            if cue in low:
+                return f"{label} at {venue_short}" if venue_short else label
+        # No cue — first substantive (non-hype, non-empty) line.
+        for line in caption.split("\n"):
+            cleaned = cls._clean_name(line)
+            if cleaned and len(cleaned) >= 4 and not cls._HYPE_RX.match(line.strip()):
+                return cleaned[:80]
+        return f"Event at {venue_short}" if venue_short else "Community Event"
 
     @classmethod
     def _in_week(cls, date_str: str) -> bool:
@@ -421,6 +477,44 @@ class InstagramOrgScraper(BaseScraper):
         logger.info("[%s] LLM extracted %d dated events", self.source_name, len(events))
         return events
 
+    # ── relative-date resolution (works WITHOUT the LLM) ────────────────────────
+    _WEEKDAYS = {"monday": 0, "mon": 0, "tuesday": 1, "tue": 1, "tues": 1,
+                 "wednesday": 2, "wed": 2, "thursday": 3, "thu": 3, "thur": 3,
+                 "thurs": 3, "friday": 4, "fri": 4, "saturday": 5, "sat": 5,
+                 "sunday": 6, "sun": 6}
+
+    @classmethod
+    def _resolve_relative_date(cls, low_caption: str, posted_on: str) -> str:
+        """Resolve a relative date phrase against the post date.
+
+        Bars post in relative time ("THIS SATURDAY", "tomorrow", "THURSDAY",
+        "tonight"). Anchor on the day the post went up (falling back to today),
+        and resolve the FIRST relative cue found. A bare weekday resolves to its
+        next occurrence on/after the post date (within the next 7 days), which is
+        exactly how a "come THURSDAY" promo reads. Returns YYYY-MM-DD or "".
+        """
+        try:
+            base = datetime.strptime(posted_on, "%Y-%m-%d") if posted_on else datetime.now()
+        except (ValueError, TypeError):
+            base = datetime.now()
+
+        # tonight / today  → the post date itself
+        if re.search(r"\b(tonight|today)\b", low_caption):
+            return base.strftime("%Y-%m-%d")
+        # tomorrow / tmrw / tmw  → +1 day
+        if re.search(r"\b(tomorrow|tmrw|tmw|2morrow)\b", low_caption):
+            return (base + timedelta(days=1)).strftime("%Y-%m-%d")
+
+        # "this saturday" / "saturday" / "sat" → next occurrence on/after the post
+        # date. Match longest weekday tokens first so "thurs" isn't shadowed by "thu".
+        for token in sorted(cls._WEEKDAYS, key=len, reverse=True):
+            if re.search(r"\b" + token + r"\b", low_caption):
+                target = cls._WEEKDAYS[token]
+                delta = (target - base.weekday()) % 7
+                # A weekday named on its own day means that day (delta 0), not +7.
+                return (base + timedelta(days=delta)).strftime("%Y-%m-%d")
+        return ""
+
     # ── regex fallback (no API key / LLM unavailable) ───────────────────────────
     def _extract_with_regex(self, posts: List[Dict]) -> List[Dict]:
         events = []
@@ -461,14 +555,22 @@ class InstagramOrgScraper(BaseScraper):
                         date_str = ""
 
             if not date_str:
-                continue  # no concrete date — skip (relative dates need the LLM path)
+                # Relative dates resolved against the POST date (bars almost never
+                # write "6/20" — they write "THIS SATURDAY", "TOMORROW", "THURSDAY",
+                # "tonight"). Without this, every IG-only bar source (YBR, Eagle,
+                # Majestic, Studio 66) silently yields 0 events whenever the LLM key
+                # is unset and the regex path runs. (2026-06-20, per William.)
+                date_str = self._resolve_relative_date(low, p.get("posted_on", ""))
+
+            if not date_str:
+                continue  # genuinely no resolvable date — skip
 
             tmatch = time_rx.search(caption)
             time_str = tmatch.group(1).upper() if tmatch else ""
-            first_line = self._clean_name(caption.split("\n")[0])[:80] or f"@{self.username} event"
+            ev_name = self._derive_event_name(caption, self.default_venue)
 
             events.append(self.make_event(
-                name=first_line,
+                name=ev_name,
                 date=date_str,
                 time=time_str,
                 venue=self.default_venue,
@@ -498,7 +600,65 @@ def scrape() -> List[Dict]:
     return all_events
 
 
+def _selftest() -> int:
+    """Offline regression test for the no-LLM extraction path.
+
+    Locks the 2026-06-20 fix: bar captions written in relative time + hype banners
+    must still resolve to dated, presentably-named events without any network or
+    API key. A silent regression here re-zeroes every IG-only bar source.
+    """
+    S = InstagramOrgScraper
+    fails = []
+
+    def _a(s):  # console (cp1252) safe — selftest must never crash on emoji
+        return str(s).encode("ascii", "ignore").decode("ascii")
+
+    # 1. Relative-date resolution anchored on the post date.
+    cases = [
+        ("come dance tonight!", "2026-06-20", "2026-06-20"),  # tonight = post day
+        ("party tomorrow at 9", "2026-06-19", "2026-06-20"),  # tomorrow = +1
+        ("THIS SATURDAY join us", "2026-06-17", "2026-06-20"),  # Wed post -> Sat
+        ("come THURSDAY for talent", "2026-06-16", "2026-06-18"),  # Tue -> Thu
+        ("see you sunday", "2026-06-20", "2026-06-21"),  # Sat -> next Sun
+        ("no date here at all", "2026-06-17", ""),  # nothing resolvable
+    ]
+    for cap, posted, expect in cases:
+        got = S._resolve_relative_date(cap.lower(), posted)
+        tag = "OK" if got == expect else "FAIL"
+        if got != expect:
+            fails.append(f"reldate {cap!r}@{posted}: got {got!r} expected {expect!r}")
+        print(f"[selftest] reldate {cap[:28]:28s} -> {got or '(none)':12s} {tag}")
+
+    # 2. Smart name derivation — hype banners must NOT become the event name.
+    venue = "Yellow Brick Road, 2630 E 15th St"
+    name_cases = [
+        ("‼️HEADS UP‼️\nWe're opening the back for our dance party tomorrow!",
+         "Dance Party at YBR"),
+        ("THIS SATURDAY\nsummer pride edition of B&B y'all!", "B&B Dance Party at YBR"),
+        ("🎤THURSDAY🎤\nCome show us what you got, we're ready to see your talents!",
+         "Talent Night at YBR"),
+        ("Next Sunday making little queer donuts in a craft class!", "Craft Class at YBR"),
+    ]
+    for cap, expect in name_cases:
+        got = S._derive_event_name(cap, venue)
+        tag = "OK" if got == expect else "FAIL"
+        if got != expect:
+            fails.append(f"name {_a(cap[:25])!r}: got {got!r} expected {expect!r}")
+        print(f"[selftest] name -> {_a(got):24s} {tag}")
+
+    if fails:
+        print("\n[selftest] FAILURES:")
+        for f in fails:
+            print("  -", _a(f))
+        print("[selftest] FAILED")
+        return 1
+    print("[selftest] ALL PASS")
+    return 0
+
+
 if __name__ == "__main__":
+    if "--selftest" in sys.argv:
+        raise SystemExit(_selftest())
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
     monday, sunday = InstagramOrgScraper._week_range()
