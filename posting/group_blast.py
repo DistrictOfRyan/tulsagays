@@ -115,28 +115,45 @@ def _on_cooldown(group, recent, now):
 
 
 # ───────────────────────── browser actions ────────────────────────────────
-def _switch_to_page(page):
-    """Make the session act as the Tulsa Gays Page. Returns True on success."""
-    page.goto(FB_PAGE_URL, wait_until="domcontentloaded")
-    page.wait_for_timeout(2500)
-    # If a "Switch Now" / "Switch into ... Page" control exists, click it.
-    for sel in ('div[role="button"]:has-text("Switch Now")',
-                'a:has-text("Switch Now")',
-                'div[aria-label*="Switch"]'):
-        try:
-            loc = page.locator(sel).first
-            if loc.count() and loc.is_visible():
-                loc.click(timeout=4000)
-                page.wait_for_timeout(3000)
-                break
-        except Exception:
-            continue
-    # Confirm: the page body should reference acting as the page.
+def _acting_as_page(page) -> bool:
+    """True if the session is currently acting as the Tulsa Gays Page. Checked on
+    the HOME page, whose menu shows 'Professional dashboard'/'Meta Business Suite'
+    + the page name ONLY when acting as a managed Page (verified 2026-06-23)."""
     try:
-        body = page.inner_text("body", timeout=5000)
+        page.goto("https://www.facebook.com/", wait_until="domcontentloaded")
+        page.wait_for_timeout(3000)
+        body = page.inner_text("body", timeout=8000).lower()
     except Exception:
-        body = ""
-    return ("now acting as" in body.lower()) or (PAGE_NAME.lower() in body.lower())
+        return False
+    return (PAGE_NAME.lower() in body
+            and ("professional dashboard" in body or "meta business suite" in body))
+
+
+def _switch_to_page(page):
+    """Make the session act as the Tulsa Gays Page. Returns True on success.
+    Note: the per-group _composer_is_page check is the real anonymity guard;
+    this is the upfront fast-path."""
+    # Already acting as the page (the dedicated profile usually persists this)?
+    if _acting_as_page(page):
+        return True
+    # Otherwise attempt the legacy 'Switch Now' control on the page URL.
+    try:
+        page.goto(FB_PAGE_URL, wait_until="domcontentloaded")
+        page.wait_for_timeout(2500)
+        for sel in ('div[role="button"]:has-text("Switch Now")',
+                    'a:has-text("Switch Now")',
+                    'div[aria-label*="Switch"]'):
+            try:
+                loc = page.locator(sel).first
+                if loc.count() and loc.is_visible():
+                    loc.click(timeout=4000)
+                    page.wait_for_timeout(3000)
+                    break
+            except Exception:
+                continue
+    except Exception:
+        pass
+    return _acting_as_page(page)
 
 
 def _composer_is_page(page) -> bool:
