@@ -330,7 +330,9 @@ def run(dry_run=False, headed=False, week=None):
                 pass
             raise SystemExit(
                 "AUTH_DEAD: Facebook group session is logged out — 0 groups posted. "
-                "Re-auth (2 min): python tools/capture_group_auth.py")
+                "Re-auth (2 min): python tools/fb_profile_login.py  "
+                "(REAL Chrome — Google trusts it; do NOT use capture_group_auth.py, "
+                "its Chrome-for-Testing browser is blocked at Google login).")
 
         if not _switch_to_page(page):
             b.close()
