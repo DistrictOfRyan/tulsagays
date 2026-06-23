@@ -403,7 +403,17 @@ def select_eotw(events_this_week: List[Dict]) -> Optional[Dict]:
     if not events_this_week:
         return None
 
-    eligible = [e for e in events_this_week if not _is_skip(e)]
+    # EOTW must be a VERIFIABLE one-off. Recurring auto-events (recurring.py)
+    # are date-stamped onto a weekday without checking they actually happen, so
+    # they are NEVER eligible to auto-win the hero slot (William 2026-06-23: an
+    # unverified "Drag Bingo Bongo at Saturn Room" recurring rule headlined a
+    # post for an event that wasn't happening). They still appear on day slides
+    # and the website. A pinned manual EOTW (data/manual_eotw.json) always wins
+    # and bypasses this — that path is human-verified.
+    eligible = [
+        e for e in events_this_week
+        if not _is_skip(e) and (e.get("source") or "").lower() != "recurring"
+    ]
 
     # Tier 0 — Homo Hotel Happy Hour
     pool = sorted([e for e in eligible if _is_hh(e)], key=_sort_key)
