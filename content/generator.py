@@ -361,8 +361,19 @@ def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "so
             cwd=neutral_cwd,
         )
         out = (r.stdout or "").strip()
-        # Sanity: if the CLI echoed a fixed-string error, treat as failure.
-        if not out or out.lower().startswith(("prompt is too long", "error:", "rate limit")):
+        # Sanity: if the CLI echoed a fixed-string error, treat as failure so the
+        # caller falls back to rule-based copy. The CLI prints connection/API
+        # failures to stdout (exit 0), so without this guard the error text gets
+        # saved AS the caption. W26 (2026-06-23) shipped the literal string
+        # "API Error: Unable to connect to API (FailedToOpenSocket)" as a caption
+        # because the old guard only matched "error:", not "api error".
+        _err_prefixes = (
+            "prompt is too long", "error:", "rate limit", "api error",
+            "execution error", "credit balance", "unable to connect",
+            "overloaded", "internal server error", "failed to authenticate",
+            "invalid authentication", "401", "403",
+        )
+        if not out or out.lower().startswith(_err_prefixes):
             return ""
         return out
     except Exception as e:
