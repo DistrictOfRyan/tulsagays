@@ -114,7 +114,11 @@ ORGS: List[Dict] = [
     },
     {
         "username": "tulsaybr",
-        "alt_usernames": ["ybrtulsa"],
+        # @imvalpal added 2026-06-24 per William: Val Pal books/promotes YBR's
+        # events and posts them on her IG, often before the venue account does, so
+        # she's a reliable second feed for YBR nights. Handles are walked in order
+        # until one returns posts, so this also covers a venue-account rename.
+        "alt_usernames": ["ybrtulsa", "imvalpal"],
         "source_name": "ybr_ig",
         "default_venue": "Yellow Brick Road, 2630 E 15th St",
         # priority 1 (top tier, 2026-06-20 per William): YBR is Tulsa's only lesbian
