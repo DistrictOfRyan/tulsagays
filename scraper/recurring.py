@@ -74,6 +74,42 @@ RECURRING = [
     # Saturn Room event unless it is verified on the source each time it posts
     # (William: "verify that it's happening before you post it"). Recurring auto-
     # events are now also barred from EOTW in eotw_selector.select_eotw.
+
+    # ── Yellow Brick Road (YBR) — Tulsa's only lesbian bar, INCLUSIVE ──────────
+    # Added 2026-06-24 per William: YBR's events weren't surfacing because the
+    # IG-only scraper (ybr_ig) depends on an Instagram session that keeps dying.
+    # These are YBR's OWN published recurring schedule, read live + verified from
+    # @tulsaybr's "Monthly Events" + "June 2026" flyers (2026-06-24), so YBR shows
+    # EVERY week without depending on the IG session. The ybr_ig scraper still
+    # catches one-off specials on top of these. Priority 1 = featured (William
+    # 2026-06-20); content/generator adds the "everyone welcome" inclusive note.
+    # NOTE: "RuPaul watch party every Friday WHEN IN SEASON" is intentionally NOT
+    # added — the in-season condition can't be auto-verified (no fabrication).
+    {"name": "Trivia Night at YBR", "day": "Tuesday", "freq": "weekly",
+     "time": "7:00 PM", "venue": "Yellow Brick Road, 2630 E 15th St",
+     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
+    {"name": "Free Pool & Darts at YBR", "day": "Wednesday", "freq": "weekly",
+     "time": "", "venue": "Yellow Brick Road, 2630 E 15th St",
+     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
+    {"name": "Babes & Bi-cons Dance Party at YBR", "day": "Saturday", "freq": "1st",
+     "time": "9:30 PM", "venue": "Yellow Brick Road, 2630 E 15th St",
+     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
+    {"name": "DJ Kylie Dance Party at YBR", "day": "Friday", "freq": "2nd",
+     "time": "9:30 PM", "venue": "Yellow Brick Road, 2630 E 15th St",
+     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
+    {"name": "Open Stage at YBR", "day": "Thursday", "freq": "3rd",
+     "time": "9:00 PM", "venue": "Yellow Brick Road, 2630 E 15th St",
+     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
+    {"name": "KATNIP at YBR", "day": "Friday", "freq": "3rd",
+     "time": "9:00 PM", "venue": "Yellow Brick Road, 2630 E 15th St",
+     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
+    {"name": "Gaymer Night at YBR", "day": "Monday", "freq": "last",
+     "time": "7:00 PM", "venue": "Yellow Brick Road, 2630 E 15th St",
+     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
+    {"name": "Karaoke at YBR (with Party Possum)", "day": "Thursday", "freq": "last",
+     "time": "", "venue": "Yellow Brick Road, 2630 E 15th St",
+     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
+
     {
         "name": "Sunday Showdown Open Talent Night",
         "day": "Sunday",
@@ -224,6 +260,11 @@ def _matches_occurrence(date: datetime, freq: str) -> bool:
     """Return True if `date` matches the occurrence rule."""
     if freq == "weekly":
         return True
+    # "last" = the final occurrence of this weekday in the month (next same
+    # weekday is in the following month). Needed for YBR's Last-Thursday Karaoke
+    # and Last-Monday Gaymer Night (added 2026-06-24).
+    if freq == "last":
+        return (date + timedelta(days=7)).month != date.month
     if freq in OCCURRENCE_RANGES:
         lo, hi = OCCURRENCE_RANGES[freq]
         return lo <= date.day <= hi
