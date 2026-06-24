@@ -26,5 +26,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
+      - name: Install dependencies
+        # verify_all imports the pipeline modules (posting/* -> graphic gate -> PIL,
+        # content/*, scrapers, etc.). Those pull third-party deps (Pillow, requests,
+        # bs4, lxml, feedparser, numpy, ...). Without this step CI runs on bare
+        # stdlib and the import chain dies with ModuleNotFoundError (red since the
+        # 2026-06-21 graphic-gate wiring added top-level PIL into the verify path).
+        run: pip install -r requirements.txt
       - name: Run verify_all (syntax gate + regression suite)
         run: python verify_all.py
