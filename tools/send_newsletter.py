@@ -84,12 +84,62 @@ def build_email(week_key):
     return subj, preview, "\n".join(parts)
 
 
+DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+
+def content_guard(week_key):
+    """Safety gate for the AUTOMATED Tuesday send. Returns (ok, reason, stats).
+
+    A broken/empty week must NEVER blast to the owned list. Aborts the send when
+    the Monday pipeline didn't produce a usable manifest:
+      - manifest missing/unreadable
+      - no EOTW hero
+      - fewer than 5 of 7 days have a featured event
+      - fewer than 10 featured events total
+    """
+    man_path = ROOT / "data" / "posts" / week_key / "slide_manifest.json"
+    if not man_path.exists():
+        return False, f"no slide_manifest.json for {week_key} (Monday pipeline didn't run?)", {}
+    try:
+        man = json.loads(man_path.read_text(encoding="utf-8"))
+    except Exception as e:  # noqa: BLE001
+        return False, f"manifest unreadable: {e}", {}
+    eotw = (man.get("eotw") or [{}])[0]
+    by_day = man.get("featured_by_day", {})
+    days_with = [d for d in DAYS if by_day.get(d)]
+    total = sum(len(by_day.get(d, [])) for d in DAYS)
+    stats = {"eotw": eotw.get("name"), "days_populated": len(days_with), "events": total}
+    if not eotw.get("name"):
+        return False, "no EOTW in manifest", stats
+    if len(days_with) < 5:
+        return False, f"only {len(days_with)}/7 days populated", stats
+    if total < 10:
+        return False, f"only {total} featured events (need >=10)", stats
+    return True, "ok", stats
+
+
 def main():
     args = sys.argv[1:]
     send = "--send" in args
+    dry_run = "--dry-run" in args
+    force = "--force" in args
     week = config.current_week_key()
     if "--week" in args:
         week = args[args.index("--week") + 1]
+
+    # Automated/real send is gated on content sanity (skippable with --force for a
+    # manual override). Draft creation is never gated.
+    if (send or dry_run) and not force:
+        ok, reason, stats = content_guard(week)
+        print(f"content guard [{week}]: {'PASS' if ok else 'BLOCK'} - {reason} | {stats}")
+        if not ok:
+            print("ABORTED: not sending a broken/empty newsletter. Fix the Monday pipeline and re-run.")
+            return 2
+
+    if dry_run:
+        subj, preview, html = build_email(week)
+        print(f"DRY RUN (no send): would send '{subj}' ({len(html)} bytes) for {week}")
+        return 0
 
     subj, preview, html = build_email(week)
     payload = {"subject": subj, "preview_text": preview, "content": html, "public": False}
