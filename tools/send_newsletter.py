@@ -73,7 +73,7 @@ def build_email(week_key):
             line = f'<strong>{_esc(e.get("name",""))}</strong>'
             meta = " · ".join(x for x in [when, ven] if x)
             if meta:
-                line += f' <span style="color:#888">— {_esc(meta)}</span>'
+                line += f' <span style="color:#888">· {_esc(meta)}</span>'
             parts.append(f'<p style="margin:8px 0">{line}<br>'
                          f'<span style="color:#444">{_esc(e.get("description",""))}</span></p>')
     parts.append(f'<p style="margin-top:26px"><a href="{SITE}" style="background:#e6007e;color:#fff;'
