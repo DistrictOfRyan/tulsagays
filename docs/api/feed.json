@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "city": "Tulsa",
-  "generated": "2026-06-14",
+  "generated": "2026-06-28",
   "license": "Free to use with attribution to tulsagays.com",
   "coverage": {
     "coverage_pct": 97.2,
@@ -9,63 +9,63 @@
     "total": 36,
     "gaps": 1
   },
-  "source_count": 236,
+  "source_count": 258,
   "event_count": 8,
   "events": [
     {
-      "name": "2026 Pinto World Championship",
-      "date": "2026-06-08",
+      "name": "Stormy Daniels",
+      "date": "2026-06-22",
       "time": "",
-      "venue": "Jun 8 – 20",
+      "venue": "Hoy, 7:00 – 10:00 p.m.",
       "url": null
     },
     {
-      "name": "Information and Tickets",
-      "date": "2026-06-08",
+      "name": "Información y entradas",
+      "date": "2026-06-22",
       "time": "",
-      "venue": "Eventbrite.com",
+      "venue": "Van The Wine Man",
       "url": null
     },
     {
-      "name": "Band Camp",
-      "date": "2026-06-08",
+      "name": "Detalles",
+      "date": "2026-06-22",
       "time": "",
-      "venue": "UTulsa Calendar - The University of Tulsa",
+      "venue": "Obtener entradas",
       "url": null
     },
     {
-      "name": "Rock 101 Camp",
-      "date": "2026-06-08",
-      "time": "10:00 AM",
-      "venue": "School of Rock",
+      "name": "Private Cellar Exchange at Boston Title & Abstract...",
+      "date": "2026-06-22",
+      "time": "",
+      "venue": "Obtener entradas",
       "url": null
     },
     {
-      "name": "Build A Reader Storytime: Babies",
-      "date": "2026-06-08",
-      "time": "10:00 - 10:20 AM",
-      "venue": "Hardesty Regional Library, 8316 E 93rd St",
+      "name": "Best of the 90's Camp",
+      "date": "2026-06-22",
+      "time": "",
+      "venue": "Obtener entradas",
       "url": null
     },
     {
-      "name": "Full Day Camp",
-      "date": "2026-06-08",
-      "time": "10:30 AM",
-      "venue": "Active.com",
+      "name": "Record Night at Saturn Room",
+      "date": "2026-06-22",
+      "time": "",
+      "venue": "Saturn Room",
       "url": null
     },
     {
-      "name": "Citizenship 101",
-      "date": "2026-06-08",
-      "time": "10:30 - 11:45 AM",
-      "venue": "Kendall-Whittier Library, 21 S Lewis Ave",
+      "name": "Flora Springs Winery Dinner at French Hen — Wine...",
+      "date": "2026-06-22",
+      "time": "",
+      "venue": "Obtener entradas",
       "url": null
     },
     {
-      "name": "Pint-Size Polka With Mike Schneider",
-      "date": "2026-06-08",
-      "time": "11:00 AM",
-      "venue": "Jenks Library, 523 W B St",
+      "name": "Intro to Entrepreneurship at Gradient",
+      "date": "2026-06-22",
+      "time": "",
+      "venue": "Obtener entradas",
       "url": null
     }
   ]
