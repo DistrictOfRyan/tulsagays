@@ -234,7 +234,20 @@ def _post_to_group(page, group, image_paths):
             except Exception:
                 continue
         if not opened:
-            res["status"] = "error"; res["error"] = "composer not found"; return res
+            # Distinguish a real failure from an ADMIN-APPROVAL group that is at its
+            # pending-content limit: FB hides the composer once your queued posts hit
+            # the cap, so prior weeks' carousels are already submitted and just await
+            # the group's admins. That is not our bug and not fixable from here.
+            try:
+                _b = page.inner_text("body", timeout=4000).lower()
+            except Exception:
+                _b = ""
+            if "limit for pending content" in _b or ("pending admin approval" in _b):
+                res["status"] = "pending"
+                res["error"] = "admin-approval group at pending limit (prior posts awaiting their admins)"
+            else:
+                res["status"] = "error"; res["error"] = "composer not found"
+            return res
         page.wait_for_timeout(1500)
 
         # ANONYMITY GATE: must be acting as the Page, else SKIP (never expose Ryan).
