@@ -711,20 +711,24 @@ def cmd_generate(post_type="weekday"):
     else:
         print("  [eotw] WARNING: No suitable LGBTQ event found for EOTW — cover slide will show generic fallback")
 
-    # De-dup the cover/day repeat: the EOTW is already the HERO of the cover, so
-    # drop it from its own day's slide (William 2026-06-29: 'same events on there
-    # twice'). Only drop when the day still keeps >=3 featured, so no day starves.
+    # The EOTW is the cover hero AND the highlight of its own day. Promote each
+    # EOTW to the FRONT of its day so it renders as that day's hero (William
+    # 2026-06-29: 'Friday ... doesn't highlight or even show the event happening
+    # that week'). It is NOT a duplicate to strip — the cover is the week's
+    # headline, the day slide is where that event actually happens. (Genuine
+    # same-event dups like the two DRAGNIFICENT entries are collapsed in
+    # _dedup_day, which is separate.)
     def _ekey(e):
         return (re.sub(r'\W+', ' ', (e.get('name') or '').lower()).strip(), e.get('date', ''))
     _eotw_keys = {_ekey(e) for e in (_eotw_list or [])}
     if _eotw_keys:
         for _day in days_of_week:
-            _kept = [e for e in events_by_day[_day] if _ekey(e) not in _eotw_keys]
-            if len(_kept) >= 3:
-                if len(_kept) != len(events_by_day[_day]):
-                    print(f"  [eotw-dedup] {_day}: removed EOTW from day slide "
-                          f"({len(events_by_day[_day])} -> {len(_kept)})")
-                events_by_day[_day] = _kept
+            _evs = events_by_day[_day]
+            _front = [e for e in _evs if _ekey(e) in _eotw_keys]
+            if _front:
+                _rest = [e for e in _evs if _ekey(e) not in _eotw_keys]
+                events_by_day[_day] = _front + _rest
+                print(f"  [eotw-hero] {_day}: '{_front[0].get('name')}' promoted to day hero")
 
     # Generate carousel images
     print("\nGenerating carousel images...")

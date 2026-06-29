@@ -72,19 +72,20 @@ def _ensure_pw():
 
 
 def setup_auth():
-    _ensure_pw()
-    from playwright.sync_api import sync_playwright
-    AUTH_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with sync_playwright() as pw:
-        b = pw.chromium.launch(headless=False)
-        ctx = b.new_context()
-        pg = ctx.new_page()
-        pg.goto("https://www.facebook.com/")
-        print("Log into Facebook as the account that manages the Tulsa Gays Page.")
-        input("Press Enter once you're logged in: ")
-        ctx.storage_state(path=str(AUTH_PATH))
-        b.close()
-    print(f"Saved auth -> {AUTH_PATH}")
+    # 2026-06-26: The old Playwright-Chromium login here was a TRAP. Google blocks
+    # sign-in inside an automation-controlled browser at the verification step, so
+    # this flow could NEVER complete (William re-ran it ~30 times, hours each, same
+    # Google block every time). Worse: the blast uses the durable REAL-Chrome
+    # persistent profile (data/fb_auto_profile) whenever it exists, and IGNORES the
+    # storage_state this used to write - so even a "successful" --setup did nothing.
+    # The ONLY method that works is logging into the dedicated profile with REAL
+    # Chrome (Google trusts it; login persists for months). So --setup now just runs
+    # tools/fb_profile_login.py. See memory: feedback_tulsagays_fb_group_reauth.
+    import subprocess
+    script = ROOT / "tools" / "fb_profile_login.py"
+    print("[--setup] Using the REAL-Chrome profile login (the only method that works).")
+    print("Playwright-Chromium login is disabled: Google blocks automation browsers.")
+    return subprocess.call([sys.executable, str(script)])
 
 
 def _recent_posts_by_group():
@@ -130,29 +131,57 @@ def _acting_as_page(page) -> bool:
 
 
 def _switch_to_page(page):
-    """Make the session act as the Tulsa Gays Page. Returns True on success.
-    Note: the per-group _composer_is_page check is the real anonymity guard;
-    this is the upfront fast-path."""
-    # Already acting as the page (the dedicated profile usually persists this)?
-    if _acting_as_page(page):
-        return True
-    # Otherwise attempt the legacy 'Switch Now' control on the page URL.
-    try:
-        page.goto(FB_PAGE_URL, wait_until="domcontentloaded")
-        page.wait_for_timeout(2500)
-        for sel in ('div[role="button"]:has-text("Switch Now")',
-                    'a:has-text("Switch Now")',
-                    'div[aria-label*="Switch"]'):
+    """Make the session act as the Tulsa Gays Page via the ACCOUNT SWITCHER.
+
+    2026-06-29 ROOT-CAUSE FIX: the old FB_PAGE_URL 'Switch Now' method silently
+    failed and left the session acting as the HHHH page ('Tulsa's Homosexual Hotel
+    Happy Hour, Inc.'), so EVERY group skipped on the per-group anonymity guard
+    ('not acting as Page') and 0/17 landed for weeks. The account that owns this
+    profile manages several pages (Tulsa Gays, HHHH, Lexington Gays...) and was
+    defaulting to HHHH. The reliable switch is: open the avatar 'Select profile'
+    panel and click the exact 'Tulsa Gays' row. Verified the group composer then
+    posts AS 'Tulsa Gays'. The per-group _composer_is_page check stays the real
+    guard.
+    """
+    def _do_switch():
+        try:
+            page.goto("https://www.facebook.com/", wait_until="domcontentloaded")
+            page.wait_for_timeout(2500)
+            for sel in ('div[aria-label="Your profile"]', 'div[aria-label="Account"]'):
+                try:
+                    page.locator(sel).first.click(timeout=4000); break
+                except Exception:
+                    continue
+            page.wait_for_timeout(2000)
+            clicked = False
             try:
-                loc = page.locator(sel).first
-                if loc.count() and loc.is_visible():
-                    loc.click(timeout=4000)
-                    page.wait_for_timeout(3000)
-                    break
+                loc = page.get_by_text(PAGE_NAME, exact=True).first
+                loc.scroll_into_view_if_needed(timeout=3000)
+                loc.click(timeout=4000); clicked = True
             except Exception:
-                continue
-    except Exception:
-        pass
+                for sel in (f'div[role="button"]:has-text("{PAGE_NAME}")',
+                            f'a:has-text("{PAGE_NAME}")'):
+                    try:
+                        page.locator(sel).first.click(timeout=3000); clicked = True; break
+                    except Exception:
+                        continue
+            page.wait_for_timeout(5000)
+            # FB sometimes shows a "Switch to <Page>?" confirm.
+            for sel in ('div[role="button"]:has-text("Switch")', 'span:has-text("Switch Now")'):
+                try:
+                    b = page.locator(sel).first
+                    if b.count() and b.is_visible():
+                        b.click(timeout=3000); page.wait_for_timeout(3000); break
+                except Exception:
+                    continue
+            return clicked
+        except Exception:
+            return False
+
+    # The account-switcher is authoritative — always run it (the persistent profile
+    # tends to default back to HHHH). _acting_as_page can false-positive (the name
+    # appears in the switcher preview), so we don't trust it to skip the switch.
+    _do_switch()
     return _acting_as_page(page)
 
 
