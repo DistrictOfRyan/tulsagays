@@ -509,23 +509,53 @@ def cmd_generate(post_type="weekday"):
             # featured-eligible. _rank still floats the fun, one-off picks up top.
             return True
 
+        def _is_junk_name(nm):
+            """A scraped sentence-fragment / cryptic promo line is a bad HERO name
+            even when the event is real, so demote it out of the highlight slot
+            (William 2026-06-29: 'why is the first event always the highlighted
+            one?'). It still appears as a regular card, it just won't lead the day."""
+            n = (nm or "").strip()
+            low = n.lower()
+            if not n:
+                return True
+            JUNK = ("the only time", "go together", " includes ", "join us", "come see",
+                    "don't miss", "for more info", "click here", "stay tuned", "...",
+                    "informaci", "detalles", "entradas")
+            if any(s in low for s in JUNK):
+                return True
+            words = n.split()
+            # Reads like a sentence, not a title: long, lowercase connectors, no event noun.
+            if (len(words) >= 9
+                    and any(c in f" {low} " for c in (" and ", " the ", " to ", " for "))
+                    and not any(k in low for k in _FUN_KW)):
+                return True
+            return False
+
         def _rank(e):
             # Classify on NAME + VENUE, never the generated description — so writing
             # voice copy can't reshuffle which events get featured (stable selection).
             combo = ((e.get("name") or "") + " " + (e.get("venue") or "")).lower()
             lg = _is_lgbtq_strict(e)
-            rec = _recurring(e)
+            # A weekly DRAG / performance show is still marquee (domain rule: drag
+            # is tier-2 + EOTW priority #3), so it must not be sunk as "recurring"
+            # below a one-off craft club (William 2026-06-29: auto-pick the best).
+            _is_perf = lg and any(k in combo for k in (
+                "drag", "talent night", "open talent", "cabaret", "variety",
+                "burlesque", "ball", "revue", "showcase"))
+            rec = _recurring(e) and not _is_perf
             fun = any(k in combo for k in _FUN_KW)
             kids = any(k in combo for k in _KIDS_FILLER_KW)
-            # GAY-FIRST (William 2026-06-15: "feature gay ones"), then keep kids'/
-            # daytime-library filler OUT of the featured slots in favor of real
-            # adult-appealing events, then one-off before recurring, then fun.
+            junk = _is_junk_name(e.get("name"))
+            # GAY-FIRST (William 2026-06-15: "feature gay ones"), then a CLEAN title
+            # leads over a cryptic scraped one (William 2026-06-29), then keep kids'/
+            # daytime-library filler OUT, then one-off before recurring, then fun.
             return (
                 0 if lg else 1,            # 1) gay events lead, always
-                1 if kids else 0,          # 2) kids/library filler sinks below adult events
-                1 if rec else 0,           # 3) one-off before weekly/recurring
-                0 if fun else 1,           # 4) fun, leave-the-house events first
-                _slide_priority(e),        # 5) existing tier/time tiebreak
+                1 if junk else 0,          # 2) clean-titled events lead over junk-named ones
+                1 if kids else 0,          # 3) kids/library filler sinks below adult events
+                1 if rec else 0,           # 4) one-off before weekly/recurring
+                0 if fun else 1,           # 5) fun, leave-the-house events first
+                _slide_priority(e),        # 6) existing tier/time tiebreak
             )
 
         # Only eligible (fun / one-off / inclusive, non-service) events ever
@@ -566,6 +596,31 @@ def cmd_generate(post_type="weekday"):
             v = venue or ''
             return ',' in v or any(c.isdigit() for c in v)
 
+        from difflib import SequenceMatcher as _SM
+
+        def _fuzzy_same(a, b):
+            """Two SAME-DATE names that point at one real event scraped twice.
+            Tuned (2026-06-29) to catch 'DRAGNIFICENT! at Club Majestic' vs
+            'DRAGNIFICENT! Drag Show' and 'First Friday Art Crawl (Downtown
+            Tulsa)' vs '... in Tulsa Arts District', WITHOUT merging distinct
+            events like 'DJ | Gus' vs 'DJ | Sir Juice' or two different markets."""
+            na, nb = _norm(a), _norm(b)
+            if not na or not nb:
+                return False
+            if na == nb:
+                return True
+            if (na in nb or nb in na) and min(len(na), len(nb)) >= 10:
+                return True
+            ta, tb = na.split(), nb.split()
+            if ta and tb and ta[0] == tb[0] and len(ta[0]) >= 8:  # shared distinctive lead token
+                return True
+            if _SM(None, na, nb).ratio() >= 0.80:
+                return True
+            sa, sb = set(ta), set(tb)
+            if sa and sb and len(sa & sb) / len(sa | sb) >= 0.55:
+                return True
+            return False
+
         seen = {}   # key -> index in result
         result = []
         for ev in ev_list:
@@ -589,12 +644,24 @@ def cmd_generate(post_type="weekday"):
             else:
                 key = (name_norm[:40], date)
 
-            if key not in seen:
+            idx = seen.get(key)
+            if idx is None:
+                # Fuzzy fallback: a near-identical name on the SAME date is the
+                # same real event scraped twice. Collapse it into the first copy.
+                for _j, _ex in enumerate(result):
+                    if _ex.get('date', '') == date and _fuzzy_same(ev.get('name', ''), _ex.get('name', '')):
+                        idx = _j
+                        break
+            if idx is None:
                 seen[key] = len(result)
                 result.append(dict(ev))
             else:
-                idx = seen[key]
                 existing = result[idx]
+                # Prefer the more informative title (one that names a venue via " at ").
+                _en = existing.get('name', '') or ''
+                _nn = ev.get('name', '') or ''
+                if ' at ' in _nn.lower() and ' at ' not in _en.lower():
+                    existing['name'] = _nn
                 # Keep the canonical "Pride Kickoff" name for the combined event.
                 if 'pride kickoff' in name_norm and 'pride kickoff' not in _norm(existing.get('name', '')):
                     existing['name'] = ev.get('name', existing.get('name'))
@@ -643,6 +710,21 @@ def cmd_generate(post_type="weekday"):
             print(f"  [eotw {_i+1}] {_ev.get('name')} @ {_ev.get('venue')} ({_ev.get('date')})")
     else:
         print("  [eotw] WARNING: No suitable LGBTQ event found for EOTW — cover slide will show generic fallback")
+
+    # De-dup the cover/day repeat: the EOTW is already the HERO of the cover, so
+    # drop it from its own day's slide (William 2026-06-29: 'same events on there
+    # twice'). Only drop when the day still keeps >=3 featured, so no day starves.
+    def _ekey(e):
+        return (re.sub(r'\W+', ' ', (e.get('name') or '').lower()).strip(), e.get('date', ''))
+    _eotw_keys = {_ekey(e) for e in (_eotw_list or [])}
+    if _eotw_keys:
+        for _day in days_of_week:
+            _kept = [e for e in events_by_day[_day] if _ekey(e) not in _eotw_keys]
+            if len(_kept) >= 3:
+                if len(_kept) != len(events_by_day[_day]):
+                    print(f"  [eotw-dedup] {_day}: removed EOTW from day slide "
+                          f"({len(events_by_day[_day])} -> {len(_kept)})")
+                events_by_day[_day] = _kept
 
     # Generate carousel images
     print("\nGenerating carousel images...")
