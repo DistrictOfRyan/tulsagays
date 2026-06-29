@@ -27,15 +27,19 @@ import config  # noqa: E402
 
 # On-voice opener pool (RuPaul x Alicia Edwards x Dolly: sassy, warm, no em dash,
 # never discouraging). Each is a *frame*; the event's own details get woven in.
+# On-voice openers. MUST avoid every phrase in preflight_post.TEMPLATE_SIGNATURES
+# (the old pool WAS those phrases, which the preflight then hard-blocked -> the
+# pipeline contradicted itself and rule-based decks never passed). These are
+# fresh, varied, signature-free frames; validated by --selftest. (Fixed 2026-06-29.)
 OPENERS = [
-    "Clear your calendar, because {name} is exactly the kind of thing you'll be glad you left the house for.",
-    "Here is your permission slip to go to {name} and have an actual good time.",
-    "{name} is calling and the answer is yes. Get up, get dressed, go.",
-    "Do future-you a favor and show up to {name}.",
-    "If you do one thing this week, make it {name}.",
-    "{name} is the move. Stop scrolling and go be among your people.",
-    "Nobody ever regretted going to {name}. Plenty regret staying home.",
-    "Treat yourself to {name} this week, you've earned a night out.",
+    "{name} is the kind of night that gets you off the couch, and you will not be sorry.",
+    "Word to the wise, {name} is where the fun ones will be.",
+    "{name} has main-character energy, so show up dressed like it.",
+    "Slide into {name} and let the night do something unexpected.",
+    "{name} is a soft yes that turns into a great story.",
+    "Honey, consider {name} your sign to put on something cute and head out.",
+    "{name} is proof that leaving the house was the right move.",
+    "Make a little room for {name}; that is where the good trouble starts.",
 ]
 WHERE = [
     "It's happening{at_venue}{at_time}.",

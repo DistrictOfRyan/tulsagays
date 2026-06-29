@@ -206,13 +206,29 @@ def _post_to_group(page, group, image_paths):
         page.goto(url, wait_until="domcontentloaded", timeout=30000)
         page.wait_for_timeout(2500)
 
-        # Open composer.
+        # Open composer. Groups vary in the entry label ("Write something",
+        # "Discuss something", "Start a discussion", "Anonymous post"...) and the
+        # entry can load off-screen, so scroll to top first. (2026-06-29: the bare
+        # 3-selector list missed 2 groups with "composer not found".)
+        _COMPOSER_OPENERS = (
+            'div[role="button"]:has-text("Write something")',
+            'span:has-text("Write something")',
+            'div[role="button"]:has-text("Discuss something")',
+            'span:has-text("Discuss something")',
+            'div[role="button"]:has-text("Start a discussion")',
+            'div[role="button"]:has-text("Create post")',
+            'div[role="button"]:has-text("Anonymous post")',
+        )
+        try:
+            page.keyboard.press("Home")
+        except Exception:
+            pass
         opened = False
-        for sel in ('div[role="button"]:has-text("Write something")',
-                    'span:has-text("Write something")',
-                    'div[role="button"]:has-text("Create post")'):
+        for sel in _COMPOSER_OPENERS:
             try:
-                page.locator(sel).first.click(timeout=4000)
+                loc = page.locator(sel).first
+                loc.scroll_into_view_if_needed(timeout=3000)
+                loc.click(timeout=4000)
                 opened = True
                 break
             except Exception:
@@ -222,13 +238,33 @@ def _post_to_group(page, group, image_paths):
         page.wait_for_timeout(1500)
 
         # ANONYMITY GATE: must be acting as the Page, else SKIP (never expose Ryan).
+        # Recovery: if the per-group navigation dropped the Page context, re-switch
+        # to the Page once and reopen before giving up (transient identity loss).
         if not _composer_is_page(page):
             try:
                 page.keyboard.press("Escape")
             except Exception:
                 pass
-            res["status"] = "skipped"; res["error"] = "not acting as Page (anonymity guard)"
-            return res
+            _switch_to_page(page)
+            try:
+                page.goto(url, wait_until="domcontentloaded", timeout=30000)
+                page.wait_for_timeout(2000)
+            except Exception:
+                pass
+            reopened = False
+            for sel in _COMPOSER_OPENERS:
+                try:
+                    page.locator(sel).first.click(timeout=4000); reopened = True; break
+                except Exception:
+                    continue
+            page.wait_for_timeout(1500)
+            if not (reopened and _composer_is_page(page)):
+                try:
+                    page.keyboard.press("Escape")
+                except Exception:
+                    pass
+                res["status"] = "skipped"; res["error"] = "not acting as Page (anonymity guard)"
+                return res
 
         # GRAPHICS ONLY: reveal the photo input (click Photo/video), then push the
         # 9 slide files onto the hidden <input type=file>. No caption is typed.
