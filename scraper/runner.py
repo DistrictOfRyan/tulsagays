@@ -1030,6 +1030,35 @@ def main():
     raw_events = run_all_scrapers()
     logger.info(f"\nTotal raw events: {len(raw_events)}")
 
+    # 1a. Recurring reality-check: drop paused/dead recurring events (a closed
+    # bar or cancelled night stops posting a ghost), auto-confirm any that a real
+    # live scrape corroborates this week -- adopting the live venue so a moved
+    # night self-corrects -- and track verification freshness for the preflight
+    # gate. Runs before the upcoming-hold so dropped events are never harvested.
+    try:
+        from scraper.recurring_verify import verify_recurring, load_ledger, save_ledger
+        _vledger = load_ledger()
+        _vtoday = datetime.now().strftime("%Y-%m-%d")
+        _recurring_evs = [e for e in raw_events if (e.get("source") or "") == "recurring"]
+        _live_evs = [e for e in raw_events if (e.get("source") or "") != "recurring"]
+        _kept_rec, _vreport = verify_recurring(_recurring_evs, _live_evs, _vtoday, _vledger)
+        save_ledger(_vledger)
+        raw_events = _live_evs + _kept_rec
+        logger.info(
+            "[recurring-verify] %d live-confirmed, %d on seed clock, %d venue-adopted, "
+            "%d venue-conflict(s), %d dropped (paused/dead)",
+            len(_vreport["live_confirmed"]), len(_vreport["seeded"]),
+            len(_vreport["venue_adopted"]), len(_vreport["venue_conflicts"]),
+            len(_vreport["dropped"]))
+        for _vline in _vreport["venue_adopted"]:
+            logger.info("[recurring-verify] venue adopted -> %s", _vline)
+        for _cline in _vreport["venue_conflicts"]:
+            logger.warning("[recurring-verify] possible move -> %s", _cline)
+        for _dline in _vreport["dropped"]:
+            logger.info("[recurring-verify] dropped -> %s", _dline)
+    except Exception as exc:
+        logger.error(f"[recurring-verify] step failed (non-fatal): {exc}", exc_info=True)
+
     # 1b. Flagship upcoming-event hold: remember juicy FUTURE events (Pride,
     # anniversaries, festivals, key-venue/priority-1) so a thing announced weeks
     # early is never dropped, and resurface any whose week has now arrived.
@@ -1127,6 +1156,15 @@ def main():
     except Exception as exc:
         logger.error(f"[sanity] checker failed (saving unsanitized output): {exc}",
                      exc_info=True)
+
+    # 5d. Apply operator venue overrides -- month-scoped corrections that WIN over
+    # any stale scraped/hardcoded/ledger venue (e.g. Queer Women's Collective,
+    # whose location rotates monthly). The final word on venue before save.
+    try:
+        from scraper.venue_overrides import apply_venue_overrides
+        sorted_events = apply_venue_overrides(sorted_events)
+    except Exception as exc:
+        logger.error(f"[venue-override] step failed (non-fatal): {exc}", exc_info=True)
 
     # 6. Save results
     paths = save_results(sorted_events, week_key)

@@ -148,11 +148,16 @@ RECURRING = [
         "priority": 1,
     },
     {
+        # Venue ROTATES month to month -- never hardcode it (a stale Equality
+        # Center venue once shipped on a slide). Left blank on purpose; the real
+        # monthly venue comes from data/venue_overrides.json, and preflight_post
+        # hard-blocks featuring this without a confirmed venue for the month.
         "name": "Queer Women's Collective",
         "day": "Wednesday",
         "freq": "1st",
         "time": "Evening",
-        "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+        "venue": "",
+        "venue_varies": True,
         "url": "https://www.facebook.com/queerwomenscollectivetulsa",
         "priority": 1,
     },
@@ -293,7 +298,7 @@ class RecurringScraper(BaseScraper):
                     continue
 
                 date_str = date.strftime("%Y-%m-%d")
-                events.append(self.make_event(
+                ev = self.make_event(
                     name=entry["name"],
                     date=date_str,
                     time=entry.get("time", ""),
@@ -301,7 +306,12 @@ class RecurringScraper(BaseScraper):
                     description="",
                     url=entry.get("url", ""),
                     priority=entry.get("priority", 2),
-                ))
+                )
+                # Flag rotating-venue events so the override/preflight layer knows
+                # not to trust a blank/stale venue (e.g. Queer Women's Collective).
+                if entry.get("venue_varies"):
+                    ev["venue_varies"] = True
+                events.append(ev)
                 # Each entry should only match once per week
                 break
 

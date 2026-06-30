@@ -256,6 +256,70 @@ def run(week_key=None):
         if pct < 0.60:
             warnings.append(f"[events] only {pct:.0%} of featured events are clearly LGBTQ (target >=60%)")
 
+    # ── VENUE STALENESS (the "wrong venue shipped" class) ──────────────────
+    # Recurring events whose location rotates month to month (Queer Women's
+    # Collective, etc.) cannot carry a trustworthy hardcoded/scraped venue.
+    # data/venue_overrides.json lists those names in `venue_varies`; each month
+    # an `overrides` entry supplies the real venue. Featuring such an event with
+    # NO confirmed venue for this month is a hard block -- that is exactly how the
+    # stale Equality Center venue went out. Resurfaced-ledger venues get eyeballed.
+    try:
+        from scraper.venue_overrides import load_venue_varies, has_override_for
+        _varies = load_venue_varies()
+        for e in eotw + featured_all:
+            nm = e.get("name", "?")
+            low = nm.lower()
+            d = e.get("date", "")
+            if any(v in low for v in _varies) and not has_override_for(nm, d):
+                errors.append(
+                    f"[venue] featured/EOTW '{nm}' rotates venue monthly and has NO confirmed "
+                    f"venue for {monday.strftime('%Y-%m')} -- add an entry to data/venue_overrides.json "
+                    f"(match + month + venue) before posting (its scraped venue is likely stale)")
+            elif e.get("resurfaced_from_upcoming") or e.get("from_upcoming_ledger"):
+                warnings.append(
+                    f"[venue] featured '{nm}' was resurfaced from the upcoming ledger; its venue "
+                    f"'{(e.get('venue') or '').strip() or '(blank)'}' may be weeks old -- confirm it's correct")
+    except Exception as _ve:
+        warnings.append(f"[venue] venue-staleness check failed: {_ve}")
+
+    # ── RECURRING EVENT VERIFICATION (still happening? still here?) ─────────
+    # Every recurring event carries a confirmation freshness clock (ledger:
+    # data/recurring_confirmations.json, refreshed by scraper/recurring_verify
+    # each scrape). TIERED: a FEATURED recurring event that's merely stale
+    # (>stale_after_days since last confirmed) WARNS; one unconfirmed past
+    # block_after_days (default 180d) is BLOCKED from being featured -- it can
+    # still sit in the website list, but it won't headline a slide unverified.
+    try:
+        from scraper.recurring_verify import load_ledger, lookup_tier
+        _rled = load_ledger()
+        _rtoday = date.today().isoformat()
+        for e in eotw + featured_all:
+            nm = e.get("name", "?")
+            is_tracked, tier, days, entry = lookup_tier(nm, _rtoday, _rled)
+            if not is_tracked:
+                continue
+            _lv = (entry or {}).get("last_verified") or "never"
+            _vv = (entry or {}).get("verified_venue") or (e.get("venue") or "").strip() or "(blank)"
+            if tier == "expired":
+                errors.append(
+                    f"[recurring] featured/EOTW '{nm}' has NOT been confirmed (still happening + "
+                    f"venue still '{_vv}') since {_lv} -- past the {_rled.get('block_after_days', 180)}-day "
+                    f"limit. Confirm it in data/recurring_confirmations.json (or set status dead/paused) "
+                    f"before featuring it")
+            elif tier == "stale":
+                warnings.append(
+                    f"[recurring] featured '{nm}' last confirmed {_lv} ({days}d ago) -- verify it still "
+                    f"runs and is still at '{_vv}', then stamp data/recurring_confirmations.json")
+            _conf = (entry or {}).get("pending_venue_conflict")
+            if _conf:
+                warnings.append(
+                    f"[recurring] featured '{nm}' may have MOVED: a live scrape shows "
+                    f"'{_conf.get('live_venue')}' ({_conf.get('source')}) vs known "
+                    f"'{_conf.get('known_venue')}' -- confirm the venue before posting "
+                    f"(stamp data/recurring_confirmations.json to resolve)")
+    except Exception as _re:
+        warnings.append(f"[recurring] verification check failed: {_re}")
+
     # ── SANITY (the W24 'Owasso city council' class of nonsense) ───────────
     # Re-apply the sanity drop rules to what is about to POST: a featured/EOTW
     # event matching a drop rule is a hard block; website-shown junk warns.

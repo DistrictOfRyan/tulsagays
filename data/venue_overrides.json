@@ -1,0 +1,14 @@
+{
+  "_note": "Late-stage venue corrections + a 'venue rotates monthly' registry for the Tulsa Gays pipeline. WHY: recurring events like Queer Women's Collective change location month to month, so a hardcoded/scraped/ledger venue silently goes stale (this shipped the wrong venue once). HOW: `overrides` entries WIN over any scraped/hardcoded/ledger venue and are applied in scraper/runner.py via scraper/venue_overrides.py AFTER scrape+dedup. `venue_varies` lists name-substrings whose location rotates monthly: tools/preflight_post.py HARD-BLOCKS featuring any such event that has no override confirmed for the post's month. `match` is a lowercase substring of the event name. Scope an override with `month` (YYYY-MM) or `date` (YYYY-MM-DD), or omit both for an always-on fix. `venue` required; `time`/`url` optional. Set a NEW override each month for every venue_varies event.",
+  "venue_varies": [
+    "queer women's collective"
+  ],
+  "overrides": [
+    {
+      "match": "queer women's collective",
+      "month": "2026-07",
+      "venue": "The Hunt Club",
+      "note": "QWC location rotates monthly. July 2026 confirmed at The Hunt Club (William 2026-06-30). Add a fresh entry each month."
+    }
+  ]
+}

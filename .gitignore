@@ -11,3 +11,8 @@ data/GROUP_AUTH_DEAD.flag
 
 # Graphic approval registry must be version-controlled (William sign-offs)
 !data/approved_assets.json
+
+# Venue corrections + recurring-event verification ledger are operator
+# source-of-truth (monthly venue overrides, dead/paused decisions) - track + sync
+!data/venue_overrides.json
+!data/recurring_confirmations.json

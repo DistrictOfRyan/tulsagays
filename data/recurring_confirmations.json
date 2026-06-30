@@ -1,0 +1,6 @@
+{
+  "_note": "Verification ledger for recurring events (scraper/recurring.py). WHY: the recurring list emits ~30 events every week with no reality-check, so a closed bar or a cancelled night would keep posting a ghost event. HOW: scraper/recurring_verify.py runs every scrape and (1) DROPS events whose status is paused/dead, (2) auto-confirms a recurring event when a real live scrape matches it that week -- stamping last_verified=today, verified_by='live-scrape:<source>', and ADOPTING the live venue so a moved night self-corrects, (3) tracks freshness. tools/preflight_post.py is TIERED: a featured recurring event merely stale (>stale_after_days since last_verified) WARNS; one unconfirmed past block_after_days BLOCKS being featured (it can still appear in the website list). venue_varies events (see venue_overrides.json) hard-block separately. Entries auto-populate on first scrape. To override: set status to 'dead' (gone for good) or 'paused' (temporarily off) to stop it posting, or stamp a human confirmation (last_verified + verified_venue + verified_by='human:<who>'). verified_by provenance: 'seed-baseline' (assumed current at install, NOT independently verified) | 'live-scrape:<source>' | 'human:<who>'. Run tools/verify_recurring.py anytime for the current report.",
+  "stale_after_days": 60,
+  "block_after_days": 180,
+  "events": {}
+}
