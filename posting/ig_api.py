@@ -101,6 +101,11 @@ def _telegram(text: str) -> None:
 
 def _degrade(reason: str) -> int:
     log(f"DEGRADE: {reason}")
+    # Silenced 2026-06-28 (William): the instagrapi engagement session expires by design
+    # (Meta invalidates it; AUTO_FOLLOW accelerates it). Posting is unaffected (durable Graph
+    # API page token). Log only - do NOT nag William via Telegram or the Action Inbox. Re-auth
+    # opportunistically via scripts/ig_login_api.py when convenient; it is not urgent.
+    return 0
     _telegram(f"tulsagays-ig-engage skipped: {reason}. "
               f"Re-auth once: run `python C:\\Users\\willi\\tulsagays\\scripts\\ig_login_api.py`.")
     try:

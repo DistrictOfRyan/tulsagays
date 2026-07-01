@@ -53,6 +53,13 @@ def split_venue(venue):
     return (name, street)
 
 
+def _slugify(s):
+    s = (s or "").lower()
+    s = re.sub(r"[^a-z0-9]+", "-", s)
+    s = re.sub(r"^-+|-+$", "", s)
+    return s[:60]
+
+
 def build(events):
     items = []
     for i, ev in enumerate(events, start=1):
@@ -69,8 +76,11 @@ def build(events):
         }
         if street:
             location["address"]["streetAddress"] = street
+        slug = "event-" + _slugify(f"{ev.get('name', '')}-{ev.get('date', '')}-{ev.get('time', '')}")
+        event_page = f"{SITE}/e/{slug}"
         event = {
             "@type": "Event",
+            "@id": event_page,
             "name": ev.get("name", "").strip(),
             "startDate": parse_start(ev.get("date", ""), ev.get("time", "")),
             "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
@@ -81,6 +91,7 @@ def build(events):
                 "name": "Tulsa Gays",
                 "url": SITE,
             },
+            "url": ev.get("url") or event_page,
         }
         items.append({"@type": "ListItem", "position": i, "item": event})
 

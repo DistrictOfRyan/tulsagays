@@ -1212,8 +1212,8 @@ MUST_HAVE_HASHTAGS = ["#TulsaGays", "#TulsaLGBTQ", "#HomoHotelHappyHour"]
 SOURCE_IG_HANDLES = {
     # Confirmed from config.py instagram fields
     "dvl_tulsa":           "@dvltulsa",
-    "hotmess_sports":      "@hotmesssports",
-    "gay_kickball_tulsa":  "@hotmesssports",
+    "hotmess_sports":      "@hotmesssportstulsa",
+    "gay_kickball_tulsa":  "@hotmesssportstulsa",
     "studio_66":           "@studio.66_",
     "tulsa_house_of_drag": "@tulsahouseofdrag",
     # Add verified handles below as you confirm them:

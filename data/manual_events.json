@@ -489,5 +489,24 @@
     "priority": 1,
     "lgbtq_relevant": true,
     "source_note": "Added 2026-06-18 (scraper repair campaign). Great Plains Rodeo Association, IGRA-sanctioned Oklahoma gay rodeo, weekend of Aug 7-9 2026 in OKC (confirmed via greatplainsrodeo.org weekend schedule). Site is a Wix prose page with no scrapable event structure, so captured manually. Re-verify exact dates closer to the event."
+  },
+  {
+    "name": "Homo Hotel Happy Hour - The Campbell Hotel",
+    "date": "2026-07-03",
+    "time": "6:00 PM",
+    "end_time": "8:00 PM",
+    "venue": "The Campbell Hotel, 2636 E 11th St, Tulsa, OK",
+    "description": "First Friday on Historic Route 66. The Campbell is the restored 1927 Spanish Colonial — the very first full-service hotel on Route 66 in Tulsa. Free admission, charity raffle all night.",
+    "url": "https://www.meetup.com/homo-hotel-happy-hour/",
+    "source": "manual",
+    "priority": 1,
+    "lgbtq_relevant": true,
+    "never_feature": false,
+    "tags": [
+      "hhhh",
+      "lgbtq",
+      "first_friday",
+      "happy_hour"
+    ]
   }
 ]

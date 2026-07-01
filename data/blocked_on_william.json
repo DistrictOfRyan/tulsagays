@@ -13,7 +13,7 @@
     "reason": "json strategy is built; needs your go/no-go since most events are storytimes/book clubs",
     "source": "rendered_sites/Tulsa City-County Library",
     "since": "2026-06-18",
-    "status": "open"
+    "status": "resolved"
   },
   {
     "id": "re-check-tulsa-pride-council-oak-goff-fest-sites",
@@ -61,6 +61,14 @@
     "reason": "auto-repair could not re-derive a working extraction; needs a human look",
     "source": "rendered_sites/Tulsa Farmers' Market",
     "since": "2026-06-20",
+    "status": "open"
+  },
+  {
+    "id": "repair-tulsagays-scraper-source-discovery-lab",
+    "item": "Repair TulsaGays scraper source: Discovery Lab",
+    "reason": "auto-repair could not re-derive a working extraction; needs a human look",
+    "source": "rendered_sites/Discovery Lab",
+    "since": "2026-06-23",
     "status": "open"
   }
 ]

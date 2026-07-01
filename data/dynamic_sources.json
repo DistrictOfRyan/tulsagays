@@ -5,7 +5,18 @@
       "url": "https://www.facebook.com/stvitustulsa/events",
       "name": "St. Vitus",
       "added": "2026-06-19",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
+    },
+    {
+      "url": "https://www.facebook.com/p/The-Tulsa-Burlesque-Festival-100077160646752/events",
+      "name": "Tulsa Burlesque Festival FB",
+      "added": "2026-06-27",
+      "via": "web-search",
+      "last_seen_week": "2026-W26",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
     }
   ],
   "fb_groups": [],
@@ -15,21 +26,28 @@
       "name": "Council Oak Mens Chorale",
       "category": "arts",
       "added": "2026-06-14",
-      "via": "weekly-search:Tulsa LGBTQ choir"
+      "via": "weekly-search:Tulsa LGBTQ choir",
+      "last_seen_week": "2026-W23",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
     },
     {
       "url": "https://allsoulschurch.org/category/events/community-events",
       "name": "All Souls Unitarian Church (Tulsa)",
       "category": "church",
       "added": "2026-06-14",
-      "via": "weekly-search:Tulsa UU/MCC events"
+      "via": "weekly-search:Tulsa UU/MCC events",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
     },
     {
       "url": "https://www.greatplainsrodeo.org/",
       "name": "Great Plains Rodeo Association (Oklahoma gay rodeo, IGRA)",
       "category": "lgbtq",
       "added": "2026-06-15",
-      "via": "william:add GPRA gay rodeo; scrape Tulsa-area activities"
+      "via": "william:add GPRA gay rodeo; scrape Tulsa-area activities",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
     }
   ],
   "partner_keywords": [
@@ -37,61 +55,177 @@
       "kw": "great plains rodeo",
       "name": "Great Plains Rodeo Association (gay rodeo)",
       "added": "2026-06-15",
-      "via": "william:GPRA"
+      "via": "william:GPRA",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
     },
     {
       "kw": "gay rodeo",
       "name": "Gay Rodeo (IGRA / GPRA)",
       "added": "2026-06-15",
-      "via": "william:GPRA"
+      "via": "william:GPRA",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
     },
     {
       "kw": "dennis r. neill equality center",
       "name": "Dennis R. Neill Equality Center",
       "added": "2026-06-14",
-      "via": "venue-miner"
+      "via": "venue-miner",
+      "last_seen_week": "2026-W26",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
     },
     {
       "kw": "loony bin comedy club - tulsa",
       "name": "Loony Bin Comedy Club - Tulsa",
       "added": "2026-06-14",
-      "via": "venue-miner"
+      "via": "venue-miner",
+      "last_seen_week": "2026-W26",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
     },
     {
       "kw": "mother road market",
       "name": "Mother Road Market",
       "added": "2026-06-14",
-      "via": "venue-miner"
+      "via": "venue-miner",
+      "last_seen_week": "2026-W25",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
     },
     {
       "kw": "loud & queer",
       "name": "Loud & Queer Fest",
       "added": "2026-06-14",
-      "via": "weekly-search:gap Loud & Queer Fest"
+      "via": "weekly-search:gap Loud & Queer Fest",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
     },
     {
       "kw": "queer crafters",
       "name": "Queer Crafters Club",
       "added": "2026-06-14",
-      "via": "weekly-search:Tulsa LGBTQ craft club"
+      "via": "weekly-search:Tulsa LGBTQ craft club",
+      "last_seen_week": "2026-W26",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
     },
     {
       "kw": "fellowship congregational",
       "name": "Fellowship Congregational UCC",
       "added": "2026-06-14",
-      "via": "weekly-search:Fellowship Congregational UCC"
+      "via": "weekly-search:Fellowship Congregational UCC",
+      "last_seen_week": "2026-W26",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
     },
     {
       "kw": "st. vitus",
       "name": "St. Vitus",
       "added": "2026-06-19",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
     },
     {
       "kw": "queer prairie",
       "name": "Center for Queer Prairie Studies",
       "added": "2026-06-20",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
+    },
+    {
+      "kw": "twisted arts",
+      "name": "Twisted Arts",
+      "added": "2026-06-27",
+      "via": "web-search",
+      "last_seen_week": "2026-W23",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
+    },
+    {
+      "kw": "tulsa burlesque festival",
+      "name": "Tulsa Burlesque Festival",
+      "added": "2026-06-27",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
+    },
+    {
+      "kw": "gay kickball",
+      "name": "Gay Kickball Tulsa",
+      "added": "2026-06-27",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-06-28"
+    },
+    {
+      "kw": "magic city books",
+      "name": "Magic City Books",
+      "added": "2026-06-28",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "eventbrite.com",
+      "name": "Eventbrite.Com",
+      "added": "2026-06-28",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "foolish things coffee",
+      "name": "Foolish Things Coffee",
+      "added": "2026-06-28",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "vintage wine bar",
+      "name": "Vintage Wine Bar",
+      "added": "2026-06-28",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "the hunt club",
+      "name": "The Hunt Club",
+      "added": "2026-06-28",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "tulsa arts district",
+      "name": "Tulsa Arts District",
+      "added": "2026-06-28",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "events time.ly",
+      "name": "Events Time.Ly",
+      "added": "2026-06-28",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "bricktown comedy club tulsa",
+      "name": "Bricktown Comedy Club Tulsa",
+      "added": "2026-06-28",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "tulsa zoo",
+      "name": "Tulsa Zoo",
+      "added": "2026-06-28",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "events at tulsa city-county library - communico",
+      "name": "Events At Tulsa City-County Library - Communico",
+      "added": "2026-06-28",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "spotify.com",
+      "name": "Spotify.Com",
+      "added": "2026-06-28",
+      "via": "venue-miner"
     }
   ],
   "retired": []

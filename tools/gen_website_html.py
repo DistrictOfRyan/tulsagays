@@ -761,9 +761,11 @@ for _ev in all_flat:
     if not re.match(r'^\d{4}-\d{2}-\d{2}$', _d or ''):
         continue
     _venue = (_ev.get('venue') or '').split(',')[0].strip()
-    _slug = _slugify(f"{_ev.get('name','')}-{_d}-{_ev.get('time','')}") if '_slugify' in dir() else None
+    _slug = 'event-' + _slugify_js(f"{_ev.get('name','')}-{_d}-{_ev.get('time','')}")
+    _event_page = f"{SITE}/e/{_slug}"
     _obj = {
         "@type": "Event",
+        "@id": _event_page,
         "name": _ev.get('name', '')[:110],
         "startDate": _iso_start(_d, _ev.get('time', '')),
         "eventStatus": "https://schema.org/EventScheduled",
@@ -783,6 +785,8 @@ for _ev in all_flat:
     _u = (_ev.get('url') or '').strip()
     if _u.startswith('http'):
         _obj["url"] = _u
+    else:
+        _obj["url"] = _event_page
     _events_ld.append(_obj)
 
 if _events_ld:

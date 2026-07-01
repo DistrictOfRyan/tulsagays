@@ -142,6 +142,26 @@ ORGS: List[Dict] = [
         "blurb": "DVL Club & Lounge, the woman-owned LGBTQ+ bar in Tulsa's Blue "
                  "Dome District. Details on Instagram @dvltulsa.",
     },
+    {
+        # HotMess Sports Tulsa (added 2026-07-01 per William: "these are cool").
+        # LGBTQ+ rec sports league (kickball, dodgeball, sand volleyball, cornhole,
+        # bowling, tennis, flag football). Their hotmesssports.com/tulsa site is a
+        # JS-rendered SportsEngine page that lists league SEASONS, not single dated
+        # events, so the static HotMessSportsScraper (specific_orgs.py) returns 0.
+        # The Tulsa IG @hotmesssportstulsa is where they post the actual dated game
+        # days, socials, tournaments, and registration pushes. IMPORTANT: use the
+        # Tulsa handle, NOT the national @hotmesssports (that mixes every city's
+        # events and returns nothing Tulsa-dated). source_name already trusted in
+        # config.LGBTQ_SOURCES.
+        "username": "hotmesssportstulsa",
+        "source_name": "hotmess_sports",
+        "default_venue": "Various venues, Tulsa (see @hotmesssportstulsa)",
+        "priority": 1,
+        "blurb": "HotMess Sports Tulsa, the LGBTQ+ rec sports league (kickball, "
+                 "dodgeball, sand volleyball, and more). All skill levels welcome, "
+                 "the whole point is showing up and having a blast. Details and "
+                 "registration on Instagram @hotmesssportstulsa.",
+    },
 ]
 
 

@@ -90,6 +90,36 @@ SEED_TEMPLATES = {
         "{city} gay bar events calendar",
         "{city} burlesque cabaret queer",
     ],
+    # Family + youth (added 2026-07-01 per William: surface gay-family and
+    # kid-friendly events, not just 21+ bar nights). These pull the whole other
+    # half of the community the bar-heavy feed was missing.
+    "family_youth": [
+        "{city} LGBTQ family friendly Pride event",
+        "{city} drag queen story hour",
+        "{city} rainbow story time library",
+        "{city} queer parents family group",
+        "{city} LGBTQ youth group meeting",
+        "{city} gay straight alliance GSA event",
+        "{city} LGBTQ teen program",
+        "{city} PFLAG {city} meeting",
+        "{city} all ages queer event",
+        "{city} affirming family day LGBTQ",
+    ],
+    # Professional / food / film / civic (added 2026-07-01). Draws a different,
+    # broader gay crowd than nightlife: networking mixers, queer makers markets,
+    # film screenings, volunteer/activism days.
+    "pro_food_film_civic": [
+        "{city} LGBTQ professionals networking mixer",
+        "{city} gay chamber of commerce event",
+        "{city} queer makers market",
+        "{city} LGBTQ pop up market",
+        "{city} LGBTQ film festival screening",
+        "{city} queer sober social event",
+        "{city} gaymers group",
+        "{city} LGBTQ trivia night",
+        "{city} LGBTQ volunteer day",
+        "{city} queer potluck community dinner",
+    ],
 }
 
 # Per-city named-venue seeds (the things you only know by local knowledge).
@@ -101,6 +131,13 @@ CITY_SPECIFIC_SEEDS = {
         "Dennis R. Neill Equality Center calendar",
         "Council Oak Men's Chorale Tulsa",
         "Black Queer Tulsa events",
+        # Family / youth / broader-community named leads (2026-07-01).
+        "Oklahomans for Equality youth program events Tulsa",
+        "PFLAG Tulsa meeting",
+        "Tulsa City-County Library rainbow story time",
+        "Freedom Oklahoma Tulsa events",
+        "HotMess Sports Tulsa kickball dodgeball",
+        "Tulsa Pride family friendly events",
     ],
 }
 
