@@ -155,10 +155,17 @@ class TulsaEagleScraper(BaseScraper):
 
 
 def scrape() -> List[Dict]:
-    """Module-level entry point."""
-    logger.info("[bars] Note: YBR, Majestic, Studio 66, Tulsa House of Drag DNS-dead. Tulsa Eagle only.")
-    scraper = TulsaEagleScraper()
-    return scraper.safe_scrape()
+    """Module-level entry point.
+
+    2026-07-02 (gap G6): tulsaeagle.com is a PARKED domain (JS redirect to
+    /lander, 114 bytes) - fetching it wastes ~50s per run and can never yield
+    events. Tulsa Eagle coverage lives in scraper/instagram_orgs.py (usernames
+    tulsaeagle / tulsaeagleok). If the Eagle ever relaunches a real website,
+    delete this early return to re-enable TulsaEagleScraper below.
+    """
+    logger.info("[bars] tulsaeagle.com parked (2026-07); skipping web scrape - "
+                "IG coverage via instagram_orgs. YBR/Majestic/Studio 66/House of Drag DNS-dead.")
+    return []
 
 
 if __name__ == "__main__":
