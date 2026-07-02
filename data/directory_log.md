@@ -150,6 +150,14 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 
 ---
 
+## [2026-07-02] White Crow Tavern (White Crow 3.0 Lounge)
+- Category: bar
+- URL: https://www.facebook.com/whitecrowtavern/
+- Source: CruisingGays Tulsa bar list + GayOut 2026 guide + Visit Tulsa listing + Yelp (updated Nov 2025)
+- Notes: Gay-friendly neighborhood bar at 5336 E Admiral Pl. On its third iteration ("3.0"). Consistently listed across LGBTQ+ travel guides for Tulsa (CruisingGays, GayOut, Visit Tulsa). Pool, karaoke, daily drink specials. No official website; Facebook is the main presence. Confirmed active as of late 2025. Not previously in directory.
+
+---
+
 ### Reviewed but NOT added (2026-06-25 scan)
 - Meadow Gold Mack (sister store to Buck Atom's, carries Indigenous queer artists' work): HELD. No verified street address found this scan. Advocate article confirmed it exists; need address to add.
 - Kinara Bookstore (Tulsa pop-up): HELD. Rotating pop-up with no fixed address. LGBTQ+ focus not confirmed on their site (marginalized authors broadly, not specifically queer). Revisit if they open a permanent location.
@@ -157,6 +165,22 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 
 ### Source-list candidates for the Monday scrape (2026-06-25)
 - None of this week's additions run regular published events. QueerLit Collective hosts occasional library events; check their Instagram @queerlitcollective for a regular cadence before adding as a scrape source.
+
+---
+
+### Reviewed but NOT added (2026-07-02 scan)
+- Triangle Coffee Roasters: DEAD. Yelp shows closed February 2026. Merged into Origin Coffee Company at the same 314 S Cincinnati Ave address. The OkEq listing appears stale. Do not add.
+- New Age Renegade (1649 S Main): DEAD. Yelp shows closed February 2026. Was a gay bar; noted here for the record but not added since it's permanently closed.
+- The Campbell Hotel and Event Centers (2636 E 11th St, EBA member): Still HELD. Legit gay-welcoming hotel/event venue but no Hotels/Lodging category in the directory yet. Revisit if we add that category.
+- et al. (Tulsa, EBA member): Still HELD. OkEq lists no street address.
+- Manila Ice (Tulsa, EBA member): Still HELD. Food truck, no fixed address.
+- Rainbows in Revolt (rainbowsinrevolt.com): Tulsa page shows 0 listings. Not a useful source at this time.
+- Reddit r/tulsa: No indexed results for LGBTQ+ business searches this scan.
+- OkEq EBA page (okeq.org/eba/): Still renders no inline member list to WebFetch. Food & Drink page remains the usable source.
+- All other OkEq Food & Drink and Tulsa Remote listings: already in directory.
+
+### Source-list candidates for the Monday scrape (2026-07-02)
+- White Crow Tavern does not post a regular event calendar. No new scrape source candidates this scan.
 
 ---
 
