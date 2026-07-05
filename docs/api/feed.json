@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "city": "Tulsa",
-  "generated": "2026-06-28",
+  "generated": "2026-07-05",
   "license": "Free to use with attribution to tulsagays.com",
   "coverage": {
     "coverage_pct": 97.2,
@@ -9,63 +9,63 @@
     "total": 36,
     "gaps": 1
   },
-  "source_count": 258,
+  "source_count": 266,
   "event_count": 8,
   "events": [
     {
-      "name": "Stormy Daniels",
-      "date": "2026-06-22",
+      "name": "Art from the Backyard (Ages 5-6)",
+      "date": "2026-06-29",
       "time": "",
-      "venue": "Hoy, 7:00 – 10:00 p.m.",
+      "venue": "Philbrook Museum",
       "url": null
     },
     {
-      "name": "Información y entradas",
-      "date": "2026-06-22",
+      "name": "Wooly Wonders: Art & Nature (Ages 7-9)",
+      "date": "2026-06-29",
       "time": "",
-      "venue": "Van The Wine Man",
+      "venue": "Philbrook Museum",
       "url": null
     },
     {
-      "name": "Detalles",
-      "date": "2026-06-22",
+      "name": "See It, Sketch It (Ages 9-11)",
+      "date": "2026-06-29",
       "time": "",
-      "venue": "Obtener entradas",
+      "venue": "Philbrook Museum",
       "url": null
     },
     {
-      "name": "Private Cellar Exchange at Boston Title & Abstract...",
-      "date": "2026-06-22",
+      "name": "Rhythm & Flow (12-14)",
+      "date": "2026-06-29",
       "time": "",
-      "venue": "Obtener entradas",
+      "venue": "Philbrook Museum",
       "url": null
     },
     {
-      "name": "Best of the 90's Camp",
-      "date": "2026-06-22",
+      "name": "Tiny Treasures (Ages 5-6)",
+      "date": "2026-06-29",
       "time": "",
-      "venue": "Obtener entradas",
+      "venue": "Philbrook Museum",
       "url": null
     },
     {
-      "name": "Record Night at Saturn Room",
-      "date": "2026-06-22",
+      "name": "The Secret Life of Tiny Worlds (Ages 7-9)",
+      "date": "2026-06-29",
       "time": "",
-      "venue": "Saturn Room",
+      "venue": "Philbrook Museum",
       "url": null
     },
     {
-      "name": "Flora Springs Winery Dinner at French Hen — Wine...",
-      "date": "2026-06-22",
+      "name": "Once Upon a City (Ages 9-11)",
+      "date": "2026-06-29",
       "time": "",
-      "venue": "Obtener entradas",
+      "venue": "Philbrook Museum",
       "url": null
     },
     {
-      "name": "Intro to Entrepreneurship at Gradient",
-      "date": "2026-06-22",
+      "name": "Craft Your Story (Ages 12-14)",
+      "date": "2026-06-29",
       "time": "",
-      "venue": "Obtener entradas",
+      "venue": "Philbrook Museum",
       "url": null
     }
   ]
