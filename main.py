@@ -498,6 +498,16 @@ def cmd_generate(post_type="weekday"):
             # Hard-exclude services / girl scouts / therapy / AA / clinics.
             if _is_skip(e) or e.get("never_feature"):
                 return False
+            # Belt-and-braces: the scrape-time NON_LGBTQ blocklist also bars the
+            # slide (data scraped BEFORE a blocklist addition still carries the
+            # event — W28's "Trans-Miss" golf led Tuesday this way).
+            try:
+                from scraper.runner import NON_LGBTQ_BLOCKLIST as _BL
+                _c = ((e.get("name") or "") + " " + (e.get("venue") or "")).lower()
+                if any(kw in _c for kw in _BL):
+                    return False
+            except Exception:
+                pass
             # Classify on NAME + VENUE, never the generated description — so writing
             # voice copy can't reshuffle which events get featured (stable selection).
             combo = ((e.get("name") or "") + " " + (e.get("venue") or "")).lower()

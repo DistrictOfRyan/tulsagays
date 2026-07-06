@@ -1187,7 +1187,7 @@ def make_day_slide(day_name: str, events: List[Dict],
             _tw = _text_width(draw, _tag, _f_tag)
             _th = _text_height(draw, _tag, _f_tag)
             _tx = (W - _tw) // 2
-            _ty = y_first_start - _th // 2 - 2
+            _ty = y_first_start - _th - 6   # fully above the border, clear of the title
             draw.rectangle([_tx - 14, _ty - 3, _tx + _tw + 14, _ty + _th + 5], fill="#000000")
             draw.text((_tx, _ty), _tag, font=_f_tag, fill=NEON_PINK)
 

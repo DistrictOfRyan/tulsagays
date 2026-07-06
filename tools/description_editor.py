@@ -32,13 +32,19 @@ import config  # noqa: E402
 SCORE_LOG = ROOT / "data" / "description_scores.jsonl"
 ENGAGEMENT = ROOT / "data" / "engagement_signals.json"  # future (Meta-blocked)
 
-TEMPLATE_SIGS = [
-    "put this on your calendar and actually go", "the people in that room are your people",
-    "arrive before it starts. find a spot", "clear your calendar, because",
-    "here is your permission slip", "nobody ever regretted going to",
-    "if you do one thing this week", "is calling and the answer is yes",
-    "do future-you a favor", "treat yourself to",
-]
+# Single source of truth: preflight's signature list (drifted copies meant the
+# editor scored "main-character energy" filler 97/100 while preflight blocked
+# on it — found in the 2026-07-06 Monday dress rehearsal).
+try:
+    from tools.preflight_post import TEMPLATE_SIGNATURES as TEMPLATE_SIGS
+except Exception:
+    TEMPLATE_SIGS = [
+        "put this on your calendar and actually go", "the people in that room are your people",
+        "arrive before it starts. find a spot", "clear your calendar, because",
+        "here is your permission slip", "nobody ever regretted going to",
+        "if you do one thing this week", "is calling and the answer is yes",
+        "do future-you a favor", "treat yourself to",
+    ]
 BANNED = ["vibrant community", "safe space", "don't miss out", "something for everyone",
           "whether you're", "whether you are", "nestled",
           "make sure to go", "actually go", "put this on your calendar",

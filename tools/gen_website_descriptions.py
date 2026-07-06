@@ -1208,6 +1208,21 @@ def _desc_generic(ev, score):
     return base
 
 
+def _smart_trim(text: str, n: int) -> str:
+    """Trim to <=n chars WITHOUT cutting mid-word (W28 slides shipped copy
+    ending "...actually a" / "...being i"). Prefer the last full sentence."""
+    t = (text or "").strip()
+    if len(t) <= n:
+        return t
+    cut = t[:n]
+    for sep in ('. ', '! ', '? '):
+        i = cut.rfind(sep)
+        if i >= n // 2:
+            return cut[:i + 1].strip()
+    i = cut.rfind(' ')
+    return (cut[:i] if i > 0 else cut).rstrip(' ,;:.') + '.'
+
+
 # ── Claude API description generator ─────────────────────────────────────────
 
 def _generate_sassy_descriptions(ev: dict, score: int) -> tuple:
@@ -1268,14 +1283,14 @@ SLIDE: [your text here]"""
             slide_desc   = parts[1].strip()
         else:
             website_desc = text
-            slide_desc   = text[:250].strip()
+            slide_desc   = _smart_trim(text, 250)
 
         return website_desc, slide_desc
 
     except Exception as e:
         print(f"    [API error: {e}] falling back to template")
         fallback = _find_description(ev, score)
-        return fallback, fallback[:220].strip()
+        return fallback, _smart_trim(fallback, 220)
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
