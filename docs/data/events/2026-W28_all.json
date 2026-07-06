@@ -1,7 +1,7 @@
 {
   "week": "2026-W28",
-  "generated_at": "2026-07-06T15:40:10.369387",
-  "total_events": 277,
+  "generated_at": "2026-07-06T15:40:29.373410",
+  "total_events": 276,
   "events": [
     {
       "name": "Lambda Bowling League",
@@ -38,7 +38,7 @@
       "name": "Clothing Swap",
       "date": "2026-07-06",
       "time": "6:00 PM",
-      "venue": "Yellow Brick Construction Zone",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
       "description": "Yellow Brick Road is Tulsa's only lesbian bar and one of the last left in the whole country, and here's the thing the boys keep missing: everyone is welcome at the cave, not just the girls. Roll up, the whole community is invited. Details on Instagram @tulsaybr.",
       "url": "https://www.instagram.com/p/DadrUnpxi0A/",
       "source_urls": [
@@ -1379,10 +1379,10 @@
       "community_event": true
     },
     {
-      "name": "Storytails",
+      "name": "Digital Literacy: Digital Citizenship Part 1",
       "date": "2026-07-07",
-      "time": "2:00 PM - 3:00 PM",
-      "venue": "Upcoming Events",
+      "time": "9:00 AM - 11:00 AM",
+      "venue": "Eventbrite.com",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+7+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -1428,25 +1428,10 @@
       "community_event": true
     },
     {
-      "name": "Digital Literacy: Digital Citizenship Part 1",
+      "name": "Storytails",
       "date": "2026-07-07",
-      "time": "9:00 AM - 11:00 AM",
-      "venue": "Legacy Plaza, 5310 E 31st St",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+July+7+2026&ibp=htl;events&hl=en&gl=US&pws=0",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+July+7+2026&ibp=htl;events&hl=en&gl=US&pws=0"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true
-    },
-    {
-      "name": "Building With Blocks",
-      "date": "2026-07-07",
-      "time": "3:00 PM - 4:00 PM",
-      "venue": "Maxwell Park Library, 1313 N Canton Ave",
+      "time": "2:00 PM - 3:00 PM",
+      "venue": "Rieger Memorial Library, 116 N Broadway",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+7+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -1462,6 +1447,21 @@
       "date": "2026-07-07",
       "time": "6:00 PM - 7:30 PM",
       "venue": "Hampton Inn & Suites Tulsa Downtown, 211 W 3rd St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+7+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+7+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Building With Blocks",
+      "date": "2026-07-07",
+      "time": "3:00 PM - 4:00 PM",
+      "venue": "Maxwell Park Library, 1313 N Canton Ave",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+7+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -1500,21 +1500,6 @@
       "priority": 2,
       "source": "recurring",
       "lgbtq_relevant": true
-    },
-    {
-      "name": "WTS Oklahoma July 2026 Lunch Meeting",
-      "date": "2026-07-08",
-      "time": "11:30 AM",
-      "venue": "4002 Mingo Valley Expy",
-      "description": "Topic: ODOT Environmental",
-      "url": "https://www.eventbrite.com/e/wts-oklahoma-july-2026-lunch-meeting-tickets-1992496044305",
-      "source_urls": [
-        "https://www.eventbrite.com/e/wts-oklahoma-july-2026-lunch-meeting-tickets-1992496044305"
-      ],
-      "priority": 2,
-      "source": "eventbrite",
-      "lgbtq_relevant": false,
-      "community_event": true
     },
     {
       "name": "EMG research study sign-up",
@@ -1779,10 +1764,10 @@
       "community_event": true
     },
     {
-      "name": "Mystery Lovers Book Club",
+      "name": "Classic Reads",
       "date": "2026-07-08",
-      "time": "3:00 PM - 4:00 PM",
-      "venue": "Nathan Hale Library, 6038 E 23rd St",
+      "time": "6:00 PM - 7:00 PM",
+      "venue": "Schusterman-Benson Library, 3333 E 32nd Pl",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+8+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -1794,10 +1779,10 @@
       "community_event": true
     },
     {
-      "name": "Classic Reads",
+      "name": "Mystery Lovers Book Club",
       "date": "2026-07-08",
-      "time": "6:00 PM - 7:00 PM",
-      "venue": "Schusterman-Benson Library, 3333 E 32nd Pl",
+      "time": "3:00 PM - 4:00 PM",
+      "venue": "Nathan Hale Library, 6038 E 23rd St",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+8+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -1824,10 +1809,10 @@
       "community_event": true
     },
     {
-      "name": "Family History Month: AI and Genealogy",
+      "name": "Paint-and-Peel Art",
       "date": "2026-07-08",
-      "time": "2:00 PM - 3:30 PM",
-      "venue": "Schusterman-Benson Library, 3333 E 32nd Pl",
+      "time": "2:00 PM - 3:00 PM",
+      "venue": "Peggy Helmerich Library, 5131 E 91st St",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+8+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -1839,10 +1824,10 @@
       "community_event": true
     },
     {
-      "name": "Paint-and-Peel Art",
+      "name": "Family History Month: AI and Genealogy",
       "date": "2026-07-08",
-      "time": "2:00 PM - 3:00 PM",
-      "venue": "Peggy Helmerich Library, 5131 E 91st St",
+      "time": "2:00 PM - 3:30 PM",
+      "venue": "Schusterman-Benson Library, 3333 E 32nd Pl",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+8+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -1886,7 +1871,7 @@
       "name": "DisruptHR Tulsa 11.0",
       "date": "2026-07-09",
       "time": "4:30 PM - 8:00 PM",
-      "venue": "Stokely Event Center, 10111 E 45th Pl",
+      "venue": "Eventbrite.com",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -2147,7 +2132,7 @@
       "name": "Porch Pounders at The Summit — Wine Tastings ...",
       "date": "2026-07-09",
       "time": "5:30 PM - 7:30 PM",
-      "venue": "Van The Wine Man",
+      "venue": "The Summit, 15 W 6th St",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -2162,10 +2147,10 @@
       ]
     },
     {
-      "name": "2026 FCA National Meet",
+      "name": "Summer Movies @ Circle Cinema",
       "date": "2026-07-09",
-      "time": "8:00 AM",
-      "venue": "Falcon Club of America",
+      "time": "1:30 PM - 3:00 PM",
+      "venue": "TulsaPeople",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -2177,10 +2162,10 @@
       "community_event": true
     },
     {
-      "name": "JT and the Dirtboxwailers at The Hunt Club",
+      "name": "2026 FCA National Meet",
       "date": "2026-07-09",
-      "time": "5:30 PM - 7:30 PM",
-      "venue": "Tulsa Arts District",
+      "time": "8:00 AM",
+      "venue": "Falcon Club of America",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -2208,10 +2193,10 @@
       "community_event": true
     },
     {
-      "name": "Crow Party: Summer Edition",
+      "name": "JT and the Dirtboxwailers at The Hunt Club",
       "date": "2026-07-09",
-      "time": "6:00 PM - 7:45 PM",
-      "venue": "Visit Tulsa",
+      "time": "5:30 PM - 7:30 PM",
+      "venue": "Tulsa Arts District",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -2223,10 +2208,10 @@
       "community_event": true
     },
     {
-      "name": "Summer Movies @ Circle Cinema",
+      "name": "Crow Party: Summer Edition",
       "date": "2026-07-09",
-      "time": "1:30 PM - 3:00 PM",
-      "venue": "TulsaPeople",
+      "time": "6:00 PM - 7:45 PM",
+      "venue": "Visit Tulsa",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -2256,38 +2241,7 @@
       "name": "Community Wellness: Total Body Tone",
       "date": "2026-07-09",
       "time": "6:00 PM - 7:00 PM",
-      "venue": "Jenks Riverwalk",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true
-    },
-    {
-      "name": "Women+ in Tech Tulsa Resume Clinic",
-      "date": "2026-07-09",
-      "time": "6:00 PM - 7:30 PM",
-      "venue": "Gradient: Tulsa's Hub for Innovation, 12 N Cheyenne Ave",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "never_feature": true,
-      "community_event": true
-    },
-    {
-      "name": "The Slam Crew",
-      "date": "2026-07-09",
-      "time": "10:00 AM - 11:00 AM",
-      "venue": "Herman & Kate Kaiser Library, 5202 S Hudson Ave",
+      "venue": "Riverwalk Crossing, 300 Riverwalk Terrace",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -2317,10 +2271,10 @@
       ]
     },
     {
-      "name": "Fresh Floral Mandala",
+      "name": "Women+ in Tech Tulsa Resume Clinic",
       "date": "2026-07-09",
-      "time": "3:00 PM - 4:00 PM",
-      "venue": "Herman & Kate Kaiser Library, 5202 S Hudson Ave",
+      "time": "6:00 PM - 7:30 PM",
+      "venue": "Gradient: Tulsa's Hub for Innovation, 12 N Cheyenne Ave",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -2329,6 +2283,7 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
+      "never_feature": true,
       "community_event": true
     },
     {
@@ -2348,6 +2303,36 @@
       "sanity_flags": [
         "truncated name (ends with ellipsis — Google Events cut it off)"
       ]
+    },
+    {
+      "name": "Fresh Floral Mandala",
+      "date": "2026-07-09",
+      "time": "3:00 PM - 4:00 PM",
+      "venue": "Herman & Kate Kaiser Library, 5202 S Hudson Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "The Slam Crew",
+      "date": "2026-07-09",
+      "time": "10:00 AM - 11:00 AM",
+      "venue": "Herman & Kate Kaiser Library, 5202 S Hudson Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
     },
     {
       "name": "Teen Advisory Board",
@@ -2627,7 +2612,7 @@
       "community_event": true
     },
     {
-      "name": "Bad Boys On The Block",
+      "name": "FRIDAY JULY 10TH",
       "date": "2026-07-10",
       "time": "9:30 PM",
       "venue": "Club Majestic, 124 N Boston Ave",
@@ -3769,24 +3754,6 @@
       ]
     },
     {
-      "name": "Dis Lit Collective",
-      "date": "",
-      "time": "",
-      "venue": "",
-      "description": "",
-      "url": "https://www.eventbrite.com/e/dis-lit-collective-tickets-1992718659152",
-      "source_urls": [
-        "https://www.eventbrite.com/e/dis-lit-collective-tickets-1992718659152"
-      ],
-      "priority": 2,
-      "source": "eventbrite",
-      "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "missing venue"
-      ]
-    },
-    {
       "name": "Drag Sing-Along Presented by Elote",
       "date": "",
       "time": "",
@@ -3895,6 +3862,24 @@
       ]
     },
     {
+      "name": "WTS Oklahoma July 2026 Lunch Meeting",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/wts-oklahoma-july-2026-lunch-meeting-tickets-1992496044305",
+      "source_urls": [
+        "https://www.eventbrite.com/e/wts-oklahoma-july-2026-lunch-meeting-tickets-1992496044305"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
       "name": "Transformation Conference: V5",
       "date": "",
       "time": "",
@@ -3985,6 +3970,24 @@
       ]
     },
     {
+      "name": "Dis Lit Collective",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/dis-lit-collective-tickets-1992718659152",
+      "source_urls": [
+        "https://www.eventbrite.com/e/dis-lit-collective-tickets-1992718659152"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
       "name": "FiberWorks Workshop: Sally Garner",
       "date": "",
       "time": "",
@@ -4029,24 +4032,6 @@
       "url": "https://www.eventbrite.com/e/underground-kitchen-a-private-dining-experience-tickets-1988868304638",
       "source_urls": [
         "https://www.eventbrite.com/e/underground-kitchen-a-private-dining-experience-tickets-1988868304638"
-      ],
-      "priority": 2,
-      "source": "eventbrite",
-      "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "missing venue"
-      ]
-    },
-    {
-      "name": "On Navigating Intersectional Identities (Livestream)",
-      "date": "",
-      "time": "",
-      "venue": "",
-      "description": "",
-      "url": "https://www.eventbrite.com/e/on-navigating-intersectional-identities-livestream-tickets-1986677473804",
-      "source_urls": [
-        "https://www.eventbrite.com/e/on-navigating-intersectional-identities-livestream-tickets-1986677473804"
       ],
       "priority": 2,
       "source": "eventbrite",
