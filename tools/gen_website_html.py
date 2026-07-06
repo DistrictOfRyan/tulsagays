@@ -410,6 +410,14 @@ def _url_label(url: str) -> str:
         return 'Link'
 
 _VENUE_JUNK = ('shared by ', 'posted by ', 'reposted by ', 'event by ')
+# Scraper button-text / truncation artifacts that are NOT venues (W28 slides
+# showed "@ Obtener entradas" and "@ mar"). Exact-match, lowercased.
+_VENUE_JUNK_EXACT = {
+    'obtener entradas', 'entradas', 'detalles', 'informacion', 'información',
+    'mas informacion', 'más información', 'get tickets', 'buy tickets',
+    'tickets', 'tickets & info', 'more info', 'more information', 'mar',
+    'tba', 'tbd', 'online', 'virtual',
+}
 # Address fragment → display name. City-specific via config.VENUE_NAME_MAP with safe
 # empty fallback for new-city scaffolds (until VENUE_FACTS / Phase 3 source discovery
 # populate it).
@@ -422,6 +430,8 @@ def _clean_venue(raw: str) -> str:
         return ''
     low = v.lower()
     if any(low.startswith(j) for j in _VENUE_JUNK):
+        return ''
+    if low.rstrip('.!') in _VENUE_JUNK_EXACT:
         return ''
     # Map known address fragments to business names
     for addr, name in _VENUE_NAME_MAP.items():
@@ -556,7 +566,8 @@ for day in DAYS_ORDERED:
             card_id = _card_id(ev_name, ev_date_iso, hour)
 
             lines.append('')
-            lines.append(f'                <div class="{card_cls}"{pink_style} id="{card_id}" data-date="{ev_date_iso}">')
+            _dt = esc((ev.get('time') or '').strip())
+            lines.append(f'                <div class="{card_cls}"{pink_style} id="{card_id}" data-date="{ev_date_iso}" data-time="{_dt}">')
             if hour:
                 lines.append(f'                    <div class="event-time-col">')
                 lines.append(f'                        <div class="event-time" style="color:{time_color}">{esc(hour)}</div>')

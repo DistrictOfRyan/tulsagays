@@ -82,6 +82,16 @@ TEMPLATE_SIGNATURES = [
     "do future-you a favor",
     "treat yourself to",
     "stop scrolling and go be among your people",
+    # Retired 2026-07-06 dedupe pool (William: name-plus-vibes filler that says
+    # nothing about the event; W28 shipped "main-character energy" on 3 slides).
+    "has main-character energy",
+    "gets you off the couch",
+    "is where the fun ones will be",
+    "let the night do something unexpected",
+    "a soft yes that turns into",
+    "your sign to put on something cute",
+    "proof that leaving the house was the right move",
+    "where the good trouble starts",
 ]
 
 

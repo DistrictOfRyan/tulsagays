@@ -103,6 +103,10 @@ _GENERIC_NON_LGBTQ_BLOCKLIST = [
     "football game", "football season", "nfl ", " nfl", "nba ", " nba",
     "mlb ", " mlb", "nhl ", " nhl", "college football", "college basketball",
     "nascar", "ufc ", " ufc", "mma fight",
+    # "Trans-Miss" = Trans-Mississippi Golf Association, a straight amateur golf
+    # tournament the word-boundary "trans" matcher misreads as LGBTQ (W28 made it
+    # Tuesday's boxed hero). Mainstream golf championships are off-topic anyway.
+    "trans-miss", "trans miss amateur", "amateur golf championship",
     # Petroleum/energy industry conferences
     "society of petroleum", "petroleum engineers",
     "spe ior", "spe improved", "improved oil recovery",
@@ -319,6 +323,13 @@ _NEVER_FEATURE_SIGNALS = (
     "girl scout", "shut up & write", "raise your spiritual iq", "mix and mingle",
     "ttrpg", "free testing", "guiding right", "okeq senior", "okeq health",
     "sunday service", "sunday services", "open meditation", "drop-in",
+    # Services are not events (William 2026-07-06: W28 boxed "Fair Housing:
+    # Legal Aid Services" + "Name & Gender Correction Clinic" as day heroes).
+    "legal aid", "legal services", "legal clinic", "legal help", "fair housing",
+    "correction clinic", "name & gender", "name and gender", "expungement",
+    "know your rights", "fafsa", "wellness fair", "health fair",
+    "health and wellness fair", "vaccine", "vaccination", "resource fair",
+    "food pantry", "blood drive", "coat drive", "clinic",
 )
 
 

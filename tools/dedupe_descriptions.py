@@ -31,15 +31,20 @@ import config  # noqa: E402
 # (the old pool WAS those phrases, which the preflight then hard-blocked -> the
 # pipeline contradicted itself and rule-based decks never passed). These are
 # fresh, varied, signature-free frames; validated by --selftest. (Fixed 2026-06-29.)
+# Rewritten 2026-07-06 (William: "write for an introvert and tell them WHY this
+# event is good for them" — the old pool was name-plus-vibes with zero reason to
+# go). Every frame gives a shy person a low-pressure entry plan: what the room
+# feels like, where to stand, why showing up alone is fine. The retired frames
+# are now TEMPLATE_SIGNATURES in preflight_post.py, so reusing them hard-blocks.
 OPENERS = [
-    "{name} is the kind of night that gets you off the couch, and you will not be sorry.",
-    "Word to the wise, {name} is where the fun ones will be.",
-    "{name} has main-character energy, so show up dressed like it.",
-    "Slide into {name} and let the night do something unexpected.",
-    "{name} is a soft yes that turns into a great story.",
-    "Honey, consider {name} your sign to put on something cute and head out.",
-    "{name} is proof that leaving the house was the right move.",
-    "Make a little room for {name}; that is where the good trouble starts.",
+    "{name} is built for the quiet ones, honey: nobody checks if you came alone, and the people-watching does half the socializing for you.",
+    "If crowds drain you, {name} is the gentle version: slip in, find the edge of the room, and let it come to you at your own speed.",
+    "{name} asks nothing of you but showing up. No small talk quota, no dress code drama, just a room that's happier with you in it.",
+    "Going solo to {name} is a power move, sugar. Claim a corner, settle in, and you'll be in a conversation before you decide to start one.",
+    "{name} is the rare plan that costs no energy: come as you are, stay an hour, and leave whenever you want. That's the whole deal.",
+    "Shy? Perfect. {name} runs on people who'd rather watch first and join in when it feels right, so you'll be in good company.",
+    "Think of {name} as a starter social: low stakes, friendly room, easy exit if you need one. You probably won't use the exit.",
+    "{name} is where you go to be around your people without performing for them. Soak it in, say hi to one person, call it a win.",
 ]
 WHERE = [
     "It's happening{at_venue}{at_time}.",
@@ -78,7 +83,12 @@ def _unique_desc(e, salt, long=False):
     seed = f"{name}|{e.get('date','')}|{salt}"
     opener = OPENERS[_h(seed + "o", len(OPENERS))].format(name=name)
     if not long:
-        return opener
+        # Short (slide) copy: include the where/when so the card says something
+        # concrete about THIS event, as long as it still fits a slide (~200 chars).
+        where = WHERE[_h(seed + "w", len(WHERE))].format(
+            at_venue=at_venue, at_venue_cap=at_venue_cap, at_time=at_time).strip()
+        combined = f"{opener} {where}".replace("  ", " ").strip()
+        return combined if len(combined) <= 200 else opener
     where = WHERE[_h(seed + "w", len(WHERE))].format(
         at_venue=at_venue, at_venue_cap=at_venue_cap, at_time=at_time).strip()
     # Rung 3: prefer a venue-tailored "best-time" tip as the closer; fall back to

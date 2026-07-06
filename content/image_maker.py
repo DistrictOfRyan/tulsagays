@@ -162,6 +162,14 @@ def clean_text(text: str) -> str:
 
 
 _VENUE_JUNK = ('shared by ', 'posted by ', 'reposted by ', 'event by ')
+# Scraper button-text / truncation artifacts that are NOT venues (W28 slides
+# showed "@ Obtener entradas" and "@ mar"). Exact-match, lowercased.
+_VENUE_JUNK_EXACT = {
+    'obtener entradas', 'entradas', 'detalles', 'informacion', 'información',
+    'mas informacion', 'más información', 'get tickets', 'buy tickets',
+    'tickets', 'tickets & info', 'more info', 'more information', 'mar',
+    'tba', 'tbd', 'online', 'virtual',
+}
 # Known address fragments → display name. City-specific. Read from config.VENUE_NAME_MAP
 # with safe empty fallback for new-city scaffolds.
 _VENUE_NAME_MAP = getattr(config, "VENUE_NAME_MAP", {})
@@ -173,6 +181,8 @@ def clean_venue(raw: str) -> str:
         return ''
     low = v.lower()
     if any(low.startswith(j) for j in _VENUE_JUNK):
+        return ''
+    if low.rstrip('.!') in _VENUE_JUNK_EXACT:
         return ''
     # Map known address fragments to business names
     for addr, name in _VENUE_NAME_MAP.items():
@@ -1169,6 +1179,17 @@ def make_day_slide(day_name: str, events: List[Dict],
                 outline=NEON_PINK,
                 width=3
             )
+            # "TOP PICK" tag centered on the box's top border so the highlight
+            # reads as a deliberate editorial pick, not an arbitrary first-row
+            # box (William 2026-07-06).
+            _tag = "TOP PICK"
+            _f_tag = _font("segoe", 20)
+            _tw = _text_width(draw, _tag, _f_tag)
+            _th = _text_height(draw, _tag, _f_tag)
+            _tx = (W - _tw) // 2
+            _ty = y_first_start - _th // 2 - 2
+            draw.rectangle([_tx - 14, _ty - 3, _tx + _tw + 14, _ty + _th + 5], fill="#000000")
+            draw.text((_tx, _ty), _tag, font=_f_tag, fill=NEON_PINK)
 
     # ── Footer ── pink divider then "X more events today" CTA ───────────────
     footer_y = H - footer_h + 8

@@ -102,7 +102,7 @@ def _queue_for_review(rows, today):
         return 0
     existing = ""
     if os.path.exists(PENDING_ACTIONS_FILE):
-        with open(PENDING_ACTIONS_FILE, "r", encoding="utf-8") as f:
+        with open(PENDING_ACTIONS_FILE, "r", encoding="utf-8", errors="replace") as f:
             existing = f.read()
 
     fresh = [r for r in rows if r["id"] not in existing]
