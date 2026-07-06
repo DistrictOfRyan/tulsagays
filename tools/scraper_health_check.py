@@ -198,10 +198,12 @@ def _module_level_checks(full: bool) -> list:
 # A zero-yield week from one of these is a broken community commitment, not a
 # soft degradation. Rows appear in every health report; the regression diff
 # alerts on the OK->DEAD flip (and stays quiet while a known outage persists).
+# Keys are PREFIXES against event 'source' values (the runner renames channels:
+# slack file events land as slack_events_local / slack_unite_lgbtq_plus).
 MUST_SOURCES = {
-    "okeq": "OKEQ / Equality Center calendar (their events were promised highlight)",
-    "slack_browser": "TulsaRemote Slack #events-local + #unite-lgbtq-plus",
-    "ybr_ig":        "YBR - @imvalpal Instagram is their only calendar",
+    "okeq":   "OKEQ / Equality Center calendar (their events were promised highlight)",
+    "slack":  "TulsaRemote Slack #events-local + #unite-lgbtq-plus",
+    "ybr_ig": "YBR - @tulsaybr/@imvalpal Instagram (web-session tier)",
 }
 
 
@@ -219,7 +221,7 @@ def _check_must_sources() -> list:
             s = e.get("source", "?")
             counts[s] = counts.get(s, 0) + 1
         for s, why in MUST_SOURCES.items():
-            n = counts.get(s, 0)
+            n = sum(v for k, v in counts.items() if str(k).startswith(s))
             rows.append({
                 "source": f"must:{s}", "raw": n, "dated": n,
                 "status": OK if n else DEAD,
