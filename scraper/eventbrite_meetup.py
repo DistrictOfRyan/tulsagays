@@ -77,6 +77,11 @@ NON_TULSA_HINTS = [
     "fayetteville", "bentonville", "rogers",
     "chicago", "minneapolis", "atlanta", "seattle",
     "norman", "stillwater", "lawton", "edmond",
+    # Mexico metros (2026-07-06: the machine now lives in Puerto Vallarta, and
+    # Meetup's IP geolocation started returning CDMX events - 8 leaked into W28).
+    "cdmx", "ciudad de mexico", "ciudad de méxico", "mexico city",
+    "polanco", "mazaryk", "condesa", "roma norte", "coyoacan", "coyoacán",
+    "guadalajara", "monterrey", "puerto vallarta", "zona romantica", "zona romántica",
 ]
 
 
@@ -352,7 +357,12 @@ class MeetupScraper(BaseScraper):
 
     source_name = "meetup"
 
-    SEARCH_URL = "https://www.meetup.com/find/?keywords={query}&location=Tulsa%2C+OK"
+    # location uses Meetup's canonical us--ok--tulsa slug: the free-text
+    # "Tulsa, OK" form gets ignored when Meetup can't geocode it and falls back
+    # to IP geolocation - which, with the machine in Puerto Vallarta, returned
+    # Mexico City events (2026-07-06, 8 CDMX leaks in W28).
+    SEARCH_URL = ("https://www.meetup.com/find/?keywords={query}"
+                  "&location=us--ok--tulsa&distance=twentyFiveMiles")
 
     def scrape(self) -> List[Dict]:
         events = []
