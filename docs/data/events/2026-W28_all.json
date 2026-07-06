@@ -1,7 +1,7 @@
 {
   "week": "2026-W28",
-  "generated_at": "2026-07-06T15:21:26.033357",
-  "total_events": 274,
+  "generated_at": "2026-07-06T15:40:10.369387",
+  "total_events": 277,
   "events": [
     {
       "name": "Lambda Bowling League",
@@ -21,20 +21,6 @@
       "never_feature": true
     },
     {
-      "name": "Clothing Swap",
-      "date": "2026-07-06",
-      "time": "6:00 PM",
-      "venue": "Yellow Brick Road, 2630 E 15th St",
-      "description": "Yellow Brick Road is Tulsa's only lesbian bar and one of the last left in the whole country, and here's the thing the boys keep missing: everyone is welcome at the cave, not just the girls. Roll up, the whole community is invited. Details on Instagram @tulsaybr.",
-      "url": "https://www.instagram.com/p/DadrUnpxi0A/",
-      "source_urls": [
-        "https://www.instagram.com/p/DadrUnpxi0A/"
-      ],
-      "priority": 1,
-      "source": "ybr_ig",
-      "lgbtq_relevant": true
-    },
-    {
       "name": "Monday Night Jazz",
       "date": "2026-07-06",
       "time": "8:00 PM",
@@ -46,6 +32,20 @@
       ],
       "priority": 1,
       "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Clothing Swap",
+      "date": "2026-07-06",
+      "time": "6:00 PM",
+      "venue": "Yellow Brick Construction Zone",
+      "description": "Yellow Brick Road is Tulsa's only lesbian bar and one of the last left in the whole country, and here's the thing the boys keep missing: everyone is welcome at the cave, not just the girls. Roll up, the whole community is invited. Details on Instagram @tulsaybr.",
+      "url": "https://www.instagram.com/p/DadrUnpxi0A/",
+      "source_urls": [
+        "https://www.instagram.com/p/DadrUnpxi0A/"
+      ],
+      "priority": 1,
+      "source": "ybr_ig",
       "lgbtq_relevant": true
     },
     {
@@ -95,7 +95,7 @@
       "never_feature": true
     },
     {
-      "name": "HotMess Sand Volleyball Free Open Play",
+      "name": "HotMess Sand Volleyball Open Play",
       "date": "2026-07-07",
       "time": "1:00 PM",
       "venue": "The University of Tulsa Sand Volleyball Courts at Lorton Village Apartments",
@@ -919,6 +919,34 @@
       "lgbtq_relevant": true
     },
     {
+      "name": "Lunch Specials at Elgin Park",
+      "date": "2026-07-06",
+      "time": "11:00 AM",
+      "venue": "Elgin Park Brewery325 E Reconciliation Way, Tulsa, OK, United States",
+      "description": "",
+      "url": "https://thetulsaartsdistrict.org/event/lunch-specials-at-elgin-park-2-2025-12-30-2026-07-03/2026-07-06/",
+      "source_urls": [
+        "https://thetulsaartsdistrict.org/event/lunch-specials-at-elgin-park-2-2025-12-30-2026-07-03/2026-07-06/"
+      ],
+      "priority": 2,
+      "source": "tulsa_arts_district",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Lunch Special at Empire Slice House",
+      "date": "2026-07-06",
+      "time": "11:00 AM",
+      "venue": "Empire Slice House Tulsa / 84 Hospitality Group417 N Main Street, Tulsa, OK, United States",
+      "description": "",
+      "url": "https://thetulsaartsdistrict.org/event/lunch-special-at-empire-slice-house-2025-12-30-2026-07-03/2026-07-06/",
+      "source_urls": [
+        "https://thetulsaartsdistrict.org/event/lunch-special-at-empire-slice-house-2025-12-30-2026-07-03/2026-07-06/"
+      ],
+      "priority": 2,
+      "source": "tulsa_arts_district",
+      "lgbtq_relevant": true
+    },
+    {
       "name": "Happy Hour with Free Pool at Caz’s Pub",
       "date": "2026-07-06",
       "time": "2:00 PM",
@@ -1040,40 +1068,10 @@
       ]
     },
     {
-      "name": "Rock 101 Camp",
-      "date": "2026-07-06",
-      "time": "9:00 AM",
-      "venue": "School of Rock",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+July+6+2026&ibp=htl;events&hl=en&gl=US&pws=0",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+July+6+2026&ibp=htl;events&hl=en&gl=US&pws=0"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true
-    },
-    {
       "name": "Sammy Obeid",
       "date": "2026-07-06",
       "time": "7:00 PM - 10:00 PM",
       "venue": "Bricktown Comedy Club Tulsa",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+July+6+2026&ibp=htl;events&hl=en&gl=US&pws=0",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+July+6+2026&ibp=htl;events&hl=en&gl=US&pws=0"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true
-    },
-    {
-      "name": "Helmerich Library Summer Movie Club",
-      "date": "2026-07-06",
-      "time": "2:00 PM - 4:00 PM",
-      "venue": "Events at Tulsa City-County Library - Tulsa Library",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+6+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -1100,10 +1098,40 @@
       "community_event": true
     },
     {
+      "name": "Rock 101 Camp",
+      "date": "2026-07-06",
+      "time": "9:00 AM",
+      "venue": "School of Rock",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+6+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+6+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
       "name": "Craft Club: Paleo-Zen Garden",
       "date": "2026-07-06",
       "time": "6:00 PM - 7:00 PM",
-      "venue": "Tulsa City County Library, 400 Civic Center",
+      "venue": "Events at Tulsa City-County Library - Communico",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+6+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+6+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Helmerich Library Summer Movie Club",
+      "date": "2026-07-06",
+      "time": "2:00 PM - 4:00 PM",
+      "venue": "Peggy Helmerich Library, 5131 E 91st St",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+6+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -1246,34 +1274,6 @@
       "lgbtq_relevant": true
     },
     {
-      "name": "Jerk Chicken Special at Sisserou's Restaurant",
-      "date": "2026-07-07",
-      "time": "8:00 AM",
-      "venue": "Sisserou's Restaurant107 N Boulder, Tulsa, OK, United States",
-      "description": "",
-      "url": "https://thetulsaartsdistrict.org/event/jerk-chicken-special-at-sisserous-restaurant-2/2026-07-07/",
-      "source_urls": [
-        "https://thetulsaartsdistrict.org/event/jerk-chicken-special-at-sisserous-restaurant-2/2026-07-07/"
-      ],
-      "priority": 2,
-      "source": "tulsa_arts_district",
-      "lgbtq_relevant": true
-    },
-    {
-      "name": "Lunch Specials at Elgin Park",
-      "date": "2026-07-07",
-      "time": "11:00 AM",
-      "venue": "Elgin Park Brewery325 E Reconciliation Way, Tulsa, OK, United States",
-      "description": "",
-      "url": "https://thetulsaartsdistrict.org/event/lunch-specials-at-elgin-park-2-2025-12-30-2026-07-03/2026-07-07/",
-      "source_urls": [
-        "https://thetulsaartsdistrict.org/event/lunch-specials-at-elgin-park-2-2025-12-30-2026-07-03/2026-07-07/"
-      ],
-      "priority": 2,
-      "source": "tulsa_arts_district",
-      "lgbtq_relevant": true
-    },
-    {
       "name": "2026 NLC Tulsa Capstones, Cocktails, & Conversations",
       "date": "2026-07-07",
       "time": "5:30 PM - 7:00 PM",
@@ -1379,10 +1379,10 @@
       "community_event": true
     },
     {
-      "name": "Digital Literacy: Digital Citizenship Part 1",
+      "name": "Storytails",
       "date": "2026-07-07",
-      "time": "9:00 AM - 11:00 AM",
-      "venue": "Eventbrite.com",
+      "time": "2:00 PM - 3:00 PM",
+      "venue": "Upcoming Events",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+7+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -1428,25 +1428,10 @@
       "community_event": true
     },
     {
-      "name": "Storytails",
+      "name": "Digital Literacy: Digital Citizenship Part 1",
       "date": "2026-07-07",
-      "time": "2:00 PM - 3:00 PM",
-      "venue": "Rieger Memorial Library, 116 N Broadway",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+July+7+2026&ibp=htl;events&hl=en&gl=US&pws=0",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+July+7+2026&ibp=htl;events&hl=en&gl=US&pws=0"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true
-    },
-    {
-      "name": "Teen 2 Teen (Tulsa)",
-      "date": "2026-07-07",
-      "time": "6:00 PM - 7:30 PM",
-      "venue": "Hampton Inn & Suites Tulsa Downtown, 211 W 3rd St",
+      "time": "9:00 AM - 11:00 AM",
+      "venue": "Legacy Plaza, 5310 E 31st St",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+7+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -1462,6 +1447,21 @@
       "date": "2026-07-07",
       "time": "3:00 PM - 4:00 PM",
       "venue": "Maxwell Park Library, 1313 N Canton Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+7+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+7+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Teen 2 Teen (Tulsa)",
+      "date": "2026-07-07",
+      "time": "6:00 PM - 7:30 PM",
+      "venue": "Hampton Inn & Suites Tulsa Downtown, 211 W 3rd St",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+7+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -2192,10 +2192,10 @@
       "community_event": true
     },
     {
-      "name": "Summer Movies @ Circle Cinema",
+      "name": "General Admission | Community Health and Wellness Fair",
       "date": "2026-07-09",
-      "time": "1:30 PM - 3:00 PM",
-      "venue": "TulsaPeople",
+      "time": "3:00 PM - 6:00 PM",
+      "venue": "Eventbrite.com",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -2204,6 +2204,7 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
+      "never_feature": true,
       "community_event": true
     },
     {
@@ -2222,10 +2223,10 @@
       "community_event": true
     },
     {
-      "name": "General Admission | Community Health and Wellness Fair",
+      "name": "Summer Movies @ Circle Cinema",
       "date": "2026-07-09",
-      "time": "3:00 PM - 6:00 PM",
-      "venue": "Eventbrite.com",
+      "time": "1:30 PM - 3:00 PM",
+      "venue": "TulsaPeople",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -2234,7 +2235,6 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
-      "never_feature": true,
       "community_event": true
     },
     {
@@ -2299,21 +2299,6 @@
       "community_event": true
     },
     {
-      "name": "Fresh Floral Mandala",
-      "date": "2026-07-09",
-      "time": "3:00 PM - 4:00 PM",
-      "venue": "Herman & Kate Kaiser Library, 5202 S Hudson Ave",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true
-    },
-    {
       "name": "Pace, Pies and Pints — a Thursday social run at...",
       "date": "2026-07-09",
       "time": "6:00 PM - 8:15 PM",
@@ -2330,6 +2315,21 @@
       "sanity_flags": [
         "truncated name (ends with ellipsis — Google Events cut it off)"
       ]
+    },
+    {
+      "name": "Fresh Floral Mandala",
+      "date": "2026-07-09",
+      "time": "3:00 PM - 4:00 PM",
+      "venue": "Herman & Kate Kaiser Library, 5202 S Hudson Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
     },
     {
       "name": "The Unhooked Negotiator: Somatic Skills for...",
@@ -2350,10 +2350,10 @@
       ]
     },
     {
-      "name": "How To Make a Flyer: Introduction to Canva",
+      "name": "Teen Advisory Board",
       "date": "2026-07-09",
-      "time": "3:00 PM - 4:00 PM",
-      "venue": "Martin Regional Library, 2601 S Garnett Rd",
+      "time": "4:30 PM - 5:30 PM",
+      "venue": "Nathan Hale Library, 6038 E 23rd St",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -2365,10 +2365,10 @@
       "community_event": true
     },
     {
-      "name": "Teen Advisory Board",
+      "name": "How To Make a Flyer: Introduction to Canva",
       "date": "2026-07-09",
-      "time": "4:30 PM - 5:30 PM",
-      "venue": "Nathan Hale Library, 6038 E 23rd St",
+      "time": "3:00 PM - 4:00 PM",
+      "venue": "Martin Regional Library, 2601 S Garnett Rd",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+9+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -2453,6 +2453,19 @@
       ],
       "priority": 2,
       "source": "extended_calendars",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tulsa Rock, Gem, Mineral and Jewelry Show",
+      "date": "2026-07-10",
+      "time": "",
+      "venue": "Tulsa, OK",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
       "lgbtq_relevant": false,
       "community_event": true
     },
@@ -2718,21 +2731,6 @@
       "community_event": true
     },
     {
-      "name": "Vintage Barbie Museum",
-      "date": "2026-07-10",
-      "time": "10:00 AM",
-      "venue": "Tulsa Arts District",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+July+10+2026&ibp=htl;events&hl=en&gl=US&pws=0",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+July+10+2026&ibp=htl;events&hl=en&gl=US&pws=0"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true
-    },
-    {
       "name": "Profitopia at Living Arts – Free Admission",
       "date": "2026-07-10",
       "time": "12:00 PM - 4:00 PM",
@@ -2778,21 +2776,6 @@
       "community_event": true
     },
     {
-      "name": "Penguin Camp Mentor",
-      "date": "2026-07-10",
-      "time": "8:30 AM",
-      "venue": "Clark Youth Theatre, 4825 S Quaker Ave",
-      "description": "",
-      "url": "https://www.google.com/search?q=events+in+tulsa+July+10+2026&ibp=htl;events&hl=en&gl=US&pws=0",
-      "source_urls": [
-        "https://www.google.com/search?q=events+in+tulsa+July+10+2026&ibp=htl;events&hl=en&gl=US&pws=0"
-      ],
-      "priority": 2,
-      "source": "google_events",
-      "lgbtq_relevant": false,
-      "community_event": true
-    },
-    {
       "name": "Sounds Of The Ocean",
       "date": "2026-07-10",
       "time": "4:30 PM - 6:00 PM",
@@ -2808,10 +2791,10 @@
       "community_event": true
     },
     {
-      "name": "“A Dozen Loops: The Radical Voice of Woody...",
+      "name": "Vintage Barbie Museum",
       "date": "2026-07-10",
       "time": "10:00 AM",
-      "venue": "Woody Guthrie Center, 102 E Reconciliation Wy",
+      "venue": "VINTAGE BARBIE MUSEUM, 216 N Main St",
       "description": "",
       "url": "https://www.google.com/search?q=events+in+tulsa+July+10+2026&ibp=htl;events&hl=en&gl=US&pws=0",
       "source_urls": [
@@ -2820,10 +2803,22 @@
       "priority": 2,
       "source": "google_events",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "truncated name (ends with ellipsis — Google Events cut it off)"
-      ]
+      "community_event": true
+    },
+    {
+      "name": "Penguin Camp Mentor",
+      "date": "2026-07-10",
+      "time": "8:30 AM",
+      "venue": "Clark Youth Theatre, 4825 S Quaker Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+10+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+10+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
     },
     {
       "name": "KAWAII RAVE (18+)",
@@ -2903,6 +2898,32 @@
       ],
       "priority": 2,
       "source": "extended_calendars",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "TFA Tours: Booker T. Washington",
+      "date": "2026-07-11",
+      "time": "",
+      "venue": "Tulsa, OK",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Second Saturday Coffee Cupping at Vast",
+      "date": "2026-07-11",
+      "time": "",
+      "venue": "Tulsa, OK",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
       "lgbtq_relevant": false,
       "community_event": true
     },
@@ -3481,6 +3502,19 @@
       "community_event": true
     },
     {
+      "name": "Hatebreed: Summer Slaughter Tour 2026",
+      "date": "2026-07-12",
+      "time": "",
+      "venue": "Tulsa, OK",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
       "name": "Hatebreed",
       "date": "2026-07-12",
       "time": "4:00 PM - 7:00 PM",
@@ -3735,6 +3769,24 @@
       ]
     },
     {
+      "name": "Dis Lit Collective",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/dis-lit-collective-tickets-1992718659152",
+      "source_urls": [
+        "https://www.eventbrite.com/e/dis-lit-collective-tickets-1992718659152"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
       "name": "Drag Sing-Along Presented by Elote",
       "date": "",
       "time": "",
@@ -3923,24 +3975,6 @@
       "url": "https://www.eventbrite.com/e/mamas-boys-leslie-and-me-tickets-1992603486668",
       "source_urls": [
         "https://www.eventbrite.com/e/mamas-boys-leslie-and-me-tickets-1992603486668"
-      ],
-      "priority": 2,
-      "source": "eventbrite",
-      "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "missing venue"
-      ]
-    },
-    {
-      "name": "Dis Lit Collective",
-      "date": "",
-      "time": "",
-      "venue": "",
-      "description": "",
-      "url": "https://www.eventbrite.com/e/dis-lit-collective-tickets-1992718659152",
-      "source_urls": [
-        "https://www.eventbrite.com/e/dis-lit-collective-tickets-1992718659152"
       ],
       "priority": 2,
       "source": "eventbrite",
