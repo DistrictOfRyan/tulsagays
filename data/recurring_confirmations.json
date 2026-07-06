@@ -2,5 +2,117 @@
   "_note": "Verification ledger for recurring events (scraper/recurring.py). WHY: the recurring list emits ~30 events every week with no reality-check, so a closed bar or a cancelled night would keep posting a ghost event. HOW: scraper/recurring_verify.py runs every scrape and (1) DROPS events whose status is paused/dead, (2) auto-confirms a recurring event when a real live scrape matches it that week -- stamping last_verified=today, verified_by='live-scrape:<source>', and ADOPTING the live venue so a moved night self-corrects, (3) tracks freshness. tools/preflight_post.py is TIERED: a featured recurring event merely stale (>stale_after_days since last_verified) WARNS; one unconfirmed past block_after_days BLOCKS being featured (it can still appear in the website list). venue_varies events (see venue_overrides.json) hard-block separately. Entries auto-populate on first scrape. To override: set status to 'dead' (gone for good) or 'paused' (temporarily off) to stop it posting, or stamp a human confirmation (last_verified + verified_venue + verified_by='human:<who>'). verified_by provenance: 'seed-baseline' (assumed current at install, NOT independently verified) | 'live-scrape:<source>' | 'human:<who>'. Run tools/verify_recurring.py anytime for the current report.",
   "stale_after_days": 60,
   "block_after_days": 180,
-  "events": {}
+  "events": {
+    "lambda bowling league": {
+      "status": "active",
+      "last_verified": "2026-07-06",
+      "verified_venue": "AMF Sheridan Lanes, 3121 S Sheridan Rd",
+      "verified_by": "live-scrape:qlist",
+      "verified_through": null,
+      "note": ""
+    },
+    "osu tulsa queer support group": {
+      "status": "active",
+      "last_verified": "2026-07-06",
+      "verified_venue": "OSU Tulsa Campus, 700 N Greenwood Ave",
+      "verified_by": "seed-baseline",
+      "verified_through": null,
+      "note": ""
+    },
+    "gender outreach support group": {
+      "status": "active",
+      "last_verified": "2026-07-06",
+      "verified_venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "verified_by": "live-scrape:community_groups",
+      "verified_through": null,
+      "note": ""
+    },
+    "lambda unity group (lgbtq+ aa meeting)": {
+      "status": "active",
+      "last_verified": "2026-07-06",
+      "verified_venue": "Fellowship Congregational Church, Tulsa",
+      "verified_by": "seed-baseline",
+      "verified_through": null,
+      "note": ""
+    },
+    "dragnificent! drag show": {
+      "status": "active",
+      "last_verified": "2026-07-06",
+      "verified_venue": "Club Majestic",
+      "verified_by": "live-scrape:community_groups",
+      "verified_through": null,
+      "note": ""
+    },
+    "trivia night at ybr": {
+      "status": "active",
+      "last_verified": "2026-07-06",
+      "verified_venue": "Yellow Brick Road, 2630 E 15th St",
+      "verified_by": "seed-baseline",
+      "verified_through": null,
+      "note": "",
+      "pending_venue_conflict": {
+        "known_venue": "Yellow Brick Road, 2630 E 15th St",
+        "live_venue": "Good Cause Brewing",
+        "live_name": "(GCB) Trivia for those that Suck and Trivia",
+        "source": "tulsa_isnt_boring",
+        "seen": "2026-07-06"
+      }
+    },
+    "free pool & darts at ybr": {
+      "status": "active",
+      "last_verified": "2026-07-06",
+      "verified_venue": "Yellow Brick Road, 2630 E 15th St",
+      "verified_by": "seed-baseline",
+      "verified_through": null,
+      "note": ""
+    },
+    "dj kylie dance party at ybr": {
+      "status": "active",
+      "last_verified": "2026-07-06",
+      "verified_venue": "Yellow Brick Road, 2630 E 15th St",
+      "verified_by": "seed-baseline",
+      "verified_through": null,
+      "note": ""
+    },
+    "sunday showdown open talent night": {
+      "status": "active",
+      "last_verified": "2026-07-06",
+      "verified_venue": "Club Majestic, 124 N Boston Ave",
+      "verified_by": "seed-baseline",
+      "verified_through": null,
+      "note": ""
+    },
+    "all souls unitarian sunday services": {
+      "status": "active",
+      "last_verified": "2026-07-06",
+      "verified_venue": "All Souls Unitarian Church, 2952 S Peoria Ave",
+      "verified_by": "seed-baseline",
+      "verified_through": null,
+      "note": ""
+    },
+    "elote drag brunch": {
+      "status": "active",
+      "last_verified": "2026-07-06",
+      "verified_venue": "Elote Cafe & Catering, 514 S Boston Ave",
+      "verified_by": "live-scrape:eventbrite",
+      "verified_through": null,
+      "note": ""
+    },
+    "tuesdays in the park concert series": {
+      "status": "active",
+      "last_verified": "2026-07-06",
+      "verified_venue": "Central Park, 1500 S Main St, Broken Arrow",
+      "verified_by": "seed-baseline",
+      "verified_through": null,
+      "note": ""
+    },
+    "green country bears monthly meetup": {
+      "status": "active",
+      "last_verified": "2026-07-06",
+      "verified_venue": "Restaurant (varies, check website)",
+      "verified_by": "live-scrape:community_groups",
+      "verified_through": null,
+      "note": ""
+    }
+  }
 }
