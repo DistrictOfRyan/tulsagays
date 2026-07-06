@@ -924,80 +924,251 @@ class VisitTulsaScraper(PlaywrightBaseScraper):
 class CircleCinemaScraper(PlaywrightBaseScraper):
     """Circle Cinema -- independent art-house cinema in Tulsa.
 
-    JS-rendered React app. Tries JSON-LD first, then generic event containers.
-    LGBTQ filter applied: only keeps queer-relevant films and events.
+    circlecinema.org itself is a Wix React shell with NO scrapable schedule:
+    /movies, /events and /schedule all render the Wix 404 page, JSON-LD is only
+    WebSite/LocalBusiness, and the wix-warmup-data blob resolves titles to image
+    filenames. The real film schedule lives on the Easy-Ware ticketing portal
+    (circlecinema.easy-ware-ticketing.com), which is a Blazor Server app: data
+    arrives over a SignalR WebSocket, so there is no JSON XHR to consume -- the
+    rendered DOM is the API. (Diagnosed 2026-07-06.)
+
+    Strategy: load the /events grid (#eventGrid .prodCard) and read each film's
+    visible showtimes straight off the card (.prodPerfItem). The grid truncates
+    to 5 showtimes behind a "More..." button, which is a Blazor client-side
+    route to /eventsByMovie/<id> carrying the synopsis (.movieSynopsis) and the
+    FULL showtime list (.perfCard -> .dayTitle "Monday July 6" + .timeTitle
+    "3:20 PM") -- films with "More..." get that visit. For the rest, the
+    "More Info" button opens a Blazored.Modal dialog (.bm-container) whose
+    .synopsis div supplies the description; it only closes via its
+    button.bm-close (Escape does nothing). Emits one event per film per date
+    with that day's remaining showtimes in the description. LGBTQ filter
+    applied on name + synopsis: only queer-relevant films kept.
+
+    NOTE: Blazor re-renders the DOM on every interaction, so element handles go
+    stale after any click -- always re-query via locators, never cache handles.
     """
 
     source_name = "circle_cinema"
     BASE_URL = "https://www.circlecinema.org"
+    TICKETING_URL = "https://circlecinema.easy-ware-ticketing.com/events"
     DEFAULT_VENUE = "Circle Cinema, 10 S Lewis Ave, Tulsa"
     PRIORITY = 2
+    MAX_FILMS = 60  # safety cap on detail-page visits
 
-    URLS_TO_TRY = [
-        "https://www.circlecinema.org/",
-        "https://www.circlecinema.org/movies",
-        "https://www.circlecinema.org/events",
-        "https://www.circlecinema.org/schedule",
+    # Film synopses (Fandango copy) often describe queer romance without any
+    # identity keyword -- "Sonya, unfamiliar with dating girls..." carries zero
+    # LGBTQ_KEYWORDS hits. These phrases supplement the shared list for
+    # synopsis text specifically.
+    SYNOPSIS_LGBTQ_PHRASES = [
+        "coming out", "same-sex", "same sex", "dating girls", "dating boys",
+        "her girlfriend", "his boyfriend", "gender identity", "lgbt",
     ]
 
-    def scrape(self) -> List[Dict]:
-        from bs4 import BeautifulSoup
-        all_events = []
+    def _film_is_lgbtq(self, title: str, synopsis: str) -> bool:
+        """Word-boundary variant of _is_lgbtq_relevant.
 
-        for url in self.URLS_TO_TRY:
-            html = self.fetch_page_js(
-                url,
-                wait_for_selector="[class*='movie'], [class*='event'], [class*='film'], article, h2",
-                timeout=20000,
-            )
-            if not html:
+        The shared filter is plain substring matching, which admits false
+        positives here ("bi" fires inside "billion"); word boundaries keep the
+        same keyword list honest for film copy. Checked against the FULL
+        synopsis, not the truncated event description."""
+        import re as _re
+        combined = f"{title} {synopsis}".lower()
+        for kw in LGBTQ_KEYWORDS + self.SYNOPSIS_LGBTQ_PHRASES:
+            if _re.search(rf"\b{_re.escape(kw)}\b", combined):
+                return True
+        return False
+
+    _MONTH_NUM = {
+        "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+        "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12,
+    }
+
+    def _parse_month_day(self, text: str) -> str:
+        """Parse 'Jul 6' / 'Monday July 6' -> YYYY-MM-DD (year inferred).
+
+        The ticketing site never shows a year. Showtimes are always current or
+        upcoming, so a parsed date landing >60 days in the past means the
+        listing has wrapped into the next calendar year (Dec -> Jan)."""
+        import re as _re
+        m = _re.search(r"([A-Za-z]{3,9})\.?\s+(\d{1,2})\s*$", (text or "").strip())
+        if not m:
+            return ""
+        month = self._MONTH_NUM.get(m.group(1)[:3].lower())
+        day = int(m.group(2))
+        if not month:
+            return ""
+        today = datetime.now()
+        try:
+            dt = datetime(today.year, month, day)
+        except ValueError:
+            return ""
+        if (dt - today).days < -60:
+            dt = datetime(today.year + 1, month, day)
+        return dt.strftime("%Y-%m-%d")
+
+    @staticmethod
+    def _time_sort_key(t: str):
+        try:
+            return datetime.strptime(t.strip(), "%I:%M %p")
+        except ValueError:
+            return datetime.max
+
+    def _wait_for_grid(self, page):
+        page.wait_for_selector("#eventGrid .prodCard .prodTitle", timeout=30000)
+        page.wait_for_timeout(1200)  # let the Blazor circuit finish streaming
+
+    def _reset_to_grid(self, page):
+        page.goto(self.TICKETING_URL, wait_until="domcontentloaded", timeout=45000)
+        self._wait_for_grid(page)
+
+    def _parse_card_showtimes(self, card) -> List:
+        """Parse a grid card's visible .prodPerfItem rows into (date, time) pairs."""
+        import re as _re
+        showtimes = []
+        for item in card.locator(".prodPerfItem").all():
+            text = item.inner_text().replace("\xa0", " ")
+            m = _re.search(r"([A-Za-z]{3,9})\.?\s+(\d{1,2})\s*-\s*(\d{1,2}:\d{2}\s*[AP]M)", text)
+            if not m:
                 continue
+            date_str = self._parse_month_day(f"{m.group(1)} {m.group(2)}")
+            if date_str:
+                showtimes.append((date_str, m.group(3).strip()))
+        return showtimes
 
-            soup = BeautifulSoup(html, "html.parser")
+    def _full_showtimes_via_detail(self, page, index: int) -> Optional[Dict]:
+        """Click film #index's 'More...' -> /eventsByMovie/<id>; return synopsis, url, full showtimes."""
+        import re as _re
+        card = page.locator("#eventGrid .prodCard").nth(index)
+        card.locator("button", has_text=_re.compile(r"^\s*More\.\.\.\s*$")).first.click(timeout=8000)
+        page.wait_for_url("**/eventsByMovie/**", timeout=15000)
+        page.wait_for_selector(".perfCard", timeout=15000)
+        page.wait_for_timeout(600)
+        detail_url = page.url
 
-            # Try JSON-LD
-            events = self._extract_json_ld_from_soup(soup, self.DEFAULT_VENUE, self.PRIORITY)
+        synopsis = ""
+        syn_loc = page.locator(".movieSynopsis")
+        if syn_loc.count():
+            synopsis = _re.sub(r"^\s*Synopsis\s*", "", syn_loc.first.inner_text(), flags=_re.I)
+            synopsis = " ".join(synopsis.split())
 
-            # Generic fallback
-            if not events:
-                containers = (
-                    soup.select("[class*='event']")
-                    or soup.select("[class*='movie']")
-                    or soup.select("[class*='film']")
-                    or soup.select("article")
-                )
-                for container in containers[:30]:
-                    name_el = container.select_one("h1, h2, h3, h4, [class*='title']")
-                    if not name_el:
-                        continue
-                    name = name_el.get_text(strip=True)
-                    if not name or len(name) < 5:
-                        continue
-                    link_el = container.find("a", href=True)
-                    url_ev = ""
-                    if link_el:
-                        href = link_el["href"]
-                        url_ev = href if href.startswith("http") else self.BASE_URL + href
-                    time_el = container.select_one("time[datetime]")
-                    date_str, time_str = "", ""
-                    if time_el:
-                        date_str, time_str = _parse_iso_datetime(time_el.get("datetime", ""))
-                    desc_el = container.select_one("p, [class*='description']")
-                    description = desc_el.get_text(strip=True)[:500] if desc_el else ""
-                    events.append(self.make_event(
-                        name=name, date=date_str, time=time_str,
-                        venue=self.DEFAULT_VENUE, description=description,
-                        url=url_ev, priority=self.PRIORITY,
-                    ))
+        showtimes = []  # list of (YYYY-MM-DD, "3:20 PM")
+        for pc in page.locator(".perfCard").all():
+            day_loc = pc.locator(".dayTitle")
+            time_loc = pc.locator(".timeTitle")
+            if not day_loc.count() or not time_loc.count():
+                continue
+            date_str = self._parse_month_day(day_loc.first.inner_text())
+            time_str = time_loc.first.inner_text().strip()
+            if date_str and time_str:
+                showtimes.append((date_str, time_str))
 
-            if events:
-                all_events.extend(events)
-                break  # Don't hit more URLs if we found something
+        self._reset_to_grid(page)
+        return {"synopsis": synopsis, "url": detail_url, "showtimes": showtimes}
 
-        # Filter to LGBTQ-relevant only
-        before = len(all_events)
-        all_events = [e for e in all_events if _is_lgbtq_relevant(e.get("name", ""), e.get("description", ""))]
-        logger.info(f"[{self.source_name}] {before} total, {len(all_events)} LGBTQ-relevant")
+    def _synopsis_via_modal(self, page, index: int) -> str:
+        """Click film #index's 'More Info' -> Blazored.Modal; read .synopsis and close it."""
+        card = page.locator("#eventGrid .prodCard").nth(index)
+        card.locator("button.btnDetails").first.click(timeout=8000)
+        page.wait_for_selector(".bm-container .synopsis", timeout=10000)
+        synopsis = " ".join(page.locator(".bm-container .synopsis").first.inner_text().split())
+        try:
+            page.locator(".bm-container button.bm-close").first.click(timeout=4000)
+            page.wait_for_selector(".bm-container", state="detached", timeout=5000)
+        except Exception:
+            self._reset_to_grid(page)  # stuck modal blocks every later click
+        return synopsis
+
+    def scrape(self) -> List[Dict]:
+        if not self._browser:
+            logger.error(f"[{self.source_name}] Browser not started")
+            return []
+
+        _, sunday = _get_week_range()
+        week_end = sunday.strftime("%Y-%m-%d")
+
+        context = self._browser.new_context(
+            user_agent=("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                        "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"),
+            locale="en-US",
+        )
+        films = []
+        try:
+            import re as _re
+            page = context.new_page()
+            self._reset_to_grid(page)
+
+            # Pre-scan the grid: title + visible showtimes + truncation flag per
+            # card. Grid showtimes are chronological, so if a film's FIRST
+            # visible showtime is already past this week's Sunday, every
+            # showtime is -- skip it entirely.
+            cards = page.locator("#eventGrid .prodCard")
+            plan = []
+            for i in range(min(cards.count(), self.MAX_FILMS)):
+                card = cards.nth(i)
+                title_loc = card.locator(".prodTitle")
+                if not title_loc.count():
+                    continue
+                title = title_loc.first.inner_text().strip()
+                if not title:
+                    continue
+                showtimes = self._parse_card_showtimes(card)
+                if not showtimes or showtimes[0][0] > week_end:
+                    continue
+                has_more = card.locator(
+                    "button", has_text=_re.compile(r"^\s*More\.\.\.\s*$")).count() > 0
+                plan.append({"index": i, "title": title,
+                             "showtimes": showtimes, "has_more": has_more})
+            logger.info(f"[{self.source_name}] {cards.count()} films on grid, "
+                        f"{len(plan)} start within current week")
+
+            for film in plan:
+                synopsis, url = "", self.TICKETING_URL
+                try:
+                    if film["has_more"]:
+                        detail = self._full_showtimes_via_detail(page, film["index"])
+                        synopsis = detail["synopsis"]
+                        url = detail["url"]
+                        if detail["showtimes"]:
+                            film["showtimes"] = detail["showtimes"]
+                    else:
+                        synopsis = self._synopsis_via_modal(page, film["index"])
+                except Exception as e:
+                    logger.warning(f"[{self.source_name}] detail/modal failed for "
+                                   f"'{film['title']}': {e}")
+                    try:
+                        self._reset_to_grid(page)  # never leave a modal/detail page open
+                    except Exception:
+                        pass
+                films.append({"title": film["title"], "synopsis": synopsis,
+                              "url": url, "showtimes": film["showtimes"]})
+        finally:
+            try:
+                context.close()
+            except Exception:
+                pass
+
+        # Filter to LGBTQ/community-relevant films on the FULL synopsis, then
+        # emit one event per film per date with that day's showtimes listed.
+        kept = [f for f in films if self._film_is_lgbtq(f["title"], f["synopsis"])]
+        logger.info(f"[{self.source_name}] {len(films)} films scraped, "
+                    f"{len(kept)} LGBTQ/community-relevant")
+        all_events = []
+        for film in kept:
+            by_date = {}
+            for date_str, time_str in film["showtimes"]:
+                by_date.setdefault(date_str, []).append(time_str)
+            for date_str, times in sorted(by_date.items()):
+                times = sorted(set(times), key=self._time_sort_key)
+                description = film["synopsis"][:400]
+                if len(times) > 1:
+                    description = (description + " Showtimes: " + ", ".join(times)).strip()
+                all_events.append(self.make_event(
+                    name=film["title"], date=date_str, time=times[0],
+                    venue=self.DEFAULT_VENUE, description=description,
+                    url=film["url"], priority=self.PRIORITY,
+                ))
+
+        logger.info(f"[{self.source_name}] {len(all_events)} events emitted")
         return all_events
 
 
@@ -1028,14 +1199,23 @@ class PhilbrookMuseumScraper(PlaywrightBaseScraper):
 
         events = self._extract_json_ld_from_soup(soup, self.DEFAULT_VENUE, self.PRIORITY)
         if not events:
+            # 2026-07-06: Philbrook's Webflow calendar has NO time[datetime] —
+            # dates are plain text ("Jul 8, 2026" in .event-date, "9:30 am" in
+            # .event-time). The old ISO-only parse produced 18 undated events
+            # every run, all silently dropped by the week filter. Nested
+            # [class*='event'] matches also duplicated every card, so dedupe
+            # by (name, date).
             containers = (
-                soup.select("[class*='event-card']")
+                soup.select("[class*='events-item']")
+                or soup.select("[class*='event-card']")
                 or soup.select("[class*='eventCard']")
                 or soup.select("[class*='event']")
                 or soup.select("article")
             )
-            for container in containers[:30]:
-                name_el = container.select_one("h1, h2, h3, h4, [class*='title']")
+            seen = set()
+            for container in containers[:60]:
+                name_el = container.select_one(
+                    "[class*='event-card-title'], h1, h2, h3, h4, [class*='title']")
                 if not name_el:
                     continue
                 name = name_el.get_text(strip=True)
@@ -1046,10 +1226,24 @@ class PhilbrookMuseumScraper(PlaywrightBaseScraper):
                 if link_el:
                     href = link_el["href"]
                     url = href if href.startswith("http") else self.BASE_URL + href
-                time_el = container.select_one("time[datetime]")
                 date_str, time_str = "", ""
+                time_el = container.select_one("time[datetime]")
                 if time_el:
                     date_str, time_str = _parse_iso_datetime(time_el.get("datetime", ""))
+                if not date_str:
+                    date_el = container.select_one("[class*='event-date']")
+                    if date_el:
+                        parsed = self.parse_date_flexible(date_el.get_text(strip=True))
+                        if parsed and re.match(r"\d{4}-\d{2}-\d{2}", parsed):
+                            date_str = parsed[:10]
+                if not time_str:
+                    t_el = container.select_one("[class*='event-time']")
+                    if t_el:
+                        time_str = t_el.get_text(strip=True)[:20]
+                key = (name.lower(), date_str)
+                if key in seen:
+                    continue
+                seen.add(key)
                 desc_el = container.select_one("p, [class*='description']")
                 description = desc_el.get_text(strip=True)[:500] if desc_el else ""
                 events.append(self.make_event(
