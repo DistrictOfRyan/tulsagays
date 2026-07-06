@@ -194,6 +194,44 @@ def _module_level_checks(full: bool) -> list:
     return [_probe_module(n, f) for n, f in mods]
 
 
+# MUST-SCRAPE sources (William 2026-07-06: "100% must be scraped sites").
+# A zero-yield week from one of these is a broken community commitment, not a
+# soft degradation. Rows appear in every health report; the regression diff
+# alerts on the OK->DEAD flip (and stays quiet while a known outage persists).
+MUST_SOURCES = {
+    "okeq": "OKEQ / Equality Center calendar (their events were promised highlight)",
+    "slack_browser": "TulsaRemote Slack #events-local + #unite-lgbtq-plus",
+    "ybr_ig":        "YBR - @imvalpal Instagram is their only calendar",
+}
+
+
+def _check_must_sources() -> list:
+    """Current week's scrape must contain >=1 event from every must-source."""
+    import config as _cfg
+    wk = _cfg.current_week_key()
+    f = ROOT / "data" / "events" / f"{wk}_all.json"
+    rows = []
+    try:
+        raw = json.loads(f.read_text(encoding="utf-8"))
+        evs = raw.get("events", raw) if isinstance(raw, dict) else raw
+        counts = {}
+        for e in evs:
+            s = e.get("source", "?")
+            counts[s] = counts.get(s, 0) + 1
+        for s, why in MUST_SOURCES.items():
+            n = counts.get(s, 0)
+            rows.append({
+                "source": f"must:{s}", "raw": n, "dated": n,
+                "status": OK if n else DEAD,
+                "error": "" if n else f"0 events in {wk} from MUST-scrape source ({why})",
+                "url": "",
+            })
+    except Exception as e:
+        rows.append({"source": "must:_check", "raw": 0, "dated": 0, "status": DEAD,
+                     "error": f"could not read week file: {e}", "url": ""})
+    return rows
+
+
 def run(full: bool = False, quick: bool = False) -> list:
     results = []
     results += _probe_community_groups()
@@ -201,6 +239,7 @@ def run(full: bool = False, quick: bool = False) -> list:
     results += _probe_rendered_sites()
     if not quick:
         results += _module_level_checks(full)
+    results += _check_must_sources()
     return results
 
 

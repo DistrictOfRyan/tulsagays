@@ -1689,8 +1689,14 @@ class GoogleEventsScraper(PlaywrightBaseScraper):
     """
     source_name = "google_events"
     PRIORITY = 2
+    # English + Spanish: the machine can sit in a Spanish-locale region (PV move
+    # 2026-06), and Google then serves the es-MX UI. hl/gl params below force
+    # English, but the Spanish terms stay as defense in depth (W28 shipped
+    # "Obtener entradas" / "mié" as venues on 41 events).
     _JUNK_HEADINGS = {"all events", "events filters list", "details", "more events",
-                      "saved", "feedback", "learn more", "map"}
+                      "saved", "feedback", "learn more", "map",
+                      "todos los eventos", "detalles", "más eventos", "guardado",
+                      "comentarios", "más información", "mapa"}
 
     def scrape(self) -> List[Dict]:
         from bs4 import BeautifulSoup
@@ -1704,7 +1710,11 @@ class GoogleEventsScraper(PlaywrightBaseScraper):
             r'(\d{1,2}(?::\d{2})?\s*(?:[–\-]\s*\d{1,2}(?::\d{2})?)?\s*[AP]M)', _re.I)
         for d in week:
             q = f"events in tulsa {d.strftime('%B')} {d.day} {d.year}"
-            url = f"https://www.google.com/search?q={q.replace(' ','+')}&ibp=htl;events"
+            # hl/gl pin the UI to English/US regardless of the machine's location
+            # (Puerto Vallarta IPs get es-MX otherwise and the button labels
+            # "Obtener entradas"/"Detalles" leak into the venue field).
+            url = (f"https://www.google.com/search?q={q.replace(' ','+')}"
+                   f"&ibp=htl;events&hl=en&gl=US&pws=0")
             html = self.fetch_page_js(url, wait_for_selector=None, timeout=30000)
             if not html:
                 continue
@@ -1727,16 +1737,38 @@ class GoogleEventsScraper(PlaywrightBaseScraper):
                 tmatch = time_rx.search(ctext)
                 if tmatch:
                     tm = tmatch.group(1).replace("–", "-").upper().replace(" ", " ")
-                # venue: a line that isn't the name/date/city/time
+                # Weekday off-by-one guard: Google's panel for one day can carry
+                # cards from adjacent days; every heading used to get stamped with
+                # the QUERY date, shifting events onto the wrong weekday. If the
+                # card itself names a date and it isn't the query day, skip it -
+                # the correct day's query picks it up (dedup key is name+date).
+                _date_rx = _re.compile(
+                    r'\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+(\d{1,2})\b', _re.I)
+                dm = _date_rx.search(ctext)
+                if dm:
+                    _mon = ("jan feb mar apr may jun jul aug sep oct nov dec"
+                            .split().index(dm.group(1).lower()[:3]) + 1)
+                    if (_mon, int(dm.group(2))) != (d.month, d.day):
+                        continue
+                # venue: a line that isn't the name/date/city/time.
+                # Junk lists carry English + Spanish (es-MX UI leak, W28).
                 venue = ""
                 _btn = ("get tickets", "details", "directions", "save event", "save",
                         "more sources", "more", "official site", "tickets", "share",
-                        "see web results", "interested", "going", "from $")
+                        "see web results", "interested", "going", "from $",
+                        "obtener entradas", "entradas", "detalles", "cómo llegar",
+                        "como llegar", "guardar", "compartir", "sitio oficial",
+                        "más opciones", "me interesa", "asistiré", "desde $")
+                # Spanish weekday tokens need a boundary right after (bare 'mar'
+                # would block "Marshall Brewing"); English keeps legacy prefix match.
+                _wday_rx = _re.compile(
+                    r'^(mon|tue|wed|thu|fri|sat|sun|tomorrow|today|\d'
+                    r'|(?:lun|mar|mi[eé]|jue|vie|s[aá]b|dom|hoy|ma[ñn]ana)(?:[\s,.:]|$))', _re.I)
                 for line in [x.strip() for x in ctext.split("\n") if x.strip()]:
                     low = line.lower()
                     if (line != nm and "tulsa, ok" not in low and not time_rx.fullmatch(line)
                             and not any(b == low or b in low for b in _btn)
-                            and not _re.match(r'^(mon|tue|wed|thu|fri|sat|sun|tomorrow|today|\d)', low)
+                            and not _wday_rx.match(low)
                             and 4 < len(line) < 60 and any(c.isalpha() for c in line)):
                         venue = line
                         break

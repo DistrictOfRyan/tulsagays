@@ -52,6 +52,7 @@ _SKIP_NAME_FRAGMENTS = {
     "support group",
     "sound bath",
     "health clinic", "okeq health", "okeq senior",
+    "(cancelled",
     "legal aid", "legal services", "legal clinic", "legal help", "fair housing",
     "correction clinic", "name & gender", "name and gender", "expungement",
     "know your rights", "fafsa", "wellness fair", "health fair",

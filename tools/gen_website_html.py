@@ -89,12 +89,27 @@ _TWO_FL = [
     'bingo', 'scavenger', 'sketch', 'craft', 'workshop', 'coffee',
 ]
 
+# Substring keyword matching lies on these: an automotive "drag race" is not a
+# drag show, "Sesame Street: The Musical" is not queer theatre, and car-stereo /
+# gymnastics comps kept rendering 5 flamingos ("Super gay") on W28. Any hit here
+# floors the score BEFORE keyword scoring runs (William 2026-07-06).
+_NOT_GAY_GUARD = [
+    'drag racing', 'drag races', 'drag strip', 'dragway', 'raceway', 'nhra',
+    'street outlaws', 'motocross', 'monster truck', 'car show', 'car meet',
+    'cars & coffee', 'cars and coffee', 'car stereo', 'car audio', 'stereo comp',
+    'sesame street', 'paw patrol', 'disney on ice', 'bluey', 'princess party',
+    'gymnastics', 'cheer competition', 'cheerleading', 'wrestling',
+    'rock mineral society', 'gun show', 'home & garden show',
+]
+
 def _flamingo_score(ev) -> int:
     name   = ev.get('name', '').lower()
     venue  = ev.get('venue', '').lower()   # raw, before address cleaning
     source = ev.get('source', '')
     content = f"{name} {venue}"
 
+    if any(kw in content for kw in _NOT_GAY_GUARD):
+        return 1
     if any(kw in content for kw in _FIVE_FL):
         return 5
     if any(bar in venue for bar in _GAY_BAR_VENUES):
@@ -305,7 +320,10 @@ def _dedup_events(evs):
 
 for day in DAYS:
     events_by_day[day] = _dedup_events(events_by_day[day])
-    events_by_day[day].sort(key=time_sort_key)
+    # Cool events on top (William 2026-07-06): rank each day by gay score first,
+    # then time, so a drag show never sits below a rock-mineral show. The pink
+    # TOP PICK box on slides has its own ranking; this orders the WEBSITE list.
+    events_by_day[day].sort(key=lambda e: (-_flamingo_score(e), time_sort_key(e)))
 
 # Find EOTW — use canonical eotw_selector.py (the single source of truth for all EOTW rules).
 # NEVER duplicate or override those rules here. eotw_selector enforces:

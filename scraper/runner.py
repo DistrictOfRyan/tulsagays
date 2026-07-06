@@ -103,6 +103,14 @@ _GENERIC_NON_LGBTQ_BLOCKLIST = [
     "football game", "football season", "nfl ", " nfl", "nba ", " nba",
     "mlb ", " mlb", "nhl ", " nhl", "college football", "college basketball",
     "nascar", "ufc ", " ufc", "mma fight",
+    # Motorsport "drag" + kids programming + hobby comps (William 2026-07-06:
+    # google_events flooded Sesame Street / gymnastics / car-stereo comps in,
+    # and automotive drag races masqueraded as drag shows).
+    "drag racing", "drag races", "drag strip", "dragway", "raceway",
+    "street outlaws", "motocross", "monster truck", "car stereo", "car audio",
+    "sesame street", "paw patrol", "disney on ice", "bluey live",
+    "gymnastics meet", "gymnastics championship", "cheer competition",
+    "gun show", "rock mineral society",
     # "Trans-Miss" = Trans-Mississippi Golf Association, a straight amateur golf
     # tournament the word-boundary "trans" matcher misreads as LGBTQ (W28 made it
     # Tuesday's boxed hero). Mainstream golf championships are off-topic anyway.
@@ -325,6 +333,7 @@ _NEVER_FEATURE_SIGNALS = (
     "sunday service", "sunday services", "open meditation", "drop-in",
     # Services are not events (William 2026-07-06: W28 boxed "Fair Housing:
     # Legal Aid Services" + "Name & Gender Correction Clinic" as day heroes).
+    "(cancelled", "cancelled)",  # cancelled events stay listed, never featured
     "legal aid", "legal services", "legal clinic", "legal help", "fair housing",
     "correction clinic", "name & gender", "name and gender", "expungement",
     "know your rights", "fafsa", "wellness fair", "health fair",
