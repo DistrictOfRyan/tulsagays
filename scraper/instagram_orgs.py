@@ -391,13 +391,29 @@ class InstagramOrgScraper(BaseScraper):
             )
             return None
 
+    def _fetch_via_web(self) -> List[Dict]:
+        """Tier 3 (2026-07-06): logged-in WEB session in the automation Chrome
+        profile. The only tier that reaches personal accounts (@tulsaybr,
+        @imvalpal) now that the public endpoint 429s and the instagrapi login is
+        bloks-walled. One-time human setup: tools/ig_profile_login.py."""
+        try:
+            from scraper import instagram_web
+            return instagram_web.posts_for(self.source_name, self.usernames)
+        except Exception as e:
+            logger.warning("[%s] web-session tier failed: %s %s",
+                           self.source_name, type(e).__name__, str(e)[:120])
+            return []
+
     def scrape(self) -> List[Dict]:
-        # Auth-free public endpoint first; authenticated session only as a fallback.
+        # Auth-free public endpoint first; authenticated session, then the
+        # logged-in web-session browser tier as the last resort.
         posts = self._fetch_public()
         if not posts:
             posts = self._fetch_via_session()
         if not posts:
-            logger.info("[%s] No captioned posts from either path — 0 events.",
+            posts = self._fetch_via_web()
+        if not posts:
+            logger.info("[%s] No captioned posts from any path — 0 events.",
                         self.source_name)
             return []
 
@@ -414,12 +430,9 @@ class InstagramOrgScraper(BaseScraper):
     # ── LLM extraction (preferred) ──────────────────────────────────────────────
     def _extract_with_llm(self, posts: List[Dict]) -> Optional[List[Dict]]:
         """Return events parsed by Claude, or None if no key / call failed."""
-        if not config.ANTHROPIC_API_KEY:
-            return None
-        try:
-            from anthropic import Anthropic
-        except ImportError:
-            return None
+        import os
+        if not config.ANTHROPIC_API_KEY and not os.environ.get("WORKER_API_KEY"):
+            return None  # no LLM available at all -> regex fallback
 
         monday, sunday = self._week_range()
         today = datetime.now().strftime("%Y-%m-%d (%A)")
@@ -450,18 +463,35 @@ class InstagramOrgScraper(BaseScraper):
             "posts. Return a JSON object: {\"events\": [ ... ]}. No prose.\n\n"
             f"CAPTIONS:\n{captions_text}"
         )
-        try:
-            client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
-            msg = client.messages.create(
-                model="claude-sonnet-4-5",
-                max_tokens=1500,
-                system=system,
-                messages=[{"role": "user", "content": user}],
-            )
-            raw = msg.content[0].text.strip()
-        except Exception as e:
-            logger.warning("[%s] LLM extraction failed (%s) — using regex fallback",
-                           self.source_name, type(e).__name__)
+        raw = None
+        if config.ANTHROPIC_API_KEY:
+            try:
+                from anthropic import Anthropic
+                client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
+                msg = client.messages.create(
+                    model="claude-sonnet-4-5",
+                    max_tokens=1500,
+                    system=system,
+                    messages=[{"role": "user", "content": user}],
+                )
+                raw = msg.content[0].text.strip()
+            except Exception as e:
+                logger.warning("[%s] Anthropic extraction failed (%s) — trying DeepSeek",
+                               self.source_name, type(e).__name__)
+        if raw is None:
+            # DeepSeek worker fallback (2026-07-06): SITES_ANTHROPIC_KEY was never
+            # set, so extraction silently ran regex-only forever. Structured JSON
+            # extraction is squarely cheap-worker work; sanity + preflight gates
+            # guard quality downstream. (Key dead as of 2026-07-06, gap G35 —
+            # kept wired so it self-heals when William renews it.)
+            raw = self._deepseek_complete(system, user)
+        if raw is None:
+            # claude CLI fallback: runs on the subscription auth the fleet already
+            # uses; haiku + hard timeout so a hang can never wedge the scrape.
+            raw = self._claude_cli_complete(system, user)
+        if raw is None:
+            logger.warning("[%s] no LLM produced output — using regex fallback",
+                           self.source_name)
             return None
 
         # Tolerate code fences / stray prose around the JSON.
@@ -500,6 +530,99 @@ class InstagramOrgScraper(BaseScraper):
             ))
         logger.info("[%s] LLM extracted %d dated events", self.source_name, len(events))
         return events
+
+    @staticmethod
+    def _deepseek_complete(system: str, user: str):
+        """OpenAI-compatible DeepSeek call using the standing WORKER_API_KEY."""
+        import os
+        import urllib.request
+        key = os.environ.get("WORKER_API_KEY", "")
+        if not key:
+            return None
+        body = json.dumps({
+            "model": "deepseek-chat",
+            "max_tokens": 1500,
+            "messages": [{"role": "system", "content": system},
+                         {"role": "user", "content": user}],
+        }).encode("utf-8")
+        req = urllib.request.Request(
+            "https://api.deepseek.com/v1/chat/completions", data=body,
+            headers={"Content-Type": "application/json",
+                     "Authorization": f"Bearer {key}"},
+            method="POST")
+        try:
+            with urllib.request.urlopen(req, timeout=90) as r:
+                j = json.loads(r.read().decode("utf-8"))
+            return (j["choices"][0]["message"]["content"] or "").strip()
+        except Exception as e:
+            logger.warning("[deepseek] extraction call failed: %s %s",
+                           type(e).__name__, str(e)[:120])
+            return None
+
+    @staticmethod
+    def _claude_cli_complete(system: str, user: str):
+        """claude -p (haiku) with a hard timeout. Resolved by absolute path so it
+        works under the pythonw scheduled runner too (the 2026-05-25 'claude CLI
+        not found in PATH' failure mode)."""
+        import os
+        import shutil
+        import subprocess
+        exe = shutil.which("claude")
+        if not exe:
+            for cand in (os.path.expanduser("~/.local/bin/claude"),
+                         os.path.expanduser("~/.local/bin/claude.exe"),
+                         os.path.expanduser("~/AppData/Roaming/npm/claude.cmd")):
+                if os.path.exists(cand):
+                    exe = cand
+                    break
+        if not exe:
+            logger.warning("[claude-cli] not found — skipping CLI extraction tier")
+            return None
+        # Dual-token failover, same mechanism as the runner's claude-tier tasks:
+        # the primary account token 401s as of 2026-07 and the fleet succeeds via
+        # the secondary ("[account: personal, FALLBACK]" in runner.log). Try the
+        # CLI's own auth first, then each stored token.
+        tokens = [None]
+        try:
+            vals = {}
+            for line in (Path.home() / ".credentials" / "claude_tokens.env").read_text(
+                    encoding="utf-8").splitlines():
+                if "=" in line and not line.strip().startswith("#"):
+                    k, v = line.split("=", 1)
+                    vals[k.strip()] = v.strip()
+            for key in ("CLAUDE_TOKEN_PRIMARY", "CLAUDE_TOKEN_SECONDARY"):
+                if vals.get(key):
+                    tokens.append(vals[key])
+        except Exception:
+            pass
+        for tok in tokens:
+            try:
+                env = os.environ.copy()
+                env.update({"PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8"})
+                # Nested-session vars make claude -p 401 when invoked from inside a
+                # live Claude Code session; strip them, then inject the token.
+                for k in list(env):
+                    if k.startswith("CLAUDE_CODE_") or k in ("CLAUDECODE", "CLAUDE_EFFORT",
+                                                              "CLAUDE_CHROME_PERMISSION_MODE"):
+                        env.pop(k, None)
+                if tok:
+                    env["CLAUDE_CODE_OAUTH_TOKEN"] = tok
+                r = subprocess.run(
+                    [exe, "-p", "--model", "claude-haiku-4-5-20251001"],
+                    input=system + "\n\n" + user,
+                    capture_output=True, text=True, encoding="utf-8",
+                    errors="replace", timeout=180, env=env)
+                out = (r.stdout or "").strip()
+                if r.returncode == 0 and out and "Failed to authenticate" not in out:
+                    return out
+                logger.warning("[claude-cli] rc=%s (%s): %s — trying next token",
+                               r.returncode, "stored-token" if tok else "default-auth",
+                               (out or r.stderr or "")[:100])
+            except subprocess.TimeoutExpired:
+                logger.warning("[claude-cli] timed out after 180s — trying next token")
+            except Exception as e:
+                logger.warning("[claude-cli] failed: %s %s", type(e).__name__, str(e)[:120])
+        return None
 
     # ── relative-date resolution (works WITHOUT the LLM) ────────────────────────
     _WEEKDAYS = {"monday": 0, "mon": 0, "tuesday": 1, "tue": 1, "tues": 1,
