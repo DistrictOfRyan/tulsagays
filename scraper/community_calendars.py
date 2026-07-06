@@ -383,8 +383,15 @@ class CommunityCalendarScraper(BaseScraper):
     # ── Gilcrease UnCrease ─────────────────────────────────────────────────
 
     def _scrape_gilcrease(self) -> List[Dict]:
-        """Scrape Gilcrease Museum's UnCrease series — free community arts program,
-        March-May 2026, local artists and performers, some LGBTQ-aligned events."""
+        """RETIRED 2026-07-06. The UnCrease series ended May 2026 (URL is 404)
+        and gilcrease.org/events is a React shell this static fetcher cannot
+        parse — this path produced 0 events for weeks. Gilcrease is now scraped
+        by rendered_sites (Playwright spec 'Gilcrease Museum' reading
+        time[datetime] blocks). Kept as a stub so the module structure and any
+        callers stay stable."""
+        return []
+
+    def _scrape_gilcrease_RETIRED(self) -> List[Dict]:
         url = "https://my.gilcrease.org/uncrease"
         soup = self.fetch_page(url)
         if not soup:

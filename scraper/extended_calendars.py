@@ -95,7 +95,8 @@ SITES: List[Tuple[str, str, str, bool]] = [
     ("https://philbrook.org/calendar/", "Philbrook Museum", "museum", False),
     ("https://woodyguthriecenter.org/events/", "Woody Guthrie Center", "museum", False),
     ("https://www.greenwoodculturalcenter.com/events", "Greenwood Cultural Center", "museum", False),
-    ("https://www.1921tulsamassacre.org/events", "1921 Tulsa Race Massacre Memorial", "museum", False),
+    # 2026-07-06: cert only valid for the apex host, www. fails TLS
+    ("https://1921tulsamassacre.org/events", "1921 Tulsa Race Massacre Memorial", "museum", False),
     ("https://www.tulsazoo.org/events/", "Tulsa Zoo", "museum", False),
     ("https://www.gatheringplace.org/parkcalendar/", "Gathering Place", "museum", False),
     ("https://www.tulsagardencenter.com/events/", "Tulsa Garden Center", "museum", False),
@@ -129,7 +130,10 @@ SITES: List[Tuple[str, str, str, bool]] = [
     ("https://www.tulsacc.edu/campus-life/events/", "Tulsa Community College", "university", False),
 
     # LGBTQ+ SPECIFIC (return ALL events, no keyword filter)
-    ("https://tulsapride.org/events/", "Tulsa Pride", "lgbtq", True),
+    # 2026-07-06: tulsapride.org rebuilt (Astra WP); /events/ is now 404, so
+    # point at the homepage — announcements surface there until a new events
+    # path exists.
+    ("https://tulsapride.org/", "Tulsa Pride", "lgbtq", True),
     # Goff Center / Goff Fest — celebrates gay architect Bruce Goff's legacy;
     # programming includes an Annual Pride Celebration. Plain-HTML events page,
     # reliable backup to the @goff_fest Instagram scraper.
@@ -137,7 +141,11 @@ SITES: List[Tuple[str, str, str, bool]] = [
 
     # TICKETING / AGGREGATORS
     ("https://seatgeek.com/tulsa-oklahoma-tickets", "SeatGeek Tulsa", "ticketing", False),
-    ("https://www.meetup.com/find/?allMeetups=true&radius=25&userFreeform=Tulsa%2C+OK", "Meetup Tulsa", "ticketing", False),
+    # 2026-07-06: Meetup REMOVED from this list. The find-page URL ignores
+    # userFreeform and geolocates by IP — from this machine (Mexico) it served
+    # CDMX events that passed the LGBTQ filter labeled as Tulsa. Meetup is
+    # covered by eventbrite_meetup.MeetupScraper, which pins
+    # location=us--ok--tulsa explicitly. Never re-add an IP-geolocated URL here.
 
     # NEIGHBORHOOD / NICHE
     ("https://www.brooksidetulsa.com/events/", "Brookside Tulsa", "neighborhood", False),

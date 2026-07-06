@@ -1,635 +1,839 @@
 [
-  {
-    "name": "TravelOK",
-    "url": "https://travelok.com/listings/view_feature/category.lodging/city.tulsa",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "note": "URL is a LODGING directory (hotels/motels), not an events page. Rendered 132KB but contains zero event listings and zero date text on the page (verified: no Month-Day patterns, only nav dropdown items). No events to extract here regardless of strategy."
+ {
+  "name": "TravelOK",
+  "url": "https://travelok.com/listings/view_feature/category.lodging/city.tulsa",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "note": "URL is a LODGING directory (hotels/motels), not an events page. Rendered 132KB but contains zero event listings and zero date text on the page (verified: no Month-Day patterns, only nav dropdown items). No events to extract here regardless of strategy."
+ },
+ {
+  "name": "Green Country Oklahoma",
+  "url": "https://www.greencountryok.com/cities/tulsa/festivals-events-in-tulsa",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "DEAD (re-verified 2026-07-06): revival attempted after the get_text separator fix, but the Playwright-rendered page now yields 0 .item blocks in [class*='events_layout_list'] (Simpleview widget changed or events moved). RSS at /event/rss/ exists but framework has no RSS strategy. Low value (tourism aggregator) - venues covered directly.",
+  "container": "[class*='events_layout_list'] .item",
+  "title": ".title",
+  "date": ".date",
+  "date_format": "auto"
+ },
+ {
+  "name": "TulsaGo",
+  "url": "https://tulsago.com/experience",
+  "strategy": "json_ld",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "sample": {
+   "name": "Third Thursday Jazz Featuring the Booker Gillespie Trio",
+   "date": "2026-06-18"
   },
-  {
-    "name": "Green Country Oklahoma",
-    "url": "https://www.greencountryok.com/cities/tulsa/festivals-events-in-tulsa",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "Simpleview events plugin DOES render 12 .item blocks (container '[class*=events_layout_list] .item', title '.title'), BUT the date is split into separate '.month' (Jun) and '.day' (18) spans with NO year. The framework's _extract_dom uses get_text(strip=True) which concatenates to 'Jun18' -> parse_date_flexible fails -> 0 dated events (verified with framework-exact replication). get_text() WITHOUT strip yields 'Jun 18' which parses, but the framework hardcodes strip=True so this is not extractable as-is. An RSS feed exists at /event/rss/ (40KB, valid) but the framework's 'ical' strategy parses VEVENT/.ics only, not RSS XML, and /event/ical/ is 404. Revivable only with a framework change (RSS strategy, or a get_text separator, or month+day+year composition)."
+  "note": "21 schema.org Event JSON-LD blocks, all with startDate (ISO YYYY-MM-DD). Verified end-to-end through the framework's _extract_json_ld_from_soup: 21/21 events dated. Best/most reliable case in this batch."
+ },
+ {
+  "name": "TulsaKids Magazine",
+  "url": "https://www.tulsakids.com/calendar/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "Events live entirely inside a cross-origin Time.ly iframe (https://calendar.time.ly/vt8kz7g6/). Playwright page.content() captures only the parent document, which has NO event text -- just the iframe embed shell. The framework renders the parent URL only and cannot reach iframe content. Tried Time.ly public API guesses (api.time.ly/.../calendars/vt8kz7g6/events and calendar.time.ly/api/...) -- both 404, no verified feed. Not extractable without a verified Time.ly feed URL or iframe-aware rendering."
+ },
+ {
+  "name": "City of Tulsa",
+  "url": "https://www.cityoftulsa.org/government/departments/parks-recreation/events/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "Rendered 34KB but the page body is pure site chrome/navigation (3.8KB text, all menus). Zero <time> tags, zero event/calendar/card class names, no event listings present in the rendered DOM. The actual events are not loaded into this URL (likely a separate widget/portal). Not extractable as-is."
+ },
+ {
+  "name": "Philbrook Museum",
+  "url": "https://philbrook.org/calendar/",
+  "strategy": "dom",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "container": ".events-item",
+  "title": ".event-card-title",
+  "date": ".event-date",
+  "date_format": "%b %d, %Y",
+  "link": "a.button",
+  "link_attr": "href",
+  "sample": {
+   "name": "Storytime at Philbrook",
+   "date": "2026-06-18"
   },
-  {
-    "name": "TulsaGo",
-    "url": "https://tulsago.com/experience",
-    "strategy": "json_ld",
-    "enabled": true,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "sample": {
-      "name": "Third Thursday Jazz Featuring the Booker Gillespie Trio",
-      "date": "2026-06-18"
-    },
-    "note": "21 schema.org Event JSON-LD blocks, all with startDate (ISO YYYY-MM-DD). Verified end-to-end through the framework's _extract_json_ld_from_soup: 21/21 events dated. Best/most reliable case in this batch."
+  "note": "Clean Webflow CMS event cards. 9 .events-item blocks each with .event-card-title and .event-date ('Jun 18, 2026' -> strptime %b %d, %Y). Verified end-to-end through the framework's _extract_dom: 9/9 events dated. Link points to /events/<slug> detail page."
+ },
+ {
+  "name": "Greenwood Cultural Center",
+  "url": "https://www.greenwoodculturalcenter.com/events",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "note": "DOMAIN DEAD. Returns a Wix error page: 'Looks like this domain isn't connected to a website yet' (5.8KB stub, 322 chars of text). The greenwoodculturalcenter.com domain is not connected to any live Wix site. Nothing to scrape."
+ },
+ {
+  "name": "1921 Tulsa Race Massacre Memorial",
+  "url": "https://www.1921tulsamassacre.org/events",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "note": "Domain parked/expired: serves a 404 stub that redirects to searchvity.com ad page (also ERR_CERT_DATE_INVALID). No event content. Re-check if the org relaunches a site."
+ },
+ {
+  "name": "Tulsa Zoo",
+  "url": "https://www.tulsazoo.org/events/",
+  "strategy": "dom",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "container": ".text-content",
+  "title": "h3",
+  "date": "h4",
+  "date_format": "%B %d, %Y",
+  "link": "a",
+  "link_attr": "href",
+  "sample": {
+   "name": "Zoo Nights",
+   "date": "2026-06-12"
   },
-  {
-    "name": "TulsaKids Magazine",
-    "url": "https://www.tulsakids.com/calendar/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "Events live entirely inside a cross-origin Time.ly iframe (https://calendar.time.ly/vt8kz7g6/). Playwright page.content() captures only the parent document, which has NO event text -- just the iframe embed shell. The framework renders the parent URL only and cannot reach iframe content. Tried Time.ly public API guesses (api.time.ly/.../calendars/vt8kz7g6/events and calendar.time.ly/api/...) -- both 404, no verified feed. Not extractable without a verified Time.ly feed URL or iframe-aware rendering."
+  "note": "Server-rendered event cards in .text-content (title h3, date in first h4). Some cards use month-only ('October 2026') or range dates which won't yield a single day and are skipped; well-formed 'Month DD, YYYY' cards extract cleanly. 4 dated events verified against saved HTML."
+ },
+ {
+  "name": "Gathering Place",
+  "url": "https://www.gatheringplace.org/parkcalendar/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 7000,
+  "note": "SpeakCDN/SiteWrench JS calendar widget. DOM renders only the view controls (Calendar/List toggle, date pickers), never dated event items, even after 7s. No JSON-LD, no <time>, no .ics. Events load from a tokened JSON API: api.sitewrench.com/pageparts/calendars/305818/events?token=<page-token>&siteid=2511&start=YYYY-MM-DD (returns {date:{Events:[{StartDateTimeInTimeZone,...}]}}). The framework has no JSON-API strategy and the token rotates, so marked dead. FUTURE: add an 'api' strategy that scrapes the token from the page then hits this endpoint."
+ },
+ {
+  "name": "Tulsa Garden Center",
+  "url": "https://www.tulsagardencenter.com/events/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "note": "/events/ returns HTTP 404 with an empty <body></body>. No event content served. Re-check root domain for a relocated calendar."
+ },
+ {
+  "name": "Oklahoma Aquarium",
+  "url": "https://www.okaquarium.org/31/Events",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "Original /events/ URL is HTTP 404; the real events page is /31/Events (status 200). But that page has no structured event list: no JSON-LD, no <time>, no event-card classes, no .ics. Event dates appear only inside free-text news paragraphs and mega-menu blurbs ('Saturday, April 8', 'October 18 & 19, 25 & 26', 'June 16, 2026 at 1:00 PM') with no consistent container/title/date selectors. No reliable DOM target, so marked dead rather than ship guessed selectors."
+ },
+ {
+  "name": "Discovery Lab",
+  "url": "https://discoverylab.org/events/",
+  "strategy": "dom",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "container": ".event-card",
+  "title": "h3",
+  "date": ".event-card__info__header p",
+  "date_format": "auto",
+  "link": ".event-card__link",
+  "link_attr": "href",
+  "sample": {
+   "name": "Member Movie Night at Discovery Lab",
+   "date": "2026-06-19"
   },
-  {
-    "name": "City of Tulsa",
-    "url": "https://www.cityoftulsa.org/government/departments/parks-recreation/events/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "Rendered 34KB but the page body is pure site chrome/navigation (3.8KB text, all menus). Zero <time> tags, zero event/calendar/card class names, no event listings present in the rendered DOM. The actual events are not loaded into this URL (likely a separate widget/portal). Not extractable as-is."
+  "note": "Clean repeating .event-card blocks. Title in h3; full date in .event-card__info__header p ('June 19, 2026 @ 6:00 PM - 8:00 PM'). The '@ time' suffix needed the new noisy-date fallback added to rendered_sites._parse_date (extracts 'Month DD, YYYY' substring). 20 dated events verified against saved HTML."
+ },
+ {
+  "name": "101 Archer",
+  "url": "https://101archer.com/events/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "note": "DNS non-existent domain (ERR_NAME_NOT_RESOLVED; nslookup = NXDOMAIN). Site is gone."
+ },
+ {
+  "name": "Tulsa PAC",
+  "url": "https://www.tulsapac.com/events/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "RE-CHECKED 2026-07-06 (still dead): Squarespace shell that client-side-loads its calendar from Ticketmaster Account Manager (am.ticketmaster.com/tulsapac). Fresh probes: /events?format=json returns a page-type collection with itemCount=0, ?format=ical returns the HTML page not an .ics, ?format=rss returns 400, /api is 404, and the 356KB fetched events page contains ZERO date-bearing elements (only the Ticketmaster embed). Not extractable without the Ticketmaster Account Manager API. Original dead verdict stands."
+ },
+ {
+  "name": "BOK Center",
+  "url": "https://www.bokcenter.com/events",
+  "strategy": "dom",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "container": ".eventItem",
+  "title": "h3",
+  "date": "[class*='date']",
+  "date_format": "auto",
+  "link": "a",
+  "link_attr": "href",
+  "sample": {
+   "name": "Carin Leon",
+   "date": "2026-07-14"
   },
-  {
-    "name": "Philbrook Museum",
-    "url": "https://philbrook.org/calendar/",
-    "strategy": "dom",
-    "enabled": true,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "container": ".events-item",
-    "title": ".event-card-title",
-    "date": ".event-date",
-    "date_format": "%b %d, %Y",
-    "link": "a.button",
-    "link_attr": "href",
-    "sample": {
-      "name": "Storytime at Philbrook",
-      "date": "2026-06-18"
-    },
-    "note": "Clean Webflow CMS event cards. 9 .events-item blocks each with .event-card-title and .event-date ('Jun 18, 2026' -> strptime %b %d, %Y). Verified end-to-end through the framework's _extract_dom: 9/9 events dated. Link points to /events/<slug> detail page."
+  "note": "FIXED 2026-07-06: Carbonhouse platform, .eventItem containers; needed the get_text separator fix in _extract_dom (m-date spans concatenated to 'July11'). Verified framework-exact: 6/6 dated from initial HTML (more load via XHR - initial page is enough for near-term events)."
+ },
+ {
+  "name": "Cain's Ballroom",
+  "url": "https://cainsballroom.com/events/",
+  "strategy": "dom",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "container": ".rhpSingleEvent",
+  "title": "[class*='rhp-event__title']",
+  "date": "[class*='eventDateList']",
+  "date_format": "auto",
+  "link": "a.url",
+  "link_attr": "href",
+  "sample": {
+   "name": "Cody Canada & The Departed",
+   "date": "2026-07-10"
   },
-  {
-    "name": "Greenwood Cultural Center",
-    "url": "https://www.greenwoodculturalcenter.com/events",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "note": "DOMAIN DEAD. Returns a Wix error page: 'Looks like this domain isn't connected to a website yet' (5.8KB stub, 322 chars of text). The greenwoodculturalcenter.com domain is not connected to any live Wix site. Nothing to scrape."
+  "note": "FIXED 2026-07-06: site moved to Rockhouse Partners markup; old selectors matched ~1 event. Static HTML carries all events; verified framework-exact _extract_dom: 38/38 dated."
+ },
+ {
+  "name": "Tulsa Theater",
+  "url": "https://tulsatheater.com/events/",
+  "strategy": "dom",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "container": ".rhpSingleEvent",
+  "title": "[class*='rhp-event__title']",
+  "date": "[class*='eventDateList']",
+  "date_format": "auto",
+  "link": "a.url",
+  "link_attr": "href",
+  "sample": {
+   "name": "W.A.S.P. -1984 TO HEADLESS",
+   "date": "2026-09-17"
   },
-  {
-    "name": "1921 Tulsa Race Massacre Memorial",
-    "url": "https://www.1921tulsamassacre.org/events",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "note": "Domain parked/expired: serves a 404 stub that redirects to searchvity.com ad page (also ERR_CERT_DATE_INVALID). No event content. Re-check if the org relaunches a site."
+  "note": "FIXED 2026-07-06: same Rockhouse Partners platform as Cain's; verified framework-exact: 12/12 dated."
+ },
+ {
+  "name": "Hard Rock Live Tulsa",
+  "url": "https://www.hardrockcasinotulsa.com/entertainment/",
+  "strategy": "json_ld",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "sample": {
+   "name": "DJ | Sir Juice",
+   "date": "2026-06-18"
   },
-  {
-    "name": "Tulsa Zoo",
-    "url": "https://www.tulsazoo.org/events/",
-    "strategy": "dom",
-    "enabled": true,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "container": ".text-content",
-    "title": "h3",
-    "date": "h4",
-    "date_format": "%B %d, %Y",
-    "link": "a",
-    "link_attr": "href",
-    "sample": {
-      "name": "Zoo Nights",
-      "date": "2026-06-12"
-    },
-    "note": "Server-rendered event cards in .text-content (title h3, date in first h4). Some cards use month-only ('October 2026') or range dates which won't yield a single day and are skipped; well-formed 'Month DD, YYYY' cards extract cleanly. 4 dated events verified against saved HTML."
+  "note": "Next.js site. MusicEvent JSON-LD with ISO startDate is nested under the WebPage node's mainEntity array; _extract_json_ld_from_soup was extended to traverse mainEntity/itemListElement. Verified 85 dated events. DOM date ('Thu, Jun 18 | 8:00 PM') is messier; JSON-LD is the clean source."
+ },
+ {
+  "name": "River Spirit Casino",
+  "url": "https://www.riverspirittulsa.com/entertainment/",
+  "strategy": "dom",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "container": ".event-card",
+  "title": ".event-card__title",
+  "date": ".event-card__info",
+  "date_format": "auto",
+  "link": "a",
+  "link_attr": "href",
+  "sample": {
+   "name": "Flatland Cavalry",
+   "date": "2026-07-09"
   },
-  {
-    "name": "Gathering Place",
-    "url": "https://www.gatheringplace.org/parkcalendar/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 7000,
-    "note": "SpeakCDN/SiteWrench JS calendar widget. DOM renders only the view controls (Calendar/List toggle, date pickers), never dated event items, even after 7s. No JSON-LD, no <time>, no .ics. Events load from a tokened JSON API: api.sitewrench.com/pageparts/calendars/305818/events?token=<page-token>&siteid=2511&start=YYYY-MM-DD (returns {date:{Events:[{StartDateTimeInTimeZone,...}]}}). The framework has no JSON-API strategy and the token rotates, so marked dead. FUTURE: add an 'api' strategy that scrapes the token from the page then hits this endpoint."
+  "note": "The Cove concerts. .event-card__info concatenates month/day/time spans to 'Jul098PM'; parse_date_flexible fallback now pulls a leading 'Mon DD' token and infers current year. Verified 4 dated events (only the near-term Cove cards render statically)."
+ },
+ {
+  "name": "The Church Studio",
+  "url": "https://www.thechurchstudio.com/events/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "The Events Calendar (tribe) list view does not render in static/rendered HTML (0 .tribe-events-calendar-list__event even after scrolling). Only a stale 'past events' widget remains: 6 .tribe-event-date-start entries, 3 dated 2022 and 3 year-less past dates. No wp-json/tribe REST feed (404). Live ticketing is off-site on Universe.com per event. No reliable upcoming dated block to extract."
+ },
+ {
+  "name": "OSU-Tulsa",
+  "url": "https://events.tulsa.okstate.edu/",
+  "strategy": "json_ld",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "sample": {
+   "name": "Reach Higher Reconnect Event @ Drillers Night!",
+   "date": "2026-06-23"
   },
-  {
-    "name": "Tulsa Garden Center",
-    "url": "https://www.tulsagardencenter.com/events/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "note": "/events/ returns HTTP 404 with an empty <body></body>. No event content served. Re-check root domain for a relocated calendar."
+  "note": "Localist platform. The /calendar/ URL 301-redirects to events.tulsa.okstate.edu (use that final host to skip the redirect). Renders ~14 schema.org Event JSON-LD blocks with clean ISO startDate. Localist JSON API (events.tulsa.okstate.edu/api/2/events?days=60) 403s on plain fetch, so json_ld is the reliable path. Verified 14 events with real ISO dates against saved HTML."
+ },
+ {
+  "name": "Cox Business Convention Center",
+  "url": "https://www.coxcentertulsa.com/events/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "Hard-blocked by Cloudflare 'Just a moment...' interstitial challenge. Headless Playwright (UA spoofed, 8s wait) only ever returns the 27KB challenge-platform shell with zero event content. Needs a challenge-solver / residential proxy / cloudscraper to revive; not feasible with the current renderer."
+ },
+ {
+  "name": "Tulsa Drillers (ONEOK Field)",
+  "url": "https://www.milb.com/tulsa/schedule/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "domcontentloaded",
+  "wait_ms": 4000,
+  "note": "Low-priority sports. Renders ~5.6MB. Has ONE JSON-LD block with ~11 schema.org Event items (name + startDate), BUT startDate is non-ISO human text e.g. 'June 18, 2026 7:05 PM CDT'. The framework json_ld helper does naive startDate[:10] -> 'June 18, 2' (garbage). To wire this up the json_ld helper would need to run startDate through parse_date_flexible (which DOES handle 'June 18, 2026'). Until then, dead. Selector: single <script type=application/ld+json> array of @type:Event."
+ },
+ {
+  "name": "FC Tulsa",
+  "url": "https://www.fctulsa.com/schedule/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "Low-priority sports. 37 .GameContainer blocks render fine, but no clean title/date split: the only JSON-LD is WebPage/Organization (no Event). Date lives glued inside .gametime as 'Saturday March 7 9:00 PM' (no year; opponent name in separate .Opta-TeamName). No single selector yields a clean event-name + a separately-parseable date, so the generic dom strategy can't produce {name,date} pairs. Dead."
+ },
+ {
+  "name": "Tulsa Oilers",
+  "url": "https://www.tulsaoilers.com/schedule/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "domcontentloaded",
+  "wait_ms": 4000,
+  "note": "Low-priority sports. JSON-LD is only @type:SportsTeam (no Event). 35 time[datetime] elements exist but they are a calendar-grid day picker (text is just '18'), not games. The 20 real games are in 'group/card' blocks as plain text e.g. 'Saturday, October 17th, 2026 Allen Americans @ Tulsa Oilers' - ordinal '17th', no datetime attr, no title/date sub-selectors. CSS class 'group/card' also needs escaping. No clean dom spec possible. Dead."
+ },
+ {
+  "name": "Expo Square",
+  "url": "https://www.exposquare.com/events/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "9 clean .galleryItem event cards render (title .expandedViewEventName, date box .expandedViewEventDateBox). BLOCKER: the date box splits month/day into separate child nodes (.eventMonth='June', .eventDayNumber='18') and the framework's _extract_dom uses get_text(strip=True) WITHOUT a separator, concatenating to 'TodayJune18Thu' - the parse_date_flexible regex needs a space ('June 18') so it returns ''. No year, no datetime attr. Would work instantly if _extract_dom used get_text(' ', strip=True), or if the spec supported a date-join. Until then, dead. (container .galleryItem, title .expandedViewEventName, date .expandedViewEventDateBox)."
+ },
+ {
+  "name": "Tulsa City-County Library",
+  "url": "https://events.tulsalibrary.org/events",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "Communico platform (NOT Localist/LibCal). Root '/' is a landing hub with no events; the /events path renders 44 .eelistevent DOM cards BUT their date text is 'Thursday, June 18: All day' which parse_date_flexible can't handle (day-prefix + ':All day' suffix). HOWEVER there is a clean same-origin JSON API the human should wire a json strategy to: GET https://events.tulsalibrary.org/eeventcaldata?event_type=0&req=<URL-encoded JSON> where req={\"private\":false,\"date\":\"YYYY-MM-DD\",\"days\":60,\"locations\":[],\"ages\":[],\"types\":[]}. Send headers User-Agent + X-Requested-With:XMLHttpRequest + Referer:https://events.tulsalibrary.org/events. Returns a flat JSON ARRAY (1054 items for days=60). JSON path: each item -> title (event name) + event_start (clean ISO 'YYYY-MM-DD HH:MM:SS', take [:10]). Verified live: 1054 events. Framework has no json strategy yet, so marked dead per instructions."
+ },
+ {
+  "name": "Tulsa Community College",
+  "url": "https://calendar.tulsacc.edu/",
+  "strategy": "dom",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "container": ".event",
+  "title": ".event-title",
+  "date": "time",
+  "date_attr": "datetime",
+  "date_format": "iso",
+  "link": "a",
+  "link_attr": "href",
+  "sample": {
+   "name": "This is My World: An Exhibition by The CENTER",
+   "date": "2026-06-26"
   },
-  {
-    "name": "Oklahoma Aquarium",
-    "url": "https://www.okaquarium.org/31/Events",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "Original /events/ URL is HTTP 404; the real events page is /31/Events (status 200). But that page has no structured event list: no JSON-LD, no <time>, no event-card classes, no .ics. Event dates appear only inside free-text news paragraphs and mega-menu blurbs ('Saturday, April 8', 'October 18 & 19, 25 & 26', 'June 16, 2026 at 1:00 PM') with no consistent container/title/date selectors. No reliable DOM target, so marked dead rather than ship guessed selectors."
+  "note": "Supplied URL https://www.tulsacc.edu/campus-life/events/ is a 404; real public calendar is calendar.tulsacc.edu (LiveWhale). 7 .event blocks, each with .event-title + time[datetime] ISO. Verified end-to-end through framework _extract_dom: 7/7 dated."
+ },
+ {
+  "name": "Tulsa Pride",
+  "url": "https://tulsapride.org/events/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 1,
+  "lgbtq_only": true,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "HIGH VALUE LGBTQ (Oklahomans for Equality program). /events/ is a 404; WP has only 3 pages (home, sponsorships, contact-us) and NO events page. NO Tribe Events plugin (wp-json/tribe/events/v1/events = 404). Homepage just says 'TULSA PRIDE 2026 IS COMING - More info coming soon' with no published dates. Re-check homepage https://tulsapride.org/ periodically; when dates/festival schedule are posted, wire a dom or hardcoded-date spec. WP REST: https://tulsapride.org/wp-json/wp/v2/pages (no event CPT exposed)."
+ },
+ {
+  "name": "Goff Center / Goff Fest",
+  "url": "https://goff-fest.com/events/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 1,
+  "lgbtq_only": true,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "HIGH VALUE LGBTQ ('ANNUAL PRIDE CELEBRATION', Goff Center for the Continuous Present). Single annual festival, not a recurring calendar: Goff Fest 2026 = June 5-7, 2026 (already past as of 2026-06-18). NO Tribe Events plugin (wp-json/tribe/events/v1/events = 404); Astra+Elementor site. Event sub-events (TFA Tours, Bruce Goff Birthday Bash) are Elementor heading widgets with dates only in free-text prose (no per-card date selector). When the 2027 festival page goes up, easiest path is a hardcoded annual-date entry or parsing the 'GOFF FEST | <dates> | Tulsa, OK' heading. Re-check each spring."
+ },
+ {
+  "name": "ORU",
+  "url": "https://www.oru.edu/events/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "Supplied URL is a 404 (Drupal 'Page Not Found'). ORU has no maintained public events feed. SA Events Calendar (oru.edu/.../student-association/events/calendar.php) embeds a public Google Calendar whose ICS feed IS reachable (https://calendar.google.com/calendar/ical/orustudentassociation%40gmail.com/public/basic.ics) but is ABANDONED - 326 VEVENTs, latest non-recurring DTSTART 2013-05-04, zero upcoming. Campus Visit page (oru.edu/admissions/visit-campus/upcoming-events.php) has date text but locked inside a Salesforce JS widget (oru.my.site.com), no extractable DOM. If the SA Google Calendar is ever revived, flip to strategy 'ical' with ics_url set to the URL above (note: framework _extract_ical does NOT expand RRULE)."
+ },
+ {
+  "name": "SeatGeek Tulsa",
+  "url": "https://seatgeek.com/tulsa-oklahoma-tickets",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "Hard-blocked by DataDome anti-bot CAPTCHA (geo.captcha-delivery.com). Headless Playwright returns only a 1.5KB CAPTCHA shell, no event content. Not scrapable without residential proxies / CAPTCHA solving (out of scope). SeatGeek has a partner API but requires a client_id; consider that route if Tulsa concert coverage becomes a priority."
+ },
+ {
+  "name": "Brookside Tulsa",
+  "url": "https://www.brooksidetulsa.com/events/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "Domain no longer a Brookside district/events site. /events/ renders an empty <body> (39 bytes); root brooksidetulsa.com 302-redirects to a realtor site (gkrantzsmith.ccoklahoma.com). The events resource is gone. No replacement URL found."
+ },
+ {
+  "name": "Cherry Street Farmers Market",
+  "url": "https://www.cherrystreetfarmersmarket.com/events/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "Domain does not resolve (DNS NXDOMAIN / ERR_NAME_NOT_RESOLVED on both apex and www; curl returns 000). cherrystreetfarmersmarket.com is dead/expired. The market itself is now run under Tulsa Farmers' Market (tulsafarmersmarket.org) - re-target there if Cherry Street market coverage is wanted."
+ },
+ {
+  "name": "Tulsa Farmers' Market",
+  "url": "https://www.tulsafarmersmarket.org/events/",
+  "strategy": "json",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "Squarespace JSON feed (seasonal; 0 upcoming off-season, auto-fills in season).",
+  "json_url": "https://www.tulsafarmersmarket.org/upcoming-events?format=json-pretty",
+  "json_path": "upcoming",
+  "json_title_key": "title",
+  "json_date_key": "startDate",
+  "json_date_format": "epoch_ms"
+ },
+ {
+  "name": "Council Oak Mens Chorale",
+  "url": "https://www.counciloak.org/concerts",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 1,
+  "lgbtq_only": true,
+  "wait_until": "domcontentloaded",
+  "wait_ms": 8000,
+  "note": "Wix. /concerts IS the 'Upcoming Events' nav target but renders only nav + footer - no Wix Events widget, no concert cards, no dates currently published (verified via rendered DOM + scroll, body innerText 290 chars). Wix-warmup-data script is 2.5KB with no event payload. Nothing extractable until they publish concerts. Re-check /concerts for a Wix Events app (article/[data-hook] event cards) before enabling."
+ },
+ {
+  "name": "All Souls Unitarian Church",
+  "url": "https://allsoulschurch.org/category/events/community-events",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "WordPress, NO Events Calendar (Tribe) plugin (/wp-json/tribe/events/v1/events = 404; no event post type). community-events is a blog category id=53 with count=1 (single 2023 post, publish-date not event-date). WP API: https://allsoulschurch.org/wp-json/wp/v2/posts?categories=53 -> stale. Not a real event feed. Their live events likely live on a calendar page not given here."
+ },
+ {
+  "name": "Great Plains Rodeo Association",
+  "url": "https://www.greatplainsrodeo.org/services-7",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 1,
+  "lgbtq_only": true,
+  "wait_until": "domcontentloaded",
+  "wait_ms": 7000,
+  "note": "Oklahoma gay rodeo (IGRA). Domain flaky on networkidle (use domcontentloaded). Homepage is image-only. Schedule page /services-7 shows the single annual rodeo in free prose: 'Weekend Schedule August 7-9, 2026' (held in OKC). NO repeating event-card DOM - date sits in an obfuscated Wix span.wixui-rich-text__text with no container/title/date split, so generic DOM strategy would be a fragile guess. RECOMMEND: hardcode the annual rodeo (Aug 7-9 2026) or add a text-regex special case scraping /services-7 for 'Weekend Schedule <month> <d>-<d>, <year>'. HIGH VALUE - worth a manual annual entry."
+ },
+ {
+  "name": "black_queer_tulsa",
+  "url": "https://www.blackqueertulsa.org/events",
+  "strategy": "dom",
+  "enabled": false,
+  "priority": 1,
+  "lgbtq_only": true,
+  "wait_until": "domcontentloaded",
+  "wait_ms": 7000,
+  "container": "article.eventlist-event",
+  "title": "h1.eventlist-title",
+  "date": "time.event-date",
+  "date_attr": "datetime",
+  "date_format": "iso",
+  "link": "a.eventlist-title-link",
+  "link_attr": "href",
+  "note": "Squarespace eventlist (NOT Wix). Homepage/nav 'Events' -> /events. DOM verified: article.eventlist-event > h1.eventlist-title + time.event-date[datetime=YYYY-MM-DD]. Squarespace JSON API also exists (https://www.blackqueertulsa.org/events?format=json-pretty -> .upcoming[]/.past[]) but currently .upcoming=0; only stale 2022 events in the collection. Page also shows hardcoded promo brunch dates (e.g. 'next monthly brunch' Jul 21/Aug 18) in a text block with no year - NOT in the structured collection, do not parse. Monthly community brunch on the 3rd Sat. Enabled so it auto-picks up real events once they publish to the events collection; runner filters past dates. | DISABLED in rendered_sites: covered by playwright_scrapers.BlackQueerTulsaScraper (trusted source).",
+  "sample": [
+   {
+    "name": "Member's Retreat",
+    "date": "2022-10-07"
+   },
+   {
+    "name": "BLACK QUEER PROUD 2022",
+    "date": "2022-06-10"
+   },
+   {
+    "name": "Black Queer Proud Kickoff Brunch",
+    "date": "2022-06-05"
+   }
+  ]
+ },
+ {
+  "name": "green_country_bears",
+  "url": "https://greencountrybears.com/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 1,
+  "lgbtq_only": true,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "Oklahoma's oldest bear group (program of OkEq). Static single-page info site (no CMS generator). NO event listing and NO specific dates - only a recurring rule in prose: 'meet on the second Thursday of every month' (Dinner 7:00pm). Nothing dated to extract. Check their Facebook page for actual event dates if needed."
+ },
+ {
+  "name": "pflag_tulsa",
+  "url": "https://tulsapflag.org/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 1,
+  "lgbtq_only": true,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "WordPress 7.0 (Elementor), NO events plugin (/wp-json/tribe/events/v1/events = 404; no event post type). NO dated event listing - only a recurring rule in prose: 'PFLAG Tulsa meets on the first Saturday of each month at 7 p.m.' at Youth Services of Tulsa, 311 S Madison Ave. Meetings alternate social/support and education. Nothing dated to extract."
+ },
+ {
+  "name": "Trans Advocacy Coalition OK",
+  "url": "https://transadvocacyok.org/events",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 1,
+  "lgbtq_only": true,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "DOMAIN HIJACKED/EXPIRED 2026-06-18: transadvocacyok.org now serves an Indonesian online-gambling site ('Agen5000'), not TACO content. Both /events and / render the casino shell. No TACO events available here. Re-find TACO's real current web/social presence before re-enabling."
+ },
+ {
+  "name": "HotMess Sports Tulsa",
+  "url": "https://www.hotmesssports.com/tulsa",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 1,
+  "lgbtq_only": true,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "SportsEngine/SportNgin SPA. /tulsa landing shows only a season label ('TULSA GRASS VOLLEYBALL SUMMER 2026') linking to a registration form (hotmesssports.sportngin.com/register/form/254966422) which carries no specific YYYY-MM-DD date - just the season name. No dated events extractable. Game schedules live behind member login. No public events/schedule JSON found. Revisit when a season schedule page with dates is published."
+ },
+ {
+  "name": "Pride Sports Tulsa",
+  "url": "https://pridesportstulsa.leagueapps.com/leagues",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 1,
+  "lgbtq_only": true,
+  "wait_until": "domcontentloaded",
+  "wait_ms": 7000,
+  "note": "LeagueApps React SPA (siteId 30493, api.leagueapps.io). networkidle never settles (Stripe/LaunchDarkly polling) - use domcontentloaded. The /leagues view fires NO programs/leagues XHR right now (only nav/theme/accountInfo calls), i.e. no leagues currently listed (off-season; nav routes Kickball/Dodgeball to external gaykickball.com & gaydodgeball.com). No dated events to extract. When leagues are active, the list should populate via an api.leagueapps.io/api/sites/30493/... programs call - capture that endpoint then and add a json strategy or scrape the rendered cards."
+ },
+ {
+  "name": "Tulsa House of Drag",
+  "url": "https://www.tulsahouseofdrag.com/",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 1,
+  "lgbtq_only": true,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "DEAD DOMAIN 2026-06-18: tulsahouseofdrag.com does not resolve (NXDOMAIN; ERR_NAME_NOT_RESOLVED on www and bare). No site exists. Find their current home (likely Instagram/Facebook/Linktree) and route via facebook_events or a new spec if a real site reappears."
+ },
+ {
+  "name": "Diva Royale Drag Brunch",
+  "url": "https://www.divaroyale.com/dragquenshow-locations.html",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 1,
+  "lgbtq_only": true,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "National drag-show chain (30+ US cities) but has NO Tulsa or Oklahoma location - the locations page lists Austin/Dallas/Houston/etc. but nothing in OK. Not relevant to a Tulsa events feed. Leave dead."
+ },
+ {
+  "name": "QueerLit Collective",
+  "url": "https://www.facebook.com/queerlitcollective",
+  "strategy": "dead",
+  "enabled": false,
+  "priority": 1,
+  "lgbtq_only": true,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "note": "FB-only, route via facebook_events. Facebook is not scrapable without auth."
+ },
+ {
+  "name": "Gilcrease Museum",
+  "url": "https://gilcrease.org/events",
+  "strategy": "dom",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 3000,
+  "container": "div.gap-2.pt-3",
+  "title": "h4",
+  "date": "time",
+  "date_attr": "datetime",
+  "date_format": "iso",
+  "link": "a",
+  "link_attr": "href",
+  "sample": {
+   "name": "Declaration Viewing // Indigenous Independence: America at 250",
+   "date": "2026-07-11"
   },
-  {
-    "name": "Discovery Lab",
-    "url": "https://discoverylab.org/events/",
-    "strategy": "dom",
-    "enabled": true,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "container": ".event-card",
-    "title": "h3",
-    "date": ".event-card__info__header p",
-    "date_format": "auto",
-    "link": ".event-card__link",
-    "link_attr": "href",
-    "sample": {
-      "name": "Member Movie Night at Discovery Lab",
-      "date": "2026-06-19"
-    },
-    "note": "Clean repeating .event-card blocks. Title in h3; full date in .event-card__info__header p ('June 19, 2026 @ 6:00 PM - 8:00 PM'). The '@ time' suffix needed the new noisy-date fallback added to rendered_sites._parse_date (extracts 'Month DD, YYYY' substring). 20 dated events verified against saved HTML."
+  "note": "ADDED 2026-07-06: React/Tailwind page but each event block (div.gap-2.pt-3) carries time[datetime=YYYY-MM-DD]. Replaces community_calendars' dead my.gilcrease.org/uncrease path (UnCrease series ended May 2026). Museum programming is ramping back up post-reopening; page had 1 event at add time."
+ },
+ {
+  "name": "Living Arts of Tulsa",
+  "url": "https://livingarts.org/events/",
+  "strategy": "json_ld",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "sample": {
+   "name": "July Gallery Hours",
+   "date": "2026-07-07"
   },
-  {
-    "name": "101 Archer",
-    "url": "https://101archer.com/events/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "note": "DNS non-existent domain (ERR_NAME_NOT_RESOLVED; nslookup = NXDOMAIN). Site is gone."
+  "note": "ADDED 2026-07-06: WordPress, server-rendered, 11 schema.org Event JSON-LD blocks with ISO startDate. Verified end-to-end through _scrape_spec (Playwright render + _extract_json_ld_from_soup): 11/11 events dated. The Events Calendar shortcuts are NOT available here: ?ical=1 returns the HTML page (253KB, not an .ics) and /wp-json/tribe/events/v1/events is 404, so json_ld render is the right path."
+ },
+ {
+  "name": "108 Contemporary",
+  "url": "https://108contemporary.org/calendar-of-events/",
+  "strategy": "dom",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "container": "article.event",
+  "title": "h2",
+  "date": ".date",
+  "date_format": "auto",
+  "link": "a",
+  "link_attr": "href",
+  "sample": {
+   "name": "Handwork 2026",
+   "date": "2026-01-01"
   },
-  {
-    "name": "Tulsa PAC",
-    "url": "https://www.tulsapac.com/events/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "Squarespace shell that client-side-loads its calendar from Ticketmaster Account Manager (am.ticketmaster.com/tulsapac/buy). Rendered HTML contains zero event titles, zero dates, and no repeating event blocks even at networkidle. ?format=json returns an empty events collection (0 items). Not extractable via generic DOM/JSON-LD; would need the Ticketmaster Account Manager API."
+  "note": "ADDED 2026-07-06: WordPress, server-rendered. 8 article.event blocks, each with h2 title (h3 is a subtitle/date line - do not use), div.date range like 'June 5 - July 25, 2026', and event-detail link. Range dates parse to the first day via the auto fallback. Verified end-to-end through _scrape_spec: 8/8 events dated. Mostly exhibitions/calls-for-entry, long-running date ranges."
+ },
+ {
+  "name": "LowDown Tulsa",
+  "url": "https://lowdowntulsa.com/shows",
+  "strategy": "json",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "json_url": "https://lowdowntulsa.com/shows?format=json",
+  "json_path": "upcoming",
+  "sample": {
+   "name": "Blue Whale Comedy Presents: Native Showcase",
+   "date": "2026-07-10"
   },
-  {
-    "name": "BOK Center",
-    "url": "https://www.bokcenter.com/events",
-    "strategy": "dom",
-    "enabled": true,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "container": ".eventItem",
-    "title": "h3.title",
-    "date": ".m-date__singleDate",
-    "date_format": "auto",
-    "link": "h3.title a",
-    "link_attr": "href",
-    "sample": {
-      "name": "Tulsa Oilers Football",
-      "date": "2026-06-20"
-    },
-    "note": "Custom BOK calendar. Each .eventItem has a .m-date__singleDate (weekday/month/day/year spans concatenating to 'Sat,June20, 2026') and title in h3.title a. Verified 11 dated events against rendered HTML."
+  "note": "ADDED 2026-07-06: Squarespace events collection. ?format=json returns 'upcoming' (31 items) + 'past' (30). Framework json defaults map 1:1: title + startDate epoch-ms. Verified end-to-end through _scrape_spec (_extract_json, live fetch): 31/31 events dated. Jazz club - high volume, real dates. No Playwright needed. Named 'LowDown Tulsa' so the venue string matches the config trust keyword."
+ },
+ {
+  "name": "Mercury Lounge",
+  "url": "https://www.prekindle.com/events/mercurylounge",
+  "strategy": "json_ld",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "sample": {
+   "name": "John Baumann Happy Hour!",
+   "date": "2026-07-09"
   },
-  {
-    "name": "Cain's Ballroom",
-    "url": "https://cainsballroom.com/events/",
-    "strategy": "dom",
-    "enabled": true,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "container": ".rhpSingleEvent",
-    "title": "#eventTitle",
-    "date": ".singleEventDate",
-    "date_format": "auto",
-    "link": "a.url",
-    "link_attr": "href",
-    "sample": {
-      "name": "Pop Punk Nite! by: Van Full of Nuns",
-      "date": "2026-06-19"
-    },
-    "note": "RHP/Etix event widget. Listing date is year-less abbreviated form 'Fri, Jun 19' in .singleEventDate; parse_date_flexible now handles '%a, %b %d' and infers current year. Verified 33 dated events."
+  "note": "ADDED 2026-07-06: Prekindle-hosted static HTML with one ld+json block containing an array of MusicEvent objects (ISO startDate). Verified end-to-end through _scrape_spec (Playwright render + _extract_json_ld_from_soup): 14/14 events dated. Venue's own mercuryloungetulsa.com is a Wix shell - the Prekindle page is the live calendar."
+ },
+ {
+  "name": "Magic City Books",
+  "url": "https://www.eventbrite.com/o/magic-city-books-25589885007",
+  "strategy": "dom",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "container": ".discover-vertical-event-card",
+  "title": "h3",
+  "date": "p",
+  "date_format": "auto",
+  "link": "a",
+  "link_attr": "href",
+  "sample": {
+   "name": "An Evening With Jason Lee",
+   "date": "2026-07-30"
   },
-  {
-    "name": "Tulsa Theater",
-    "url": "https://tulsatheater.com/events/",
-    "strategy": "dom",
-    "enabled": true,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "container": ".rhpSingleEvent",
-    "title": "#eventTitle",
-    "date": ".singleEventDate",
-    "date_format": "auto",
-    "link": "a.url",
-    "link_attr": "href",
-    "sample": {
-      "name": "W.A.S.P. -1984 TO HEADLESS",
-      "date": "2026-09-17"
-    },
-    "note": "Same RHP/Etix widget as Cain's (sister DCF venue). Year-less 'Thu, Sep 17' in .singleEventDate, current year inferred. Verified 10 dated events."
+  "note": "ADDED 2026-07-06: Eventbrite organizer page. Raw requests HTML has NO ld+json and no __SERVER_DATA__; the showmore JSON API nests title under name.text so the framework json strategy can't use it. Rendered page has section.discover-vertical-event-card cards (stable class; the hashed EventCard_* classes are not) with h3 title + p date 'Thu, Jul 30 - 7:00 PM' (no year -> current-year assumption). Verified end-to-end through _scrape_spec: 2/2 events dated (same event duplicated across list sections; downstream dedupe handles it). Low volume (bookstore, 1-2 upcoming). magiccitybooks.com/events itself returns a title-only shell to fetchers."
+ },
+ {
+  "name": "Guthrie Green",
+  "url": "https://guthriegreen.com/events",
+  "strategy": "json_ld",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "sample": {
+   "name": "Fitness on the Green - YMCA Yoga (in Fly Loft)",
+   "date": "2026-07-07"
   },
-  {
-    "name": "Hard Rock Live Tulsa",
-    "url": "https://www.hardrockcasinotulsa.com/entertainment/",
-    "strategy": "json_ld",
-    "enabled": true,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "sample": {
-      "name": "DJ | Sir Juice",
-      "date": "2026-06-18"
-    },
-    "note": "Next.js site. MusicEvent JSON-LD with ISO startDate is nested under the WebPage node's mainEntity array; _extract_json_ld_from_soup was extended to traverse mainEntity/itemListElement. Verified 85 dated events. DOM date ('Thu, Jun 18 | 8:00 PM') is messier; JSON-LD is the clean source."
+  "note": "ADDED 2026-07-06: JS shell via requests (22KB), but the rendered page injects 6 schema.org Event JSON-LD blocks (one per event, ISO startDate). No .w-dyn-item list in the rendered DOM, so json_ld beats dom here. Verified end-to-end through _scrape_spec (Playwright networkidle + 2500ms): 6/6 events dated."
+ },
+ {
+  "name": "Tulsa Ballet",
+  "url": "https://tulsaballet.org/performances/",
+  "strategy": "json_ld",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "sample": {
+   "name": "Creations in Studio K 2026",
+   "date": "2026-09-10"
   },
-  {
-    "name": "River Spirit Casino",
-    "url": "https://www.riverspirittulsa.com/entertainment/",
-    "strategy": "dom",
-    "enabled": true,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "container": ".event-card",
-    "title": ".event-card__title",
-    "date": ".event-card__info",
-    "date_format": "auto",
-    "link": "a",
-    "link_attr": "href",
-    "sample": {
-      "name": "Flatland Cavalry",
-      "date": "2026-07-09"
-    },
-    "note": "The Cove concerts. .event-card__info concatenates month/day/time spans to 'Jul098PM'; parse_date_flexible fallback now pulls a leading 'Mon DD' token and infers current year. Verified 4 dated events (only the near-term Cove cards render statically)."
+  "note": "ADDED 2026-07-06: Server-rendered WordPress with ld+json Event blocks for the full 2026-27 season, startDate = first day of each run (e.g. Swan Lake 2026-10-22). Verified end-to-end through _scrape_spec: 8/8 events dated. Titles keep HTML entities (e.g. 'Romeo &#038; Juliet 2027') - framework behavior, cosmetic only."
+ },
+ {
+  "name": "Tulsa Symphony",
+  "url": "https://www.tulsasymphony.org/events-tickets",
+  "strategy": "dom",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "container": ".summary-item",
+  "title": ".summary-title",
+  "date": ".summary-thumbnail-event-date",
+  "date_format": "auto",
+  "link": "a.summary-title-link",
+  "link_attr": "href",
+  "sample": {
+   "name": "TSO GIVING DAY 2026",
+   "date": "2026-09-04"
   },
-  {
-    "name": "The Church Studio",
-    "url": "https://www.thechurchstudio.com/events/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "The Events Calendar (tribe) list view does not render in static/rendered HTML (0 .tribe-events-calendar-list__event even after scrolling). Only a stale 'past events' widget remains: 6 .tribe-event-date-start entries, 3 dated 2022 and 3 year-less past dates. No wp-json/tribe REST feed (404). Live ticketing is off-site on Universe.com per event. No reliable upcoming dated block to extract."
+  "note": "ADDED 2026-07-06: Squarespace summary blocks on /events-tickets (homepage has no Event ld+json). 12 .summary-item cards with .summary-title + .summary-thumbnail-event-date ('Sep 4' - NO YEAR, so auto-parse assumes current year). KNOWN LIMIT: spring-2027 concerts will mis-year to 2026 until the calendar year turns, which lands them in the past where downstream filtering drops them - self-limiting, no bad future dates. Verified end-to-end through _scrape_spec: 12/12 events dated."
+ },
+ {
+  "name": "Theatre Tulsa",
+  "url": "https://theatretulsa.org/this-season",
+  "strategy": "dom",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "container": "div.sqs-html-content",
+  "title": "h2",
+  "date": "p.sqsrte-large",
+  "date_format": "auto",
+  "link": "a",
+  "link_attr": "href",
+  "sample": {
+   "name": "Grease",
+   "date": "2026-09-10"
   },
-  {
-    "name": "OSU-Tulsa",
-    "url": "https://events.tulsa.okstate.edu/",
-    "strategy": "json_ld",
-    "enabled": true,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "sample": {
-      "name": "Reach Higher Reconnect Event @ Drillers Night!",
-      "date": "2026-06-23"
-    },
-    "note": "Localist platform. The /calendar/ URL 301-redirects to events.tulsa.okstate.edu (use that final host to skip the redirect). Renders ~14 schema.org Event JSON-LD blocks with clean ISO startDate. Localist JSON API (events.tulsa.okstate.edu/api/2/events?days=60) 403s on plain fetch, so json_ld is the reliable path. Verified 14 events with real ISO dates against saved HTML."
+  "note": "ADDED 2026-07-06: Squarespace rich-text season page (no events collection: /events?format=json is HTML). Show blocks are div.sqs-html-content with h2 title + p.sqsrte-large date range like 'September 10 - 13, 2026 - TICKETS' (parses to first day). Do NOT use div.sqs-block-content: 61 blocks and the framework's [:40] container cap cuts off later shows. KNOWN LIMIT: ranges ending in a 2027 year mis-year to current year, landing in the past where downstream filtering drops them - self-correcting once 2027 arrives. Verified end-to-end through _scrape_spec: 12/12 events dated (2026 shows all correct)."
+ },
+ {
+  "name": "Tulsa Opera",
+  "url": "https://tulsaopera.com/2026-27-season/",
+  "strategy": "dom",
+  "enabled": true,
+  "priority": 2,
+  "lgbtq_only": false,
+  "wait_until": "networkidle",
+  "wait_ms": 2500,
+  "container": "div.et_pb_text_inner",
+  "title": "h1",
+  "date": "h2",
+  "date_format": "auto",
+  "sample": {
+   "name": "Little Women",
+   "date": "2026-11-21"
   },
-  {
-    "name": "Cox Business Convention Center",
-    "url": "https://www.coxcentertulsa.com/events/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "Hard-blocked by Cloudflare 'Just a moment...' interstitial challenge. Headless Playwright (UA spoofed, 8s wait) only ever returns the 27KB challenge-platform shell with zero event content. Needs a challenge-solver / residential proxy / cloudscraper to revive; not feasible with the current renderer."
-  },
-  {
-    "name": "Tulsa Drillers (ONEOK Field)",
-    "url": "https://www.milb.com/tulsa/schedule/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "domcontentloaded",
-    "wait_ms": 4000,
-    "note": "Low-priority sports. Renders ~5.6MB. Has ONE JSON-LD block with ~11 schema.org Event items (name + startDate), BUT startDate is non-ISO human text e.g. 'June 18, 2026 7:05 PM CDT'. The framework json_ld helper does naive startDate[:10] -> 'June 18, 2' (garbage). To wire this up the json_ld helper would need to run startDate through parse_date_flexible (which DOES handle 'June 18, 2026'). Until then, dead. Selector: single <script type=application/ld+json> array of @type:Event."
-  },
-  {
-    "name": "FC Tulsa",
-    "url": "https://www.fctulsa.com/schedule/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "Low-priority sports. 37 .GameContainer blocks render fine, but no clean title/date split: the only JSON-LD is WebPage/Organization (no Event). Date lives glued inside .gametime as 'Saturday March 7 9:00 PM' (no year; opponent name in separate .Opta-TeamName). No single selector yields a clean event-name + a separately-parseable date, so the generic dom strategy can't produce {name,date} pairs. Dead."
-  },
-  {
-    "name": "Tulsa Oilers",
-    "url": "https://www.tulsaoilers.com/schedule/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "domcontentloaded",
-    "wait_ms": 4000,
-    "note": "Low-priority sports. JSON-LD is only @type:SportsTeam (no Event). 35 time[datetime] elements exist but they are a calendar-grid day picker (text is just '18'), not games. The 20 real games are in 'group/card' blocks as plain text e.g. 'Saturday, October 17th, 2026 Allen Americans @ Tulsa Oilers' - ordinal '17th', no datetime attr, no title/date sub-selectors. CSS class 'group/card' also needs escaping. No clean dom spec possible. Dead."
-  },
-  {
-    "name": "Expo Square",
-    "url": "https://www.exposquare.com/events/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "9 clean .galleryItem event cards render (title .expandedViewEventName, date box .expandedViewEventDateBox). BLOCKER: the date box splits month/day into separate child nodes (.eventMonth='June', .eventDayNumber='18') and the framework's _extract_dom uses get_text(strip=True) WITHOUT a separator, concatenating to 'TodayJune18Thu' - the parse_date_flexible regex needs a space ('June 18') so it returns ''. No year, no datetime attr. Would work instantly if _extract_dom used get_text(' ', strip=True), or if the spec supported a date-join. Until then, dead. (container .galleryItem, title .expandedViewEventName, date .expandedViewEventDateBox)."
-  },
-  {
-    "name": "Tulsa City-County Library",
-    "url": "https://events.tulsalibrary.org/events",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "Communico platform (NOT Localist/LibCal). Root '/' is a landing hub with no events; the /events path renders 44 .eelistevent DOM cards BUT their date text is 'Thursday, June 18: All day' which parse_date_flexible can't handle (day-prefix + ':All day' suffix). HOWEVER there is a clean same-origin JSON API the human should wire a json strategy to: GET https://events.tulsalibrary.org/eeventcaldata?event_type=0&req=<URL-encoded JSON> where req={\"private\":false,\"date\":\"YYYY-MM-DD\",\"days\":60,\"locations\":[],\"ages\":[],\"types\":[]}. Send headers User-Agent + X-Requested-With:XMLHttpRequest + Referer:https://events.tulsalibrary.org/events. Returns a flat JSON ARRAY (1054 items for days=60). JSON path: each item -> title (event name) + event_start (clean ISO 'YYYY-MM-DD HH:MM:SS', take [:10]). Verified live: 1054 events. Framework has no json strategy yet, so marked dead per instructions."
-  },
-  {
-    "name": "Tulsa Community College",
-    "url": "https://calendar.tulsacc.edu/",
-    "strategy": "dom",
-    "enabled": true,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "container": ".event",
-    "title": ".event-title",
-    "date": "time",
-    "date_attr": "datetime",
-    "date_format": "iso",
-    "link": "a",
-    "link_attr": "href",
-    "sample": {
-      "name": "This is My World: An Exhibition by The CENTER",
-      "date": "2026-06-26"
-    },
-    "note": "Supplied URL https://www.tulsacc.edu/campus-life/events/ is a 404; real public calendar is calendar.tulsacc.edu (LiveWhale). 7 .event blocks, each with .event-title + time[datetime] ISO. Verified end-to-end through framework _extract_dom: 7/7 dated."
-  },
-  {
-    "name": "Tulsa Pride",
-    "url": "https://tulsapride.org/events/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 1,
-    "lgbtq_only": true,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "HIGH VALUE LGBTQ (Oklahomans for Equality program). /events/ is a 404; WP has only 3 pages (home, sponsorships, contact-us) and NO events page. NO Tribe Events plugin (wp-json/tribe/events/v1/events = 404). Homepage just says 'TULSA PRIDE 2026 IS COMING - More info coming soon' with no published dates. Re-check homepage https://tulsapride.org/ periodically; when dates/festival schedule are posted, wire a dom or hardcoded-date spec. WP REST: https://tulsapride.org/wp-json/wp/v2/pages (no event CPT exposed)."
-  },
-  {
-    "name": "Goff Center / Goff Fest",
-    "url": "https://goff-fest.com/events/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 1,
-    "lgbtq_only": true,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "HIGH VALUE LGBTQ ('ANNUAL PRIDE CELEBRATION', Goff Center for the Continuous Present). Single annual festival, not a recurring calendar: Goff Fest 2026 = June 5-7, 2026 (already past as of 2026-06-18). NO Tribe Events plugin (wp-json/tribe/events/v1/events = 404); Astra+Elementor site. Event sub-events (TFA Tours, Bruce Goff Birthday Bash) are Elementor heading widgets with dates only in free-text prose (no per-card date selector). When the 2027 festival page goes up, easiest path is a hardcoded annual-date entry or parsing the 'GOFF FEST | <dates> | Tulsa, OK' heading. Re-check each spring."
-  },
-  {
-    "name": "ORU",
-    "url": "https://www.oru.edu/events/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "Supplied URL is a 404 (Drupal 'Page Not Found'). ORU has no maintained public events feed. SA Events Calendar (oru.edu/.../student-association/events/calendar.php) embeds a public Google Calendar whose ICS feed IS reachable (https://calendar.google.com/calendar/ical/orustudentassociation%40gmail.com/public/basic.ics) but is ABANDONED - 326 VEVENTs, latest non-recurring DTSTART 2013-05-04, zero upcoming. Campus Visit page (oru.edu/admissions/visit-campus/upcoming-events.php) has date text but locked inside a Salesforce JS widget (oru.my.site.com), no extractable DOM. If the SA Google Calendar is ever revived, flip to strategy 'ical' with ics_url set to the URL above (note: framework _extract_ical does NOT expand RRULE)."
-  },
-  {
-    "name": "SeatGeek Tulsa",
-    "url": "https://seatgeek.com/tulsa-oklahoma-tickets",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "Hard-blocked by DataDome anti-bot CAPTCHA (geo.captcha-delivery.com). Headless Playwright returns only a 1.5KB CAPTCHA shell, no event content. Not scrapable without residential proxies / CAPTCHA solving (out of scope). SeatGeek has a partner API but requires a client_id; consider that route if Tulsa concert coverage becomes a priority."
-  },
-  {
-    "name": "Brookside Tulsa",
-    "url": "https://www.brooksidetulsa.com/events/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "Domain no longer a Brookside district/events site. /events/ renders an empty <body> (39 bytes); root brooksidetulsa.com 302-redirects to a realtor site (gkrantzsmith.ccoklahoma.com). The events resource is gone. No replacement URL found."
-  },
-  {
-    "name": "Cherry Street Farmers Market",
-    "url": "https://www.cherrystreetfarmersmarket.com/events/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "Domain does not resolve (DNS NXDOMAIN / ERR_NAME_NOT_RESOLVED on both apex and www; curl returns 000). cherrystreetfarmersmarket.com is dead/expired. The market itself is now run under Tulsa Farmers' Market (tulsafarmersmarket.org) - re-target there if Cherry Street market coverage is wanted."
-  },
-  {
-    "name": "Tulsa Farmers' Market",
-    "url": "https://www.tulsafarmersmarket.org/events/",
-    "strategy": "json",
-    "enabled": true,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "Squarespace JSON feed (seasonal; 0 upcoming off-season, auto-fills in season).",
-    "json_url": "https://www.tulsafarmersmarket.org/upcoming-events?format=json-pretty",
-    "json_path": "upcoming",
-    "json_title_key": "title",
-    "json_date_key": "startDate",
-    "json_date_format": "epoch_ms"
-  },
-  {
-    "name": "Council Oak Mens Chorale",
-    "url": "https://www.counciloak.org/concerts",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 1,
-    "lgbtq_only": true,
-    "wait_until": "domcontentloaded",
-    "wait_ms": 8000,
-    "note": "Wix. /concerts IS the 'Upcoming Events' nav target but renders only nav + footer - no Wix Events widget, no concert cards, no dates currently published (verified via rendered DOM + scroll, body innerText 290 chars). Wix-warmup-data script is 2.5KB with no event payload. Nothing extractable until they publish concerts. Re-check /concerts for a Wix Events app (article/[data-hook] event cards) before enabling."
-  },
-  {
-    "name": "All Souls Unitarian Church",
-    "url": "https://allsoulschurch.org/category/events/community-events",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 2,
-    "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "WordPress, NO Events Calendar (Tribe) plugin (/wp-json/tribe/events/v1/events = 404; no event post type). community-events is a blog category id=53 with count=1 (single 2023 post, publish-date not event-date). WP API: https://allsoulschurch.org/wp-json/wp/v2/posts?categories=53 -> stale. Not a real event feed. Their live events likely live on a calendar page not given here."
-  },
-  {
-    "name": "Great Plains Rodeo Association",
-    "url": "https://www.greatplainsrodeo.org/services-7",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 1,
-    "lgbtq_only": true,
-    "wait_until": "domcontentloaded",
-    "wait_ms": 7000,
-    "note": "Oklahoma gay rodeo (IGRA). Domain flaky on networkidle (use domcontentloaded). Homepage is image-only. Schedule page /services-7 shows the single annual rodeo in free prose: 'Weekend Schedule August 7-9, 2026' (held in OKC). NO repeating event-card DOM - date sits in an obfuscated Wix span.wixui-rich-text__text with no container/title/date split, so generic DOM strategy would be a fragile guess. RECOMMEND: hardcode the annual rodeo (Aug 7-9 2026) or add a text-regex special case scraping /services-7 for 'Weekend Schedule <month> <d>-<d>, <year>'. HIGH VALUE - worth a manual annual entry."
-  },
-  {
-    "name": "black_queer_tulsa",
-    "url": "https://www.blackqueertulsa.org/events",
-    "strategy": "dom",
-    "enabled": false,
-    "priority": 1,
-    "lgbtq_only": true,
-    "wait_until": "domcontentloaded",
-    "wait_ms": 7000,
-    "container": "article.eventlist-event",
-    "title": "h1.eventlist-title",
-    "date": "time.event-date",
-    "date_attr": "datetime",
-    "date_format": "iso",
-    "link": "a.eventlist-title-link",
-    "link_attr": "href",
-    "note": "Squarespace eventlist (NOT Wix). Homepage/nav 'Events' -> /events. DOM verified: article.eventlist-event > h1.eventlist-title + time.event-date[datetime=YYYY-MM-DD]. Squarespace JSON API also exists (https://www.blackqueertulsa.org/events?format=json-pretty -> .upcoming[]/.past[]) but currently .upcoming=0; only stale 2022 events in the collection. Page also shows hardcoded promo brunch dates (e.g. 'next monthly brunch' Jul 21/Aug 18) in a text block with no year - NOT in the structured collection, do not parse. Monthly community brunch on the 3rd Sat. Enabled so it auto-picks up real events once they publish to the events collection; runner filters past dates. | DISABLED in rendered_sites: covered by playwright_scrapers.BlackQueerTulsaScraper (trusted source).",
-    "sample": [
-      {
-        "name": "Member's Retreat",
-        "date": "2022-10-07"
-      },
-      {
-        "name": "BLACK QUEER PROUD 2022",
-        "date": "2022-06-10"
-      },
-      {
-        "name": "Black Queer Proud Kickoff Brunch",
-        "date": "2022-06-05"
-      }
-    ]
-  },
-  {
-    "name": "green_country_bears",
-    "url": "https://greencountrybears.com/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 1,
-    "lgbtq_only": true,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "Oklahoma's oldest bear group (program of OkEq). Static single-page info site (no CMS generator). NO event listing and NO specific dates - only a recurring rule in prose: 'meet on the second Thursday of every month' (Dinner 7:00pm). Nothing dated to extract. Check their Facebook page for actual event dates if needed."
-  },
-  {
-    "name": "pflag_tulsa",
-    "url": "https://tulsapflag.org/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 1,
-    "lgbtq_only": true,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "WordPress 7.0 (Elementor), NO events plugin (/wp-json/tribe/events/v1/events = 404; no event post type). NO dated event listing - only a recurring rule in prose: 'PFLAG Tulsa meets on the first Saturday of each month at 7 p.m.' at Youth Services of Tulsa, 311 S Madison Ave. Meetings alternate social/support and education. Nothing dated to extract."
-  },
-  {
-    "name": "Trans Advocacy Coalition OK",
-    "url": "https://transadvocacyok.org/events",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 1,
-    "lgbtq_only": true,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "DOMAIN HIJACKED/EXPIRED 2026-06-18: transadvocacyok.org now serves an Indonesian online-gambling site ('Agen5000'), not TACO content. Both /events and / render the casino shell. No TACO events available here. Re-find TACO's real current web/social presence before re-enabling."
-  },
-  {
-    "name": "HotMess Sports Tulsa",
-    "url": "https://www.hotmesssports.com/tulsa",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 1,
-    "lgbtq_only": true,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "SportsEngine/SportNgin SPA. /tulsa landing shows only a season label ('TULSA GRASS VOLLEYBALL SUMMER 2026') linking to a registration form (hotmesssports.sportngin.com/register/form/254966422) which carries no specific YYYY-MM-DD date - just the season name. No dated events extractable. Game schedules live behind member login. No public events/schedule JSON found. Revisit when a season schedule page with dates is published."
-  },
-  {
-    "name": "Pride Sports Tulsa",
-    "url": "https://pridesportstulsa.leagueapps.com/leagues",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 1,
-    "lgbtq_only": true,
-    "wait_until": "domcontentloaded",
-    "wait_ms": 7000,
-    "note": "LeagueApps React SPA (siteId 30493, api.leagueapps.io). networkidle never settles (Stripe/LaunchDarkly polling) - use domcontentloaded. The /leagues view fires NO programs/leagues XHR right now (only nav/theme/accountInfo calls), i.e. no leagues currently listed (off-season; nav routes Kickball/Dodgeball to external gaykickball.com & gaydodgeball.com). No dated events to extract. When leagues are active, the list should populate via an api.leagueapps.io/api/sites/30493/... programs call - capture that endpoint then and add a json strategy or scrape the rendered cards."
-  },
-  {
-    "name": "Tulsa House of Drag",
-    "url": "https://www.tulsahouseofdrag.com/",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 1,
-    "lgbtq_only": true,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "DEAD DOMAIN 2026-06-18: tulsahouseofdrag.com does not resolve (NXDOMAIN; ERR_NAME_NOT_RESOLVED on www and bare). No site exists. Find their current home (likely Instagram/Facebook/Linktree) and route via facebook_events or a new spec if a real site reappears."
-  },
-  {
-    "name": "Diva Royale Drag Brunch",
-    "url": "https://www.divaroyale.com/dragquenshow-locations.html",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 1,
-    "lgbtq_only": true,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "National drag-show chain (30+ US cities) but has NO Tulsa or Oklahoma location - the locations page lists Austin/Dallas/Houston/etc. but nothing in OK. Not relevant to a Tulsa events feed. Leave dead."
-  },
-  {
-    "name": "QueerLit Collective",
-    "url": "https://www.facebook.com/queerlitcollective",
-    "strategy": "dead",
-    "enabled": false,
-    "priority": 1,
-    "lgbtq_only": true,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "note": "FB-only, route via facebook_events. Facebook is not scrapable without auth."
-  }
+  "note": "ADDED 2026-07-06: /season/ is a SEASON ARCHIVE (all past dates) - use the current-season page. Divi blocks: div.et_pb_text_inner with h1 title + h2 full dates ('Saturday, November 21, 2026 at 7:30 PM'), years parse correctly including 2027. Verified end-to-end through _scrape_spec: 4/4 events dated (Cosi fan tutte + Voices of Tomorrow use a different block layout and drop out - acceptable at this volume). MAINTENANCE: URL is season-specific; bump to /2027-28-season/ around mid-2027."
+ }
 ]

@@ -538,7 +538,7 @@ SOURCES = {
     # },
     "magic_city_books": {
         "name": "Magic City Books",
-        "url": "",
+        "url": "https://www.eventbrite.com/o/magic-city-books-25589885007",
         "priority": 3,
         "type": "community",
         "description": "Independent bookstore in Arts District, hosts LGBTQIA+ author events",
@@ -688,7 +688,7 @@ SOURCES = {
     },
     "living_arts_tulsa": {
         "name": "Living Arts Tulsa",
-        "url": "https://livingarts.org/",
+        "url": "https://livingarts.org/events/",
         "priority": 2,
         "type": "arts",
         "description": "Contemporary art exhibitions, workshops, performances, films, lectures, education. Open Tue-Sat 12-4pm. Free admission.",
@@ -1302,6 +1302,21 @@ COMMUNITY_PARTNER_KEYWORDS = [
     "living arts",
     "vanguard tulsa",
     "flagship", "tulsa artist fellowship",
+    # Art/culture venue expansion (William 2026-07-06: "make sure we're looking
+    # at art venues and such") — queer Tulsans show up for gallery openings,
+    # symphony, ballet, indie stages. Substring-matched vs name+venue+desc+url.
+    "gilcrease",
+    "108 contemporary",
+    "lowdown tulsa",
+    "mercury lounge",
+    "tulsa ballet",
+    "tulsa opera",
+    "tulsa symphony",
+    "theatre tulsa",
+    "tulsa theater",
+    "church studio",
+    "liggett studio",
+    "tac gallery",
     # Wellness / meditation / yoga venues â€” special events (sound baths,
     # workshops, kirtan, retreats) at these places are queer-welcoming.
     "shambhala", "shambhala meditation",

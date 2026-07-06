@@ -163,14 +163,17 @@ class RenderedSitesScraper(BaseScraper):
         for block in soup.select(container)[:40]:
             try:
                 t_el = block.select_one(title_sel) if title_sel else block
-                name = (t_el.get_text(strip=True) if t_el else "").strip()
+                # get_text(" ", ...) keeps a separator between nested spans —
+                # bare strip=True concatenated "July"+"11" into unparseable
+                # "July11" (killed BOK Center and Green Country dates).
+                name = (t_el.get_text(" ", strip=True) if t_el else "").strip()
                 if not name or len(name) < 4:
                     continue
                 d_raw = ""
                 if date_sel:
                     d_el = block.select_one(date_sel)
                     if d_el is not None:
-                        d_raw = (d_el.get(date_attr, "") if date_attr else d_el.get_text(strip=True)) or ""
+                        d_raw = (d_el.get(date_attr, "") if date_attr else d_el.get_text(" ", strip=True)) or ""
                 elif date_attr:
                     d_raw = block.get(date_attr, "")
                 date_str = self._parse_date(d_raw, date_fmt)
