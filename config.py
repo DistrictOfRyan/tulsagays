@@ -1263,7 +1263,7 @@ LGBTQ_SOURCES = {
     "ybr_ig",            # @tulsaybr (verified active) — Yellow Brick Road (lesbian bar), IG-only events
     "dvl_ig",            # @dvltulsa — woman-owned LGBTQ+ bar (Blue Dome); site calendar is JS-only, IG carries events
 
-    "pflag_tulsa", "black_queer_tulsa", "freedom_oklahoma",
+    "pflag_tulsa", "pflag_ig", "black_queer_tulsa", "freedom_oklahoma",
     "utulsa_pride", "osu_tulsa",
     "circles_lgbtq",  # LGBTQ social org -- trust all events
     "circle_cinema", "philbrook_museum", "tulsa_arts_district",

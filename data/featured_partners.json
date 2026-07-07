@@ -1,6 +1,17 @@
 {
   "_note": "Add paying Featured Partners here. The directory generator reads this file and injects cards into the Featured Partners section. Each entry requires: name, url, description (2-3 sentences, Tulsa Gays voice), tier (community|partner|pride), monthly_fee, active (true/false). Address is optional.",
-  "partners": [],
+  "partners": [
+    {
+      "name": "PFLAG Tulsa",
+      "url": "https://tulsapflag.org/",
+      "description": "Parents, families, and allies showing up for 2SLGBTQIA+ Tulsans since before it was easy. Monthly first-Saturday meetings at Youth Services of Tulsa, education programs, and a soft landing for families figuring things out.",
+      "tier": "community",
+      "monthly_fee": 0,
+      "active": true,
+      "note": "Community partner (nonprofit, no fee) - cross-promo partnership 2026-07-07",
+      "address": "Youth Services of Tulsa, 311 S Madison Ave"
+    }
+  ],
   "_tiers": {
     "community": {
       "fee": 25

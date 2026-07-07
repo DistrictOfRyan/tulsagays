@@ -72,6 +72,19 @@ EVENT_KEYWORDS = [
 # priority      : 1 = primary LGBTQ org (fun one-offs, good featured/EOTW)
 # blurb         : short event-facing description suffix (no em dashes — preflight bans)
 ORGS: List[Dict] = [
+    {   # PFLAG Tulsa - cross-promo partner (Nicole, 2026-07-07). Meetings are
+        # first Saturdays (manual_events carries those); IG catches their
+        # special events, fundraisers, and education nights.
+        "username": "pflagtulsa",
+        "alt_usernames": [],
+        "source_name": "pflag_ig",
+        "default_venue": "Youth Services of Tulsa, 311 S Madison Ave",
+        "priority": 1,
+        "blurb": ("PFLAG Tulsa is parents, families, and allies showing up for 2SLGBTQIA+ "
+                  "Tulsans: monthly meetings, education, and advocacy. Everyone is welcome. "
+                  "Details at tulsapflag.org and @pflagtulsa."),
+    },
+
     {
         "username": "upflykai",
         "source_name": "klassic",
