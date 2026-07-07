@@ -4,7 +4,7 @@ Sources:
 - Visit Tulsa: https://www.visittulsa.com/events/
 - Downtown Tulsa: https://downtowntulsa.com/experience/calendar
 - Tulsa Arts District: https://thetulsaartsdistrict.org/events/list/
-- Public Radio Tulsa: https://www.publicradiotulsa.org/community-calendar
+- Public Radio Tulsa: RETIRED 2026-07-07 (calendar removed from the site; all paths 404)
 - TulsaPeople: https://www.tulsapeople.com/local-events/
 - ValueNews: https://valuenews.com/calendar-of-events
 - AllEvents.in Tulsa: https://allevents.in/tulsa
@@ -195,29 +195,12 @@ class CommunityCalendarScraper(BaseScraper):
     # ── Public Radio Tulsa ─────────────────────────────────────────────────
 
     def _scrape_public_radio_tulsa(self) -> List[Dict]:
-        url = "https://www.publicradiotulsa.org/community-calendar"
-        soup = self.fetch_page(url)
-        if not soup:
-            logger.info("[community_calendars] Public Radio Tulsa: no response")
-            return []
-
-        events = self._extract_json_ld(soup, "Public Radio Tulsa", priority=2)
-        if events:
-            self._random_delay()
-            return events
-
-        containers = (
-            soup.select(".event")
-            or soup.select(".calendar-event")
-            or soup.select("[class*='event']")
-        )
-        for container in containers[:30]:
-            event = self._parse_generic_container(container, "Public Radio Tulsa", url, 2)
-            if event:
-                events.append(event)
-
-        self._random_delay()
-        return events
+        # RETIRED 2026-07-07: publicradiotulsa.org removed its community
+        # calendar. Every path variant (/community-calendar, /events,
+        # /calendar, /community-calendar-events) returns 404, and the footer
+        # "Community Events" nav item is now a dead label with no link. No-op
+        # instead of hitting a 404 (and logging a scary ERROR) every scrape.
+        return []
 
     # ── TulsaPeople ────────────────────────────────────────────────────────
 
@@ -288,41 +271,11 @@ class CommunityCalendarScraper(BaseScraper):
     # ── AllEvents.in ───────────────────────────────────────────────────────
 
     def _scrape_allevents(self) -> List[Dict]:
-        # AllEvents.in uses a React frontend — try the search API first, then fall back to HTML
-        api_url = "https://allevents.in/api/index.php"
-        params = {
-            "city": "Tulsa",
-            "state": "Oklahoma",
-            "country": "US",
-            "format": "json",
-            "page": 1,
-            "limit": 50,
-        }
-        data = self.fetch_json(api_url, params=params)
-        if data and isinstance(data, dict):
-            items = data.get("data", data.get("events", data.get("results", [])))
-            if isinstance(items, list) and items:
-                events = []
-                for item in items[:40]:
-                    name = item.get("event_name") or item.get("name") or item.get("title", "")
-                    if not name:
-                        continue
-                    start = item.get("start_time") or item.get("start") or item.get("date", "")
-                    date_str = str(start)[:10] if start else ""
-                    time_str = str(start)[11:16] if start and "T" in str(start) else ""
-                    venue_info = item.get("venue") or item.get("location") or {}
-                    venue = venue_info.get("name", "Tulsa") if isinstance(venue_info, dict) else str(venue_info)[:80]
-                    description = (item.get("description") or item.get("event_description") or "")[:500]
-                    event_url = item.get("event_url") or item.get("url") or "https://allevents.in/tulsa"
-                    events.append(self.make_event(
-                        name=name, date=date_str, time=time_str,
-                        venue=venue, description=description, url=event_url, priority=2
-                    ))
-                if events:
-                    self._random_delay()
-                    return events
-
-        # Fallback: scrape HTML listing page
+        # AllEvents.in serves schema.org/Event JSON-LD in its listing-page HTML.
+        # The old /api/index.php JSON endpoint is dead (returns an HTML error
+        # page -> a noisy "Expecting value" ERROR every scrape), so go straight
+        # to the HTML the JSON-LD extractor actually reads (verified 2026-07-07:
+        # allevents.in/tulsa returns 200 with Event JSON-LD).
         url = "https://allevents.in/tulsa"
         soup = self.fetch_page(url)
         if not soup:

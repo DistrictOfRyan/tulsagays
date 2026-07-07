@@ -33,18 +33,26 @@ IDENTITY_SUPPLEMENTS = [
 ]
 
 
-def compile_lgbtq_keywords(keywords: Iterable[str]) -> Pattern:
-    """Compile an LGBTQ keyword list into a word-boundary regex.
+def compile_keywords(keywords: Iterable[str]) -> Pattern:
+    """Compile any keyword list into a word-boundary regex.
 
-    Longest-first alternation so multi-word phrases win over their own
-    substrings; case-insensitive matching is handled by lowercasing here
-    rather than callers pre-lowering their combined text (they still do,
-    harmlessly)."""
-    terms = list(dict.fromkeys(
-        [k.strip().lower() for k in keywords if k and k.strip()] + IDENTITY_SUPPLEMENTS
-    ))
+    Boundaries are (?<![a-z0-9]) ... (?![a-z0-9]) (matching runner.py's
+    identity regex), so punctuation counts as a boundary and hyphenated slugs
+    still match; a trailing optional 's' keeps plurals working. Longest-first
+    alternation so multi-word phrases win over their own substrings. Callers
+    lowercase their combined text (harmless with IGNORECASE)."""
+    terms = list(dict.fromkeys(k.strip().lower() for k in keywords if k and k.strip()))
+    if not terms:
+        return re.compile(r"(?!x)x")  # matches nothing
     alts = "|".join(re.escape(t) for t in sorted(terms, key=len, reverse=True))
     return re.compile(r"(?<![a-z0-9])(?:" + alts + r")s?(?![a-z0-9])", re.IGNORECASE)
+
+
+def compile_lgbtq_keywords(keywords: Iterable[str]) -> Pattern:
+    """compile_keywords plus the long-form identity supplements the old
+    substring stems caught implicitly ('bi' -> bisexual, 'trans' ->
+    transgender, etc.), so moving to word boundaries loses no coverage."""
+    return compile_keywords(list(keywords) + IDENTITY_SUPPLEMENTS)
 
 
 if __name__ == "__main__":

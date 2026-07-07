@@ -37,6 +37,7 @@ from scraper import (
     instagram_orgs,
     rendered_sites,
 )
+from scraper.relevance import compile_keywords
 
 logger = logging.getLogger(__name__)
 
@@ -144,6 +145,14 @@ JUNK_NAMES = {
 LGBTQ_SOURCES = getattr(config, "LGBTQ_SOURCES", set())
 COMMUNITY_PARTNER_KEYWORDS = getattr(config, "COMMUNITY_PARTNER_KEYWORDS", [])
 NON_LGBTQ_BLOCKLIST = _GENERIC_NON_LGBTQ_BLOCKLIST + getattr(config, "NON_LGBTQ_BLOCKLIST_CITY", [])
+
+# Word-boundary matchers for the community-keeper lists. Substring matching
+# used to keep an event as community_event on false hits ('market' inside
+# 'supermarket'/'marketing', 'panel' inside a random word); word boundaries
+# match runner's identity regex. Keeper lists only gate WEBSITE inclusion, so
+# this is lower-stakes than the LGBTQ gate, but the same correctness applies.
+_COMMUNITY_PARTNER_RX = compile_keywords(COMMUNITY_PARTNER_KEYWORDS)
+_COMMUNITY_CULTURE_RX = compile_keywords(COMMUNITY_CULTURE_KEYWORDS)
 
 
 
@@ -280,9 +289,9 @@ def _is_community_keeper(event: Dict) -> bool:
         event.get("venue", ""),
         event.get("url", ""),
     ]).lower()
-    if any(kw in combined for kw in COMMUNITY_PARTNER_KEYWORDS):
+    if _COMMUNITY_PARTNER_RX.search(combined):
         return True
-    return any(kw in combined for kw in COMMUNITY_CULTURE_KEYWORDS)
+    return bool(_COMMUNITY_CULTURE_RX.search(combined))
 
 
 # ── Geographic filter ──────────────────────────────────────────────────────
