@@ -52,6 +52,18 @@ def cmd_scrape():
     print("SCRAPING EVENTS")
     print("=" * 50)
 
+    # Pull emailed events (events@tulsagays.com) into manual_events BEFORE scraping,
+    # so every scrape "looks in there" and surfaces good submissions (William
+    # 2026-07-07). Best-effort: an intake hiccup must never abort the scrape.
+    try:
+        from tools import ingest_email_events
+        _em = ingest_email_events.ingest()
+        if _em.get("collected"):
+            print(f"[email-intake] {_em['collected']} emailed submission(s): "
+                  f"{len(_em['auto_published'])} auto-published, {len(_em['held'])} held for review")
+    except Exception as _e:
+        print(f"[email-intake] skipped ({type(_e).__name__}: {str(_e)[:80]})")
+
     from scraper.runner import main as run_scrapers
     events = run_scrapers()
     print(f"\nTotal events found: {len(events) if events else 0}")
@@ -557,15 +569,20 @@ def cmd_generate(post_type="weekday"):
             kids = any(k in combo for k in _KIDS_FILLER_KW)
             junk = _is_junk_name(e.get("name"))
             # GAY-FIRST (William 2026-06-15: "feature gay ones"), then a CLEAN title
-            # leads over a cryptic scraped one (William 2026-06-29), then keep kids'/
-            # daytime-library filler OUT, then one-off before recurring, then fun.
+            # leads over a cryptic scraped one (William 2026-06-29), then ONE-TIME
+            # events lead over recurring ones (William 2026-07-07: "one-time events
+            # are WAY more important than repeating"), then keep kids' filler OUT,
+            # then fun. A submitted/emailed one-off (source submission/manual/email)
+            # is surfaced alongside the best scraped one-offs.
+            submitted = (e.get("source") or "").lower() in ("submission", "manual", "email")
             return (
                 0 if lg else 1,            # 1) gay events lead, always
                 1 if junk else 0,          # 2) clean-titled events lead over junk-named ones
-                1 if kids else 0,          # 3) kids/library filler sinks below adult events
-                1 if rec else 0,           # 4) one-off before weekly/recurring
-                0 if fun else 1,           # 5) fun, leave-the-house events first
-                _slide_priority(e),        # 6) existing tier/time tiebreak
+                1 if rec else 0,           # 3) ONE-TIME events lead over weekly/recurring (top signal)
+                0 if (submitted and not rec) else 1,  # 4) a good emailed one-off gets surfaced
+                1 if kids else 0,          # 5) kids/library filler sinks below adult events
+                0 if fun else 1,           # 6) fun, leave-the-house events first
+                _slide_priority(e),        # 7) existing tier/time tiebreak
             )
 
         # Only eligible (fun / one-off / inclusive, non-service) events ever
