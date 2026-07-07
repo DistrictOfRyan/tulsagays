@@ -24,6 +24,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
 from scraper.playwright_scrapers import PlaywrightBaseScraper, _parse_iso_datetime
 from scraper import dynamic_sources as _dyn
+from scraper.relevance import compile_lgbtq_keywords
 
 logger = logging.getLogger(__name__)
 
@@ -131,9 +132,12 @@ def _is_in_week(date_str: str, week_offset: int = 0) -> bool:
         return False
 
 
+_LGBTQ_RX = compile_lgbtq_keywords(LGBTQ_KEYWORDS)
+
+
 def _is_lgbtq_relevant(name: str, description: str = "") -> bool:
     combined = (name + " " + description).lower()
-    return any(kw in combined for kw in LGBTQ_KEYWORDS)
+    return bool(_LGBTQ_RX.search(combined))
 
 
 class FacebookEventsScraper(PlaywrightBaseScraper):

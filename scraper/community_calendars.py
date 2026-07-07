@@ -24,6 +24,7 @@ from typing import List, Dict, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from scraper.base import BaseScraper
+from scraper.relevance import compile_lgbtq_keywords
 
 logger = logging.getLogger(__name__)
 
@@ -50,10 +51,13 @@ LGBTQ_KEYWORDS = [
 ]
 
 
+_LGBTQ_RX = compile_lgbtq_keywords(LGBTQ_KEYWORDS)
+
+
 def _is_lgbtq_relevant(name: str, description: str = "") -> bool:
-    """Return True if the event appears LGBTQ-relevant."""
+    """Return True if the event appears LGBTQ-relevant (word-boundary match)."""
     combined = (name + " " + description).lower()
-    return any(kw in combined for kw in LGBTQ_KEYWORDS)
+    return bool(_LGBTQ_RX.search(combined))
 
 
 class CommunityCalendarScraper(BaseScraper):

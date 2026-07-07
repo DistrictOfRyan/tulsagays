@@ -25,6 +25,7 @@ from typing import List, Dict, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from scraper.base import BaseScraper
+from scraper.relevance import compile_lgbtq_keywords
 
 logger = logging.getLogger(__name__)
 
@@ -53,9 +54,12 @@ LGBTQ_KEYWORDS = [
 ]
 
 
+_LGBTQ_RX = compile_lgbtq_keywords(LGBTQ_KEYWORDS)
+
+
 def _is_lgbtq_relevant(name: str, description: str = "") -> bool:
     combined = (name + " " + description).lower()
-    return any(kw in combined for kw in LGBTQ_KEYWORDS)
+    return bool(_LGBTQ_RX.search(combined))
 
 
 # ── Week range helper ──────────────────────────────────────────────────────────
@@ -961,22 +965,15 @@ class CircleCinemaScraper(PlaywrightBaseScraper):
     # synopsis text specifically.
     SYNOPSIS_LGBTQ_PHRASES = [
         "coming out", "same-sex", "same sex", "dating girls", "dating boys",
-        "her girlfriend", "his boyfriend", "gender identity", "lgbt",
+        "her girlfriend", "his boyfriend", "gender identity",
     ]
+    _FILM_RX = compile_lgbtq_keywords(LGBTQ_KEYWORDS + SYNOPSIS_LGBTQ_PHRASES)
 
     def _film_is_lgbtq(self, title: str, synopsis: str) -> bool:
-        """Word-boundary variant of _is_lgbtq_relevant.
-
-        The shared filter is plain substring matching, which admits false
-        positives here ("bi" fires inside "billion"); word boundaries keep the
-        same keyword list honest for film copy. Checked against the FULL
-        synopsis, not the truncated event description."""
-        import re as _re
+        """_is_lgbtq_relevant plus the synopsis-phrase supplements, checked
+        against the FULL synopsis rather than the truncated event description."""
         combined = f"{title} {synopsis}".lower()
-        for kw in LGBTQ_KEYWORDS + self.SYNOPSIS_LGBTQ_PHRASES:
-            if _re.search(rf"\b{_re.escape(kw)}\b", combined):
-                return True
-        return False
+        return bool(self._FILM_RX.search(combined))
 
     _MONTH_NUM = {
         "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
