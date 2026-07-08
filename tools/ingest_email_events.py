@@ -69,25 +69,24 @@ def _is_one_time(entry: dict) -> bool:
 
 
 def _autorespond(senders: set, now: datetime) -> str:
-    cfg = _load(CONFIG_FILE, {})
+    """Auto-reply with submission instructions, from events@tulsagays.com via Brevo
+    (anonymous; never William's address). Once per sender."""
     log = _load(AUTOREPLY_LOG, {"replied": []})
     already = {a.lower() for a in log.get("replied", [])}
     fresh = [s for s in senders if s and s.lower() not in already]
     if not fresh:
         return "0"
-    if not cfg.get("alias_verified"):
-        return f"HELD ({len(fresh)} awaiting events@ alias)"
+    from tools import brevo_send
+    if not brevo_send._key():
+        return f"HELD ({len(fresh)} - no Brevo key)"
     body = AUTORESPONSE_TXT.read_text(encoding="utf-8")
-    sys.path.insert(0, str(SCRIPTS))
-    from send_gmail import send_email
     sent = 0
     for s in fresh:
-        try:
-            send_email(s, "Thanks for sending us your event", body, account="tulsagays",
-                       verified_evidence=f"submitted an event to events@tulsagays.com on {now:%Y-%m-%d}")
+        ok, detail = brevo_send.send(s, "Thanks for sending us your event", body)
+        if ok:
             log.setdefault("replied", []).append(s); sent += 1
-        except Exception as e:
-            logger.warning("[email] autoresponse to %s failed: %s", s, str(e)[:120])
+        else:
+            logger.warning("[email] autoresponse to %s failed: %s", s, detail)
     AUTOREPLY_LOG.write_text(json.dumps(log, indent=2), encoding="utf-8")
     return f"{sent} sent"
 
