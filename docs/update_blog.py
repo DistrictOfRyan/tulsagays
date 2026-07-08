@@ -285,7 +285,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tulsa Gays - Your Weekly LGBTQ+ Event Guide for Tulsa</title>
     <meta name="description" content="Tulsa Gays is your weekly LGBTQ+ event guide for Tulsa, Oklahoma. Find LGBTQIA+ events, pride happenings, drag shows, community gatherings, and more.">
-    <meta name="keywords" content="Tulsa LGBTQ events, Tulsa gay events, Tulsa pride, LGBTQIA+ Tulsa, Tulsa drag shows, LGBTQ Oklahoma, Tulsa nightlife, Homo Hotel Happy Hour, OKEQ events">
+    <meta name="keywords" content="Tulsa LGBTQ events, Tulsa gay events, Tulsa pride, LGBTQIA+ Tulsa, Tulsa drag shows, LGBTQ Oklahoma, Tulsa nightlife, OKEQ events">
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="Tulsa Gays - Weekly LGBTQ+ Events">
     <meta property="og:description" content="Your weekly guide to LGBTQ+ events in Tulsa, Oklahoma. Community gatherings, nightlife, arts, and more.">
@@ -407,7 +407,7 @@ INDEX_TEMPLATE = r"""<!DOCTYPE html>
         <div class="footer-inner">
             <p>Follow us on Instagram: <a href="https://instagram.com/tulsagays" target="_blank" rel="noopener">@tulsagays</a></p>
             <p>Updated weekly &middot; Your guide to LGBTQ+ Tulsa</p>
-            <p style="font-size:0.75em;opacity:0.55;margin-top:0.5em">&copy; 2026 Tulsa Gays&#8482; &middot; Homo Hotel Happy Hour&#8482;</p>
+            <p style="font-size:0.75em;opacity:0.55;margin-top:0.5em">&copy; 2026 Tulsa Gays&#8482;</p>
         </div>
     </footer>
 </body>
@@ -468,7 +468,7 @@ ARCHIVE_TEMPLATE = r"""<!DOCTYPE html>
         <div class="footer-inner">
             <p>Follow us on Instagram: <a href="https://instagram.com/tulsagays" target="_blank" rel="noopener">@tulsagays</a></p>
             <p>Updated weekly &middot; Your guide to LGBTQ+ Tulsa</p>
-            <p style="font-size:0.75em;opacity:0.55;margin-top:0.5em">&copy; 2026 Tulsa Gays&#8482; &middot; Homo Hotel Happy Hour&#8482;</p>
+            <p style="font-size:0.75em;opacity:0.55;margin-top:0.5em">&copy; 2026 Tulsa Gays&#8482;</p>
         </div>
     </footer>
 </body>
