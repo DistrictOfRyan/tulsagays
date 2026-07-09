@@ -232,6 +232,20 @@ def run(week_key=None):
         if frag and not any(frag in (e.get("name", "").lower()) for e in eotw):
             errors.append(f"[events] manual EOTW '{frag}' was pinned but is not in the cover EOTW set")
 
+    # Recompute never-feature LIVE against the current signal list — the flag
+    # persisted in the manifest is only as new as the generate run. W28 shipped
+    # "(Cancelled) Clothing Swap!" as a Saturday highlight because the cancelled
+    # signal was added AFTER Monday's generate, and this gate trusted the stale
+    # flag. Signal additions must retroactively protect an already-built deck.
+    try:
+        from scraper.runner import _is_never_feature as _live_never_feature
+        from scraper.runner import _is_cancelled as _live_cancelled
+        from scraper.runner import _same_event_by_venue as _same_event
+    except Exception:
+        _live_never_feature = lambda _e: False
+        _live_cancelled = lambda _e: False
+        _same_event = lambda _a, _b: False
+
     featured_all = []
     for day, evs in featured_by_day.items():
         # HARD RULE (William): every day must have at least 3 featured events.
@@ -239,9 +253,20 @@ def run(week_key=None):
             errors.append(f"[events] {day} has only {len(evs)} featured event(s) — HARD RULE requires >=3 per day (fix scrape supply)")
         if len(evs) > 3:
             warnings.append(f"[events] {day} has {len(evs)} featured (>3)")
+        # HARD RULE (William 2026-07-08): the featured 3 are 3 DISTINCT events.
+        # W28 Saturday seated the same Elote drag brunch twice under two titles.
+        for i in range(len(evs)):
+            for j in range(i + 1, len(evs)):
+                if _same_event(evs[i], evs[j]):
+                    errors.append(
+                        f"[events] {day} features the SAME event twice: "
+                        f"'{evs[i].get('name')}' and '{evs[j].get('name')}' "
+                        f"(same venue + date + overlapping name) — fix dedup, regenerate")
         for e in evs:
             featured_all.append(e)
-            if e.get("never_feature"):
+            if _live_cancelled(e):
+                errors.append(f"[events] {day} features a CANCELLED/postponed event: '{e.get('name')}'")
+            elif e.get("never_feature") or _live_never_feature(e):
                 errors.append(f"[events] {day} features a never-feature/service event: '{e.get('name')}'")
             # Quality guards (insurance behind tools/clean_event_data.py): a
             # featured event is on a slide, so flag artifacts that should have
@@ -259,6 +284,12 @@ def run(week_key=None):
                     errors.append(f"[events] {day} features out-of-week event '{e.get('name')}' ({d})")
             except Exception:
                 errors.append(f"[events] featured event '{e.get('name')}' has bad/missing date '{d}'")
+
+    for e in eotw:
+        if _live_cancelled(e):
+            errors.append(f"[events] EOTW '{e.get('name')}' is CANCELLED/postponed")
+        elif e.get("never_feature") or _live_never_feature(e):
+            errors.append(f"[events] EOTW '{e.get('name')}' is a never-feature/service event")
 
     if featured_all:
         gay = sum(1 for e in featured_all if e.get("flamingo", 0) >= 4 or e.get("lgbtq_relevant"))

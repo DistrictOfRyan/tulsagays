@@ -181,8 +181,57 @@ def _same_date(date_a: str, date_b: str) -> bool:
     return date_a.strip() == date_b.strip()
 
 
+def _venues_match(venue_a: str, venue_b: str) -> bool:
+    """One normalized venue contains the other (long enough to be meaningful).
+    Catches 'Elote Cafe & Catering' vs 'Elote Cafe & Catering, 514 S Boston Ave'."""
+    a, b = _normalize(venue_a or ""), _normalize(venue_b or "")
+    if len(a) < 8 or len(b) < 8:
+        return False
+    return a in b or b in a
+
+
+# Words too generic to prove two same-venue titles are one event ("Non-binary
+# Support Group" vs "Gender Outreach Support Group" are DIFFERENT groups).
+_VENUE_DEDUP_GENERIC = {
+    "support", "group", "night", "meeting", "weekly", "monthly", "annual",
+    "tulsa", "event", "events", "with", "presents", "featuring",
+}
+
+
+def _same_event_by_venue(ev_a: Dict, ev_b: Dict) -> bool:
+    """Same date + same venue + names sharing >=2 significant words = one real
+    event scraped under two different titles. Name similarity alone missed
+    W28's 'Elote Drag Brunch' (recurring) vs 'Drag Brunch : jul. 11th - stars,
+    stripes & sequins' (community_groups) — both at Elote on the same Saturday,
+    which put the same brunch in two of Saturday's three featured slots.
+
+    Only DISTINCTIVE shared words count: generic event-type words are ignored,
+    and so are words of the venue itself leaking into a title ('Happy Hour at
+    Saturn Room' vs 'Record Night at Saturn Room' are different events)."""
+    if not _same_date(ev_a.get("date", ""), ev_b.get("date", "")):
+        return False
+    if not _venues_match(ev_a.get("venue"), ev_b.get("venue")):
+        return False
+    venue_words = {w for w in _normalize((ev_a.get("venue") or "") + " " + (ev_b.get("venue") or "")).split()
+                   if len(w) >= 4}
+
+    def _tokens(name):
+        out = set()
+        for w in _normalize(name or "").split():
+            if len(w) < 4 or w in _VENUE_DEDUP_GENERIC:
+                continue
+            # venue word (or an address-glued variant like 'room209') in a title
+            if any(v.startswith(w) or w.startswith(v) for v in venue_words):
+                continue
+            out.add(w)
+        return out
+
+    return len(_tokens(ev_a.get("name")) & _tokens(ev_b.get("name"))) >= 2
+
+
 def deduplicate(events: List[Dict]) -> List[Dict]:
-    """Remove duplicate events based on name + date similarity."""
+    """Remove duplicate events based on name + date similarity, or same
+    venue + date + overlapping name words (the cross-source rename case)."""
     if not events:
         return []
 
@@ -190,21 +239,48 @@ def deduplicate(events: List[Dict]) -> List[Dict]:
     for event in events:
         is_dup = False
         for i, existing in enumerate(unique):
-            if _are_similar(event["name"], existing["name"]) and _same_date(event["date"], existing["date"]):
+            if (_are_similar(event["name"], existing["name"]) and _same_date(event["date"], existing["date"])) \
+                    or _same_event_by_venue(event, existing):
                 is_dup = True
                 # Collect all unique URLs from both events before deciding winner
                 merged_urls = list(dict.fromkeys(
                     (existing.get("source_urls") or []) + (event.get("source_urls") or [])
                 ))
-                if event["priority"] < existing["priority"]:
+                # A live-scraped record BEATS the hardcoded recurring one: the
+                # scrape proves a SPECIAL instance ('Drag Brunch : ... stars,
+                # stripes & sequins' vs the recurring 'Elote Drag Brunch'),
+                # and source=recurring is barred from EOTW — letting recurring
+                # win the merge silently demoted the week's top event.
+                rec_event = (event.get("source") == "recurring")
+                rec_existing = (existing.get("source") == "recurring")
+                if rec_event != rec_existing:
+                    if rec_existing:
+                        unique[i] = event
+                elif event["priority"] < existing["priority"]:
                     unique[i] = event
                 elif event["priority"] == existing["priority"]:
                     event_info = sum(1 for v in event.values() if v)
                     existing_info = sum(1 for v in existing.values() if v)
                     if event_info > existing_info:
                         unique[i] = event
-                # Apply the merged URL list to whichever event won
-                unique[i]["source_urls"] = merged_urls
+                # Backfill the winner from the loser so a merge never LOSES
+                # information (address venue, richer description/time, URL).
+                winner = unique[i]
+                loser = existing if winner is event else event
+
+                def _has_addr(v):
+                    return "," in (v or "") or any(c.isdigit() for c in (v or ""))
+                if _has_addr(loser.get("venue")) and not _has_addr(winner.get("venue")):
+                    winner["venue"] = loser["venue"]
+                if len(loser.get("description") or "") > len(winner.get("description") or ""):
+                    winner["description"] = loser["description"]
+                if loser.get("url") and not winner.get("url"):
+                    winner["url"] = loser["url"]
+                if loser.get("time") and not winner.get("time"):
+                    winner["time"] = loser["time"]
+                if loser.get("lgbtq_relevant"):
+                    winner["lgbtq_relevant"] = True
+                winner["source_urls"] = merged_urls
                 break
         if not is_dup:
             unique.append(event)
@@ -351,7 +427,27 @@ _NEVER_FEATURE_SIGNALS = (
 )
 
 
+# A cancelled/postponed event must NEVER be a highlighted pick (W28 featured
+# "(Cancelled) Clothing Swap!" as a Saturday hero). Names get word-boundary
+# matching in any spelling/format; descriptions only match explicit
+# "this event is off" phrasing so ticket boilerplate like "free cancellation"
+# or a "cancellation policy" paragraph never fires.
+_CANCELLED_NAME_RE = re.compile(r"\b(cancell?ed|postponed|rescheduled)\b", re.IGNORECASE)
+_CANCELLED_DESC_RE = re.compile(
+    r"\b(has been|have been|is|are|was|were|event)\s+(cancell?ed|postponed)\b"
+    r"|\bcancell?ed due to\b|\bno longer happening\b",
+    re.IGNORECASE)
+
+
+def _is_cancelled(event: Dict) -> bool:
+    if _CANCELLED_NAME_RE.search(event.get("name") or ""):
+        return True
+    return bool(_CANCELLED_DESC_RE.search(event.get("description") or ""))
+
+
 def _is_never_feature(event: Dict) -> bool:
+    if _is_cancelled(event):
+        return True
     text = ((event.get("name") or "") + " " + (event.get("description") or "")).lower()
     return any(sig in text for sig in _NEVER_FEATURE_SIGNALS)
 

@@ -319,6 +319,64 @@ def test_ybr_highlighting():
         check("inclusive-note helper importable", False, str(e))
 
 
+# ── W28 Saturday carousel failures (William 2026-07-08): the same Elote drag
+# brunch featured twice under two titles + a cancelled event as the third
+# highlight. Locks: cross-source venue dedup, cancelled detection, and that
+# neither guard over-fires on legit distinct events / ticket boilerplate.
+def test_w28_saturday_dedup_and_cancelled():
+    print("W28 Saturday dedup + cancelled locks:")
+    try:
+        from scraper.runner import (_same_event_by_venue, _is_cancelled,
+                                    _is_never_feature, deduplicate)
+    except Exception as e:
+        check("runner dedup/cancelled helpers importable", False, str(e))
+        return
+    a = {"name": "Elote Drag Brunch", "date": "2026-07-11",
+         "venue": "Elote Cafe & Catering, 514 S Boston Ave",
+         "priority": 1, "source": "recurring"}
+    b = {"name": "Drag Brunch : jul. 11th - stars, stripes & sequins",
+         "date": "2026-07-11", "venue": "Elote Cafe & Catering",
+         "priority": 2, "source": "community_groups"}
+    check("Elote brunch under two titles = ONE event", _same_event_by_venue(a, b))
+    check("deduplicate() collapses the Elote pair", len(deduplicate([dict(a), dict(b)])) == 1)
+    check("'(Cancelled) Clothing Swap!' is cancelled",
+          _is_cancelled({"name": "(Cancelled) Clothing Swap!", "description": ""}))
+    check("cancelled implies never_feature",
+          _is_never_feature({"name": "CANCELED: Pride Picnic", "description": ""}))
+    check("'has been cancelled' in description caught",
+          _is_cancelled({"name": "Movie Night",
+                         "description": "This event has been cancelled due to weather."}))
+    # Must-NOT-fire cases
+    check("two different DJs same bar NOT merged",
+          not _same_event_by_venue(
+              {"name": "DJ | Gus", "date": "2026-07-11", "venue": "Club Majestic"},
+              {"name": "DJ | Sir Juice", "date": "2026-07-11", "venue": "Club Majestic"}))
+    check("same event name on DIFFERENT dates NOT venue-merged",
+          not _same_event_by_venue(
+              {"name": "Elote Drag Brunch", "date": "2026-07-11", "venue": "Elote Cafe & Catering"},
+              {"name": "Elote Drag Brunch", "date": "2026-07-12", "venue": "Elote Cafe & Catering"}))
+    check("'free cancellation' ticket boilerplate NOT flagged",
+          not _is_cancelled({"name": "Comedy Show",
+                             "description": "Free cancellation up to 24 hours. Flexible cancellation policy."}))
+    # Real W28 near-misses surfaced by the dry-run: distinct same-venue events
+    # sharing only GENERIC words or the VENUE's own name must never merge.
+    eq = "Dennis R. Neill Equality Center, 621 E 4th St"
+    check("two different support groups NOT merged",
+          not _same_event_by_venue(
+              {"name": "Gender Outreach Support Group", "date": "2026-07-08", "venue": eq},
+              {"name": "Non-binary Support Group", "date": "2026-07-08", "venue": eq}))
+    sat = "Saturn Room209 N Boulder, Tulsa, OK, United States"
+    check("venue name in two titles NOT merge evidence",
+          not _same_event_by_venue(
+              {"name": "Happy Hour at Saturn Room", "date": "2026-07-06", "venue": sat},
+              {"name": "Record Night at Saturn Room", "date": "2026-07-06", "venue": sat}))
+    ybr = "Yellow Brick Road, 2630 E 15th St"
+    check("'Clothing Swap' vs 'Monthly Clothing Swap at YBR' IS merged",
+          _same_event_by_venue(
+              {"name": "Clothing Swap", "date": "2026-07-06", "venue": ybr},
+              {"name": "Monthly Clothing Swap at YBR", "date": "2026-07-06", "venue": ybr}))
+
+
 def main():
     print("=== TulsaGays pipeline regression suite ===")
     test_classifier()
@@ -334,6 +392,7 @@ def main():
     test_gpra_source_registered()
     test_graphic_gate()
     test_ybr_highlighting()
+    test_w28_saturday_dedup_and_cancelled()
     print()
     if FAILS:
         print(f"[X] {len(FAILS)} FAILED: {', '.join(FAILS)}")

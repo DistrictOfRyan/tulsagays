@@ -513,8 +513,14 @@ def cmd_generate(post_type="weekday"):
             # Belt-and-braces: the scrape-time NON_LGBTQ blocklist also bars the
             # slide (data scraped BEFORE a blocklist addition still carries the
             # event — W28's "Trans-Miss" golf led Tuesday this way).
+            # Same for never-feature: recompute LIVE, never trust only the flag
+            # persisted at scrape time — W28's "(Cancelled) Clothing Swap!" was
+            # scraped before the cancelled signal existed, so its stale flag
+            # sailed it into Saturday's featured 3.
             try:
-                from scraper.runner import NON_LGBTQ_BLOCKLIST as _BL
+                from scraper.runner import NON_LGBTQ_BLOCKLIST as _BL, _is_never_feature as _live_nf
+                if _live_nf(e):
+                    return False
                 _c = ((e.get("name") or "") + " " + (e.get("venue") or "")).lower()
                 if any(kw in _c for kw in _BL):
                     return False
@@ -597,15 +603,31 @@ def cmd_generate(post_type="weekday"):
         # with genuinely LGBTQ events when the day has them; only backfill with
         # inclusive community events when there aren't enough gay events that day.
         lg = [e for e in feat_pool if _is_lgbtq_strict(e)]
+
+        # The featured 3 must be 3 DISTINCT events. _dedup_day runs first, but
+        # if a rename slips past it (W28: the Elote brunch under two titles
+        # filled two of Saturday's three slots), never seat the same real
+        # event twice — same venue + date + overlapping name words = one event.
+        def _dup_of_picked(e, picked):
+            try:
+                from scraper.runner import _same_event_by_venue as _sev
+            except Exception:
+                return False
+            return any(_sev(e, p) for p in picked)
+
         top, seen = [], set()
         for e in lg:
             if len(top) >= target:
                 break
+            if _dup_of_picked(e, top):
+                continue
             top.append(e); seen.add(id(e))
         for e in feat_pool:
             if len(top) >= target:
                 break
             if id(e) not in seen:
+                if _dup_of_picked(e, top):
+                    continue
                 top.append(e); seen.add(id(e))
         # Remaining eligible events keep their rank order behind the featured 3
         # (they drive the "N more events" count). Services never appear here.
@@ -674,9 +696,18 @@ def cmd_generate(post_type="weekday"):
             idx = seen.get(key)
             if idx is None:
                 # Fuzzy fallback: a near-identical name on the SAME date is the
-                # same real event scraped twice. Collapse it into the first copy.
+                # same real event scraped twice — OR same venue + date with
+                # overlapping name words (W28: 'Elote Drag Brunch' vs 'Drag
+                # Brunch : jul. 11th - stars, stripes & sequins', one brunch
+                # under two titles that took two featured slots).
+                try:
+                    from scraper.runner import _same_event_by_venue as _sev
+                except Exception:
+                    _sev = lambda _a, _b: False
                 for _j, _ex in enumerate(result):
-                    if _ex.get('date', '') == date and _fuzzy_same(ev.get('name', ''), _ex.get('name', '')):
+                    if _ex.get('date', '') == date and (
+                            _fuzzy_same(ev.get('name', ''), _ex.get('name', ''))
+                            or _sev(ev, _ex)):
                         idx = _j
                         break
             if idx is None:
