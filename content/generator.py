@@ -346,39 +346,71 @@ def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "so
     # starts with a minimal session.
     import os as _os
     neutral_cwd = _os.path.expanduser("~")
+
+    # Sanity: if the CLI echoed a fixed-string error, treat as failure so the
+    # caller falls back to rule-based copy. The CLI prints connection/API
+    # failures to stdout (exit 0), so without this guard the error text gets
+    # saved AS the caption. W26 (2026-06-23) shipped the literal string
+    # "API Error: Unable to connect to API (FailedToOpenSocket)" as a caption
+    # because the old guard only matched "error:", not "api error".
+    _err_prefixes = (
+        "prompt is too long", "error:", "rate limit", "api error",
+        "execution error", "credit balance", "unable to connect",
+        "overloaded", "internal server error", "failed to authenticate",
+        "invalid authentication", "401", "403",
+    )
+
+    # Dual-token failover (same mechanism as instagram_orgs._claude_cli_complete
+    # and the runner's claude-tier tasks): default auth first, then each stored
+    # fleet token. Nested-session env vars (CLAUDE_CODE_*) make `claude -p`
+    # 401 when invoked from inside a live Claude Code session — strip them.
+    attempts = [None]
     try:
-        # timeout default raised 120 -> 300 (2026-06-12): W23/W24 enrichment
-        # batches timed out at 120s, fell back to rule-based templates, and
-        # shipped 165 pool-filler descriptions to the website.
-        r = subprocess.run(
-            [claude_bin, "-p", "--model", model],
-            input=merged,
-            capture_output=True,
-            text=True,
-            timeout=timeout,
-            encoding="utf-8",
-            errors="replace",
-            cwd=neutral_cwd,
-        )
-        out = (r.stdout or "").strip()
-        # Sanity: if the CLI echoed a fixed-string error, treat as failure so the
-        # caller falls back to rule-based copy. The CLI prints connection/API
-        # failures to stdout (exit 0), so without this guard the error text gets
-        # saved AS the caption. W26 (2026-06-23) shipped the literal string
-        # "API Error: Unable to connect to API (FailedToOpenSocket)" as a caption
-        # because the old guard only matched "error:", not "api error".
-        _err_prefixes = (
-            "prompt is too long", "error:", "rate limit", "api error",
-            "execution error", "credit balance", "unable to connect",
-            "overloaded", "internal server error", "failed to authenticate",
-            "invalid authentication", "401", "403",
-        )
-        if not out or out.lower().startswith(_err_prefixes):
+        _vals = {}
+        with open(_os.path.join(_os.path.expanduser("~"), ".credentials",
+                                "claude_tokens.env"), encoding="utf-8") as _tf:
+            for _line in _tf:
+                if "=" in _line and not _line.strip().startswith("#"):
+                    _k, _v = _line.split("=", 1)
+                    _vals[_k.strip()] = _v.strip()
+        for _key in ("CLAUDE_TOKEN_PRIMARY", "CLAUDE_TOKEN_SECONDARY"):
+            if _vals.get(_key):
+                attempts.append(_vals[_key])
+    except Exception:
+        pass
+
+    for tok in attempts:
+        env = _os.environ.copy()
+        for k in list(env):
+            if k.startswith("CLAUDE_CODE_") or k in ("CLAUDECODE", "CLAUDE_EFFORT",
+                                                     "CLAUDE_CHROME_PERMISSION_MODE"):
+                env.pop(k, None)
+        if tok:
+            env["CLAUDE_CODE_OAUTH_TOKEN"] = tok
+        try:
+            # timeout default raised 120 -> 300 (2026-06-12): W23/W24 enrichment
+            # batches timed out at 120s, fell back to rule-based templates, and
+            # shipped 165 pool-filler descriptions to the website.
+            r = subprocess.run(
+                [claude_bin, "-p", "--model", model],
+                input=merged,
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+                encoding="utf-8",
+                errors="replace",
+                cwd=neutral_cwd,
+                env=env,
+            )
+            out = (r.stdout or "").strip()
+            if out and not out.lower().startswith(_err_prefixes):
+                return out
+            print(f"[generator] claude CLI ({'stored-token' if tok else 'default-auth'}) "
+                  f"failed: {(out or r.stderr or 'empty')[:100]} — trying next auth")
+        except Exception as e:
+            print(f"[generator] claude CLI fallback failed: {e}")
             return ""
-        return out
-    except Exception as e:
-        print(f"[generator] claude CLI fallback failed: {e}")
-        return ""
+    return ""
 
 
 def _call_claude(user_prompt: str) -> str:

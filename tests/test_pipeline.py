@@ -377,6 +377,18 @@ def test_w28_saturday_dedup_and_cancelled():
               {"name": "Monthly Clothing Swap at YBR", "date": "2026-07-06", "venue": ybr}))
 
 
+# ── Final deck review (William 2026-07-09): the last-eyes pass over the
+# generated deck — cancelled, dupes, recurring-vs-one-off, best picks.
+def test_final_deck_review():
+    print("final deck review selftest:")
+    try:
+        sys.path.insert(0, os.path.join(ROOT, "tools"))
+        import final_deck_review as fdr
+        check("final_deck_review selftest passes", fdr._selftest() == 0)
+    except Exception as e:
+        check("final_deck_review importable", False, str(e))
+
+
 def main():
     print("=== TulsaGays pipeline regression suite ===")
     test_classifier()
@@ -393,6 +405,7 @@ def main():
     test_graphic_gate()
     test_ybr_highlighting()
     test_w28_saturday_dedup_and_cancelled()
+    test_final_deck_review()
     print()
     if FAILS:
         print(f"[X] {len(FAILS)} FAILED: {', '.join(FAILS)}")

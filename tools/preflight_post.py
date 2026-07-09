@@ -232,19 +232,45 @@ def run(week_key=None):
         if frag and not any(frag in (e.get("name", "").lower()) for e in eotw):
             errors.append(f"[events] manual EOTW '{frag}' was pinned but is not in the cover EOTW set")
 
-    # Recompute never-feature LIVE against the current signal list — the flag
-    # persisted in the manifest is only as new as the generate run. W28 shipped
-    # "(Cancelled) Clothing Swap!" as a Saturday highlight because the cancelled
-    # signal was added AFTER Monday's generate, and this gate trusted the stale
-    # flag. Signal additions must retroactively protect an already-built deck.
+    # FINAL DECK REVIEW — rule layer (William 2026-07-08/09). One shared
+    # implementation in tools/final_deck_review.py, re-run LIVE on every gate
+    # check so a signal added after Monday's generate still retroactively
+    # protects the deck (W28 shipped "(Cancelled) Clothing Swap!" + the same
+    # Elote brunch twice because this gate trusted flags persisted at scrape
+    # time). Covers: cancelled/never-feature in featured+EOTW, duplicate
+    # events in the featured 3 AND the full shown list, recurring-over-one-off
+    # warnings. An import failure is a BLOCK, not a silent skip — this layer
+    # replaced the inline checks, so losing it would mean losing the gate.
     try:
-        from scraper.runner import _is_never_feature as _live_never_feature
-        from scraper.runner import _is_cancelled as _live_cancelled
-        from scraper.runner import _same_event_by_venue as _same_event
-    except Exception:
-        _live_never_feature = lambda _e: False
-        _live_cancelled = lambda _e: False
-        _same_event = lambda _a, _b: False
+        try:
+            from tools.final_deck_review import deterministic_pass as _fdr_pass
+        except ImportError:
+            from final_deck_review import deterministic_pass as _fdr_pass  # run from tools/
+        _fe, _fw = _fdr_pass(manifest)
+        errors.extend(_fe)
+        warnings.extend(_fw)
+    except Exception as _e:
+        errors.append(f"[final] final deck review rule layer failed to run ({_e}) — fix tools/final_deck_review.py before posting")
+
+    # LLM-editor findings persisted by the generate-time final review run.
+    _fr_path = os.path.join(post_dir, "final_review.json")
+    if not os.path.exists(_fr_path):
+        warnings.append("[final] no final_review.json — run tools/final_deck_review.py for the LLM editor pass")
+    else:
+        try:
+            _fr = json.load(open(_fr_path, encoding="utf-8"))
+            _mt = _fr.get("manifest_mtime")
+            if _mt and abs(_mt - os.path.getmtime(manifest_path)) > 1:
+                warnings.append("[final] final_review.json is STALE (deck regenerated since) — re-run tools/final_deck_review.py")
+            else:
+                for _line in _fr.get("errors", []):
+                    if _line.startswith("[final-llm]") and _line not in errors:
+                        errors.append(_line)
+                for _line in _fr.get("warnings", []):
+                    if _line.startswith("[final-llm]") and _line not in warnings:
+                        warnings.append(_line)
+        except Exception:
+            warnings.append("[final] final_review.json unreadable — re-run tools/final_deck_review.py")
 
     featured_all = []
     for day, evs in featured_by_day.items():
@@ -253,21 +279,8 @@ def run(week_key=None):
             errors.append(f"[events] {day} has only {len(evs)} featured event(s) — HARD RULE requires >=3 per day (fix scrape supply)")
         if len(evs) > 3:
             warnings.append(f"[events] {day} has {len(evs)} featured (>3)")
-        # HARD RULE (William 2026-07-08): the featured 3 are 3 DISTINCT events.
-        # W28 Saturday seated the same Elote drag brunch twice under two titles.
-        for i in range(len(evs)):
-            for j in range(i + 1, len(evs)):
-                if _same_event(evs[i], evs[j]):
-                    errors.append(
-                        f"[events] {day} features the SAME event twice: "
-                        f"'{evs[i].get('name')}' and '{evs[j].get('name')}' "
-                        f"(same venue + date + overlapping name) — fix dedup, regenerate")
         for e in evs:
             featured_all.append(e)
-            if _live_cancelled(e):
-                errors.append(f"[events] {day} features a CANCELLED/postponed event: '{e.get('name')}'")
-            elif e.get("never_feature") or _live_never_feature(e):
-                errors.append(f"[events] {day} features a never-feature/service event: '{e.get('name')}'")
             # Quality guards (insurance behind tools/clean_event_data.py): a
             # featured event is on a slide, so flag artifacts that should have
             # been cleaned. Warnings, not blocks, so they never death-spiral.
@@ -284,12 +297,6 @@ def run(week_key=None):
                     errors.append(f"[events] {day} features out-of-week event '{e.get('name')}' ({d})")
             except Exception:
                 errors.append(f"[events] featured event '{e.get('name')}' has bad/missing date '{d}'")
-
-    for e in eotw:
-        if _live_cancelled(e):
-            errors.append(f"[events] EOTW '{e.get('name')}' is CANCELLED/postponed")
-        elif e.get("never_feature") or _live_never_feature(e):
-            errors.append(f"[events] EOTW '{e.get('name')}' is a never-feature/service event")
 
     if featured_all:
         gay = sum(1 for e in featured_all if e.get("flamingo", 0) >= 4 or e.get("lgbtq_relevant"))

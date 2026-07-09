@@ -878,6 +878,19 @@ def cmd_generate(post_type="weekday"):
         print(_preview)
     except UnicodeEncodeError:
         sys.stdout.buffer.write((_preview + "\n").encode("utf-8", "replace"))
+
+    # FINAL DECK REVIEW (William 2026-07-09): the last set of eyes on the
+    # finished deck — no cancelled events, no double events, no recurring
+    # filler over available one-offs, best-pick audit (deterministic rules +
+    # LLM editor per day). Persists final_review.json in the week's post dir;
+    # preflight_post.py re-runs the rule layer and reads the LLM findings, so
+    # a deck that failed its final review cannot post. Never crashes generation.
+    try:
+        from tools.final_deck_review import run_for_week as _final_review
+        _final_review(week_key, use_llm=True)
+    except Exception as _e:
+        print(f"[final] deck review failed to run: {_e}")
+
     return post_data
 
 
