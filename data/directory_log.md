@@ -168,6 +168,14 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 
 ---
 
+## [2026-07-09] Charcuteray
+- Category: restaurant (cheese shop / specialty food)
+- URL: https://charcuteray.com
+- Source: OkEq Food & Drink (EBA member) + Yelp (updated March 2026, confirmed active storefront)
+- Notes: Woman-owned charcuterie and cheese shop in a restored 1917 Route 66 gas station at 12th and Lewis in Midtown Tulsa. Physical storefront, Tue-Sat 10am-6pm. OkEq EBA member = vetted gay-welcoming. Previously held in June 2026 scans as "catering only" -- Yelp and a 2022 Tulsa World feature confirm it is a walk-in retail shop with boards, wine, beer, and catering. Address: 1207 S Lewis Ave, Suite B.
+
+---
+
 ### Reviewed but NOT added (2026-07-02 scan)
 - Triangle Coffee Roasters: DEAD. Yelp shows closed February 2026. Merged into Origin Coffee Company at the same 314 S Cincinnati Ave address. The OkEq listing appears stale. Do not add.
 - New Age Renegade (1649 S Main): DEAD. Yelp shows closed February 2026. Was a gay bar; noted here for the record but not added since it's permanently closed.
