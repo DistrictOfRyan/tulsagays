@@ -131,7 +131,11 @@ class BaseScraper:
             for node in list(items):
                 if not isinstance(node, dict):
                     continue
-                for key in ("mainEntity", "itemListElement"):
+                # "Events"/"events": SeatEngine (and some venue platforms) render
+                # a schema.org Place whose event list hangs off a non-standard
+                # "Events" key. Non-Event dicts pulled up here are filtered out
+                # below by the @type check, so this is safe and additive.
+                for key in ("mainEntity", "itemListElement", "Events", "events"):
                     nested = node.get(key)
                     if isinstance(nested, list):
                         items.extend(n for n in nested if isinstance(n, dict))
@@ -152,8 +156,7 @@ class BaseScraper:
                 if not name:
                     continue
                 start = item.get("startDate", "") or ""
-                date_str = start[:10] if start else ""
-                time_str = start.split("T")[1][:5] if "T" in start else ""
+                date_str, time_str = self._split_schema_datetime(start)
                 location = item.get("location", {})
                 venue = venue_default
                 if isinstance(location, dict):
@@ -167,6 +170,42 @@ class BaseScraper:
                     description=description, url=url, priority=priority,
                 ))
         return events
+
+    @staticmethod
+    def _split_schema_datetime(start: str):
+        """Split a schema.org startDate into (date, time), timezone-aware.
+
+        SeatEngine and some venue feeds emit UTC-zoned startDates (e.g.
+        '2026-07-12T20:00:00Z' for a 3:00 PM CDT show). Taken raw that displays
+        as 8:00 PM. Rules:
+          - No 'T'            -> (date, "")   date only.
+          - Time is 00:00     -> (date, "")   midnight = 'no time set' placeholder
+                                              (e.g. '...T00:00:00Z'); never convert,
+                                              which would shove it to the prior day.
+          - Explicit zone (Z or +/-HH:MM) -> convert to America/Chicago (date can
+                                              legitimately shift for late times).
+          - Naive local time  -> pass through unchanged (existing behavior).
+        Falls back to the naive slice on any parse failure.
+        """
+        if not start:
+            return "", ""
+        date_str = start[:10]
+        if "T" not in start:
+            return date_str, ""
+        time_part = start.split("T", 1)[1]
+        if time_part[:5] in ("00:00",):
+            return date_str, ""  # date-only placeholder
+        has_zone = time_part.endswith("Z") or re.search(r"[+-]\d{2}:?\d{2}$", time_part)
+        if not has_zone:
+            return date_str, time_part[:5]
+        try:
+            from datetime import datetime
+            from zoneinfo import ZoneInfo
+            iso = start.replace("Z", "+00:00")
+            dt = datetime.fromisoformat(iso).astimezone(ZoneInfo("America/Chicago"))
+            return dt.strftime("%Y-%m-%d"), dt.strftime("%H:%M")
+        except Exception:
+            return date_str, time_part[:5]
 
     def scrape(self) -> List[Dict]:
         """Override in subclasses. Must return a list of event dicts."""

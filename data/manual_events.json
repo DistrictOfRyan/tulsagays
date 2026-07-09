@@ -581,5 +581,17 @@
     "priority": 3,
     "description": "Homo Hotel Happy Hour takes over the Courtyard Downtown, and this month every dollar raised goes to PFLAG Tulsa. Come for the hotel-bar glamour, stay because your cover charge keeps parents showing up for their queer kids.",
     "website_description": "August's Homo Hotel Happy Hour lands at the Courtyard Downtown on Boston Ave, 6 to 8 p.m., and it is a fundraiser for PFLAG Tulsa, the folks who have been showing up for 2SLGBTQIA+ Tulsans and their families every month for years. First Fridays at HHHH are the easiest social on the calendar: a hotel bar full of friendly faces, no dress code, no agenda, come alone and you will not stay alone long. This one comes with a bonus: the money goes somewhere that matters."
+  },
+  {
+    "name": "Drag Bingo",
+    "date": "2026-07-12",
+    "time": "3:00 PM",
+    "venue": "Bricktown Comedy Club Tulsa",
+    "description": "Sunday afternoon drag bingo with Porsche Lynn in full glam, five free cards, and a whole room hollering BINGO louder than the emcee. Slip in at doors (2pm) for a booth near the stage, sugar, and let the daubers do your socializing for you.",
+    "website_description": "Bricktown Comedy Club Tulsa turns Sunday afternoon into a glitter-drenched bingo hall with Porsche Lynn working the mic in looks that could stop traffic on Yale. Your $15 gets you five free cards for five games, real prizes on the line, and the kind of crowd that treats a stranger like an old friend by the second round. It is an 18-and-up afternoon show with a two-item food-and-drink minimum, so order the nachos and settle in. Introverts, this one is built for you: the game gives your hands something to do, the daubing gives you cover, and nobody expects a speech, just a shriek of BINGO when your card fills. Doors at 2, show at 3, at 5982 S Yale Ave. Come at doors to claim a booth near the stage with a clean sightline and an easy path out, then let Porsche do the heavy lifting.",
+    "url": "https://bricktowntulsa-com.seatengine.com/shows/374468",
+    "source": "manual",
+    "priority": 1,
+    "source_note": "Bricktown Comedy Club Tulsa recurring Drag Bingo (host Porsche Lynn, Sun 3pm, 18+, $15/5 cards). Added 2026-07-09 per William (venue keeps comping tickets; promote them). Live-verified on bricktowntulsa.com/events + show page 374468. Also captured durably via rendered_site_specs json_ld spce; this manual entry gives the featured-quality card for W28."
   }
 ]
