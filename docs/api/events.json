@@ -2,19 +2,10 @@
   "api_version": "1",
   "city": "Tulsa, OK",
   "publisher": "Tulsa Gays",
-  "generated_at": "2026-07-06T14:09:26Z",
+  "generated_at": "2026-07-10T16:49:59Z",
   "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
   "count": 8,
   "events": [
-    {
-      "name": "Free FAFSA Workshop",
-      "date": "2026-07-06",
-      "time": "",
-      "venue": "Tulsa Community College",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
     {
       "name": "MOREcolor 2026: Pride Art Exhibition",
       "date": "2026-07-06",
@@ -25,55 +16,64 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "Sammy Obeid",
+      "name": "Lunch Specials at Elgin Park",
       "date": "2026-07-06",
-      "time": "",
-      "venue": "Hoy, 7:00 – 10:00 p.m.",
+      "time": "11:00 AM",
+      "venue": "Elgin Park Brewery325 E Reconciliation Way, Tulsa, OK, United States",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
-      "name": "Music Sandwiched In: Fireflies and Fireworks",
+      "name": "Lunch Special at Empire Slice House",
       "date": "2026-07-06",
-      "time": "",
-      "venue": "Obtener entradas",
+      "time": "11:00 AM",
+      "venue": "Empire Slice House Tulsa / 84 Hospitality Group417 N Main Street, Tulsa, OK, United States",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
-      "name": "Oklahoma",
+      "name": "Happy Hour with Free Pool at Caz’s Pub",
       "date": "2026-07-06",
-      "time": "",
-      "venue": "Obtener entradas",
+      "time": "2:00 PM",
+      "venue": "Caz's Pub21 E Reconciliation Way, Tulsa, OK, United States",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
-      "name": "Sketch Writing Class",
+      "name": "Happy Hour at in the raw vū",
       "date": "2026-07-06",
-      "time": "",
-      "venue": "Obtener entradas",
+      "time": "3:00 PM",
+      "venue": "in the raw vū110 N Elgin Ave., Tulsa, OK, United States",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
-      "name": "Live music at Duet Restaurant from 6:30-9:30p",
+      "name": "Happy Hour at Saturn Room",
       "date": "2026-07-06",
-      "time": "",
-      "venue": "Obtener entradas",
+      "time": "4:00 PM",
+      "venue": "Saturn Room209 N Boulder, Tulsa, OK, United States",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
-      "name": "Stained Glass Garden",
+      "name": "Entrepreneurs Bootcamp at Gradient",
       "date": "2026-07-06",
-      "time": "",
-      "venue": "Hoy, 7:00 – 9:00 p.m.",
+      "time": "5:00 PM",
+      "venue": "Gradient Innovation Hub12 N Cheyenne Ave, Tulsa, OK, United States",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Clothing Swap",
+      "date": "2026-07-06",
+      "time": "6:00 PM",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"

@@ -1,12 +1,5 @@
 [
   {
-    "name": "Free FAFSA Workshop",
-    "venue": "Tulsa Community College",
-    "date": "2026-07-06",
-    "day_short": "MON",
-    "time": ""
-  },
-  {
     "name": "MOREcolor 2026: Pride Art Exhibition",
     "venue": "",
     "date": "2026-07-06",
@@ -14,45 +7,52 @@
     "time": ""
   },
   {
-    "name": "Sammy Obeid",
-    "venue": "Hoy, 7:00\u2009\u2013\u200910:00\u202fp.m.",
+    "name": "Lunch Specials at Elgin Park",
+    "venue": "Elgin Park Brewery325 E Reconciliation Way, Tulsa, OK, United States",
     "date": "2026-07-06",
     "day_short": "MON",
-    "time": ""
+    "time": "11:00 AM"
   },
   {
-    "name": "Music Sandwiched In: Fireflies and Fireworks",
-    "venue": "Obtener entradas",
+    "name": "Lunch Special at Empire Slice House",
+    "venue": "Empire Slice House Tulsa / 84 Hospitality Group417 N Main Street, Tulsa, OK, United States",
     "date": "2026-07-06",
     "day_short": "MON",
-    "time": ""
+    "time": "11:00 AM"
   },
   {
-    "name": "Oklahoma",
-    "venue": "Obtener entradas",
+    "name": "Happy Hour with Free Pool at Caz\u2019s Pub",
+    "venue": "Caz's Pub21 E Reconciliation Way, Tulsa, OK, United States",
     "date": "2026-07-06",
     "day_short": "MON",
-    "time": ""
+    "time": "2:00 PM"
   },
   {
-    "name": "Sketch Writing Class",
-    "venue": "Obtener entradas",
+    "name": "Happy Hour at in the raw v\u016b",
+    "venue": "in the raw v\u016b110 N Elgin Ave., Tulsa, OK, United States",
     "date": "2026-07-06",
     "day_short": "MON",
-    "time": ""
+    "time": "3:00 PM"
   },
   {
-    "name": "Live music at Duet Restaurant from 6:30-9:30p",
-    "venue": "Obtener entradas",
+    "name": "Happy Hour at Saturn Room",
+    "venue": "Saturn Room209 N Boulder, Tulsa, OK, United States",
     "date": "2026-07-06",
     "day_short": "MON",
-    "time": ""
+    "time": "4:00 PM"
   },
   {
-    "name": "Stained Glass Garden",
-    "venue": "Hoy, 7:00\u2009\u2013\u20099:00\u202fp.m.",
+    "name": "Entrepreneurs Bootcamp at Gradient",
+    "venue": "Gradient Innovation Hub12 N Cheyenne Ave, Tulsa, OK, United States",
     "date": "2026-07-06",
     "day_short": "MON",
-    "time": ""
+    "time": "5:00 PM"
+  },
+  {
+    "name": "Clothing Swap",
+    "venue": "Yellow Brick Road, 2630 E 15th St",
+    "date": "2026-07-06",
+    "day_short": "MON",
+    "time": "6:00 PM"
   }
 ]

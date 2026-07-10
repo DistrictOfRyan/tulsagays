@@ -452,6 +452,30 @@ def write_events_current_json():
             e for e in events
             if week_mon.strftime("%Y-%m-%d") <= e.get("date","") <= week_sun.strftime("%Y-%m-%d")
         ]
+        # AEO fix (2026-07-10): the public feed + machine-readable data llms.txt points LLMs
+        # at must be CLEAN. Previously this took the first 8 events chronologically with no
+        # relevance filter, so services (FAFSA workshops), kids programming, and geo-locale
+        # junk venues ("Obtener entradas") leaked into events-current.json and /api/*.json.
+        # Filter to real, LGBTQ-relevant, featurable events using the site's own helpers.
+        try:
+            from scraper.runner import _is_never_feature, _is_junk_name
+        except Exception:
+            _is_never_feature = lambda e: bool(e.get("never_feature"))  # noqa: E731
+            _is_junk_name = lambda n: False  # noqa: E731
+        _VENUE_JUNK = {"obtener entradas", "hoy", "mar", "mié", "mie", "tickets",
+                       "get tickets", "más información", "mas informacion"}
+        def _clean_for_feed(e):
+            if not e.get("lgbtq_relevant"):
+                return False
+            if e.get("never_feature") or _is_never_feature(e):
+                return False
+            if _is_junk_name(e.get("name", "")):
+                return False
+            v = (e.get("venue", "") or "").strip().lower().rstrip(".!")
+            if v in _VENUE_JUNK:
+                e["venue"] = ""  # keep the event, drop the junk venue label
+            return True
+        week_events = [e for e in week_events if _clean_for_feed(e)]
         week_events.sort(key=lambda e: (e.get("date",""), e.get("time","")))
         slim = []
         for e in week_events[:8]:

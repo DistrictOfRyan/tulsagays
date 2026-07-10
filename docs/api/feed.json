@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "city": "Tulsa",
-  "generated": "2026-07-05",
+  "generated": "2026-07-10",
   "license": "Free to use with attribution to tulsagays.com",
   "coverage": {
     "coverage_pct": 97.2,
@@ -9,63 +9,63 @@
     "total": 36,
     "gaps": 1
   },
-  "source_count": 266,
+  "source_count": 265,
   "event_count": 8,
   "events": [
     {
-      "name": "Art from the Backyard (Ages 5-6)",
-      "date": "2026-06-29",
+      "name": "MOREcolor 2026: Pride Art Exhibition",
+      "date": "2026-07-06",
       "time": "",
-      "venue": "Philbrook Museum",
+      "venue": "",
       "url": null
     },
     {
-      "name": "Wooly Wonders: Art & Nature (Ages 7-9)",
-      "date": "2026-06-29",
-      "time": "",
-      "venue": "Philbrook Museum",
+      "name": "Lunch Specials at Elgin Park",
+      "date": "2026-07-06",
+      "time": "11:00 AM",
+      "venue": "Elgin Park Brewery325 E Reconciliation Way, Tulsa, OK, United States",
       "url": null
     },
     {
-      "name": "See It, Sketch It (Ages 9-11)",
-      "date": "2026-06-29",
-      "time": "",
-      "venue": "Philbrook Museum",
+      "name": "Lunch Special at Empire Slice House",
+      "date": "2026-07-06",
+      "time": "11:00 AM",
+      "venue": "Empire Slice House Tulsa / 84 Hospitality Group417 N Main Street, Tulsa, OK, United States",
       "url": null
     },
     {
-      "name": "Rhythm & Flow (12-14)",
-      "date": "2026-06-29",
-      "time": "",
-      "venue": "Philbrook Museum",
+      "name": "Happy Hour with Free Pool at Caz’s Pub",
+      "date": "2026-07-06",
+      "time": "2:00 PM",
+      "venue": "Caz's Pub21 E Reconciliation Way, Tulsa, OK, United States",
       "url": null
     },
     {
-      "name": "Tiny Treasures (Ages 5-6)",
-      "date": "2026-06-29",
-      "time": "",
-      "venue": "Philbrook Museum",
+      "name": "Happy Hour at in the raw vū",
+      "date": "2026-07-06",
+      "time": "3:00 PM",
+      "venue": "in the raw vū110 N Elgin Ave., Tulsa, OK, United States",
       "url": null
     },
     {
-      "name": "The Secret Life of Tiny Worlds (Ages 7-9)",
-      "date": "2026-06-29",
-      "time": "",
-      "venue": "Philbrook Museum",
+      "name": "Happy Hour at Saturn Room",
+      "date": "2026-07-06",
+      "time": "4:00 PM",
+      "venue": "Saturn Room209 N Boulder, Tulsa, OK, United States",
       "url": null
     },
     {
-      "name": "Once Upon a City (Ages 9-11)",
-      "date": "2026-06-29",
-      "time": "",
-      "venue": "Philbrook Museum",
+      "name": "Entrepreneurs Bootcamp at Gradient",
+      "date": "2026-07-06",
+      "time": "5:00 PM",
+      "venue": "Gradient Innovation Hub12 N Cheyenne Ave, Tulsa, OK, United States",
       "url": null
     },
     {
-      "name": "Craft Your Story (Ages 12-14)",
-      "date": "2026-06-29",
-      "time": "",
-      "venue": "Philbrook Museum",
+      "name": "Clothing Swap",
+      "date": "2026-07-06",
+      "time": "6:00 PM",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
       "url": null
     }
   ]
