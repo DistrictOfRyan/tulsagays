@@ -593,5 +593,47 @@
     "source": "manual",
     "priority": 1,
     "source_note": "Bricktown Comedy Club Tulsa recurring Drag Bingo (host Porsche Lynn, Sun 3pm, 18+, $15/5 cards). Added 2026-07-09 per William (venue keeps comping tickets; promote them). Live-verified on bricktowntulsa.com/events + show page 374468. Also captured durably via rendered_site_specs json_ld spce; this manual entry gives the featured-quality card for W28."
+  },
+  {
+    "name": "Two Spirit Celebration: Stomp Dance",
+    "date": "2026-10-23",
+    "time": "6:00 PM",
+    "end_time": "10:00 PM",
+    "venue": "Cherokee Nation Powwow Grounds, Tahlequah, OK",
+    "description": "The All Nations Two-Spirit Society and the Intercultural Partnership Council open a two-day Two Spirit Celebration with a Friday-night stomp dance next to the Cherokee Nation Powwow Grounds in Tahlequah. Everyone is welcome, and every event is alcohol- and drug-free.",
+    "website_description": "The Intercultural Partnership Council kicks off its Two Spirit Celebration with a stomp dance on Friday night, held next to the Cherokee Nation Powwow Grounds in Tahlequah. Presented with the All Nations Two-Spirit Society, Cherokee Nation, Tahlequah Public Library, and Squirrel Ridge Ceremonial Grounds, this is the opening night of a two-day gathering honoring Two-Spirit people. Everyone is welcome, all events are alcohol- and drug-free, and there's no charge for food or activities. Worth the drive from Tulsa. General info at tinyurl.com/ipctahlequah or ipc.gadugi@gmail.com.",
+    "url": "https://tinyurl.com/ipctahlequah",
+    "source": "manual",
+    "priority": 2,
+    "lgbtq_relevant": true,
+    "source_note": "Two Spirit Celebration flyer (All Nations Two-Spirit Society, posted Jun 5). A Project of the Intercultural Partnership Council. Submitted via image by William; added 2026-07-10."
+  },
+  {
+    "name": "Two Spirit Celebration: Symposium",
+    "date": "2026-10-24",
+    "time": "8:30 AM",
+    "end_time": "12:30 PM",
+    "venue": "Tahlequah Public Library, Tahlequah, OK",
+    "description": "Day two of the Two Spirit Celebration opens with a morning symposium at the Tahlequah Public Library. Free, alcohol- and drug-free, and open to everyone, hosted by the Intercultural Partnership Council and the All Nations Two-Spirit Society.",
+    "website_description": "The second day of the Intercultural Partnership Council's Two Spirit Celebration opens with a Saturday-morning symposium at the Tahlequah Public Library. Presented with the All Nations Two-Spirit Society, Cherokee Nation, and Squirrel Ridge Ceremonial Grounds, it's a space to gather, learn, and honor Two-Spirit history and community. Everyone is welcome, there's no charge for food or activities, and every event is alcohol- and drug-free. Stick around for the community powwow that afternoon. General info at tinyurl.com/ipctahlequah or ipc.gadugi@gmail.com.",
+    "url": "https://tinyurl.com/ipctahlequah",
+    "source": "manual",
+    "priority": 2,
+    "lgbtq_relevant": true,
+    "source_note": "Two Spirit Celebration flyer (All Nations Two-Spirit Society, posted Jun 5). A Project of the Intercultural Partnership Council. Submitted via image by William; added 2026-07-10."
+  },
+  {
+    "name": "Two Spirit Celebration: Community Powwow",
+    "date": "2026-10-24",
+    "time": "4:00 PM",
+    "end_time": "10:00 PM",
+    "venue": "Cherokee Nation Powwow Arena, Tahlequah, OK",
+    "description": "The Two Spirit Celebration closes with a community powwow at the Cherokee Nation Powwow Arena in Tahlequah. Everyone is welcome, it's alcohol- and drug-free, and there's no charge for food or activities.",
+    "website_description": "The Intercultural Partnership Council's Two Spirit Celebration closes Saturday evening with a community powwow at the Cherokee Nation Powwow Arena in Tahlequah. Hosted with the All Nations Two-Spirit Society, Cherokee Nation, Tahlequah Public Library, and Squirrel Ridge Ceremonial Grounds, it's the celebratory heart of a weekend honoring Two-Spirit people. Everyone is welcome, every event is alcohol- and drug-free, and there's no charge for food or activities. An easy trip from Tulsa. General info at tinyurl.com/ipctahlequah or ipc.gadugi@gmail.com.",
+    "url": "https://tinyurl.com/ipctahlequah",
+    "source": "manual",
+    "priority": 2,
+    "lgbtq_relevant": true,
+    "source_note": "Two Spirit Celebration flyer (All Nations Two-Spirit Society, posted Jun 5). A Project of the Intercultural Partnership Council. Submitted via image by William; added 2026-07-10."
   }
 ]
