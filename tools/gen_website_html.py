@@ -27,6 +27,18 @@ def _is_garbage(ev):
     return False
 events = [e for e in events if not _is_garbage(e)]
 
+# Voice rule #1 at the DATA level: strip em/en dashes from every event field once,
+# up front, so no downstream path (cards via esc(), schema.org JSON-LD via
+# json.dumps, share pages, og/meta descriptions) can ship a dash to the website.
+try:
+    from content.generator import strip_em_dashes as _sed_field
+    for _e in events:
+        for _f in ('name', 'description', 'website_description', 'time', 'venue'):
+            if _e.get(_f):
+                _e[_f] = _sed_field(_e[_f])
+except Exception:
+    pass
+
 # Show ALL events on the website — gay score distinguishes LGBTQ events from general ones.
 # All city-specific data (venues, source keys, anchor keywords) reads from config.py.
 # Generic universal patterns stay here in shared code. See city-growth-playbook §15.5.
@@ -372,7 +384,14 @@ def _day_sort_key(e):
 def esc(s):
     if not s:
         return ''
-    return str(s).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+    s = str(s)
+    # Voice rule #1 (no em/en dashes) applied at the single render choke point, so
+    # raw scraped event names/times/descriptions can't ship a dash to the website.
+    # Ranges become "to" (11 AM - 3 PM), prose em dashes become commas.
+    s = re.sub(r'(\w)\s*[–—]\s*(\d)', r'\1 to \2', s)
+    s = (s.replace(' — ', ', ').replace('—', ', ')
+          .replace(' – ', ', ').replace('–', '-'))
+    return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
 
 SITE = 'https://www.tulsagays.com'
 
@@ -822,7 +841,7 @@ if _events_ld:
     _itemlist = {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        "name": f"LGBTQ+ Events in Tulsa — {_week_start} to {_week_end}",
+        "name": f"LGBTQ+ Events in Tulsa, {_week_start} to {_week_end}",
         "itemListElement": [
             {"@type": "ListItem", "position": _i + 1, "item": _o}
             for _i, _o in enumerate(_events_ld)
@@ -864,7 +883,7 @@ def _render_event_page(p):
     _full = (_lead + '. ' if _lead else '') + (p.get('desc') or '')
     _og_desc = _trunc(_full, 300)
     _meta_desc = _trunc(_full, 160)
-    _title = _trunc(_name, 90) + ' — Tulsa Gays'
+    _title = _trunc(_name, 90) + ' | Tulsa Gays'
     _src_btn = (f'<a class="ev-btn" href="{esc(p["url"])}" target="_blank" rel="noopener">Get tickets / more info &rarr;</a>'
                 if p.get('url') else '')
     _when_html = f'<p class="ev-when">{esc(p["when"])}</p>' if p.get('when') else ''
@@ -888,7 +907,7 @@ def _render_event_page(p):
 <meta property="og:image" content="{_img}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Tulsa Gays — LGBTQ+ Event Guide">
+<meta property="og:image:alt" content="Tulsa Gays: LGBTQ+ Event Guide">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{esc(_trunc(_name, 90))}">
 <meta name="twitter:description" content="{esc(_meta_desc)}">
@@ -917,7 +936,7 @@ def _render_event_page(p):
 {_desc_html}
 {_src_btn}
 <a class="ev-btn alt" href="{esc(_deep)}">See it on the full calendar &rarr;</a>
-<p class="ev-foot">Found via <a href="/">tulsagays.com</a> — every LGBTQ+ event in Tulsa, every week. <a href="/newsletter.html">Get the newsletter &rarr;</a></p>
+<p class="ev-foot">Found via <a href="/">tulsagays.com</a>, every LGBTQ+ event in Tulsa, every week. <a href="/newsletter.html">Get the newsletter &rarr;</a></p>
 </div>
 </body>
 </html>
