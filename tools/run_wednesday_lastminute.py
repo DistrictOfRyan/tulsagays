@@ -178,6 +178,13 @@ def main() -> int:
         )
     caption_lines += ["", "Full week at tulsagays.com.", "#TulsaGays #QueerTulsa #LGBTQTulsa"]
     caption = "\n".join(caption_lines).strip()
+    # Voice rule #1: scraped event names/venues can carry em/en dashes (tour titles) —
+    # strip before the caption ships. (The image body is scrubbed by clean_text already.)
+    try:
+        from content.generator import strip_em_dashes as _sed
+        body, caption = _sed(body), _sed(caption)
+    except Exception:
+        pass
 
     out_rel = Path("docs") / "posts" / week_key
     out_abs = ROOT / out_rel

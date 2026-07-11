@@ -1285,6 +1285,12 @@ SLIDE: [your text here]"""
             website_desc = text
             slide_desc   = _smart_trim(text, 250)
 
+        # Voice rule #1: deterministic backstop even though the prompt forbids them.
+        try:
+            from content.generator import strip_em_dashes as _sed
+            website_desc, slide_desc = _sed(website_desc), _sed(slide_desc)
+        except Exception:
+            pass
         return website_desc, slide_desc
 
     except Exception as e:

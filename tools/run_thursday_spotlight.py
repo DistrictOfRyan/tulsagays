@@ -118,10 +118,17 @@ def _related_events_for(subject_key: str, events: list[dict], max_n: int = 4) ->
 
 def _article_html(title: str, slug: str, hero_p: str, sections: list[tuple[str, str]]) -> str:
     """Minimal valid HTML article that matches existing /blog/ structure."""
+    # Voice rule #1: raw scraped descriptions feed the section bodies, so strip
+    # em/en dashes before they render into the published blog article.
+    try:
+        from content.generator import strip_em_dashes as _sed
+    except Exception:
+        _sed = lambda t: (t or "").replace(" — ", ", ").replace("—", ", ").replace("–", "-")
     canonical = f"https://www.tulsagays.com/blog/{slug}.html"
-    title_e = html.escape(title, quote=True)
+    hero_p = _sed(hero_p)
+    title_e = html.escape(_sed(title), quote=True)
     sections_html = "\n".join(
-        f"<h2>{html.escape(h)}</h2>\n<p>{html.escape(b)}</p>" for h, b in sections
+        f"<h2>{html.escape(_sed(h))}</h2>\n<p>{html.escape(_sed(b))}</p>" for h, b in sections
     )
     today = datetime.now().strftime("%Y-%m-%d")
     return f"""<!DOCTYPE html>
@@ -326,7 +333,11 @@ def main() -> int:
     public_blog_url = f"https://www.tulsagays.com/blog/{slug}.html"
     print(f"public_img_url={public_img_url}\npublic_blog_url={public_blog_url}")
 
-    caption = (
+    try:
+        from content.generator import strip_em_dashes as _sed
+    except Exception:
+        _sed = lambda t: (t or "").replace(" — ", ", ").replace("—", ", ").replace("–", "-")
+    caption = _sed(
         f"This week's spotlight: {title.replace('Spotlight: ', '')}.\n\n"
         f"Read the full story → {public_blog_url}\n\n"
         "#TulsaGays #QueerTulsa #LGBTQTulsa"

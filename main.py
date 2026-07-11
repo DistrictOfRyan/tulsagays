@@ -832,6 +832,10 @@ def cmd_generate(post_type="weekday"):
                 "flamingo": _flscore(e),
                 "never_feature": bool(e.get("never_feature")),
                 "lgbtq_relevant": bool(e.get("lgbtq_relevant")),
+                # carry the voice-pass provenance so preflight + the newsletter can
+                # see whether a slide's copy went through the LLM voice pass.
+                "voice_passed": bool(e.get("voice_passed")),
+                "voice_source": e.get("voice_source", ""),
             }
         manifest = {
             "week_key": week_key,

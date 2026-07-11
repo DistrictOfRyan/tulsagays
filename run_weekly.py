@@ -100,20 +100,28 @@ def run_pre():
     # 4. Generate slides — FAST rule-based path (no nested-CLI hang).
     step("Generate carousel (rule-based)", [PY, "main.py", "generate-all"],
          timeout=900, env=_env(TULSAGAYS_RULE_ENRICH="1"))
-    # 5. Confirm 9 slides exist (voice pass + templated check happen in --post).
+    # 5. Confirm 9 slides exist before the voice pass rewrites them.
     slides = sorted(POST_DIR.glob("all__*.png"))
     if len(slides) < 9:
         print(f"  [X] only {len(slides)}/9 slides generated", flush=True)
         sys.exit(1)
-    print(f"\n[ok] PRE-PHASE complete — {len(slides)} slides, {n} events.", flush=True)
-    print("NEXT: do the VOICE PASS (Step 2.1) — rewrite every FEATURED + EOTW "
-          "blurb in the Alicia/RuPaul/Dolly voice (describe the event, why-go, "
-          "best-time tip) into data/events/<week>_all.json, then run:", flush=True)
-    print("  python run_weekly.py --post", flush=True)
-    # surface the featured set so the agent knows exactly what to rewrite
+    # 6. AUTOMATIC VOICE PASS (2026-07-11) — the old manual "Step 2.1" is now code.
+    # LLM-rewrite ONLY the featured + EOTW slide copy in the Alicia/RuPaul/Dolly
+    # voice (fits the wall-clock budget, unlike enriching all ~200 events), then
+    # re-render with TULSAGAYS_SKIP_ENRICH so the copy survives. Non-fatal: if the
+    # LLM is unreachable it falls back to the (now much larger) rule-based bank and
+    # the deck still ships; preflight in --post enforces slide-copy quality.
+    step("Voice pass (LLM featured + EOTW)", [PY, "tools/voice_pass.py"],
+         timeout=900, required=False)
+    slides = sorted(POST_DIR.glob("all__*.png"))
+    if len(slides) < 9:
+        print(f"  [X] only {len(slides)}/9 slides after voice pass", flush=True)
+        sys.exit(1)
+    print(f"\n[ok] PRE-PHASE complete — {len(slides)} slides, {n} events, voiced.", flush=True)
+    print("NEXT: review the featured/EOTW copy, then run:  python run_weekly.py --post", flush=True)
     try:
         man = json.loads((POST_DIR / "slide_manifest.json").read_text(encoding="utf-8"))
-        print("\nFEATURED EVENTS TO VOICE (by day):", flush=True)
+        print("\nFEATURED EVENTS (voiced, by day):", flush=True)
         for day, evs in man.get("featured_by_day", {}).items():
             for e in evs:
                 print(f"  {day[:3]} | {e.get('name','')[:48]} @ {(e.get('venue') or '')[:24]}", flush=True)

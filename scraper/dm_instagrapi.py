@@ -48,8 +48,8 @@ MSGS_PER_THREAD = 12
 # No "I", no operator name — speaks as the page ("we"/"you").
 DEFAULT_REPLY = (
     "Added to the TulsaGays calendar, thank you for the tip! 🏳️‍🌈 "
-    "You can see every Tulsa LGBTQ+ event any time at tulsagays.com — "
-    "and hit us back if anything looks off."
+    "You can see every Tulsa LGBTQ+ event any time at tulsagays.com. "
+    "Hit us back if anything looks off."
 )
 
 # instagrapi message item types that carry a photo/flyer.
@@ -169,6 +169,12 @@ def send_confirmations(cl, tips: list[dict], reply_text: str = DEFAULT_REPLY,
 
     `tips` are the queued tip entries that came from DMs (need thread_id + submitted_by).
     Returns a summary dict. Never raises."""
+    # Voice rule #1: no em dashes in anything a human reads (belt for custom replies).
+    try:
+        from content.generator import strip_em_dashes as _sed
+        reply_text = _sed(reply_text)
+    except Exception:
+        reply_text = reply_text.replace(" — ", ", ").replace("—", ", ").replace("–", "-")
     if not _is_anonymous(reply_text):
         return {"sent": 0, "error": "reply text failed anonymity guard"}
     log = _load_log()

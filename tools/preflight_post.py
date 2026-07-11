@@ -95,9 +95,37 @@ TEMPLATE_SIGNATURES = [
 ]
 
 
+def _bank_signatures():
+    """Distinctive opening fragments of the rule-based _VOICE_BANK variants, so
+    preflight can RECOGNIZE floor copy on a slide (the old signature list only
+    knew the retired dedupe pool, so current rule-based copy sailed through).
+    Cached; degrades to empty on any import problem."""
+    global _BANK_SIG_CACHE
+    try:
+        return _BANK_SIG_CACHE
+    except NameError:
+        pass
+    sigs = []
+    try:
+        from content.generator import _VOICE_BANK
+        for _cat, _lines in _VOICE_BANK.items():
+            for _l in _lines:
+                frag = " ".join((_l or "").lower().split())[:45]
+                if len(frag) > 20:
+                    sigs.append(frag)
+    except Exception:
+        sigs = []
+    _BANK_SIG_CACHE = sigs
+    return sigs
+
+
 def _looks_templated(text):
-    low = (text or "").strip().lower()
-    return any(sig in low for sig in TEMPLATE_SIGNATURES)
+    low = " ".join((text or "").strip().lower().split())
+    if any(sig in low for sig in TEMPLATE_SIGNATURES):
+        return True
+    # Rule-based floor copy: a bank variant appears verbatim (rule enrich returns
+    # bank text, sometimes with a grounded clause prepended/appended).
+    return any(sig in low for sig in _bank_signatures())
 
 # ── Anonymity policy ────────────────────────────────────────────────────────
 # The account is ANONYMOUS — nothing posted may reveal who runs it. Block any
@@ -402,16 +430,32 @@ def run(week_key=None):
     # (Re-scoped 2026-06-15 — see feedback_tulsagays_featured_gay_first.)
     _slide_events = list(eotw) + list(featured_all)
     if _slide_events:
-        _stpl = sum(
-            1 for e in _slide_events
-            if _looks_templated(e.get("description"))
-            or _looks_templated(e.get("website_description")))
-        _sratio = _stpl / len(_slide_events)
-        if _sratio > 0.25:
+        # STRICT (2026-07-11, William: "enforce this, it's been generic and dry"):
+        # a FEATURED/EOTW slide that ships templated/rule-based copy WITHOUT having
+        # been run through the voice pass is the exact silent-generic failure. Hard
+        # block it. The automatic voice pass (tools/voice_pass.py) marks every slide
+        # it touches voice_passed=True, so LLM copy AND a deliberate rule fallback
+        # both clear this gate; only un-voiced template filler trips it.
+        _silent_generic = [
+            e for e in _slide_events
+            if not e.get("voice_passed")
+            and (_looks_templated(e.get("description"))
+                 or _looks_templated(e.get("website_description")))]
+        if _silent_generic:
+            _names = ", ".join(f"'{e.get('name')}'" for e in _silent_generic[:6])
             errors.append(
-                f"[voice] {_stpl}/{len(_slide_events)} ({_sratio:.0%}) FEATURED/EOTW slide "
-                f"descriptions are templated filler — rewrite them in the RuPaul x Dolly voice "
-                f"(Monday Step 2.1) before posting; the slides are the hero content")
+                f"[voice] {len(_silent_generic)}/{len(_slide_events)} FEATURED/EOTW slides ship "
+                f"generic/templated copy and never went through the voice pass: {_names}. "
+                f"Run `python tools/voice_pass.py` (or hand-write them in the RuPaul x Dolly "
+                f"voice) before posting. The slides are the hero content.")
+        # Degraded-quality WARNING (not a block, so an LLM outage can't stall the
+        # post): the voice pass ran but had to fall back to rule-based copy.
+        _rule_fb = [e for e in _slide_events if e.get("voice_source") == "rule"]
+        if _rule_fb:
+            warnings.append(
+                f"[voice] {len(_rule_fb)}/{len(_slide_events)} slides used the rule-based "
+                f"fallback (LLM voice pass could not reach them) — copy is acceptable but not "
+                f"bespoke; check the claude CLI / token if this persists.")
     try:
         _all_path = os.path.join(config.DATA_DIR, "events", f"{week_key}_all.json")
         with open(_all_path, encoding="utf-8") as _af:

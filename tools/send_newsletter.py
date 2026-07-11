@@ -81,7 +81,13 @@ def build_email(week_key):
     parts.append('<p style="color:#999;font-size:12px;margin-top:24px">You\'re getting this because you '
                  'wanted Tulsa\'s queer calendar in your inbox. Pace yourself, hydrate, look out for each other.</p>')
     parts.append('</div>')
-    return subj, preview, "\n".join(parts)
+    # Voice rule #1: strip em/en dashes from everything a subscriber reads. Safe on
+    # the inline CSS (only touches em/en dashes, not the ASCII hyphens in styles).
+    try:
+        from content.generator import strip_em_dashes as _sed
+    except Exception:
+        _sed = lambda t: (t or "").replace(" — ", ", ").replace("—", ", ").replace("–", "-")
+    return _sed(subj), _sed(preview), _sed("\n".join(parts))
 
 
 DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]

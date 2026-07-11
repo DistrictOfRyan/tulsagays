@@ -106,6 +106,12 @@ def _gate(image_paths) -> None:
 
 def post_to_group(message: str, image_paths=None):
     """Post a message (and optional images) to the configured FB group."""
+    # Voice rule #1: scrub em/en dashes from whatever a caller hands us.
+    try:
+        from content.generator import strip_em_dashes as _sed
+        message = _sed(message)
+    except Exception:
+        pass
     _ensure_playwright()
     from playwright.sync_api import sync_playwright
 

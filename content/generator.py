@@ -150,6 +150,7 @@ VOICE & TONE RULES (critical -- follow these exactly):
 - Include 1-2 moments of genuine enthusiasm ("we LOVE this one", "dont sleep on this", "obsessed")
 - Occasionally drop a Tulsa-specific reference (Brookside, the Gathering Place, Cherry Street, 11th & Lewis, Philbrook, etc)
 - Swear lightly if it fits the vibe (hell yeah, damn, etc) but keep it IG-friendly
+- NEVER use em dashes. Not one. Use a comma, a period, or parentheses instead. This is a hard rule.
 
 WORDS/PHRASES YOU MUST NEVER USE (these are AI tells):
 - delve, landscape, tapestry, vibrant, foster, holistic, synergy, leverage
@@ -171,7 +172,7 @@ EVENT FIDELITY RULES (absolute, no exceptions):
 - Only mention events from the list provided in the user prompt
 - Never invent event names, dates, venues, or details
 - Never pull events from memory of past weeks
-- If the events list is short, write a shorter caption — do not pad with fictional events
+- If the events list is short, write a shorter caption, do not pad with fictional events
 
 FORMAT RULES:
 - First line is the hook -- short, punchy, makes people stop scrolling
@@ -186,6 +187,40 @@ Return ONLY the caption text followed by hashtags. No preamble, no "here's your 
 
 
 # ── Main generation function ────────────────────────────────────────────────
+
+def _strip_em_dashes(text: str) -> str:
+    """Hard belt-and-suspenders: William's #1 voice rule is NO em dashes, and the
+    caption LLM occasionally slips one in. Ranges become 'to', prose dashes become
+    commas. Runs on every caption before it can reach a post."""
+    if not text:
+        return text
+    import re as _re
+    text = _re.sub(r'(\w)\s*[–—]\s*(\d)', r'\1 to \2', text)  # "6pm – 9pm" -> "6pm to 9pm"
+    text = text.replace(' — ', ', ').replace('—', ', ')       # em dash
+    text = text.replace(' – ', ', ').replace('–', ', ')       # en dash
+    return text
+
+
+# Public alias so any generator/tool can import the canonical scrubber without
+# reaching for a private name. Voice rule #1 (no em dashes) applies to ALL public
+# copy, so every path that ships text to a human should call this on its output.
+def strip_em_dashes(text: str) -> str:
+    return _strip_em_dashes(text)
+
+
+_REFUSAL_MARKERS = (
+    "i cannot", "i can't", "i can not", "i'm unable", "i am unable",
+    "i won't", "as an ai", "i'm sorry, but", "i am sorry, but",
+    "i'm not able", "i am not able", "i must decline",
+)
+
+
+def _is_refusal(text: str) -> bool:
+    """True if the model returned a refusal instead of copy. A refusal is the
+    ultimate voice violation and must never be saved as a description."""
+    low = (text or "").strip().lower()
+    return any(low.startswith(m) or f" {m}" in low[:60] for m in _REFUSAL_MARKERS)
+
 
 def generate_post_caption(
     events: list[dict],
@@ -315,6 +350,8 @@ mention it.
         caption = _fallback_caption(
             events_for_caption, post_type, date_range, hashtag_str
         )
+
+    caption = _strip_em_dashes(caption)
 
     return {
         "caption": caption,
@@ -470,6 +507,166 @@ def _apply_ybr_inclusive_note(events: list[dict]) -> list[dict]:
     return events
 
 
+# ── Canonical voice prompt ──────────────────────────────────────────────────
+# The one system prompt every LLM enrichment path uses, so the voice never drifts
+# between the bulk enricher and the featured-only voice pass (tools/voice_pass.py).
+VOICE_SYS_PROMPT = (
+    "You write event descriptions for TulsaGays.com, an LGBTQ+ community events guide in "
+    "Tulsa. Voice: RuPaul meets Alicia Edwards (Abbott Elementary) with a warm Dolly Parton "
+    "heart. Sassy, fun, encouraging, a little theatrical, genuinely kind. You are talking to "
+    "a gay introvert and your whole job is to lovingly get him off the couch and out the "
+    "door, then make sure he has the best possible time once he's there. "
+    "CRAFT (every time): open with a SPECIFIC sensory image of THIS event (a look, a "
+    "sound, a moment), sprinkle drag-mother terms of endearment (honey, sugar, darling, "
+    "baby), land one witty line, and close with a concrete BEST-TIME tip (when to arrive, "
+    "where to stand, what to bring). Hand-written for that one event, never a template. "
+    "NEVER waste a line on empty cheerleading: a bare 'make sure to go', 'you won't regret "
+    "it', 'put it on your calendar', or 'these are your people' is FORBIDDEN. Every sentence "
+    "must carry a specific, useful, or funny detail. "
+    "HARD RULES: Never discourage, hedge, mock, or put down an event in ANY way — every "
+    "event gets a genuine, warm reason to go. Never use em dashes. Never sound like AI or "
+    "corporate copy. Banned phrases: 'vibrant community', 'safe space', 'don't miss out', "
+    "'something for everyone', 'whether you're', 'make sure to go', 'actually go', "
+    "'you will thank yourself', 'zero excuses'. Write like a real, funny, loving friend "
+    "who happens to talk like Dolly hosting Drag Race. "
+    "ANONYMITY: this account is anonymous. NEVER reveal or hint at who runs it. No real "
+    "names, no 'I run this', no 'dm me', no personal signatures. Speak as the community, "
+    "always 'you' (the reader), never 'I' (the operator)."
+)
+
+
+def _voice_batch_prompt(batch: list[dict]) -> str:
+    """Build the S/L enrichment prompt for a small batch of events."""
+    lines = []
+    for j, e in enumerate(batch):
+        name = e.get("name", "Unknown")
+        venue = (e.get("venue") or "").split(",")[0].strip()
+        date = e.get("date", "")
+        time = e.get("time", "")
+        existing = (e.get("description") or "").strip()
+        line = f"{j+1}. {name}"
+        if venue:
+            line += f" @ {venue}"
+        if date or time:
+            line += f" ({date} {time})".strip()
+        if existing and len(existing) > 20 and not _is_scraper_artifact(existing):
+            line += f" -- hint: {existing[:120]}"
+        lines.append(line)
+    return (
+        "For EACH event below, write TWO things:\n"
+        "  (S) a SHORT slide pitch, 1 punchy sentence under 150 characters, that makes a "
+        "shy gay introvert WANT to go. End on a high note (no trailing ellipsis).\n"
+        "  (L) a LONG website description, 3 to 5 sentences: what the event IS, why it's "
+        "worth leaving the house for, and ALWAYS end with a concrete 'how to have the best "
+        "time' tip tailored to THIS event.\n\n"
+        "Use any hint to be specific to the real event. Never invent a price or lineup.\n\n"
+        "Events:\n" + "\n".join(lines) +
+        "\n\nReply with ONLY this exact format, two lines per event, nothing else:\n"
+        "1S. [short pitch]\n1L. [long description]\n2S. [short pitch]\n2L. [long description]"
+    )
+
+
+def _featured_rank(e: dict) -> int:
+    """Lower sorts first. Spend the LLM budget on the copy people actually see:
+    EOTW and explicitly queer, one-off events before the long tail."""
+    name = (e.get("name") or "").lower()
+    if e.get("is_eotw") or e.get("eotw"):
+        return 0
+    score = 5
+    if e.get("lgbtq_relevant"):
+        score -= 2
+    if any(k in name for k in ("drag", "queer", "pride", "cabaret", "chorale", "happy hour")):
+        score -= 2
+    if (e.get("source") or "").lower() == "recurring":
+        score += 2
+    try:
+        score -= int(e.get("priority") or 0)
+    except (TypeError, ValueError):
+        pass
+    return max(0, score)
+
+
+def voice_enrich(events: list[dict], budget_s: int = 240, batch: int = 6) -> dict:
+    """LLM-rewrite the SHORT + LONG copy for the given (small) set of shown events
+    in the canonical voice, featured/EOTW first, within a wall-clock budget. Any
+    event the LLM can't reach falls back to rule-based copy so nothing ships empty.
+    Marks each successfully processed event `voice_passed=True` so a later render
+    with TULSAGAYS_SKIP_ENRICH keeps the copy. Returns a stats dict.
+
+    This is the automatic version of the manual 'Step 2.1' voice pass: it runs on
+    ONLY the featured/EOTW events (~20), so it fits the budget instead of stalling
+    on all ~200 like the full enricher did.
+    """
+    import time as _time
+    stats = {"total": len(events), "llm": 0, "rule": 0, "elapsed": 0.0}
+    if not events:
+        return stats
+    order = sorted(range(len(events)), key=lambda i: _featured_rank(events[i]))
+    start = _time.monotonic()
+    use_cli = True
+    i = 0
+    while i < len(order):
+        idxs = order[i:i + batch]
+        i += batch
+        batch_events = [events[k] for k in idxs]
+        over_budget = (_time.monotonic() - start) > budget_s
+        response = ""
+        if use_cli and not over_budget:
+            try:
+                response = _call_claude_cli(_voice_batch_prompt(batch_events),
+                                            VOICE_SYS_PROMPT, model="sonnet", timeout=300)
+                if not response:
+                    response = _call_claude_cli(_voice_batch_prompt(batch_events),
+                                                VOICE_SYS_PROMPT, model="sonnet", timeout=300)
+            except Exception as e:
+                print(f"[voice_enrich] CLI batch failed: {e}")
+                response = ""
+        elif over_budget:
+            print(f"[voice_enrich] budget {budget_s}s spent — rule-based for the rest")
+            use_cli = False
+
+        parsed = {}
+        for line in (response or "").split("\n"):
+            line = line.strip()
+            if not line or not line[0].isdigit():
+                continue
+            try:
+                dot = line.index(".")
+                tag = line[:dot].strip()
+                kind = tag[-1].upper() if tag and tag[-1].isalpha() else "S"
+                num = int(tag.rstrip("SLsl")) - 1
+                desc = line[dot + 1:].strip()
+                if 0 <= num < len(batch_events) and desc:
+                    parsed.setdefault(num, {})[kind] = desc
+            except (ValueError, IndexError):
+                continue
+
+        for local, k in enumerate(idxs):
+            got = parsed.get(local, {})
+            # A refusal is never valid copy: drop it so the rule-based fallback runs.
+            if _is_refusal(got.get("S")) or _is_refusal(got.get("L")):
+                got = {}
+            if got.get("S"):
+                # Strip em dashes at the SOURCE so every downstream consumer
+                # (slides, newsletter, website, feeds) inherits clean copy.
+                events[k]["description"] = _strip_em_dashes(got["S"])
+                if got.get("L"):
+                    events[k]["website_description"] = _strip_em_dashes(got["L"])
+                events[k]["voice_passed"] = True
+                events[k]["voice_source"] = "llm"
+                stats["llm"] += 1
+            else:
+                # Fallback: keep the deck shippable in the same voice.
+                events[k]["description"] = _rule_based_enrich(events[k])
+                events[k]["website_description"] = _rule_based_website_description(
+                    events[k], events[k]["description"])
+                events[k]["voice_passed"] = True  # don't let a later render re-template it
+                events[k]["voice_source"] = "rule"
+                stats["rule"] += 1
+    stats["elapsed"] = round(_time.monotonic() - start, 1)
+    return stats
+
+
 def enrich_event_descriptions(events: list[dict]) -> list[dict]:
     """Public entrypoint: enrich, then guarantee YBR events carry the inclusive
     'everyone's welcome' framing on every return path."""
@@ -580,29 +777,7 @@ def _enrich_event_descriptions_impl(events: list[dict]) -> list[dict]:
             continue
 
         try:
-            sys_prompt = (
-                "You write event descriptions for TulsaGays.com, an LGBTQ+ community events guide in "
-                "Tulsa. Voice: RuPaul meets Alicia Edwards (Abbott Elementary) with a warm Dolly Parton "
-                "heart. Sassy, fun, encouraging, a little theatrical, genuinely kind. You are talking to "
-                "a gay introvert and your whole job is to lovingly get him off the couch and out the "
-                "door, then make sure he has the best possible time once he's there. "
-                "CRAFT (every time): open with a SPECIFIC sensory image of THIS event (a look, a "
-                "sound, a moment), sprinkle drag-mother terms of endearment (honey, sugar, darling, "
-                "baby), land one witty line, and close with a concrete BEST-TIME tip (when to arrive, "
-                "where to stand, what to bring). Hand-written for that one event, never a template. "
-                "NEVER waste a line on empty cheerleading: a bare 'make sure to go', 'you won't regret "
-                "it', 'put it on your calendar', or 'these are your people' is FORBIDDEN. Every sentence "
-                "must carry a specific, useful, or funny detail. "
-                "HARD RULES: Never discourage, hedge, mock, or put down an event in ANY way — every "
-                "event gets a genuine, warm reason to go. Never use em dashes. Never sound like AI or "
-                "corporate copy. Banned phrases: 'vibrant community', 'safe space', 'don't miss out', "
-                "'something for everyone', 'whether you're', 'make sure to go', 'actually go', "
-                "'you will thank yourself', 'zero excuses'. Write like a real, funny, loving friend "
-                "who happens to talk like Dolly hosting Drag Race. "
-                "ANONYMITY: this account is anonymous. NEVER reveal or hint at who runs it. No real "
-                "names, no 'I run this', no 'dm me', no personal signatures. Speak as the community, "
-                "always 'you' (the reader), never 'I' (the operator)."
-            )
+            sys_prompt = VOICE_SYS_PROMPT
             if use_cli:
                 # Route through `claude -p` subprocess — subscription credits.
                 # Retry once on empty (nested CLI is flaky under concurrency).
@@ -629,8 +804,8 @@ def _enrich_event_descriptions_impl(events: list[dict]) -> list[dict]:
                     tag = line[:dot_idx].strip()          # e.g. "1S" or "1L"
                     kind = tag[-1].upper() if tag and tag[-1].isalpha() else "S"
                     num = int(tag.rstrip("SLsl")) - 1
-                    desc = line[dot_idx + 1:].strip()
-                    if 0 <= num < len(batch) and desc:
+                    desc = _strip_em_dashes(line[dot_idx + 1:].strip())
+                    if 0 <= num < len(batch) and desc and not _is_refusal(desc):
                         orig_idx = batch[num][0]
                         if kind == "L":
                             events[orig_idx]["website_description"] = desc
@@ -668,8 +843,8 @@ def _enrich_event_descriptions_impl(events: list[dict]) -> list[dict]:
                         tag = line[:dot_idx].strip()
                         kind = tag[-1].upper() if tag and tag[-1].isalpha() else "S"
                         num = int(tag.rstrip("SLsl")) - 1
-                        desc = line[dot_idx + 1:].strip()
-                        if 0 <= num < len(batch) and desc:
+                        desc = _strip_em_dashes(line[dot_idx + 1:].strip())
+                        if 0 <= num < len(batch) and desc and not _is_refusal(desc):
                             orig_idx = batch[num][0]
                             if kind == "L":
                                 events[orig_idx]["website_description"] = desc
@@ -720,6 +895,18 @@ _VOICE_BANK = {
         "Darling, this is the closest thing Tulsa has to church. Front row, fresh dollar "
         "bills, and a gasp ready in your throat. The opening number warms you up, but the "
         "late set is where the wigs and the inhibitions both come off.",
+        "Sequins, spotlights, and a queen who will absolutely clock your outfit, sugar. Grab "
+        "an aisle seat so you catch the death drops up close, and keep those ones folded and "
+        "ready. The energy climbs all night, so pace your gasps.",
+        "Baby, the lip sync is a contact sport and you are in the splash zone. Show up while "
+        "the house lights are still up to snag a spot near the stage, then let a six-foot "
+        "goddess in heels remind you why you left the house.",
+        "This is where Tulsa keeps its glamour, honey. Big wigs, bigger personalities, and a "
+        "crowd that hollers for every reveal. Come a touch early, tip early and often, and do "
+        "not sit somewhere you would mind getting pulled onstage.",
+        "Rhinestones catching the light, a host with a mouth on her, and numbers you will be "
+        "quoting all week, darling. Post up near the runway, keep your drink in one hand and "
+        "your tips in the other, and let the queens do the rest.",
     ],
     "brunch": [
         "Put on the outfit that makes you feel a little expensive and order the mimosa like "
@@ -728,6 +915,15 @@ _VOICE_BANK = {
         "Eggs are optional, the gossip is mandatory, baby. Dress like you tried, tip your "
         "server like a Parton, and let the bottomless pours do the introductions. Roll in "
         "right at the start before the good tables go.",
+        "Daytime drinking with a side of fabulous, sugar. The patio catches the morning sun "
+        "and the whole room is dressed to be seen. Get there when the doors open so you land "
+        "a table in the thick of it, not exiled to the corner.",
+        "Carbs, cocktails, and a crowd that treats a Sunday like a runway, honey. Come with an "
+        "appetite and a compliment ready for a stranger. Early birds get the good booth and "
+        "the first round before the line wraps the block.",
+        "The kind of brunch where the tea is hot and so is the coffee, darling. Sit near the "
+        "action, order something that photographs well, and let the mimosas turn strangers "
+        "into the table you never wanted to leave.",
     ],
     "dance": [
         "Wear something you can sweat through, sugar, because a chair is not in your future. "
@@ -735,6 +931,14 @@ _VOICE_BANK = {
         "and do not you dare leave before the DJ's last song.",
         "This is your sign to move like nobody's filming, honey. The floor fills up by "
         "eleven, so get loose early and let the bass do your overthinking for you.",
+        "Lights low, bass high, and a room full of people who came to lose it, darling. Stake "
+        "out a spot near the speakers, hydrate like it is a personality trait, and stay for "
+        "the set the DJ saves for the real ones.",
+        "Baby, your hips have been waiting all week for this. Get there before the crowd peaks "
+        "so you can actually find your groove, then dance until your feet file a complaint.",
+        "A proper queer dance floor is cheaper than therapy and twice as fun, sugar. Show up "
+        "an hour in when the room is warm but not packed, find your people by the light rig, "
+        "and let the night take the wheel.",
     ],
     "bar": [
         "Pull up to the bar, order something with a little sparkle, and say hi to whoever's "
@@ -742,31 +946,85 @@ _VOICE_BANK = {
         "kind of nerve. Earlier is for real conversation, later is for delicious chaos.",
         "Belly up, tip your bartender like a tithe, and let the room do its thing, darling. "
         "Slow at first, electric by midnight. Go before you talk yourself into staying in.",
+        "The good kind of dive where everybody eventually knows your drink, honey. Come early "
+        "enough to actually hear the person next to you, grab a stool with a view of the door, "
+        "and let the regulars fold you in.",
+        "Neon, cheap-enough drinks, and a jukebox with excellent taste, sugar. Post up at the "
+        "bar, buy a stranger's next round, and watch a quiet Tuesday turn into a story. "
+        "Earlier for talking, later for trouble.",
+        "This is where Tulsa's queer crowd unwinds and it shows, baby. Roll in before the rush "
+        "for a real seat, tip well, and stay long enough to catch the moment the whole bar "
+        "starts singing along.",
     ],
     "karaoke": [
         "Pick something gloriously embarrassing and commit to the bit, baby. Nobody in this "
         "room is judging, and the brave soul who signs up first always has the best night. "
         "Get your name on the list early so you go before the catalog fills up.",
+        "The mic does not care if you can sing, honey, it cares if you mean it. Slide your "
+        "slip in early, cheer loud for every nervous soul before you, and pick the song you "
+        "belt in the car with the windows down.",
+        "Somewhere between a talent show and a group hug, sugar. Sign up the second you walk "
+        "in, order the drink that unlocks your range, and remember the crowd roots hardest "
+        "for whoever commits the most.",
+        "Darling, this is your Grammy moment and the academy is three drinks deep and adoring. "
+        "Get your name down early, warm up in the bathroom mirror, and leave nothing on that "
+        "little stage.",
     ],
     "trivia": [
         "Round up some strangers, name your team something that'll make the host blush, and "
         "play like there's rent on the line, honey. Show up fifteen minutes early to claim a "
         "good table and a fighting chance.",
+        "You are smarter than you think and pettier than you admit, and both help here, sugar. "
+        "Grab a table near the host so you hear every question, and bring the friend who "
+        "somehow knows all the sports answers.",
+        "Low stakes, high drama, free to lose your dignity, darling. Get there early to lock "
+        "down a booth, order a round for the table, and let the tie-breaker bring out a side "
+        "of you the group has never seen.",
+        "The one weeknight where being a know-it-all pays off, baby. Show up before the first "
+        "round to settle in, name the team something unrepeatable, and play like the gift card "
+        "is a mortgage payment.",
     ],
     "comedy": [
         "Sit close enough to be in danger, laugh from your belly, and chat up the folks beside "
         "you at the break. Live comedy in a small room hits different, sugar. Get there early "
         "for the seats the comics actually look at.",
+        "Grab a drink, sit a few rows back if you scare easy, and let a stranger with a mic "
+        "ruin your composure, honey. The early crowd gets the tight seats and the best crowd "
+        "work, so do not stroll in late.",
+        "Nothing bonds a room like laughing at the same thing at the same time, darling. Come "
+        "a little early, order before the show so you are not that clinking glass, and sit "
+        "close enough to feel the punchlines land.",
+        "The kind of night where your cheeks hurt in the good way, baby. Show up early for a "
+        "seat with a clear sightline, tip your bartender, and be ready to be lovingly roasted "
+        "if you take the front row.",
     ],
     "market": [
         "Bring cash and a little more willpower than usual, because the artists here are "
         "talented and you are weak, darling. Talk to the makers, ask about the work, and go "
         "early while the good pieces are still on the table.",
+        "Local hands, weird and wonderful wares, and a crowd that browses like it is a sport, "
+        "honey. Come early for first pick, chat up the vendor whose booth stops you, and bring "
+        "a tote because you will not leave empty-handed.",
+        "The good stuff sells fast and the makers love to talk shop, sugar. Get there near "
+        "opening, wander the whole row before you commit, and tip your favorite artist with an "
+        "actual sale, not just a compliment.",
+        "A morning of one-of-a-kind finds and zero big-box energy, baby. Bring cash, bring a "
+        "friend with opinions, and get there early while the tables are still full and the "
+        "coffee line is short.",
     ],
     "music": [
         "Get there before the first note, find your spot, and let yourself feel something for "
         "once, honey. Tulsa's live music is criminally underrated. Early gets you close; close "
         "gets you a story.",
+        "Show up for the opener nobody warned you would be that good, sugar. Post up near the "
+        "bar for an easy refill and a clear view, and stay for the encore the die-hards are "
+        "already screaming for.",
+        "The room goes electric the second the band plugs in, darling. Come early enough to "
+        "grab a spot with sightlines, tip the opener at the merch table, and let one great set "
+        "reset your whole week.",
+        "Live and loud and better in person, baby. Get there before doors close on the good "
+        "spots, stand where the sound hits right, and let yourself be the person who sings "
+        "every word without apology.",
     ],
     "default": [
         "This one's got your name on it, sugar. Walk in like you own a little piece of the "
@@ -774,6 +1032,15 @@ _VOICE_BANK = {
         "before the crowd does.",
         "Consider this your formal invitation to leave the couch, darling. Roll in early, say "
         "yes to the first thing that sounds fun, and let the night surprise you.",
+        "The kind of low-pressure good time that is easy to skip and easier to love, honey. "
+        "Get there near the start, find one friendly face, and let the rest of the night build "
+        "itself from there.",
+        "Come as you are and a little earlier than you planned, baby. The best moments happen "
+        "before the room fills up, so grab a good spot, order something you like, and settle "
+        "in for a genuinely nice time.",
+        "Small effort, real payoff, sugar. Show up near the top, park yourself somewhere you "
+        "can people-watch and be watched, and let leaving the house feel like the easy win it "
+        "is.",
     ],
 }
 
@@ -1031,6 +1298,9 @@ _FORCE_REWRITE_SOURCES = {"okeq", "okeq_calendar"}
 def _rule_based_enrich_all(events: list[dict]) -> list[dict]:
     """Apply rule-based enrichment to all events missing good or sassy descriptions."""
     for ev in events:
+        # Never re-template copy the LLM voice pass already wrote (tools/voice_pass.py).
+        if ev.get("voice_passed"):
+            continue
         existing = (ev.get("description") or "").strip()
         src = (ev.get("source") or "").lower()
         # Always re-enrich OKEQ events — their scraped descriptions are
