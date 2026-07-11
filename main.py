@@ -959,12 +959,18 @@ def cmd_update_blog():
     print("UPDATING BLOG")
     print("=" * 50)
 
-    try:
-        from blog.update_blog import update_blog
-        update_blog()
-        print("Blog updated successfully!")
-    except Exception as e:
-        print(f"Blog update failed: {e}")
+    # HONEST NO-OP (2026-07-11): the old `from blog.update_blog import update_blog`
+    # never resolved (docs/ is not a package), so this step SILENTLY did nothing.
+    # On inspection the legacy renderer docs/update_blog.py is architecturally stale
+    # anyway: it reads `{week}.json` (the pipeline now writes `{week}_all.json`) and
+    # expects an old categorized-dict format with per-event `category` fields that no
+    # longer exists, so it would render an empty blog. The live blog is maintained by
+    # tools/elevate_blog.py and the scheduled Wednesday blog task. Rather than
+    # resurrect dead code or fail silently, report clearly and skip.
+    print("[blog] Skipped: the legacy docs/update_blog.py index renderer is stale "
+          "(expects an old data format the pipeline no longer produces). The live "
+          "blog is handled by tools/elevate_blog.py + the Wednesday blog task.")
+    return True
 
 
 def cmd_discover():

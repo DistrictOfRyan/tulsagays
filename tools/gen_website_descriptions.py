@@ -2,10 +2,10 @@
 Generate rich, persuasive website descriptions for each event.
 Writes 'website_description' field to the events JSON.
 
-Voice: Joan Crawford at a queer community mixer. Theatrical, imperious, sardonic,
-withering but warm, always on the reader's side even when reading them. The goal
-is to convince a shy introverted gay person to actually get off the couch, and to
-tell them exactly what to do so they have the best possible time.
+Voice: the site's canonical one (content.generator.VOICE_SYS_PROMPT) - RuPaul meets
+Alicia Edwards with a warm Dolly Parton heart. Convince a shy introverted gay person
+to actually get off the couch, and tell them exactly what to do so they have the best
+possible time. No em dashes (output is also run through strip_em_dashes as a backstop).
 
 Rules:
 - Full flowing paragraphs. No fragmented sentence bursts.
@@ -1241,7 +1241,7 @@ def _generate_sassy_descriptions(ev: dict, score: int) -> tuple:
 
         prompt = f"""You write event descriptions for Tulsa Gays, a website helping LGBTQ+ people in Tulsa, Oklahoma find things to do.
 
-Your voice: Joan Crawford at a queer community mixer. Theatrical, imperious, sardonic, withering but warm, and always ultimately on the reader's side even when you're gently reading them. Think Alicia Edwards from Abbott Elementary: the perfectly delivered withering observation that is also the most helpful thing anyone has said. You are convincing a shy, introverted gay person to get off the couch, and you are going to tell them exactly what to do so they have the best possible time once they get there.
+Write in the site's canonical voice, which is defined in the system prompt (RuPaul meets Alicia Edwards with a warm Dolly Parton heart). You are convincing a shy, introverted gay person to get off the couch, and you tell them exactly what to do so they have the best possible time once they get there.
 
 EVENT DETAILS:
 Name: {name}
@@ -1268,9 +1268,14 @@ Format EXACTLY as:
 WEBSITE: [your text here]
 SLIDE: [your text here]"""
 
+        try:
+            from content.generator import VOICE_SYS_PROMPT as _VSP
+        except Exception:
+            _VSP = "You write sassy, warm, witty LGBTQ+ event copy. Never use em dashes."
         resp = client.messages.create(
             model="claude-haiku-4-5-20251001",
             max_tokens=600,
+            system=_VSP,
             messages=[{"role": "user", "content": prompt}]
         )
         text = resp.content[0].text.strip()

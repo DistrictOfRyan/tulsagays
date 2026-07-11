@@ -1086,6 +1086,7 @@ def _rule_based_enrich(event: dict) -> str:
     _force_rewrite = src in _FORCE_REWRITE_SRCS
     if (existing and len(existing) > 80
             and not any(a in existing.lower() for a in _scraper_artifacts)
+            and not _is_scraper_artifact(existing)   # also rejects raw HTML tags/entities
             and not _force_rewrite):
         return existing  # already has a good description
 
@@ -1285,6 +1286,11 @@ _METADATA_PREFIX_PAT = re.compile(
 def _is_scraper_artifact(desc: str) -> bool:
     d = desc.lower()
     if any(a in d for a in _SCRAPER_ARTIFACTS):
+        return True
+    # HTML tags / entities leaked from a scraper (e.g. a raw academic abstract
+    # "&lt;p&gt;A major constraint...") are never our voice copy — treat as an
+    # artifact so they get re-enriched into voice, not shipped raw to the site.
+    if any(m in d for m in ("&lt;", "&gt;", "<p>", "<p ", "</p>", "<br", "&nbsp;", "&#")):
         return True
     # OKEQ-style "May 28, 2026 | 6:00 pm" metadata prefix counts as artifact
     if _METADATA_PREFIX_PAT.match(desc.strip()):
