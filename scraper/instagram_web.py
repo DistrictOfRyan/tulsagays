@@ -55,10 +55,15 @@ async (user) => {
     const r2 = await fetch(`/api/v1/feed/user/${u.id}/?count=%d`, {headers: H});
     if (!r2.ok) return {err: 'feed HTTP ' + r2.status};
     const j = await r2.json();
+    const bestImg = (o) => {
+      const c = (o && o.image_versions2 && o.image_versions2.candidates) || [];
+      return c.length ? c[0].url : '';
+    };
     return {items: (j.items || []).map(it => ({
       caption: (it.caption && it.caption.text) || '',
       code: it.code || '',
-      taken_at: it.taken_at || 0
+      taken_at: it.taken_at || 0,
+      image_url: bestImg(it) || (it.carousel_media && it.carousel_media.length ? bestImg(it.carousel_media[0]) : '')
     }))};
   } catch (e) { return {err: String(e).slice(0, 120)}; }
 }
@@ -83,7 +88,8 @@ def _to_posts(items: list, profile_url: str) -> List[Dict]:
                 posted_on = datetime.fromtimestamp(int(ts)).strftime("%Y-%m-%d")
             except (ValueError, OverflowError, OSError):
                 posted_on = ""
-        posts.append({"caption": caption, "url": url, "posted_on": posted_on})
+        posts.append({"caption": caption, "url": url, "posted_on": posted_on,
+                      "image_url": it.get("image_url") or ""})
     return posts
 
 
