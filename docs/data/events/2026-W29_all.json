@@ -1,0 +1,4791 @@
+{
+  "week": "2026-W29",
+  "generated_at": "2026-07-13T06:02:57.208542",
+  "total_events": 306,
+  "events": [
+    {
+      "name": "Homo Hotel Happy Hour",
+      "date": "2026-08-07",
+      "time": "6:00 PM - 8:00 PM",
+      "venue": "Homo Hotel",
+      "description": "Tulsa's queerest happy hour is a First Friday tradition. The Homo Hotel opens its doors for an evening of community, conversation, and cocktails. Whether you're new to Tulsa or a longtime local, this is THE place to kick off your weekend with your LGBTQ+ family. All are welcome - bring a friend, make a friend, be yourself. No cover, just vibes.\n\nThis Friday, August 07 - don't miss it!",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "homo_hotel",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Lambda Bowling League",
+      "date": "2026-07-13",
+      "time": "7:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 13, 2026 | 7:00 pm - 9:00 pm AMF Sheridan Lanes, 3121 S Sheridan Rd, Tulsa, OK 74145, United States 3121 S Sheridan Rd Tulsa, OK 74145 Phone: (918) 694-1082 Email: lambdaleague@cox.net affiliate member of IGBO,  international gay bowling organization, providing social opportunities to promote the sport of bowling and to enrich lives of LGBT individuals and allies through leagues and tournamen",
+      "url": "https://qlist.app/events/Tulsa/Lambda-Bowling-League/25979",
+      "source_urls": [
+        "https://qlist.app/events/Tulsa/Lambda-Bowling-League/25979",
+        "https://www.facebook.com/groups/4177858394"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Monday Night Jazz",
+      "date": "2026-07-13",
+      "time": "8:00 PM",
+      "venue": "Tulsa, OK",
+      "description": "Monday Night Jazz night at Vintage Wine Bar - every Monday from 8pm to 11pm",
+      "url": "https://downtowntulsa.com/do/monday-night-jazz",
+      "source_urls": [
+        "https://downtowntulsa.com/do/monday-night-jazz"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "OKEQ Health Clinic",
+      "date": "2026-07-14",
+      "time": "9:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 14, 2026 | 9:00 am - 4:00 pm Open 9:00 a.m. - 4:00 p.m. by appointment only. Please call 918-938-6537 to set up an appointment.",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true,
+      "never_feature": true,
+      "sanity_flags": [
+        "LLM wanted to drop (protected source): Health clinic service, not community event"
+      ]
+    },
+    {
+      "name": "OKEQ Senior's",
+      "date": "2026-07-14",
+      "time": "10:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 14, 2026 | 10:00 am - 12:00 pm Dennis R. Neill Equality Center, 621 E 4th St, Tulsa, OK 74120, USA OKEQ Seniors is a daytime program for LGBTQ+ elders. The program supports LGBT elders and meets every Tuesday morning at 10:00 am at the Dennis R. Neill Equality Center. Together with its members and allies, OKEQ Seniors works towards ensuring a high quality of life for older LGBT adults, advoca",
+      "url": "https://qlist.app/events/Tulsa/OKEQ-Seniors/26000",
+      "source_urls": [
+        "https://qlist.app/events/Tulsa/OKEQ-Seniors/26000"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true,
+      "sanity_flags": [
+        "LLM: Name truncated/awkward ('Senior's' vs 'Seniors')"
+      ]
+    },
+    {
+      "name": "(On Pause for the Summer) EdQ (Educators for Equality)",
+      "date": "2026-07-14",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 14, 2026 | 6:00 pm - 7:00 pm An Oklahomans for Equality Program EdQ brings together queer educators and anyone who works with youth to build stronger supports and resources for creating safe, affirming spaces for students. Whether you're in a classroom, counseling role, or youth serving space. This is for you. Let's connect, learn, and support one another.",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM wanted to drop (protected source): Explicitly on pause for the summer"
+      ]
+    },
+    {
+      "name": "OKEQ Town Hall",
+      "date": "2026-07-14",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 14, 2026 | 6:00 pm - 7:00 pm Dennis R. Neill Equality Center, 621 E 4th St, Tulsa, OK 74120, USA",
+      "url": "https://qlist.app/events/Tulsa/OKEQ-Town-Hall/25962",
+      "source_urls": [
+        "https://qlist.app/events/Tulsa/OKEQ-Town-Hall/25962"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Tulsa Area Prime Timers",
+      "date": "2026-07-14",
+      "time": "7:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 14, 2026 | 7:00 pm - 9:00 pm Event Center A social organization for mature-minded Gay and Bisexual men to establish friendship and support through social interaction. 21+ 2nd Tuesday of every month at 7pm - Contact stevendubois@cox.net / 918.592.0088 or visit http://www.tulsaareaprimetimers.com/ for more information.",
+      "url": "http://www.tulsaareaprimetimers.com/",
+      "source_urls": [
+        "http://www.tulsaareaprimetimers.com/",
+        "https://qlist.app/events/Tulsa/Tulsa-Area-Prime-Timers/25945",
+        "https://okeq.org/okeq-events/tulsa-area-prime-timers/",
+        "https://okeq.org"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "HotMess Sand Volleyball Free Open Play",
+      "date": "2026-07-14",
+      "time": "1:00 PM",
+      "venue": "Lorton Village Apartments at University of Tulsa",
+      "description": "HotMess Sports Tulsa, the LGBTQ+ rec sports league (kickball, dodgeball, sand volleyball, and more). All skill levels welcome, the whole point is showing up and having a blast. Details and registration on Instagram @hotmesssportstulsa.",
+      "url": "https://www.instagram.com/p/DaQ3Tbgmgqk/",
+      "source_urls": [
+        "https://www.instagram.com/p/DaQ3Tbgmgqk/",
+        "https://www.instagram.com/p/DaOAbYFGmXt/"
+      ],
+      "priority": 1,
+      "source": "hotmess_sports",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Rose District Farmers Market",
+      "date": "2026-07-14",
+      "time": "4:00 PM",
+      "venue": "418 S Main St",
+      "description": "Farmers Market Broken Arrow Main Street",
+      "url": "https://www.facebook.com/RoseDistrictFarmersMarket/",
+      "source_urls": [
+        "https://www.facebook.com/RoseDistrictFarmersMarket/",
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Crosbie Heights Garden Hangouts",
+      "date": "2026-07-14",
+      "time": "7:00 PM",
+      "venue": "311 S Phoenix Ave",
+      "description": "Summer is here and it’s getting hot! Our Saturday morning workdays are becoming Tuesday evening hangouts! Join us in the garden for drinks, snacks, and some light to moderate garden work! Starting tomorrow evening! Everyone is welcome! 311 S Phoenix Ave.",
+      "url": "https://www.facebook.com/crosbieheights/",
+      "source_urls": [
+        "https://www.facebook.com/crosbieheights/"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "OSU Tulsa Queer Support Group",
+      "date": "2026-07-14",
+      "time": "6:00 PM",
+      "venue": "OSU Tulsa Campus, 700 N Greenwood Ave",
+      "description": "",
+      "url": "https://events.tulsa.okstate.edu",
+      "source_urls": [
+        "https://events.tulsa.okstate.edu"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Trivia Night at YBR",
+      "date": "2026-07-14",
+      "time": "7:00 PM",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
+      "description": "",
+      "url": "https://www.instagram.com/tulsaybr/",
+      "source_urls": [
+        "https://www.instagram.com/tulsaybr/"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Canceled: HOPE Testing (Health Outreach, Prevention & Education)",
+      "date": "2026-07-14",
+      "time": "4:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 14, 2026 | 4:00 pm - 6:00 pm 2nd & 4th Tuesday, Free HIV Testing with HOPE Testing at The Dennis R. Neill Equality Center 🏳️‍⚧️🪶❤️🧡💛💚💙💜🤍🩷🩵🤎🖤🪶🏳️‍🌈 H.O.P.E. (Health Outreach, Prevention and Education) Testing Clinic provides free HIV testing at the Equality Center 2nd & 4th Tuesdays from 4:00 - 6:00 pm in the OKEQ Health Clinic. 🏳️‍⚧️🪶❤️🧡💛💚💙💜🤍🩷🩵🤎🖤🪶🏳️‍🌈",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true,
+      "never_feature": true,
+      "sanity_flags": [
+        "LLM wanted to drop (protected source): Event is canceled"
+      ]
+    },
+    {
+      "name": "OKEQ Health Clinic",
+      "date": "2026-07-15",
+      "time": "9:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 15, 2026 | 9:00 am - 4:00 pm Appointments need to be made 24 hours prior to your requested appointment time. We currently accept Blue Cross and Blue Shield and offer a self-pay option. At the moment, we are only able to see patients who are 18 and older. If you want to start or transfer services, please call 918-938-6537 to set up an appointment or use the link below.﻿ ﻿ SCHEDULE APPOINTMENT",
+      "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor",
+      "source_urls": [
+        "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true,
+      "never_feature": true,
+      "sanity_flags": [
+        "LLM wanted to drop (protected source): Health clinic service, not community event"
+      ]
+    },
+    {
+      "name": "Smart Recovery Meetings",
+      "date": "2026-07-15",
+      "time": "6:30 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 15, 2026 | 6:30 pm - 8:00 pm Dennis R. Neill Equality Center, 621 E 4th St, Tulsa, OK 74120, USA Smart Recovery is the leading, evidence informed approach to overcoming addictive behaviors and leading a balanced life. SMART is stigma-free and emphasizes self empowerment every 1st and 3rd Wednesday at Oklahomans for Equality starting at 6:30pm for more information email joseph.nowicki@va.gov w",
+      "url": "https://okeq.orgmailto:joseph.nowicki@va.gov",
+      "source_urls": [
+        "https://okeq.orgmailto:joseph.nowicki@va.gov"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Gender Support Group",
+      "date": "2026-07-15",
+      "time": "7:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 15, 2026 | 7:00 pm - 8:30 pm Event Center The Gender Support provides support, education, and social opportunities for transgender and intersex individuals. You'll need to have a first-time interview before attending your first meeting. ⚧️ Gender Support meets every Wednesday and every Second Wednesday is the breakout group for Non-binary, Trans Men, Trans Women, and Partners of Trans* indivi",
+      "url": "https://qlist.app/events/Tulsa/Gender-Support-Group/26073",
+      "source_urls": [
+        "https://qlist.app/events/Tulsa/Gender-Support-Group/26073",
+        "https://okeq.org/transgender-support/",
+        "https://okeq.org"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Social Play (mahjong)",
+      "date": "2026-07-15",
+      "time": "6:00 PM",
+      "venue": "",
+      "description": "",
+      "url": "https://timetr.ee/p/tulsa_isnt_boring/3006360652861236548",
+      "source_urls": [
+        "https://timetr.ee/p/tulsa_isnt_boring/3006360652861236548"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM: Missing venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Food Truck Wednesdays (Guthrie Green)",
+      "date": "2026-07-15",
+      "time": "11:00 AM",
+      "venue": "Guthrie Green",
+      "description": "Every Wednesday, grab some tasty eats and gather on the grounds of Guthrie Green. During Food Truck Wednesdays, lunchtime transforms into a community-wide affair, with roaming food trucks posting up at this Tulsa park. While you dine on delicious food, be sure to enjoy the live music and fresh air.",
+      "url": "https://www.travelok.com/listings/view.profile/id.25472/event.52671",
+      "source_urls": [
+        "https://www.travelok.com/listings/view.profile/id.25472/event.52671"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Free Pool & Darts at YBR",
+      "date": "2026-07-15",
+      "time": "",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
+      "description": "",
+      "url": "https://www.instagram.com/tulsaybr/",
+      "source_urls": [
+        "https://www.instagram.com/tulsaybr/"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM: Missing time"
+      ]
+    },
+    {
+      "name": "OKEQ Health Clinic",
+      "date": "2026-07-16",
+      "time": "9:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 16, 2026 | 9:00 am - 12:00 pm Appointments need to be made 24 hours prior to your requested appointment time. We currently accept Blue Cross and Blue Shield and offer a self-pay option. At the moment, we are only able to see patients who are 18 and older. If you want to start or transfer services, please call 918-938-6537 to set up an appointment or use the link below.﻿ ﻿ SCHEDULE APPOINTMENT",
+      "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor",
+      "source_urls": [
+        "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true,
+      "never_feature": true,
+      "sanity_flags": [
+        "LLM wanted to drop (protected source): Health clinic service, not community event"
+      ]
+    },
+    {
+      "name": "OkEq Board Meeting",
+      "date": "2026-07-16",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 16, 2026 | 6:00 pm - 8:00 pm 621 East 4th Street, Tulsa, OK, United States All Oklahomans for Equality board meetings are open to all OkEq members.",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM wanted to drop (protected source): Organizational board meeting, not community event"
+      ]
+    },
+    {
+      "name": "Queer Crafters Club",
+      "date": "2026-07-16",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 16, 2026 | 6:00 pm - 8:00 pm Dennis R. Neill Equality Center, 621 E 4th St, Tulsa, OK 74120, USA Bring your own craft night! Come craft with the queer community. Our focus is to build on togetherness while we craft in our own mediums! You can find us in the Gallery on Thursdays at the Equality Center.",
+      "url": "https://qlist.app/events/Tulsa/Queer-Crafters-Club/26048",
+      "source_urls": [
+        "https://qlist.app/events/Tulsa/Queer-Crafters-Club/26048"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Girl Scout Troop 7484",
+      "date": "2026-07-16",
+      "time": "6:30 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 16, 2026 | 6:30 pm - 7:30 pm Wellness Room Come be part of something special with ! We welcome all girls, trans, and nonbinary youth to join our vibrant community. Every Thursday at 6:30 PM, we meet to build friendships, develop new skills, and have fun together. Whether you're looking for adventure, learning, or a supportive community, we’ve got a place for you! Want to learn more or get inv",
+      "url": "https://okeq.orgmailto:t.marler@cox.net",
+      "source_urls": [
+        "https://okeq.orgmailto:t.marler@cox.net"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true,
+      "never_feature": true,
+      "sanity_flags": [
+        "LLM wanted to drop (protected source): Children-only programming (Girl Scout troop)"
+      ]
+    },
+    {
+      "name": "Shut up & Write: Broken Arrow",
+      "date": "2026-07-16",
+      "time": "6:00 PM",
+      "venue": "Rivendell Books and Baubles",
+      "description": "Shut Up & Write hosts free in-person and online writing events for writers all over the world. Our goal is to ensure that every writer, regardless of genre or skill level, has access to the community, accountability, and resources they need to be successful in their personal writing goals. Our events use our proven formula: a few minutes of introductions, an hour of focused writing, and a final check-in to share the hour's progress.\n\nWhat to Expect\nRSVP and please arrive 10–15 minutes early to get settled at an in-person event. Our host will lead introductions and then everyone will write for a quiet, focused period of time.\n\nAfterward, we’ll have an optional time to chat and get to know each other. Members often talk about their successes and challenges as writers. Our events are a safe space for writers to work on their craft. No one will read or critique your writing.\nFor more information about our events, visit https://shutupwrite.com.\n\nBeing Late is Okay: Just show up and get settled, then check in with me after the session. (I’ll be the person with the Shut Up & Write sign.) If you are on time, please be willing to make room for any friendly latecomers.\n\nWhat Should I Bring?\nWhatever you need to be able to write!\nBring earbuds/earplugs if you want to block the cafe’s ambient music or the occasional conversation by other patrons.",
+      "url": "https://rivendellbandb.com/pages/events",
+      "source_urls": [
+        "https://www.meetup.com/shutupandwritetulsa/events/315434475/",
+        "https://rivendellbandb.com/pages/events"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "(GCB) Trivia for those that Suck and Trivia",
+      "date": "2026-07-16",
+      "time": "7:00 PM",
+      "venue": "Good Cause Brewing",
+      "description": "Trivia for People Who Suck at Trivia is tonight at 7pm! Trivia is held in our front space, so if that’s not your thing, you can still come hang out in the taproom. (But, really, our trivia is a blast with the nicest players ever so maybe give it a shot!) \n\nOpen noon - 9pm Tues-Thurs, noon - 11pm Fri & Sat, 2-9 Sun \n\n#thingstodointulsa #tulsaoklahoma #tulsacraftbeer",
+      "url": "https://www.instagram.com/goodcausebrewing/",
+      "source_urls": [
+        "https://www.instagram.com/goodcausebrewing/"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Trivia (Starlite)",
+      "date": "2026-07-16",
+      "time": "8:00 PM",
+      "venue": "Starlite",
+      "description": "Join us every Thursday evening for Trivia at The Starlite, where the questions are sharp, the drinks are strong, and the vibes are weird...in a good way!\n\nBring a team (up to 6) or play solo.\nMediocre bonus prizes.\nFree to play.\nStarts at 8pm, arrive early to get a table.",
+      "url": "https://www.visittulsa.com/event/starlite-trivia-night/10938/",
+      "source_urls": [
+        "https://www.visittulsa.com/event/starlite-trivia-night/10938/"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Bingo at Saturn Room",
+      "date": "2026-07-16",
+      "time": "6:30 PM",
+      "venue": "Saturn Room",
+      "description": "",
+      "url": "https://www.saturnroom.com/",
+      "source_urls": [
+        "https://www.saturnroom.com/"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Silent Book Club at Rivendell Books and Baubles",
+      "date": "2026-07-16",
+      "time": "6:00 PM",
+      "venue": "Rivendell Books and Baubles",
+      "description": "Join us for our Monthly Silent Book Club at Rivendell Books and Baubles!\nEvery third Thursday | 6:00 PM - 8:00 PM\n\nStep into our cozy bookstore for an evening of literary discussion, peaceful reading, and bookish camaraderie. Whether you're a casual reader or a devoted bibliophile, you'll find your people here!\n\n📚 Event Format:\n6:00 - 6:30 PM: Social Hour • Arrive and get settled • Grab drinks and snacks from our coffee bar • Share what you're currently reading • Connect with fellow book lovers\n\n6:30 - 7:30 PM: Quiet Reading Hour • Dedicated peaceful reading time • Bring your current read or browse our shelves • Enjoy the tranquil atmosphere among fellow readers\n\n7:30 - 8:00 PM: Optional Social Time • Discuss what you read • Exchange book recommendations • Connect with your reading community • Wind down the evening at your own pace\n\nWhat to expect: • A welcoming community of fellow readers • Comfortable seating for reading • Light refreshments available at our coffee bar • A peaceful, distraction-free environment • The magical ambiance of being surrounded by books\nBring whatever book you're currently reading - this isn't a traditional book club where everyone reads the same book. Instead, it's a dedicated time to read, share recommendations, and connect with other book lovers!\n\nMark your calendar for the third Thursday of every month and join our growing community of readers!\n\nLocation: Rivendell Books and Baubles 2034 W Houston St; Broken Arrow, OK 74012\n\nSpace is limited - we recommend arriving a few minutes early to get settled in.\n\nQuestions? Feel free to reach out to us!",
+      "url": "https://rivendellbandb.com/pages/events",
+      "source_urls": [
+        "https://rivendellbandb.com/pages/events"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Lit Fic Book Club",
+      "date": "2026-07-16",
+      "time": "5:00 PM",
+      "venue": "Magic City Books",
+      "description": "Meets the 3rd Thursday of the month at 5:00 pm\n\n\n\nThe perfect excuse to leave work a little early but still make it home by dinnertime. This group reads contemporary literary fiction with a focus on women authors. Novels considered literary are typically high-caliber, meaningful character studies that deeply explore thought-provoking themes.",
+      "url": "https://magiccitybooks.com/programs-services/lit-fic-book-club",
+      "source_urls": [
+        "https://magiccitybooks.com/programs-services/lit-fic-book-club"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Open Stage at YBR",
+      "date": "2026-07-16",
+      "time": "9:00 PM",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
+      "description": "",
+      "url": "https://www.instagram.com/tulsaybr/",
+      "source_urls": [
+        "https://www.instagram.com/tulsaybr/"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Guiding Right Inc. Testing",
+      "date": "2026-07-16",
+      "time": "3:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 16, 2026 | 3:00 pm - 6:00 pm Join Guiding Right Inc. for FREE HIV and Hepatitis-C testing and prevention at the OKEQ Health Clinic every 1st and 3rd Thursday of the month from 3:00–6:00 PM at the Dennis R. Neill Equality Center. Services include free HIV testing, free Hepatitis-C testing, prevention supplies, and gift card incentives for participants.",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true,
+      "never_feature": true,
+      "sanity_flags": [
+        "LLM wanted to drop (protected source): Professional testing/certification course"
+      ]
+    },
+    {
+      "name": "Free Drop-In Therapy Sessions",
+      "date": "2026-07-17",
+      "time": "9:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 17, 2026 | 9:00 am - 5:00 pm Low barrier, NO COST drop in therapy sessions available only for those aged 18+ at The Dennis R. Neill Equality Center. Call or text 918-205-4018 to schedule or just drop in during open hours. About Tifany Oslin, LMSW Tifany Oslin (she/her) is a Licensed Master Social Worker providing affirming mental-health support for individuals navigating identity, trauma, and",
+      "url": "",
+      "source_urls": [],
+      "priority": 1,
+      "source": "okeq",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true,
+      "never_feature": true,
+      "sanity_flags": [
+        "LLM wanted to drop (protected source): Health service (therapy sessions), not community event"
+      ]
+    },
+    {
+      "name": "OKEQ Health Clinic",
+      "date": "2026-07-17",
+      "time": "1:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 17, 2026 | 1:00 pm - 4:00 pm Appointments need to be made 24 hours prior to your requested appointment time. We currently accept Blue Cross and Blue Shield and offer a self-pay option. At the moment, we are only able to see patients who are 18 and older. If you want to start or transfer services, please call 918-938-6537 to set up an appointment or use the link below.﻿ ﻿ SCHEDULE APPOINTMENT",
+      "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor",
+      "source_urls": [
+        "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true,
+      "never_feature": true,
+      "sanity_flags": [
+        "LLM wanted to drop (protected source): Health clinic service, not community event"
+      ]
+    },
+    {
+      "name": "AFFIRMING",
+      "date": "2026-07-17",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 17, 2026 | 6:00 pm - 7:00 pm Wellness Room We are thrilled to share the news that AFFIRM, a Cognitive Behavioral Therapy-based program, is now available through Oklahomans for Equality. This program is specifically designed to support LGBTQ+ youth in managing stress and promoting overall well-being The AFFIRM practice models were developed in collaboration with LGBTQ+ youth and adult communit",
+      "url": "https://qlist.app/events/Tulsa/AFFIRMING/25886",
+      "source_urls": [
+        "https://qlist.app/events/Tulsa/AFFIRMING/25886"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Positively Grateful",
+      "date": "2026-07-17",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 17, 2026 | 6:00 pm - 8:00 pm Event Center Are you HIV+?, Looking for support, friends, or someone to talk to? Join  an HIV+ Support Group that meets every Friday. Join  for potluck meals, receive wellness tips, find support, raise awareness, and more! All are welcome!",
+      "url": "https://qlist.app/events/Tulsa/Positively-Grateful/26014",
+      "source_urls": [
+        "https://qlist.app/events/Tulsa/Positively-Grateful/26014"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Cheap Date Night",
+      "date": "2026-07-17",
+      "time": "",
+      "venue": "DVL Club & Lounge, 302 S Frankfort Ave",
+      "description": "DVL Club & Lounge, the woman-owned LGBTQ+ bar in Tulsa's Blue Dome District. Details on Instagram @dvltulsa.",
+      "url": "https://www.instagram.com/p/DamSxqcgJxA/",
+      "source_urls": [
+        "https://www.instagram.com/p/DamSxqcgJxA/"
+      ],
+      "priority": 1,
+      "source": "dvl_ig",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Heatwave Half Marathon (dash, 1M, 5k, 10k, Half, Half/Relay)",
+      "date": "2026-07-17",
+      "time": "",
+      "venue": "River West Festival Park",
+      "description": "5K/10K/Half- Marathon & Relay registration includes a custom bib, designer shirt, and a custom finisher medal!\n\n1 Mile registration is untimed and includes a custom bib, designer shirt, and a custom finisher medal!\n\nThe kid's dash is a fun, untimed dash for our kiddos ages 10 and under. Registration includes a mini bib, youth-sized shirt, and a specifically crafted medal for our kids' dash event! (If your child wants to run the kid's dash, and doesn't want the SWAG, they are welcome to run with us on race day for free!)",
+      "url": "https://runsignup.com/Race/OK/Tulsa/HeatwaveHalfMarathonTulsa",
+      "source_urls": [
+        "https://runsignup.com/Race/OK/Tulsa/HeatwaveHalfMarathonTulsa"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM: Missing time for event"
+      ]
+    },
+    {
+      "name": "KATNIP at YBR",
+      "date": "2026-07-17",
+      "time": "9:00 PM",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
+      "description": "",
+      "url": "https://www.instagram.com/tulsaybr/",
+      "source_urls": [
+        "https://www.instagram.com/tulsaybr/"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "OKEQ Tulsa TTRPGs",
+      "date": "2026-07-18",
+      "time": "12:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 18, 2026 | 12:00 pm - 6:00 pm Wellness Room/Library Are you a fan of tabletop role-playing games? If so, you won't want to miss Tulsa's TTRPGs 🧙🏾‍♂️👹🧝🏼🧌🪄🧚🏻‍♀️ Meet new people, make friends, learn about our store partners, and play your favorite games. Don't miss out on this exciting event! Contact us at okeqtulsattrpg@gmail.com to learn more! We can't wait to see you there! 🏳️‍⚧️🧡💛💚💙💜🤍🤎🖤🏳️‍🌈",
+      "url": "https://okeq.orgmailto:okeqtulsattrpg@gmail.com",
+      "source_urls": [
+        "https://okeq.orgmailto:okeqtulsattrpg@gmail.com",
+        "https://qlist.app/events/Tulsa/OKEQ-Tulsa-TTRPGs/25924"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Rainbow Harvest: Free Farmer's Market",
+      "date": "2026-07-18",
+      "time": "1:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "description": "July 18, 2026 | 1:00 pm - 4:00 pm ✨ What is Rainbow Harvest? Rainbow Harvest is a FREE Farmers Market for the community. This event is all about increasing access to fresh, nutritious food and fostering connection in a space that’s safe, welcoming, and affirming of all identities. This market is in recognition of the unique challenges our community faces around food insecurity and access. 📋 IMPORT",
+      "url": "https://forms.gle/WXMVSfEJpav4Lg4p8",
+      "source_urls": [
+        "https://forms.gle/WXMVSfEJpav4Lg4p8",
+        "https://qlist.app/events/Tulsa/Rainbow-Harvest-Free-Farmers-Market/25911"
+      ],
+      "priority": 1,
+      "source": "okeq",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "SHUT UP & WRITE (Foolish Things)",
+      "date": "2026-07-18",
+      "time": "10:30 AM",
+      "venue": "Foolish Things Coffee Company",
+      "description": "Shut Up & Write!® at Foolish Things\nSUAW hosts free in-person and online writing events for writers all over the world. Our goal is to ensure that every writer, regardless of genre or skill level, has access to the community, accountability, and resources they need to be successful in their personal writing goals.\n\nOur events use our proven formula: a few minutes of introductions, an hour of focused writing, and a final check-in to share the hour’s progress.\n\nWhat to Expect: RSVP and please arrive 10–15 minutes early to get settled at an in-person event. Our host will lead introductions and then everyone will write for a quiet, focused period of time.\n\nAfterward, we’ll have an optional time to chat and get to know each other. Members often talk about their successes and challenges as writers.\n\nOur events are a safe space for writers to work on their craft. No one will read or critique your writing.",
+      "url": "http://expwriting.com/events/shut-up-write-at-foolish-things/",
+      "source_urls": [
+        "https://www.meetup.com/shutupandwritetulsa/events/315455698/",
+        "http://expwriting.com/events/shut-up-write-at-foolish-things/"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "BLACK WALL STREET 2026 FOOD FESTIVAL",
+      "date": "2026-07-18",
+      "time": "12:00 PM",
+      "venue": "188 N Greenwood Ave",
+      "description": "BLACK WALL STREET 2026 FOOD FESTIVAL\n🗣️🗣️🗣️ If you would like to be a Food Vendor , Drink & Retail Vendor at The 2026 BLACK WALL STREET FOOD FESTIVAL on July 18, 2026! We invite you to register for this exciting event by clicking on the link provided. Over 50 food trucks and numerous vendors will be featured, offering a wide variety of cuisine. The festival is free and open to the public, promising an enjoyable experience of food, community, and fun.\n#BlackWallStreettulsa #greenwood #foodfestival\n\nhttps://form.jotform.com/260647685319064",
+      "url": "https://allevents.in/tulsa/black-wall-street-2026-food-festival/200029808540233",
+      "source_urls": [
+        "https://allevents.in/tulsa/black-wall-street-2026-food-festival/200029808540233"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "DCC Book Club: Book 8 Floor 11 (location tbd)",
+      "date": "2026-07-18",
+      "time": "1:00 PM",
+      "venue": "",
+      "description": "We’re talking about book 8 Still!!!!\n\nCome talk about the exposition dumb that is floor 11. Hit us with those new theories. Is lucia a child or a shell???? Is the whole thing a Soma issue?\n\nI don’t know. Convince me!\n\n*we are all inclusive and try to give people enough time to talk (or not talk) as much as they like. \n\nWe usually do a social right after so anyone who has more to say or book recommendations can share them with the group. \n\nSize (8-23 people)",
+      "url": "https://timetr.ee/p/tulsa_isnt_boring/3000530072538015334",
+      "source_urls": [
+        "https://timetr.ee/p/tulsa_isnt_boring/3000530072538015334"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM: Venue incomplete (location TBD)",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "POLKA PARTY 2026",
+      "date": "2026-07-18",
+      "time": "4:30 PM",
+      "venue": "1429 Terrace Drive, Oklahoma 74104",
+      "description": "POLKA PARTY 2026\nIt's back for a 3rd year! The German-American Society of Tulsa is thrilled to announce Polka Party 2026.\n\nJoin us Saturday, July 18th at the GAST Event Center, in the heart of midtown Tulsa just one block west of Lewis at 15th Street & Terrace Drive. Doors open at 4:30 p.m.!\n\nPut on your dancing shoes, Tulsa, and learn to polka with the GAST Blaskapelle and Folk Dancers! As the music fills the hall, we'll be serving up fresh, hot, authentic German food: bratwurst, pretzels, sauerkraut, apfelstrudel, and much more. There's also cold beer on tap, prizes all night long, and a whole lot of fun.\n\nAdmission and parking are free, and no purchase is necessary. Come learn to polka with us!",
+      "url": "https://allevents.in/tulsa/polka-party-2026/200030238081837#google_vignette",
+      "source_urls": [
+        "https://allevents.in/tulsa/polka-party-2026/200030238081837#google_vignette"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Tulsa Farmers' Market",
+      "date": "2026-07-18",
+      "time": "7:00 AM",
+      "venue": "East Admiral Boulevard & South Lewis Avenue",
+      "description": "Tulsa FARMERS’ MARKET\n\nApril-Sept., Saturdays 7-11a\n\nMay- Aug., Wednesdays 8-11a\n\nOct- March, Saturdays 8a-12p\n\n*TFM is closed on Saturdays immediately following Thanksgiving & Christmas Holidays.",
+      "url": "https://www.tulsafarmersmarket.org/visit",
+      "source_urls": [
+        "https://www.tulsafarmersmarket.org/visit"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Rose District Farmers Market",
+      "date": "2026-07-18",
+      "time": "8:00 AM",
+      "venue": "418 S Main St",
+      "description": "Farmers Market Broken Arrow Main Street",
+      "url": "https://www.facebook.com/RoseDistrictFarmersMarket/",
+      "source_urls": [
+        "https://www.facebook.com/RoseDistrictFarmersMarket/"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "El Molino - Brunch (New Story Brewery)",
+      "date": "2026-07-18",
+      "time": "11:00 AM",
+      "venue": "New Story Brewing",
+      "description": "Weekend Brunch at New Story Brewing!\nEvery Saturday & Sunday • 11 AM – 3 PM\n\nWe’re serving up El Molino’s fresh, house-made tortillas and bold flavors for the perfect weekend hangout.\n\nBrunch Menu:\n• Brunch Taco\n• Chilaquiles \n• Huevos Rancheros \n• Sour Beermosa \n• Michelada \n\nKick back with great food, cold beer, and good vibes at New Story Brewing!\n\nPrice:\nFree\nTime:\n11:00 AM to 3:00 PM\nRecurrence:\nRecurring weekly on Sunday, Saturday",
+      "url": "https://www.visittulsa.com/event/el-molino-brunch/10424/",
+      "source_urls": [
+        "https://www.visittulsa.com/event/el-molino-brunch/10424/"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "The Hive Farmer's Market",
+      "date": "2026-07-18",
+      "time": "8:00 AM",
+      "venue": "2615 S Harvard Ave",
+      "description": "The Hive Farmer's Market\nShop Local!! The Hive Farmers’ Market is all about celebrating Oklahoma agriculture and local artisans. We provide a space where farmers, ranchers, gardeners, chefs, and makers can sell their goods directly to you. We also love showing the community what’s available locally, sharing the benefits of fresh, homegrown products, and creating a fun, family-friendly spot for everyone in Tulsa to enjoy.",
+      "url": "https://allevents.in/tulsa/the-hive-farmers-market/200029300147515",
+      "source_urls": [
+        "https://allevents.in/tulsa/the-hive-farmers-market/200029300147515"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Irish American Club of Tulsa Ice Cream Social",
+      "date": "2026-07-19",
+      "time": "2:00 PM",
+      "venue": "The American Legion",
+      "description": "Join us for sweet treats, good company and Irish tradition at the Irish American Club of Tulsa’s Annual Ice Cream Social!\nEnjoy a variety of ice cream, connect with friends old and new, and settle in for an afternoon of Irish storytelling as we share tales and history that have been passed down through generations.\nWhether you're celebrating your Irish heritage or simply looking for a fun family-friendly outing, there's something for everyone at this beloved summer tradition.\nWe look forward to seeing you there! ☘️🍨📚",
+      "url": "https://www.eventbrite.com/e/irish-american-club-of-tulsa-ice-cream-social-tickets-1992098923506?aff=ebdssbdestsearch",
+      "source_urls": [
+        "https://www.eventbrite.com/e/irish-american-club-of-tulsa-ice-cream-social-tickets-1992098923506?aff=ebdssbdestsearch"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Sunday Swap (book swap)",
+      "date": "2026-07-19",
+      "time": "2:00 PM",
+      "venue": "American Solera",
+      "description": "",
+      "url": "https://www.americansolera.com/tulsa-taproom-events",
+      "source_urls": [
+        "https://www.americansolera.com/tulsa-taproom-events"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "El Molino - Brunch (New Story Brewery)",
+      "date": "2026-07-19",
+      "time": "11:00 AM",
+      "venue": "New Story Brewery",
+      "description": "Weekend Brunch at New Story Brewing!\nEvery Saturday & Sunday • 11 AM – 3 PM\n\nWe’re serving up El Molino’s fresh, house-made tortillas and bold flavors for the perfect weekend hangout.\n\nBrunch Menu:\n• Brunch Taco\n• Chilaquiles \n• Huevos Rancheros \n• Sour Beermosa \n• Michelada \n\nKick back with great food, cold beer, and good vibes at New Story Brewing!\n\nPrice:\nFree\nTime:\n11:00 AM to 3:00 PM\nRecurrence:\nRecurring weekly on Sunday, Saturday",
+      "url": "https://www.visittulsa.com/event/el-molino-brunch/10424/",
+      "source_urls": [
+        "https://www.visittulsa.com/event/el-molino-brunch/10424/"
+      ],
+      "priority": 1,
+      "source": "tulsa_isnt_boring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Sunday Showdown Open Talent Night",
+      "date": "2026-07-19",
+      "time": "Doors 9 PM, Show 11 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "",
+      "url": "https://qlist.app/events/Tulsa/The-Sunday-Showdown-Open-Talent-Night-at-Club-Majestic/16808",
+      "source_urls": [
+        "https://qlist.app/events/Tulsa/The-Sunday-Showdown-Open-Talent-Night-at-Club-Majestic/16808"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Black Queer Tulsa Monthly Brunch",
+      "date": "2026-07-19",
+      "time": "Check website for time",
+      "venue": "Various locations, Tulsa",
+      "description": "",
+      "url": "https://www.blackqueertulsa.org/events",
+      "source_urls": [
+        "https://www.blackqueertulsa.org/events"
+      ],
+      "priority": 1,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "non-time time field: 'Check website for time'"
+      ]
+    },
+    {
+      "name": "Book Launch Party for Democracy [In]Action",
+      "date": "2026-07-13",
+      "time": "6:30 PM",
+      "venue": "Harvest Farm Event Center",
+      "description": "Celebrate the launch of Democracy [In]Action, the book Kirkus Reviews called \"accessible...well-researched, timely.\"",
+      "url": "https://www.eventbrite.com/e/book-launch-party-for-democracy-inaction-tickets-1989131966257",
+      "source_urls": [
+        "https://www.eventbrite.com/e/book-launch-party-for-democracy-inaction-tickets-1989131966257",
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Film Noir with Josh Fadem",
+      "date": "2026-07-13",
+      "time": "11:30 PM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.meetup.com/tulsa-shenanigans-society/events/315443373/",
+      "source_urls": [
+        "https://www.meetup.com/tulsa-shenanigans-society/events/315443373/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Missing venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Summer Piano Camp",
+      "date": "2026-07-13",
+      "time": "12:00 AM",
+      "venue": "Lorton Performance Center",
+      "description": "&lt;p&gt;UTulsa Summer Piano Camp is open to intermediate to advanced level piano students, grades nine through 12. Students will work with UTulsa piano faculty and attend seminars, workshops and presentations designed to equip pianists with the necessary skills for a career in music, or to simply enrich their lives through music, performance and informed listening. [&hellip;]&lt;/p&gt;\\n",
+      "url": "https://calendar.utulsa.edu/event/summer-piano-camp-2/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/event/summer-piano-camp-2/",
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "extended_calendars",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Implausible time (12:00 AM for piano camp)"
+      ]
+    },
+    {
+      "name": "Tulsa Herb Society",
+      "date": "2026-07-13",
+      "time": "",
+      "venue": "Tulsa, OK",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Missing time and incomplete venue info"
+      ]
+    },
+    {
+      "name": "Members-Only Early Access Hours",
+      "date": "2026-07-13",
+      "time": "",
+      "venue": "Discovery Lab",
+      "description": "",
+      "url": "https://discoverylab.org/events/event/5696592/date/2026-07-13",
+      "source_urls": [
+        "https://discoverylab.org/events/event/5696592/date/2026-07-13"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Little Lab: Early Learners Program (Ages 0–4)",
+      "date": "2026-07-13",
+      "time": "11:00 AM - 11:30 AM",
+      "venue": "Discovery Lab, 3123 Riverside Dr",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://discoverylab.org/events/event/5696585/date/2026-07-13",
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Free FAFSA Workshop",
+      "date": "2026-07-13",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "description": "",
+      "url": "https://calendar.tulsacc.edu/event/22567-free-fafsa-workshop",
+      "source_urls": [
+        "https://calendar.tulsacc.edu/event/22567-free-fafsa-workshop"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "never_feature": true,
+      "community_event": true
+    },
+    {
+      "name": "MOREcolor 2026: Pride Art Exhibition",
+      "date": "2026-07-13",
+      "time": "",
+      "venue": "",
+      "description": "Pride-season fine arts exhibition spotlighting 2SLGBTQ+ artists, with works for viewing and purchase",
+      "url": "https://qlist.app/events/Tulsa/MOREcolor-2026-Pride-Art-Exhibition/23707",
+      "source_urls": [
+        "https://qlist.app/events/Tulsa/MOREcolor-2026-Pride-Art-Exhibition/23707"
+      ],
+      "priority": 2,
+      "source": "qlist",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "PODCAST FIRST AMERICA HOSTED AND REPORTED BY REBECCA NAGLE (CHEROKEE NATION)",
+      "date": "2026-07-13",
+      "time": "",
+      "venue": "Tulsa Artist Fellowship109 N ML King Blvd, Tulsa, OK, United States",
+      "description": "WEEKLY EPISODES - click this event for a link to the podcast",
+      "url": "https://thetulsaartsdistrict.org/event/podcast-first-america-hosted-and-reported-by-rebecca-nagle-cherokee-nation/2026-07-13/",
+      "source_urls": [
+        "https://thetulsaartsdistrict.org/event/podcast-first-america-hosted-and-reported-by-rebecca-nagle-cherokee-nation/2026-07-13/"
+      ],
+      "priority": 2,
+      "source": "tulsa_arts_district",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM: Event name and venue appear truncated/garbled"
+      ]
+    },
+    {
+      "name": "FACE by Miles Rogoish – Free Admission at Chimera Cafe",
+      "date": "2026-07-13",
+      "time": "7:00 AM",
+      "venue": "Chimera Café212 N Main, Tulsa, OK, United States",
+      "description": "",
+      "url": "https://thetulsaartsdistrict.org/event/face-by-miles-rogoish-free-admission-at-chimera-cafe/2026-07-13/",
+      "source_urls": [
+        "https://thetulsaartsdistrict.org/event/face-by-miles-rogoish-free-admission-at-chimera-cafe/2026-07-13/"
+      ],
+      "priority": 2,
+      "source": "tulsa_arts_district",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Lunch Specials at Elgin Park",
+      "date": "2026-07-13",
+      "time": "11:00 AM",
+      "venue": "Elgin Park Brewery325 E Reconciliation Way, Tulsa, OK, United States",
+      "description": "",
+      "url": "https://thetulsaartsdistrict.org/event/lunch-specials-at-elgin-park-2-2025-12-30-2026-07-03/2026-07-13/",
+      "source_urls": [
+        "https://thetulsaartsdistrict.org/event/lunch-specials-at-elgin-park-2-2025-12-30-2026-07-03/2026-07-13/"
+      ],
+      "priority": 2,
+      "source": "tulsa_arts_district",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Lunch Special at Empire Slice House",
+      "date": "2026-07-13",
+      "time": "11:00 AM",
+      "venue": "Empire Slice House Tulsa / 84 Hospitality Group417 N Main Street, Tulsa, OK, United States",
+      "description": "",
+      "url": "https://thetulsaartsdistrict.org/event/lunch-special-at-empire-slice-house-2025-12-30-2026-07-03/2026-07-13/",
+      "source_urls": [
+        "https://thetulsaartsdistrict.org/event/lunch-special-at-empire-slice-house-2025-12-30-2026-07-03/2026-07-13/"
+      ],
+      "priority": 2,
+      "source": "tulsa_arts_district",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Happy Hour with Free Pool at Caz’s Pub",
+      "date": "2026-07-13",
+      "time": "2:00 PM",
+      "venue": "Caz's Pub21 E Reconciliation Way, Tulsa, OK, United States",
+      "description": "",
+      "url": "https://thetulsaartsdistrict.org/event/happy-hour-with-free-pool-at-cazs-pub-2025-06-30-2025-11-12/2026-07-13/",
+      "source_urls": [
+        "https://thetulsaartsdistrict.org/event/happy-hour-with-free-pool-at-cazs-pub-2025-06-30-2025-11-12/2026-07-13/",
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "tulsa_arts_district",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Happy Hour at in the raw vū",
+      "date": "2026-07-13",
+      "time": "3:00 PM",
+      "venue": "in the raw vū110 N Elgin Ave., Tulsa, OK, United States",
+      "description": "",
+      "url": "https://thetulsaartsdistrict.org/event/happy-hour-at-in-the-raw-vu-2024-12-19-2025-06-30/2026-07-13/",
+      "source_urls": [
+        "https://thetulsaartsdistrict.org/event/happy-hour-at-in-the-raw-vu-2024-12-19-2025-06-30/2026-07-13/"
+      ],
+      "priority": 2,
+      "source": "tulsa_arts_district",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Happy Hour at Saturn Room",
+      "date": "2026-07-13",
+      "time": "4:00 PM",
+      "venue": "Saturn Room209 N Boulder, Tulsa, OK, United States",
+      "description": "",
+      "url": "https://thetulsaartsdistrict.org/event/happy-hour-at-saturn-room/2026-07-13/",
+      "source_urls": [
+        "https://thetulsaartsdistrict.org/event/happy-hour-at-saturn-room/2026-07-13/"
+      ],
+      "priority": 2,
+      "source": "tulsa_arts_district",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Entrepreneurs Bootcamp at Gradient",
+      "date": "2026-07-13",
+      "time": "5:00 PM",
+      "venue": "Gradient Innovation Hub12 N Cheyenne Ave, Tulsa, OK, United States",
+      "description": "",
+      "url": "https://thetulsaartsdistrict.org/event/entrepreneurs-bootcamp-at-gradient/2026-07-13/",
+      "source_urls": [
+        "https://thetulsaartsdistrict.org/event/entrepreneurs-bootcamp-at-gradient/2026-07-13/"
+      ],
+      "priority": 2,
+      "source": "tulsa_arts_district",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM wanted to drop (protected source): Paid professional training course"
+      ]
+    },
+    {
+      "name": "TCC Skills Lab – Monthly Info Session at Gradient",
+      "date": "2026-07-13",
+      "time": "5:30 PM",
+      "venue": "Gradient Innovation Hub12 N Cheyenne Ave, Tulsa, OK, United States",
+      "description": "",
+      "url": "https://thetulsaartsdistrict.org/event/tcc-skills-lab-monthly-info-session-at-gradient/",
+      "source_urls": [
+        "https://thetulsaartsdistrict.org/event/tcc-skills-lab-monthly-info-session-at-gradient/",
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "tulsa_arts_district",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Record Night at Saturn Room",
+      "date": "2026-07-13",
+      "time": "8:00 PM",
+      "venue": "Saturn Room209 N Boulder, Tulsa, OK, United States",
+      "description": "",
+      "url": "https://thetulsaartsdistrict.org/event/record-night-at-saturn-room/2026-07-13/",
+      "source_urls": [
+        "https://thetulsaartsdistrict.org/event/record-night-at-saturn-room/2026-07-13/"
+      ],
+      "priority": 2,
+      "source": "tulsa_arts_district",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Fresh Floral Mandala With Artist Ellen Weatherholt",
+      "date": "2026-07-13",
+      "time": "3:00 PM - 4:00 PM",
+      "venue": "Events at Tulsa City-County Library - Tulsa Library",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Singles Dating - Your Happy Ever After Life - ...",
+      "date": "2026-07-13",
+      "time": "5:30 PM - 8:00 PM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Venue listed as 'Eventbrite.com' (not a real location)",
+        "truncated name (ends with ellipsis — Google Events cut it off)"
+      ]
+    },
+    {
+      "name": "Pop Punk Camp",
+      "date": "2026-07-13",
+      "time": "9:00 AM",
+      "venue": "School of Rock",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Unraveled: Fiber Arts Club",
+      "date": "2026-07-13",
+      "time": "1:30 PM - 3:30 PM",
+      "venue": "Events at Tulsa City-County Library - Tulsa Library",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Books Sandwiched In: \"The Lion Women of Tehran\"",
+      "date": "2026-07-13",
+      "time": "12:10 PM - 12:50 PM",
+      "venue": "Events at Tulsa City-County Library - Tulsa Library",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Helmerich Library Summer Movie Club",
+      "date": "2026-07-13",
+      "time": "2:00 PM - 4:00 PM",
+      "venue": "Events at Tulsa City-County Library - Tulsa Library",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Really Basic Computer Class",
+      "date": "2026-07-13",
+      "time": "6:00 PM - 7:00 PM",
+      "venue": "Events at Tulsa City-County Library - Tulsa Library",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Oklahoma Mid-Amateur Championship",
+      "date": "2026-07-13",
+      "time": "",
+      "venue": "Battle Creek Golf Club, 3200 N Battle Creek Dr",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Supa Awesome Dog Man Crafts",
+      "date": "2026-07-13",
+      "time": "3:00 PM - 4:00 PM",
+      "venue": "Charles Page Library, 551 E 4th St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Bronson Brookside Book Discussion",
+      "date": "2026-07-13",
+      "time": "1:30 PM - 2:30 PM",
+      "venue": "Bronson Brookside Library, 4607 S Madison Pl",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Introduction to Project Budgets",
+      "date": "2026-07-13",
+      "time": "2:30 PM - 3:30 PM",
+      "venue": "Hardesty Regional Library, 8316 E 93rd St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Balloon-Twisting Workshop With Joe Coover",
+      "date": "2026-07-13",
+      "time": "11:30 AM",
+      "venue": "Hardesty Regional Library, 8316 E 93rd St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+13+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Noir Nights with Josh Fadem: The Killer Is Loose",
+      "date": "2026-07-13",
+      "time": "7:00 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "description": "Noir Nights with Josh Fadem continues monthly as one of Circle's most popular series! This month, we're paying tribute to Lucien Ballard, one of the 2026 inductees on Circle's Oklahoma Walk of Fame! See this classic film noir with cinematography by Lucien Ballard on Mon 7/13, tickets on sale now, $5 members and $8 non-members. Then come back on Wed 7/15 for a free Walk of Fame event and the unveil",
+      "url": "https://circlecinema.easy-ware-ticketing.com/events",
+      "source_urls": [
+        "https://circlecinema.easy-ware-ticketing.com/events"
+      ],
+      "priority": 2,
+      "source": "circle_cinema",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Carín León",
+      "date": "2026-07-14",
+      "time": "",
+      "venue": "BOK Center",
+      "description": "",
+      "url": "https://www.bokcenter.com/events/detail/carin-leon-26",
+      "source_urls": [
+        "https://www.bokcenter.com/events/detail/carin-leon-26"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Free FAFSA Workshop",
+      "date": "2026-07-14",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "description": "",
+      "url": "https://calendar.tulsacc.edu/event/22568-free-fafsa-workshop",
+      "source_urls": [
+        "https://calendar.tulsacc.edu/event/22568-free-fafsa-workshop"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "never_feature": true,
+      "community_event": true
+    },
+    {
+      "name": "Summer PopUp",
+      "date": "2026-07-14",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "description": "",
+      "url": "https://admission.tulsacc.edu/portal/SummerPopup",
+      "source_urls": [
+        "https://admission.tulsacc.edu/portal/SummerPopup"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Event name vague/unclear ('Summer PopUp')"
+      ]
+    },
+    {
+      "name": "July Gallery Hours",
+      "date": "2026-07-14",
+      "time": "",
+      "venue": "Living Arts of Tulsa",
+      "description": "Living Arts of Tulsa is open for viewing Tuesday - Saturday from 12:00 - 4:00 PM and does not charge admission to view exhibitions!",
+      "url": "https://livingarts.org/calendar/july-gallery-hours-2/",
+      "source_urls": [
+        "https://livingarts.org/calendar/july-gallery-hours-2/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Fitness on the Green - YMCA Yoga",
+      "date": "2026-07-14",
+      "time": "6:00 PM",
+      "venue": "Guthrie Green",
+      "description": "Connect your breath, body, and mind during Yoga on the Guthrie Green dock. In th...",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "MONTHLY COMMUNITY EVENT: Surviving Summer Naturally",
+      "date": "2026-07-14",
+      "time": "6:00 PM - 7:30 PM",
+      "venue": "Natural Health & Wellness Center, 608 W 41st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Nostalgia Wine Dinner - The Brasserie at Juniper —...",
+      "date": "2026-07-14",
+      "time": "6:00 PM - 9:00 PM",
+      "venue": "Van The Wine Man",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Event name truncated",
+        "truncated name (ends with ellipsis — Google Events cut it off)"
+      ]
+    },
+    {
+      "name": "Buttercream & BINGO!",
+      "date": "2026-07-14",
+      "time": "6:00 PM - 8:00 PM",
+      "venue": "Allthingscakeshop.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Fresh Floral Mandala With Artist Ellen Weatherholt",
+      "date": "2026-07-14",
+      "time": "3:00 PM - 4:00 PM",
+      "venue": "Events at Tulsa City-County Library - Tulsa Library",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tuesday Morning Birders",
+      "date": "2026-07-14",
+      "time": "8:00 AM",
+      "venue": "Tockify",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Evaluate the 918: You Spoke, We Listened",
+      "date": "2026-07-14",
+      "time": "5:30 PM - 7:30 PM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "NGC Flower Show School Course 2",
+      "date": "2026-07-14",
+      "time": "8:30 AM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Balloon-Twisting Workshop With Joe Coover",
+      "date": "2026-07-14",
+      "time": "4:00 PM - 5:00 PM",
+      "venue": "Events at Tulsa City-County Library - Tulsa Library",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Hearland Harmony Dulcimer Club",
+      "date": "2026-07-14",
+      "time": "6:00 PM - 8:00 PM",
+      "venue": "Zarrow Regional Library, 2224 W 51st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Patchworkers",
+      "date": "2026-07-14",
+      "time": "6:00 PM - 7:45 PM",
+      "venue": "Collinsville Public Library, 1223 W Main St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Teen Craft Time",
+      "date": "2026-07-14",
+      "time": "2:00 PM - 4:00 PM",
+      "venue": "Tulsa City County Library, 400 Civic Center",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "LEGO Club",
+      "date": "2026-07-14",
+      "time": "6:00 PM - 7:00 PM",
+      "venue": "Zarrow Regional Library, 2224 W 51st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "One Book, One Tulsa Book Chat",
+      "date": "2026-07-14",
+      "time": "3:00 PM - 4:00 PM",
+      "venue": "Nathan Hale Library, 6038 E 23rd St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "D&D: Game Master's Guild",
+      "date": "2026-07-14",
+      "time": "4:00 PM - 5:30 PM",
+      "venue": "Bronson Brookside Library, 4607 S Madison Pl",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Book Lovers Book Club",
+      "date": "2026-07-14",
+      "time": "6:00 PM - 7:00 PM",
+      "venue": "Peggy Helmerich Library, 5131 E 91st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "YMCA Community Wellness Series: Yoga",
+      "date": "2026-07-14",
+      "time": "6:00 PM - 7:00 PM",
+      "venue": "Riverwalk Crossing, 300 Riverwalk Terrace",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tommy Terrific: A Magical Dinosaur Dig",
+      "date": "2026-07-14",
+      "time": "11:00 AM",
+      "venue": "Pratt Library, 3219 S 113th Ave W",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+14+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Open Meditation – Tues.",
+      "date": "2026-07-14",
+      "time": "6:30 PM",
+      "venue": "Shambhala Meditation Center of Tulsa",
+      "description": "",
+      "url": "https://tulsa.shambhala.org/event/867582-open-meditation-tues",
+      "source_urls": [
+        "https://tulsa.shambhala.org/event/867582-open-meditation-tues"
+      ],
+      "priority": 2,
+      "source": "shambhala_tulsa",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Tuesdays in the Park Concert Series",
+      "date": "2026-07-14",
+      "time": "7:00 PM - 9:00 PM",
+      "venue": "Central Park, 1500 S Main St, Broken Arrow",
+      "description": "",
+      "url": "https://www.artsok.org/",
+      "source_urls": [
+        "https://www.artsok.org/"
+      ],
+      "priority": 2,
+      "source": "recurring",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Culinary Tour",
+      "date": "2026-07-15",
+      "time": "11:00 PM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.meetup.com/tulsa-shenanigans-society/events/313858922/",
+      "source_urls": [
+        "https://www.meetup.com/tulsa-shenanigans-society/events/313858922/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Implausible time (11:00 PM for culinary tour)",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Little Garden Explorers",
+      "date": "2026-07-15",
+      "time": "9:30 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "description": "",
+      "url": "https://www.philbrook.org/events/little-garden-explorers-36769",
+      "source_urls": [
+        "https://philbrook.org/events/little-garden-explorers-36769",
+        "https://www.philbrook.org/events/little-garden-explorers-36769"
+      ],
+      "priority": 2,
+      "source": "philbrook_museum",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Christopher Shayne",
+      "date": "2026-07-15",
+      "time": "7:00 PM",
+      "venue": "Hard Rock Live Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Free FAFSA Workshop",
+      "date": "2026-07-15",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "description": "",
+      "url": "https://calendar.tulsacc.edu/event/22569-free-fafsa-workshop",
+      "source_urls": [
+        "https://calendar.tulsacc.edu/event/22569-free-fafsa-workshop"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "never_feature": true,
+      "community_event": true
+    },
+    {
+      "name": "July Gallery Hours",
+      "date": "2026-07-15",
+      "time": "",
+      "venue": "Living Arts of Tulsa",
+      "description": "Living Arts of Tulsa is open for viewing Tuesday - Saturday from 12:00 - 4:00 PM and does not charge admission to view exhibitions!",
+      "url": "https://livingarts.org/calendar/july-gallery-hours-2/",
+      "source_urls": [
+        "https://livingarts.org/calendar/july-gallery-hours-2/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Camp Guthrie: STEM",
+      "date": "2026-07-15",
+      "time": "10:00 AM",
+      "venue": "Guthrie Green",
+      "description": "Get ready for a summer of curiosity, creativity, and hands-on fun at Camp Guthri...",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Inspyral Circus Jam",
+      "date": "2026-07-15",
+      "time": "6:00 PM",
+      "venue": "Guthrie Green",
+      "description": "Come play! Inspyral Circus Jam is a free, community jam open to anyone intereste...",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "2026 July Business Over Breakfast",
+      "date": "2026-07-15",
+      "time": "8:00 AM - 9:00 AM",
+      "venue": "Red Wing - Owasso, OK, 9538 N Garnett Rd Ste 101",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Midweek Market at Santa Fe Square!",
+      "date": "2026-07-15",
+      "time": "4:30 PM - 7:30 PM",
+      "venue": "Midweek Market at Santa Fe Square! - Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Winesday! at The TAVERN",
+      "date": "2026-07-15",
+      "time": "5:00 PM - 10:00 PM",
+      "venue": "Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "OK LET'S MAHJONG ⁕ TULSA: Social Play at The Vault",
+      "date": "2026-07-15",
+      "time": "6:00 PM - 8:00 PM",
+      "venue": "OK Let's Mahjong",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Inspyral Circus Jam at Guthrie Green",
+      "date": "2026-07-15",
+      "time": "6:00 PM - 8:00 PM",
+      "venue": "Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Likely duplicate of event #110 (same event, time, different venue listing)"
+      ]
+    },
+    {
+      "name": "“GIGANTIC!” Art Show & Sale at Chrysalis Salon ...",
+      "date": "2026-07-15",
+      "time": "12:00 PM - 5:00 PM",
+      "venue": "Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Event name truncated",
+        "truncated name (ends with ellipsis — Google Events cut it off)"
+      ]
+    },
+    {
+      "name": "Jurassic Marathon",
+      "date": "2026-07-15",
+      "time": "5:00 PM - 7:00 PM",
+      "venue": "Events at Tulsa City-County Library - Tulsa Library",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Breakfast Chat | Tulsa Business Networking at...",
+      "date": "2026-07-15",
+      "time": "8:30 AM - 10:00 AM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "truncated name (ends with ellipsis — Google Events cut it off)"
+      ]
+    },
+    {
+      "name": "Artist Demonstrations at 108 Contemporary",
+      "date": "2026-07-15",
+      "time": "5:00 PM - 7:00 PM",
+      "venue": "Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Hump Day Nooner Stretch & Flow",
+      "date": "2026-07-15",
+      "time": "12:00 PM - 12:50 PM",
+      "venue": "Punchpass",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "ATRIUM LIVE with Kalish Nesbitt at Gradient",
+      "date": "2026-07-15",
+      "time": "12:00 PM - 1:00 PM",
+      "venue": "Gradient: Tulsa's Hub for Innovation, 12 N Cheyenne Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Restoration Meditation",
+      "date": "2026-07-15",
+      "time": "6:00 PM - 7:15 PM",
+      "venue": "Yoga Time, 6705 E 81st St #170",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Teen Lounge",
+      "date": "2026-07-15",
+      "time": "4:00 PM - 6:00 PM",
+      "venue": "Tulsa City County Library, 400 Civic Center",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "The Greenhouse",
+      "date": "2026-07-15",
+      "time": "5:30 PM - 6:30 PM",
+      "venue": "Tulsa City County Library, 400 Civic Center",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Event name unclear/vague"
+      ]
+    },
+    {
+      "name": "ISSA Oklahoma Monthly Meeting",
+      "date": "2026-07-15",
+      "time": "11:30 AM",
+      "venue": "Tulsa, OK",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "never_feature": true,
+      "community_event": true
+    },
+    {
+      "name": "All Thumbs Knitters",
+      "date": "2026-07-15",
+      "time": "12:30 PM - 2:30 PM",
+      "venue": "Collinsville Public Library, 1223 W Main St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "T-Rex Tea Party",
+      "date": "2026-07-15",
+      "time": "4:00 PM - 5:00 PM",
+      "venue": "Collinsville Public Library, 1223 W Main St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Part 2: Financial Strategy Workshop — Investing",
+      "date": "2026-07-15",
+      "time": "5:30 PM - 7:30 PM",
+      "venue": "Schusterman-Benson Library, 3333 E 32nd Pl",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Balloon-Twisting Workshop With Joe Coover",
+      "date": "2026-07-15",
+      "time": "3:00 PM - 4:00 PM",
+      "venue": "Zarrow Regional Library, 2224 W 51st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+15+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Midweek Meditation (Zoom only)",
+      "date": "2026-07-15",
+      "time": "12:00 PM",
+      "venue": "Shambhala Meditation Center of Tulsa",
+      "description": "",
+      "url": "https://tulsa.shambhala.org/event/867654-midweek-meditation-zoom-only",
+      "source_urls": [
+        "https://tulsa.shambhala.org/event/867654-midweek-meditation-zoom-only"
+      ],
+      "priority": 2,
+      "source": "shambhala_tulsa",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Dis Lit Collective",
+      "date": "2026-07-16",
+      "time": "6:00 PM",
+      "venue": "Tulsa, OK",
+      "description": "DisLit Collective is a BIPOC disability-led digital safe space and communal literary experience featuring storytelling, poetry, prose & art.",
+      "url": "https://www.eventbrite.com/e/dis-lit-collective-tickets-1992718659152",
+      "source_urls": [
+        "https://www.eventbrite.com/e/dis-lit-collective-tickets-1992718659152"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Vigil by George Saunders",
+      "date": "2026-07-16",
+      "time": "11:00 PM",
+      "venue": "Albert G's Bar-B-Q",
+      "description": "A wise, playful, electric novel from the #1 New York Times bestselling, Booker Prize–winning author of Lincoln in the Bardo, taking place at the bedside of an oil company CEO, in the twilight hours of his life, as he is ferried from this world into the next.\n\nNot for the first time, Jill “Doll” Blai",
+      "url": "https://www.meetup.com/wise-and-wonderful-women-over-50-book-club/events/312501342/",
+      "source_urls": [
+        "https://www.meetup.com/wise-and-wonderful-women-over-50-book-club/events/312501342/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "JULY 🌞 TECH-ON-TAP BEACH PARTY & INFRAGARD SUMMER SOCIAL (For IT people)",
+      "date": "2026-07-16",
+      "time": "10:00 PM",
+      "venue": "Welltown Brewing",
+      "description": "🌞 TECH-ON-TAP & INFRAGARD SUMMER SOCIAL NEXT THURSDAY!!!\n\n🧠 TOPIC: \"The Evolution of the IF statement, a discussion about AI\"\n🦾 SPEAKERS: **[🔐Justus Post, CISSP, CCSP](https://www.linkedin.com/in/justuspost/)** & **[Jonathan Kimmitt](https://www.linkedin.com/in/jonathan-kimmitt/)**\n\n🏆 SPONSOR: INFRA",
+      "url": "https://www.meetup.com/https-www-linkedin-com-in-melaniehendricks/events/315118990/",
+      "source_urls": [
+        "https://www.meetup.com/https-www-linkedin-com-in-melaniehendricks/events/315118990/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Third Thursday Jazz at the Tulsa Club Hotel",
+      "date": "2026-07-16",
+      "time": "",
+      "venue": "Tulsa, OK",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Missing time"
+      ]
+    },
+    {
+      "name": "Fish Feeding",
+      "date": "2026-07-16",
+      "time": "10:30 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "description": "",
+      "url": "https://www.philbrook.org/events/fish-feeding-36816",
+      "source_urls": [
+        "https://philbrook.org/events/fish-feeding-36816",
+        "https://www.philbrook.org/events/fish-feeding-36816"
+      ],
+      "priority": 2,
+      "source": "philbrook_museum",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "DJ | Gus",
+      "date": "2026-07-16",
+      "time": "7:00 PM",
+      "venue": "Hard Rock Live Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "July Gallery Hours",
+      "date": "2026-07-16",
+      "time": "",
+      "venue": "Living Arts of Tulsa",
+      "description": "Living Arts of Tulsa is open for viewing Tuesday - Saturday from 12:00 - 4:00 PM and does not charge admission to view exhibitions!",
+      "url": "https://livingarts.org/calendar/july-gallery-hours-2/",
+      "source_urls": [
+        "https://livingarts.org/calendar/july-gallery-hours-2/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Open Mic Night",
+      "date": "2026-07-16",
+      "time": "",
+      "venue": "Bricktown Comedy Club Tulsa",
+      "description": "<p><strong>Featuring: </strong>The best and worst Tulsa has to offer.</p>\n<p><strong>Tickets:</strong> Free!</p>\n<ul><li>All shows are 18+ with valid ID unless stated otherwise.</li></ul>\n<p><u><strong>Show/Doors Times</strong></u></p>\n<ul><li>7:00 PM Show/6:00 PM Doors</li></ul>",
+      "url": "https://bricktowntulsa-com.seatengine.com/shows/373766",
+      "source_urls": [
+        "https://bricktowntulsa-com.seatengine.com/shows/373766"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Missing time"
+      ]
+    },
+    {
+      "name": "DRAGNIFICENT! at Club Majestic",
+      "date": "2026-07-16",
+      "time": "",
+      "venue": "",
+      "description": "Weekly 18+ late-night drag showcase with rotating performers, hosted by Shanel Sterling",
+      "url": "https://qlist.app/events/Tulsa/DRAGNIFICENT-at-Club-Majestic/25103",
+      "source_urls": [
+        "https://qlist.app/events/Tulsa/DRAGNIFICENT-at-Club-Majestic/25103"
+      ],
+      "priority": 2,
+      "source": "qlist",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM: LGBTQ+ drag show (keep) but missing time",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Tech Mixer at Gradient",
+      "date": "2026-07-16",
+      "time": "5:30 PM - 7:30 PM",
+      "venue": "Gradient: Tulsa's Hub for Innovation, 12 N Cheyenne Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Sunset Social Hour",
+      "date": "2026-07-16",
+      "time": "6:30 PM - 8:30 PM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Profitopia at Living Arts",
+      "date": "2026-07-16",
+      "time": "12:00 PM - 4:00 PM",
+      "venue": "Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Fitness on the Green: YMCA HIIT",
+      "date": "2026-07-16",
+      "time": "6:00 PM - 7:00 PM",
+      "venue": "Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Uplift & Rise: Heather Nash, Deep Greenwood Foundation",
+      "date": "2026-07-16",
+      "time": "6:00 PM - 7:30 PM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Third Thursday",
+      "date": "2026-07-16",
+      "time": "6:30 PM",
+      "venue": "Tulsa Shambhala Meditation Group",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+        "https://tulsa.shambhala.org/event/867701-third-thursday"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": true,
+      "community_event": true
+    },
+    {
+      "name": "Porter Peach Festival",
+      "date": "2026-07-16",
+      "time": "",
+      "venue": "Festacular",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "“A Dozen Loops: The Radical Voice of Woody...",
+      "date": "2026-07-16",
+      "time": "10:00 AM",
+      "venue": "in 3 days",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Event name truncated, venue malformed ('in 3 days')",
+        "truncated name (ends with ellipsis — Google Events cut it off)"
+      ]
+    },
+    {
+      "name": "TCC Northeast Campus CFRF   — Food On The Move",
+      "date": "2026-07-16",
+      "time": "11:30 AM",
+      "venue": "Food On The Move",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Event name unclear/truncated"
+      ]
+    },
+    {
+      "name": "Summer Movies @ Circle Cinema",
+      "date": "2026-07-16",
+      "time": "1:30 PM - 3:00 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Community Listening Session 1",
+      "date": "2026-07-16",
+      "time": "6:00 PM - 7:30 PM",
+      "venue": "Hannah Banquet Hall, 1801 S Garnett Rd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Beyond the Book",
+      "date": "2026-07-16",
+      "time": "10:30 AM - 11:30 AM",
+      "venue": "South Broken Arrow Library, 3600 S Chestnut Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "BUILDville® Social Playgroup — Building All Children",
+      "date": "2026-07-16",
+      "time": "10:00 AM - 11:00 AM",
+      "venue": "Building All Children, 6910 S 101st E Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "DBIA Tulsa Indoor Golf Social Hour",
+      "date": "2026-07-16",
+      "time": "5:00 PM - 7:00 PM",
+      "venue": "BirdieBay Golf, 10324 E 71st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Craft Castle: Dino-mite Summer!",
+      "date": "2026-07-16",
+      "time": "4:00 PM - 5:00 PM",
+      "venue": "Martin Regional Library, 2601 S Garnett Rd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "ATRIUM LIVE with Nicole Halper at Gradient",
+      "date": "2026-07-16",
+      "time": "4:00 PM - 5:00 PM",
+      "venue": "Gradient: Tulsa's Hub for Innovation, 12 N Cheyenne Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Teen Karaoke",
+      "date": "2026-07-16",
+      "time": "5:00 PM - 6:30 PM",
+      "venue": "Schusterman-Benson Library, 3333 E 32nd Pl",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "RedBud Theatre for Young Audiences Presents",
+      "date": "2026-07-16",
+      "time": "10:00 AM - 11:00 AM",
+      "venue": "Tulsa City County Library, 400 Civic Center",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+16+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Summer Good. Summer Bad. Year Two - LaserEye & Friends",
+      "date": "2026-07-16",
+      "time": "",
+      "venue": "The Vanguard, 222 N Main St, Tulsa, OK",
+      "description": "",
+      "url": "https://www.thevanguardtulsa.com/shows/summer-good-summer-bad-year-two-lasereye-friends-16-jul",
+      "source_urls": [
+        "https://www.thevanguardtulsa.com/shows/summer-good-summer-bad-year-two-lasereye-friends-16-jul"
+      ],
+      "priority": 2,
+      "source": "the_vanguard_tulsa",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Storytime at Philbrook",
+      "date": "2026-07-16",
+      "time": "10:00 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "description": "",
+      "url": "https://www.philbrook.org/events/storytime-at-philbrook-36794",
+      "source_urls": [
+        "https://www.philbrook.org/events/storytime-at-philbrook-36794"
+      ],
+      "priority": 2,
+      "source": "philbrook_museum",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "LOQAL LGBTQ+ Board Game Night – CDMX",
+      "date": "2026-07-16",
+      "time": "1:00 AM",
+      "venue": "El Ocho",
+      "description": "🌈 LOQAL LGBTQ+ Board Game Night – CDMX\n\nLanguage. Culture. Pride.\n\nJoin us for a fun and relaxed LGBTQ+ board game night where community, laughter, and a little friendly competition come together! 🎲✨\n\nHosted by LOQAL, this meetup is a welcoming space for LGBTQ+ locals, expats, and travelers to meet new people, play games, and enjoy a social evening in one of Condesa’s favorite bars.\n\nWhether you come with friends or solo, you’ll quickly find a table and join the fun.\n\n🎲 Board games provided (plu",
+      "url": "https://www.meetup.com/loqal-spanish/events/315293887/",
+      "source_urls": [
+        "https://www.meetup.com/loqal-spanish/events/315293887/"
+      ],
+      "priority": 2,
+      "source": "extended_calendars",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM: LGBTQ+ board game night at 1:00 AM is implausible time"
+      ]
+    },
+    {
+      "name": "Holy Girl Slumber Party",
+      "date": "2026-07-17",
+      "time": "7:00 PM",
+      "venue": "Archive Creative Space",
+      "description": "Holy Girl Slumber Party is a spirit-led girls night designed to feel like the cozy nostalgia of a childhood sleepover centered around Jesus",
+      "url": "https://www.eventbrite.com/e/holy-girl-slumber-party-tickets-1990284834517",
+      "source_urls": [
+        "https://www.eventbrite.com/e/holy-girl-slumber-party-tickets-1990284834517"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "🌅 Sunset Stroll Along the River 🌅",
+      "date": "2026-07-17",
+      "time": "1:00 AM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.meetup.com/tulsa-shenanigans-society/events/315576911/",
+      "source_urls": [
+        "https://www.meetup.com/tulsa-shenanigans-society/events/315576911/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Sunset stroll at 1:00 AM is impossible time",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Mediumship Gallery with Valorie Lewis",
+      "date": "2026-07-17",
+      "time": "11:00 PM",
+      "venue": "",
+      "description": "This is a Premier Event meaning that there is a fee associated ($25). This fee helps support Awkwardly Zen and our awesome [Awkwardly Zen Partners](https://awkwardlyzen.com).\n**Purchase tickets [HERE](https://www.valorielewis.com/events-1/mediumship-gallery-july-17)**\n\nSpend an evening with psychic",
+      "url": "https://www.meetup.com/awkwardly-zen-a-safe-place-for-your-spiritual-path-ok/events/315349583/",
+      "source_urls": [
+        "https://www.meetup.com/awkwardly-zen-a-safe-place-for-your-spiritual-path-ok/events/315349583/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Mediumship event at 11:00 PM is implausible time",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Family Nature Walk",
+      "date": "2026-07-17",
+      "time": "10:00 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "description": "",
+      "url": "https://www.philbrook.org/events/family-nature-walk-36842",
+      "source_urls": [
+        "https://philbrook.org/events/family-nature-walk-36842",
+        "https://www.philbrook.org/events/family-nature-walk-36842"
+      ],
+      "priority": 2,
+      "source": "philbrook_museum",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Backyard BBQ Fridays",
+      "date": "2026-07-17",
+      "time": "5:00 PM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "description": "",
+      "url": "https://www.philbrook.org/events/backyard-bbq-fridays-36956",
+      "source_urls": [
+        "https://philbrook.org/events/backyard-bbq-fridays-36956",
+        "https://www.philbrook.org/events/backyard-bbq-fridays-36956"
+      ],
+      "priority": 2,
+      "source": "philbrook_museum",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Films at the Museum: The Muppets Take Manhattan (1984)",
+      "date": "2026-07-17",
+      "time": "7:00 PM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "description": "",
+      "url": "https://www.philbrook.org/events/films-at-the-museum-the-muppets-take-manhattan-1984-36892",
+      "source_urls": [
+        "https://philbrook.org/events/films-at-the-museum-the-muppets-take-manhattan-1984-36892",
+        "https://www.philbrook.org/events/films-at-the-museum-the-muppets-take-manhattan-1984-36892"
+      ],
+      "priority": 2,
+      "source": "philbrook_museum",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Member Movie Night at Discovery Lab",
+      "date": "2026-07-17",
+      "time": "",
+      "venue": "Discovery Lab",
+      "description": "",
+      "url": "https://discoverylab.org/events/event/6204546",
+      "source_urls": [
+        "https://discoverylab.org/events/event/6204546"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Last Podcast on the Left",
+      "date": "2026-07-17",
+      "time": "",
+      "venue": "Cain's Ballroom",
+      "description": "",
+      "url": "https://www.cainsballroom.com/event/last-podcast-on-the-left/cains-ballroom/tulsa--oklahoma/",
+      "source_urls": [
+        "https://www.cainsballroom.com/event/last-podcast-on-the-left/cains-ballroom/tulsa--oklahoma/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "DJ | Dust",
+      "date": "2026-07-17",
+      "time": "7:00 PM",
+      "venue": "Hard Rock Live Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Big Daddy",
+      "date": "2026-07-17",
+      "time": "8:00 PM",
+      "venue": "Hard Rock Live Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Brothers Osborne",
+      "date": "2026-07-17",
+      "time": "8:00 PM",
+      "venue": "Hard Rock Live Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "DJ | 2 Legit",
+      "date": "2026-07-17",
+      "time": "9:00 PM",
+      "venue": "Hard Rock Live Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "90 Proof",
+      "date": "2026-07-17",
+      "time": "9:30 PM",
+      "venue": "Hard Rock Live Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "July Gallery Hours",
+      "date": "2026-07-17",
+      "time": "",
+      "venue": "Living Arts of Tulsa",
+      "description": "Living Arts of Tulsa is open for viewing Tuesday - Saturday from 12:00 - 4:00 PM and does not charge admission to view exhibitions!",
+      "url": "https://livingarts.org/calendar/july-gallery-hours-2/",
+      "source_urls": [
+        "https://livingarts.org/calendar/july-gallery-hours-2/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Grady Nichols and Kolbi Jordan - Songs You Love",
+      "date": "2026-07-17",
+      "time": "",
+      "venue": "LowDown Tulsa",
+      "description": "",
+      "url": "https://lowdowntulsa.com/shows",
+      "source_urls": [
+        "https://lowdowntulsa.com/shows"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Ronnie and The Redwoods",
+      "date": "2026-07-17",
+      "time": "",
+      "venue": "Mercury Lounge",
+      "description": "Ronnie and The Redwoods",
+      "url": "http://www.prekindle.com/event/39945-ronnie-and-the-redwoods-tulsa",
+      "source_urls": [
+        "http://www.prekindle.com/event/39945-ronnie-and-the-redwoods-tulsa"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Matilda Jr.",
+      "date": "2026-07-17",
+      "time": "",
+      "venue": "Theatre Tulsa",
+      "description": "",
+      "url": "https://theatretulsa.org/this-season",
+      "source_urls": [
+        "https://theatretulsa.org/this-season"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Open Mic Night",
+      "date": "2026-07-17",
+      "time": "",
+      "venue": "Bricktown Comedy Club Tulsa",
+      "description": "<p><strong>Featuring: </strong>The best and worst Tulsa has to offer.</p>\n<p><strong>Tickets:</strong> Free!</p>\n<ul><li>All shows are 18+ with valid ID unless stated otherwise.</li></ul>\n<p><u><strong>Show/Doors Times</strong></u></p>\n<ul><li>7:00 PM Show/6:00 PM Doors</li></ul>",
+      "url": "https://bricktowntulsa-com.seatengine.com/shows/373770",
+      "source_urls": [
+        "https://bricktowntulsa-com.seatengine.com/shows/373770"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Skate Tulsa",
+      "date": "2026-07-17",
+      "time": "",
+      "venue": "Tulsa, OK",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tulsa SWE Monthly Lunch at The Tropical",
+      "date": "2026-07-17",
+      "time": "11:30 AM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Profitopia at Living Arts – Free Admission",
+      "date": "2026-07-17",
+      "time": "12:00 PM - 4:00 PM",
+      "venue": "Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "SINGLES MINGLE EVENT",
+      "date": "2026-07-17",
+      "time": "6:45 PM - 8:45 PM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "BC Williams",
+      "date": "2026-07-17",
+      "time": "12:00 PM - 4:00 PM",
+      "venue": "Spotify.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Summer Reading Event! The Tulsa Zoo!",
+      "date": "2026-07-17",
+      "time": "10:00 AM - 11:00 AM",
+      "venue": "in 4 days",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Movie and Craft Friday",
+      "date": "2026-07-17",
+      "time": "10:00 AM",
+      "venue": "Events at Tulsa City-County Library - Tulsa Library",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Pie Night at Antoinette Bakery & Cafe",
+      "date": "2026-07-17",
+      "time": "5:00 PM - 9:00 PM",
+      "venue": "Pie Night at Antoinette Bakery & Cafe - Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Wildcard Collective Monthly Luncheon",
+      "date": "2026-07-17",
+      "time": "11:30 AM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Wildcard Collective context unclear; venue data malformed"
+      ]
+    },
+    {
+      "name": "Tommy Terrific: A Magical Dinosaur Dig",
+      "date": "2026-07-17",
+      "time": "11:00 AM",
+      "venue": "Nathan Hale Library, 6038 E 23rd St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Jurassic Party",
+      "date": "2026-07-17",
+      "time": "2:00 PM - 4:00 PM",
+      "venue": "South Broken Arrow Library, 3600 S Chestnut Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Youth Advanced Camp - Female",
+      "date": "2026-07-17",
+      "time": "",
+      "venue": "The University of Tulsa, 800 S Tucker Dr",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Live music at Duet Restaurant from 6:30-9:30p",
+      "date": "2026-07-17",
+      "time": "5:00 PM - 10:00 PM",
+      "venue": "Duet, 108 N Detroit Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Siren of the Wood",
+      "date": "2026-07-17",
+      "time": "5:30 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Ice Cream in a Bag and More!",
+      "date": "2026-07-17",
+      "time": "3:00 PM - 4:00 PM",
+      "venue": "Herman & Kate Kaiser Library, 5202 S Hudson Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "OKC Rolling Thunder Book Bus",
+      "date": "2026-07-17",
+      "time": "1:00 PM - 2:00 PM",
+      "venue": "Zarrow Regional Library, 2224 W 51st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Mark Gibson - Bob Dylan Center",
+      "date": "2026-07-17",
+      "time": "6:00 PM - 10:00 PM",
+      "venue": "Bob Dylan Center, 116 E Reconciliation Wy",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Watercolor Painting With Artist Candacee White",
+      "date": "2026-07-17",
+      "time": "3:00 PM - 5:00 PM",
+      "venue": "Martin Regional Library, 2601 S Garnett Rd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+17+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "The Damn Quails",
+      "date": "2026-07-17",
+      "time": "",
+      "venue": "The Vanguard, 222 N Main St, Tulsa, OK",
+      "description": "",
+      "url": "https://www.thevanguardtulsa.com/shows/the-damn-quails-17-jul",
+      "source_urls": [
+        "https://www.thevanguardtulsa.com/shows/the-damn-quails-17-jul"
+      ],
+      "priority": 2,
+      "source": "the_vanguard_tulsa",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "SERPENTINE TRANSMISSION: TULSA DEBUT + RECORD RELEASE",
+      "date": "2026-07-17",
+      "time": "7:00 PM11:00 PM19:0023:00",
+      "venue": "Flagship / Tulsa Artist Fellowship, 112 N Boston Ave",
+      "description": "Serpentine Transmissioncelebrates the release of their first studio album,of mud and gold,with their first performances outside of Los Angeles. The improvised music quartet features Tulsa Artist FellowMicaela Tobinon voice and electronics.",
+      "url": "https://www.tulsaartistfellowship.org/calendar/serpentine-transmission",
+      "source_urls": [
+        "https://www.tulsaartistfellowship.org/calendar/serpentine-transmission"
+      ],
+      "priority": 2,
+      "source": "tulsa_artist_fellowship",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM: Time field corrupted (7:00 PM11:00 PM19:0023:00)"
+      ]
+    },
+    {
+      "name": "Return of the Sacred Red Rock - CCFF",
+      "date": "2026-07-17",
+      "time": "7:00 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "description": "Return of the Sacred Red Rock Dir. Jeremy Charles – 56min – Documentary – English Friday, Screen 2 and 3 - $12 members, $15 non-members – Includes post-film Q&A in the lobby. Monday encore is film only in Screen 2. CCFF winner – Best Documentary Feature! After nearly a century apart, the Kaw (Kanza) Nation brings their sacred stone home. In ́zhújé waxóbe — a 28-ton quartzite boulder — returns, not",
+      "url": "https://circlecinema.easy-ware-ticketing.com/events",
+      "source_urls": [
+        "https://circlecinema.easy-ware-ticketing.com/events"
+      ],
+      "priority": 2,
+      "source": "circle_cinema",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Soul Line Dance Night w/ Nicole",
+      "date": "2026-07-17",
+      "time": "6:00 PM7:30 PM",
+      "venue": "yogaQuest, Tulsa",
+      "description": "Learn soulful line dances step by step — from the Cupid Shuffle to The Hustle with Stevie Wonder.We start simple and build the rhythm together. All levels welcome. Stay after for commingling and refreshments.Date: Friday, July 17th.Time:  6-7:30Cost: Unlimited yQ Members FreeDrop-ins $10  All can bring a buddy for $5Book your spot now",
+      "url": "https://www.tulsayogaquest.com/events/soul-line-dance-night-w-nicole-2kjbd",
+      "source_urls": [
+        "https://www.tulsayogaquest.com/events/soul-line-dance-night-w-nicole-2kjbd"
+      ],
+      "priority": 2,
+      "source": "yogaquest_tulsa",
+      "lgbtq_relevant": true,
+      "never_feature": true,
+      "sanity_flags": [
+        "LLM: Time field corrupted (6:00 PM7:30 PM)"
+      ]
+    },
+    {
+      "name": "LOQAL Queer Language Exchange – CDMX",
+      "date": "2026-07-17",
+      "time": "1:00 AM",
+      "venue": "BAR ROMELIA",
+      "description": "🌈 LOQAL Queer Language Exchange - CDMX\n\nLanguage. Culture. Pride.\n\nJoin us for a fun and relaxed evening where language, culture, and community come together! 💬✨\n\nThe LOQAL Queer Language Exchange is a friendly meetup for LGBTQ+ locals, expats, and travelers who want to practice Spanish and English in a welcoming, inclusive environment. Whether you’re just learning or already fluent, everyone’s invited to connect, chat, and make new friends.\n\n🗣️ Casual conversations in Spanish & English\n🍸 Drinks",
+      "url": "https://www.meetup.com/loqal-spanish/events/314738343/",
+      "source_urls": [
+        "https://www.meetup.com/loqal-spanish/events/314738343/"
+      ],
+      "priority": 2,
+      "source": "extended_calendars",
+      "from_upcoming_ledger": true,
+      "resurfaced_from_upcoming": true,
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM: LGBTQ+ language exchange at 1:00 AM is implausible time"
+      ]
+    },
+    {
+      "name": "Route 66 Festival: Tales of the Mother Road",
+      "date": "2026-07-18",
+      "time": "9:00 AM",
+      "venue": "ONEOK Boathouse, 2900 S John Williams Way E",
+      "description": "Demonstrations, performances, and Mother Road storytelling for all ages at Gathering Place.",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Passport 30 | A Luxury Cultural Experience",
+      "date": "2026-07-18",
+      "time": "8:00 PM",
+      "venue": "Four. Seven. Three. (473)",
+      "description": "A destination-inspired experience bringing together great people, elevated vibes, cultural food, hookah, live entertainment, and memories.",
+      "url": "https://www.eventbrite.com/e/passport-30-a-luxury-cultural-experience-tickets-1991397503540",
+      "source_urls": [
+        "https://www.eventbrite.com/e/passport-30-a-luxury-cultural-experience-tickets-1991397503540"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Cynthia Simmons Live at Lowdown",
+      "date": "2026-07-18",
+      "time": "",
+      "venue": "Tulsa, OK",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "TFA Tours: Tulsa Fire Alarm Building",
+      "date": "2026-07-18",
+      "time": "",
+      "venue": "Tulsa, OK",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Flower Arranging Workshop",
+      "date": "2026-07-18",
+      "time": "9:15 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "description": "",
+      "url": "https://www.philbrook.org/events/flower-arranging-workshop-36648",
+      "source_urls": [
+        "https://philbrook.org/events/flower-arranging-workshop-36648",
+        "https://www.philbrook.org/events/flower-arranging-workshop-36648"
+      ],
+      "priority": 2,
+      "source": "philbrook_museum",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Meditation at the Museum",
+      "date": "2026-07-18",
+      "time": "10:00 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "description": "",
+      "url": "https://www.philbrook.org/events/meditation-at-the-museum-36701",
+      "source_urls": [
+        "https://philbrook.org/events/meditation-at-the-museum-36701",
+        "https://www.philbrook.org/events/meditation-at-the-museum-36701"
+      ],
+      "priority": 2,
+      "source": "philbrook_museum",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Preview of TPAC Produces: Rodgers & Hammerstein’s \"Oklahoma!\" ft. \"The Dustbowl Radio Hour: A New Musical\"",
+      "date": "2026-07-18",
+      "time": "12:30 PM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "description": "",
+      "url": "https://www.philbrook.org/events/preview-of-tpac-produces-rodgers-hammerstein-s-oklahoma-ft-the-dustbowl-radio-hour-a-new-musical-37122",
+      "source_urls": [
+        "https://philbrook.org/events/preview-of-tpac-produces-rodgers-hammerstein-s-oklahoma-ft-the-dustbowl-radio-hour-a-new-musical-37122",
+        "https://www.philbrook.org/events/preview-of-tpac-produces-rodgers-hammerstein-s-oklahoma-ft-the-dustbowl-radio-hour-a-new-musical-37122"
+      ],
+      "priority": 2,
+      "source": "philbrook_museum",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Saturday Night Lab",
+      "date": "2026-07-18",
+      "time": "",
+      "venue": "Discovery Lab",
+      "description": "",
+      "url": "https://discoverylab.org/events/event/6066751",
+      "source_urls": [
+        "https://discoverylab.org/events/event/6066751"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "DJ | Oreo",
+      "date": "2026-07-18",
+      "time": "6:00 PM",
+      "venue": "Hard Rock Live Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "DJ | Dust",
+      "date": "2026-07-18",
+      "time": "7:00 PM",
+      "venue": "Hard Rock Live Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Billy Bob Thornton & The Boxmasters",
+      "date": "2026-07-18",
+      "time": "8:00 PM",
+      "venue": "Hard Rock Live Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "80's Gadgets",
+      "date": "2026-07-18",
+      "time": "8:00 PM",
+      "venue": "Hard Rock Live Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Brent Giddens",
+      "date": "2026-07-18",
+      "time": "8:00 PM",
+      "venue": "Hard Rock Live Tulsa",
+      "description": "",
+      "url": "",
+      "source_urls": [],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Cynthia Simmons",
+      "date": "2026-07-18",
+      "time": "",
+      "venue": "LowDown Tulsa",
+      "description": "",
+      "url": "https://lowdowntulsa.com/shows",
+      "source_urls": [
+        "https://lowdowntulsa.com/shows"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Dance Monkey Dance!",
+      "date": "2026-07-18",
+      "time": "",
+      "venue": "Mercury Lounge",
+      "description": "Dance Monkey Dance!",
+      "url": "http://www.prekindle.com/event/86483-dance-monkey-dance-tulsa",
+      "source_urls": [
+        "http://www.prekindle.com/event/86483-dance-monkey-dance-tulsa"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Peyton Ruddy",
+      "date": "2026-07-18",
+      "time": "6:00 PM",
+      "venue": "Bricktown Comedy Club Tulsa",
+      "description": "<ul><li>All shows are 18+ with valid ID unless stated otherwise.</li><li>Seats only guaranteed until showtime. <u>Ticket price is more expensive at the door (if any remain).</u></li><li>Premium seating is in the front couple of rows. GA is first come, first serve.</li><li>No refunds on any ticket purchase.</li><li><strong>2-item minimum in showroom</strong>.<em></em><em> This can be food, alcohol, or non-alcoholic beverages.</em></li></ul><p><u><strong>Show/Doors Times</strong></u></p><ul><li>6:",
+      "url": "https://bricktowntulsa-com.seatengine.com/shows/357344",
+      "source_urls": [
+        "https://bricktowntulsa-com.seatengine.com/shows/357343",
+        "https://bricktowntulsa-com.seatengine.com/shows/357344",
+        "https://bricktowntulsa-com.seatengine.com/shows/357345"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Plant Identification Walk",
+      "date": "2026-07-18",
+      "time": "10:30 AM",
+      "venue": "Tockify",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "World Series Of Comedy at Tulsa Loony Bin",
+      "date": "2026-07-18",
+      "time": "6:00 PM - 7:30 PM",
+      "venue": "Loonybincomedy.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Book Eats: Culinary Adventures of Route 66",
+      "date": "2026-07-18",
+      "time": "11:00 AM",
+      "venue": "Events at Tulsa City-County Library - Tulsa Library",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Simulator Saturday | July 18 | Tulsa Flight Facility",
+      "date": "2026-07-18",
+      "time": "10:00 AM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Event name malformed/data scraped incorrectly"
+      ]
+    },
+    {
+      "name": "Stained Glass All Day Workshop",
+      "date": "2026-07-18",
+      "time": "9:00 AM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Pie Night at Antoinette Bakery & Cafe",
+      "date": "2026-07-18",
+      "time": "5:00 PM - 9:00 PM",
+      "venue": "Pie Night at Antoinette Bakery & Cafe - Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Day of Zen with Tulsa Sangha July 2026 — Forest of...",
+      "date": "2026-07-18",
+      "time": "8:30 AM",
+      "venue": "Day of Zen with Tulsa Sangha July 2026 — Forest of Peace",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "truncated name (ends with ellipsis — Google Events cut it off)"
+      ]
+    },
+    {
+      "name": "Hasty Bake Charcoal Grills 101 Demonstration Class",
+      "date": "2026-07-18",
+      "time": "10:30 AM - 11:30 AM",
+      "venue": "Eventbrite.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Sunlit Oasis",
+      "date": "2026-07-18",
+      "time": "2:00 PM - 4:00 PM",
+      "venue": "Pinotspalette.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Community Listening Session 2",
+      "date": "2026-07-18",
+      "time": "2:00 PM - 3:30 PM",
+      "venue": "Hannah Banquet Hall, 1801 S Garnett Rd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Stained Glass Event + Smash",
+      "date": "2026-07-18",
+      "time": "1:00 PM - 4:00 PM",
+      "venue": "Tulsa Stained Glass, 4131 S Sheridan Rd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tulsa-OSU-Tulsa-Main Hall/Tulsa Room",
+      "date": "2026-07-18",
+      "time": "10:30 AM",
+      "venue": "OSU-Tulsa Conference Center, 700 N Greenwood Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Event name severely garbled (Tulsa-OSU-Tulsa-Main Hall/Tulsa Room)"
+      ]
+    },
+    {
+      "name": "Good Trouble Lives On Tulsa",
+      "date": "2026-07-18",
+      "time": "3:00 PM - 5:00 PM",
+      "venue": "Best Buy, 10303 E 71st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Sound Bath Meditation in Fly Loft",
+      "date": "2026-07-18",
+      "time": "10:00 AM - 11:00 AM",
+      "venue": "Fly Loft, 117 N Boston Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Tulsa Summer Invitational",
+      "date": "2026-07-18",
+      "time": "",
+      "venue": "Tulsa, OK",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Creative Truths: A History Book Discussion Club",
+      "date": "2026-07-18",
+      "time": "9:00 AM - 10:00 AM",
+      "venue": "Herman & Kate Kaiser Library, 5202 S Hudson Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Heatwave Half Marathon - Tulsa",
+      "date": "2026-07-18",
+      "time": "7:00 AM - 10:00 AM",
+      "venue": "River West Festival Park, 2100 S Jackson Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Splash Into the Y - Community Open House",
+      "date": "2026-07-18",
+      "time": "10:00 AM",
+      "venue": "R.C. Dickenson Family YMCA, 8501 S Garnett Rd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+18+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Cliffdiver",
+      "date": "2026-07-18",
+      "time": "",
+      "venue": "The Vanguard, 222 N Main St, Tulsa, OK",
+      "description": "",
+      "url": "https://www.thevanguardtulsa.com/shows/cliffdiver-18-jul",
+      "source_urls": [
+        "https://www.thevanguardtulsa.com/shows/cliffdiver-18-jul"
+      ],
+      "priority": 2,
+      "source": "the_vanguard_tulsa",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Fighting More Than Fire - CCFF",
+      "date": "2026-07-18",
+      "time": "2:45 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "description": "Fighting More Than Fire Dir. Keith “Sneak” Daniels – 1h25min – Documentary – English Saturday Screen 3, Sunday Screen 4 - $12 members, $15 non-members Fighting More Than Fire is a documentary that explores the untold history of Black firefighters in Tulsa, Oklahoma. Through personal stories, first-hand accounts, and following a “day-in-the-life” of these heroes, the film captures the struggles and",
+      "url": "https://circlecinema.easy-ware-ticketing.com/events",
+      "source_urls": [
+        "https://circlecinema.easy-ware-ticketing.com/events"
+      ],
+      "priority": 2,
+      "source": "circle_cinema",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Doc Shorts A - CCFF",
+      "date": "2026-07-18",
+      "time": "5:00 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "description": "Doc Shorts A 1h38min – Shorts Screen 2 - $12 members, $15 non-members. Includes filmmaker Q&As See the first block of new documentary shorts, including: Amber Valetta: Beyond the Runway – 13min – dir. Jen Loren For the Life of Me – 12min – dir. Anthony Croff Ride on! The Saga of the Black Cowboy – 11min – dir. Kelly Kerr Chasing Trains – 3min – dir. Beth Turner Echoes of the Ancestors: Oakhill Sti",
+      "url": "https://circlecinema.easy-ware-ticketing.com/events",
+      "source_urls": [
+        "https://circlecinema.easy-ware-ticketing.com/events"
+      ],
+      "priority": 2,
+      "source": "circle_cinema",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Down Home Blues - CCFF",
+      "date": "2026-07-18",
+      "time": "8:30 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "description": "Down Home Blues Dir. Evan Clayburg – 1h20min – Documentary – English Screen 3 - $12 members, $15 non-members. Includes filmmaker Q&A Down Home Blues is a feature length documentary set at the Down Home Blues Club, a historic juke joint in Rentiesville, Oklahoma. Since 2008, Selby Minner hosted Sunday jam sessions there, creating a vibrant gathering place for musicians and community in the small ru",
+      "url": "https://circlecinema.easy-ware-ticketing.com/events",
+      "source_urls": [
+        "https://circlecinema.easy-ware-ticketing.com/events"
+      ],
+      "priority": 2,
+      "source": "circle_cinema",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "PINT's Rockin' Auction Extravaganza",
+      "date": "2026-07-19",
+      "time": "3:00 PM - 7:00 PM",
+      "venue": "Venue Shrine, 112 E 18th St S, Tulsa, OK 74119",
+      "description": "Rock for Rescues, baby. Cobi Lalas plays the 70s through 90s sing-alongs you know by heart, there's a silent auction packed with art and oddities, and every dollar sends a homeless pup toward a real home. Tickets on StubWire.",
+      "website_description": "Paws In Need Tulsa throws its Rockin' Auction Extravaganza at Venue Shrine, and it is the rare fundraiser that actually slaps. Local rockers Cobi Lalas open with the rock classics from the 70s, 80s, and 90s you will absolutely sing along to, then swing into their own quantum groove rock, all grunge grit and red-dirt soul. While the music plays you can wander a silent auction stacked with artwork, collectibles, experiences, and musical instruments, and every ticket and every winning bid funds PINT's transport program that drives homeless animals to rescue partners across the country. It runs 3 to 7pm, all heart, all good cause. Tickets are on StubWire. Best-time tip for the shy ones: come right at 3 while the auction tables are fresh and the room is still easy to work, scope your bids early, then settle in for the second set when the band gets weird and wonderful.",
+      "url": "https://www.facebook.com/events/1725078808494256/",
+      "priority": 2,
+      "source": "manual",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "GCW presents \"The Tussle in Tulsa\"",
+      "date": "2026-07-19",
+      "time": "5:00 PM",
+      "venue": "The Property Event Center, 11500 S 129th E Ave",
+      "description": "GCW comes to Oklahoma for the first time on Sunday, July 19th when the outlaws visit Broken Arrow and the Property Events Center!",
+      "url": "https://www.eventbrite.com/e/gcw-presents-the-tussle-in-tulsa-tickets-1990112263352",
+      "source_urls": [
+        "https://www.eventbrite.com/e/gcw-presents-the-tussle-in-tulsa-tickets-1990112263352",
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "ACT Book Club",
+      "date": "2026-07-19",
+      "time": "6:15 PM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.meetup.com/act-ok/events/315150601/",
+      "source_urls": [
+        "https://www.meetup.com/act-ok/events/315150601/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "DWA (Drinking With Atheists)",
+      "date": "2026-07-19",
+      "time": "12:00 AM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.meetup.com/act-ok/events/315150573/",
+      "source_urls": [
+        "https://www.meetup.com/act-ok/events/315150573/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Members-Only Early Access Hours",
+      "date": "2026-07-19",
+      "time": "",
+      "venue": "Discovery Lab",
+      "description": "",
+      "url": "https://discoverylab.org/events/event/5696588/date/2026-07-19",
+      "source_urls": [
+        "https://discoverylab.org/events/event/5696588/date/2026-07-19"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Mr. & Miss Oklahoma Bold & Beautiful Newcomer 2026",
+      "date": "2026-07-19",
+      "time": "10:00 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "Club Majestic, Tulsa's flagship LGBTQ+ nightclub downtown. Details on Instagram @clubmajestictulsa.",
+      "url": "https://www.instagram.com/p/Dauyc-1xrQI/",
+      "source_urls": [
+        "https://www.instagram.com/p/Dauyc-1xrQI/"
+      ],
+      "priority": 2,
+      "source": "club_majestic_ig",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Fitness on the Green – Zumba with Ariane",
+      "date": "2026-07-19",
+      "time": "10:30 AM - 11:30 AM",
+      "venue": "in 6 days",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Loony Bin - Tulsa",
+      "date": "2026-07-19",
+      "time": "6:00 PM - 9:00 PM",
+      "venue": "Stubhub.ca",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "ShulSchool at the Pool — Jewish Life in Tulsa",
+      "date": "2026-07-19",
+      "time": "9:00 AM",
+      "venue": "Congregation B'nai Emunah",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Cobi Lalas",
+      "date": "2026-07-19",
+      "time": "3:00 PM - 8:00 PM",
+      "venue": "StubWire.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Ocean’s Gentle Giant",
+      "date": "2026-07-19",
+      "time": "2:00 PM - 4:00 PM",
+      "venue": "Pinotspalette.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Sisters of Cinema Short Film Block",
+      "date": "2026-07-19",
+      "time": "2:30 PM",
+      "venue": "Circle Cinema",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "The Kickback at The Hunt Club",
+      "date": "2026-07-19",
+      "time": "4:00 PM - 7:00 PM",
+      "venue": "Tulsa Arts District",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Lilacs in a Glass",
+      "date": "2026-07-19",
+      "time": "10:00 AM",
+      "venue": "Pinotspalette.com",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Fighting More Than Fire - CCFF",
+      "date": "2026-07-19",
+      "time": "5:15 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "description": "Fighting More Than Fire Dir. Keith “Sneak” Daniels – 1h25min – Documentary – English Saturday Screen 3, Sunday Screen 4 - $12 members, $15 non-members Fighting More Than Fire is a documentary that explores the untold history of Black firefighters in Tulsa, Oklahoma. Through personal stories, first-hand accounts, and following a “day-in-the-life” of these heroes, the film captures the struggles and",
+      "url": "https://circlecinema.easy-ware-ticketing.com/events",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+        "https://circlecinema.easy-ware-ticketing.com/events"
+      ],
+      "priority": 2,
+      "source": "circle_cinema",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Power & Pranayama Vinyasa Yoga",
+      "date": "2026-07-19",
+      "time": "9:30 AM - 10:45 AM",
+      "venue": "Open Eye Yoga and Healing Space, 4329 S Peoria Ave #350",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "LaserEye",
+      "date": "2026-07-19",
+      "time": "7:00 PM - 8:30 PM",
+      "venue": "The Vanguard, 222 N Main St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Possible duplicate of #155 (LaserEye)"
+      ]
+    },
+    {
+      "name": "Okie Shorts (Block B)",
+      "date": "2026-07-19",
+      "time": "12:30 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Inspyral Circus Jam at Guthrie Green",
+      "date": "2026-07-19",
+      "time": "6:00 PM - 8:00 PM",
+      "venue": "Guthrie Green, 111 E Reconciliation Wy",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Sunday SIP",
+      "date": "2026-07-19",
+      "time": "",
+      "venue": "Dave & Buster's Tulsa, 6812 S 105th E Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Trade Routes Commander Matinee",
+      "date": "2026-07-19",
+      "time": "1:30 PM - 5:30 PM",
+      "venue": "Trade Routes, 5625 E 41st St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Dried Flower Bookmark Kit",
+      "date": "2026-07-19",
+      "time": "",
+      "venue": "Hardesty Regional Library, 8316 E 93rd St",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "(WINNER) When The Rain Comes",
+      "date": "2026-07-19",
+      "time": "7:30 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Floating Sound Bath",
+      "date": "2026-07-19",
+      "time": "8:30 AM - 9:30 AM",
+      "venue": "Brut Hotel, 1840 S Boulder Ave",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Oklahoma Throws Series",
+      "date": "2026-07-19",
+      "time": "",
+      "venue": "Millican Field, 38087 N 4000 Rd",
+      "description": "",
+      "url": "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0",
+      "source_urls": [
+        "https://www.google.com/search?q=events+in+tulsa+July+19+2026&ibp=htl;events&hl=en&gl=US&pws=0"
+      ],
+      "priority": 2,
+      "source": "google_events",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Doc Shorts B - CCFF",
+      "date": "2026-07-19",
+      "time": "12:30 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "description": "Doc Shorts B 1h5min – Shorts Screen 2 - $12 members, $15 non-members. Includes filmmaker Q&As See the first block of new documentary shorts, including: 1921 – 9min – dir. Kevin Stephenson The Pursuit of Happiness – 20min – dir. Manny Marquez Canyon Light – 6min – dir. Elijah Bigler From Their Hands – 3min – dir. Matt Brewer Home – 19min – dir. Milena Perkins Cut from a Different Cloth: Wendell Coc",
+      "url": "https://circlecinema.easy-ware-ticketing.com/events",
+      "source_urls": [
+        "https://circlecinema.easy-ware-ticketing.com/events"
+      ],
+      "priority": 2,
+      "source": "circle_cinema",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Lee Roy Chapman Vs the Ghost of Tate Brady - CCFF",
+      "date": "2026-07-19",
+      "time": "3:45 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "description": "Lee Roy Chapman Vs. The Ghost of Tate Brady Dir. Việt H. Nguyễn - 30min – Documentary – English Screen 3 - $5 members, $8 non-members Encore presentation of CCFF Winner – Best Oklahoma Short Documentary. The film will also screen as part of the Doc Shorts A block on Saturday July 18. In 2011, citizen journalist Lee Roy Chapman published an explosive article exposing Tulsa city founder Tate Brady’s",
+      "url": "https://circlecinema.easy-ware-ticketing.com/events",
+      "source_urls": [
+        "https://circlecinema.easy-ware-ticketing.com/events"
+      ],
+      "priority": 2,
+      "source": "circle_cinema",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "All Souls Unitarian Sunday Services",
+      "date": "2026-07-19",
+      "time": "10:00 AM and 11:15 AM",
+      "venue": "All Souls Unitarian Church, 2952 S Peoria Ave",
+      "description": "",
+      "url": "https://allsoulschurch.org",
+      "source_urls": [
+        "https://allsoulschurch.org"
+      ],
+      "priority": 2,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "never_feature": true
+    },
+    {
+      "name": "Drag Sing-Along Presented by Elote",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/drag-sing-along-presented-by-elote-tickets-1988242480782",
+      "source_urls": [
+        "https://www.eventbrite.com/e/drag-sing-along-presented-by-elote-tickets-1988242480782",
+        "https://www.eventbrite.com/e/drag-brunch-presented-by-elote-tickets-1976646183946"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM: Drag sing-along missing date/time/venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Miss Gay Oklahoma America",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/miss-gay-oklahoma-america-tickets-1990147876873",
+      "source_urls": [
+        "https://www.eventbrite.com/e/miss-gay-oklahoma-america-tickets-1990147876873"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM: Miss Gay Oklahoma pageant missing date/time/venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "MAS TULSA 2026: A Caribbean Carnivale Experience",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/mas-tulsa-2026-a-caribbean-carnivale-experience-tickets-1989884411842",
+      "source_urls": [
+        "https://www.eventbrite.com/e/mas-tulsa-2026-a-caribbean-carnivale-experience-tickets-1989884411842"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Caribbean Carnivale missing date/time/venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Book Launch for Michelle Hardesty",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/book-launch-for-michelle-hardesty-tickets-1990994191222",
+      "source_urls": [
+        "https://www.eventbrite.com/e/book-launch-for-michelle-hardesty-tickets-1990994191222"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Book launch missing date/time/venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "An Evening With Jason Lee",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/an-evening-with-jason-lee-tickets-1989850063104",
+      "source_urls": [
+        "https://www.eventbrite.com/e/an-evening-with-jason-lee-tickets-1989850063104"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Jason Lee evening missing date/time/venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Transformation Conference: V5",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/transformation-conference-v5-tickets-1774852133509",
+      "source_urls": [
+        "https://www.eventbrite.com/e/transformation-conference-v5-tickets-1774852133509"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Transformation Conference context unclear; missing date/time/venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Wine & Hip Hop Tasting Notes From The Streets Food Hall Experience",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/wine-hip-hop-tasting-notes-from-the-streets-food-hall-experience-tickets-1990182790300",
+      "source_urls": [
+        "https://www.eventbrite.com/e/wine-hip-hop-tasting-notes-from-the-streets-food-hall-experience-tickets-1990182790300"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Wine & Hip Hop event missing date/time/venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Mamas' Boys: Leslie and Me",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/mamas-boys-leslie-and-me-tickets-1992603486668",
+      "source_urls": [
+        "https://www.eventbrite.com/e/mamas-boys-leslie-and-me-tickets-1992603486668"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Mamas' Boys performance missing date/time/venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "TFA + Lortondale Club Pool Party",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/tfa-lortondale-club-pool-party-tickets-1984589228807",
+      "source_urls": [
+        "https://www.eventbrite.com/e/tfa-lortondale-club-pool-party-tickets-1984589228807"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Pool party missing date/time/venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "TFA + THE VAULT COCKTAIL CLASS: Iconic Tulsa Music Venues",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/tfa-the-vault-cocktail-class-iconic-tulsa-music-venues-tickets-1987633148252",
+      "source_urls": [
+        "https://www.eventbrite.com/e/tfa-the-vault-cocktail-class-iconic-tulsa-music-venues-tickets-1987633148252"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Cocktail class missing date/time/venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Encountering the Prophetic in a Supernatural Season",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/encountering-the-prophetic-in-a-supernatural-season-tickets-1991506206674",
+      "source_urls": [
+        "https://www.eventbrite.com/e/encountering-the-prophetic-in-a-supernatural-season-tickets-1991506206674"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Religious conference missing date/time/venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Pints and Ponytails",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/pints-and-ponytails-tickets-1992368255084",
+      "source_urls": [
+        "https://www.eventbrite.com/e/pints-and-ponytails-tickets-1992368255084"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Pints and Ponytails missing date/time/venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Tulsa Speed Dating for Singles Age 40s/50s â¥ Tulsa Oklahoma",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/tulsa-speed-dating-for-singles-age-40s50s-tulsa-oklahoma-tickets-1992005883220",
+      "source_urls": [
+        "https://www.eventbrite.com/e/tulsa-speed-dating-for-singles-age-40s50s-tulsa-oklahoma-tickets-1992005883220"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Speed dating event missing date/time/venue",
+        "garbled characters in name (mojibake)",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "How Top Agents Create Consistent, High-Volume Business (CE Class) TRP",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/how-top-agents-create-consistent-high-volume-business-ce-class-trp-tickets-1993148783666",
+      "source_urls": [
+        "https://www.eventbrite.com/e/how-top-agents-create-consistent-high-volume-business-ce-class-trp-tickets-1993148783666"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Underground Kitchen, a private dining experience",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/underground-kitchen-a-private-dining-experience-tickets-1988868304638",
+      "source_urls": [
+        "https://www.eventbrite.com/e/underground-kitchen-a-private-dining-experience-tickets-1988868304638"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Launch Your Podcast as a Faith Based Entrepreneur or Ministry Leader",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/launch-your-podcast-as-a-faith-based-entrepreneur-or-ministry-leader-tickets-1992602212858",
+      "source_urls": [
+        "https://www.eventbrite.com/e/launch-your-podcast-as-a-faith-based-entrepreneur-or-ministry-leader-tickets-1992602212858"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Cocktail Class: Versatile Vodka",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/cocktail-class-versatile-vodka-tickets-1988366446567",
+      "source_urls": [
+        "https://www.eventbrite.com/e/cocktail-class-versatile-vodka-tickets-1988366446567"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "2026 OSU-CHS Athletic Training and AOOK Simulation Event",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/2026-osu-chs-athletic-training-and-aook-simulation-event-tickets-1989918062492",
+      "source_urls": [
+        "https://www.eventbrite.com/e/2026-osu-chs-athletic-training-and-aook-simulation-event-tickets-1989918062492"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "FiberWorks Workshop: Sean Tyler",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/fiberworks-workshop-sean-tyler-tickets-1989620425251",
+      "source_urls": [
+        "https://www.eventbrite.com/e/fiberworks-workshop-sean-tyler-tickets-1989620425251"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Build High-Growth Startups: Strategies for Neurodiverse & Diverse Founders",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/build-high-growth-startups-strategies-for-neurodiverse-diverse-founders-tickets-1992929193867",
+      "source_urls": [
+        "https://www.eventbrite.com/e/build-high-growth-startups-strategies-for-neurodiverse-diverse-founders-tickets-1992929193867"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "INNER CIRCLE DRAG SHOW",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/inner-circle-drag-show-tickets-1979909993087",
+      "source_urls": [
+        "https://www.eventbrite.com/e/inner-circle-drag-show-tickets-1979909993087"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Drag Brunch",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/drag-brunch-tickets-1993483166815",
+      "source_urls": [
+        "https://www.eventbrite.com/e/drag-brunch-tickets-1993483166815"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Swiftball Tulsa,OK",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/swiftball-tulsaok-tickets-1976426292244",
+      "source_urls": [
+        "https://www.eventbrite.com/e/swiftball-tulsaok-tickets-1976426292244"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Ego Trippin",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/ego-trippin-tickets-1992956128429",
+      "source_urls": [
+        "https://www.eventbrite.com/e/ego-trippin-tickets-1992956128429"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "LLM: Event name possibly truncated; missing date/time/venue",
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Ghoul Friends Presents 'Hotter Than Hell'",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/ghoul-friends-presents-hotter-than-hell-tickets-1992102985656",
+      "source_urls": [
+        "https://www.eventbrite.com/e/ghoul-friends-presents-hotter-than-hell-tickets-1992102985656"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "In-Person CAPM Exam Prep Course in Tulsa",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/in-person-capm-exam-prep-course-in-tulsa-tickets-1985761475027",
+      "source_urls": [
+        "https://www.eventbrite.com/e/in-person-capm-exam-prep-course-in-tulsa-tickets-1985761475027"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "CISSP Certification Training Course in Jenks, OK",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/cissp-certification-training-course-in-jenks-ok-tickets-1979969150027",
+      "source_urls": [
+        "https://www.eventbrite.com/e/cissp-certification-training-course-in-jenks-ok-tickets-1979969150027"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "PMP Training Tulsa with PMBOK 8th Edition and Full Pass Guarantee",
+      "date": "",
+      "time": "",
+      "venue": "",
+      "description": "",
+      "url": "https://www.eventbrite.com/e/pmp-training-tulsa-with-pmbok-8th-edition-and-full-pass-guarantee-tickets-1993628587773",
+      "source_urls": [
+        "https://www.eventbrite.com/e/pmp-training-tulsa-with-pmbok-8th-edition-and-full-pass-guarantee-tickets-1993628587773"
+      ],
+      "priority": 2,
+      "source": "eventbrite",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Black. Queer. proud.",
+      "date": "",
+      "time": "",
+      "venue": "Various locations in Tulsa",
+      "description": "",
+      "url": "https://www.blackqueertulsa.org/events",
+      "source_urls": [
+        "https://www.blackqueertulsa.org/events",
+        "https://www.blackqueertulsa.org/black-queer-proud-2024"
+      ],
+      "priority": 2,
+      "source": "community_groups",
+      "lgbtq_relevant": true,
+      "sanity_flags": [
+        "LLM: LGBTQ+ community group missing date/time/venue"
+      ]
+    },
+    {
+      "name": "Lambda Unity Group (LGBTQ+ AA Meeting)",
+      "date": "2026-07-15",
+      "time": "Check listing for time",
+      "venue": "Fellowship Congregational Church, Tulsa",
+      "description": "",
+      "url": "https://aaoklahoma.org/meetings/lambda-unity/",
+      "source_urls": [
+        "https://aaoklahoma.org/meetings/lambda-unity/"
+      ],
+      "priority": 3,
+      "source": "recurring",
+      "lgbtq_relevant": true,
+      "never_feature": true,
+      "sanity_flags": [
+        "non-time time field: 'Check listing for time'"
+      ]
+    },
+    {
+      "name": "DRAGNIFICENT! Drag Show",
+      "date": "2026-07-16",
+      "time": "10:00 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "Weekly Thursday drag show hosted by the legendary Shanel Sterling. High energy, great performances.",
+      "url": "https://downtowntulsa.com/do/dragnificent-at-club-majestic-1",
+      "source_urls": [
+        "https://downtowntulsa.com/do/dragnificent-at-club-majestic-1"
+      ],
+      "priority": 3,
+      "source": "community_groups",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "AA Oklahoma – Area 57",
+      "date": "",
+      "time": "",
+      "venue": "Tulsa, OK",
+      "description": "",
+      "url": "https://aaoklahoma.org/meetings/?tsml-day=any&tsml-region=tulsa&tsml-type=LGBTQ",
+      "source_urls": [
+        "https://aaoklahoma.org/meetings/?tsml-day=any&tsml-region=tulsa&tsml-type=LGBTQ"
+      ],
+      "priority": 3,
+      "source": "aa_meetings",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Archives",
+      "date": "",
+      "time": "",
+      "venue": "Tulsa, OK",
+      "description": "",
+      "url": "https://aaoklahoma.org/meetings/?tsml-day=any&tsml-region=tulsa&tsml-type=LGBTQ",
+      "source_urls": [
+        "https://aaoklahoma.org/meetings/?tsml-day=any&tsml-region=tulsa&tsml-type=LGBTQ"
+      ],
+      "priority": 3,
+      "source": "aa_meetings",
+      "lgbtq_relevant": true
+    }
+  ]
+}
