@@ -360,6 +360,51 @@ mention it.
     }
 
 
+# ── LLM health breadcrumb (gap G46) ──────────────────────────────────────
+# A `claude -p` default-auth 401 once silently killed EVERY tulsagays CLI LLM
+# layer at once: sanity_check, voice_pass, final_deck_review, description
+# enrichment all just fell back to rule copy and NOBODY knew the LLM was dead.
+# _call_claude_cli records a health breadcrumb on STATE CHANGE (not every call,
+# to avoid churn) so `tools/llm_health.py` can turn a total-auth outage into a
+# loud, detectable signal instead of a silent degrade. An individual prompt
+# failing while auth still works is NOT an outage — only auth-class failures
+# across ALL tokens flip the flag.
+_LLM_HEALTH_FILE = _os_path_health = None  # resolved lazily to avoid import cost
+_LLM_LAST_STATE = None  # None | "up" | "down"
+_LLM_AUTH_SIGNATURES = ("401", "403", "authenticate", "authentication",
+                        "credit balance", "unauthorized")
+
+
+def _llm_health_path():
+    import os as _o
+    return _o.path.join(_o.path.dirname(_o.path.dirname(_o.path.abspath(__file__))),
+                        "data", "llm_health.json")
+
+
+def _record_llm_health(ok: bool, detail: str = ""):
+    """Persist LLM auth health on state change only. ok=True clears the alarm."""
+    global _LLM_LAST_STATE
+    state = "up" if ok else "down"
+    if state == _LLM_LAST_STATE:
+        return
+    _LLM_LAST_STATE = state
+    try:
+        import json as _j, time as _t, os as _o
+        p = _llm_health_path()
+        _o.makedirs(_o.path.dirname(p), exist_ok=True)
+        payload = {"auth_ok": ok, "ts": _t.strftime("%Y-%m-%d %H:%M:%S"),
+                   "epoch": int(_t.time()), "detail": detail[:200]}
+        with open(p, "w", encoding="utf-8") as f:
+            _j.dump(payload, f, indent=1)
+        if not ok:
+            # loud stderr marker so a scheduled run's log flags it too
+            print(f"[generator][LLM-DOWN] claude -p auth failing across all tokens: "
+                  f"{detail[:120]} — LLM layers are degrading to rule-based copy",
+                  file=__import__("sys").stderr)
+    except Exception:
+        pass
+
+
 def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "sonnet",
                      timeout: int = 300) -> str:
     """Shell out to the local `claude -p` CLI for description generation.
@@ -416,6 +461,7 @@ def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "so
     except Exception:
         pass
 
+    _last_fail = ""
     for tok in attempts:
         env = _os.environ.copy()
         for k in list(env):
@@ -441,12 +487,19 @@ def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "so
             )
             out = (r.stdout or "").strip()
             if out and not out.lower().startswith(_err_prefixes):
+                _record_llm_health(True)
                 return out
+            _last_fail = (out or r.stderr or "empty")
             print(f"[generator] claude CLI ({'stored-token' if tok else 'default-auth'}) "
-                  f"failed: {(out or r.stderr or 'empty')[:100]} — trying next auth")
+                  f"failed: {_last_fail[:100]} — trying next auth")
         except Exception as e:
+            _last_fail = str(e)
             print(f"[generator] claude CLI fallback failed: {e}")
-            return ""
+    # Every auth path exhausted. If the last failure was auth-class (not a
+    # one-off timeout / prompt-too-long), flip the loud health flag so the
+    # silent LLM outage becomes detectable (gap G46).
+    if any(sig in _last_fail.lower() for sig in _LLM_AUTH_SIGNATURES):
+        _record_llm_health(False, _last_fail)
     return ""
 
 

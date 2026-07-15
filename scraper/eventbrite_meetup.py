@@ -133,6 +133,69 @@ EVENTBRITE_API = "https://www.eventbrite.com/api/v3/destination/search/"
 EVENTBRITE_SEARCH_URL = "https://www.eventbrite.com/d/ok--tulsa/{query}/"
 
 
+def _iso_to_time(iso: str) -> str:
+    """'2026-07-16T18:00:00-05:00' -> '6:00 PM'. Empty on failure."""
+    m = re.search(r"T(\d{2}):(\d{2})", iso or "")
+    if not m:
+        return ""
+    h, mnt = int(m.group(1)), m.group(2)
+    ap = "AM" if h < 12 else "PM"
+    h12 = h % 12 or 12
+    return f"{h12}:{mnt} {ap}"
+
+
+def _backfill_dates_from_detail(scraper, events: List[Dict], cap: int = 35) -> List[Dict]:
+    """Recover dates for events scraped via the dateless link/last-resort path
+    (gap G51). Eventbrite's public search API now returns HTTP 405 (dead for
+    everyone), so the scrapers fall through to link extraction which produces
+    events with `date=""` — 68% of lexingtongays W28 events were undated this
+    way and therefore never displayed. Each dateless event still carries its
+    detail URL, and every Eventbrite/Meetup event PAGE embeds JSON-LD with a
+    real `startDate`. Fetch the detail page and fill date + time from it.
+
+    Bounded by `cap` detail fetches so a thin week can't stall the scrape.
+    Failures are skipped silently — the event stays dateless and is dropped by
+    the runner's current-week filter, exactly as before this fix.
+    """
+    fetched = 0
+    for ev in events:
+        if ev.get("date"):
+            continue
+        url = ""
+        if ev.get("source_urls"):
+            url = ev["source_urls"][0]
+        url = url or ev.get("url") or ""
+        if not url or not url.startswith("http"):
+            continue
+        if fetched >= cap:
+            break
+        fetched += 1
+        soup = scraper.fetch_page(url)
+        if not soup:
+            scraper._random_delay()
+            continue
+        start = ""
+        for script in soup.find_all("script", type="application/ld+json"):
+            raw = script.string or script.get_text() or ""
+            try:
+                obj = json.loads(raw)
+            except Exception:
+                continue
+            for it in (obj if isinstance(obj, list) else [obj]):
+                if isinstance(it, dict) and it.get("startDate"):
+                    start = it["startDate"]
+                    break
+            if start:
+                break
+        if start:
+            ev["date"] = start[:10]
+            if not ev.get("time"):
+                ev["time"] = _iso_to_time(start)
+            logger.info(f"[{scraper.source_name}] backfilled date {ev['date']} for '{ev.get('name','')[:40]}'")
+        scraper._random_delay()
+    return events
+
+
 class EventbriteScraper(BaseScraper):
     """Search Eventbrite for Tulsa LGBTQ events.
 
@@ -182,7 +245,7 @@ class EventbriteScraper(BaseScraper):
             if len(events) >= 30:
                 break
 
-        return events
+        return _backfill_dates_from_detail(self, events)
 
     def _try_api(self) -> List[Dict]:
         """Try the Eventbrite public search API for each search term."""
@@ -396,7 +459,7 @@ class MeetupScraper(BaseScraper):
             if len(events) >= 20:
                 break
 
-        return events
+        return _backfill_dates_from_detail(self, events)
 
     def _extract_json_ld(self, soup) -> List[Dict]:
         events = []

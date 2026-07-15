@@ -234,11 +234,12 @@ def _check_must_sources() -> list:
     return rows
 
 
-def run(full: bool = False, quick: bool = False) -> list:
+def run(full: bool = False, quick: bool = False, skip_rendered: bool = False) -> list:
     results = []
     results += _probe_community_groups()
     results += _probe_extended_calendars()
-    results += _probe_rendered_sites()
+    if not skip_rendered:
+        results += _probe_rendered_sites()
     if not quick:
         results += _module_level_checks(full)
     results += _check_must_sources()
@@ -324,13 +325,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--full", action="store_true", help="also run slow aggregators")
     ap.add_argument("--quick", action="store_true", help="multi-site sub-sources only")
+    ap.add_argument("--skip-rendered", action="store_true",
+                    help="skip Playwright-rendered_sites probes (faster, avoids hang)")
     ap.add_argument("--no-alert", action="store_true", help="never write to action inbox")
     ap.add_argument("--json", action="store_true", help="machine-readable summary only")
     args = ap.parse_args()
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
     prev = _load_prev()
-    results = run(full=args.full, quick=args.quick)
+    results = run(full=args.full, quick=args.quick, skip_rendered=args.skip_rendered)
 
     # Regression = was OK (or unseen but now broken is also worth surfacing once)
     regressions = [r for r in results

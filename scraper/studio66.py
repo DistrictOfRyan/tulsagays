@@ -207,13 +207,46 @@ class Studio66Scraper(BaseScraper):
             )
             return None
 
+    def _fetch_via_web_session(self) -> List[Dict]:
+        """Tier 3 (gap G7): the proven fb_auto_profile web-session reader used by
+        instagram_orgs. When the public endpoint is 429'd AND the instagrapi
+        session is missing/expired, this drives the dedicated real-Chrome
+        profile headlessly and reads the same public web API from an
+        authenticated browser context. Re-auth (when the profile session
+        lapses) is `python tools/ig_profile_login.py` — a human 'Log in with
+        Facebook' click, NOT scripts/ig_login_api.py (bloks-challenge wall)."""
+        try:
+            from scraper import instagram_web
+            raw = instagram_web.posts_for("studio_66", [USERNAME]) or []
+        except Exception as e:
+            logger.warning("[studio_66] web-session fetch failed: %s %s",
+                           type(e).__name__, str(e)[:160])
+            return []
+        posts = []
+        for p in raw:
+            caption = (p.get("caption") or "").strip()
+            if not caption:
+                continue
+            posts.append({
+                "caption": caption,
+                "url": p.get("url") or PROFILE_URL,
+                "posted_on": (p.get("posted_on") or p.get("date") or ""),
+            })
+        logger.info("[studio_66] web-session fallback returned %d captioned posts", len(posts))
+        return posts
+
     def scrape(self) -> List[Dict]:
-        # Auth-free public endpoint first; authenticated session only as a fallback.
+        # Tier 1 auth-free public endpoint, tier 2 instagrapi session, tier 3
+        # fb_auto_profile web session — first non-empty path wins (gap G7:
+        # public 429 + missing instagrapi session left this dark with no
+        # third path to fall through to).
         posts = self._fetch_public()
         if not posts:
             posts = self._fetch_via_session()
         if not posts:
-            logger.info("[studio_66] No captioned posts from either path — 0 events.")
+            posts = self._fetch_via_web_session()
+        if not posts:
+            logger.info("[studio_66] No captioned posts from any of the 3 paths — 0 events.")
             return []
 
         events = self._extract_with_llm(posts)

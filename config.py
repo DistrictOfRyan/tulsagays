@@ -992,7 +992,7 @@ SOURCES = {
     },
     "ticketmaster_tulsa": {
         "name": "Ticketmaster - Tulsa Events",
-        "url": "https://www.ticketmaster.com/tulsa-oklahoma-concerts-sports-arts-theater-family/",
+        "url": "https://www.ticketmaster.com/search?q=tulsa&city=Tulsa&state=OK",
         "priority": 1,
         "type": "aggregator",
         "description": "Official ticketing platform for major venues and events in Tulsa.",

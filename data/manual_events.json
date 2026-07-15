@@ -593,5 +593,62 @@
     "source": "manual",
     "priority": 1,
     "source_note": "Bricktown Comedy Club Tulsa recurring Drag Bingo (host Porsche Lynn, Sun 3pm, 18+, $15/5 cards). Added 2026-07-09 per William (venue keeps comping tickets; promote them). Live-verified on bricktowntulsa.com/events + show page 374468. Also captured durably via rendered_site_specs json_ld spce; this manual entry gives the featured-quality card for W28."
+  },
+  {
+    "name": "Two Spirit Celebration: Stomp Dance",
+    "date": "2026-10-23",
+    "time": "6:00 PM - 10:00 PM",
+    "venue": "Cherokee Nation Powwow Grounds (next to), Tahlequah, OK",
+    "description": "The Two Spirit Celebration opens Friday night with a Stomp Dance beside the Cherokee Nation Powwow Grounds, honoring Native queer folks the old way, under the stars, feet to the ground, everybody welcome. Alcohol and drug free. Come as you are, sugar.",
+    "website_description": "The Intercultural Partnership Council kicks off its Two Spirit Celebration with a Friday-night Stomp Dance right beside the Cherokee Nation Powwow Grounds in Tahlequah, 6 to 10 PM. This is Two-Spirit tradition held with pride: Native LGBTQ folks and the whole community moving together in the circle, the shell-shakers keeping time, everyone welcome no matter where you come from. It is completely alcohol and drug free, and there is no charge for food or activities. Best-time tip for the shy ones: get there right at 6 while the light is still soft and folks are gathering, stand at the edge of the circle to watch and listen first, and when you feel ready, someone will wave you in, that is exactly how the dance is meant to work. General info at tinyurl.com/ipctahlequah.",
+    "url": "https://tinyurl.com/ipctahlequah",
+    "source": "manual",
+    "priority": 1,
+    "lgbtq_relevant": true,
+    "source_note": "Added 2026-07-10 per William (flyer from All Nations Two-Spirit Society, posted Jun 5). Two Spirit Celebration Oct 23-24 2026, a project of the Intercultural Partnership Council. Partners: Cherokee Nation, Tahlequah Public Library, All Nations Two Spirit Society, Squirrel Ridge Ceremonial Grounds. Everyone welcome, all events alcohol/drug free, no charge for food or activities. General info ipc.gadugi@gmail.com / tinyurl.com/ipctahlequah. Tahlequah is ~65mi SE of Tulsa but OK-wide marquee Two-Spirit event, priority 1."
+  },
+  {
+    "name": "Two Spirit Celebration: Symposium",
+    "date": "2026-10-24",
+    "time": "8:30 AM - 12:30 PM",
+    "venue": "Tahlequah Public Library, Tahlequah, OK",
+    "description": "Saturday morning the Two Spirit Celebration heads to the Tahlequah Public Library for a symposium, honest talk about Two-Spirit history, identity, and community, coffee-warm and everyone welcome. Free, alcohol and drug free.",
+    "website_description": "The middle chapter of the Two Spirit Celebration is a Saturday-morning symposium at the Tahlequah Public Library, 8:30 AM to 12:30 PM. This is the learning heart of the weekend: Two-Spirit history, culture, and lived experience shared out loud in a warm, welcoming room, open to Native and non-Native folks alike. It is free, alcohol and drug free, and there is no charge for food or activities. Best-time tip for the shy ones: a library is the gentlest possible place to walk into something new, so come near the 8:30 start, grab a seat toward the back, and let yourself just listen, nobody is going to put you on the spot. General info at tinyurl.com/ipctahlequah.",
+    "url": "https://tinyurl.com/ipctahlequah",
+    "source": "manual",
+    "priority": 1,
+    "lgbtq_relevant": true,
+    "source_note": "Added 2026-07-10 per William (flyer from All Nations Two-Spirit Society). Day 2 morning session of the Two Spirit Celebration. See Stomp Dance entry for full partner/contact detail."
+  },
+  {
+    "name": "Two Spirit Celebration: Community Powwow",
+    "date": "2026-10-24",
+    "time": "4:00 PM - 10:00 PM",
+    "venue": "Cherokee Nation Powwow Arena, Tahlequah, OK",
+    "description": "The Two Spirit Celebration closes big Saturday evening with a Community Powwow at the Cherokee Nation Powwow Arena, regalia, drum, and the whole circle out proud. Everyone welcome, alcohol and drug free, no charge to be there, darling.",
+    "website_description": "The Two Spirit Celebration goes out on a high note with a Community Powwow at the Cherokee Nation Powwow Arena in Tahlequah, 4 to 10 PM Saturday. Six hours of drum, dance, and regalia, a Two-Spirit-honoring gathering with the whole community invited into the circle. It is alcohol and drug free with no charge for food or activities, so you can stay as long as your heart wants. Best-time tip for the shy ones: arrive around 4 while the arena is still filling and find a spot on the bleachers to take it all in, watch a round or two to learn the rhythm, and stand when they call an intertribal, that is the dance where everyone, spectators included, is welcome to step in. General info at tinyurl.com/ipctahlequah.",
+    "url": "https://tinyurl.com/ipctahlequah",
+    "source": "manual",
+    "priority": 1,
+    "lgbtq_relevant": true,
+    "source_note": "Added 2026-07-10 per William (flyer from All Nations Two-Spirit Society). Day 2 evening finale of the Two Spirit Celebration. See Stomp Dance entry for full partner/contact detail."
+  },
+  {
+    "name": "Tie-Dye Party with QueerLit",
+    "date": "2026-07-12",
+    "time": "2:00 PM - 4:00 PM",
+    "venue": "Yellow Brick Road, 2630 E 15th St",
+    "url": "https://www.instagram.com/p/Daqu5wlATZc/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Tulsa Eagle Bingo for a Cause (benefiting Fernando Peñaloza)",
+    "date": "2026-07-12",
+    "time": "4:00 PM",
+    "venue": "Tulsa Eagle, 1338 E 3rd St",
+    "url": "https://www.instagram.com/p/Das1UWLCtm5/",
+    "source": "venue_flyer_dig",
+    "priority": 2
   }
 ]
