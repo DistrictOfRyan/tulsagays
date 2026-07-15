@@ -31,9 +31,16 @@ as NEEDS VERIFICATION, either verify it or omit the address entirely.
 | Venue | Address | Status | Notes |
 |---|---|---|---|
 | OkEq / Dennis R. Neill Equality Center | 621 E 4th St | OPEN | Tulsa's LGBTQ+ anchor organization since 1980. Also see: event calendar at okeq.org/event-calendar/ |
-| PFLAG Tulsa | Meets at OkEq | OPEN | First Saturday each month, 7pm. |
+| PFLAG Tulsa | Youth Services of Tulsa (YST), 311 S Madison Ave, Tulsa OK 74120 | OPEN | First Saturday each month, 7pm. Verified tulsapflag.org July 2026. NOT at OkEq (prior listing here was wrong). |
 | Tulsa Pride | Varies (festival) | ACTIVE | Annual late-June festival. tulsapride.org |
-| Freedom Oklahoma | Statewide advocacy | ACTIVE | Not a physical venue to visit. freedomoklahoma.org |
+| Freedom Oklahoma | Statewide advocacy | ACTIVE | Not a physical venue to visit. Runs a Trans+ Resources page (freedomoklahoma.org/youth/trans-resources) with national hotlines, legal/policy navigation via A4TE, and links to TACO. freedomoklahoma.org |
+| OkEq Gender Support Group | Dennis R. Neill Equality Center, 621 E 4th St | OPEN | Every Wednesday 7:00-8:30pm. Second Wednesday of the month adds breakout groups by identity (non-binary, trans men, trans women, partners of trans people). First-time interview required before attending — call 918-743-4297. Verified okeq.org July 2026. |
+| OkEq Health Clinic | Dennis R. Neill Equality Center, 621 E 4th St | OPEN | HRT, PrEP/PEP, STI/HIV screening for 2SLGBTQIA+ community. Ages 18+. Tue-Wed 9am-4pm, Thu 9am-12pm, Fri 1pm-4pm. Appointment required 24hrs ahead: 918-938-6537. Verified okeq.org July 2026. |
+| Trans Advocacy Coalition of Oklahoma (TACO) | Tulsa-based, no public storefront | ACTIVE | Grassroots nonprofit (founded 2023) providing mutual aid, direct assistance, and community resources for trans/nonbinary/gender-diverse Oklahomans. **Do NOT link transadvocacyok.org — that domain has expired and now redirects to an unrelated commercial site (meflora.com).** Use their Facebook (facebook.com/transadvocacyok) or Instagram (@transadvocacyok) instead. Verified July 2026. |
+| Diversity Family Health | 1822 E 15th St, Suite A, Tulsa OK 74104 | OPEN | Gender-affirming primary care, HRT, mental health, sexual health. Mon-Fri 9am-5pm; walk-in STI clinic Mon-Fri 8am-12pm. (405) 848-0026. Verified July 2026. |
+| Planned Parenthood — Peoria Health Center | 1007 S Peoria Ave, Tulsa OK 74120 | OPEN | Offers gender-affirming care/HRT alongside general reproductive health. (918) 858-4661. Verified July 2026. |
+| Youth Services of Tulsa (YST) | 311 S Madison Ave, Tulsa OK 74120 | OPEN | 2SLGBTQ+ youth services and GSA support. Also hosts PFLAG Tulsa's monthly meeting. (918) 582-0061, ysthelp.com. Verified July 2026. |
+| Taylor Burns Counseling — Trans Support Groups | Location given privately after contact (safety/confidentiality) | ACTIVE | Groups for trans kids, teens, adults, and families in Tulsa. Call (918) 675-0206 to be connected — do not publish a meeting address. Verified Psychology Today listing July 2026. |
 
 ---
 
@@ -158,4 +165,4 @@ Format for new entries:
 | Venue Name | Full Address or "Address unverified" | OPEN / PERMANENTLY CLOSED / NEEDS VERIFICATION | Notes |
 ```
 
-Last updated: 2026-06-17 (verified Elote drag-brunch address 514 S Boston Ave; added Dilly Diner; flagged Lefty's on Greenwood as likely closed per Yelp March 2026)
+Last updated: 2026-07-15 (added trans resources: OkEq Gender Support Group + Health Clinic, TACO, Diversity Family Health, Planned Parenthood Peoria, Youth Services of Tulsa, Taylor Burns Counseling; corrected PFLAG Tulsa venue from OkEq to Youth Services of Tulsa; flagged transadvocacyok.org as an expired/squatted domain)
