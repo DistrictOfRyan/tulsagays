@@ -192,6 +192,71 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 
 ---
 
+## [2026-07-16] Yokozuna
+- Category: restaurant
+- URL: (no verified website found)
+- Source: GayBnB Travel (dedicated LGBTQ+ travel platform) - Tulsa gay-friendly restaurants guide
+- Notes: Sushi and Asian small plates, 309 E 2nd St S, Blue Dome District. Single-source (GayBnB Travel curated list), same sourcing tier as the Tulsa Remote guide entries already in the directory. No explicit queer ownership claim.
+
+## [2026-07-16] The Brook Restaurant and Bar
+- Category: restaurant
+- URL: (no verified website found)
+- Source: GayBnB Travel (dedicated LGBTQ+ travel platform) - Tulsa gay-friendly restaurants guide
+- Notes: American fare in a converted movie house, 3401 S Peoria Ave, Brookside. Single-source (GayBnB Travel), no explicit queer ownership claim.
+
+## [2026-07-16] Lambrusco'z To Go
+- Category: restaurant
+- URL: https://www.lambruscoz.com
+- Source: GayBnB Travel (dedicated LGBTQ+ travel platform) - tagged trans-friendly and women-led
+- Notes: Deli, 1344 E 41st St, Brookside. Founded 1985 by Nancy Bruce and her mother Roxie (Barbara Lamer). Stronger signal than the other GayBnB entries this scan (explicit trans-friendly/women-owned tag), though not independently confirmed beyond the GayBnB listing.
+
+## [2026-07-16] India Palace
+- Category: restaurant
+- URL: (no verified website found)
+- Source: GayBnB Travel (dedicated LGBTQ+ travel platform) - Tulsa gay-friendly restaurants guide
+- Notes: Tulsa's oldest Indian restaurant, 6963 S Lewis Ave. Single-source (GayBnB Travel), no explicit queer ownership claim.
+
+## [2026-07-16] KEO
+- Category: restaurant
+- URL: (no verified website found)
+- Source: GayBnB Travel (dedicated LGBTQ+ travel platform) - Tulsa gay-friendly restaurants guide
+- Notes: Southeast Asian restaurant, 8921 S Yale Ave. Single-source (GayBnB Travel), no explicit queer ownership claim.
+
+## [2026-07-16] White Lion Pub
+- Category: bar
+- URL: https://whitelionpubtulsa.com/
+- Source: GayBnB Travel (dedicated LGBTQ+ travel platform) - Tulsa gay-friendly restaurants guide
+- Notes: British pub, 6927 S Canton Ave, open 20+ years. Single-source (GayBnB Travel), no explicit queer ownership claim.
+
+## [2026-07-16] McNellie's
+- Category: bar
+- URL: (no verified website found)
+- Source: GayBnB Travel (dedicated LGBTQ+ travel platform) - Tulsa gay-friendly restaurants guide
+- Notes: Downtown beer pub, 409 E 1st St. Distinct from the "McNellie's Group" corporate holding company entry previously skipped as out-of-scope (no address) - this is the actual flagship storefront location. Single-source (GayBnB Travel), no explicit queer ownership claim.
+
+## [2026-07-16] Dilly Diner
+- Category: restaurant
+- URL: (no verified website found)
+- Source: GayBnB Travel (dedicated LGBTQ+ travel platform) - Tulsa gay-friendly restaurants guide
+- Notes: Deli and brunch spot, 402 E 2nd St S, Blue Dome District. Single-source (GayBnB Travel), no explicit queer ownership claim. Shares ownership with McNellie's/Yokozuna (same restaurant group) but is its own distinct storefront.
+
+---
+
+### Reviewed but NOT added (2026-07-16 scan)
+- Shades of Brown Coffee & Art (3302 S Peoria Ave): DUPLICATE. Already in directory under "Shades of Brown Coffee" in Coffee & Books. GayBnB Travel and Rainbows in Revolt both surfaced it, but no new business.
+- Dalesandro's: already in directory under Restaurants & Food. No new business.
+- Rainbows in Revolt Tulsa safe-spaces page: 0 listings shown for Tulsa. Not a usable source yet.
+- OkEq EBA directory page (okeq.org/eba/): still renders no inline member list to WebFetch. Food & Drink page remains the usable member source - all 49 businesses currently listed there are already in the directory or previously reviewed/held/skipped (Triangle Coffee Roasters confirmed dead/closed in a prior scan; The Campbell Hotel, et al., Manila Ice still held pending a Hotels/Lodging category or verified address; McNellie's Group and Wild Mike's still out of scope as the corporate/non-Tulsa entries).
+- Tulsa Remote LGBTQ guide: all listed businesses already in the directory.
+- The Gayly: no Tulsa-specific business coverage found this scan.
+- WebSearch "new LGBTQ business Tulsa 2026 opened" / "queer-owned business Tulsa 2026" / "gay friendly Tulsa restaurant 2026": no net-new businesses beyond the GayBnB Travel list above.
+- Reddit r/tulsa (both query variants): no indexed results this scan.
+
+### Source-list candidates for the Monday scrape (2026-07-16)
+- None of this scan's additions run a regular published event calendar.
+
+---
+
 ### Reviewed but NOT added (2026-06-11 scan)
 - OkEq EBA directory page (https://okeq.org/eba/) renders no inline member list to WebFetch (auth/JS). Food & Drink page is the usable member source.
 - Tulsa Remote LGBTQ guide: all listed businesses (Tonsorial, il Seme, Cherry & Bark, YBR, Fulton Street, Jo & June, Magic City Books, Studio 66, Black Queer Tulsa, Twisted Arts, H.O.P.E., TACO) already in the directory.
