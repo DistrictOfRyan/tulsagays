@@ -110,23 +110,39 @@ class Studio66Scraper(BaseScraper):
         No login / session / credentials. Returns a list of
         {caption, url, posted_on} dicts, or [] on any failure.
         """
-        import requests
+        import requests, time, random
         headers = {
             "User-Agent": _UA,
             "X-IG-App-ID": IG_WEB_APP_ID,
             "Accept": "*/*",
             "Referer": PROFILE_URL,
         }
-        try:
-            r = requests.get(WEB_PROFILE_URL.format(user=USERNAME),
-                             headers=headers, timeout=20)
-        except Exception as e:
-            logger.warning("[studio_66] public profile request failed: %s %s",
-                           type(e).__name__, str(e)[:120])
-            return []
-        if r.status_code != 200:
-            logger.warning("[studio_66] public profile HTTP %s (logged-out endpoint "
-                           "may be rate-limited) — will try session fallback", r.status_code)
+        # Gap G7: the public endpoint 429s intermittently (IP rate-limit). A single
+        # attempt then goes dark and forces the session/re-auth path. Retry with
+        # exponential backoff + jitter so transient 429/5xx recover on their own.
+        r = None
+        for attempt in range(4):
+            if attempt:
+                delay = min(2 ** attempt, 8) + random.uniform(0.5, 2.0)
+                logger.info("[studio_66] public endpoint retry %d after %.1fs (last HTTP %s)",
+                            attempt, delay, getattr(r, "status_code", "err"))
+                time.sleep(delay)
+            try:
+                r = requests.get(WEB_PROFILE_URL.format(user=USERNAME),
+                                 headers=headers, timeout=20)
+            except Exception as e:
+                logger.warning("[studio_66] public profile request failed: %s %s",
+                               type(e).__name__, str(e)[:120])
+                r = None
+                continue
+            if r.status_code == 200:
+                break
+            if r.status_code not in (429, 500, 502, 503, 504):
+                break  # a non-retryable status; stop early
+        if r is None or r.status_code != 200:
+            logger.warning("[studio_66] public profile HTTP %s after retries (logged-out "
+                           "endpoint rate-limited) — will try session fallback",
+                           getattr(r, "status_code", "no-response"))
             return []
         try:
             user = (r.json().get("data", {}) or {}).get("user") or {}
@@ -235,12 +251,58 @@ class Studio66Scraper(BaseScraper):
         logger.info("[studio_66] web-session fallback returned %d captioned posts", len(posts))
         return posts
 
+    # ── Tier 0: Instagram Graph API business_discovery (G7 permanent fix) ──────
+    def _fetch_via_graph_api(self) -> List[Dict]:
+        """Read @studio.66_'s recent posts via business_discovery on the
+        @tulsagays IG Business account using the permanent page token
+        (TULSAGAYS_PAGE_ACCESS_TOKEN in .env). No login/session/429."""
+        import json as _json, urllib.request as _rq, urllib.parse as _up, urllib.error as _err
+        tok = None
+        env_path = Path(__file__).resolve().parent.parent / ".env"
+        try:
+            for line in env_path.read_text(encoding="utf-8").splitlines():
+                if line.startswith("TULSAGAYS_PAGE_ACCESS_TOKEN="):
+                    tok = line.split("=", 1)[1].strip()
+        except OSError:
+            tok = None
+        if not tok:
+            logger.warning("[studio_66] graph-api tier: no page token in .env — falling through")
+            return []
+        ig_business_id = "17841441654786297"  # @tulsagays IG Business account
+        fields = (f"business_discovery.username({USERNAME})"
+                  "{username,media_count,media.limit(%d){caption,permalink,timestamp}}" % POSTS_TO_SCAN)
+        url = (f"https://graph.facebook.com/v21.0/{ig_business_id}"
+               f"?fields={_up.quote(fields)}&access_token={tok}")
+        try:
+            data = _json.load(_rq.urlopen(url, timeout=25))
+        except _err.HTTPError as e:
+            logger.warning("[studio_66] graph-api tier HTTP %s — falling through: %s",
+                           e.code, e.read().decode("utf-8", "replace")[:120])
+            return []
+        except Exception as e:  # noqa: BLE001
+            logger.warning("[studio_66] graph-api tier failed: %s %s", type(e).__name__, str(e)[:100])
+            return []
+        media = ((data.get("business_discovery") or {}).get("media") or {}).get("data", [])
+        posts = []
+        for m in media:
+            caption = (m.get("caption") or "").strip()
+            if not caption:
+                continue
+            posts.append({"caption": caption,
+                          "url": m.get("permalink") or PROFILE_URL,
+                          "posted_on": (m.get("timestamp") or "")[:10]})
+        logger.info("[studio_66] graph-api tier returned %d captioned posts", len(posts))
+        return posts
+
     def scrape(self) -> List[Dict]:
+        # Tier 0 (G7 PERMANENT FIX, 2026-07-16): Instagram Graph API
+        # business_discovery via the permanent page token — no login, no
+        # session, no IP 429. Verified live (@studio.66_, 382 posts).
         # Tier 1 auth-free public endpoint, tier 2 instagrapi session, tier 3
-        # fb_auto_profile web session — first non-empty path wins (gap G7:
-        # public 429 + missing instagrapi session left this dark with no
-        # third path to fall through to).
-        posts = self._fetch_public()
+        # fb_auto_profile web session — first non-empty path wins.
+        posts = self._fetch_via_graph_api()
+        if not posts:
+            posts = self._fetch_public()
         if not posts:
             posts = self._fetch_via_session()
         if not posts:
