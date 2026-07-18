@@ -24,11 +24,75 @@ Usage:
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config  # noqa: E402
+
+
+# Deterministic copy sanitizer. The LLM voice pass occasionally emits copy that
+# trips preflight's HARD gates (em dashes, banned cliches), and because the copy
+# varies per run the self-repair loop played whack-a-mole and left the whole
+# week's deck BLOCKED (the recurring Monday-post failure diagnosed 2026-07-17:
+# preflight blocked after self-repair on "whether you're" + em dashes). This runs
+# on the voiced featured/EOTW copy BEFORE the re-render, so a stray cliche can
+# never block the post again. Grammar-preserving substitutions where possible;
+# anything else in preflight's BANNED_PHRASES is removed and the text cleaned up.
+_BANNED_SUBS = {
+    "whether you're": "if you're",
+    "whether you are": "if you are",
+    "vibrant community": "community",
+    "safe space": "welcoming space",
+    "don't miss out": "come through",
+    "dont miss out": "come through",
+    "something for everyone": "plenty going on",
+    "nestled": "tucked",
+    "fun for all ages": "all ages",
+    "come one come all": "everybody's welcome",
+    "make sure to go": "go",
+    "make sure you go": "go",
+    "be sure to go": "go",
+    "actually go": "go",
+    "put this on your calendar": "mark the date",
+    "put it on your calendar": "mark the date",
+    "your people, and": "your people. ",
+}
+
+
+def _sanitize_copy(text: str) -> str:
+    """Strip the deterministic hard-gate violations from a slide/EOTW description
+    so preflight can't block the deck on mechanical LLM slip-ups. Idempotent."""
+    if not text:
+        return text
+    t = text
+    # 1) Em dashes -> comma (William's hard voice rule; preflight blocks on them).
+    t = t.replace("—", ", ").replace(" - - ", ", ")
+    # 2) Banned phrases -> grammar-preserving sub, else remove. Sourced from
+    #    preflight so the two never drift.
+    try:
+        from tools.preflight_post import BANNED_PHRASES as _banned
+    except Exception:
+        _banned = list(_BANNED_SUBS.keys())
+    for phrase in _banned:
+        if phrase.lower() in t.lower():
+            repl = _BANNED_SUBS.get(phrase.lower(), "")
+            t = re.sub(re.escape(phrase), repl, t, flags=re.IGNORECASE)
+    # 3) A couple of hard-gated artifact patterns (stray HTML, thrilled-to-share).
+    t = re.sub(r"<[a-z/][^>]*>", "", t, flags=re.IGNORECASE)
+    t = re.sub(r"we are thrilled to share", "", t, flags=re.IGNORECASE)
+    # 4) Cleanup: collapse spaces, drop orphaned/double punctuation, recapitalize.
+    t = re.sub(r"\s+", " ", t)
+    t = re.sub(r"\s+([,.;:!?])", r"\1", t)
+    t = re.sub(r"([,.;:!?])\1+", r"\1", t)
+    t = re.sub(r",\s*\.", ".", t)
+    t = t.strip().lstrip(",.;: ").strip()
+    # Recapitalize the first letter of every sentence (a lowercase sub landing at
+    # a sentence start, e.g. "make sure to go" -> "go", would otherwise read badly).
+    t = re.sub(r"(^|[.!?]\s+)([a-z])",
+               lambda m: m.group(1) + m.group(2).upper(), t)
+    return t
 
 
 def _norm(s: str) -> str:
@@ -163,6 +227,19 @@ def run_voice_pass(week: str = None, budget_s: int = 240,
                 e["voice_source"] = "llm"
                 healed += 1
     result["healed_duplicates"] = healed
+
+    # Deterministic sanitize of the voiced copy BEFORE persist+render, so a stray
+    # em dash / banned cliche from the LLM can't hard-block the whole deck at
+    # preflight (recurring Monday-post failure, fixed 2026-07-17). Idempotent.
+    sanitized = 0
+    for ev in targets:
+        for fld in ("description", "website_description"):
+            orig = ev.get(fld) or ""
+            clean = _sanitize_copy(orig)
+            if clean != orig:
+                ev[fld] = clean
+                sanitized += 1
+    result["sanitized_fields"] = sanitized
 
     # Persist (targets are references into all_events, so dump the whole list).
     with open(events_path, "w", encoding="utf-8") as f:

@@ -56,13 +56,14 @@ BROWSER_JSON = os.path.join(config.DATA_DIR, "slack_events_browser.json")
 FLAG_FILE = os.path.join(config.DATA_DIR, "slack_browser_needed.flag")
 CHANNEL_CACHE = os.path.join(config.DATA_DIR, "slack_channel_ids.json")
 
-# name -> known ID (None = resolve via conversations.list). unite-lgbtq-plus has
-# TWO IDs floating around old code (CU36YG88K vs C0262PQNUDD); name resolution
-# wins, these are only the no-channels:read fallback.
+# name -> known ID. Verified live via the session 2026-07-17 (William confirmed we
+# want #events-local COMMUNITY events, NOT #-events-tr-hosted CF07NK2RJ which is
+# deliberately excluded). unite-lgbtq-plus is CU36YG88K (the OLD C0262PQNUDD was
+# stale and returned channel_not_found). #gradient isn't in the workspace.
 CHANNELS = {
-    "events-local": "CGV2YLJSG",
-    "unite-lgbtq-plus": "C0262PQNUDD",
-    "gradient": None,
+    "events-local": "CGV2YLJSG",       # community events (the one we want)
+    "unite-lgbtq-plus": "CU36YG88K",   # LGBTQ+ events (corrected ID)
+    # NOTE: #-events-tr-hosted (CF07NK2RJ) is TulsaRemote's OWN events — EXCLUDED on purpose.
 }
 
 LOOKBACK_DAYS = 14
