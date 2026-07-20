@@ -33,6 +33,7 @@ except Exception:
     _config = None
 
 _MANUAL_EOTW_PATH = os.path.join(os.path.dirname(__file__), "data", "manual_eotw.json")
+_FEATURED_PARTNERS_PATH = os.path.join(os.path.dirname(__file__), "data", "featured_partners.json")
 
 
 # ---------------------------------------------------------------------------
@@ -62,6 +63,12 @@ _SKIP_NAME_FRAGMENTS = {
     "drop-in therapy", "therapy session", "free drop-in",
     "health outreach",
     "girl scout",
+    # Kids / family programming — real events, but they belong on the website,
+    # never featured/EOTW (William 2026-07-20). Venue-based catch (_SKIP_VENUES)
+    # handles Discovery Lab etc.; these names catch kid events elsewhere.
+    "story time", "storytime", "toddler", "preschool", "homeschool",
+    "kids camp", "day camp", "summer camp", "tinkercad", "lego club",
+    "for families", "family fun", "kids' ", "kids club", "children's story",
     "mix and mingle",
     "shut up & write",
     "raise your spiritual iq",
@@ -81,9 +88,16 @@ _SKIP_NAME_FRAGMENTS = {
     "office closed", "center closed", "closed today", "closed for the",
 }
 
-# Venue-level bans REMOVED 2026-06-12 (William): Majestic/Eagle special events
-# are featurable. Keep the set so callers don't break; leave it empty.
-_SKIP_VENUES = set()
+# Venue-level bans: Majestic/Eagle special events are featurable (2026-06-12),
+# but children's-museum / kids-programming venues are NOT — their events are
+# family/kids fare that must never lead a day or be EOTW (William 2026-07-20:
+# "Big Build Week ... it's a kids event ... that's definitely not gay"). They
+# still list on the website.
+_SKIP_VENUES = {
+    "discovery lab",          # Tulsa children's science museum (Big Build Week etc.)
+    "children's museum", "childrens museum",
+    "little light house",     # children's charity/school
+}
 
 
 # Service/recurring signals found in the DESCRIPTION (not the name). Catches
@@ -499,13 +513,100 @@ def load_manual_eotw(week_key: Optional[str]) -> List[Dict]:
     return []
 
 
+# ---------------------------------------------------------------------------
+# Partner auto-highlight (William 2026-07-20)
+# ---------------------------------------------------------------------------
+# The site has cross-promo deals (PFLAG Tulsa, Oklahomans for Equality / the
+# Equality Center) to highlight partners' events. Rather than remembering to pin
+# them in manual_eotw.json each week, an active partner's SPECIAL event is auto-
+# promoted to an Event-of-the-Week hero the week it happens. Data-driven from
+# data/featured_partners.json so each city just maintains its own partner list.
+
+# Partner events that are NOT featurable highlights even though they come from a
+# partner: routine support meetings, memberships, business/service programming.
+# The deal is to spotlight a partner's SPECIAL events, never their standing
+# support meeting (support-meeting policy, William 2026-07-07).
+_PARTNER_NONEVENT_FRAGMENTS = (
+    "monthly meeting", "support group", "support meeting", "membership",
+    "office hours", "volunteer meeting", "board meeting", "general meeting",
+    "weekly meeting", "business meeting",
+)
+
+
+def _load_partner_matchers() -> List[Dict]:
+    """Return active auto-highlight partners from data/featured_partners.json as
+    [{"name": str, "match": [lowercase substrings]}].
+
+    A partner opts IN by being active (the default) and does not set
+    "highlight": false. `match` substrings are tested against an event's
+    name + source + venue; when absent, the partner name is the default matcher.
+    Fails soft (returns []) so a missing/broken file never blocks EOTW."""
+    try:
+        with open(_FEATURED_PARTNERS_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+    except (FileNotFoundError, ValueError):
+        return []
+    out: List[Dict] = []
+    for p in (data.get("partners") or []):
+        if not isinstance(p, dict) or not p.get("active", False):
+            continue
+        if p.get("highlight") is False:
+            continue
+        matchers = p.get("match") or []
+        if isinstance(matchers, str):
+            matchers = [matchers]
+        matchers = [str(m).lower() for m in matchers if str(m).strip()]
+        if not matchers and p.get("name"):
+            matchers = [str(p["name"]).lower()]
+        if matchers:
+            out.append({"name": p.get("name", matchers[0]), "match": matchers})
+    return out
+
+
+def _partner_of(e: Dict, partners: Optional[List[Dict]] = None) -> Optional[str]:
+    """Return the partner name if this event belongs to an active highlight
+    partner, else None (matches on name + source + venue)."""
+    if partners is None:
+        partners = _load_partner_matchers()
+    hay = ((e.get("name") or "") + " | " + (e.get("source") or "")
+           + " | " + (e.get("venue") or "")).lower()
+    for p in partners:
+        if any(m in hay for m in p["match"]):
+            return p["name"]
+    return None
+
+
+def _is_partner_special(e: Dict, partners: Optional[List[Dict]] = None) -> bool:
+    """True when an event is a partner's SPECIAL event worth auto-heroing:
+    from an active partner, a real event (not a service / support meeting caught
+    by _is_skip or the non-event fragments), and not a bare recurring auto-row.
+    Preserves the support-meeting policy — a partner's routine meeting is never
+    auto-featured."""
+    if not _partner_of(e, partners):
+        return False
+    if _is_skip(e):
+        return False
+    if (e.get("source") or "").lower() == "recurring":
+        return False
+    name = (e.get("name") or "").lower()
+    if any(frag in name for frag in _PARTNER_NONEVENT_FRAGMENTS):
+        return False
+    return True
+
+
 def select_eotw_list(events_this_week: List[Dict],
                      week_key: Optional[str] = None) -> List[Dict]:
-    """Return an ordered list of Events of the Week (usually 1, sometimes 2+).
+    """Return an ordered list of Events of the Week (usually 1, sometimes 2).
 
-    If data/manual_eotw.json pins events for this week_key, resolve those
-    against the week's events (in the order listed). Otherwise fall back to
-    the single auto-selected EOTW. Returns [] if nothing qualifies."""
+    Order of precedence:
+      1. Human-pinned manual override (data/manual_eotw.json) — always wins.
+      2. Auto: partner special events (one hero per active partner from
+         data/featured_partners.json) lead, so PFLAG / OKEQ deals are honored
+         automatically; any remaining hero slot is filled by the marquee
+         auto-pick (select_eotw). Capped at 2 to fit the stacked-cover layout.
+      3. Single auto-selected EOTW when there are no partner events.
+    Returns [] if nothing qualifies."""
+    # 1. Human-pinned override always wins (a person verified it).
     manual = load_manual_eotw(week_key)
     if manual:
         resolved: List[Dict] = []
@@ -527,5 +628,103 @@ def select_eotw_list(events_this_week: List[Dict],
                     seen.add(id(best))
         if resolved:
             return resolved
-    one = select_eotw(events_this_week)
-    return [one] if one else []
+
+    # 2. Auto path — lead with partner special events (one per partner).
+    partners = _load_partner_matchers()
+    heroes: List[Dict] = []
+    seen_ids = set()
+    if partners:
+        best_by_partner: Dict[str, Dict] = {}
+        for e in events_this_week:
+            if not _is_partner_special(e, partners):
+                continue
+            pname = _partner_of(e, partners)
+            cur = best_by_partner.get(pname)
+            if cur is None or _sort_key(e) < _sort_key(cur):
+                best_by_partner[pname] = e
+        for e in sorted(best_by_partner.values(), key=_sort_key):
+            if id(e) not in seen_ids:
+                heroes.append(e)
+                seen_ids.add(id(e))
+
+    # Fill any remaining hero slot (up to 2) with the marquee auto-pick.
+    if len(heroes) < 2:
+        marquee = select_eotw([e for e in events_this_week if id(e) not in seen_ids])
+        if marquee is not None and id(marquee) not in seen_ids:
+            heroes.append(marquee)  # rounds out slot 2, or is the sole hero
+            seen_ids.add(id(marquee))
+
+    return heroes[:2]
+
+
+# ---------------------------------------------------------------------------
+# Self-test — python eotw_selector.py --selftest
+# ---------------------------------------------------------------------------
+def _selftest() -> int:
+    """Prove partner auto-highlight: partners lead, services are excluded, the
+    support-meeting policy holds, and manual pins still win. Returns 0 on pass."""
+    import sys
+    partners = [
+        {"name": "PFLAG", "match": ["pflag"]},
+        {"name": "OKEQ", "match": ["okeq", "equality center"]},
+    ]
+    fri = "2026-07-24"
+    events = [
+        {"name": "Drag Bingo", "source": "recurring", "date": "2026-07-22"},
+        {"name": "Random Comedy Night", "source": "eventbrite", "date": "2026-07-23"},
+        {"name": "PFLAG Tulsa: Big Gala", "source": "manual", "date": fri, "url": "x", "description": "gala"},
+        {"name": "OKEQ Health Clinic", "source": "okeq", "date": "2026-07-21", "never_feature": True},
+        {"name": "PFLAG Monthly Meeting", "source": "manual", "date": "2026-07-25"},
+        {"name": "Queer Night at the Equality Center", "source": "okeq", "date": "2026-07-25", "url": "y", "description": "party"},
+    ]
+    fails = []
+
+    # partner detection + special filter
+    if not _is_partner_special(events[2], partners):
+        fails.append("PFLAG gala should be a partner special")
+    if _is_partner_special(events[3], partners):
+        fails.append("OKEQ clinic (never_feature) must be excluded")
+    if _is_partner_special(events[4], partners):
+        fails.append("PFLAG monthly meeting must be excluded (support-meeting policy)")
+    if _is_partner_special(events[0], partners):
+        fails.append("recurring auto-row must be excluded")
+    if not _is_partner_special(events[5], partners):
+        fails.append("OKEQ queer night should be a partner special")
+
+    # auto path: both partners lead, capped at 2, marquee does not crowd them out
+    import unittest.mock as _mock
+    with _mock.patch.object(sys.modules[__name__], "_load_partner_matchers", lambda: partners):
+        heroes = select_eotw_list(events, week_key="2099-W01")
+    names = [h["name"] for h in heroes]
+    if len(heroes) != 2:
+        fails.append(f"expected 2 heroes, got {len(heroes)}: {names}")
+    if not any("PFLAG Tulsa: Big Gala" in n for n in names):
+        fails.append(f"PFLAG special missing from heroes: {names}")
+    if not any("Equality Center" in n for n in names):
+        fails.append(f"OKEQ special missing from heroes: {names}")
+    if any("Monthly Meeting" in n or "Clinic" in n for n in names):
+        fails.append(f"a service/meeting leaked into heroes: {names}")
+
+    # no partners with events -> single marquee hero (a real LGBTQ event)
+    marquee_only = {"name": "Big Drag Show", "source": "eventbrite", "date": fri,
+                    "url": "z", "description": "a drag show"}
+    with _mock.patch.object(sys.modules[__name__], "_load_partner_matchers", lambda: partners):
+        solo = select_eotw_list([marquee_only, events[1]], week_key="2099-W02")
+    if len(solo) != 1 or solo[0]["name"] != "Big Drag Show":
+        fails.append(f"no-partner week should fall back to single marquee: {[h['name'] for h in solo]}")
+
+    if fails:
+        print("SELFTEST FAILED:")
+        for f in fails:
+            print("  -", f)
+        return 1
+    print("SELFTEST PASSED — partner auto-highlight, service exclusion, "
+          "support-meeting policy, and marquee fallback all verified.")
+    return 0
+
+
+if __name__ == "__main__":
+    import sys as _sys
+    if "--selftest" in _sys.argv:
+        raise SystemExit(_selftest())
+    print("eotw_selector.py — use --selftest to run the regression checks.")

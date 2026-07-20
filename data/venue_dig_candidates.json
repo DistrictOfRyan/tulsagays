@@ -1,146 +1,36 @@
 {
   "generated_at": null,
-  "count": 14,
+  "count": 3,
   "events": [
+    {
+      "name": "Open Stage with Jason Waterfalls",
+      "date": "2026-07-16",
+      "time": "Sign up 8PM, Show 9PM",
+      "notes": "Weekly open stage's featured/host performer for this date is Jason Waterfalls; 6 spots available per caption",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DaxuOKnxYFp/",
+      "from_post": "2026-07-14"
+    },
     {
       "name": "Tie-Dye Party with QueerLit",
       "date": "2026-07-12",
       "time": "2:00 PM - 4:00 PM",
-      "notes": "Sunday afternoon tie-dye event at Yellow Brick Road; limited shirts for purchase, or bring your own",
+      "notes": "Sunday afternoon tie-dye event at YBR with QueerLit. Limited stash of shirts for purchase; guests may bring their own.",
       "venue": "Yellow Brick Road, 2630 E 15th St",
       "source": "venue_flyer_dig",
       "url": "https://www.instagram.com/p/Daqu5wlATZc/",
       "from_post": "2026-07-11"
     },
     {
-      "name": "Zodiac: Cancer (DJ Kylie)",
+      "name": "ZODIAC: Cancer Set hosted by DJ Kylie",
       "date": "2026-07-10",
-      "time": "21:00",
-      "notes": "Dolly Fartin Productions presents Zodiac monthly party, hosted by DJ Kylie, Cancer edition",
+      "time": "9:00 PM",
+      "notes": "Dolly Fartin Productions presents; monthly zodiac-themed music night at YBR, this installment for Cancer season",
       "venue": "Yellow Brick Road, 2630 E 15th St",
       "source": "venue_flyer_dig",
       "url": "https://www.instagram.com/p/DajZf6iRfFe/",
       "from_post": "2026-07-08"
-    },
-    {
-      "name": "Babes & Bi-Cons (4th of July Edition)",
-      "date": "2026-07-04",
-      "time": "9:30 PM - 1:30 AM",
-      "notes": "DJs Katnip Worldwide & DJ Kylie, 21+, at Yellow Brick Road",
-      "venue": "Yellow Brick Road, 2630 E 15th St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DaS-2kVRr5_/",
-      "from_post": "2026-07-02"
-    },
-    {
-      "name": "Bad Boys On the Block (Legacy Entertainment) hosted by Scrappy Legacy, with Londenn D. Raine",
-      "date": "2026-07-10",
-      "time": "Doors 9:00pm, Showtime 9:30pm-10:30pm",
-      "notes": "Featuring Miss Oklahoma American Femme 2026, NWA GOAT King 2026 Sean Tylr Davis, Mr. Oklahoma Bold & Beautiful Newcomer 2026 Kenzo Z. Paige, and Alexander Moonwalker. Dance competition sign-up at DJ booth, cash prize for winner.",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DagoOOOEVE2/",
-      "from_post": "2026-07-07"
-    },
-    {
-      "name": "The New Kidz: Crowns Edition",
-      "date": "2026-07-09",
-      "time": "11:00 PM (doors 9pm)",
-      "notes": "Hosted by Shanel Sterling & Londenn D. Raine, featuring Serenity S. Grace, Xiana Davenport Jade, Virtue Ali. 18 to enter.",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DagnT-9RZUh/",
-      "from_post": "2026-07-07"
-    },
-    {
-      "name": "Bad Boys On the Block (Legacy Entertainment, hosted by Scrappy Legacy, with Londenn D. Raine)",
-      "date": "2026-07-10",
-      "time": "9:30pm (doors 9pm)",
-      "notes": "Features Miss Oklahoma American Femme 2026, NWA Northwest Arkansas GOAT King 2026 (Sean Tylr Davis), Mr Oklahoma Bold & Beautiful Newcomer 2026 (Kenzo Z. Paige), Alexander Moonwalker; 18 to enter",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DabwiEwxf6a/",
-      "from_post": "2026-07-05"
-    },
-    {
-      "name": "STARPOWER Drag Show",
-      "date": "2026-07-04",
-      "time": "9:30 PM - 10:30 PM",
-      "notes": "Featuring Shanel Sterling, Nala Jade, Finley S. Paige, Sophie Moon. Followed by Shake It Up Saturday dance party. 21 to enter.",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DaZOSuvkeIU/",
-      "from_post": "2026-07-04"
-    },
-    {
-      "name": "Drag Roulette",
-      "date": "2026-07-02",
-      "time": "11:00 PM (doors 9pm)",
-      "notes": "With Shanel Sterling, Londenn D. Raine, Bobcatte Keugar, and Adonia. 18 to enter.",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DaOsl_FRRl9/",
-      "from_post": "2026-06-30"
-    },
-    {
-      "name": "Tulsa Eagle Bingo for a Cause (benefiting Fernando Peñaloza)",
-      "date": "2026-07-12",
-      "time": "4:00 PM",
-      "notes": "Special Sunday edition of Tulsa Eagle Bingo; prizes every round; benefits Fernando Peñaloza",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/Das1UWLCtm5/",
-      "from_post": "2026-07-12"
-    },
-    {
-      "name": "Hang out with Isaac",
-      "date": "2026-07-11",
-      "time": "2:00 PM",
-      "notes": "Afternoon hangout with Isaac at Tulsa Eagle",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/Daqu2jhmVdr/",
-      "from_post": "2026-07-11"
-    },
-    {
-      "name": "Leather Night with Steven, Kay Kay and Justin",
-      "date": "2026-07-11",
-      "time": "10:00 PM",
-      "notes": "w/ DJ Markz",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/Daqu2jhmVdr/",
-      "from_post": "2026-07-11"
-    },
-    {
-      "name": "Monday Movie Night: Fried Green Tomatoes",
-      "date": "2026-07-06",
-      "time": "7:00 PM",
-      "notes": "Sponsored by Circle Cinema, screening at Tulsa Eagle, 1338 E 3rd St",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DadYe03jMRI/",
-      "from_post": "2026-07-06"
-    },
-    {
-      "name": "Imperial Court of All Oklahoma Sunday Funday Cookout",
-      "date": "2026-07-05",
-      "time": "4:00 PM",
-      "notes": "Benefit cookout for Reign 18 Charities & Partners, hot dogs/hamburgers, $5 suggested donation, at Tulsa Eagle",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DaazqufGU1B/",
-      "from_post": "2026-07-05"
-    },
-    {
-      "name": "Red White and Blue Bash w/ DJ Markz",
-      "date": "2026-07-04",
-      "time": "10:00 PM",
-      "notes": "Following Isaac, Nathan, and Justin from 8PM; Saturday July 4th weekend special",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DaYO2hIjkt-/",
-      "from_post": "2026-07-04"
     }
   ]
 }

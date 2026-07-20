@@ -7,16 +7,16 @@
       "added": "2026-06-19",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "url": "https://www.facebook.com/p/The-Tulsa-Burlesque-Festival-100077160646752/events",
       "name": "Tulsa Burlesque Festival FB",
       "added": "2026-06-27",
       "via": "web-search",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "url": "https://www.facebook.com/TheStarliteBar/events",
@@ -24,7 +24,7 @@
       "added": "2026-07-04",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "url": "https://www.facebook.com/TranscendentTulsa/events",
@@ -32,7 +32,7 @@
       "added": "2026-07-10",
       "via": "source-growth-review (William approved 2026-07-10)",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "url": "https://www.facebook.com/Tulsa-Two-Spirit-Society-164444053595892/events",
@@ -40,7 +40,7 @@
       "added": "2026-07-11",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "url": "https://www.facebook.com/tulsaequalitygaming/events",
@@ -48,13 +48,16 @@
       "added": "2026-07-11",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "url": "https://m.facebook.com/pages/category/Local-Business/Community-of-Hope-Ucc-959007827477792/events",
       "name": "Community of Hope UCC Tulsa",
       "added": "2026-07-12",
-      "via": "weekly-search:community hope ucc tulsa"
+      "via": "weekly-search:community hope ucc tulsa",
+      "last_seen_week": "2026-W29",
+      "seen_count": 0,
+      "last_checked": "2026-07-19"
     }
   ],
   "fb_groups": [
@@ -63,18 +66,18 @@
       "name": "WClub Tulsa Downtown",
       "added": "2026-07-05",
       "via": "weekly-search:tulsa queer women group social",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "url": "https://www.facebook.com/groups/684968686023978/events",
       "name": "WClub Tulsa Southeast",
       "added": "2026-07-05",
       "via": "weekly-search:WClub Tulsa Downtown women LGBTQ",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     }
   ],
   "calendars": [
@@ -86,7 +89,7 @@
       "via": "weekly-search:Tulsa LGBTQ choir",
       "last_seen_week": "2026-W23",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "url": "https://allsoulschurch.org/category/events/community-events",
@@ -95,7 +98,7 @@
       "added": "2026-06-14",
       "via": "weekly-search:Tulsa UU/MCC events",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "url": "https://www.greatplainsrodeo.org/",
@@ -104,7 +107,7 @@
       "added": "2026-06-15",
       "via": "william:add GPRA gay rodeo; scrape Tulsa-area activities",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "url": "https://www.soundscapestulsa.com/soundscapes/public-events",
@@ -113,7 +116,7 @@
       "added": "2026-07-10",
       "via": "source-growth-review (William approved 2026-07-10)",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     }
   ],
   "partner_keywords": [
@@ -123,7 +126,7 @@
       "added": "2026-06-15",
       "via": "william:GPRA",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "gay rodeo",
@@ -131,16 +134,16 @@
       "added": "2026-06-15",
       "via": "william:GPRA",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "dennis r. neill equality center",
       "name": "Dennis R. Neill Equality Center",
       "added": "2026-06-14",
       "via": "venue-miner",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "loony bin comedy club - tulsa",
@@ -149,7 +152,7 @@
       "via": "venue-miner",
       "last_seen_week": "2026-W28",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "mother road market",
@@ -158,7 +161,7 @@
       "via": "venue-miner",
       "last_seen_week": "2026-W25",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "loud & queer",
@@ -166,25 +169,25 @@
       "added": "2026-06-14",
       "via": "weekly-search:gap Loud & Queer Fest",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "queer crafters",
       "name": "Queer Crafters Club",
       "added": "2026-06-14",
       "via": "weekly-search:Tulsa LGBTQ craft club",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "fellowship congregational",
       "name": "Fellowship Congregational UCC",
       "added": "2026-06-14",
       "via": "weekly-search:Fellowship Congregational UCC",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "st. vitus",
@@ -192,7 +195,7 @@
       "added": "2026-06-19",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "queer prairie",
@@ -200,7 +203,7 @@
       "added": "2026-06-20",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "twisted arts",
@@ -209,7 +212,7 @@
       "via": "web-search",
       "last_seen_week": "2026-W23",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "tulsa burlesque festival",
@@ -217,7 +220,7 @@
       "added": "2026-06-27",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "gay kickball",
@@ -225,61 +228,61 @@
       "added": "2026-06-27",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "magic city books",
       "name": "Magic City Books",
       "added": "2026-06-28",
       "via": "venue-miner",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "eventbrite.com",
       "name": "Eventbrite.Com",
       "added": "2026-06-28",
       "via": "venue-miner",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "foolish things coffee",
       "name": "Foolish Things Coffee",
       "added": "2026-06-28",
       "via": "venue-miner",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "vintage wine bar",
       "name": "Vintage Wine Bar",
       "added": "2026-06-28",
       "via": "venue-miner",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "the hunt club",
       "name": "The Hunt Club",
       "added": "2026-06-28",
       "via": "venue-miner",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "tulsa arts district",
       "name": "Tulsa Arts District",
       "added": "2026-06-28",
       "via": "venue-miner",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "events time.ly",
@@ -288,16 +291,16 @@
       "via": "venue-miner",
       "last_seen_week": "2026-W25",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "bricktown comedy club tulsa",
       "name": "Bricktown Comedy Club Tulsa",
       "added": "2026-06-28",
       "via": "venue-miner",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "tulsa zoo",
@@ -306,7 +309,7 @@
       "via": "venue-miner",
       "last_seen_week": "2026-W26",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "events at tulsa city-county library - communico",
@@ -315,16 +318,16 @@
       "via": "venue-miner",
       "last_seen_week": "2026-W28",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "spotify.com",
       "name": "Spotify.Com",
       "added": "2026-06-28",
       "via": "venue-miner",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "starlite bar",
@@ -332,7 +335,7 @@
       "added": "2026-07-04",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "gypsy coffee house",
@@ -341,16 +344,16 @@
       "via": "venue-miner",
       "last_seen_week": "2026-W28",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "visit tulsa",
       "name": "Visit Tulsa",
       "added": "2026-07-05",
       "via": "venue-miner",
-      "last_seen_week": "2026-W28",
+      "last_seen_week": "2026-W29",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "tulsa raceway park",
@@ -359,7 +362,7 @@
       "via": "venue-miner",
       "last_seen_week": "2026-W25",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "pinot's palette",
@@ -368,7 +371,7 @@
       "via": "venue-miner",
       "last_seen_week": "2026-W28",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "community hope ucc",
@@ -376,7 +379,7 @@
       "added": "2026-07-10",
       "via": "source-growth-review (William approved 2026-07-10)",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "tulsa two spirit society",
@@ -384,7 +387,7 @@
       "added": "2026-07-11",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "tulsa equality gaming",
@@ -392,31 +395,73 @@
       "added": "2026-07-11",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-07-12"
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "van the wine man",
       "name": "Van The Wine Man",
       "added": "2026-07-12",
-      "via": "venue-miner"
+      "via": "venue-miner",
+      "last_seen_week": "2026-W28",
+      "seen_count": 0,
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "thomas k. mckeon center for creativity",
       "name": "Thomas K. Mckeon Center For Creativity",
       "added": "2026-07-12",
-      "via": "venue-miner"
+      "via": "venue-miner",
+      "last_seen_week": "2026-W25",
+      "seen_count": 0,
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "discovery lab",
       "name": "Discovery Lab",
       "added": "2026-07-12",
-      "via": "venue-miner"
+      "via": "venue-miner",
+      "last_seen_week": "2026-W29",
+      "seen_count": 0,
+      "last_checked": "2026-07-19"
     },
     {
       "kw": "queer night",
       "name": "Queer Night (YWCA Tulsa)",
       "added": "2026-07-12",
-      "via": "weekly-search:tulsa LGBTQ trivia night"
+      "via": "weekly-search:tulsa LGBTQ trivia night",
+      "last_seen_week": "2026-W27",
+      "seen_count": 0,
+      "last_checked": "2026-07-19"
+    },
+    {
+      "kw": "trade routes",
+      "name": "Trade Routes",
+      "added": "2026-07-19",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "tulsa city county library",
+      "name": "Tulsa City County Library",
+      "added": "2026-07-19",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "hardesty regional library",
+      "name": "Hardesty Regional Library",
+      "added": "2026-07-19",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "obtener entradas",
+      "name": "Obtener Entradas",
+      "added": "2026-07-19",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "hard rock live tulsa",
+      "name": "Hard Rock Live Tulsa",
+      "added": "2026-07-19",
+      "via": "venue-miner"
     }
   ],
   "retired": []

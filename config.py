@@ -1397,7 +1397,11 @@ VENUE_NAME_MAP = {
 # Use lowercase substrings (matched against venue field, after clean_venue).
 TRUE_GAY_BAR_VENUES = {
     'club majestic', 'tulsa eagle', 'yellow brick', 'majestic tulsa',
-    '1330 e 3rd', '1338 e 3rd', 'the vanguard',
+    '1330 e 3rd', '1338 e 3rd',
+    # NOTE: 'the vanguard' removed 2026-07-20 — it is a general all-ages
+    # live-music venue (222 N Main, metal/punk/indie), NOT a gay bar. Listing it
+    # here rated every Vanguard show 5🦩 and floated a metalcore concert into the
+    # featured slots. A genuinely queer show there still scores via its name.
     'pump bar', '602 south lewis', '602 s. lewis', '602 s lewis',
 }
 

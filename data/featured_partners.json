@@ -1,5 +1,6 @@
 {
   "_note": "Add paying Featured Partners here. The directory generator reads this file and injects cards into the Featured Partners section. Each entry requires: name, url, description (2-3 sentences, Tulsa Gays voice), tier (community|partner|pride), monthly_fee, active (true/false). Address is optional.",
+  "_highlight_note": "AUTO-HIGHLIGHT (William 2026-07-20): eotw_selector.py auto-promotes an active partner's SPECIAL event to an Event-of-the-Week hero each week it happens - no manual_eotw.json entry needed. Opt a partner in with active:true (default) and out with highlight:false. `match` is a list of lowercase substrings tested against each event's name + source + venue; omit it to default to the partner name. Routine support meetings / services are always excluded (support-meeting policy).",
   "partners": [
     {
       "name": "PFLAG Tulsa",
@@ -8,8 +9,22 @@
       "tier": "community",
       "monthly_fee": 0,
       "active": true,
+      "highlight": true,
+      "match": ["pflag"],
       "note": "Community partner (nonprofit, no fee) - cross-promo partnership 2026-07-07",
       "address": "Youth Services of Tulsa, 311 S Madison Ave"
+    },
+    {
+      "name": "Oklahomans for Equality (OKEQ)",
+      "url": "https://okeq.org/",
+      "description": "Oklahoma's LGBTQ+ community hub, home of the Dennis R. Neill Equality Center. Programs, events, and support for queer Tulsans of every age, all under one roof downtown.",
+      "tier": "community",
+      "monthly_fee": 0,
+      "active": true,
+      "highlight": true,
+      "match": ["okeq", "oklahomans for equality", "equality oklahoma", "dennis r. neill", "equality center"],
+      "note": "Community partner (nonprofit, no fee) - highlight their special events; routine clinics/support groups are auto-excluded",
+      "address": "Dennis R. Neill Equality Center, 621 E 4th St"
     }
   ],
   "_tiers": {

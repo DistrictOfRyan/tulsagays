@@ -425,6 +425,11 @@ class InstagramOrgScraper(BaseScraper):
             posts = self._fetch_via_session()
         if not posts:
             posts = self._fetch_via_web()
+        # Record how many posts the fetch tiers actually returned so scrape() can
+        # tell a genuine "no dated events this week" (posts>0, events==0) apart
+        # from a silent fetch failure (posts==0 = rate-limited/blocked/session
+        # dead). The latter must never be mistaken for an empty week.
+        self.last_posts_count = len(posts or [])
         if not posts:
             logger.info("[%s] No captioned posts from any path — 0 events.",
                         self.source_name)
@@ -750,13 +755,56 @@ def scrape() -> List[Dict]:
     the rest, and returns the combined in-week event list.
     """
     all_events = []
+    health = {}          # source_name -> {"posts": int, "events": int}
     for org in ORGS:
+        sn = org["source_name"]
         try:
-            events = InstagramOrgScraper(org).safe_scrape()
-            logger.info("[instagram_orgs] %s: %d events", org["source_name"], len(events))
+            sc = InstagramOrgScraper(org)
+            events = sc.safe_scrape()
+            posts_n = getattr(sc, "last_posts_count", 0)
+            health[sn] = {"posts": posts_n, "events": len(events)}
+            logger.info("[instagram_orgs] %s: %d posts -> %d events", sn, posts_n, len(events))
             all_events.extend(events)
         except Exception as e:
-            logger.error("[instagram_orgs] %s crashed: %s", org["source_name"], e)
+            health[sn] = {"posts": 0, "events": 0, "error": str(e)[:120]}
+            logger.error("[instagram_orgs] %s crashed: %s", sn, e)
+
+    # Completeness signal (William 2026-07-20): a post must never be built on a
+    # silently-empty IG venue scrape. Distinguish a genuine quiet week (some
+    # venues returned posts, just no dated events) from a fetch failure (NO venue
+    # returned any posts = rate-limited / blocked / session dead). Persist a
+    # health record the prep/health tasks read; loud-log the failure signature.
+    venues_with_posts = sum(1 for v in health.values() if v.get("posts", 0) > 0)
+    attempted = len(health)
+    fetch_failed = attempted > 0 and venues_with_posts == 0
+    # DEGRADED: the fetch technically returned something, but from so few venues
+    # that the rest were almost certainly rate-limited (429) rather than genuinely
+    # postless. 1-of-8 is the same silent hole as 0-of-8 in practice (William
+    # 2026-07-20). Treated the same as a failure by the prep guard: cool down +
+    # retry, and flag if it persists.
+    fetch_degraded = attempted >= 4 and venues_with_posts <= max(1, attempted // 4)
+    try:
+        import json as _json
+        from datetime import datetime as _dt
+        _rec = {
+            "checked_at": _dt.now().strftime("%Y-%m-%d %H:%M"),
+            "venues_attempted": attempted,
+            "venues_with_posts": venues_with_posts,
+            "total_events": len(all_events),
+            "fetch_failed": fetch_failed,
+            "fetch_degraded": fetch_degraded,
+            "per_venue": health,
+        }
+        _p = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "ig_scrape_health.json")
+        with open(_p, "w", encoding="utf-8") as _f:
+            _json.dump(_rec, _f, ensure_ascii=False, indent=2)
+    except Exception as _e:
+        logger.warning("[instagram_orgs] could not write ig_scrape_health.json: %s", _e)
+    if fetch_failed or fetch_degraded:
+        logger.error("[instagram_orgs] IG-FETCH-%s: only %d/%d venues returned posts "
+                     "(rate-limited/blocked) — gay-venue events likely missing this "
+                     "run; do NOT treat as an empty week.",
+                     "FAILED" if fetch_failed else "DEGRADED", venues_with_posts, attempted)
     return all_events
 
 

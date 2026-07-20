@@ -652,33 +652,36 @@ def make_cover_slide(post_type: str, date_range: str,
         _f_name_md = _font("poiret", 36)   # medium
         _f_name_sm = _font("poiret", 30)   # long names (e.g. Council Oak Jukebox)
         for _ev in _evlist[:2]:
-            _nm = clean_text(_ev.get("name", ""))
+            _nm = clean_text(_ev.get("cover_name") or _ev.get("name", ""))
             _vn = clean_venue(_ev.get("venue", ""))
             _tm = _ev.get("time", "")
             _dt = format_date(_ev.get("date", ""))
             _pitch = (_ev.get("slide_description") or _ev.get("description")
                       or _ev.get("website_description", ""))
             _btop = y
-            _yy = y + 12
+            # Tightened vertical rhythm so two cards with long names + 2-line
+            # pitches (e.g. a Fringe + PFLAG partner-hero week) fit above the
+            # footer without overlap (William 2026-07-20).
+            _yy = y + 8
             try:
                 _wl = datetime.strptime(_ev.get("date", ""), "%Y-%m-%d").strftime("%A").upper()
             except Exception:
                 _wl = ""
             if _wl:
-                _yy = _draw_centered(draw, _wl, _yy, f_eotw_label, WHITE); _yy += 12
+                _yy = _draw_centered(draw, _wl, _yy, f_eotw_label, WHITE); _yy += 6
             _nf = _f_name_lg if len(_nm) <= 22 else (_f_name_md if len(_nm) <= 40 else _f_name_sm)
-            _yy = _draw_wrapped(draw, _nm, _yy, _nf, WHITE, max_px=W - 150, max_lines=2, line_gap=12)
-            _yy += 10
+            _yy = _draw_wrapped(draw, _nm, _yy, _nf, WHITE, max_px=W - 150, max_lines=2, line_gap=8)
+            _yy += 6
             if _vn:
                 _yy = _draw_wrapped(draw, f"@ {_vn}", _yy, f_eotw_venue, NEON_PINK,
-                                    max_px=W - 160, max_lines=1, line_gap=4); _yy += 6
+                                    max_px=W - 160, max_lines=1, line_gap=4); _yy += 4
             _dl = f"{_dt}  ·  {_tm}" if _dt and _tm else (_dt or _tm)
             if _dl:
-                _yy = _draw_centered(draw, _dl, _yy, f_eotw_dt, GRAY); _yy += 6
+                _yy = _draw_centered(draw, _dl, _yy, f_eotw_dt, GRAY); _yy += 4
             _yy = _draw_flamingo_score(draw, _flamingo_score(_ev), W // 2, _yy, size=16)
             if _pitch:
                 _yy = _draw_wrapped(draw, _pitch, _yy, f_eotw_pitch, LIGHT_GRAY,
-                                    max_px=W - 170, max_lines=2, line_gap=6); _yy += 4
+                                    max_px=W - 170, max_lines=2, line_gap=5); _yy += 3
             _url = _ev.get("url", "")
             if _url:
                 _du = re.sub(r'^https?://', '', _url).split("?")[0]
@@ -686,11 +689,11 @@ def make_cover_slide(post_type: str, date_range: str,
                 _lbl = "MORE INFO" if _is_signature_event({"name": _nm}) else "TICKETS"
                 _yy = _draw_centered(draw, f"{_lbl}  →  {_du}", _yy,
                                      _font("segoe-semi", 19), NEON_PINK)
-            draw.rounded_rectangle([PAD - 22, _btop, W - PAD + 22, _yy + 12],
+            draw.rounded_rectangle([PAD - 22, _btop, W - PAD + 22, _yy + 9],
                                    radius=12, outline=NEON_PINK, width=3)
-            y = _yy + 10
+            y = _yy + 8
     elif featured_event and not _is_garbage(featured_event):
-        ev_name  = clean_text(featured_event.get("name", ""))
+        ev_name  = clean_text(featured_event.get("cover_name") or featured_event.get("name", ""))
         ev_time  = featured_event.get("time", "")
         ev_venue = clean_venue(featured_event.get("venue", ""))
         # Cover uses the SHORT pitch (the long website_description belongs on the

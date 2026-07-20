@@ -581,14 +581,26 @@ def cmd_generate(post_type="weekday"):
             # then fun. A submitted/emailed one-off (source submission/manual/email)
             # is surfaced alongside the best scraped one-offs.
             submitted = (e.get("source") or "").lower() in ("submission", "manual", "email")
+            # Queerness bucket (William 2026-07-20: "a lot of events that aren't
+            # really gay in there that are one pink flamingo ... replace those").
+            # Among the community backfill, a gay-friendly 2-3 flamingo event
+            # (art opening, Pride-adjacent, affirming venue) beats a pure-straight
+            # 1-flamingo filler (farmers market, brewery bingo, generic jazz).
+            try:
+                from content.image_maker import _flamingo_score as _flsc
+                _fl = _flsc(e)
+            except Exception:
+                _fl = 4 if lg else 1
+            fl_bucket = 0 if _fl >= 4 else (1 if _fl >= 2 else 2)
             return (
                 0 if lg else 1,            # 1) gay events lead, always
-                1 if junk else 0,          # 2) clean-titled events lead over junk-named ones
-                1 if rec else 0,           # 3) ONE-TIME events lead over weekly/recurring (top signal)
-                0 if (submitted and not rec) else 1,  # 4) a good emailed one-off gets surfaced
-                1 if kids else 0,          # 5) kids/library filler sinks below adult events
-                0 if fun else 1,           # 6) fun, leave-the-house events first
-                _slide_priority(e),        # 7) existing tier/time tiebreak
+                fl_bucket,                 # 2) gay-friendly (2-3🦩) beats mostly-straight (1🦩)
+                1 if junk else 0,          # 3) clean-titled events lead over junk-named ones
+                1 if rec else 0,           # 4) ONE-TIME events lead over weekly/recurring (top signal)
+                0 if (submitted and not rec) else 1,  # 5) a good emailed one-off gets surfaced
+                1 if kids else 0,          # 6) kids/library filler sinks below adult events
+                0 if fun else 1,           # 7) fun, leave-the-house events first
+                _slide_priority(e),        # 8) existing tier/time tiebreak
             )
 
         # Only eligible (fun / one-off / inclusive, non-service) events ever

@@ -650,5 +650,18 @@
     "url": "https://www.instagram.com/p/Das1UWLCtm5/",
     "source": "venue_flyer_dig",
     "priority": 2
+  },
+  {
+    "name": "upcoming PFLAG Tulsa Event",
+    "date": "2026-07-23",
+    "time": "6:00 PM",
+    "venue": "755 N Mingo Rd",
+    "description": "Sharing insights, elevating community voices and creating space for collaboration and dialogue around building a more inclusive Tulsa.",
+    "website_description": "Sharing insights, elevating community voices and creating space for collaboration and dialogue around building a more inclusive Tulsa. It's a Thursday thing, around 6:00 PM, over at 755 N Mingo Rd. Dress how it makes you feel, roll in a little early, and thank yourself later, sugar.",
+    "url": "https://tinyurl.com/mpy8dbde",
+    "source": "submission",
+    "priority": 3,
+    "lgbtq_relevant": true,
+    "source_note": "Tip via DM EMAIL from infopflagtulsa@gmail.com captured 2026-07-19 18:30; reviewed before publish"
   }
 ]

@@ -5,7 +5,7 @@
   "events": {
     "lambda bowling league": {
       "status": "active",
-      "last_verified": "2026-07-13",
+      "last_verified": "2026-07-20",
       "verified_venue": "AMF Sheridan Lanes, 3121 S Sheridan Rd",
       "verified_by": "live-scrape:qlist",
       "verified_through": null,
@@ -21,7 +21,7 @@
     },
     "gender outreach support group": {
       "status": "active",
-      "last_verified": "2026-07-13",
+      "last_verified": "2026-07-20",
       "verified_venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "verified_by": "live-scrape:community_groups",
       "verified_through": null,
@@ -37,7 +37,7 @@
     },
     "dragnificent! drag show": {
       "status": "active",
-      "last_verified": "2026-07-13",
+      "last_verified": "2026-07-20",
       "verified_venue": "Club Majestic",
       "verified_by": "live-scrape:community_groups",
       "verified_through": null,
@@ -55,7 +55,7 @@
         "live_venue": "Bricktown Comedy Club Tulsa",
         "live_name": "True Crime Trivia",
         "source": "rendered_sites",
-        "seen": "2026-07-13"
+        "seen": "2026-07-20"
       }
     },
     "free pool & darts at ybr": {
@@ -132,7 +132,7 @@
     },
     "tulsa area prime timers": {
       "status": "active",
-      "last_verified": "2026-07-13",
+      "last_verified": "2026-07-17",
       "verified_venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "verified_by": "live-scrape:okeq",
       "verified_through": null,

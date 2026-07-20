@@ -241,6 +241,22 @@ def run_voice_pass(week: str = None, budget_s: int = 240,
                 sanitized += 1
     result["sanitized_fields"] = sanitized
 
+    # Mirror the voiced short copy into slide_description. The renderer
+    # (content/image_maker.py) prefers slide_description over description, but
+    # gen_website_descriptions.py writes a _smart_trim slide_description that
+    # truncates mid-word ("...which is a.") and leaves empty-venue templates
+    # ("Drag Brunch at ."). Without this mirror the voiced copy never reaches the
+    # slide. Root cause of the W30 broken EOTW hero + mid-word truncations
+    # (fixed 2026-07-20). Only the voiced targets are touched; website-only
+    # events keep their own copy (the website uses website_description anyway).
+    mirrored = 0
+    for ev in targets:
+        desc = ev.get("description") or ""
+        if desc and ev.get("slide_description") != desc:
+            ev["slide_description"] = desc
+            mirrored += 1
+    result["slide_desc_mirrored"] = mirrored
+
     # Persist (targets are references into all_events, so dump the whole list).
     with open(events_path, "w", encoding="utf-8") as f:
         if isinstance(raw, dict):
