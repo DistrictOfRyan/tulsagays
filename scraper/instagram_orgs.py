@@ -418,13 +418,17 @@ class InstagramOrgScraper(BaseScraper):
             return []
 
     def scrape(self) -> List[Dict]:
-        # Auth-free public endpoint first; authenticated session, then the
-        # logged-in web-session browser tier as the last resort.
-        posts = self._fetch_public()
+        # WEB-SESSION FIRST (reordered 2026-07-20). The logged-in web session is
+        # the authenticated path and is NOT rate-limited the way the logged-out
+        # public endpoint is — hammering the public endpoint across every venue in
+        # a full scrape is exactly what 429'd it to zero and silently dropped all
+        # gay-venue events for months. Try the reliable tier first; only fall back
+        # to the public/instagrapi tiers if the web session is down.
+        posts = self._fetch_via_web()
+        if not posts:
+            posts = self._fetch_public()
         if not posts:
             posts = self._fetch_via_session()
-        if not posts:
-            posts = self._fetch_via_web()
         # Record how many posts the fetch tiers actually returned so scrape() can
         # tell a genuine "no dated events this week" (posts>0, events==0) apart
         # from a silent fetch failure (posts==0 = rate-limited/blocked/session
@@ -754,10 +758,13 @@ def scrape() -> List[Dict]:
     Runs every configured IG-only org independently so one failure never aborts
     the rest, and returns the combined in-week event list.
     """
+    import time as _time
     all_events = []
     health = {}          # source_name -> {"posts": int, "events": int}
-    for org in ORGS:
+    for _i, org in enumerate(ORGS):
         sn = org["source_name"]
+        if _i:
+            _time.sleep(4)   # pace venue fetches so we don't trip IG rate-limiting
         try:
             sc = InstagramOrgScraper(org)
             events = sc.safe_scrape()
