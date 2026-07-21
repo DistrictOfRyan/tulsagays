@@ -343,7 +343,7 @@ for day in DAYS:
 #   - _SKIP_VENUES (majestic, etc.)
 #   - _SKIP_NAME_FRAGMENTS (bowling, support groups, etc.)
 #   - Tier priority: HH → Council Oak → Drag → Queer Perf → Trusted LGBTQ → LGBTQ keywords
-from eotw_selector import select_eotw
+from eotw_selector import select_eotw_list
 
 all_flat = [e for day in DAYS for e in events_by_day[day]]
 
@@ -375,8 +375,14 @@ try:
 except Exception as _ed:
     print(f"[warn] final card dedupe skipped: {_ed}")
 
-eotw = select_eotw(all_flat)
+# Use the LIST selector so the website honors manual pins + partner auto-
+# highlight exactly like the carousel (2026-07-20: the old single-pick path
+# ignored both and bannered a recurring Drag Brunch over the Fringe/PFLAG
+# partner heroes). Banner shows hero #1; every hero gets the featured star.
+_eotw_list = select_eotw_list(all_flat, week_key=config.current_week_key())
+eotw = _eotw_list[0] if _eotw_list else None
 eotw_key = (eotw.get('name', ''), eotw.get('date', '')) if eotw else None
+eotw_keys = {(e.get('name', ''), e.get('date', '')) for e in _eotw_list}
 
 def _day_sort_key(e):
     return (e.get('priority', 99), _parse_minutes(e.get('time') or ''))
@@ -574,7 +580,7 @@ for day in DAYS_ORDERED:
         for ev in day_evs:
             ev_name = ev.get('name', '')
             ev_key = (ev_name, ev.get('date', ''))
-            is_featured = bool(eotw_key and ev_key == eotw_key)
+            is_featured = bool(eotw_keys and ev_key in eotw_keys)
             card_cls = 'event-card featured' if is_featured else 'event-card'
             name_color = 'var(--gold)' if is_featured else f'var({css_var})'
             time_color = 'var(--gold)' if is_featured else f'var({css_var})'

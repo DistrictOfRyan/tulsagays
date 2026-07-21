@@ -2,19 +2,10 @@
   "api_version": "1",
   "city": "Tulsa, OK",
   "publisher": "Tulsa Gays",
-  "generated_at": "2026-07-20T09:54:47Z",
+  "generated_at": "2026-07-21T00:25:40Z",
   "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
   "count": 8,
   "events": [
-    {
-      "name": "MOREcolor 2026: Pride Art Exhibition",
-      "date": "2026-07-20",
-      "time": "",
-      "venue": "",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
     {
       "name": "Meet Me in St. Louis - CCFF",
       "date": "2026-07-20",
@@ -74,6 +65,15 @@
       "date": "2026-07-21",
       "time": "7:00 PM",
       "venue": "311 S Phoenix Ave",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Trivia Night at YBR",
+      "date": "2026-07-21",
+      "time": "7:00 PM",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"

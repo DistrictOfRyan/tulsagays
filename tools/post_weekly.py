@@ -431,10 +431,30 @@ def post_fb_carousel(slides: list[Path], caption: str) -> dict:
     # request" (error code 1/2). Photos are already uploaded, so retry ONLY the
     # post-creation call with backoff — no duplicate uploads. FB returns the new
     # post id on success, so a retry after a true error cannot double-post.
+    def _already_posted():
+        """Did a 'failed' /feed attempt actually create the post? FB sometimes
+        returns a transient error AFTER creating it (W30 2026-07-20: attempt 1
+        'errored', the retry then failed 'Invalid parameter' because the photos
+        were already consumed — but the post was LIVE). An unpublished photo's
+        page_story_id is set the moment it's attached to a published post, so
+        query the first photo instead of retrying blind."""
+        try:
+            r = requests.get(f"{API_BASE}/{photo_ids[0]}",
+                             params={"fields": "page_story_id",
+                                     "access_token": PAGE_TOKEN},
+                             timeout=30).json()
+            return r.get("page_story_id")
+        except Exception:
+            return None
+
     data = {}
     last_err = None
     for attempt, delay in enumerate((0, 8, 20, 40), start=1):
         if delay:
+            story = _already_posted()
+            if story:
+                print(f"     [FB] attempt {attempt-1}'s 'error' was a false negative — post {story} is LIVE.")
+                return {"post_id": story, "photo_ids": photo_ids}
             print(f"     [FB] transient error, retry {attempt-1} in {delay}s...")
             time.sleep(delay)
         resp = requests.post(
@@ -447,8 +467,13 @@ def post_fb_carousel(slides: list[Path], caption: str) -> dict:
             break
         last_err = data.get("error", {})
         code = last_err.get("code")
-        # Retry only the known-transient codes; fail fast on real errors.
+        # Retry only the known-transient codes; fail fast on real errors —
+        # but never before checking whether the post actually landed.
         if code not in (1, 2) and "reduce the amount of data" not in (last_err.get("message") or "").lower():
+            story = _already_posted()
+            if story:
+                print(f"     [FB] '{last_err.get('message')}' but post {story} is LIVE — treating as success.")
+                return {"post_id": story, "photo_ids": photo_ids}
             raise RuntimeError(f"FB post failed: {last_err.get('message')}")
     if "id" not in data:
         raise RuntimeError(f"FB post failed after retries: {last_err}")

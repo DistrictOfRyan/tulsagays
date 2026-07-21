@@ -1,12 +1,5 @@
 [
   {
-    "name": "MOREcolor 2026: Pride Art Exhibition",
-    "venue": "",
-    "date": "2026-07-20",
-    "day_short": "MON",
-    "time": ""
-  },
-  {
     "name": "Meet Me in St. Louis - CCFF",
     "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
     "date": "2026-07-20",
@@ -51,6 +44,13 @@
   {
     "name": "Crosbie Heights Garden Hangouts",
     "venue": "311 S Phoenix Ave",
+    "date": "2026-07-21",
+    "day_short": "TUE",
+    "time": "7:00 PM"
+  },
+  {
+    "name": "Trivia Night at YBR",
+    "venue": "Yellow Brick Road, 2630 E 15th St",
     "date": "2026-07-21",
     "day_short": "TUE",
     "time": "7:00 PM"
