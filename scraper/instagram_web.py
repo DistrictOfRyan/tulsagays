@@ -48,11 +48,24 @@ _JS_FETCH = """
 async (user) => {
   const H = {'x-ig-app-id': '%s'};
   try {
+    // uid resolution, two paths: web_profile_info started returning HTTP 400
+    // for most business/professional handles (2026-07-22) while topsearch
+    // still resolves every account — try profile first, fall back to search.
+    let uid = null, perr = '';
     const r1 = await fetch(`/api/v1/users/web_profile_info/?username=${user}`, {headers: H});
-    if (!r1.ok) return {err: 'profile HTTP ' + r1.status};
-    const u = (await r1.json())?.data?.user;
-    if (!u || !u.id) return {err: 'no uid (private/renamed?)'};
-    const r2 = await fetch(`/api/v1/feed/user/${u.id}/?count=%d`, {headers: H});
+    if (r1.ok) {
+      const u = (await r1.json())?.data?.user;
+      if (u && u.id) uid = u.id;
+    } else { perr = 'profile HTTP ' + r1.status; }
+    if (!uid) {
+      const rs = await fetch(`/web/search/topsearch/?query=${user}`, {headers: H});
+      if (!rs.ok) return {err: (perr ? perr + '; ' : '') + 'topsearch HTTP ' + rs.status};
+      const j = await rs.json();
+      const hit = (j.users || []).find(x => x.user && x.user.username === user);
+      if (!hit) return {err: (perr ? perr + '; ' : '') + 'no uid via topsearch (private/renamed?)'};
+      uid = hit.user.pk;
+    }
+    const r2 = await fetch(`/api/v1/feed/user/${uid}/?count=%d`, {headers: H});
     if (!r2.ok) return {err: 'feed HTTP ' + r2.status};
     const j = await r2.json();
     const bestImg = (o) => {

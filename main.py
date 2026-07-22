@@ -559,6 +559,24 @@ def cmd_generate(post_type="weekday"):
                 return True
             return False
 
+        # Routine bar-utility programming (open darts, free pool, trivia,
+        # karaoke, generic bingo) — weekly filler even when scraped as a dated
+        # IG post, so recurrence detection alone misses it. Ranked DOWN, never
+        # banned: it still lists, still featurable on a thin day (William
+        # 2026-07-22: "open darts should never be the event of the day").
+        _BAR_UTILITY_KW = (
+            "free pool", "pool & darts", "pool and darts", "darts",
+            "trivia", "karaoke", "happy hour", "bingo", "game night",
+            "pool night", "billiards", "open pool", "open mic",
+        )
+
+        def _bar_utility(e):
+            combo = ((e.get("name") or "") + " " + (e.get("venue") or "")).lower()
+            if any(k in combo for k in ("drag", "talent", "cabaret", "burlesque",
+                                        "revue", "showcase", "show")):
+                return False  # performance nights are marquee, never demoted
+            return any(k in combo for k in _BAR_UTILITY_KW)
+
         def _rank(e):
             # Classify on NAME + VENUE, never the generated description — so writing
             # voice copy can't reshuffle which events get featured (stable selection).
@@ -597,6 +615,7 @@ def cmd_generate(post_type="weekday"):
                 fl_bucket,                 # 2) gay-friendly (2-3🦩) beats mostly-straight (1🦩)
                 1 if junk else 0,          # 3) clean-titled events lead over junk-named ones
                 1 if rec else 0,           # 4) ONE-TIME events lead over weekly/recurring (top signal)
+                1 if _bar_utility(e) else 0,  # 4b) routine bar-utility (darts/trivia/karaoke) sinks below real events
                 0 if (submitted and not rec) else 1,  # 5) a good emailed one-off gets surfaced
                 1 if kids else 0,          # 6) kids/library filler sinks below adult events
                 0 if fun else 1,           # 7) fun, leave-the-house events first
@@ -641,6 +660,47 @@ def cmd_generate(post_type="weekday"):
                 if _dup_of_picked(e, top):
                     continue
                 top.append(e); seen.add(id(e))
+        # TOP PICK QUALITY GATE (William 2026-07-20, recurring feedback finally
+        # coded in): the pink TOP PICK box is the day's editorial hero, and a
+        # weekly bar-utility night ("Free Pool & Darts", "Trivia Night", happy
+        # hour, bingo) must NEVER headline the day when anything genuinely fun
+        # and unique exists — it makes the city look dead, the opposite of the
+        # site's whole purpose. Bar-utility nights STAY in the featured 3 (gay
+        # events still weight heavily); they just can't be slot #1 unless the
+        # day truly has nothing better. Drag/performance nights are marquee and
+        # exempt. Hero preference: one-off LGBTQ > one-off fun community >
+        # recurring LGBTQ performance > recurring LGBTQ non-utility > the rest.
+        def _hero_rank(e):
+            lg_e = _is_lgbtq_strict(e)
+            rec_e = _recurring(e)
+            util = _bar_utility(e)
+            combo = ((e.get("name") or "") + " " + (e.get("venue") or "")).lower()
+            perf = any(k in combo for k in ("drag", "talent night", "open talent",
+                                            "cabaret", "burlesque", "revue"))
+            fun = any(k in combo for k in _FUN_KW)
+            if lg_e and not rec_e and not util:
+                cls = 0          # one-off gay event — the ideal hero
+            elif not rec_e and fun and not util:
+                cls = 1          # one-off fun community event
+            elif lg_e and rec_e and perf:
+                cls = 2          # recurring drag/performance — still marquee
+            elif lg_e and not util:
+                cls = 3          # other recurring gay (non-utility)
+            elif not util:
+                cls = 4
+            else:
+                cls = 5          # weekly bar-utility — hero only if nothing else
+            return (cls, _rank(e))
+
+        if top:
+            hero = min(feat_pool, key=_hero_rank)
+            if id(hero) != id(top[0]) and _hero_rank(hero) < _hero_rank(top[0]):
+                if id(hero) in {id(t) for t in top}:
+                    top = [hero] + [t for t in top if id(t) != id(hero)]
+                elif not _dup_of_picked(hero, top):
+                    top = ([hero] + [t for t in top if id(t) != id(hero)])[:target]
+                seen = {id(t) for t in top}
+
         # Remaining eligible events keep their rank order behind the featured 3
         # (they drive the "N more events" count). Services never appear here.
         tail = [e for e in feat_pool if id(e) not in seen]
