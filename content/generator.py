@@ -208,6 +208,29 @@ def strip_em_dashes(text: str) -> str:
     return _strip_em_dashes(text)
 
 
+# LLM meta-chatter that occasionally leaks ahead of the real caption ("okay
+# writing this one straight from the brief since everything needed ... is
+# already fully specified in the prompt."). Never part of the post — drop
+# leading paragraphs that talk ABOUT the task instead of TO the audience.
+# Seen live 2026-07-22 in a W30 caption regen.
+_PREAMBLE_MARKERS = (
+    "the brief", "the prompt", "the instructions", "as requested",
+    "here's the caption", "here is the caption", "here's your caption",
+    "writing this one", "fully specified", "voice rules",
+)
+
+
+def _strip_llm_preamble(text: str) -> str:
+    parts = (text or "").split("\n\n")
+    while parts:
+        first = parts[0].strip().lower()
+        if first and any(m in first for m in _PREAMBLE_MARKERS) and len(first) < 300:
+            parts.pop(0)
+            continue
+        break
+    return "\n\n".join(parts).strip() or (text or "")
+
+
 _REFUSAL_MARKERS = (
     "i cannot", "i can't", "i can not", "i'm unable", "i am unable",
     "i won't", "as an ai", "i'm sorry, but", "i am sorry, but",
@@ -352,6 +375,7 @@ mention it.
         )
 
     caption = _strip_em_dashes(caption)
+    caption = _strip_llm_preamble(caption)
 
     return {
         "caption": caption,
