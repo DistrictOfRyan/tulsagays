@@ -242,6 +242,16 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 
 ---
 
+### Reviewed but NOT added (2026-07-23 scan)
+- Open Container (Boxyard, 502 E 3rd St): surfaced across multiple "gay friendly Tulsa restaurant" search results (vegan-friendly bar food, LGBTQ+-noted spot on the Boxyard's 2nd floor). Yelp listing shows **CLOSED - Updated May 2026**. Not added; treated the same as the prior Triangle Coffee Roasters closure finding.
+- OkEq EBA directory page (okeq.org/eba/): still renders no inline member list to WebFetch (auth/JS gated). Food & Drink page remains the usable member source - all businesses currently listed there are already in the directory or previously reviewed/held/skipped.
+- OkEq Food & Drink full re-check (49 listings): no net-new businesses. Queenies, Prhyme, Roppongi, Sisserou's, Freya Nordic Kitchen, Inheritance Kitchen & Juicery, The People's Bakery, The Vault, Farrell Bread, The Max Retropub, Vintage Wine Bar, Ranch Acres, Red Sky Liquor, Inner Circle Vodka Bar, Valkyrie, Cruise N, Empire Slice House all confirmed already in the directory from prior scans.
+- Tulsa Remote LGBTQ guide: all listed businesses (Tonsorial, il Seme, Cherry & Bark, YBR, The Donut Hole, Fulton Street, Jo & June, Magic City Books, Studio 66, Black Queer Tulsa, Twisted Arts, H.O.P.E, TACO) already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage found this scan (one unrelated A&E mention of a touring Phantom of the Opera production).
+- WebSearch "new LGBTQ business Tulsa 2026 opened" / "queer-owned business Tulsa 2026" / "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses plus the closed Open Container above. One feature piece on Yellow Brick Road Pub's evolving clientele (tulsaflyer.org) - no new business, YBR already listed.
+- tulsasun.com/tulsa-gay-bars/ and visittulsa.com LGBTQ itinerary blog post: both 404'd on fetch this scan (URLs may have moved or been retired). Note for next scan to re-check or drop from rotation if still dead.
+- Reddit r/tulsa (both query variants): no indexed results this scan.
+
 ### Reviewed but NOT added (2026-07-16 scan)
 - Shades of Brown Coffee & Art (3302 S Peoria Ave): DUPLICATE. Already in directory under "Shades of Brown Coffee" in Coffee & Books. GayBnB Travel and Rainbows in Revolt both surfaced it, but no new business.
 - Dalesandro's: already in directory under Restaurants & Food. No new business.
