@@ -119,7 +119,8 @@ def preflight(src: str, require_approved: bool = False, alert: bool = True) -> d
                 if alert:
                     _alert(src, verdict["reason"])
                 return verdict
-        r = graphic_qa.qa_image(local, require_approved=require_approved)
+        r = graphic_qa.qa_image(local, require_approved=require_approved,
+                                 approval_key=(src if _is_url(src) else None))
         verdict = {"ok": r["ok"], "src": src, "reason": r["reason"], "checks": r.get("checks", {})}
         if not r["ok"] and alert:
             _alert(src, r["reason"])

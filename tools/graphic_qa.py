@@ -90,9 +90,12 @@ def _rel(path: str) -> str:
 
 
 # ── approval registry ────────────────────────────────────────────────────────
-def is_approved(path: str) -> bool:
+def is_approved(path: str, approval_key: str | None = None) -> bool:
+    """Check the approval registry. approval_key overrides the lookup key —
+    needed when `path` is a downloaded temp file standing in for a remote URL
+    (the registry is keyed by the URL/repo-relative path, not a Temp\\ path)."""
     reg = _load_registry()
-    entry = reg.get(_rel(path))
+    entry = reg.get(approval_key if approval_key is not None else _rel(path))
     if not entry:
         return False
     return entry.get("sha256") == _sha256(path)
@@ -120,7 +123,7 @@ def _check_blank(img) -> tuple[bool, str]:
     return True, "varied"
 
 
-def qa_image(path: str, require_approved: bool = False) -> dict:
+def qa_image(path: str, require_approved: bool = False, approval_key: str | None = None) -> dict:
     checks: dict = {}
     if not os.path.exists(path):
         return {"ok": False, "path": path, "checks": {}, "reason": f"missing file: {path}"}
@@ -160,7 +163,7 @@ def qa_image(path: str, require_approved: bool = False) -> dict:
 
     # human approval registry (only enforced when asked)
     if require_approved:
-        appr = is_approved(path)
+        appr = is_approved(path, approval_key=approval_key)
         checks["approved"] = appr
         if not appr:
             reasons.append("not in approved-assets registry (needs William's visual sign-off)")
