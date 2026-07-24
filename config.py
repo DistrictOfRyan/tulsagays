@@ -1,6 +1,13 @@
 """Central configuration for Tulsa Gays automation."""
 import os
 from datetime import datetime
+# ── City identity ────────────────────────────────────
+# CITY-SPECIFIC - never let sync_from_tulsa.py propagate this value to another
+# city. Read by tools/geo_guard.py (resolve_city) to drop events from other
+# metros before publish. Added 2026-07-23 for gap G204. If unset the guard
+# fails OPEN and does nothing.
+CITY_NAME = "Tulsa"
+CITY_STATE = "OK"
 
 # Load .env if present
 _env_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")

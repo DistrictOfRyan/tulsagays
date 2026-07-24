@@ -808,6 +808,31 @@ def save_results(events: List[Dict], week_key: str = None):
     if week_key is None:
         week_key = get_week_key()
 
+    # G204 GEO GUARD: drop events belonging to a DIFFERENT city before any file
+    # is written. Found on LexingtonGays 2026-07-23, where 14 of 84 events were
+    # published at TULSA venues (Philbrook, Circle Cinema, Dennis R. Neill
+    # Equality Center, qlist.app/events/Tulsa/...) relabelled as Lexington -
+    # addresses that do not exist in that metro. The offending scrapers live in
+    # THIS shared file tree, which sync_from_tulsa.py overlays onto every city
+    # site, so the guard belongs here in the master and propagates outward.
+    # Guarding at the single write choke point covers _all/_weekday/_weekend.
+    # Fail-OPEN by design: a guard bug must never take a site down. If no city
+    # is configured it REFUSES TO GUESS and passes everything through.
+    try:
+        from tools.geo_guard import filter_events as _geo_filter, resolve_city as _resolve_city
+        _city = _resolve_city(config)
+        if not _city:
+            raise RuntimeError(
+                "no CITY_NAME/CITY/SITE_CITY in config - refusing to guess a city")
+        _kept, _dropped = _geo_filter(events, _city)
+        if _dropped:
+            print(f"[geo_guard] dropped {len(_dropped)} event(s) not in {_city}:")
+            for _e in _dropped[:10]:
+                print(f"    - {str(_e.get('name'))[:50]} | {_e.get('_dropped_reason')}")
+            events = _kept
+    except Exception as _e:  # noqa: BLE001 - never block a publish on the guard
+        print(f"[geo_guard] SKIPPED (non-fatal): {_e}")
+
     split = split_weekday_weekend(events)
 
     combined_path = os.path.join(config.EVENTS_DIR, f"{week_key}_all.json")
