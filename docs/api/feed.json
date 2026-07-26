@@ -1,71 +1,64 @@
 {
   "schema_version": "1.0",
   "city": "Tulsa",
-  "generated": "2026-07-20",
+  "generated": "2026-07-26",
   "license": "Free to use with attribution to tulsagays.com",
   "coverage": {
-    "coverage_pct": 100.0,
-    "covered": 36,
+    "coverage_pct": 97.2,
+    "covered": 35,
     "total": 36,
-    "gaps": 0
+    "gaps": 1
   },
-  "source_count": 282,
-  "event_count": 8,
+  "source_count": 275,
+  "event_count": 7,
   "events": [
     {
-      "name": "MOREcolor 2026: Pride Art Exhibition",
-      "date": "2026-07-20",
-      "time": "",
+      "name": "AZ Partner Event: Ethereal Rainbow ALLYance: Pronouns Educational with River",
+      "date": "2026-07-26",
+      "time": "10:00 PM",
       "venue": "",
       "url": null
     },
     {
-      "name": "Meet Me in St. Louis - CCFF",
-      "date": "2026-07-20",
-      "time": "4:30 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "name": "El Molino - Brunch (New Story Brewery)",
+      "date": "2026-07-26",
+      "time": "11:00 AM",
+      "venue": "New Story Brewery",
       "url": null
     },
     {
-      "name": "Return of the Sacred Red Rock - CCFF",
-      "date": "2026-07-20",
-      "time": "7:00 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "name": "Tulsa Fringe Festival: Superstition and Espionage",
+      "date": "2026-07-26",
+      "time": "12:30 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "url": null
     },
     {
-      "name": "The Wild Bunch - CCFF",
-      "date": "2026-07-20",
-      "time": "7:15 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "name": "Outsider Creatives of Tulsa meets today at 2:45 p.m",
+      "date": "2026-07-26",
+      "time": "2:45 PM",
+      "venue": "Good Cause Brewing",
       "url": null
     },
     {
-      "name": "Monday Night Jazz",
-      "date": "2026-07-20",
-      "time": "8:00 PM",
-      "venue": "Tulsa, OK",
+      "name": "Own Voices (Promoted by Magic City Books)",
+      "date": "2026-07-26",
+      "time": "3:00 PM",
+      "venue": "Magic City Books",
       "url": null
     },
     {
-      "name": "Rose District Farmers Market",
-      "date": "2026-07-21",
-      "time": "4:00 PM",
-      "venue": "418 S Main St",
-      "url": null
-    },
-    {
-      "name": "Underground Kitchen, a private dining experience",
-      "date": "2026-07-21",
+      "name": "Broadway Clubhouse",
+      "date": "2026-07-26",
       "time": "6:30 PM",
-      "venue": "Arvest Convention Center",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "url": null
     },
     {
-      "name": "Crosbie Heights Garden Hangouts",
-      "date": "2026-07-21",
-      "time": "7:00 PM",
-      "venue": "311 S Phoenix Ave",
+      "name": "Sunday Showdown Open Talent Night",
+      "date": "2026-07-26",
+      "time": "Doors 9 PM, Show 11 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
       "url": null
     }
   ]
