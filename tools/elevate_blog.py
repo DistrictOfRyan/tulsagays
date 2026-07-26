@@ -477,6 +477,16 @@ def write_events_current_json():
             return True
         week_events = [e for e in week_events if _clean_for_feed(e)]
         week_events.sort(key=lambda e: (e.get("date",""), e.get("time","")))
+        # Recency fix (2026-07-26): this took the first 8 events of the week chronologically,
+        # so from Wednesday onward the public feed - and the machine-readable data llms.txt
+        # points LLMs at - served only Monday/Tuesday events that had already happened.
+        # (Verified live 2026-07-26: the feed showed 8 events, all dated 07-20/07-21, while
+        # the source had 81 relevant events across the week including 8 that same day.)
+        # Prefer what is still UPCOMING; fall back to the full week only when the week is
+        # already over, so the widget is never empty.
+        upcoming = [e for e in week_events if e.get("date", "") >= today.strftime("%Y-%m-%d")]
+        if upcoming:
+            week_events = upcoming
         slim = []
         for e in week_events[:8]:
             d = e.get("date","")
