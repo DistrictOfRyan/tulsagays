@@ -2,40 +2,58 @@
   "api_version": "1",
   "city": "Tulsa, OK",
   "publisher": "Tulsa Gays",
-  "generated_at": "2026-07-21T00:25:40Z",
+  "generated_at": "2026-07-27T09:52:13Z",
   "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
   "count": 8,
   "events": [
     {
-      "name": "Meet Me in St. Louis - CCFF",
-      "date": "2026-07-20",
-      "time": "4:30 PM",
+      "name": "Mario Kart Gaymer Night",
+      "date": "2026-07-27",
+      "time": "",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "WTO/99",
+      "date": "2026-07-27",
+      "time": "12:40 PM",
       "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
-      "name": "Return of the Sacred Red Rock - CCFF",
-      "date": "2026-07-20",
+      "name": "Art Explorers (Ages 5-6)",
+      "date": "2026-07-27",
+      "time": "1:00 PM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Tiny Worlds & Hidden Habitats (Ages 9-11)",
+      "date": "2026-07-27",
+      "time": "1:00 PM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Gaymer Night at YBR",
+      "date": "2026-07-27",
       "time": "7:00 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "The Wild Bunch - CCFF",
-      "date": "2026-07-20",
-      "time": "7:15 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
       "name": "Monday Night Jazz",
-      "date": "2026-07-20",
+      "date": "2026-07-27",
       "time": "8:00 PM",
       "venue": "Tulsa, OK",
       "url": "",
@@ -43,37 +61,19 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "Rose District Farmers Market",
-      "date": "2026-07-21",
-      "time": "4:00 PM",
-      "venue": "418 S Main St",
+      "name": "Road Trip Adventures (Ages 5-6)",
+      "date": "2026-07-27",
+      "time": "9:00 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
-      "name": "Underground Kitchen, a private dining experience",
-      "date": "2026-07-21",
-      "time": "6:30 PM",
-      "venue": "Arvest Convention Center",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Crosbie Heights Garden Hangouts",
-      "date": "2026-07-21",
-      "time": "7:00 PM",
-      "venue": "311 S Phoenix Ave",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Trivia Night at YBR",
-      "date": "2026-07-21",
-      "time": "7:00 PM",
-      "venue": "Yellow Brick Road, 2630 E 15th St",
+      "name": "Cut, Paste, Create (Ages 7-9)",
+      "date": "2026-07-27",
+      "time": "9:00 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"

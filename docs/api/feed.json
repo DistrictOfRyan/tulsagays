@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "city": "Tulsa",
-  "generated": "2026-07-26",
+  "generated": "2026-07-27",
   "license": "Free to use with attribution to tulsagays.com",
   "coverage": {
     "coverage_pct": 97.2,
@@ -10,55 +10,62 @@
     "gaps": 1
   },
   "source_count": 275,
-  "event_count": 7,
+  "event_count": 8,
   "events": [
     {
-      "name": "AZ Partner Event: Ethereal Rainbow ALLYance: Pronouns Educational with River",
-      "date": "2026-07-26",
-      "time": "10:00 PM",
-      "venue": "",
+      "name": "Mario Kart Gaymer Night",
+      "date": "2026-07-27",
+      "time": "",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
       "url": null
     },
     {
-      "name": "El Molino - Brunch (New Story Brewery)",
-      "date": "2026-07-26",
-      "time": "11:00 AM",
-      "venue": "New Story Brewery",
+      "name": "WTO/99",
+      "date": "2026-07-27",
+      "time": "12:40 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
       "url": null
     },
     {
-      "name": "Tulsa Fringe Festival: Superstition and Espionage",
-      "date": "2026-07-26",
-      "time": "12:30 PM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "name": "Art Explorers (Ages 5-6)",
+      "date": "2026-07-27",
+      "time": "1:00 PM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
       "url": null
     },
     {
-      "name": "Outsider Creatives of Tulsa meets today at 2:45 p.m",
-      "date": "2026-07-26",
-      "time": "2:45 PM",
-      "venue": "Good Cause Brewing",
+      "name": "Tiny Worlds & Hidden Habitats (Ages 9-11)",
+      "date": "2026-07-27",
+      "time": "1:00 PM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
       "url": null
     },
     {
-      "name": "Own Voices (Promoted by Magic City Books)",
-      "date": "2026-07-26",
-      "time": "3:00 PM",
-      "venue": "Magic City Books",
+      "name": "Gaymer Night at YBR",
+      "date": "2026-07-27",
+      "time": "7:00 PM",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
       "url": null
     },
     {
-      "name": "Broadway Clubhouse",
-      "date": "2026-07-26",
-      "time": "6:30 PM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "name": "Monday Night Jazz",
+      "date": "2026-07-27",
+      "time": "8:00 PM",
+      "venue": "Tulsa, OK",
       "url": null
     },
     {
-      "name": "Sunday Showdown Open Talent Night",
-      "date": "2026-07-26",
-      "time": "Doors 9 PM, Show 11 PM",
-      "venue": "Club Majestic, 124 N Boston Ave",
+      "name": "Road Trip Adventures (Ages 5-6)",
+      "date": "2026-07-27",
+      "time": "9:00 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": null
+    },
+    {
+      "name": "Cut, Paste, Create (Ages 7-9)",
+      "date": "2026-07-27",
+      "time": "9:00 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
       "url": null
     }
   ]
