@@ -240,6 +240,52 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 - Source: GayBnB Travel (dedicated LGBTQ+ travel platform) - Tulsa gay-friendly restaurants guide
 - Notes: Deli and brunch spot, 402 E 2nd St S, Blue Dome District. Single-source (GayBnB Travel), no explicit queer ownership claim. Shares ownership with McNellie's/Yokozuna (same restaurant group) but is its own distinct storefront.
 
+## [2026-07-30] UniComm Solutions
+- Category: services
+- URL: https://unicomm-solutions.com/
+- Source: OkEq Equality Business Alliance (okeq.org/eba/) - page rendered a live current-member list for the first time in tracked scans (prior scans logged it as auth/JS-gated with no inline list)
+- Notes: IT support, VoIP, and managed services firm at 624 S Denver Ave Ste 300, Tulsa, owner Scott Dye. Current paying member of the relaunched EBA.
+
+## [2026-07-30] Yoga Quest LLC
+- Category: health
+- URL: https://www.tulsayogaquest.com
+- Source: OkEq Equality Business Alliance (okeq.org/eba/)
+- Notes: Bikram/hot yoga and wellness studio at 3325 E 31st St, Tulsa; also offers massage and acupuncture. Current EBA member. (Note: a Yelp listing for a different old address, 5539 E 41st St, shows closed - that's a stale location, not this one.)
+
+## [2026-07-30] Doc J's Heat and Air LLC
+- Category: services
+- URL: https://docjsheatandair.com
+- Source: OkEq Equality Business Alliance (okeq.org/eba/)
+- Notes: HVAC contractor at 1333 W Woodrow St, Tulsa, owned by Julius and Deborah Warren, 30+ years experience. Current EBA member.
+
+## [2026-07-30] Littleton Legal PLLC
+- Category: services
+- URL: https://littletonlegal.com
+- Source: OkEq Equality Business Alliance (okeq.org/eba/)
+- Notes: Estate planning, business law, and elder law firm founded and owned by Brittany Littleton, Tulsa office at Gradient (12 N Cheyenne Ave). Current EBA member.
+
+## [2026-07-30] Edgewood Veterinary Hospital
+- Category: health
+- URL: http://www.tulsavet.net
+- Source: OkEq Equality Business Alliance (okeq.org/eba/)
+- Notes: Full-service veterinary hospital at 3104 E 51st St, Tulsa, serving pets since 1956. Current EBA member.
+
+## [2026-07-30] Osteostrong Tulsa Midtown
+- Category: health
+- URL: https://centers.osteostrong.me/oklahoma-tulsa-midtown/
+- Source: OkEq Equality Business Alliance (okeq.org/eba/)
+- Notes: Bone density and strength wellness studio at 5940 S Lewis Ave, Tulsa, owned by Sue Welch. Current EBA member.
+
+---
+
+### Reviewed but NOT added (2026-07-30 scan)
+- **Source health note:** okeq.org/eba/ rendered a live inline member list for the first time in tracked scans (six current members, all added above) - it had been logged as auth/JS-gated on every prior scan since at least 2026-06-11. Worth re-checking on future scans in case membership grows.
+- OkEq Food & Drink full re-check (50 listings): no net-new businesses. All confirmed already in the directory or previously reviewed/held/skipped from prior scans.
+- Tulsa Remote LGBTQ guide: all listed businesses already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage found this scan.
+- WebSearch "new LGBTQ business Tulsa 2026" / "queer-owned business Tulsa 2026" / "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (Dilly Diner, KEO, Open Container - still shows CLOSED per prior scan) and general guide/listicle pages, no net-new finds.
+- Reddit r/tulsa (both query variants): no indexed results this scan.
+
 ---
 
 ### Reviewed but NOT added (2026-07-23 scan)
