@@ -5,7 +5,7 @@
   "events": {
     "lambda bowling league": {
       "status": "active",
-      "last_verified": "2026-07-20",
+      "last_verified": "2026-07-27",
       "verified_venue": "AMF Sheridan Lanes, 3121 S Sheridan Rd",
       "verified_by": "live-scrape:qlist",
       "verified_through": null,
@@ -21,7 +21,7 @@
     },
     "gender outreach support group": {
       "status": "active",
-      "last_verified": "2026-07-20",
+      "last_verified": "2026-07-27",
       "verified_venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "verified_by": "live-scrape:community_groups",
       "verified_through": null,
@@ -37,7 +37,7 @@
     },
     "dragnificent! drag show": {
       "status": "active",
-      "last_verified": "2026-07-20",
+      "last_verified": "2026-07-27",
       "verified_venue": "Club Majestic",
       "verified_by": "live-scrape:community_groups",
       "verified_through": null,
@@ -45,18 +45,11 @@
     },
     "trivia night at ybr": {
       "status": "active",
-      "last_verified": "2026-07-06",
+      "last_verified": "2026-07-27",
       "verified_venue": "Yellow Brick Road, 2630 E 15th St",
-      "verified_by": "seed-baseline",
+      "verified_by": "live-scrape:meetup",
       "verified_through": null,
-      "note": "",
-      "pending_venue_conflict": {
-        "known_venue": "Yellow Brick Road, 2630 E 15th St",
-        "live_venue": "Bricktown Comedy Club Tulsa",
-        "live_name": "True Crime Trivia",
-        "source": "rendered_sites",
-        "seen": "2026-07-20"
-      }
+      "note": ""
     },
     "free pool & darts at ybr": {
       "status": "active",
@@ -76,9 +69,9 @@
     },
     "sunday showdown open talent night": {
       "status": "active",
-      "last_verified": "2026-07-06",
+      "last_verified": "2026-07-27",
       "verified_venue": "Club Majestic, 124 N Boston Ave",
-      "verified_by": "seed-baseline",
+      "verified_by": "live-scrape:qlist",
       "verified_through": null,
       "note": ""
     },
@@ -143,6 +136,38 @@
       "last_verified": "2026-07-13",
       "verified_venue": "Various locations, Tulsa",
       "verified_by": "seed-baseline",
+      "verified_through": null,
+      "note": ""
+    },
+    "babes & bi-cons dance party at ybr": {
+      "status": "active",
+      "last_verified": "2026-07-27",
+      "verified_venue": "Yellow Brick Road, 2630 E 15th St",
+      "verified_by": "seed-baseline",
+      "verified_through": null,
+      "note": ""
+    },
+    "gaymer night at ybr": {
+      "status": "active",
+      "last_verified": "2026-07-27",
+      "verified_venue": "Yellow Brick Road, 2630 E 15th St",
+      "verified_by": "live-scrape:manual",
+      "verified_through": null,
+      "note": ""
+    },
+    "karaoke at ybr (with party possum)": {
+      "status": "active",
+      "last_verified": "2026-07-27",
+      "verified_venue": "Yellow Brick Road, 2630 E 15th St",
+      "verified_by": "seed-baseline",
+      "verified_through": null,
+      "note": ""
+    },
+    "pflag tulsa monthly meeting": {
+      "status": "active",
+      "last_verified": "2026-07-27",
+      "verified_venue": "110 S Hartford Ave, Suite 2516, Tulsa",
+      "verified_by": "live-scrape:community_groups",
       "verified_through": null,
       "note": ""
     }
