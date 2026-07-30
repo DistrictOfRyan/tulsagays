@@ -443,11 +443,45 @@ class InstagramOrgScraper(BaseScraper):
         if events is None:
             events = self._extract_with_regex(posts)
 
-        # Keep only events with a parseable date inside the current Mon–Sun week.
-        in_week = [e for e in events if self._in_week(e.get("date", ""))]
-        logger.info("[%s] %d candidate events, %d in current week",
-                    self.source_name, len(events), len(in_week))
+        # Guard 1 — announcement window: an event may not be dated more than
+        # MAX_ANNOUNCE_GAP_DAYS after (or before) the post that announced it. Bars
+        # post about events close to when they happen; a stale post's relative
+        # weekday ("FRIDAY") must never be projected weeks forward onto the current
+        # week. This is the 2026-07-27 YBR fix: a 2026-07-08 "DJ Kylie FRIDAY" post
+        # was being published as this Friday (23 days later). Events with no known
+        # source-post date skip this check (absolute-dated captions still rely on
+        # the in-week filter below).
+        fresh = []
+        for e in events:
+            if self._within_announce_window(e.get("date", ""), e.get("_src_posted_on", "")):
+                e.pop("_src_posted_on", None)
+                fresh.append(e)
+        dropped = len(events) - len(fresh)
+        # Guard 2 — keep only events inside the current Mon–Sun week.
+        in_week = [e for e in fresh if self._in_week(e.get("date", ""))]
+        logger.info("[%s] %d candidate events, %d dropped stale-projection, %d in current week",
+                    self.source_name, len(events), dropped, len(in_week))
         return in_week
+
+    # Bars announce events close to when they happen. An event dated more than
+    # this many days after its announcing post is a stale relative-date projection
+    # (or an unrelated future teaser we can't confirm) — do not publish it.
+    MAX_ANNOUNCE_GAP_DAYS = 10
+
+    @classmethod
+    def _within_announce_window(cls, event_date: str, posted_on: str) -> bool:
+        """True if event_date is plausibly announced by a post on posted_on:
+        within [posted_on - 1 day, posted_on + MAX_ANNOUNCE_GAP_DAYS]. Unknown
+        posted_on -> True (can't judge; other guards apply)."""
+        if not posted_on or not event_date:
+            return True
+        try:
+            ed = datetime.strptime(event_date[:10], "%Y-%m-%d")
+            pd = datetime.strptime(posted_on[:10], "%Y-%m-%d")
+        except (ValueError, TypeError):
+            return True
+        gap = (ed - pd).days
+        return -1 <= gap <= cls.MAX_ANNOUNCE_GAP_DAYS
 
     # ── LLM extraction (preferred) ──────────────────────────────────────────────
     def _extract_with_llm(self, posts: List[Dict]) -> Optional[List[Dict]]:
@@ -540,8 +574,9 @@ class InstagramOrgScraper(BaseScraper):
             except (TypeError, ValueError):
                 idx = -1
             url = posts[idx]["url"] if 0 <= idx < len(posts) else self.profile_url
+            src_posted = posts[idx]["posted_on"] if 0 <= idx < len(posts) else ""
             venue = (item.get("venue") or "").strip() or self.default_venue
-            events.append(self.make_event(
+            ev = self.make_event(
                 name=self._clean_name(name),
                 date=date,
                 time=(item.get("time") or "").strip(),
@@ -549,7 +584,12 @@ class InstagramOrgScraper(BaseScraper):
                 description=self.blurb,
                 url=url,
                 priority=self.priority,
-            ))
+            )
+            # Tag with the announcing post's date so the caller can reject stale
+            # relative-date projections (a month-old "FRIDAY" post becoming this
+            # Friday — the 2026-07-27 YBR "DJ Kylie" bug).
+            ev["_src_posted_on"] = src_posted
+            events.append(ev)
         logger.info("[%s] LLM extracted %d dated events", self.source_name, len(events))
         return events
 
@@ -738,7 +778,7 @@ class InstagramOrgScraper(BaseScraper):
             time_str = tmatch.group(1).upper() if tmatch else ""
             ev_name = self._derive_event_name(caption, self.default_venue)
 
-            events.append(self.make_event(
+            ev = self.make_event(
                 name=ev_name,
                 date=date_str,
                 time=time_str,
@@ -746,7 +786,9 @@ class InstagramOrgScraper(BaseScraper):
                 description=self.blurb,
                 url=p["url"],
                 priority=self.priority,
-            ))
+            )
+            ev["_src_posted_on"] = p.get("posted_on", "")
+            events.append(ev)
         logger.info("[%s] Regex fallback extracted %d dated events",
                     self.source_name, len(events))
         return events

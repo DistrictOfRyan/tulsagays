@@ -139,6 +139,24 @@ def deterministic_pass(manifest: dict) -> tuple:
             elif e.get("never_feature") or _is_never_feature(e):
                 errors.append(f"[final] {day} features a never-feature/service event: '{e.get('name')}'")
 
+    # 1a.2 PARTNER-SOURCE gate (William 2026-07-27). Yellow Brick Road is a
+    # partner we promote; on 2026-07-27 we published YBR nights that weren't
+    # happening (a stale hardcoded flyer + a stale IG post projected forward) and
+    # YBR called it out. YBR events may ONLY come from their live Instagram
+    # (source 'ybr_ig'). A featured YBR event from any other source (recurring
+    # assumption, google_events, etc.) is a HARD block — never post a ghost event
+    # for a partner. See [[feedback_tulsagays_ybr_ig_only]].
+    def _is_ybr(e):
+        v = (e.get("venue") or "").lower()
+        return ("yellow brick" in v) or ("ybr" in v) or ("2630 e 15th" in v)
+    for day, evs in featured_by_day.items():
+        for e in evs:
+            if _is_ybr(e) and (e.get("source") or "") != "ybr_ig":
+                errors.append(
+                    f"[final] {day} features a YBR event NOT from YBR's Instagram "
+                    f"(source='{e.get('source')}'): '{e.get('name')}'. YBR is a "
+                    f"partner — only live @tulsaybr (ybr_ig) events may be featured.")
+
     # 1b. Featured picks per day must be distinct real events.
     for day, evs in featured_by_day.items():
         for i in range(len(evs)):

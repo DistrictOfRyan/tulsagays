@@ -76,39 +76,19 @@ RECURRING = [
     # events are now also barred from EOTW in eotw_selector.select_eotw.
 
     # ── Yellow Brick Road (YBR) — Tulsa's only lesbian bar, INCLUSIVE ──────────
-    # Added 2026-06-24 per William: YBR's events weren't surfacing because the
-    # IG-only scraper (ybr_ig) depends on an Instagram session that keeps dying.
-    # These are YBR's OWN published recurring schedule, read live + verified from
-    # @tulsaybr's "Monthly Events" + "June 2026" flyers (2026-06-24), so YBR shows
-    # EVERY week without depending on the IG session. The ybr_ig scraper still
-    # catches one-off specials on top of these. Priority 1 = featured (William
-    # 2026-06-20); content/generator adds the "everyone welcome" inclusive note.
-    # NOTE: "RuPaul watch party every Friday WHEN IN SEASON" is intentionally NOT
-    # added — the in-season condition can't be auto-verified (no fabrication).
-    {"name": "Trivia Night at YBR", "day": "Tuesday", "freq": "weekly",
-     "time": "7:00 PM", "venue": "Yellow Brick Road, 2630 E 15th St",
-     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
-    {"name": "Free Pool & Darts at YBR", "day": "Wednesday", "freq": "weekly",
-     "time": "", "venue": "Yellow Brick Road, 2630 E 15th St",
-     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
-    {"name": "Babes & Bi-cons Dance Party at YBR", "day": "Saturday", "freq": "1st",
-     "time": "9:30 PM", "venue": "Yellow Brick Road, 2630 E 15th St",
-     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
-    {"name": "DJ Kylie Dance Party at YBR", "day": "Friday", "freq": "2nd",
-     "time": "9:30 PM", "venue": "Yellow Brick Road, 2630 E 15th St",
-     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
-    {"name": "Open Stage at YBR", "day": "Thursday", "freq": "3rd",
-     "time": "9:00 PM", "venue": "Yellow Brick Road, 2630 E 15th St",
-     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
-    {"name": "KATNIP at YBR", "day": "Friday", "freq": "3rd",
-     "time": "9:00 PM", "venue": "Yellow Brick Road, 2630 E 15th St",
-     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
-    {"name": "Gaymer Night at YBR", "day": "Monday", "freq": "last",
-     "time": "7:00 PM", "venue": "Yellow Brick Road, 2630 E 15th St",
-     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
-    {"name": "Karaoke at YBR (with Party Possum)", "day": "Thursday", "freq": "last",
-     "time": "", "venue": "Yellow Brick Road, 2630 E 15th St",
-     "url": "https://www.instagram.com/tulsaybr/", "priority": 1},
+    # REMOVED 2026-07-27 (William). YBR is a PARTNER we promote, and on 2026-06-24
+    # a hardcoded copy of YBR's "June 2026" flyer schedule (Trivia Tue, Free Pool &
+    # Darts Wed, Babes & Bi-cons Sat, DJ Kylie Fri, Open Stage/KATNIP, Gaymer Night,
+    # Karaoke) was added here as a stopgap while the IG session kept dying. That
+    # flyer went stale, YBR's schedule changed, and we published nights that were
+    # NOT happening (no DJ Friday, etc.). YBR messaged us — a real partner-trust
+    # problem. The @tulsaybr Instagram scraper (source 'ybr_ig', Meta
+    # business_discovery API) now works reliably, so YBR events come ONLY from
+    # their ACTUAL current Instagram posts — never a hardcoded assumption. If the
+    # IG scrape has a bad week, YBR simply isn't featured that week; we would
+    # rather under-promote than post a ghost event for a partner. Enforced as a
+    # HARD gate in tools/preflight_post.py (a featured YBR event MUST be ybr_ig).
+    # Do NOT re-add hardcoded YBR nights here — see [[feedback_tulsagays_ybr_ig_only]].
 
     {
         "name": "Sunday Showdown Open Talent Night",
