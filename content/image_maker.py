@@ -170,6 +170,12 @@ _VENUE_JUNK_EXACT = {
     'tickets', 'tickets & info', 'more info', 'more information', 'mar',
     'tba', 'tbd', 'online', 'virtual',
 }
+# Relative-date leakage: Eventbrite / Google Events cards put "in 5 days",
+# "Tomorrow" etc. where the venue should be. Pattern, not exact-match, because
+# the number changes daily. Kept in sync with tools/gen_website_html.py.
+_VENUE_JUNK_RE = re.compile(
+    r'^(in\s+(a|an|\d+)\s+(day|days|hour|hours|week|weeks|month|months)'
+    r'|today|tonight|tomorrow|yesterday|this\s+\w+|next\s+\w+)$', re.I)
 # Known address fragments → display name. City-specific. Read from config.VENUE_NAME_MAP
 # with safe empty fallback for new-city scaffolds.
 _VENUE_NAME_MAP = getattr(config, "VENUE_NAME_MAP", {})
@@ -183,6 +189,8 @@ def clean_venue(raw: str) -> str:
     if any(low.startswith(j) for j in _VENUE_JUNK):
         return ''
     if low.rstrip('.!') in _VENUE_JUNK_EXACT:
+        return ''
+    if _VENUE_JUNK_RE.match(low.rstrip('.!')):
         return ''
     # Map known address fragments to business names
     for addr, name in _VENUE_NAME_MAP.items():

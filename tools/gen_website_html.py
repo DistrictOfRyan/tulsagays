@@ -27,6 +27,14 @@ def _is_garbage(ev):
     return False
 events = [e for e in events if not _is_garbage(e)]
 
+# Relative-date leakage: Eventbrite / Google Events cards put "in 5 days",
+# "Tomorrow" etc. where the venue should be, and it shipped to the live site as
+# the venue on 85 event cards AND into the schema.org location name (2026-07-31).
+# Pattern, not exact-match, because the number varies day to day.
+_VENUE_JUNK_RE = re.compile(
+    r'^(in\s+(a|an|\d+)\s+(day|days|hour|hours|week|weeks|month|months)'
+    r'|today|tonight|tomorrow|yesterday|this\s+\w+|next\s+\w+)$', re.I)
+
 # Voice rule #1 at the DATA level: strip em/en dashes from every event field once,
 # up front, so no downstream path (cards via esc(), schema.org JSON-LD via
 # json.dumps, share pages, og/meta descriptions) can ship a dash to the website.
@@ -38,6 +46,24 @@ try:
                 _e[_f] = _sed_field(_e[_f])
 except Exception:
     pass
+
+# Same DATA-level treatment for relative-date venue leakage. Eventbrite / Google
+# Events cards put "in 5 days" where the venue belongs; the venue field renders
+# through _clean_venue(), but by the time we get here the phrase is also BAKED
+# INTO generated copy ("Summer Meltdown Half Marathon at in 5 days"). That
+# shipped to the live site on 85 cards and into the schema.org location name
+# (2026-07-31). Scrub the sentence fragment once, up front, so no downstream
+# path can emit it. The generator no longer produces it (see _usable_venue).
+_REL_DATE_PHRASE_RE = re.compile(
+    r'\s+at\s+(in\s+(?:a|an|\d+)\s+(?:day|days|hour|hours|week|weeks|month|months)'
+    r'|today|tonight|tomorrow|yesterday|tba|tbd)\b(?=[\s.,!?]|$)', re.I)
+for _e in events:
+    for _f in ('description', 'website_description'):
+        if _e.get(_f):
+            _e[_f] = _REL_DATE_PHRASE_RE.sub('', _e[_f])
+    # And the venue field itself, so schema.org location never carries it.
+    if _e.get('venue') and _VENUE_JUNK_RE.match(str(_e['venue']).strip().rstrip('.!')):
+        _e['venue'] = ''
 
 # Show ALL events on the website — gay score distinguishes LGBTQ events from general ones.
 # All city-specific data (venues, source keys, anchor keywords) reads from config.py.
@@ -475,6 +501,8 @@ def _clean_venue(raw: str) -> str:
     if any(low.startswith(j) for j in _VENUE_JUNK):
         return ''
     if low.rstrip('.!') in _VENUE_JUNK_EXACT:
+        return ''
+    if _VENUE_JUNK_RE.match(low.rstrip('.!')):
         return ''
     # Map known address fragments to business names
     for addr, name in _VENUE_NAME_MAP.items():
