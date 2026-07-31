@@ -47,23 +47,19 @@ try:
 except Exception:
     pass
 
-# Same DATA-level treatment for relative-date venue leakage. Eventbrite / Google
-# Events cards put "in 5 days" where the venue belongs; the venue field renders
-# through _clean_venue(), but by the time we get here the phrase is also BAKED
-# INTO generated copy ("Summer Meltdown Half Marathon at in 5 days"). That
-# shipped to the live site on 85 cards and into the schema.org location name
-# (2026-07-31). Scrub the sentence fragment once, up front, so no downstream
-# path can emit it. The generator no longer produces it (see _usable_venue).
-_REL_DATE_PHRASE_RE = re.compile(
-    r'\s+at\s+(in\s+(?:a|an|\d+)\s+(?:day|days|hour|hours|week|weeks|month|months)'
-    r'|today|tonight|tomorrow|yesterday|tba|tbd)\b(?=[\s.,!?]|$)', re.I)
+# DATA-level scrub of scraper artifacts, using the ONE shared implementation
+# (content/textclean.py) so the website, the slides and the weekend carousel
+# cannot drift apart again. Done once, up front, so no downstream path (cards,
+# schema.org JSON-LD, share pages, og/meta tags) can emit an artifact.
+from content.textclean import clean_time as _tc_time, scrub_copy as _tc_copy,     is_junk_venue as _tc_junk_venue
 for _e in events:
+    if _e.get('time'):
+        _e['time'] = _tc_time(_e['time'])
+    if _e.get('venue') and _tc_junk_venue(_e['venue']):
+        _e['venue'] = ''
     for _f in ('description', 'website_description'):
         if _e.get(_f):
-            _e[_f] = _REL_DATE_PHRASE_RE.sub('', _e[_f])
-    # And the venue field itself, so schema.org location never carries it.
-    if _e.get('venue') and _VENUE_JUNK_RE.match(str(_e['venue']).strip().rstrip('.!')):
-        _e['venue'] = ''
+            _e[_f] = _tc_copy(_e[_f])
 
 # Show ALL events on the website — gay score distinguishes LGBTQ events from general ones.
 # All city-specific data (venues, source keys, anchor keywords) reads from config.py.

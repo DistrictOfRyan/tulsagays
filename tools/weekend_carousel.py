@@ -142,39 +142,10 @@ def _clean_venue(raw: str) -> str:
     return v
 
 
-_TIME_RE = re.compile(r"(\d{1,2}):(\d{2})\s*([ap])\.?m\.?", re.I)
-
-
-def clean_time(raw: str) -> str:
-    """Repair the concatenated time strings the scrapers sometimes emit.
-
-    Live W31 data carried values like "6:00 PM8:30 PM18:0020:30" (12-hour
-    start, 12-hour end, then the same range again in 24-hour, all jammed
-    together). Rendering that verbatim is one of the things that made the post
-    look careless. Returns "" when nothing sane can be recovered.
-    """
-    s = (raw or "").strip().replace(" ", " ").replace(" ", " ")
-    if not s:
-        return ""
-    found = _TIME_RE.findall(s)
-    if not found:
-        # Bare 24-hour or unparseable: keep only if it is short and clean.
-        return s if len(s) <= 20 and not re.search(r"\d{4}", s) else ""
-
-    def fmt(m):
-        hh, mm, ap = m
-        return f"{int(hh)}:{mm} {ap.upper()}M"
-
-    # De-duplicate while preserving order (the 24-hour tail repeats the range).
-    seen, times = set(), []
-    for m in found:
-        t = fmt(m)
-        if t not in seen:
-            seen.add(t)
-            times.append(t)
-    if len(times) >= 2:
-        return f"{times[0]} - {times[1]}"
-    return times[0]
+# Time repair and copy scrubbing live in ONE place (content/textclean.py) so
+# the carousel, the website generator and the slide renderer cannot drift.
+from content import textclean as _tc  # noqa: E402
+from content.textclean import clean_time, scrub_copy  # noqa: E402
 
 
 # Marks of raw, un-voiced scraper text: run-on concatenation from stripped
@@ -221,22 +192,25 @@ def sanitize_pitch(text: str) -> str:
     that ran off both edges of the Sunday slide. Returns "" on any violation,
     which renders as no pitch line, which is always better than debris.
     """
-    t = (text or "").strip()
-    if not t:
+    raw = (text or "").strip()
+    if not raw:
         return ""
-    low = t.lower()
-    if "http" in low or "www." in low or "fbclid" in low or ".com/" in low:
+    # DETECT on the original using the shared patterns, then DROP. The website
+    # scrubs an artifact out and keeps the sentence, because a card has room to
+    # carry a slightly shortened line. A slide does not: a sentence with its
+    # verb phrase surgically removed reads worse than no sentence at all, and
+    # there is no way to recover a mangled link mid-render. Same patterns, one
+    # source of truth, deliberately different verdicts.
+    low = raw.lower()
+    if _tc.URL_RE.search(raw) or "fbclid" in low or ".com/" in low:
         return ""
-    # Relative-date leakage from the scrapers, in any position. The trailing
-    # form catches a fragment whose "days" was already truncated away.
-    if re.search(r"\bin \d+ days?\b|\bin a day\b|\bat TBD\b", t, re.I):
-        return ""
-    if re.search(r"\bin \d+\s*\.{0,3}\s*$", t):
+    if _tc.REL_DATE_PHRASE_RE.search(raw) or _tc.REL_DATE_BARE_RE.search(raw):
         return ""
     # A single token this long cannot wrap and will overflow the slide.
-    if any(len(tok) > 30 for tok in t.split()):
+    if any(len(tok) > 30 for tok in raw.split()):
         return ""
-    return t.replace("—", ",").replace("–", "-")
+    # Clean copy: still run the shared tidy for dashes and whitespace.
+    return scrub_copy(raw)
 
 
 def _fallback_pitch(e: Dict) -> str:

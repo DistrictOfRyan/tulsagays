@@ -1190,20 +1190,95 @@ def _desc_gay_bar(ev, score):
     )
 
 
+# The catch-all opener used to be ONE hardcoded sentence ("Getting out of the
+# house and doing something intentional with your time is its own reward"). It
+# is on the repo's own banned-phrase list, and because everything unmatched
+# falls through here it shipped on 92 of 182 events in W31, over the 40%
+# templated-filler threshold that hard-blocks the carousel. Varied openers,
+# hash-picked per event so the same event reads the same way week to week.
+_GENERIC_OPENERS = [
+    "{n}{at}. Not every good night announces itself, sugar, and this is one of the quiet ones worth showing up for.",
+    "{n}{at}. Low stakes, easy exit, and a decent chance you leave in a better mood than you arrived in.",
+    "{n}{at}. Show up, take up space, and let the room come to you. That is the whole assignment.",
+    "{n}{at}. The kind of plan you can say yes to without rearranging your week, honey.",
+    "{n}{at}. Come as you are, stay as long as it is fun, and leave whenever you like.",
+    "{n}{at}. A reason to put on real clothes and be somewhere other than your couch, darling.",
+    "{n}{at}. Good odds on interesting people and no pressure to perform for any of them.",
+    "{n}{at}. Bring a friend or bring nobody, sugar. Both work here.",
+]
+# Best-time tips keyed to the hour we actually know about the event.
+_GENERIC_TIPS = {
+    "morning": "Get there early if you want the calm version before the room fills up.",
+    "afternoon": "Mid-afternoon is the sweet spot, busy enough to feel alive, quiet enough to talk.",
+    "evening": "Arrive in the first half hour if you want to settle in before the crowd lands.",
+    "night": "Roll in after the first rush and you will walk into a room that is already warm.",
+    "": "Check the time before you go, then give yourself a few extra minutes to find parking.",
+}
+
+
+def _time_bucket(ev):
+    m = re.search(r'(\d{1,2})(?::(\d{2}))?\s*([ap])\.?m\.?', ev.get('time') or '', re.I)
+    if not m:
+        return ""
+    hour = int(m.group(1)) % 12
+    if m.group(3).lower() == 'p':
+        hour += 12
+    if hour < 11:
+        return "morning"
+    if hour < 16:
+        return "afternoon"
+    if hour < 20:
+        return "evening"
+    return "night"
+
+
+# Services are not a night out. Sending "put on real clothes and get off your
+# couch, darling" to a health clinic or a legal aid session is both wrong in
+# register and quietly insulting to the person who needs it. Detected here and
+# routed to a plain, respectful opener instead.
+_SERVICE_SIGNALS = (
+    'clinic', 'health', 'testing', 'screening', 'vaccin', 'therapy',
+    'counsel', 'legal aid', 'fair housing', 'name change', 'gender marker',
+    'food pantry', 'food bank', 'resource fair', 'benefits', 'fafsa',
+    'support group', 'recovery', 'harm reduction',
+)
+_SERVICE_OPENERS = [
+    "{n}{at}. Free, confidential, and staffed by people who do this every week.",
+    "{n}{at}. No appointment anxiety needed. Show up, ask questions, take what you need.",
+    "{n}{at}. Practical help from people who will not make you explain yourself twice.",
+    "{n}{at}. Low barrier and judgment free. Bring a friend if that makes it easier.",
+]
+
+
+def _is_service(ev):
+    blob = f"{ev.get('name','')} {ev.get('venue','')}".lower()
+    return any(sig in blob for sig in _SERVICE_SIGNALS)
+
+
+# A bare city/state is not a venue and reads badly as "at Tulsa, OK".
+_NON_VENUE_RE = re.compile(
+    r'^(tulsa|broken arrow|jenks|owasso|bixby|sand springs|sapulpa)'
+    r'(\s*,\s*(ok|okla|oklahoma))?$', re.I)
+
+
 def _desc_generic(ev, score):
     n = ev.get('name', '')
     v = ev.get('venue', '')
-    base = (
-        f"{n}{f' at {v}' if v else ''}. Getting out of the house and doing something "
-        "intentional with your time is its own reward, and this is worth putting on "
-        "your calendar and actually attending rather than saving and forgetting about. "
-    )
+    if v and _NON_VENUE_RE.match(v.strip()):
+        v = ''
+    at = f' at {v}' if v else ''
+    if _is_service(ev):
+        idx = sum(ord(c) for c in (n + (ev.get('date') or ''))) % len(_SERVICE_OPENERS)
+        return _SERVICE_OPENERS[idx].format(n=n, at=at)
+    # Stable per-event pick: same event, same line, every regeneration.
+    idx = sum(ord(c) for c in (n + (ev.get('date') or ''))) % len(_GENERIC_OPENERS)
+    base = _GENERIC_OPENERS[idx].format(n=n, at=at) + " "
+    base += _GENERIC_TIPS[_time_bucket(ev)]
     if score <= 2:
         base += (
-            "The queer community has always shown up for things that are worth showing "
-            "up for, and the best rooms are rarely the ones that announce themselves as "
-            "such ahead of time. Interesting spaces attract interesting people. "
-            "Go find out who's there."
+            " The queer community has always shown up for things worth showing up for, "
+            "and the best rooms are rarely the ones that announce themselves ahead of "
+            "time. Interesting spaces attract interesting people. Go find out who is there."
         )
     return base
 
@@ -1325,14 +1400,26 @@ def _is_garbage(ev):
     return name.lower() in _GARBAGE_NAMES
 events = [e for e in events if not _is_garbage(e)]
 
+# Hand-written copy is never machine-overwritten. Manual entries and venue-dig
+# / DM-tip finds carry copy a human wrote in site voice for that specific event;
+# regenerating over it replaces something true and specific with a template.
+_HANDWRITTEN_SOURCES = {'manual', 'venue_flyer_dig', 'submission'}
+
 updated = 0
+kept = 0
 for ev in events:
+    if (ev.get('source') in _HANDWRITTEN_SOURCES
+            and (ev.get('website_description') or '').strip()):
+        kept += 1
+        continue
     score = flamingo_score(ev)
     website_desc, slide_desc = _generate_sassy_descriptions(ev, score)
     ev['website_description'] = website_desc
     ev['slide_description']   = slide_desc
     updated += 1
     print(f"  [{score}🦩] {ev.get('name','')[:55]}")
+if kept:
+    print(f"  (kept {kept} hand-written descriptions untouched)")
 
 if isinstance(raw, dict):
     raw['events'] = events
