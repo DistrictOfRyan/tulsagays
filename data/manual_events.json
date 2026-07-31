@@ -694,5 +694,45 @@
     "url": "https://www.instagram.com/p/DbMiDVUx3AE/",
     "source": "venue_flyer_dig",
     "priority": 2
+  },
+  {
+    "name": "Ho You Think You Can Dance with Shanel Sterling & DJ Konnect",
+    "date": "2026-07-31",
+    "time": "Doors 9:00 PM",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DbY5N3Czs7T/",
+    "source": "venue_flyer_dig",
+    "priority": 1,
+    "website_description": "Shanel Sterling hosts and performs while DJ Konnect runs dance, pop and hip-hop all night. The dance competition takes the first four people who sign up at the DJ booth, and the winner walks with a hundred dollars. 18 to enter, doors at 9. Two floors, a big dance floor, and a patio when you need air."
+  },
+  {
+    "name": "STARPOWER ft. Shanel Sterling, Londen D. Raine, Nikki Fae, Day Len, CheriBomb LeKohl",
+    "date": "2026-08-01",
+    "time": "Doors 9:00 PM, Show 9:30 PM - 10:30 PM",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DbY5q16lPrW/",
+    "source": "venue_flyer_dig",
+    "priority": 1,
+    "website_description": "Five queens, one hour, first Saturday of the month. Doors at 9, showtime 9:30 to 10:30, and the party keeps going after the last number. 21 and up. Get there by 9:15 if you want a spot where you can actually see."
+  },
+  {
+    "name": "Babes & Bi-cons: Val's Birthday Edition with DJ Kylie and Katnip",
+    "date": "2026-08-01",
+    "time": "9:30 PM",
+    "venue": "Yellow Brick Road, 2630 E 15th St",
+    "url": "https://www.instagram.com/p/DbTW4JWx1qw/",
+    "source": "venue_flyer_dig",
+    "priority": 1,
+    "website_description": "The usual Babes and Bi-cons dance floor, except it is Val's birthday and the bar is making a night of it. Drink feature, a raffle, and SuperGay vodka on special. Bring a box of menstrual products and you are entered to win a fifty dollar Mother Road Market gift card. Part of the haul goes to a queer friendly health clinic, the rest stocks the bar's own bathrooms."
+  },
+  {
+    "name": "Clothing Swap and Boys Night",
+    "date": "2026-08-03",
+    "time": "6:00 PM",
+    "venue": "Yellow Brick Road, 2630 E 15th St",
+    "url": "https://www.instagram.com/p/DbWYbxkRigZ/",
+    "source": "venue_flyer_dig",
+    "priority": 1,
+    "website_description": "Bring what you never wear, leave with something you will. Free pizza lands at 7 and there is wrestling on the TV because it is boys night. Doors at 6, and the early crowd gets the good rack."
   }
 ]
