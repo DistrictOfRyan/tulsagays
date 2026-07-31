@@ -192,7 +192,7 @@ def map_block(maps):
     for m in maps:
         embed_url = f"https://maps.google.com/maps?q={m['q']}&output=embed"
         parts.append(f"""<div class="venue-map-item">
-    <p class="venue-map-name">{m['name']} &mdash; {m['address']}</p>
+    <p class="venue-map-name">{m['name']}: {m['address']}</p>
     <iframe src="{embed_url}" width="100%" height="250" style="border:0;border-radius:6px;display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map: {m['name']}"></iframe>
 </div>""")
     parts.append('</div>')

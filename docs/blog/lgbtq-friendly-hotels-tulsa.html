@@ -229,12 +229,10 @@
             white-space: normal;
             overflow: visible;
         }
-        .post-figure.pf-right figcaption,
-        .post-figure.pf-left figcaption { text-align: left; }
+        .post-figure.pf-right figcaption.post-figure.pf-left figcaption { text-align: left; }
         .post-clearfix { clear: both; }
         @media (max-width: 600px) {
-            .post-figure.pf-right,
-            .post-figure.pf-left {
+            .post-figure.pf-right.post-figure.pf-left {
                 float: none;
                 width: 100%;
                 margin: 1.5rem 0;
@@ -272,7 +270,7 @@
         .lew-day { color: var(--gold,#f59e0b); min-width: 40px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; padding-top: 0.1rem; }
         .lew-name { color: var(--text-primary,#fff); flex: 1; }
         .lew-venue { color: var(--text-muted,#888); font-size: 0.78rem; white-space: nowrap; }
-        .lew-loading, .lew-empty { color: var(--text-muted,#888); font-size: 0.85rem; }
+        .lew-loading.lew-empty { color: var(--text-muted,#888); font-size: 0.85rem; }
         .lew-more { display: inline-block; margin-top: 0.75rem; font-size: 0.8rem; color: var(--gold,#f59e0b); border: none !important; }
 
         /* Newsletter CTA */
@@ -356,7 +354,7 @@
 </nav>
 <figure class="post-figure pf-full" style="margin-top:0;">
 <img alt="LGBTQ friendly hotels Tulsa Oklahoma downtown skyline where to stay gay travel" loading="eager" src="img/wikimedia/Downtown_Tulsa_Skyline.jpg" style="max-height:460px;"/>
-<figcaption>Photo: Wikimedia Commons — Downtown Tulsa, where nearly every hotel worth booking happens to be</figcaption>
+<figcaption>Photo: Wikimedia Commons, Downtown Tulsa, where nearly every hotel worth booking happens to be</figcaption>
 </figure>
 <div class="post-clearfix"></div>
 <p>
@@ -379,7 +377,7 @@
             </p>
 <figure class="post-figure pf-right">
 <img alt="Mayo Hotel Tulsa Oklahoma historic 1925 Art Deco LGBTQ friendly downtown accommodation rooftop bar" loading="lazy" src="img/wikimedia/Mayo_Hotel_Tulsa.jpg"/>
-<figcaption>Photo: Camerafiend / CC BY-SA 3.0 (Wikimedia Commons) — The Mayo Hotel, 1925, restored to its full deco glory</figcaption>
+<figcaption>Photo: Camerafiend / CC BY-SA 3.0 (Wikimedia Commons). The Mayo Hotel, 1925, restored to its full deco glory</figcaption>
 </figure>
 <div class="venue-callout">
 <span class="venue-name"><a href="https://www.themayohotel.com" rel="noopener" target="_blank">The Mayo Hotel</a></span>

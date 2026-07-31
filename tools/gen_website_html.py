@@ -768,7 +768,7 @@ with open(_idx_path, encoding='utf-8') as _f:
 _week_start = day_dates[DAYS[0]].strftime('%B ') + str(day_dates[DAYS[0]].day)
 _week_end_dt = day_dates[DAYS[-1]]
 _week_end = _week_end_dt.strftime('%B ') + str(_week_end_dt.day) + ', ' + str(_week_end_dt.year)
-_new_date_range = f'<!-- DATE-RANGE -->{_week_start} &mdash; {_week_end}<!-- /DATE-RANGE -->'
+_new_date_range = f'<!-- DATE-RANGE -->{_week_start} to {_week_end}<!-- /DATE-RANGE -->'
 _html2 = re.sub(r'<!-- DATE-RANGE -->.*?<!-- /DATE-RANGE -->', _new_date_range, _html2)
 
 # 2. EOTW banner (between <!-- EOTW-START --> and <!-- EOTW-END --> markers)

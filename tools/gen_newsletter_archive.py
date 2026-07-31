@@ -73,7 +73,7 @@ def render_archive(broadcasts):
 <meta name="description" content="Past issues of the TulsaGays weekly LGBTQ+ event newsletter for Tulsa, Oklahoma.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="{SITE}/issues/">
-<meta property="og:title" content="Newsletter Archive — Tulsa Gays">
+<meta property="og:title" content="Newsletter Archive: Tulsa Gays">
 <meta property="og:description" content="Every weekly LGBTQ+ event digest we've sent, archived and public.">
 <meta property="og:url" content="{SITE}/issues/">
 <meta property="og:image" content="{SITE}/images/og-event.png">

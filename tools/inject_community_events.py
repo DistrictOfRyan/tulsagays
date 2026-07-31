@@ -79,7 +79,7 @@ def build_card(ev: dict, css_var: str) -> str:
     end = esc(ev.get('end_time', ''))
     time_str = start
     if end:
-        time_str = f'{start} &ndash; {end}'
+        time_str = f'{start} to {end}'
 
     desc = esc(ev.get('description', ''))
     url = (ev.get('event_url', '') or ev.get('url', '')).strip()

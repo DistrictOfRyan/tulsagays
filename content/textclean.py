@@ -22,8 +22,9 @@ from __future__ import annotations
 import re
 from typing import Optional
 
-__all__ = ["clean_time", "clean_venue_junk", "scrub_copy", "is_junk_venue",
-           "URL_RE", "REL_DATE_PHRASE_RE", "REL_DATE_BARE_RE", "JUNK_VENUE_RE"]
+__all__ = ["clean_time", "clean_venue_junk", "scrub_copy", "scrub_voice",
+           "is_junk_venue", "URL_RE", "REL_DATE_PHRASE_RE", "REL_DATE_BARE_RE",
+           "JUNK_VENUE_RE"]
 
 # ── Venue ────────────────────────────────────────────────────────────────────
 
@@ -98,6 +99,37 @@ REL_DATE_BARE_RE = re.compile(
     r'|\s+in\s+\d+\s*\.{0,3}\s*$', re.I)
 URL_RE = re.compile(r'\S*(?:https?://|www\.|fbclid=)\S*', re.I)
 
+# ── Voice ────────────────────────────────────────────────────────────────────
+
+# Scraped venue blurbs arrive full of AI-marketing filler, and it renders on the
+# website cards under William's name. Readers told him the site "reads like AI"
+# (2026-07-31), so the same phrases preflight_post.py BLOCKS on a slide are also
+# rewritten here, where the website copy is built. Grammar-preserving swaps only.
+_VOICE_SUBS = [
+    (re.compile(r"\bwhether you're\b", re.I), "if you're"),
+    (re.compile(r"\bwhether you are\b", re.I), "if you are"),
+    (re.compile(r"\bvibrant community\b", re.I), "community"),
+    (re.compile(r"\bsomething for everyone\b", re.I), "plenty going on"),
+    (re.compile(r"\bnestled\b", re.I), "tucked"),
+    (re.compile(r"\bdon'?t miss out\b", re.I), "come through"),
+    (re.compile(r"\bcome one,? come all\b", re.I), "everybody's welcome"),
+    (re.compile(r"\bfun for all ages\b", re.I), "all ages"),
+    (re.compile(r"\blook no further\b", re.I), "this is it"),
+    (re.compile(r"\bhidden gem\b(?![^.]{0,20}Hangout)", re.I), "under-the-radar spot"),
+]
+
+
+def scrub_voice(text: Optional[str]) -> str:
+    """Swap AI-marketing filler for plain phrasing. Safe on empty input.
+
+    Keeps the original capitalization, so a phrase that opened the sentence does
+    not come back lowercase ("Whether you're new" -> "If you're new").
+    """
+    t = text or ""
+    for rx, rep in _VOICE_SUBS:
+        t = rx.sub(lambda m, r=rep: r[0].upper() + r[1:] if m.group(0)[:1].isupper() else r, t)
+    return t
+
 
 def scrub_copy(text: Optional[str], max_token: int = 40) -> str:
     """Clean generated/scraped prose for display.
@@ -113,6 +145,7 @@ def scrub_copy(text: Optional[str], max_token: int = 40) -> str:
     t = REL_DATE_PHRASE_RE.sub('', t)
     t = REL_DATE_BARE_RE.sub('', t)
     t = t.replace('—', ',').replace('–', '-')
+    t = scrub_voice(t)
     t = " ".join(tok for tok in t.split() if len(tok) <= max_token)
     t = re.sub(r'\s+([.,!?])', r'\1', t)      # space before punctuation
     t = re.sub(r'\(\s*\)|\[\s*\]', '', t)     # emptied brackets
@@ -161,6 +194,10 @@ def _selftest() -> int:
     chk(scrub_copy("A line that trails off in 6...") == "A line that trails off.",
         "truncated relative-date tail removed")
     chk("—" not in scrub_copy("A line — with a dash"), "em dash converted")
+    chk(scrub_copy("Whether you're new or a regular, stop in.")
+        == "If you're new or a regular, stop in.", "AI filler phrase rewritten")
+    chk("nestled" not in scrub_copy("A bar nestled on Cherry Street."),
+        "stock adjective rewritten")
     chk("x" * 45 not in scrub_copy("Tickets " + "x" * 45), "unwrappable token dropped")
     chk(scrub_copy("Claim your corner, sugar, and settle in.")
         == "Claim your corner, sugar, and settle in.", "clean copy untouched")
