@@ -340,13 +340,27 @@ def run(week_key=None):
     # NO confirmed venue for this month is a hard block -- that is exactly how the
     # stale Equality Center venue went out. Resurfaced-ledger venues get eyeballed.
     try:
-        from scraper.venue_overrides import load_venue_varies, has_override_for
+        from scraper.venue_overrides import (load_venue_varies, has_override_for,
+                                              override_venue_mismatch)
         _varies = load_venue_varies()
         for e in eotw + featured_all:
             nm = e.get("name", "?")
             low = nm.lower()
             d = e.get("date", "")
-            if any(v in low for v in _varies) and not has_override_for(nm, d):
+            # OUTCOME CHECK (2026-08-03): an override EXISTING is not the same as the
+            # deck USING it. Overrides are applied during scrape; a per-week deck built
+            # before the override was added keeps the stale venue while this gate goes
+            # green. That nearly shipped "Equality Center, 5:00 PM" for W32 when the
+            # confirmed venue was "The Starlite Bar, 5:30 PM". Verify the rendered
+            # value, not just the precondition.
+            _mm = override_venue_mismatch(e)
+            if _mm:
+                errors.append(
+                    f"[venue] featured/EOTW '{nm}' carries venue '{_mm[1]}' but the CONFIRMED "
+                    f"override for {d} is '{_mm[0]}' -- the deck was built before the override "
+                    f"was added. Re-apply overrides to data/events/<week>_all.json and regenerate "
+                    f"before posting (do NOT just re-run preflight)")
+            elif any(v in low for v in _varies) and not has_override_for(nm, d):
                 errors.append(
                     f"[venue] featured/EOTW '{nm}' rotates venue monthly and has NO confirmed "
                     f"venue for {monday.strftime('%Y-%m')} -- add an entry to data/venue_overrides.json "

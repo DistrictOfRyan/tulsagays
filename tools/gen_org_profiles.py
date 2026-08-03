@@ -83,13 +83,29 @@ def _schema(org, events, url):
             f'<script type="application/ld+json">{json.dumps(crumb)}</script>')
 
 
+def _dashless(s):
+    """Strip em/en dashes from DISPLAY text before it reaches a generated page.
+
+    Why (2026-08-03): voice-guard failed daily because docs/org/shambhala.html shipped
+    3 en dashes, all inside a scraped third-party event title ("Open Meditation - Tues.").
+    The house rule (no em/en dashes on published pages) is supposed to be enforced at the
+    generator boundary, but org profiles never went through content/textclean.py, so
+    scraped titles reached the page verbatim.
+
+    Deliberately NOT folded into esc(): esc() is also applied to href URLs
+    (gen_website_html.py), and rewriting a dash inside a URL would break the link.
+    This is display-text only.
+    """
+    return str(s or "").replace("—", ", ").replace("–", "-")
+
+
 def render_org(org, events):
     url = f"{BASE}/org/{org['id']}.html"
     guide = TYPE_TO_GUIDE.get(org.get("type"), "lgbtq-organizations-tulsa")
     if events:
         rows = "\n".join(
-            f'<li><strong>{esc(e.get("name"))}</strong> &middot; {esc(e.get("date"))} '
-            f'{esc(e.get("time",""))} &middot; {esc(e.get("venue",""))}</li>' for e in events[:30])
+            f'<li><strong>{esc(_dashless(e.get("name")))}</strong> &middot; {esc(e.get("date"))} '
+            f'{esc(e.get("time",""))} &middot; {esc(_dashless(e.get("venue","")))}</li>' for e in events[:30])
         ev_block = f'<h2>Events we\'ve tracked ({len(events)})</h2><ul class="topic-events">{rows}</ul>'
     else:
         ev_block = ""

@@ -68,6 +68,43 @@ def has_override_for(name, date_str):
     return False
 
 
+def override_venue_for(name, date_str):
+    """Return the CONFIRMED override venue for this event, or None.
+
+    Added 2026-08-03. has_override_for() only answers "does an override exist",
+    which let preflight PASS a deck whose rendered venue still contradicted the
+    override: the W32 deck said "Equality Center, 5:00 PM" while the confirmed
+    override said "The Starlite Bar, 5:30 PM", because overrides are applied during
+    scrape and the per-week deck snapshot was built before the override was added.
+    Callers can now compare the confirmed venue against what the event actually
+    carries, i.e. verify the OUTCOME rather than the precondition.
+    """
+    low = (name or "").lower()
+    for ov in _load_doc().get("overrides", []):
+        m = (ov.get("match") or "").lower().strip()
+        if m and m in low and ov.get("venue") and _scope_matches(ov, date_str):
+            return ov.get("venue")
+    return None
+
+
+def override_venue_mismatch(event):
+    """Return (confirmed, actual) when a venue_varies event's venue contradicts its
+    confirmed override, else None. A mismatch means the rendered deck is STALE and
+    must not ship."""
+    name = event.get("name") or ""
+    confirmed = override_venue_for(name, event.get("date", ""))
+    if not confirmed:
+        return None
+    actual = (event.get("venue") or "").strip()
+    # Compare on the venue's leading segment ("The Starlite Bar" out of
+    # "The Starlite Bar, 1902 E 11th St, Tulsa") so a shortened but correct
+    # rendering still passes, while a different venue entirely does not.
+    core = confirmed.split(",")[0].strip().casefold()
+    if core and core in actual.casefold():
+        return None
+    return (confirmed, actual or "(blank)")
+
+
 def apply_venue_overrides(events):
     """Overwrite venue (and optional time/url) on any event matching an override
     whose scope covers the event's date. Tags the event `venue_override_applied`
