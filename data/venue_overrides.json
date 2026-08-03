@@ -1,20 +1,27 @@
 {
-  "_note": "Late-stage venue corrections + a 'venue rotates monthly' registry for the Tulsa Gays pipeline. WHY: recurring events like Queer Women's Collective change location month to month, so a hardcoded/scraped/ledger venue silently goes stale (this shipped the wrong venue once). HOW: `overrides` entries WIN over any scraped/hardcoded/ledger venue and are applied in scraper/runner.py via scraper/venue_overrides.py AFTER scrape+dedup. `venue_varies` lists name-substrings whose location rotates monthly: tools/preflight_post.py HARD-BLOCKS featuring any such event that has no override confirmed for the post's month. `match` is a lowercase substring of the event name. Scope an override with `month` (YYYY-MM) or `date` (YYYY-MM-DD), or omit both for an always-on fix. `venue` required; `time`/`url` optional. Set a NEW override each month for every venue_varies event.",
-  "venue_varies": [
-    "queer women's collective"
-  ],
-  "overrides": [
-    {
-      "match": "queer women's collective",
-      "month": "2026-07",
-      "venue": "The Hunt Club",
-      "note": "QWC location rotates monthly. July 2026 confirmed at The Hunt Club (William 2026-06-30). Add a fresh entry each month."
-    },
-    {
-      "match": "homo hotel",
-      "month": "2026-07",
-      "venue": "The Campbell Hotel, 2636 E 11th St, Tulsa",
-      "note": "July 2026 HHHH First Friday (Jul 3, 6-8 PM) at The Campbell. Source: homohotelhappyhour.com next-event block + 2026-07-campbell.png og:image, read 2026-07-06."
-    }
-  ]
+ "_note": "Late-stage venue corrections + a 'venue rotates monthly' registry for the Tulsa Gays pipeline. WHY: recurring events like Queer Women's Collective change location month to month, so a hardcoded/scraped/ledger venue silently goes stale (this shipped the wrong venue once). HOW: `overrides` entries WIN over any scraped/hardcoded/ledger venue and are applied in scraper/runner.py via scraper/venue_overrides.py AFTER scrape+dedup. `venue_varies` lists name-substrings whose location rotates monthly: tools/preflight_post.py HARD-BLOCKS featuring any such event that has no override confirmed for the post's month. `match` is a lowercase substring of the event name. Scope an override with `month` (YYYY-MM) or `date` (YYYY-MM-DD), or omit both for an always-on fix. `venue` required; `time`/`url` optional. Set a NEW override each month for every venue_varies event.",
+ "venue_varies": [
+  "queer women's collective"
+ ],
+ "overrides": [
+  {
+   "match": "queer women's collective",
+   "month": "2026-07",
+   "venue": "The Hunt Club",
+   "note": "QWC location rotates monthly. July 2026 confirmed at The Hunt Club (William 2026-06-30). Add a fresh entry each month."
+  },
+  {
+   "match": "homo hotel",
+   "month": "2026-07",
+   "venue": "The Campbell Hotel, 2636 E 11th St, Tulsa",
+   "note": "July 2026 HHHH First Friday (Jul 3, 6-8 PM) at The Campbell. Source: homohotelhappyhour.com next-event block + 2026-07-campbell.png og:image, read 2026-07-06."
+  },
+  {
+   "match": "queer women's collective",
+   "month": "2026-08",
+   "venue": "The Starlite Bar, 1902 E 11th St, Tulsa",
+   "time": "5:30 PM",
+   "note": "August 2026 confirmed from the organizers' own Instagram @qwc_tul (verified 2026-08-03): 'WEDNESDAY AUGUST 5TH 5:30-7:30 PM Queer Women's Collective AUGUST MEETUP THE STARLITE BAR 1902 E. 11TH STREET'. The okeq.org listing was STALE on both fields - it showed the Dennis R. Neill Equality Center (OkEq's own building, its default address) and 5:00 PM. The venue_varies guard caught exactly what it exists to catch."
+  }
+ ]
 }

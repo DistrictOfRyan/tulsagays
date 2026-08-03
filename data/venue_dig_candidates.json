@@ -1,12 +1,32 @@
 {
   "generated_at": null,
-  "count": 13,
+  "count": 14,
   "events": [
     {
-      "name": "Tahlia's Belated Birthday ft. @prettyreverb w/ DJ Katnip & Pashea",
+      "name": "Clothing Swap (Boys Night)",
+      "date": "2026-08-03",
+      "time": "6:00 PM",
+      "notes": "Free pizza at 7pm, wrestling on TV; drop by and swap clothes",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DbWYbxkRigZ/",
+      "from_post": "2026-07-28"
+    },
+    {
+      "name": "Babes & Bi-Cons: Val's Birthday Edition",
+      "date": "2026-08-01",
+      "time": "9:30 PM",
+      "notes": "Featuring DJs @katnipworldwide and @djkylie918, drink feature, and a raffle (entry for every menstrual product box/package donated)",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DbTW4JWx1qw/",
+      "from_post": "2026-07-27"
+    },
+    {
+      "name": "Tahlia's Belated Birthday feat. @prettyreverb",
       "date": "2026-07-25",
       "time": "9:00 PM - 2:00 AM",
-      "notes": "Hyperpop, techno, goth electronic, club classics; music starts at 9",
+      "notes": "Music by DJ Katnip and Pashea; hyperpop, techno, goth electronic, club classics",
       "venue": "Yellow Brick Road, 2630 E 15th St",
       "source": "venue_flyer_dig",
       "url": "https://www.instagram.com/p/DbEk3H1Rbkr/",
@@ -16,27 +36,37 @@
       "name": "Queens & Split Screens Gaymer Night: Mario Kart 64 (Rain's Birthday)",
       "date": "2026-07-27",
       "time": null,
-      "notes": "Monthly gaymer night at Yellow Brick Road, Mario Kart 64 + Wheel of Fortune, free pizza, celebrating @raindawwg's birthday",
+      "notes": "Monthly gaymer night themed around Mario Kart 64; also celebrating @raindawwg's birthday. Free pizza; buy Rain a tequila shot.",
       "venue": "Yellow Brick Road, 2630 E 15th St",
       "source": "venue_flyer_dig",
       "url": "https://www.instagram.com/p/DbEIBEqRCKg/",
       "from_post": "2026-07-21"
     },
     {
-      "name": "Open Stage with Jason Waterfalls",
-      "date": "2026-07-16",
-      "time": "Sign up 8:00 PM, Show 9:00 PM",
-      "notes": "Yellow Brick Road open stage/talent show; special performance from last week's winner; 6 spots available",
-      "venue": "Yellow Brick Road, 2630 E 15th St",
+      "name": "Dragnificent! - Beat the Heat",
+      "date": "2026-07-30",
+      "time": "Doors 9pm, Showtime 11pm",
+      "notes": "18 to enter; DJ Konnect before/after; cast: Shanel Sterling, Kiana Davenport Jade, Cheri Bomb LeKohl + T",
+      "venue": "Club Majestic, 124 N Boston Ave",
       "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DaxuOKnxYFp/",
-      "from_post": "2026-07-14"
+      "url": "https://www.instagram.com/p/DbWeoWNRgQG/",
+      "from_post": "2026-07-28"
     },
     {
-      "name": "The Sunday Spotlight ft. Shanel Sterling, Ceej Thetroll, Londenn D. Raine, Kallaya, Patty Bourey, Star Flower, Scrappy Legacy",
+      "name": "Diamonds & Dreams: A Benefit Show",
+      "date": "2026-08-16",
+      "time": "9:00 PM - 10:30 PM",
+      "notes": "Benefit show hosted by Serenity S. Grace (on her way to America's Queen and Miss Gay Oklahoma America). Cast: Briar Rose Lovethorn, Virtue Ali, Little Miss MG, Adam Parks, Innocence Quinn, Keosha Simone, Nikolas Simone, Finley S. Paige, T, and more.",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DbTt3yaRk_3/",
+      "from_post": "2026-07-27"
+    },
+    {
+      "name": "The Sunday Spotlight",
       "date": "2026-07-26",
       "time": "Doors 9:00 PM, Show 10:30 PM",
-      "notes": "Monthly all-star drag showcase hosted by Kallaya and Londenn D. Raine; message Kallaya on social for table reservations",
+      "notes": "Featuring Shanel Sterling, Ceej TheTroll, Londenn D. Raine, Kallaya, Patty Bourey, Star Flower, Scrappy Legacy",
       "venue": "Club Majestic, 124 N Boston Ave",
       "source": "venue_flyer_dig",
       "url": "https://www.instagram.com/p/DbMiDVUx3AE/",
@@ -45,8 +75,8 @@
     {
       "name": "Pandora's Box",
       "date": "2026-07-24",
-      "time": "Doors 9pm, Showtime 9:30pm-10:30pm",
-      "notes": "Legacy Entertainment show hosted by Scrappy Legacy, featuring Death, Koko the Doll, Anthill Jackson, special guest Arya Down; dance competition sign-up at DJ booth afterward",
+      "time": "Doors 9pm, showtime 9:30pm-10:30pm",
+      "notes": "Hosted by Scrappy Legacy, presented by Legacy Entertainment. Performers: Koko the Doll, Anthill Jackson, Death, Arya Down, plus special guest. Dance competition sign-up at the DJ booth; cash prize.",
       "venue": "Club Majestic, 124 N Boston Ave",
       "source": "venue_flyer_dig",
       "url": "https://www.instagram.com/p/DbEbXkwRPgM/",
@@ -56,81 +86,61 @@
       "name": "Tulsa Supreme: Foodies",
       "date": "2026-07-23",
       "time": "Doors 9pm, Showtime 11pm",
-      "notes": "Hosted by Londenn D. Raine, featuring Shanel, Kiana, Angela; 18 to Enter; theme Foodies",
+      "notes": "Hosted by Londenn D. Raine; performers Shanel/Kiana/Angela; theme FOODIES; 18 to Enter",
       "venue": "Club Majestic, 124 N Boston Ave",
       "source": "venue_flyer_dig",
       "url": "https://www.instagram.com/p/DbEXdnpzAIE/",
       "from_post": "2026-07-21"
     },
     {
-      "name": "Sensational Saturdays: Femme Power",
-      "date": "2026-07-18",
-      "time": "Doors 9pm, Showtime 9:30pm",
-      "notes": "Hosted by Londenn D. Raine (Miss Gay Oklahoma America Femme); featuring Sophie Moon, Amy H. Graves, Nala Jade, Kallaya; 21+",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/Da1U0VoRJmd/",
-      "from_post": "2026-07-15"
-    },
-    {
-      "name": "Escándalo - Tulsa's Latin Drag Show (hosted by La Franchesqua & King Laylo York, feat. Indya Naomi & La Pusetta Brooks)",
-      "date": "2026-07-17",
-      "time": "Doors 9:00 PM, Showtime 9:30 PM",
-      "notes": "Followed by 'Ho You Think You Can Dance' cash prize competition. 18 to enter. 124 N Boston Ave.",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/Da1Ux0tkZNz/",
-      "from_post": "2026-07-15"
-    },
-    {
-      "name": "Look Who's Hosting Now! with Shanel Sterling & Londenn D. Raine (guest cohost Angela Doll + guest Sharon Fries)",
-      "date": "2026-07-16",
-      "time": "11:00 PM (doors 9pm)",
-      "notes": "18 to enter",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/Dayc4-mREa5/",
-      "from_post": "2026-07-14"
-    },
-    {
-      "name": "Mr. & Miss Oklahoma Bold & Beautiful Newcomer 2026",
-      "date": "2026-07-19",
-      "time": "Doors 9pm, Showtime 10pm",
-      "notes": "18 to enter; cover $5 (21+) / $10 (18-20); at Club Majestic, 124 N Boston Ave",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/Dauyc-1xrQI/",
-      "from_post": "2026-07-13"
-    },
-    {
-      "name": "UNLEASHED: Pup & Kink Night",
-      "date": "2026-07-25",
-      "time": "8:00 PM (DJ Kudos at 10:00 PM)",
-      "notes": "Bartenders Steven, Kay Kay, and Justin take over at 8pm with DJ Kudos at 10pm; Megan opens the day at 2pm. Tulsa Eagle, 1338 E 3rd St.",
+      "name": "OKLA Cookout",
+      "date": "2026-08-02",
+      "time": "2:00 PM - 4:00 PM",
+      "notes": "Benefit for The Trevor Project, dedicated to fallen brother David, hosted by Oklahoma Leather Association at Tulsa Eagle. Dunk tank, donations appreciated but not required.",
       "venue": "Tulsa Eagle, 1338 E 3rd St",
       "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbOTnW4lPjl/",
-      "from_post": "2026-07-25"
+      "url": "https://www.instagram.com/p/Dbi58DtE4_C/",
+      "from_post": "2026-08-02"
     },
     {
-      "name": "Monday Movie Night: The Greatest Showman",
-      "date": "2026-07-20",
+      "name": "Wild Bill's BBQ food truck at Tulsa Eagle",
+      "date": "2026-08-01",
+      "time": "evening",
+      "notes": "Saturday evening, per caption",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DbfpbIHFSkV/",
+      "from_post": "2026-08-01"
+    },
+    {
+      "name": "Wild Bill's BBQ food truck at Tulsa Eagle",
+      "date": "2026-08-02",
+      "time": "evening",
+      "notes": "Sunday evening, per caption",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DbfpbIHFSkV/",
+      "from_post": "2026-08-01"
+    },
+    {
+      "name": "Boogie Fever Disco Dance Party with DJ Haze",
+      "date": "2026-07-31",
+      "time": "10:00 PM",
+      "notes": "Bartenders Isaac, Nathan, and Justin take over at 8PM leading into the disco dance party at 10PM with DJ Haze.",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DbeIECamWgq/",
+      "from_post": "2026-07-31"
+    },
+    {
+      "name": "Monday Movie Night: Mean Girls",
+      "date": "2026-07-27",
       "time": "7:00 PM",
       "notes": "Sponsored by Circle Cinema, at Tulsa Eagle, 1338 E 3rd St",
       "venue": "Tulsa Eagle, 1338 E 3rd St",
       "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbBbjmpjJS9/",
-      "from_post": "2026-07-20"
-    },
-    {
-      "name": "Tulsa Eagle Jungle Party w/ DJ Scandal",
-      "date": "2026-07-18",
-      "time": "10:00 PM (Megan, Nathan & Justin from 8PM)",
-      "notes": "Caption-only detail, not shown on flyer image (flyer graphic is the recurring 1st & 3rd Saturday Bingo promo, ignored per instructions)",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/Da8SAT3gWMJ/",
-      "from_post": "2026-07-18"
+      "url": "https://www.instagram.com/p/DbTdKNcjR9J/",
+      "from_post": "2026-07-27"
     }
   ]
 }

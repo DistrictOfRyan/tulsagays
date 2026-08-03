@@ -734,5 +734,41 @@
     "source": "venue_flyer_dig",
     "priority": 1,
     "website_description": "Bring what you never wear, leave with something you will. Free pizza lands at 7 and there is wrestling on the TV because it is boys night. Doors at 6, and the early crowd gets the good rack."
+  },
+  {
+    "name": "Clothing Swap (Boys Night)",
+    "date": "2026-08-03",
+    "time": "6:00 PM",
+    "venue": "Yellow Brick Road, 2630 E 15th St",
+    "url": "https://www.instagram.com/p/DbWYbxkRigZ/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Diamonds & Dreams: A Benefit Show",
+    "date": "2026-08-16",
+    "time": "9:00 PM - 10:30 PM",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DbTt3yaRk_3/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "OKLA Cookout",
+    "date": "2026-08-02",
+    "time": "2:00 PM - 4:00 PM",
+    "venue": "Tulsa Eagle, 1338 E 3rd St",
+    "url": "https://www.instagram.com/p/Dbi58DtE4_C/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Wild Bill's BBQ food truck at Tulsa Eagle",
+    "date": "2026-08-02",
+    "time": "evening",
+    "venue": "Tulsa Eagle, 1338 E 3rd St",
+    "url": "https://www.instagram.com/p/DbfpbIHFSkV/",
+    "source": "venue_flyer_dig",
+    "priority": 2
   }
 ]
