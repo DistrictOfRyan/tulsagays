@@ -2,22 +2,13 @@
   "api_version": "1",
   "city": "Tulsa, OK",
   "publisher": "Tulsa Gays",
-  "generated_at": "2026-07-27T09:52:13Z",
+  "generated_at": "2026-08-03T09:49:24Z",
   "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
   "count": 8,
   "events": [
     {
-      "name": "Mario Kart Gaymer Night",
-      "date": "2026-07-27",
-      "time": "",
-      "venue": "Yellow Brick Road, 2630 E 15th St",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
       "name": "WTO/99",
-      "date": "2026-07-27",
+      "date": "2026-08-03",
       "time": "12:40 PM",
       "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
       "url": "",
@@ -26,7 +17,7 @@
     },
     {
       "name": "Art Explorers (Ages 5-6)",
-      "date": "2026-07-27",
+      "date": "2026-08-03",
       "time": "1:00 PM",
       "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
       "url": "",
@@ -34,8 +25,8 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "Tiny Worlds & Hidden Habitats (Ages 9-11)",
-      "date": "2026-07-27",
+      "name": "Printastic! (Ages 7-9)",
+      "date": "2026-08-03",
       "time": "1:00 PM",
       "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
       "url": "",
@@ -43,8 +34,17 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "Gaymer Night at YBR",
-      "date": "2026-07-27",
+      "name": "Wooly Wonders: Nature & Art (Ages 9-11)",
+      "date": "2026-08-03",
+      "time": "1:00 PM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Boys Night Clothing Swap",
+      "date": "2026-08-03",
       "time": "7:00 PM",
       "venue": "Yellow Brick Road, 2630 E 15th St",
       "url": "",
@@ -52,17 +52,8 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "Monday Night Jazz",
-      "date": "2026-07-27",
-      "time": "8:00 PM",
-      "venue": "Tulsa, OK",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Road Trip Adventures (Ages 5-6)",
-      "date": "2026-07-27",
+      "name": "Print it Up! (Ages 5-6)",
+      "date": "2026-08-03",
       "time": "9:00 AM",
       "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
       "url": "",
@@ -70,8 +61,17 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "Cut, Paste, Create (Ages 7-9)",
-      "date": "2026-07-27",
+      "name": "Nature's Paintbox (Ages 7-9)",
+      "date": "2026-08-03",
+      "time": "9:00 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Cities of the Future (Ages 9-11)",
+      "date": "2026-08-03",
       "time": "9:00 AM",
       "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
       "url": "",

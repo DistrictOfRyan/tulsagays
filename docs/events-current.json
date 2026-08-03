@@ -1,57 +1,57 @@
 [
   {
-    "name": "Mario Kart Gaymer Night",
-    "venue": "Yellow Brick Road, 2630 E 15th St",
-    "date": "2026-07-27",
-    "day_short": "MON",
-    "time": ""
-  },
-  {
     "name": "WTO/99",
     "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-07-27",
+    "date": "2026-08-03",
     "day_short": "MON",
     "time": "12:40 PM"
   },
   {
     "name": "Art Explorers (Ages 5-6)",
     "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-07-27",
+    "date": "2026-08-03",
     "day_short": "MON",
     "time": "1:00 PM"
   },
   {
-    "name": "Tiny Worlds & Hidden Habitats (Ages 9-11)",
+    "name": "Printastic! (Ages 7-9)",
     "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-07-27",
+    "date": "2026-08-03",
     "day_short": "MON",
     "time": "1:00 PM"
   },
   {
-    "name": "Gaymer Night at YBR",
+    "name": "Wooly Wonders: Nature & Art (Ages 9-11)",
+    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+    "date": "2026-08-03",
+    "day_short": "MON",
+    "time": "1:00 PM"
+  },
+  {
+    "name": "Boys Night Clothing Swap",
     "venue": "Yellow Brick Road, 2630 E 15th St",
-    "date": "2026-07-27",
+    "date": "2026-08-03",
     "day_short": "MON",
     "time": "7:00 PM"
   },
   {
-    "name": "Monday Night Jazz",
-    "venue": "Tulsa, OK",
-    "date": "2026-07-27",
-    "day_short": "MON",
-    "time": "8:00 PM"
-  },
-  {
-    "name": "Road Trip Adventures (Ages 5-6)",
+    "name": "Print it Up! (Ages 5-6)",
     "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-07-27",
+    "date": "2026-08-03",
     "day_short": "MON",
     "time": "9:00 AM"
   },
   {
-    "name": "Cut, Paste, Create (Ages 7-9)",
+    "name": "Nature's Paintbox (Ages 7-9)",
     "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-07-27",
+    "date": "2026-08-03",
+    "day_short": "MON",
+    "time": "9:00 AM"
+  },
+  {
+    "name": "Cities of the Future (Ages 9-11)",
+    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+    "date": "2026-08-03",
     "day_short": "MON",
     "time": "9:00 AM"
   }
