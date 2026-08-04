@@ -139,28 +139,53 @@ def apply_venue_overrides(events):
 
 
 def _selftest():
+    # NOTE: assertions here must not depend on which months happen to have an
+    # override in data/venue_overrides.json -- the previous version asserted
+    # "August QWC has no override", which started FAILING the moment the real
+    # August entry was added on 2026-08-03. A guard that goes red for doing its
+    # job is a guard nobody runs. Use a month far enough out that no real
+    # override will ever cover it for the "unscoped" cases.
+    UNCOVERED = "2099-01-06"
     sample = [
         {"name": "Queer Women's Collective Tulsa", "date": "2026-07-01",
          "venue": "Dennis R. Neill Equality Center, 621 E 4th St"},
-        {"name": "Queer Women's Collective Tulsa", "date": "2026-08-05",
+        {"name": "Queer Women's Collective Tulsa", "date": UNCOVERED,
          "venue": "Dennis R. Neill Equality Center, 621 E 4th St"},
         {"name": "Trivia Night at YBR", "date": "2026-07-07",
          "venue": "Yellow Brick Road, 2630 E 15th St"},
+        {"name": "Homo Hotel Happy Hour at Courtyard Downtown", "date": "2026-08-07",
+         "venue": "Dennis R. Neill Equality Center, 621 E 4th St"},
     ]
     apply_venue_overrides(sample)
     # July QWC: overridden away from the stale Equality Center, flagged applied.
     assert sample[0].get("venue_override_applied") is True, sample[0]
     assert not sample[0]["venue"].startswith("Dennis"), sample[0]
-    # August QWC: no override this month -> venue untouched, no applied flag.
+    # A month with no override -> venue untouched, no applied flag.
     assert not sample[1].get("venue_override_applied"), sample[1]
     assert sample[1]["venue"].startswith("Dennis"), sample[1]
     # Unrelated stable-venue event: never touched.
     assert not sample[2].get("venue_override_applied"), sample[2]
     assert sample[2]["venue"].startswith("Yellow"), sample[2]
+    # W32 regression: the August HHHH override must pull the event OFF the
+    # Equality Center and onto the real Courtyard Downtown address.
+    assert sample[3].get("venue_override_applied") is True, sample[3]
+    assert "Courtyard" in sample[3]["venue"], sample[3]
+    assert "621 E 4th" not in sample[3]["venue"], sample[3]
     # Registry + override presence the preflight gate relies on.
     assert "queer women's collective" in load_venue_varies()
+    assert "homo hotel" in load_venue_varies()
     assert has_override_for("Queer Women's Collective Tulsa", "2026-07-01")
-    assert not has_override_for("Queer Women's Collective Tulsa", "2026-08-05")
+    assert not has_override_for("Queer Women's Collective Tulsa", UNCOVERED)
+    assert has_override_for("Homo Hotel Happy Hour", "2026-08-07")
+    assert not has_override_for("Homo Hotel Happy Hour", UNCOVERED)
+    # override_venue_mismatch: stale rendered venue must be caught.
+    _stale = override_venue_mismatch(
+        {"name": "Homo Hotel Happy Hour", "date": "2026-08-07",
+         "venue": "Dennis R. Neill Equality Center, 621 E 4th St"})
+    assert _stale and "Courtyard" in _stale[0], _stale
+    assert override_venue_mismatch(
+        {"name": "Homo Hotel Happy Hour", "date": "2026-08-07",
+         "venue": "Courtyard Downtown, 415 S Boston Ave, Tulsa"}) is None
     print("venue_overrides selftest OK")
 
 

@@ -372,6 +372,95 @@ def run(week_key=None):
     except Exception as _ve:
         warnings.append(f"[venue] venue-staleness check failed: {_ve}")
 
+    # ── VENUE SELF-CONTRADICTION (added 2026-08-04) ─────────────────────────
+    # The slide is ONE claim. If an event's own title or copy names a venue and
+    # the venue line under it names a different building, the slide is wrong no
+    # matter which half is right -- and a reader trusts the address.
+    #
+    # W32 shipped exactly this on the CAROUSEL COVER: title "Homo Hotel Happy
+    # Hour at Courtyard Downtown" over "@ Dennis R. Neill Equality Center,
+    # 621 E 4th St". Every other venue gate passed, because each checked the
+    # venue field against an EXTERNAL source; none checked the slide against
+    # ITSELF. This one needs no source of truth, so it can never be stale.
+    try:
+        from scraper.runner import _same_venue_place, _venue_place_tokens
+
+        # "... at Courtyard Downtown" / "... @ The Starlite" / "takes over the
+        # Courtyard Downtown" / "lands at the Campbell Hotel"
+        _hint_res = [
+            re.compile(r"\b(?:at|@)\s+([A-Z][\w'&.\- ]{2,40})", re.U),
+            re.compile(r"\b(?:takes over|lands at|moves to|is at)\s+(?:the\s+)?([A-Z][\w'&.\- ]{2,40})", re.I | re.U),
+        ]
+
+        # Only a hint that names a venue KNOWN to this week counts as a venue
+        # claim. "at Courtyard Downtown" matters because Courtyard is a real
+        # venue somewhere in the week's data; "at The Sunday Showdown" (an event
+        # name) and other incidental capitalized phrases must not fire the gate.
+        #
+        # CRITICAL: the vocabulary is built from the RAW week file + the
+        # confirmed overrides, NOT just the deck manifest. The W32 merge ERASED
+        # 'Courtyard' from every manifest venue field (that was the bug) -- a
+        # vocabulary drawn only from the manifest can't vouch for the very venue
+        # the merge destroyed, and the gate would go quiet exactly when needed.
+        _known_venue_tokens = set()
+        for _ke in eotw + featured_all + (all_shown or []):
+            _known_venue_tokens |= _venue_place_tokens(_ke.get("venue") or "")
+        try:
+            _rawp = os.path.join(config.DATA_DIR, "events", f"{week_key}_all.json")
+            with open(_rawp, "r", encoding="utf-8") as _rf:
+                _rawdoc = json.load(_rf)
+            for _re_ in (_rawdoc.get("events", _rawdoc) if isinstance(_rawdoc, (dict, list)) else []):
+                if isinstance(_re_, dict):
+                    _known_venue_tokens |= _venue_place_tokens(_re_.get("venue") or "")
+        except Exception:
+            pass
+        try:
+            from scraper.venue_overrides import _load_doc as _vo_doc
+            for _ov in _vo_doc().get("overrides", []):
+                _known_venue_tokens |= _venue_place_tokens(_ov.get("venue") or "")
+        except Exception:
+            pass
+
+        for e in eotw + featured_all:
+            nm = e.get("name", "?")
+            ven = (e.get("venue") or "").strip()
+            if not ven:
+                continue
+            vtok = _venue_place_tokens(ven)
+            if not vtok:
+                continue
+
+            # A duplicate-merge that refused to relocate the venue leaves this.
+            for _conf in (e.get("venue_conflict") or []):
+                errors.append(
+                    f"[venue] featured/EOTW '{nm}' merged with a duplicate carrying a DIFFERENT "
+                    f"venue: kept '{ven}', conflicting '{_conf}'. Two sources disagree on where "
+                    f"this event is -- confirm against the organizer's own listing and set a "
+                    f"data/venue_overrides.json entry before posting")
+
+            for _field, _text in (("title", nm), ("copy", e.get("description") or "")):
+                for _re in _hint_res:
+                    for _m in _re.finditer(_text):
+                        htok = _venue_place_tokens(_m.group(1))
+                        if not htok:
+                            continue
+                        # The phrase must name a venue this deck actually knows,
+                        # otherwise it's an event name / turn of phrase, not a claim.
+                        if not (htok & _known_venue_tokens):
+                            continue
+                        # A venue claim that shares nothing with the event's own
+                        # venue line = the slide contradicts itself.
+                        if not _same_venue_place(_m.group(1), ven):
+                            errors.append(
+                                f"[venue] featured/EOTW '{nm}' CONTRADICTS ITSELF: its {_field} says "
+                                f"'{_m.group(1).strip()}' but its venue line says '{ven}'. One of the two "
+                                f"is wrong and the address is what readers act on. Fix the event record "
+                                f"(confirm against the organizer's own listing) and regenerate -- do NOT "
+                                f"just re-run preflight")
+                            break
+    except Exception as _vc:
+        warnings.append(f"[venue] venue self-contradiction check failed: {_vc}")
+
     # ── RECURRING EVENT VERIFICATION (still happening? still here?) ─────────
     # Every recurring event carries a confirmation freshness clock (ledger:
     # data/recurring_confirmations.json, refreshed by scraper/recurring_verify

@@ -190,6 +190,49 @@ def _venues_match(venue_a: str, venue_b: str) -> bool:
     return a in b or b in a
 
 
+# Venue words that prove nothing about WHICH building this is: geography, and
+# the generic nouns half of Tulsa's venues share. 'Courtyard Downtown' and
+# 'Dennis R. Neill Equality Center' must not read as the same place just
+# because both are downtown.
+_VENUE_PLACE_GENERIC = {
+    "the", "a", "an", "of", "at", "and", "on", "in",
+    "tulsa", "ok", "okla", "oklahoma", "downtown", "midtown", "north", "south",
+    "east", "west", "st", "ave", "avenue", "street", "rd", "road", "blvd",
+    "suite", "ste", "center", "centre", "hall", "room", "bar", "club", "cafe",
+    "hotel", "lounge", "house", "place", "building", "venue",
+}
+
+
+def _venue_place_tokens(venue: str) -> set:
+    """Distinctive tokens of a venue's NAME segment (everything before the first
+    comma, i.e. 'Courtyard Downtown' out of 'Courtyard Downtown, 415 S Boston
+    Ave'). Street numbers and generic/geographic words are dropped, so what's
+    left is what actually identifies the building."""
+    name_part = (venue or "").split(",")[0]
+    # Strip possessives BEFORE normalizing ("Elote's brunch" -> "elote brunch"),
+    # so a copy mention and the venue field agree on the same word.
+    name_part = re.sub(r"['’]s\b", "", name_part)
+    toks = _normalize(name_part).split()
+    return {t for t in toks
+            if t not in _VENUE_PLACE_GENERIC and not t.isdigit() and len(t) > 1}
+
+
+def _same_venue_place(venue_a: str, venue_b: str) -> bool:
+    """True only when both venue strings name the SAME building.
+
+    Deliberately conservative: two venues are the same place only if they share
+    a distinctive (non-generic, non-geographic) token. 'Courtyard Tulsa
+    Downtown' vs 'Courtyard Downtown, 415 S Boston Ave' -> {courtyard} shared,
+    same place. 'Courtyard Tulsa Downtown' vs 'Dennis R. Neill Equality Center,
+    621 E 4th St' -> {courtyard} vs {dennis, neill, equality}, nothing shared,
+    DIFFERENT places. When either side has no distinctive token left, the answer
+    is False (unknown reads as different, so callers fail closed)."""
+    ta, tb = _venue_place_tokens(venue_a), _venue_place_tokens(venue_b)
+    if not ta or not tb:
+        return False
+    return bool(ta & tb)
+
+
 # Words too generic to prove two same-venue titles are one event ("Non-binary
 # Support Group" vs "Gender Outreach Support Group" are DIFFERENT groups).
 _VENUE_DEDUP_GENERIC = {
@@ -270,8 +313,31 @@ def deduplicate(events: List[Dict]) -> List[Dict]:
 
                 def _has_addr(v):
                     return "," in (v or "") or any(c.isdigit() for c in (v or ""))
-                if _has_addr(loser.get("venue")) and not _has_addr(winner.get("venue")):
-                    winner["venue"] = loser["venue"]
+
+                # VENUE BACKFILL -- enrich, NEVER relocate (fixed 2026-08-04).
+                # The old rule was "loser's venue looks like an address and the
+                # winner's doesn't, so take the loser's". It never checked the two
+                # strings named the same building, so W32's HHHH merge overwrote the
+                # winner's 'Courtyard Tulsa Downtown' with an OkEq-sourced 'Dennis R.
+                # Neill Equality Center, 621 E 4th St' -- a different building a mile
+                # away -- and that address went out on the carousel cover slide while
+                # the slide's own title still said Courtyard Downtown.
+                # Now: only fill a BLANK venue, or add street detail to the SAME
+                # place. Two different places never overwrite; the conflict is
+                # recorded so preflight can block on it.
+                _wv, _lv = (winner.get("venue") or "").strip(), (loser.get("venue") or "").strip()
+                if _lv and not _wv:
+                    winner["venue"] = _lv
+                elif _lv and _wv and _same_venue_place(_wv, _lv) and _has_addr(_lv) and not _has_addr(_wv):
+                    winner["venue"] = _lv
+                elif _lv and _wv and not _same_venue_place(_wv, _lv):
+                    conflicts = winner.setdefault("venue_conflict", [])
+                    if _lv not in conflicts:
+                        conflicts.append(_lv)
+                    logger.warning(
+                        "[dedup] venue conflict on '%s' (%s): kept '%s', refused to "
+                        "overwrite with '%s' from the merged duplicate",
+                        winner.get("name", "?"), winner.get("date", "?"), _wv, _lv)
                 if len(loser.get("description") or "") > len(winner.get("description") or ""):
                     winner["description"] = loser["description"]
                 if loser.get("url") and not winner.get("url"):

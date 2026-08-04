@@ -2,57 +2,57 @@
   {
     "name": "WTO/99",
     "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-08-03",
-    "day_short": "MON",
+    "date": "2026-08-04",
+    "day_short": "TUE",
     "time": "12:40 PM"
   },
   {
-    "name": "Art Explorers (Ages 5-6)",
-    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-08-03",
-    "day_short": "MON",
-    "time": "1:00 PM"
-  },
-  {
-    "name": "Printastic! (Ages 7-9)",
-    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-08-03",
-    "day_short": "MON",
-    "time": "1:00 PM"
-  },
-  {
-    "name": "Wooly Wonders: Nature & Art (Ages 9-11)",
-    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-08-03",
-    "day_short": "MON",
-    "time": "1:00 PM"
-  },
-  {
-    "name": "Boys Night Clothing Swap",
-    "venue": "Yellow Brick Road, 2630 E 15th St",
-    "date": "2026-08-03",
-    "day_short": "MON",
+    "name": "Tulsa Shakespeare Audition - Hamlet",
+    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+    "date": "2026-08-04",
+    "day_short": "TUE",
     "time": "7:00 PM"
   },
   {
-    "name": "Print it Up! (Ages 5-6)",
-    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-08-03",
-    "day_short": "MON",
-    "time": "9:00 AM"
+    "name": "Tuesdays in the Park Concert Series",
+    "venue": "Central Park, 1500 S Main St, Broken Arrow",
+    "date": "2026-08-04",
+    "day_short": "TUE",
+    "time": "7:00 PM - 9:00 PM"
   },
   {
-    "name": "Nature's Paintbox (Ages 7-9)",
-    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-08-03",
-    "day_short": "MON",
-    "time": "9:00 AM"
+    "name": "Midweek Meditation (Zoom only)",
+    "venue": "Shambhala Meditation Center of Tulsa",
+    "date": "2026-08-05",
+    "day_short": "WED",
+    "time": "12:00 PM"
   },
   {
-    "name": "Cities of the Future (Ages 9-11)",
-    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-08-03",
-    "day_short": "MON",
-    "time": "9:00 AM"
+    "name": "WTO/99",
+    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+    "date": "2026-08-05",
+    "day_short": "WED",
+    "time": "12:40 PM"
+  },
+  {
+    "name": "Queer Women's Collective Tulsa",
+    "venue": "The Starlite Bar, 1902 E 11th St, Tulsa",
+    "date": "2026-08-05",
+    "day_short": "WED",
+    "time": "5:30 PM"
+  },
+  {
+    "name": "Tulsa Leather Community (TLC) Oklahoma",
+    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+    "date": "2026-08-05",
+    "day_short": "WED",
+    "time": "6:30 PM"
+  },
+  {
+    "name": "Tulsa Shakespeare Auditions-Hamlet",
+    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+    "date": "2026-08-05",
+    "day_short": "WED",
+    "time": "7:00 PM"
   }
 ]

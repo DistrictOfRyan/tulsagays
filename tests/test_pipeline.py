@@ -389,6 +389,107 @@ def test_final_deck_review():
         check("final_deck_review importable", False, str(e))
 
 
+def test_w32_venue_relocation():
+    """W32 shipped the WRONG ADDRESS for Homo Hotel Happy Hour on the carousel
+    cover slide: title 'Homo Hotel Happy Hour at Courtyard Downtown' printed over
+    '@ Dennis R. Neill Equality Center, 621 E 4th St' -- a different building a
+    mile from the real one, for William's OWN event.
+
+    Cause: deduplicate()'s venue backfill treated 'has a comma or a digit' as
+    'is a better venue' and copied the loser's venue onto the winner without ever
+    checking the two strings named the same building. An address ENRICHMENT
+    silently became an address RELOCATION."""
+    print("W32 venue-relocation locks:")
+    try:
+        from scraper.runner import (_same_venue_place, _venue_place_tokens,
+                                    deduplicate)
+        from scraper.venue_overrides import load_venue_varies, has_override_for
+    except Exception as e:
+        check("runner/venue helpers importable", False, str(e))
+        return
+
+    # --- the comparator ---
+    check("Courtyard vs Equality Center = DIFFERENT places",
+          not _same_venue_place("Courtyard Tulsa Downtown",
+                                "Dennis R. Neill Equality Center, 621 E 4th St"))
+    check("same venue + street detail = SAME place",
+          _same_venue_place("Courtyard Tulsa Downtown",
+                            "Courtyard Downtown, 415 S Boston Ave"))
+    check("Elote enrichment still reads as same place",
+          _same_venue_place("Elote Cafe & Catering",
+                            "Elote Cafe & Catering, 514 S Boston Ave"))
+    check("venues that are only generic words never match",
+          not _same_venue_place("The Bar", "The Hotel"))
+    check("'downtown'/'tulsa' alone don't prove a shared venue",
+          not _same_venue_place("Tulsa Downtown", "Downtown Tulsa Center"))
+
+    # --- THE PATH THAT ACTUALLY SHIPPED IT: main._dedup_day's __hhhh__ bucket ---
+    # All HHHH variants on a date collapse into one bucket, then fields were taken
+    # "best of" independently: the title from whichever record said " at ", the
+    # venue from whichever address string was longest, the copy from whichever was
+    # longest. Three records, one slide, no consistency check between them.
+    try:
+        from main import _dedup_day as _dd
+    except Exception as e:
+        check("main._dedup_day importable (hoisted for testing)", False, str(e))
+        _dd = None
+
+    w32_records = [
+        {"name": "Homo Hotel Happy Hour", "date": "2026-08-07", "venue": "",
+         "time": "6:00 PM - 8:00 PM", "priority": 1, "source": "homo_hotel",
+         "description": "First Friday means the Homo Hotel throws its doors wide open."},
+        {"name": "Homo Hotel Happy Hour (4H)", "date": "2026-08-07",
+         "venue": "Dennis R. Neill Equality Center, 621 E 4th St", "time": "6:00 PM",
+         "priority": 1, "source": "okeq",
+         "description": "Leave the phone in your pocket, baby."},
+        {"name": "Homo Hotel Happy Hour at Courtyard Downtown", "date": "2026-08-07",
+         "venue": "Courtyard Tulsa Downtown", "time": "11:00 PM", "priority": 2,
+         "source": "meetup", "description": "Dress up a little, honey."},
+        {"name": "HHHH First Friday: PFLAG Tulsa Fundraiser", "date": "2026-08-07",
+         "venue": "Courtyard Downtown, 415 S Boston Ave", "time": "6:00 PM - 8:00 PM",
+         "priority": 3, "source": "manual",
+         "description": "Homo Hotel Happy Hour takes over the Courtyard Downtown, and "
+                        "this month every dollar raised goes to PFLAG Tulsa."},
+    ]
+    if _dd:
+        got = _dd([dict(r) for r in w32_records])
+        check("the four HHHH records still collapse to one", len(got) == 1,
+              f"got {len(got)}")
+        if got:
+            v = (got[0].get("venue") or "")
+            n = (got[0].get("name") or "")
+            check("merged HHHH is NOT at the Equality Center",
+                  "Dennis" not in v and "621 E 4th" not in v, f"venue={v!r}")
+            check("merged HHHH slide does not contradict itself",
+                  ("courtyard" in n.lower()) <= ("ourtyard" in v.lower()),
+                  f"name={n!r} venue={v!r}")
+    # A blank venue must still be filled, and same-place detail still enriches.
+    blank = deduplicate([
+        {"name": "Drag Brunch", "date": "2026-08-08", "venue": "",
+         "priority": 1, "source": "a"},
+        {"name": "Drag Brunch", "date": "2026-08-08",
+         "venue": "Elote Cafe & Catering, 514 S Boston Ave", "priority": 2, "source": "b"},
+    ])
+    check("a BLANK venue is still backfilled",
+          blank and "Elote" in (blank[0].get("venue") or ""))
+    enrich = deduplicate([
+        {"name": "Drag Brunch", "date": "2026-08-08", "venue": "Elote Cafe & Catering",
+         "priority": 1, "source": "a"},
+        {"name": "Drag Brunch", "date": "2026-08-08",
+         "venue": "Elote Cafe & Catering, 514 S Boston Ave", "priority": 2, "source": "b"},
+    ])
+    check("same-place street detail is still adopted",
+          enrich and "514 S Boston" in (enrich[0].get("venue") or ""))
+
+    # --- HHHH is now a registered rotating venue with a confirmed August venue ---
+    check("'homo hotel' registered in venue_varies",
+          "homo hotel" in load_venue_varies())
+    check("HHHH has a CONFIRMED venue for August 2026",
+          has_override_for("Homo Hotel Happy Hour", "2026-08-07"))
+    check("HHHH with no override for a future month would BLOCK",
+          not has_override_for("Homo Hotel Happy Hour", "2026-12-04"))
+
+
 def main():
     print("=== TulsaGays pipeline regression suite ===")
     test_classifier()
@@ -405,6 +506,7 @@ def main():
     test_graphic_gate()
     test_ybr_highlighting()
     test_w28_saturday_dedup_and_cancelled()
+    test_w32_venue_relocation()
     test_final_deck_review()
     print()
     if FAILS:

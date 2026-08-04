@@ -1,0 +1,32 @@
+[
+  {
+    "username": "rockhard7byhardrocktulsa",
+    "pre_state": "Follow Back",
+    "post_state": "Following",
+    "action": "clicked_follow"
+  },
+  {
+    "username": "rainbowfish078",
+    "pre_state": "Follow",
+    "post_state": "Following",
+    "action": "clicked_follow"
+  },
+  {
+    "username": "sequinrodmother",
+    "pre_state": "Follow",
+    "post_state": "Following",
+    "action": "clicked_follow"
+  },
+  {
+    "username": "mendozar09",
+    "pre_state": "Follow",
+    "post_state": "Following",
+    "action": "clicked_follow"
+  },
+  {
+    "username": "brandonintulsa",
+    "pre_state": "Follow",
+    "post_state": "Following",
+    "action": "clicked_follow"
+  }
+]

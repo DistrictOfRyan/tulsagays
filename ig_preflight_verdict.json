@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "src": "https://www.tulsagays.com/assets/weekend-preview-bg.png",
+  "reason": "all graphic QA checks passed",
+  "checks": {
+    "tofu_clean": true,
+    "resolution_ok": true,
+    "aspect_ok": true,
+    "not_blank": true,
+    "approved": true
+  }
+}
