@@ -313,6 +313,15 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 
 ---
 
+### Reviewed but NOT added (2026-08-06 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/): rendered its live inline member list again (6 current members: UniComm Solutions, Yoga Quest LLC, Doc J's Heat and Air, Littleton Legal PLLC, Edgewood Veterinary Hospital, Osteostrong Tulsa Midtown) - no net-new members since the 2026-07-30 scan, all six confirmed already in the directory.
+- OkEq Food & Drink full re-check (50 listings): no net-new businesses. One notable second location surfaced - Empire Slice Shop (1502 E 11th St, counter-service) - same brand/ownership as the already-listed Empire Slice House (417 N Main St); not treated as a distinct new business.
+- Tulsa Remote LGBTQ guide: all 13 listed businesses/resources already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage found this scan.
+- WebSearch "new LGBTQ business Tulsa 2026 opened" / "queer-owned business Tulsa 2026" / "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (Dilly Diner, KEO, White Crow Tavern, Club Majestic, YBR, Tulsa Eagle) plus two unverified names - Duet Restaurant (108 N Detroit Ave, real jazz-and-dinner spot, but no source confirms an LGBTQ+ affiliation - explicitly absent from the gay-friendly restaurant lists it was searched against) and "Centennial Supper Club" (no primary source found at all; the one hit citing it appears to be a circular/hallucinated reference back to tulsagays.com itself). Neither added - insufficient LGBTQ+ sourcing per standing verification rule.
+- GayOut Tulsa guide (gayout.com): blocked WebFetch with HTTP 403 this scan; could not check for new listings. Revisit next scan.
+- Reddit r/tulsa (both query variants): no indexed results this scan.
+
 ### Reviewed but NOT added (2026-06-11 scan)
 - OkEq EBA directory page (https://okeq.org/eba/) renders no inline member list to WebFetch (auth/JS). Food & Drink page is the usable member source.
 - Tulsa Remote LGBTQ guide: all listed businesses (Tonsorial, il Seme, Cherry & Bark, YBR, Fulton Street, Jo & June, Magic City Books, Studio 66, Black Queer Tulsa, Twisted Arts, H.O.P.E., TACO) already in the directory.
