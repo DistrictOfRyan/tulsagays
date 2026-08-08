@@ -138,6 +138,20 @@
       "via": "web-search",
       "seen_count": 0,
       "last_checked": "2026-08-02"
+    },
+    {
+      "url": "gaykickball.com/tulsa.html",
+      "name": "Gay Kickball Tulsa",
+      "category": "lgbtq",
+      "added": "2026-08-08",
+      "via": "web-search"
+    },
+    {
+      "url": "tulsaareaprimetimers.com/calendars.html",
+      "name": "Tulsa Area Prime Timers",
+      "category": "lgbtq",
+      "added": "2026-08-08",
+      "via": "web-search"
     }
   ],
   "partner_keywords": [
@@ -427,6 +441,12 @@
       "name": "In 6 Days",
       "added": "2026-08-02",
       "via": "venue-miner"
+    },
+    {
+      "kw": "tulsa area prime timers",
+      "name": "Tulsa Area Prime Timers",
+      "added": "2026-08-08",
+      "via": "web-search"
     }
   ],
   "retired": [
