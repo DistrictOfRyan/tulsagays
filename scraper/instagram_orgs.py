@@ -463,10 +463,30 @@ class InstagramOrgScraper(BaseScraper):
                     self.source_name, len(events), dropped, len(in_week))
         return in_week
 
-    # Bars announce events close to when they happen. An event dated more than
-    # this many days after its announcing post is a stale relative-date projection
-    # (or an unrelated future teaser we can't confirm) — do not publish it.
-    MAX_ANNOUNCE_GAP_DAYS = 10
+    # An event dated more than this many days after its announcing post is treated
+    # as unpublishable.
+    #
+    # Raised 10 -> 31 on 2026-08-10. The 10-day value was a BLUNT PROXY for the
+    # forward-dating bug (a stale post's bare "FRIDAY" projected onto the current
+    # week — the 2026-07-27 YBR fix). It limited the damage by refusing far dates,
+    # but it also silently deleted every LEGITIMATE advance announcement: Club
+    # Majestic's "THURSDAY AUGUST 27TH ... Tulsa Supreme Beach Party", posted
+    # 2026-08-09 with an EXPLICIT date, is 18 days out and was dropped here. Worse,
+    # it could never recover — by the time 8/27's own week came around, the
+    # announcing post was 18 days old and still outside the window, so a marquee
+    # event was permanently invisible. That is a supply bug of exactly the kind
+    # that starved W33's Wednesday.
+    #
+    # The CAUSE is now fixed where it belongs, in the extraction prompt: a bare
+    # weekday resolves to the first such day ON OR AFTER the post date, so it can
+    # land at most ~7 days out and can no longer be projected into the current
+    # week. Guard 2 (_in_week) still restricts what actually ships. So this window
+    # only needs to be loose enough for real venue lead time (bars routinely
+    # announce 3-4 weeks ahead) while still rejecting a date BEFORE the post.
+    # Locked by tests/test_pipeline.py::test_ig_date_anchor_contract — if you
+    # tighten this, the anchoring rules in _extract_with_llm are what keeps the
+    # deck safe, so do not remove them.
+    MAX_ANNOUNCE_GAP_DAYS = 31
 
     @classmethod
     def _within_announce_window(cls, event_date: str, posted_on: str) -> bool:
@@ -501,8 +521,8 @@ class InstagramOrgScraper(BaseScraper):
             "You extract concrete, dated events from a Tulsa LGBTQ+ / queer-cultural "
             "org's Instagram captions. The org may rove between venues. Return ONLY "
             "events that have an identifiable calendar date. Resolve relative dates "
-            "('this Saturday', 'tonight', '6/14') against the post date and today's "
-            "date. Output STRICT JSON only."
+            "against THE POST DATE, never against the current week. Output STRICT "
+            "JSON only."
         )
         user = (
             f"Today is {today}. The current week runs {monday.strftime('%Y-%m-%d')} "
@@ -511,6 +531,21 @@ class InstagramOrgScraper(BaseScraper):
             "date. For each, output an object with keys:\n"
             '  "name"  - short event title (no hashtags/emoji, no em dashes)\n'
             '  "date"  - YYYY-MM-DD (resolve relative dates; year is the current year)\n'
+            "\n"
+            "DATE RULES - the post date is the anchor, NOT the current week. Bars post\n"
+            "day-of or a few days ahead, and mis-dating one publishes an event on a\n"
+            "night it is not happening:\n"
+            "  1. An EXPLICIT date in the caption ALWAYS wins ('SATURDAY 8/15',\n"
+            "     'FRIDAY AUGUST 14TH' -> use exactly that, even if weeks out).\n"
+            "  2. A BARE weekday with no date ('SATURDAY NIGHT!', 'THIS FRIDAY') means\n"
+            "     the FIRST such weekday ON OR AFTER the post date. A post made\n"
+            "     2026-08-06 saying 'SATURDAY NIGHT!' is 2026-08-08, NOT a later\n"
+            "     Saturday. Never roll a bare weekday forward into the current week.\n"
+            "  3. 'tonight'/'today' = the post date itself. 'tomorrow' = post date + 1.\n"
+            "  4. NEVER output a date BEFORE the post date.\n"
+            "The event may already be in the past relative to today. That is correct and\n"
+            "expected. Date it honestly from the post; later filters drop stale events.\n"
+            "\n"
             '  "time"  - like "9:00 PM" or "" if none stated\n'
             '  "venue" - the venue/address ONLY if explicitly named in the caption, '
             'else "" (do NOT invent a location)\n'

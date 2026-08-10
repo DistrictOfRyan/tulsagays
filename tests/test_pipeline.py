@@ -379,6 +379,53 @@ def test_w28_saturday_dedup_and_cancelled():
 
 # ── Final deck review (William 2026-07-09): the last-eyes pass over the
 # generated deck — cancelled, dupes, recurring-vs-one-off, best picks.
+def test_ig_date_anchor_contract():
+    """W33 (2026-08-10) was HARD-BLOCKED by a Saturday duplicate because the IG
+    caption extractor resolved BARE weekday captions against the CURRENT WEEK
+    instead of the post date. A 'SATURDAY NIGHT!' post made 2026-08-06 (for 8/08)
+    landed on 8/15 and collided with the real 8/15 flyer event; 'SUNDAY NIGHT!'
+    posted 8/07 (for 8/09) landed on 8/16.
+
+    The behaviour lives in a prompt, so this locks the CONTRACT: the anchoring
+    rules must stay in the prompt and the system line must not reintroduce
+    'today's date' as a co-equal anchor. Verified live 2026-08-10 against the real
+    captions: bare weekdays resolved to 8/08 and 8/09, while the explicit
+    'SATURDAY 8/15' and the 18-day-out 'THURSDAY AUGUST 27TH' were preserved.
+    Do not weaken without re-running that check. See gap G428.
+    """
+    print("IG caption date-anchor contract:")
+    try:
+        src = os.path.join(ROOT, "scraper", "instagram_orgs.py")
+        with open(src, encoding="utf-8") as f:
+            code = f.read()
+    except Exception as e:
+        check("instagram_orgs.py readable", False, str(e))
+        return
+
+    check("anchors on the POST DATE, not the current week",
+          "against THE POST DATE, never against the current week" in code)
+    check("explicit dates win over a bare weekday",
+          "EXPLICIT date in the caption ALWAYS wins" in code)
+    check("bare weekday = first occurrence ON OR AFTER the post date",
+          "FIRST such weekday ON OR AFTER the post date" in code)
+    check("never emits a date before the post date",
+          "NEVER output a date BEFORE the post date" in code)
+    # The old wording is what produced the W33 collision.
+    check("old 'post date and today's date' anchor is gone",
+          "against the post date and today's" not in code)
+    # The window must stay loose enough for real advance announcements
+    # ('THURSDAY AUGUST 27TH' posted 8/09 = 18 days out is legitimate).
+    try:
+        sys.path.insert(0, os.path.join(ROOT, "scraper"))
+        from scraper.instagram_orgs import InstagramOrgScraper as IOS
+        check("announce window still allows a real advance post",
+              IOS._within_announce_window("2026-08-27", "2026-08-09") is True)
+        check("announce window still rejects a pre-post date",
+              IOS._within_announce_window("2026-08-01", "2026-08-09") is False)
+    except Exception as e:
+        check("instagram_orgs importable", False, str(e))
+
+
 def test_anonymity_allowlist():
     """The account is anonymous, so preflight warns on any standalone 'ryan' /
     'william' / 'hunt'. Real Tulsa venues carry those words in their own names
@@ -556,6 +603,7 @@ def main():
     test_ybr_highlighting()
     test_w28_saturday_dedup_and_cancelled()
     test_w32_venue_relocation()
+    test_ig_date_anchor_contract()
     test_anonymity_allowlist()
     test_final_deck_review()
     print()
