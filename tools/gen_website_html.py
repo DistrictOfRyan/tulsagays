@@ -771,6 +771,15 @@ _week_end = _week_end_dt.strftime('%B ') + str(_week_end_dt.day) + ', ' + str(_w
 _new_date_range = f'<!-- DATE-RANGE -->{_week_start} to {_week_end}<!-- /DATE-RANGE -->'
 _html2 = re.sub(r'<!-- DATE-RANGE -->.*?<!-- /DATE-RANGE -->', _new_date_range, _html2)
 
+# 1b. Freshness marker + schema dateModified. Answer engines weight recency heavily
+# (Ahrefs: ~76% of ChatGPT's top-cited pages refreshed within 30 days), and a hard-coded
+# date would go stale and lie. Both are re-stamped from the actual run date every build.
+_today_human = datetime.now().strftime('%B ') + str(datetime.now().day) + ', ' + str(datetime.now().year)
+_html2 = re.sub(r'<!-- UPDATED -->.*?<!-- /UPDATED -->',
+                f'<!-- UPDATED -->{_today_human}<!-- /UPDATED -->', _html2)
+_html2 = re.sub(r'"dateModified"\s*:\s*"[^"]*"',
+                f'"dateModified": "{datetime.now().strftime("%Y-%m-%d")}"', _html2)
+
 # 2. EOTW banner (between <!-- EOTW-START --> and <!-- EOTW-END --> markers)
 if eotw:
     _e = eotw
