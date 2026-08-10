@@ -1272,6 +1272,8 @@ LGBTQ_SOURCES = {
 
     "pflag_tulsa", "pflag_ig", "black_queer_tulsa", "freedom_oklahoma",
     "utulsa_pride", "osu_tulsa",
+    "tcc_pride",         # @tcc_pride — TCC's LGBTQ+ student org. Their events never
+                         # reach calendar.tulsacc.edu (0 LGBTQ hits in all 323), so IG is the feed.
     "circles_lgbtq",  # LGBTQ social org -- trust all events
     "circle_cinema", "philbrook_museum", "tulsa_arts_district",
     "tulsa_isnt_boring",

@@ -85,6 +85,24 @@ ORGS: List[Dict] = [
                   "Details at tulsapflag.org and @pflagtulsa."),
     },
 
+    {   # TCC Pride, the LGBTQ+ student org at Tulsa Community College
+        # (added 2026-08-10 per William). Their events do NOT appear on the
+        # college's own calendar: all 323 events on calendar.tulsacc.edu had
+        # zero LGBTQ keyword hits when this was wired, so Instagram is the
+        # only feed. Verified live: 12 posts read, carrying a real dated event
+        # (Aug 27, 11:30am-1pm, Metro Campus 2nd Floor Student Union).
+        # Campus events are open to the public and skew young/first-timers,
+        # exactly the shy-introvert reader the site writes for.
+        "username": "tcc_pride",
+        "alt_usernames": ["tccpride"],
+        "source_name": "tcc_pride",
+        "default_venue": "TCC Metro Campus, 909 S Boston Ave",
+        "priority": 2,
+        "blurb": "TCC Pride is the LGBTQ+ student organization at Tulsa "
+                 "Community College, open to everyone on campus and a soft "
+                 "landing if you are new to queer Tulsa. Details on Instagram "
+                 "@tcc_pride.",
+    },
     {
         "username": "upflykai",
         "source_name": "klassic",

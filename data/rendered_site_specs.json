@@ -382,24 +382,38 @@
   {
     "name": "Tulsa Community College",
     "url": "https://calendar.tulsacc.edu/",
-    "strategy": "dom",
+    "strategy": "json",
     "enabled": true,
     "priority": 2,
     "lgbtq_only": false,
-    "wait_until": "networkidle",
-    "wait_ms": 2500,
-    "container": ".event",
-    "title": ".event-title",
-    "date": "time",
-    "date_attr": "datetime",
-    "date_format": "iso",
-    "link": "a",
-    "link_attr": "href",
+    "json_url": "https://calendar.tulsacc.edu/live/json/events",
+    "json_path": "data",
+    "json_title_key": "title",
+    "json_date_key": "date_iso",
+    "json_date_format": "iso",
     "sample": {
-      "name": "This is My World: An Exhibition by The CENTER",
-      "date": "2026-06-26"
+      "name": "Route 66 Centennial Exhibit by Urban Sketchers",
+      "date": "2026-08-14"
     },
-    "note": "Supplied URL https://www.tulsacc.edu/campus-life/events/ is a 404; real public calendar is calendar.tulsacc.edu (LiveWhale). 7 .event blocks, each with .event-title + time[datetime] ISO. Verified end-to-end through framework _extract_dom: 7/7 dated."
+    "note": "UPGRADED 2026-08-10 from strategy 'dom' (7 events, needed Playwright) to LiveWhale's native JSON API: 100 dated events per page, 323 total, no browser. Results are date-ascending from today so page 1 always covers the current week. Payload list is under 'data' (NOT 'events'); date_iso is a full ISO string the framework truncates to YYYY-MM-DD. Verified end-to-end through _scrape_spec: 100/100 dated. LGBTQ note: this is the INSTITUTIONAL calendar (FAFSA workshops, semester dates) and carried 0 LGBTQ keyword hits across all 323 events on 2026-08-10, so TCC Pride's own events do NOT appear here. The club posts only to Instagram, which is why source 'tcc_pride' exists in instagram_orgs.py. Keep lgbtq_only false so the runner relevance filter gates these."
+  },
+  {
+    "name": "University of Tulsa",
+    "url": "https://calendar.utulsa.edu/",
+    "strategy": "json",
+    "enabled": true,
+    "priority": 2,
+    "lgbtq_only": false,
+    "json_url": "https://calendar.utulsa.edu/wp-json/tribe/events/v1/events?per_page=50",
+    "json_path": "events",
+    "json_title_key": "title",
+    "json_date_key": "start_date",
+    "json_date_format": "iso",
+    "sample": {
+      "name": "Book Launch for Professor Kristen Oertel",
+      "date": "2026-08-11"
+    },
+    "note": "ADDED 2026-08-10. TU's public calendar runs The Events Calendar (Modern Tribe) on its OWN host calendar.utulsa.edu, NOT on utulsa.edu (utulsa.edu/wp-json/tribe/... is a 404, which is why this source was missed before). REST returns 635 upcoming events, 50/page, date-ascending, so page 1 covers the current week. Titles come HTML-escaped ('Men&#8217;s Soccer'); _extract_json now unescapes. Requires a browser User-Agent (BaseScraper sets one; a bare urllib fetch 403s). Also available: ?ical=1 on the same host. LGBTQ note: 0 keyword hits across the first 250 events on 2026-08-10, but TU's fall term had not started; TU lists Queer Media Club and OutLaws (TU Law) in its 162-org directory, and their events post here during term. lgbtq_only false so the runner relevance filter gates them."
   },
   {
     "name": "Tulsa Pride",

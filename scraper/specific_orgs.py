@@ -10,6 +10,7 @@ Each org: tries JSON-LD first, then HTML parsing, then returns empty with a log 
 
 import sys
 import os
+import html as _html
 import json
 import re
 import logging
@@ -268,11 +269,98 @@ class AllSoulsSpecialScraper(BaseOrgScraper):
 
 
 class UTulsaPrideClubScraper(BaseOrgScraper):
+    """University of Tulsa queer campus events, via the calendar's REST API.
+
+    REPAIRED 2026-08-10. The old EVENTS_URL
+    (calendar.utulsa.edu/organization/pride-club/) has been a hard 404 for an
+    unknown stretch, so this "configured" source was silently contributing 0
+    events every run while looking wired. Exactly the failure class the
+    fb_session trap taught us: configured is not functional.
+
+    TU's calendar runs The Events Calendar (Modern Tribe) on calendar.utulsa.edu
+    and exposes a real REST API with server-side keyword search (verified:
+    search=soccer -> 10, search=research -> 99, so a 0 is a true 0, not a broken
+    query). We search that per LGBTQ keyword rather than guessing club URLs,
+    which also survives clubs being renamed or added. TU's own org directory
+    lists Queer Media Club and OutLaws (TU Law) among its 162 groups.
+
+    Named handles for the record: utulsa.edu/student-life/student-organizations/
+    is a plain HTML directory (all 162 orgs inline, no JS), so it is scrapable if
+    org-level detail is ever needed.
+    """
+
     source_name = "utulsa_pride"
     BASE_URL = "https://calendar.utulsa.edu"
-    EVENTS_URL = "https://calendar.utulsa.edu/organization/pride-club/"
+    EVENTS_URL = "https://calendar.utulsa.edu/wp-json/tribe/events/v1/events"
     DEFAULT_VENUE = "University of Tulsa Campus"
     PRIORITY = 2
+
+    # Narrow, high-precision terms only. Broad ones from the module-level list
+    # ("gender", "equality", "inclusive", "bi") would pull in gender-studies
+    # lectures and DEI trainings, which are not events for this site.
+    SEARCH_TERMS = ["lgbtq", "lgbt", "queer", "pride", "drag", "trans",
+                    "lesbian", "gay", "nonbinary", "sapphic", "outlaws"]
+
+    def scrape(self) -> List[Dict]:
+        events: List[Dict] = []
+        seen_ids = set()
+
+        for term in self.SEARCH_TERMS:
+            try:
+                resp = self.session.get(
+                    self.EVENTS_URL,
+                    params={"search": term, "per_page": 50},
+                    timeout=20,
+                )
+                resp.raise_for_status()
+                payload = resp.json()
+            except Exception as e:
+                logger.warning("[%s] search '%s' failed: %s",
+                               self.source_name, term, e)
+                continue
+
+            for item in payload.get("events", []):
+                ev_id = item.get("id")
+                if ev_id in seen_ids:
+                    continue
+                seen_ids.add(ev_id)
+
+                # Tribe returns HTML-escaped titles and HTML-blob descriptions.
+                name = _html.unescape(str(item.get("title", ""))).strip()
+                start = str(item.get("start_date", ""))
+                date = start[:10]
+                if not name or not re.match(r"\d{4}-\d{2}-\d{2}", date):
+                    continue
+
+                desc = _html.unescape(
+                    re.sub(r"<[^>]+>", " ", str(item.get("description", "")))
+                )
+                desc = re.sub(r"\s+", " ", desc).strip()
+
+                # The API search matches body text too, so re-check relevance on
+                # title+description. Keeps a passing mention of "pride" in an
+                # unrelated event out of the feed.
+                if not _is_lgbtq_relevant(name, desc):
+                    continue
+
+                venue = (item.get("venue") or {}).get("venue") or self.DEFAULT_VENUE
+                time_str = start[11:16] if len(start) >= 16 else ""
+
+                events.append(self.make_event(
+                    name=name,
+                    date=date,
+                    time=time_str,
+                    venue=venue,
+                    description=desc[:600],
+                    url=item.get("url", "") or self.BASE_URL,
+                    priority=self.PRIORITY,
+                ))
+
+            self._random_delay()
+
+        logger.info("[%s] %d queer campus events across %d search terms",
+                    self.source_name, len(events), len(self.SEARCH_TERMS))
+        return events
 
 
 class OSUTulsaScraper(BaseOrgScraper):

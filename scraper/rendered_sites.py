@@ -10,7 +10,7 @@ Spec schema (one object per site in data/rendered_site_specs.json):
   {
     "name": "Philbrook Museum",          # display + source label
     "url": "https://philbrook.org/calendar/",
-    "strategy": "json_ld" | "dom" | "ical" | "dead",
+    "strategy": "json_ld" | "dom" | "json" | "ical" | "dead",
     "enabled": true,
     "priority": 2,
     "lgbtq_only": false,                 # if false, runner relevance filter applies
@@ -35,6 +35,7 @@ Run standalone:  python scraper/rendered_sites.py [--only NAME] [--list]
 """
 
 import argparse
+import html as _html
 import json
 import logging
 import os
@@ -255,7 +256,9 @@ class RenderedSitesScraper(BaseScraper):
         for it in items:
             if not isinstance(it, dict):
                 continue
-            name = str(it.get(tk, "")).strip()
+            # WordPress / Tribe APIs return titles HTML-escaped ("Men&#8217;s
+            # Soccer"). Unescape here or the entity ships to the slide + website.
+            name = _html.unescape(str(it.get(tk, ""))).strip()
             rawd = it.get(dk, "")
             date_str = ""
             try:
