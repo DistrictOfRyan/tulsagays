@@ -379,6 +379,55 @@ def test_w28_saturday_dedup_and_cancelled():
 
 # ── Final deck review (William 2026-07-09): the last-eyes pass over the
 # generated deck — cancelled, dupes, recurring-vs-one-off, best picks.
+def test_anonymity_allowlist():
+    """The account is anonymous, so preflight warns on any standalone 'ryan' /
+    'william' / 'hunt'. Real Tulsa venues carry those words in their own names
+    ('The Hunt Club', 224 N Main St), which fired a false warning EVERY week and
+    buried the warnings that matter -- W33's real blocker was a Saturday
+    duplicate while the alert text led with the Hunt Club flag.
+
+    IDENTITY_SOFT_ALLOWLIST masks those venue strings for the SOFT scan only.
+    The point of this lock: masking must NEVER reach the hard checks. A genuine
+    operator leak has to keep blocking even when it sits inside an allowlisted
+    string. Never weaken these assertions.
+    """
+    print("anonymity allowlist (soft-only masking):")
+    try:
+        sys.path.insert(0, os.path.join(ROOT, "tools"))
+        from preflight_post import _check_anonymity
+    except Exception as e:
+        check("preflight_post importable", False, str(e))
+        return
+
+    def scan(text):
+        errs, warns = [], []
+        _check_anonymity(text, "t", errs, warns)
+        return errs, warns
+
+    # Real venue names: fully clean, no noise.
+    for txt in ("Taco Tuesday at The Hunt Club, 224 N Main St",
+                "Open Mic Comedy Night at The Hunt Club runs 8 to 10",
+                "A scavenger hunt through the Arts District"):
+        e, w = scan(txt)
+        check(f"clean: {txt[:38]}", not e and not w)
+
+    # Hard leaks still BLOCK -- including inside an allowlisted venue string.
+    for txt, why in (
+        ("This account is run by Ryan Hunt", "operator full name"),
+        ("Open mic at The Hunt Club, hosted by William Hunt", "full name beside allowlisted venue"),
+        ("I run this account, dm me", "operator self-ID phrase"),
+    ):
+        e, _ = scan(txt)
+        check(f"still blocks ({why})", len(e) > 0, f"got 0 errors for {txt!r}")
+
+    # Un-allowlisted soft terms still warn (the guard is not globally disabled).
+    for txt, term in (("The hunt for the best taco in Tulsa", "hunt"),
+                      ("DJ Ryan spins at 10", "ryan"),
+                      ("Hosted by William, your local drag mother", "william")):
+        _, w = scan(txt)
+        check(f"still warns on bare '{term}'", len(w) > 0)
+
+
 def test_final_deck_review():
     print("final deck review selftest:")
     try:
@@ -507,6 +556,7 @@ def main():
     test_ybr_highlighting()
     test_w28_saturday_dedup_and_cancelled()
     test_w32_venue_relocation()
+    test_anonymity_allowlist()
     test_final_deck_review()
     print()
     if FAILS:
