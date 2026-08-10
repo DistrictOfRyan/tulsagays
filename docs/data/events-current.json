@@ -1,58 +1,58 @@
 [
   {
-    "name": "WTO/99",
-    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-08-04",
-    "day_short": "TUE",
-    "time": "12:40 PM"
+    "name": "Lunch Specials at Elgin Park",
+    "venue": "Elgin Park Brewery",
+    "date": "2026-08-10",
+    "day_short": "MON",
+    "time": "11:00 AM"
   },
   {
-    "name": "Tulsa Shakespeare Audition - Hamlet",
-    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-    "date": "2026-08-04",
-    "day_short": "TUE",
-    "time": "7:00 PM"
+    "name": "Lunch Special at Empire Slice House",
+    "venue": "Empire Slice House Tulsa / 84 Hospitality Group",
+    "date": "2026-08-10",
+    "day_short": "MON",
+    "time": "11:00 AM"
   },
   {
-    "name": "Tuesdays in the Park Concert Series",
-    "venue": "Central Park, 1500 S Main St, Broken Arrow",
-    "date": "2026-08-04",
-    "day_short": "TUE",
-    "time": "7:00 PM - 9:00 PM"
+    "name": "Happy Hour with Free Pool at Caz\u2019s Pub",
+    "venue": "Caz\u2019s Pub",
+    "date": "2026-08-10",
+    "day_short": "MON",
+    "time": "2:00 PM"
   },
   {
-    "name": "Midweek Meditation (Zoom only)",
-    "venue": "Shambhala Meditation Center of Tulsa",
-    "date": "2026-08-05",
-    "day_short": "WED",
-    "time": "12:00 PM"
+    "name": "The Marvelous Miss Gender Tour Starring Bosco",
+    "venue": "Cains Ballroom",
+    "date": "2026-08-10",
+    "day_short": "MON",
+    "time": "3:00 PM"
   },
   {
-    "name": "WTO/99",
-    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-08-05",
-    "day_short": "WED",
-    "time": "12:40 PM"
+    "name": "Happy Hour at in the raw v\u016b",
+    "venue": "in the raw v\u016b",
+    "date": "2026-08-10",
+    "day_short": "MON",
+    "time": "3:00 PM"
   },
   {
-    "name": "Queer Women's Collective Tulsa",
-    "venue": "The Starlite Bar, 1902 E 11th St, Tulsa",
-    "date": "2026-08-05",
-    "day_short": "WED",
+    "name": "Sunday & Monday Bar Special at PRHYME",
+    "venue": "PRHYME: Downtown Steakhouse",
+    "date": "2026-08-10",
+    "day_short": "MON",
+    "time": "4:00 PM"
+  },
+  {
+    "name": "Happy Hour at Saturn Room",
+    "venue": "Saturn Room",
+    "date": "2026-08-10",
+    "day_short": "MON",
+    "time": "4:00 PM"
+  },
+  {
+    "name": "TCC Skills Lab \u2013 Monthly Info Session at Gradient",
+    "venue": "Gradient Innovation Hub",
+    "date": "2026-08-10",
+    "day_short": "MON",
     "time": "5:30 PM"
-  },
-  {
-    "name": "Tulsa Leather Community (TLC) Oklahoma",
-    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-    "date": "2026-08-05",
-    "day_short": "WED",
-    "time": "6:30 PM"
-  },
-  {
-    "name": "Tulsa Shakespeare Auditions-Hamlet",
-    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-    "date": "2026-08-05",
-    "day_short": "WED",
-    "time": "7:00 PM"
   }
 ]
