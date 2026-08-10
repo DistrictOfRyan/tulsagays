@@ -1215,7 +1215,8 @@ def make_day_slide(day_name: str, events: List[Dict],
     _pink_bar(draw, footer_y, height=2)
     footer_y += 12
     more_count = max(0, total_day_events - len(events))
-    cta_line1 = f"{more_count} MORE EVENTS TODAY" if more_count > 0 else "YOUR FULL QUEER WEEK"
+    cta_line1 = (f"{more_count} MORE EVENT{'S' if more_count != 1 else ''} TODAY"
+                 if more_count > 0 else "YOUR FULL QUEER WEEK")
     _draw_centered(draw, cta_line1, footer_y, f_cta, NEON_PINK)
     footer_y += footer_cta_h + 10
     _draw_centered(draw, "SEE ALL AT TULSAGAYS.COM", footer_y, f_footer_big, WHITE)

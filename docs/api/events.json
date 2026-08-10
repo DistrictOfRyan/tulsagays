@@ -2,7 +2,7 @@
   "api_version": "1",
   "city": "Tulsa, OK",
   "publisher": "Tulsa Gays",
-  "generated_at": "2026-08-10T09:51:05Z",
+  "generated_at": "2026-08-10T12:04:02Z",
   "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
   "count": 8,
   "events": [
@@ -70,7 +70,7 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "TCC Skills Lab – Monthly Info Session at Gradient",
+      "name": "TCC Skills Lab - Monthly Info Session at Gradient",
       "date": "2026-08-10",
       "time": "5:30 PM",
       "venue": "Gradient Innovation Hub",

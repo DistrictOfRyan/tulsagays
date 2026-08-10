@@ -770,5 +770,83 @@
     "url": "https://www.instagram.com/p/DbfpbIHFSkV/",
     "source": "venue_flyer_dig",
     "priority": 2
+  },
+  {
+    "name": "Bad Boys On the Block (Legacy Entertainment)",
+    "date": "2026-08-14",
+    "time": "Doors 9pm, Showtime 9:30pm-10:30pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DbwrpUgRcnn/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Miss Gay Rose Rock America \"Welcome to the Apocalypse\" (prelim to Miss Gay Oklahoma America)",
+    "date": "2026-08-09",
+    "time": "Registration 1:30pm, Interview 2:30pm, Pageant 10pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DburUXpTdmk/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Sensational Saturdays feat. August, Yakisoba, Innocence, Coco, Serenity",
+    "date": "2026-08-15",
+    "time": "9:30 PM",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DbuiJnyAqav/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Diamonds & Dreams: A Benefit Show hosted by Serenity S. Grace",
+    "date": "2026-08-16",
+    "time": "9:00 PM - 10:30 PM",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DbTt3yaRk_3/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "LOVE IN ACTION: A Benefit Show for Krazy Kris Sipe",
+    "date": "2026-08-09",
+    "time": "6:00 PM",
+    "venue": "Tulsa Eagle, 1338 E 3rd St",
+    "url": "https://www.instagram.com/p/Db07qETGWJk/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Temple Sessions Ecstatic Dance",
+    "date": "2026-08-12",
+    "time": "6:30 PM - 8:30 PM",
+    "venue": "Contemporary Arts of Tulsa (C.A.T.)",
+    "url": "https://downtowntulsa.com/do/temple-sessions-ecstatic-dance",
+    "source_note": "Verified live on downtowntulsa.com/experience/calendar 2026-08-10",
+    "priority": 1,
+    "description": "Two hours of barefoot dancing with no steps to learn and nobody keeping score, sugar. Ecstatic dance asks for zero small talk, which is the entire appeal.",
+    "website_description": "Ecstatic dance is exactly what it sounds like, a room full of people moving however their body wants to move, no choreography, no partner, no conversation required. That last part is the gift for anyone who wants a night out but dreads the mingling that usually comes attached to one. Lights are low, the music does the driving, and nobody is watching you because every one of them is deep in their own thing. Come in socks or bare feet, land at 6:30 while the room is still filling so you can claim a corner and warm up slow, and give yourself permission to be terrible at it for the first twenty minutes."
+  },
+  {
+    "name": "Open Mic Comedy Night at The Hunt Club",
+    "date": "2026-08-12",
+    "time": "8:00 PM - 10:00 PM",
+    "venue": "The Hunt Club, 224 N Main St",
+    "url": "https://downtowntulsa.com/do/open-mic-comedy-night-at-the-hunt-club",
+    "source_note": "Verified live on downtowntulsa.com/experience/calendar 2026-08-10",
+    "priority": 2,
+    "description": "Brave strangers bombing and killing in equal measure, honey. The cheapest live entertainment downtown, and your whole job is to sit in the dark and react.",
+    "website_description": "Open mic comedy is a gorgeous mess, a rotating lineup of people testing brand new material on a room that has no idea what is coming. Some sets land, some die a slow public death, and honestly both are worth showing up for. It is the ideal low-commitment Wednesday because nothing is asked of you except laughing, which takes no social stamina at all. Take a seat toward the back where you can howl without becoming part of somebody's crowd work, arrive by 8 to catch the early sets while the room is still loose, and tip your bartender on the way out."
+  },
+  {
+    "name": "Jazz Depot - Eicher Wednesdays",
+    "date": "2026-08-12",
+    "time": "6:30 PM - 7:30 PM",
+    "venue": "Baxter's Interurban Grill, 717 S Houston Ave",
+    "url": "https://downtowntulsa.com/do/jazz-depot-eicher-wednesdays",
+    "source_note": "Verified live on downtowntulsa.com/experience/calendar 2026-08-10",
+    "priority": 2,
+    "description": "Live jazz over dinner at Baxter's, one hour on the nose, and listening counts as participating, honey.",
+    "website_description": "Eicher Wednesdays puts live jazz in Baxter's Interurban Grill for an hour, which is precisely the right length for a weeknight you did not plan on. Jazz is the kindest music for the socially cautious, because sitting quietly and listening IS the correct way to attend, and nobody will ask anything else of you. Order something, take a table with a clear view of the players, and let an hour of real musicianship reset the middle of your week. Arrive by 6:30 when it starts so you are not the one walking in mid-song."
   }
 ]

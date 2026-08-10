@@ -138,6 +138,18 @@ IDENTITY_TERMS_HARD = [
 # Soft (warn + eyeball): standalone first names / surname — could be a real
 # performer ("scavenger hunt", a DJ named Ryan), so warn rather than block.
 IDENTITY_TERMS_SOFT = ["ryan", "william", "hunt"]
+# Real Tulsa venues/events whose OWN NAME contains a soft identity term. These
+# are verified public places, not the operator, so the soft warning is pure
+# noise on them and buries the warnings that matter. Only the SOFT list is
+# suppressed here — IDENTITY_TERMS_HARD and OPERATOR_PHRASES are never masked,
+# so a genuine leak ("Ryan Hunt", "I run this") still blocks even inside one of
+# these strings. Add a venue ONLY after verifying it exists (The Hunt Club:
+# 224 N Main St, Tulsa — confirmed on downtowntulsa.com 2026-08-10).
+IDENTITY_SOFT_ALLOWLIST = [
+    "the hunt club",
+    "scavenger hunt",
+    "house hunt",
+]
 OPERATOR_PHRASES = [
     "i run this", "i run the", "i created this", "i started this", "i curate",
     "my account", "account is run by", "run by me", "founder of this",
@@ -162,8 +174,14 @@ def _check_anonymity(text, where, errors, warnings):
     for phrase in OPERATOR_PHRASES:
         if phrase in low:
             errors.append(f"[anonymity] {where} self-identifies the operator ('{phrase}') — account MUST stay anonymous")
+    # Blank out known real-venue names before the soft scan so a legitimate
+    # venue ("The Hunt Club") stops crying wolf every week. The hard checks
+    # above already ran against the UNMASKED text.
+    soft_low = low
+    for allowed in IDENTITY_SOFT_ALLOWLIST:
+        soft_low = soft_low.replace(allowed, " ")
     for term in IDENTITY_TERMS_SOFT:
-        if _word(term, low):
+        if _word(term, soft_low):
             warnings.append(f"[anonymity] {where} contains '{term}' — verify it's a real event detail, not the operator")
 
 
