@@ -102,6 +102,8 @@ as NEEDS VERIFICATION, either verify it or omit the address entirely.
 | Gathering Place | 2650 S John Williams Way | OPEN | Free public park. Not specifically queer but heavily used by community. One of the best parks in the US. |
 | Philbrook Museum | Address unverified | OPEN | Fine arts museum. Queer-friendly. Do not publish street number. |
 | Gilcrease Museum | 1400 N Gilcrease Museum Rd, Tulsa OK 74127 | OPEN | Art and history museum. 23 acres in the Osage Hills. Verified address. Phone: 918-596-2783. |
+| Center for Queer Prairie Studies (CQPS) | 112 N Boston Ave, Downtown Tulsa (inside Tulsa Artist Fellowship Flagship space) | OPEN | Queer art and history project curated by Tulsa Artist Fellow Karl Jones. Exhibitions, film screenings, lectures, performance art centered on 2SLGBTQ+ prairie/Oklahoma history. Programming rotates, check calendar before visiting. Verified tulsaartistfellowship.org/calendar/cqps August 2026. |
+| Twisted Arts / Twisted Fest | No fixed address, screens at Circle Cinema (10 S Lewis Ave) | ACTIVE | Tulsa's LGBTQ+ film festival, founded 2020. Annual event, first-run queer features plus 20-30 short films. Runs the "Drag Me to the Movies" series at Circle Cinema. Verified twistedfest.org August 2026. |
 
 ---
 
@@ -165,4 +167,6 @@ Format for new entries:
 | Venue Name | Full Address or "Address unverified" | OPEN / PERMANENTLY CLOSED / NEEDS VERIFICATION | Notes |
 ```
 
-Last updated: 2026-07-15 (added trans resources: OkEq Gender Support Group + Health Clinic, TACO, Diversity Family Health, Planned Parenthood Peoria, Youth Services of Tulsa, Taylor Burns Counseling; corrected PFLAG Tulsa venue from OkEq to Youth Services of Tulsa; flagged transadvocacyok.org as an expired/squatted domain)
+Last updated: 2026-08-12 (added Center for Queer Prairie Studies + Twisted Arts/Twisted Fest, verified for the LGBTQIA+ Arts Scene blog post)
+
+Previously: 2026-07-15 (added trans resources: OkEq Gender Support Group + Health Clinic, TACO, Diversity Family Health, Planned Parenthood Peoria, Youth Services of Tulsa, Taylor Burns Counseling; corrected PFLAG Tulsa venue from OkEq to Youth Services of Tulsa; flagged transadvocacyok.org as an expired/squatted domain)
