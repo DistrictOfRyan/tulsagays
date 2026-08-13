@@ -328,3 +328,13 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 - Skipped from OkEq Food & Drink as not consumer-facing storefronts or already listed: caterers (Aila's, Charcuteray, Justin Thompson, TW's AFAB, The Girl Can Cook), corporate food cos (Bama, Ingredion), meal prep (Cozy Cuisine), chains (Nothing Bundt Cakes), orgs (Hunger Free OK), and already-listed venues (American Solera, Big Dipper, Cherry & Bark, Club Majestic, Dalesandro's, East Village Bohemian, Elote, Empire Slice, FarmBar, Heirloom, Juniper, Lefty's, St. Vitus, il Seme, Starlite).
 - Candidates held for a future scan (qualify but no verified address this run): The Donut Hole (double-sourced inclusive), Freya Nordic Kitchen, Inheritance Kitchen & Juicery, The People's Bakery, Triangle Coffee Roasters, The Vault, The Max Retropub, Vintage Wine Bar.
 - Reddit r/tulsa: WebSearch returned no results this run.
+
+---
+
+### Reviewed but NOT added (2026-08-13 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/): rendered its live inline member list again (same 6 current members: UniComm Solutions, Yoga Quest LLC, Doc J's Heat and Air, Littleton Legal PLLC, Edgewood Veterinary Hospital, Osteostrong Tulsa Midtown) - no net-new members since the 2026-07-30/08-06 scans, all confirmed already in the directory.
+- OkEq Food & Drink full re-check (50 listings): no net-new businesses. All confirmed already in the directory or previously reviewed/held/skipped from prior scans (including Oren Restaurant, confirmed already listed under Restaurants & Food since 2026-06-11).
+- Tulsa Remote LGBTQ guide: all listed businesses/resources already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage found this scan.
+- WebSearch "new LGBTQ business Tulsa 2026 opened" / "queer-owned business Tulsa 2026" / "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (Il Seme, Cherry & Bark, Jo & June, KEO, Yokozuna, Dilly Diner, Lambrusco'z To Go) plus general guide/listicle pages (Yelp, GayCities, Rainbows in Revolt). No net-new finds.
+- Reddit r/tulsa (both query variants): no indexed results this scan (search surfaced only unrelated hotel-booking pages).
