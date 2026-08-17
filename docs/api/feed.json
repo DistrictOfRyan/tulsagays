@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "city": "Tulsa",
-  "generated": "2026-08-16",
+  "generated": "2026-08-17",
   "license": "Free to use with attribution to tulsagays.com",
   "coverage": {
     "coverage_pct": 94.4,
@@ -14,58 +14,58 @@
   "events": [
     {
       "name": "Lunch Specials at Elgin Park",
-      "date": "2026-08-10",
+      "date": "2026-08-17",
       "time": "11:00 AM",
       "venue": "Elgin Park Brewery",
       "url": null
     },
     {
       "name": "Lunch Special at Empire Slice House",
-      "date": "2026-08-10",
+      "date": "2026-08-17",
       "time": "11:00 AM",
       "venue": "Empire Slice House Tulsa / 84 Hospitality Group",
       "url": null
     },
     {
       "name": "Happy Hour with Free Pool at Caz’s Pub",
-      "date": "2026-08-10",
+      "date": "2026-08-17",
       "time": "2:00 PM",
       "venue": "Caz’s Pub",
       "url": null
     },
     {
-      "name": "The Marvelous Miss Gender Tour Starring Bosco",
-      "date": "2026-08-10",
-      "time": "3:00 PM",
-      "venue": "Cains Ballroom",
-      "url": null
-    },
-    {
       "name": "Happy Hour at in the raw vū",
-      "date": "2026-08-10",
+      "date": "2026-08-17",
       "time": "3:00 PM",
       "venue": "in the raw vū",
       "url": null
     },
     {
       "name": "Sunday & Monday Bar Special at PRHYME",
-      "date": "2026-08-10",
+      "date": "2026-08-17",
       "time": "4:00 PM",
       "venue": "PRHYME: Downtown Steakhouse",
       "url": null
     },
     {
       "name": "Happy Hour at Saturn Room",
-      "date": "2026-08-10",
+      "date": "2026-08-17",
       "time": "4:00 PM",
       "venue": "Saturn Room",
       "url": null
     },
     {
-      "name": "TCC Skills Lab - Monthly Info Session at Gradient",
-      "date": "2026-08-10",
+      "name": "Workshop with 108 exhibiting artist Aaron Jones at the TCC McKeon Center for Creativity – Free Event",
+      "date": "2026-08-17",
       "time": "5:30 PM",
-      "venue": "Gradient Innovation Hub",
+      "venue": "108 Contemporary",
+      "url": null
+    },
+    {
+      "name": "FACE by Miles Rogoish – Free Admission at Chimera Cafe",
+      "date": "2026-08-17",
+      "time": "7:00 AM",
+      "venue": "Chimera Café",
       "url": null
     }
   ]

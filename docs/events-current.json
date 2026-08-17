@@ -2,57 +2,57 @@
   {
     "name": "Lunch Specials at Elgin Park",
     "venue": "Elgin Park Brewery",
-    "date": "2026-08-10",
+    "date": "2026-08-17",
     "day_short": "MON",
     "time": "11:00 AM"
   },
   {
     "name": "Lunch Special at Empire Slice House",
     "venue": "Empire Slice House Tulsa / 84 Hospitality Group",
-    "date": "2026-08-10",
+    "date": "2026-08-17",
     "day_short": "MON",
     "time": "11:00 AM"
   },
   {
     "name": "Happy Hour with Free Pool at Caz\u2019s Pub",
     "venue": "Caz\u2019s Pub",
-    "date": "2026-08-10",
+    "date": "2026-08-17",
     "day_short": "MON",
     "time": "2:00 PM"
   },
   {
-    "name": "The Marvelous Miss Gender Tour Starring Bosco",
-    "venue": "Cains Ballroom",
-    "date": "2026-08-10",
-    "day_short": "MON",
-    "time": "3:00 PM"
-  },
-  {
     "name": "Happy Hour at in the raw v\u016b",
     "venue": "in the raw v\u016b",
-    "date": "2026-08-10",
+    "date": "2026-08-17",
     "day_short": "MON",
     "time": "3:00 PM"
   },
   {
     "name": "Sunday & Monday Bar Special at PRHYME",
     "venue": "PRHYME: Downtown Steakhouse",
-    "date": "2026-08-10",
+    "date": "2026-08-17",
     "day_short": "MON",
     "time": "4:00 PM"
   },
   {
     "name": "Happy Hour at Saturn Room",
     "venue": "Saturn Room",
-    "date": "2026-08-10",
+    "date": "2026-08-17",
     "day_short": "MON",
     "time": "4:00 PM"
   },
   {
-    "name": "TCC Skills Lab - Monthly Info Session at Gradient",
-    "venue": "Gradient Innovation Hub",
-    "date": "2026-08-10",
+    "name": "Workshop with 108 exhibiting artist Aaron Jones at the TCC McKeon Center for Creativity \u2013 Free Event",
+    "venue": "108 Contemporary",
+    "date": "2026-08-17",
     "day_short": "MON",
     "time": "5:30 PM"
+  },
+  {
+    "name": "FACE by Miles Rogoish \u2013 Free Admission at Chimera Cafe",
+    "venue": "Chimera Caf\u00e9",
+    "date": "2026-08-17",
+    "day_short": "MON",
+    "time": "7:00 AM"
   }
 ]

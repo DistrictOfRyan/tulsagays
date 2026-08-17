@@ -2,13 +2,13 @@
   "api_version": "1",
   "city": "Tulsa, OK",
   "publisher": "Tulsa Gays",
-  "generated_at": "2026-08-10T12:04:02Z",
+  "generated_at": "2026-08-17T18:06:10Z",
   "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
   "count": 8,
   "events": [
     {
       "name": "Lunch Specials at Elgin Park",
-      "date": "2026-08-10",
+      "date": "2026-08-17",
       "time": "11:00 AM",
       "venue": "Elgin Park Brewery",
       "url": "",
@@ -17,7 +17,7 @@
     },
     {
       "name": "Lunch Special at Empire Slice House",
-      "date": "2026-08-10",
+      "date": "2026-08-17",
       "time": "11:00 AM",
       "venue": "Empire Slice House Tulsa / 84 Hospitality Group",
       "url": "",
@@ -26,7 +26,7 @@
     },
     {
       "name": "Happy Hour with Free Pool at Caz’s Pub",
-      "date": "2026-08-10",
+      "date": "2026-08-17",
       "time": "2:00 PM",
       "venue": "Caz’s Pub",
       "url": "",
@@ -34,17 +34,8 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "The Marvelous Miss Gender Tour Starring Bosco",
-      "date": "2026-08-10",
-      "time": "3:00 PM",
-      "venue": "Cains Ballroom",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
       "name": "Happy Hour at in the raw vū",
-      "date": "2026-08-10",
+      "date": "2026-08-17",
       "time": "3:00 PM",
       "venue": "in the raw vū",
       "url": "",
@@ -53,7 +44,7 @@
     },
     {
       "name": "Sunday & Monday Bar Special at PRHYME",
-      "date": "2026-08-10",
+      "date": "2026-08-17",
       "time": "4:00 PM",
       "venue": "PRHYME: Downtown Steakhouse",
       "url": "",
@@ -62,7 +53,7 @@
     },
     {
       "name": "Happy Hour at Saturn Room",
-      "date": "2026-08-10",
+      "date": "2026-08-17",
       "time": "4:00 PM",
       "venue": "Saturn Room",
       "url": "",
@@ -70,10 +61,19 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "TCC Skills Lab - Monthly Info Session at Gradient",
-      "date": "2026-08-10",
+      "name": "Workshop with 108 exhibiting artist Aaron Jones at the TCC McKeon Center for Creativity – Free Event",
+      "date": "2026-08-17",
       "time": "5:30 PM",
-      "venue": "Gradient Innovation Hub",
+      "venue": "108 Contemporary",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "FACE by Miles Rogoish – Free Admission at Chimera Cafe",
+      "date": "2026-08-17",
+      "time": "7:00 AM",
+      "venue": "Chimera Café",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
