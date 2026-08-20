@@ -17,6 +17,10 @@ data/GROUP_AUTH_DEAD.flag
 !data/venue_overrides.json
 !data/recurring_confirmations.json
 
+# Event-of-the-Week pins are a curator decision (a human verified this event is
+# the week's hero), so they must survive to every machine that generates a week.
+!data/manual_eotw.json
+
 # Local debug/backup debris - keep on disk, never commit (added 2026-07-01)
 *.bak
 *.bak-*
