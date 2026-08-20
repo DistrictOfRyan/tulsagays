@@ -331,6 +331,14 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 
 ---
 
+### Reviewed but NOT added (2026-08-20 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/): rendered its live inline member list again (same 6 current members: UniComm Solutions, Yoga Quest LLC, Doc J's Heat and Air, Littleton Legal PLLC, Edgewood Veterinary Hospital, Osteostrong Tulsa Midtown) - no net-new members since the 2026-07-30/08-06/08-13 scans, all confirmed already in the directory.
+- OkEq Food & Drink full re-check (50 listings): no net-new businesses. All confirmed already in the directory or previously reviewed/held/skipped from prior scans.
+- Tulsa Remote LGBTQ guide: all listed businesses/resources (Tonsorial, il Seme, Cherry & Bark, YBR, The Donut Hole, Fulton Street, Jo & June, Magic City Books, Studio 66, Black Queer Tulsa, Twisted Arts, H.O.P.E, TACO) already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage found this scan (only an unrelated Tulsa University Theatre academic-department mention).
+- WebSearch "new LGBTQ business Tulsa 2026" / "queer-owned business Tulsa 2026" / "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (Il Seme, Cherry & Bark, Jo & June, Magic City Books, Yokozuna, Lambrusco'z To Go, KEO, Dilly Diner) plus general guide/listicle pages (Yelp, GayCities, Rainbows in Revolt, Tulsa Sun). No net-new finds.
+- Reddit r/tulsa (both query variants): no indexed results this scan (search surfaced only unrelated hotel-booking pages).
+
 ### Reviewed but NOT added (2026-08-13 scan)
 - OkEq Equality Business Alliance (okeq.org/eba/): rendered its live inline member list again (same 6 current members: UniComm Solutions, Yoga Quest LLC, Doc J's Heat and Air, Littleton Legal PLLC, Edgewood Veterinary Hospital, Osteostrong Tulsa Midtown) - no net-new members since the 2026-07-30/08-06 scans, all confirmed already in the directory.
 - OkEq Food & Drink full re-check (50 listings): no net-new businesses. All confirmed already in the directory or previously reviewed/held/skipped from prior scans (including Oren Restaurant, confirmed already listed under Restaurants & Food since 2026-06-11).
