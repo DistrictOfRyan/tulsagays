@@ -2,78 +2,78 @@
   "api_version": "1",
   "city": "Tulsa, OK",
   "publisher": "Tulsa Gays",
-  "generated_at": "2026-08-17T18:06:10Z",
+  "generated_at": "2026-08-20T20:31:31Z",
   "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
   "count": 8,
   "events": [
     {
+      "name": "Karaoke Brunch & Ugly Dog Contest",
+      "date": "2026-08-20",
+      "time": "",
+      "venue": "DVL Club & Lounge, 302 S Frankfort Ave",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Summerween Party",
+      "date": "2026-08-20",
+      "time": "",
+      "venue": "DVL Club & Lounge, 302 S Frankfort Ave",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "“A Dozen Loops: The Radical Voice of Woody Guthrie” + “Tom Paxton: A Car Full of Songs,” + “The Melody of Riot: Jay Farrar, Son Volt, and the Legacy of Woody Guthrie,” at Woody Guthrie Center",
+      "date": "2026-08-20",
+      "time": "10:00 AM",
+      "venue": "Woody Guthrie Center",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Permanent Exhibits and “Thin Wild Mercury: Dylan 1966” + “Face Value” at Bob Dylan Center",
+      "date": "2026-08-20",
+      "time": "10:00 AM",
+      "venue": "Bob Dylan Center",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Storytime at Philbrook: Route 66 Road Stops",
+      "date": "2026-08-20",
+      "time": "10:00 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "DRAGNIFICENT! Drag Show",
+      "date": "2026-08-20",
+      "time": "10:00 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Fish Feeding",
+      "date": "2026-08-20",
+      "time": "10:30 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
       "name": "Lunch Specials at Elgin Park",
-      "date": "2026-08-17",
+      "date": "2026-08-20",
       "time": "11:00 AM",
       "venue": "Elgin Park Brewery",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Lunch Special at Empire Slice House",
-      "date": "2026-08-17",
-      "time": "11:00 AM",
-      "venue": "Empire Slice House Tulsa / 84 Hospitality Group",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Happy Hour with Free Pool at Caz’s Pub",
-      "date": "2026-08-17",
-      "time": "2:00 PM",
-      "venue": "Caz’s Pub",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Happy Hour at in the raw vū",
-      "date": "2026-08-17",
-      "time": "3:00 PM",
-      "venue": "in the raw vū",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Sunday & Monday Bar Special at PRHYME",
-      "date": "2026-08-17",
-      "time": "4:00 PM",
-      "venue": "PRHYME: Downtown Steakhouse",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Happy Hour at Saturn Room",
-      "date": "2026-08-17",
-      "time": "4:00 PM",
-      "venue": "Saturn Room",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Workshop with 108 exhibiting artist Aaron Jones at the TCC McKeon Center for Creativity – Free Event",
-      "date": "2026-08-17",
-      "time": "5:30 PM",
-      "venue": "108 Contemporary",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "FACE by Miles Rogoish – Free Admission at Chimera Cafe",
-      "date": "2026-08-17",
-      "time": "7:00 AM",
-      "venue": "Chimera Café",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
