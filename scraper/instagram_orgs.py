@@ -129,6 +129,20 @@ ORGS: List[Dict] = [
         # main gay bar — the W24 Pride miss class of failure.
         "alt_usernames": ["tulsaeagleok"],
         "source_name": "tulsa_eagle_ig",
+        # WHY THIS VENUE OFTEN YIELDS 0 EVENTS (diagnosed 2026-08-20, gap G513).
+        # The fetch is NOT the problem: on 2026-08-20 @tulsaeagle returned 12 posts
+        # and still produced 0 events, while Club Majestic (12 posts) and DVL (11)
+        # produced 2 each from the same run. The Eagle's programming is RECURRING
+        # WEEKLY NIGHTS (karaoke, drag) rather than dated one-off events, and this
+        # module requires a parseable IN-WEEK DATE before it will emit anything - so
+        # an undated "every Friday" caption is correctly dropped and the venue reads
+        # as empty all week on the site.
+        # The fix is NOT to loosen the date requirement here (that would flood the
+        # week with undated noise). Recurring nights belong in the `recurring`
+        # scraper / data/recurring_confirmations.json, which currently has NO Eagle
+        # entry. Before adding one, CONFIRM the actual nights against the venue's own
+        # posts - secondary aggregators (Yelp/GayCities) list a Tue-karaoke /
+        # Fri-drag pattern but are not a publishable source on their own.
         "default_venue": "Tulsa Eagle, 1338 E 3rd St",
         "priority": 2,
         "blurb": "Tulsa Eagle, Tulsa's levi-leather LGBTQ+ bar. "
