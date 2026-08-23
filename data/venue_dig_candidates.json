@@ -1,146 +1,126 @@
 {
   "generated_at": null,
-  "count": 14,
+  "count": 12,
   "events": [
     {
-      "name": "Clothing Swap (Boys Night)",
-      "date": "2026-08-03",
-      "time": "6:00 PM",
-      "notes": "Free pizza at 7pm, wrestling on TV; drop by and swap clothes",
-      "venue": "Yellow Brick Road, 2630 E 15th St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbWYbxkRigZ/",
-      "from_post": "2026-07-28"
-    },
-    {
-      "name": "Babes & Bi-Cons: Val's Birthday Edition",
-      "date": "2026-08-01",
-      "time": "9:30 PM",
-      "notes": "Featuring DJs @katnipworldwide and @djkylie918, drink feature, and a raffle (entry for every menstrual product box/package donated)",
-      "venue": "Yellow Brick Road, 2630 E 15th St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbTW4JWx1qw/",
-      "from_post": "2026-07-27"
-    },
-    {
-      "name": "Tahlia's Belated Birthday feat. @prettyreverb",
-      "date": "2026-07-25",
-      "time": "9:00 PM - 2:00 AM",
-      "notes": "Music by DJ Katnip and Pashea; hyperpop, techno, goth electronic, club classics",
-      "venue": "Yellow Brick Road, 2630 E 15th St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbEk3H1Rbkr/",
-      "from_post": "2026-07-21"
-    },
-    {
-      "name": "Queens & Split Screens Gaymer Night: Mario Kart 64 (Rain's Birthday)",
-      "date": "2026-07-27",
+      "name": "Zodiac: Leo Night with DJ Kylie",
+      "date": "2026-08-15",
       "time": null,
-      "notes": "Monthly gaymer night themed around Mario Kart 64; also celebrating @raindawwg's birthday. Free pizza; buy Rain a tequila shot.",
+      "notes": "Dolly Fartin Productions presents Zodiac (Leo edition), hosted by DJ Kylie. Rescheduled to Saturday per caption after being moved twice ('third time's a charm'); flyer date 8/15/26.",
       "venue": "Yellow Brick Road, 2630 E 15th St",
       "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbEIBEqRCKg/",
-      "from_post": "2026-07-21"
+      "url": "https://www.instagram.com/p/Db6nFoGxB0i/",
+      "from_post": "2026-08-11"
     },
     {
-      "name": "Dragnificent! - Beat the Heat",
-      "date": "2026-07-30",
-      "time": "Doors 9pm, Showtime 11pm",
-      "notes": "18 to enter; DJ Konnect before/after; cast: Shanel Sterling, Kiana Davenport Jade, Cheri Bomb LeKohl + T",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbWeoWNRgQG/",
-      "from_post": "2026-07-28"
-    },
-    {
-      "name": "Diamonds & Dreams: A Benefit Show",
+      "name": "Benefit for Serenity S. Grace / Sunday Showdown Open Talent Night",
       "date": "2026-08-16",
-      "time": "9:00 PM - 10:30 PM",
-      "notes": "Benefit show hosted by Serenity S. Grace (on her way to America's Queen and Miss Gay Oklahoma America). Cast: Briar Rose Lovethorn, Virtue Ali, Little Miss MG, Adam Parks, Innocence Quinn, Keosha Simone, Nikolas Simone, Finley S. Paige, T, and more.",
+      "time": "Doors 9pm, first show 9:30-10:30pm, second show 11pm",
+      "notes": "Benefit show featuring Serenity S. Grace (on her way to America's Queen and Miss Gay Oklahoma America) plus Briar Rose Lovethorn, Virtue Ali, Little Miss MG, Adam Parks, Innocence Quinn, Keosha Simone, Nikolas Simone, Finley S. Paige and more. 18 to enter.",
       "venue": "Club Majestic, 124 N Boston Ave",
       "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbTt3yaRk_3/",
-      "from_post": "2026-07-27"
+      "url": "https://www.instagram.com/p/DcEm153nzgT/",
+      "from_post": "2026-08-15"
+    },
+    {
+      "name": "Sensational Saturdays feat. August, Yakisoba, Innocence, Coco, Serenity",
+      "date": "2026-08-15",
+      "time": "9:30pm-10:30pm show, dance/party after with DJ Konnect",
+      "notes": "Hosted by Londenn D. Raine (Miss Gay Oklahoma America Femme); presented by L.D.R. Produxctions and Club Majestic; 21 to enter; Shake It Up Saturday dance party follows show",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Db_3Yxan-zy/",
+      "from_post": "2026-08-13"
+    },
+    {
+      "name": "Bad Boys On the Block (Legacy Entertainment)",
+      "date": "2026-08-14",
+      "time": "9:30pm (doors 9pm)",
+      "notes": "Hosted by Scrappy Legacy, with Londenn D. Raine. Featuring Miss Oklahoma American Femme 2026, NWA Northwest Arkansas GOAT King 2026 (Sean Tylr Davis), Mr Oklahoma Bold & Beautiful Newcomer 2026 (Kenzo Zane Paige), Mister USofA MI Classic 2025 (Mles High), and Kahann Uchawi. Followed by Ho You Think You Can Dance. 18 to enter.",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Db9Na-TEcZJ/",
+      "from_post": "2026-08-12"
     },
     {
       "name": "The Sunday Spotlight",
-      "date": "2026-07-26",
-      "time": "Doors 9:00 PM, Show 10:30 PM",
-      "notes": "Featuring Shanel Sterling, Ceej TheTroll, Londenn D. Raine, Kallaya, Patty Bourey, Star Flower, Scrappy Legacy",
+      "date": "2026-08-30",
+      "time": "Doors 9PM, Show 10:30PM",
+      "notes": "Hosted by Kallaya and Londenn D. Raine; featuring D Angelo, Pastel Lush, Londenn D. Raine, Kallaya, Tracy La Louisianne (Miss Gay America), Saturn, Logan Liqueur (Mr. Gay USofA M.I.); message Kallaya on social for table reservations",
       "venue": "Club Majestic, 124 N Boston Ave",
       "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbMiDVUx3AE/",
-      "from_post": "2026-07-24"
+      "url": "https://www.instagram.com/p/Db6zcMqR5U0/",
+      "from_post": "2026-08-11"
     },
     {
-      "name": "Pandora's Box",
-      "date": "2026-07-24",
-      "time": "Doors 9pm, showtime 9:30pm-10:30pm",
-      "notes": "Hosted by Scrappy Legacy, presented by Legacy Entertainment. Performers: Koko the Doll, Anthill Jackson, Death, Arya Down, plus special guest. Dance competition sign-up at the DJ booth; cash prize.",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbEbXkwRPgM/",
-      "from_post": "2026-07-21"
-    },
-    {
-      "name": "Tulsa Supreme: Foodies",
-      "date": "2026-07-23",
+      "name": "The New Kidz",
+      "date": "2026-08-13",
       "time": "Doors 9pm, Showtime 11pm",
-      "notes": "Hosted by Londenn D. Raine; performers Shanel/Kiana/Angela; theme FOODIES; 18 to Enter",
+      "notes": "18 to enter. Hosted by Shanel Sterling and Londenn D. Raine. Featuring Nikki Fae, Khalani BouRey, Angela Doll.",
       "venue": "Club Majestic, 124 N Boston Ave",
       "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbEXdnpzAIE/",
-      "from_post": "2026-07-21"
+      "url": "https://www.instagram.com/p/Db3yEzPTyC2/",
+      "from_post": "2026-08-10"
     },
     {
-      "name": "OKLA Cookout",
+      "name": "Tulsa Supreme Beach Party",
+      "date": "2026-08-27",
+      "time": "Doors 9pm, Showtime 10:30pm",
+      "notes": "L.D.R. Productions & Club Majestic present; hosted by Londenn D. Raine (Miss Gay Oklahoma America Femme); featuring Shanel Sterling, Angela Doll, King Laylo York; 18 to enter",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Db2OgVBg3_l/",
+      "from_post": "2026-08-09"
+    },
+    {
+      "name": "Miss Gay Rose Rock America (prelim to Miss Gay Oklahoma America) - Welcome to the Apocalypse",
+      "date": "2026-08-09",
+      "time": "Registration 1:30pm, Interview 2:30pm, Pageant 10pm",
+      "notes": "Hosted by Natalia Masters; honoring Dixie Normouse (Miss Gay Rose Rock America 2025); pre-registration $50, day-of $75, contestants who competed but didn't qualify this season free; message Kallaya to register/reserve a table",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DburUXpTdmk/",
+      "from_post": "2026-08-07"
+    },
+    {
+      "name": "Drag Roulette",
+      "date": "2026-08-06",
+      "time": "Doors 9pm, Show 11pm",
+      "notes": "18 to enter. Audience request show featuring Shanel Sterling, Londenn D. Raine, Briar R. Lovethorn, Bobcatte Keugar.",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Dbo7UsnRkxs/",
+      "from_post": "2026-08-04"
+    },
+    {
+      "name": "Monday Movie Night: Legally Blonde",
+      "date": "2026-08-10",
+      "time": "7:00 PM",
+      "notes": "Tulsa Eagle and Circle Cinema present a screening of Legally Blonde, part of Monday Movie Night series, sponsored by Circle Cinema.",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Db3gdKHgg1f/",
+      "from_post": "2026-08-10"
+    },
+    {
+      "name": "Monday Movie Night: Bring It On",
+      "date": "2026-08-03",
+      "time": "7:00 PM",
+      "notes": "Sponsored by Circle Cinema, showing 'Bring It On'",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Dble28tGCg_/",
+      "from_post": "2026-08-03"
+    },
+    {
+      "name": "OKLA Cookout (Oklahoma Leather Association, benefit for The Trevor Project)",
       "date": "2026-08-02",
-      "time": "2:00 PM - 4:00 PM",
-      "notes": "Benefit for The Trevor Project, dedicated to fallen brother David, hosted by Oklahoma Leather Association at Tulsa Eagle. Dunk tank, donations appreciated but not required.",
+      "time": "2pm-4pm",
+      "notes": "Cookout dedicated to fallen member David, all proceeds donated to The Trevor Project in his name. Dunk tank included. At Tulsa Eagle.",
       "venue": "Tulsa Eagle, 1338 E 3rd St",
       "source": "venue_flyer_dig",
       "url": "https://www.instagram.com/p/Dbi58DtE4_C/",
       "from_post": "2026-08-02"
-    },
-    {
-      "name": "Wild Bill's BBQ food truck at Tulsa Eagle",
-      "date": "2026-08-01",
-      "time": "evening",
-      "notes": "Saturday evening, per caption",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbfpbIHFSkV/",
-      "from_post": "2026-08-01"
-    },
-    {
-      "name": "Wild Bill's BBQ food truck at Tulsa Eagle",
-      "date": "2026-08-02",
-      "time": "evening",
-      "notes": "Sunday evening, per caption",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbfpbIHFSkV/",
-      "from_post": "2026-08-01"
-    },
-    {
-      "name": "Boogie Fever Disco Dance Party with DJ Haze",
-      "date": "2026-07-31",
-      "time": "10:00 PM",
-      "notes": "Bartenders Isaac, Nathan, and Justin take over at 8PM leading into the disco dance party at 10PM with DJ Haze.",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbeIECamWgq/",
-      "from_post": "2026-07-31"
-    },
-    {
-      "name": "Monday Movie Night: Mean Girls",
-      "date": "2026-07-27",
-      "time": "7:00 PM",
-      "notes": "Sponsored by Circle Cinema, at Tulsa Eagle, 1338 E 3rd St",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DbTdKNcjR9J/",
-      "from_post": "2026-07-27"
     }
   ]
 }
