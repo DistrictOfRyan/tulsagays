@@ -1,58 +1,58 @@
 [
   {
-    "name": "Karaoke Brunch & Ugly Dog Contest",
-    "venue": "DVL Club & Lounge, 302 S Frankfort Ave",
-    "date": "2026-08-20",
-    "day_short": "THU",
-    "time": ""
+    "name": "Dust Bowls and Jewish Souls",
+    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+    "date": "2026-08-24",
+    "day_short": "MON",
+    "time": "1:20 PM"
   },
   {
-    "name": "Summerween Party",
-    "venue": "DVL Club & Lounge, 302 S Frankfort Ave",
-    "date": "2026-08-20",
-    "day_short": "THU",
-    "time": ""
+    "name": "Noir Nights with Josh Fadem: Wicked Woman on 35mm",
+    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+    "date": "2026-08-24",
+    "day_short": "MON",
+    "time": "7:00 PM"
   },
   {
-    "name": "\u201cA Dozen Loops: The Radical Voice of Woody Guthrie\u201d\u00a0+ \u201cTom Paxton: A Car Full of Songs,\u201d + \u201cThe Melody of Riot: Jay Farrar, Son Volt, and the Legacy of Woody Guthrie,\u201d\u00a0at Woody Guthrie Center",
-    "venue": "Woody Guthrie Center",
-    "date": "2026-08-20",
-    "day_short": "THU",
-    "time": "10:00 AM"
+    "name": "Dust Bowls and Jewish Souls",
+    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+    "date": "2026-08-25",
+    "day_short": "TUE",
+    "time": "2:50 PM"
   },
   {
-    "name": "Permanent Exhibits and \u201cThin Wild Mercury: Dylan 1966\u201d + \u201cFace Value\u201d at Bob Dylan Center",
-    "venue": "Bob Dylan Center",
-    "date": "2026-08-20",
-    "day_short": "THU",
-    "time": "10:00 AM"
+    "name": "Sisters of Cinema: Queens of Pain",
+    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+    "date": "2026-08-25",
+    "day_short": "TUE",
+    "time": "7:00 PM"
   },
   {
-    "name": "Storytime at Philbrook: Route 66 Road Stops",
+    "name": "Tuesdays in the Park Concert Series",
+    "venue": "Central Park, 1500 S Main St, Broken Arrow",
+    "date": "2026-08-25",
+    "day_short": "TUE",
+    "time": "7:00 PM - 9:00 PM"
+  },
+  {
+    "name": "Midweek Meditation (Zoom only)",
+    "venue": "Shambhala Meditation Center of Tulsa",
+    "date": "2026-08-26",
+    "day_short": "WED",
+    "time": "12:00 PM"
+  },
+  {
+    "name": "Dust Bowls and Jewish Souls",
+    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+    "date": "2026-08-26",
+    "day_short": "WED",
+    "time": "1:00 PM"
+  },
+  {
+    "name": "Little Garden Explorers",
     "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-08-20",
-    "day_short": "THU",
-    "time": "10:00 AM"
-  },
-  {
-    "name": "DRAGNIFICENT! Drag Show",
-    "venue": "Club Majestic, 124 N Boston Ave",
-    "date": "2026-08-20",
-    "day_short": "THU",
-    "time": "10:00 PM"
-  },
-  {
-    "name": "Fish Feeding",
-    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-08-20",
-    "day_short": "THU",
-    "time": "10:30 AM"
-  },
-  {
-    "name": "Lunch Specials at Elgin Park",
-    "venue": "Elgin Park Brewery",
-    "date": "2026-08-20",
-    "day_short": "THU",
-    "time": "11:00 AM"
+    "date": "2026-08-26",
+    "day_short": "WED",
+    "time": "9:30 AM"
   }
 ]
