@@ -850,6 +850,33 @@
     "website_description": "Eicher Wednesdays puts live jazz in Baxter's Interurban Grill for an hour, which is precisely the right length for a weeknight you did not plan on. Jazz is the kindest music for the socially cautious, because sitting quietly and listening IS the correct way to attend, and nobody will ask anything else of you. Order something, take a table with a clear view of the players, and let an hour of real musicianship reset the middle of your week. Arrive by 6:30 when it starts so you are not the one walking in mid-song."
   },
   {
+    "name": "Benefit for Serenity S. Grace / Sunday Showdown Open Talent Night",
+    "date": "2026-08-16",
+    "time": "Doors 9pm, first show 9:30-10:30pm, second show 11pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DcEm153nzgT/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "The Sunday Spotlight",
+    "date": "2026-08-30",
+    "time": "Doors 9PM, Show 10:30PM",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/Db6zcMqR5U0/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Tulsa Supreme Beach Party",
+    "date": "2026-08-27",
+    "time": "Doors 9pm, Showtime 10:30pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/Db2OgVBg3_l/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
     "name": "Equality & Justyce",
     "date": "2026-08-29",
     "time": "6:00 PM - 9:00 PM",

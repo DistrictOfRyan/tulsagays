@@ -20,7 +20,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SCRIPTS = Path.home() / ".claude" / "scripts"
-IMAP_TOKEN = SCRIPTS / "token_gmail_imap.json"
+# Moved to the non-synced credentials vault by the 2026-08 secret sweep.
+IMAP_TOKEN = Path.home() / ".credentials" / "oauth" / "token_gmail_imap.json"
 SUBMIT_HTML = ROOT / "docs" / "submit.html"
 EMAIL_BOX = ROOT / "drafts" / "tulsagays" / "submit_email_box.html"
 CONFIG = ROOT / "data" / "email_intake_config.json"

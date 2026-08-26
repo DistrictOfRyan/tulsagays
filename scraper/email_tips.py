@@ -38,7 +38,9 @@ logger = logging.getLogger(__name__)
 
 ROOT = Path(__file__).resolve().parent.parent
 INTAKE_ADDR = "events@tulsagays.com"
-IMAP_TOKEN = Path.home() / ".claude" / "scripts" / "token_gmail_imap.json"
+# Token moved to the non-synced credentials vault by the 2026-08 secret sweep
+# (no-secrets-on-synced-drives rule); the old .claude/scripts path is dead.
+IMAP_TOKEN = Path.home() / ".credentials" / "oauth" / "token_gmail_imap.json"
 MAILBOX_USER = "williamryanhunt@gmail.com"
 STATE_FILE = ROOT / "data" / "email_intake_state.json"
 FLYER_DIR = ROOT / "data" / "email_flyers"
