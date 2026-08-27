@@ -331,6 +331,14 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 
 ---
 
+### Reviewed but NOT added (2026-08-27 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/): rendered its live inline member list again (same 6 current members: UniComm Solutions, Yoga Quest LLC, Doc J's Heat and Air, Littleton Legal PLLC, Edgewood Veterinary Hospital, Osteostrong Tulsa Midtown) - no net-new members since the 2026-07-30/08-06/08-13/08-20 scans, all confirmed already in the directory.
+- OkEq Food & Drink full re-check (50 listings): no net-new businesses. All 50 confirmed already in the directory or previously reviewed/held/skipped from prior scans (Triangle Coffee Roasters still listed by OkEq despite the confirmed February 2026 closure - stale OkEq entry, not re-added).
+- Tulsa Remote LGBTQ guide: all listed businesses/resources (Tonsorial, il Seme, Cherry & Bark, YBR, The Donut Hole, Fulton Street, Jo & June, Magic City Books, Studio 66, Black Queer Tulsa, Twisted Arts, H.O.P.E, TACO) already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage found this scan (August 2026 headlines were healthcare costs, student AI use, an HIV testing piece, and running/fitness - no new-business features).
+- WebSearch "new LGBTQ business Tulsa 2026 opened" / "queer-owned business Tulsa 2026" / "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (Il Seme, Jo & June, Tonsorial, Magic City Books, Yokozuna, Lambrusco'z To Go, Shades of Brown, KEO) plus general guide/listicle pages (Yelp, GayCities, Rainbows in Revolt, Tripadvisor). Duet Restaurant surfaced again with no LGBTQ+ sourcing confirmed - still not added, consistent with the 2026-08-06 finding.
+- Reddit r/tulsa (both query variants): no indexed results this scan (search surfaced only unrelated hotel-booking pages, same pattern as every prior scan).
+
 ### Reviewed but NOT added (2026-08-20 scan)
 - OkEq Equality Business Alliance (okeq.org/eba/): rendered its live inline member list again (same 6 current members: UniComm Solutions, Yoga Quest LLC, Doc J's Heat and Air, Littleton Legal PLLC, Edgewood Veterinary Hospital, Osteostrong Tulsa Midtown) - no net-new members since the 2026-07-30/08-06/08-13 scans, all confirmed already in the directory.
 - OkEq Food & Drink full re-check (50 listings): no net-new businesses. All confirmed already in the directory or previously reviewed/held/skipped from prior scans.
