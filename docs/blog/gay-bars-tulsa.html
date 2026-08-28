@@ -642,6 +642,39 @@
   <div google-add-preferred-source-btn data-theme="light" data-lang="en"></div>
   <noscript><a href="https://www.google.com/preferences/source?q=tulsagays.com" rel="nofollow">Add Tulsa Gays as a preferred source in Google</a></noscript>
 </div>
+<script data-gps-preferred-source-track>
+/* Measure the button. Google renders it inside a cross-origin iframe, so a real
+   click is not observable from this page. Two things are: whether the button was
+   ever actually seen, and the window blur that fires when the pointer is over the
+   iframe and the user clicks into it. The second is a proxy, not a true click, and
+   the event name says so. Fires into gtag or dataLayer when either exists, and
+   does nothing at all when neither does. */
+(function () {
+  try {
+    var wrap = document.querySelector('.gps-preferred');
+    if (!wrap || !window.IntersectionObserver) return;
+    function send(name, extra) {
+      var p = Object.assign({ site: 'tulsagays.com', placement: 'footer' }, extra || {});
+      if (typeof window.gtag === 'function') { window.gtag('event', name, p); return; }
+      if (window.dataLayer && window.dataLayer.push) { p.event = name; window.dataLayer.push(p); }
+    }
+    var seen = false;
+    new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting || seen) return;
+        seen = true; obs.disconnect();
+        send('preferred_source_impression');
+        var over = false;
+        wrap.addEventListener('mouseenter', function () { over = true; });
+        wrap.addEventListener('mouseleave', function () { over = false; });
+        window.addEventListener('blur', function () {
+          if (over) send('preferred_source_click_proxy');
+        });
+      });
+    }, { threshold: 0.5 }).observe(wrap);
+  } catch (e) {}
+})();
+</script>
 <!-- gps-preferred-source:end -->
 <p>© 2026 Tulsa Gays™. Nothing to do? Sounds like a straight person problem.</p>
 <p style="margin-top:0.5rem;"><a href="https://linktr.ee/tulsagays" style="color:var(--gold);">linktr.ee/tulsagays</a></p>
