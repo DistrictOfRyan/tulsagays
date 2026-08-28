@@ -146,6 +146,14 @@ def run_post(dry=False):
     # 3. Website — regenerate homepage + share pages (the step that was skipped).
     step("Update website (gen_website_html)", [PY, "tools/gen_website_html.py"],
          timeout=600, env=_env(TULSAGAYS_SKIP_ENRICH="1"))
+    # Google Preferred Sources button (added 2026-08-27). gen_website_html rewrites
+    # pages from its templates, so the button has to be re-stamped after every build
+    # or it silently disappears. The patcher is idempotent, so re-running is safe.
+    step("Re-stamp Google Preferred Sources button",
+         [PY, r"C:\Users\willi\.claude\scripts\add_preferred_source.py",
+          "--root", r"C:\Users\willi\tulsagays\docs",
+          "--domain", "tulsagays.com", "--label", "Tulsa Gays", "--apply"],
+         timeout=180, required=False)
     if dry:
         step("Group blast DRY-RUN", [PY, "-m", "posting.group_blast", "--dry-run"],
              timeout=120, required=False)
