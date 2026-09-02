@@ -165,6 +165,64 @@ def _normalize(text: str) -> str:
     return text
 
 
+# ── HTML entity / tag hygiene ─────────────────────────────────────────────────
+# Central de-entitizing pass (added 2026-09-02 after the campus-sources verify
+# found "LET&#8217;S GET IT ON" (Living Arts, rendered_sites) and
+# "&#8220;A Dozen Loops&#8221;" (Woody Guthrie Center, extended_calendars)
+# shipping in three consecutive weeks of event NAMES).
+#
+# Why it lives HERE and not in each scraper: every WordPress/Tribe-backed source
+# returns HTML-escaped titles, and there are ~250 sources. Patching them one at a
+# time guarantees the next one added leaks again. specific_orgs and rendered_sites
+# already unescape on SOME code paths; this is the floor under all of them, run
+# once right before save so no source can bypass it.
+#
+# Descriptions get tags STRIPPED as well as entities decoded: several sources
+# escape raw HTML into the body ("&lt;p&gt;"), so a bare unescape would inject
+# literal markup into slide and website copy.
+_TAG_RX = re.compile(r"<[^>]+>")
+
+
+def _deentitize(text: str, strip_tags: bool = False) -> str:
+    """Decode HTML entities (incl. double-escaped) and collapse whitespace."""
+    import html as _html
+    s = str(text or "")
+    if not s:
+        return s
+    for _ in range(3):                      # &amp;#8217; needs two passes
+        new = _html.unescape(s)
+        if new == s:
+            break
+        s = new
+    if strip_tags:
+        s = _TAG_RX.sub(" ", s)
+    s = s.replace(" ", " ")
+    return re.sub(r"[ 	]+", " ", s).strip()
+
+
+def clean_html_artifacts(events: List[Dict]) -> List[Dict]:
+    """Strip HTML entities/tags from every human-visible field, all sources."""
+    fixed = 0
+    for ev in events:
+        for field in ("name", "venue", "location"):
+            before = ev.get(field)
+            if before:
+                after = _deentitize(before)
+                if after != before:
+                    ev[field] = after
+                    fixed += 1
+        for field in ("description", "website_description"):
+            before = ev.get(field)
+            if before:
+                after = _deentitize(before, strip_tags=True)
+                if after != before:
+                    ev[field] = after
+                    fixed += 1
+    if fixed:
+        logger.info(f"[html-hygiene] cleaned {fixed} field(s) of entity/tag debris")
+    return events
+
+
 def _are_similar(name_a: str, name_b: str) -> bool:
     a = _normalize(name_a)
     b = _normalize(name_b)
@@ -1381,6 +1439,15 @@ def main():
         sorted_events = apply_venue_overrides(sorted_events)
     except Exception as exc:
         logger.error(f"[venue-override] step failed (non-fatal): {exc}", exc_info=True)
+
+    # 5e. HTML entity/tag hygiene -- the floor under every source. WordPress and
+    # Tribe backed calendars return escaped titles ("LET&#8217;S GET IT ON"), and
+    # patching individual scrapers has already failed twice. Last transform
+    # before save so nothing downstream (slides, website, newsletter) sees debris.
+    try:
+        sorted_events = clean_html_artifacts(sorted_events)
+    except Exception as exc:
+        logger.error(f"[html-hygiene] step failed (non-fatal): {exc}", exc_info=True)
 
     # 6. Save results
     paths = save_results(sorted_events, week_key)

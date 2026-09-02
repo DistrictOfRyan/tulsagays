@@ -864,5 +864,23 @@
       "date": "2026-07-12"
     },
     "note": "SeatEngine venue. Server-rendered JSON-LD Place block nests all shows under a non-standard \"Events\" key (added to _extract_json_ld_from_soup in base.py 2026-07-09). Hosts recurring Drag Bingo (Porsche Lynn, Sun 3pm) + Drag Brunch events; lgbtq_only False so runner relevance keeps only drag/queer shows for slides, rest go to website. Added 2026-07-09 per William (make sure Drag Bingo is on the scraper). dynamic_sources venue-miner entry had seen_count 0 (never pulled) - this explicit spec replaces it."
+  },
+  {
+    "name": "TCC Student Clubs (Presence)",
+    "url": "https://tulsacc.presence.io/events",
+    "strategy": "json",
+    "json_url": "https://api.presence.io/tulsacc/v1/events",
+    "json_path": "",
+    "json_title_key": "eventName",
+    "json_date_key": "startDateTimeUtc",
+    "json_date_format": "iso",
+    "json_venue_key": "location",
+    "json_link_key": "uri",
+    "enabled": true,
+    "priority": 2,
+    "lgbtq_only": false,
+    "sample": "August 2026 SOTA Meeting (2026-08-20, MP 544)",
+    "note": "Added 2026-09-02 by tulsagays-campus-sources-verify. TCC's OFFICIAL student-club events API (Presence/Involve), unauthenticated JSON, no session and no rate limit. Exists because TCC Pride (org uri 'tcc-pride-2') is registered here, giving their events a path that does NOT depend on the Instagram session -- which was found fully dark on 2026-09-02 (all three IG tiers dead). TCC Pride had 0 events posted here at wiring time, so a 0 from this source is expected until they start using it; the college-wide feed carried 4 events total. Orgs list: https://api.presence.io/tulsacc/v1/organizations (77 orgs). Note the /events endpoint IGNORES ?organizationUri= -- it always returns the whole campus feed, so filtering happens downstream via the runner relevance gate.",
+    "json_link_prefix": "/event/"
   }
 ]

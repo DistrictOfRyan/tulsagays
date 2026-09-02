@@ -616,3 +616,49 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+def test_html_entities_never_ship_in_event_names():
+    """Regression lock, 2026-09-02: HTML entities leaked into event NAMES.
+
+    Found by tulsagays-campus-sources-verify. "August OK So: LET&#8217;S GET IT
+    ON" (Living Arts, via rendered_sites) and "&#8220;A Dozen Loops&#8221;"
+    (Woody Guthrie Center, via extended_calendars) had shipped in stored event
+    data for six consecutive weeks (W30-W35, 20 files). Two DIFFERENT scrapers
+    produced it, which is why the fix is central (runner.clean_html_artifacts,
+    step 5e, last transform before save) rather than per-scraper. Never move
+    this cleanup back into individual scrapers -- there are ~250 sources and the
+    next WordPress-backed one added would leak again.
+    """
+    from scraper.runner import clean_html_artifacts, _deentitize
+
+    # The two real names that shipped.
+    assert _deentitize("August OK So: LET&#8217;S GET IT ON") == \
+        "August OK So: LET’S GET IT ON"
+    assert _deentitize("The Beginnings of &#8220;A Dozen Loops&#8221;") == \
+        "The Beginnings of “A Dozen Loops”"
+    # Double-escaped survives (needs more than one unescape pass).
+    assert _deentitize("Men&amp;#8217;s Soccer") == "Men’s Soccer"
+    # Clean text is untouched (idempotent).
+    assert _deentitize("Drag Brunch at Elote") == "Drag Brunch at Elote"
+
+    # Descriptions get TAGS stripped too: some sources escape raw HTML into the
+    # body, so a bare unescape would inject literal markup into slide copy.
+    events = [{
+        "name": "Pride Night &#8211; Fall Kickoff",
+        "venue": "Metro Campus &amp; Student Union",
+        "description": "&lt;p&gt;Join us &amp;amp; friends&lt;/p&gt;",
+        "website_description": "&lt;strong&gt;Come as you are&lt;/strong&gt;",
+    }]
+    clean_html_artifacts(events)
+    ev = events[0]
+    assert ev["name"] == "Pride Night – Fall Kickoff"
+    assert ev["venue"] == "Metro Campus & Student Union"
+    assert "<" not in ev["description"]          # tags stripped, not decoded in
+    assert ev["description"] == "Join us & friends"
+    assert ev["website_description"] == "Come as you are"
+
+    # Running twice changes nothing.
+    snapshot = dict(ev)
+    clean_html_artifacts(events)
+    assert events[0] == snapshot

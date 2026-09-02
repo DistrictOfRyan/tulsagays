@@ -23,6 +23,10 @@ Spec schema (one object per site in data/rendered_site_specs.json):
     "date_attr": "datetime",             # read this attribute instead of text (optional)
     "date_format": "iso",                # "iso" | "auto" | a strptime format
     "link": "a", "link_attr": "href",   # optional
+    # strategy "json" (optional):
+    "json_venue_key": "location",        # per-event venue (else spec name)
+    "json_link_key": "uri",              # per-event link, joined onto url
+    "json_link_prefix": "/event/",       # prepended to json_link_key value
     # strategy "ical":
     "ics_url": "https://.../events.ics", # optional override (else url)
     "note": "..."
@@ -250,6 +254,11 @@ class RenderedSitesScraper(BaseScraper):
         tk = spec.get("json_title_key", "title")
         dk = spec.get("json_date_key", "startDate")
         dfmt = spec.get("json_date_format", "epoch_ms")
+        # Optional per-event venue/link keys (added 2026-09-02 for the Presence
+        # club API, whose events carry a real room like "MP 544"). Absent these,
+        # behaviour is unchanged: venue falls back to the spec name.
+        vk = spec.get("json_venue_key")
+        lk = spec.get("json_link_key")
         venue = spec["name"]
         priority = int(spec.get("priority", 2))
         events = []
@@ -272,8 +281,19 @@ class RenderedSitesScraper(BaseScraper):
                 date_str = ""
             if not name or not date_str or not re.match(r"\d{4}-\d{2}-\d{2}", date_str):
                 continue
-            events.append(self.make_event(name=name, date=date_str, venue=venue,
-                                          url=spec["url"], priority=priority))
+            ev_venue = venue
+            if vk:
+                cand = _html.unescape(str(it.get(vk) or "")).strip()
+                if cand:
+                    ev_venue = cand
+            ev_url = spec["url"]
+            if lk:
+                cand = str(it.get(lk) or "").strip()
+                if cand:
+                    ev_url = urljoin(spec["url"],
+                                     spec.get("json_link_prefix", "") + cand)
+            events.append(self.make_event(name=name, date=date_str, venue=ev_venue,
+                                          url=ev_url, priority=priority))
         return events
 
     def _scrape_spec(self, spec: Dict) -> List[Dict]:
