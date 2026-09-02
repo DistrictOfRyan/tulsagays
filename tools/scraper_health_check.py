@@ -341,6 +341,28 @@ def main():
     recovered = [r for r in results
                  if r["status"] == OK and prev.get(r["source"]) in (JUNK, DEAD)]
 
+    # Automation-profile session liveness. Added 2026-09-02: @tcc_pride returned
+    # 0 events for a week where 0 was coincidentally correct, while all three IG
+    # tiers were in fact dead (empty cookie jar). Nothing here looked at that
+    # jar, so the outage was invisible. Registering it as a blocked-on-William
+    # item means it lands on TODAY and auto-clears on re-login, instead of
+    # failing silently and quietly dropping every IG-only org.
+    ig_session = None
+    try:
+        from tools.check_ig_profile_session import probe as _ig_probe
+        from tools import blocked_items as _bi
+        ig_session = _ig_probe()
+        if ig_session["ok"]:
+            _bi.resolve("instagram-automation-profile-session")
+        else:
+            _bi.add("Instagram automation profile session",
+                    f"{ig_session['detail']}. Fix: {ig_session['fix']} "
+                    "(a login, so it needs your hands). Blocks every IG-only "
+                    "org (@tcc_pride, bars, HotMess) and the FB group blast.",
+                    source="check_ig_profile_session", since=now)
+    except Exception as e:
+        print(f"[health] ig-profile-session probe skipped: {e}")
+
     _write_health(results, now)
     alerted = False
     if not args.no_alert:
@@ -380,6 +402,11 @@ def main():
         print(f"\n+++ {len(recovered)} RECOVERED since last run +++")
         for r in recovered:
             print(f"  + {r['source']}")
+    if ig_session is not None:
+        _st = "OK" if ig_session["ok"] else "BLOCKED"
+        print(f"\nIG automation profile session: {_st} - {ig_session['detail']}")
+        if not ig_session["ok"]:
+            print(f"  -> {ig_session['fix']} (needs your hands; it is a login)")
     print(f"\nReport: {HEALTH_FILE}")
 
 
