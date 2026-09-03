@@ -160,13 +160,23 @@ def check_imap_auth() -> tuple[bool, str]:
 
 
 def _search_token(token: str) -> list[str]:
-    """Return Message-IDs of INBOX messages whose subject contains the token."""
+    """Return Message-IDs of messages whose subject contains the token.
+
+    Searches "[Gmail]/All Mail", not INBOX (fixed 2026-09-03, G499/G500/G637):
+    a Gmail filter on the forwarded events@tulsagays.com mail skips the inbox
+    (archives on arrival, marks read) -- confirmed via X-GM-LABELS on the two
+    canaries this checker had wrongly flagged as "never arrived". The real
+    intake scanner (scraper/email_tips.py collect()) already searches All Mail
+    for exactly this reason; this checker hadn't matched it, so every canary
+    was a guaranteed false FORWARD CHAIN BROKEN alert regardless of pipeline
+    health. Real event submissions were never affected -- only this checker.
+    """
     conn = _imap()
     if conn is None:
         raise RuntimeError("IMAP unavailable")
     found = []
     try:
-        conn.select("INBOX")
+        conn.select('"[Gmail]/All Mail"')
         typ, data = conn.search(None, "SUBJECT", f'"{token}"')
         if typ == "OK" and data and data[0]:
             for num in data[0].split():
