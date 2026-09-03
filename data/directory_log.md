@@ -354,3 +354,13 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 - The Gayly homepage: no Tulsa-specific business coverage found this scan.
 - WebSearch "new LGBTQ business Tulsa 2026 opened" / "queer-owned business Tulsa 2026" / "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (Il Seme, Cherry & Bark, Jo & June, KEO, Yokozuna, Dilly Diner, Lambrusco'z To Go) plus general guide/listicle pages (Yelp, GayCities, Rainbows in Revolt). No net-new finds.
 - Reddit r/tulsa (both query variants): no indexed results this scan (search surfaced only unrelated hotel-booking pages).
+
+---
+
+### Reviewed but NOT added (2026-09-03 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/): rendered its live inline member list again (same 6 current members: UniComm Solutions, Yoga Quest LLC, Doc J's Heat and Air, Littleton Legal PLLC, Edgewood Veterinary Hospital, OsteoStrong Tulsa Midtown) - no net-new members since the 2026-07-30 scan, all confirmed already in the directory.
+- OkEq Food & Drink full re-check (50 listings): no net-new businesses. All 50 confirmed already in the directory or previously reviewed/held/skipped from prior scans.
+- Tulsa Remote LGBTQ guide: all 8 listed businesses (Tonsorial, il Seme, Cherry & Bark, YBR, The Donut Hole, Fulton Street, Jo & June, Magic City Books) and 5 resources already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage found this scan (measles, transgender medical records, youth programming, and entertainment headlines only).
+- WebSearch "new LGBTQ business Tulsa 2026" / "queer-owned business Tulsa 2026" / "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (Club Majestic, Cherry & Bark, The Vault, Il Seme, Jo & June, Donut Hole, Yokozuna, Lambrusco'z To Go, Shades of Brown, India Palace) plus general guide/listicle pages (Yelp, GayCities, Rainbows in Revolt, Tripadvisor). Duet Restaurant surfaced again with no LGBTQ+ sourcing confirmed - still not added, consistent with the 2026-08-06 finding.
+- Reddit r/tulsa (both query variants): no indexed results this scan (search surfaced only unrelated hotel-booking sites, same pattern as every prior scan).
