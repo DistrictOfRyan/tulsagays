@@ -577,6 +577,45 @@ def test_w32_venue_relocation():
     check("same-place street detail is still adopted",
           enrich and "514 S Boston" in (enrich[0].get("venue") or ""))
 
+    # --- hand-written site copy must survive the merge (2026-08-26) ---
+    # _dedup_day carried `description` across a merge but not `website_description`.
+    # A submitted event that was ALSO scraped from somewhere else therefore came out
+    # of the merge with an empty website_description, and content/generator.py then
+    # filled it with generated copy -- silently replacing a human's words. Caught on
+    # "Equality & Justyce" (2026-W35), whose flyer copy never reached the site.
+    if _dd:
+        submitted_copy = "Fashion show by RE:APOLLO drawing selections from the Apollo Archive. " * 3
+        merged = _dd([
+            {"name": "Equality & Justyce", "date": "2026-08-29", "source": "okeq",
+             "venue": "Dennis R. Neill Equality Center, 621 E 4th St", "priority": 1,
+             "description": "Short scraped blurb."},
+            {"name": "Equality & Justyce", "date": "2026-08-29", "source": "manual",
+             "venue": "Dennis R. Neill Equality Center, 621 E 4th St", "priority": 1,
+             "description": "A longer hand-written description than the scraped one.",
+             "website_description": submitted_copy},
+        ])
+        check("submitted event still collapses to one record", len(merged) == 1,
+              f"got {len(merged)}")
+        if merged:
+            check("hand-written website_description survives the merge",
+                  (merged[0].get("website_description") or "") == submitted_copy,
+                  f"got {(merged[0].get('website_description') or '')[:40]!r}")
+            check("longest description still wins",
+                  "hand-written" in (merged[0].get("description") or ""),
+                  f"got {(merged[0].get('description') or '')[:40]!r}")
+        # The reverse ordering must behave identically -- scrape order is not stable.
+        merged_rev = _dd([
+            {"name": "Equality & Justyce", "date": "2026-08-29", "source": "manual",
+             "venue": "Dennis R. Neill Equality Center, 621 E 4th St", "priority": 1,
+             "description": "A longer hand-written description than the scraped one.",
+             "website_description": submitted_copy},
+            {"name": "Equality & Justyce", "date": "2026-08-29", "source": "okeq",
+             "venue": "Dennis R. Neill Equality Center, 621 E 4th St", "priority": 1,
+             "description": "Short scraped blurb."},
+        ])
+        check("site copy survives regardless of scrape order",
+              merged_rev and (merged_rev[0].get("website_description") or "") == submitted_copy)
+
     # --- HHHH is now a registered rotating venue with a confirmed August venue ---
     check("'homo hotel' registered in venue_varies",
           "homo hotel" in load_venue_varies())

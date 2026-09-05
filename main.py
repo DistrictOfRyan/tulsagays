@@ -340,6 +340,14 @@ def _dedup_day(ev_list):
             # Take longest/best description (keep sassy copy)
             if len(ev.get('description') or '') > len(existing.get('description') or ''):
                 existing['description'] = ev['description']
+            # Same rule for the long site copy. Without this, a hand-written
+            # website_description was dropped whenever the same event was also
+            # scraped from somewhere else -- the merge kept only `description`,
+            # so content/generator.py then saw an empty field and replaced real
+            # copy with a generated one. Cost us the submitted flyer copy for
+            # "Equality & Justyce" (2026-W35) before anyone noticed.
+            if len(ev.get('website_description') or '') > len(existing.get('website_description') or ''):
+                existing['website_description'] = ev['website_description']
             # Take URL if missing
             if ev.get('url') and not existing.get('url'):
                 existing['url'] = ev['url']
