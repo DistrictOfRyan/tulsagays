@@ -47,8 +47,39 @@ class CommunityGroupsScraper(BaseScraper):
     # these sources route through _scrape_squarespace_json instead. (2026-06-18)
     SQUARESPACE_JSON_SOURCES = {"elote_events"}
 
+    # -----------------------------------------------------------------------
+    # CITY GATE (2026-09-07). Every SOURCE url and every hardcoded recurring
+    # event in this file is TULSA data. City sites were created by find-replacing
+    # the city name in the URLs, which invented domains that do not exist:
+    #   elotetulsa.com   -> elotelexington.com        DNS failure
+    #   tulsapflag.org   -> lexingtonpflag.org        DNS failure
+    #   blackqueertulsa  -> blackqueerlexington.org   DNS failure
+    # and left genuinely Tulsa ones in place (okeq.org, counciloak.org,
+    # greencountrybears.com) with the event NAME find-replaced, e.g.
+    # "Lexington Area Prime Timers" at "Dennis R. Neill Equality Center,
+    # 621 E 4th St" which is Tulsa's Equality Center.
+    #
+    # Until a city supplies its OWN groups, this scraper yields nothing for it.
+    # No data beats fabricated data, and geo_guard should not be the only thing
+    # standing between invented URLs and a published page.
+    # -----------------------------------------------------------------------
+    HOME_CITY = "Tulsa"
+
+    def _is_home_city(self) -> bool:
+        try:
+            import config as _cfg
+            return (getattr(_cfg, "CITY_NAME", "") or "").strip().lower() == self.HOME_CITY.lower()
+        except Exception:
+            return False
+
     def scrape(self) -> List[Dict]:
         events = []
+
+        if not self._is_home_city():
+            logger.info("[community_groups] skipped: this file's sources and "
+                        "recurring events are %s data; supply city-specific "
+                        "groups in config before enabling.", self.HOME_CITY)
+            return events
 
         # Scrape websites that have event listings
         for source_key, url in self.SOURCES.items():

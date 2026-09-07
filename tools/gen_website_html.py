@@ -367,6 +367,28 @@ for day in DAYS:
 #   - Tier priority: HH → Council Oak → Drag → Queer Perf → Trusted LGBTQ → LGBTQ keywords
 from eotw_selector import select_eotw_list
 
+# ---------------------------------------------------------------------------
+# City identity for schema output. Derived from config (2026-09-07) because the
+# hardcoded pair below was find-replaced city-by-city and the STATE never got
+# replaced: LexingtonGays emitted addressLocality "Lexington" with addressRegion
+# "OK" on every event, including its genuine Kentucky ones.
+# Fail loud rather than guessing: a wrong state on every event is worse than a
+# crash the weekly run surfaces.
+# ---------------------------------------------------------------------------
+try:
+    import config as _sitecfg
+    _SITE_CITY = (getattr(_sitecfg, "CITY_NAME", "") or "").strip()
+    _SITE_STATE = (getattr(_sitecfg, "CITY_STATE", "") or "").strip().upper()
+    _SITE_URL_CFG = (getattr(_sitecfg, "SITE_URL", "") or "").strip().rstrip("/")
+    _SITE_BRAND = (getattr(_sitecfg, "BRAND_NAME", "") or "").strip()
+except Exception:
+    _SITE_CITY = _SITE_STATE = _SITE_URL_CFG = _SITE_BRAND = ""
+if not (_SITE_CITY and _SITE_STATE and _SITE_URL_CFG and _SITE_BRAND):
+    raise SystemExit("[gen_website_html] CITY_NAME/CITY_STATE/SITE_URL/BRAND_NAME "
+                     "missing from config.py; refusing to emit a page with a "
+                     "guessed city, domain or brand.")
+
+
 all_flat = [e for day in DAYS for e in events_by_day[day]]
 
 # FINAL de-dup, immediately before render, on the EXACT events the cards iterate
@@ -421,7 +443,7 @@ def esc(s):
           .replace(' – ', ', ').replace('–', '-'))
     return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
 
-SITE = 'https://www.tulsagays.com'
+SITE = _SITE_URL_CFG
 
 def _slugify_js(s):
     """Mirror the client-side _slugify() in docs/index.html EXACTLY so the
@@ -859,11 +881,11 @@ for _ev in all_flat:
         "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
         "location": {
             "@type": "Place",
-            "name": _venue or "Tulsa, OK",
-            "address": {"@type": "PostalAddress", "addressLocality": "Tulsa",
-                        "addressRegion": "OK", "addressCountry": "US"},
+            "name": _venue or f"{_SITE_CITY}, {_SITE_STATE}",
+            "address": {"@type": "PostalAddress", "addressLocality": _SITE_CITY,
+                        "addressRegion": _SITE_STATE, "addressCountry": "US"},
         },
-        "organizer": {"@type": "Organization", "name": "Tulsa Gays", "url": SITE},
+        "organizer": {"@type": "Organization", "name": _SITE_BRAND, "url": SITE},
         "image": SITE + "/images/og-event.png",
     }
     _desc = (_ev.get('website_description') or _ev.get('description') or '').strip()
@@ -880,7 +902,7 @@ if _events_ld:
     _itemlist = {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        "name": f"LGBTQ+ Events in Tulsa, {_week_start} to {_week_end}",
+        "name": f"LGBTQ+ Events in {_SITE_CITY}, {_week_start} to {_week_end}",
         "itemListElement": [
             {"@type": "ListItem", "position": _i + 1, "item": _o}
             for _i, _o in enumerate(_events_ld)
@@ -975,7 +997,7 @@ def _render_event_page(p):
 {_desc_html}
 {_src_btn}
 <a class="ev-btn alt" href="{esc(_deep)}">See it on the full calendar &rarr;</a>
-<p class="ev-foot">Found via <a href="/">tulsagays.com</a>, every LGBTQ+ event in Tulsa, every week. <a href="/newsletter.html">Get the newsletter &rarr;</a></p>
+<p class="ev-foot">Found via <a href="/">{_SITE_URL_CFG.split("//")[-1].replace("www.","")}</a>, every LGBTQ+ event in {_SITE_CITY}, every week. <a href="/newsletter.html">Get the newsletter &rarr;</a></p>
 </div>
 </body>
 </html>

@@ -20,6 +20,9 @@ CITY_BBOX = "36.05,-96.05,36.25,-95.85"  # Tulsa, OK - EXACT original hardcoded
 # OSM city boundary: TulsaGays is the live earning site and this box is proven,
 # so the 2026-09-07 refactor preserves its behaviour byte for byte.
 
+SITE_URL = "https://www.tulsagays.com"    # CITY-SPECIFIC. Read by tools/gen_website_html.py
+BRAND_NAME = "Tulsa Gays"   # CITY-SPECIFIC. Organizer name + footer brand.
+
 
 # Load .env if present
 _env_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
