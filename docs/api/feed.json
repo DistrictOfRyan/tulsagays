@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "city": "Tulsa",
-  "generated": "2026-09-06",
+  "generated": "2026-09-07",
   "license": "Free to use with attribution to tulsagays.com",
   "coverage": {
     "coverage_pct": 94.4,
@@ -13,59 +13,59 @@
   "event_count": 8,
   "events": [
     {
-      "name": "Dust Bowls and Jewish Souls",
-      "date": "2026-08-24",
-      "time": "1:20 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "name": "Fall Season Infusion Class",
+      "date": "2026-09-07",
+      "time": "",
+      "venue": "410 N Main St.,Unit A,Tulsa,74103,US",
       "url": null
     },
     {
-      "name": "Noir Nights with Josh Fadem: Wicked Woman on 35mm",
-      "date": "2026-08-24",
-      "time": "7:00 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "name": "Vintage Barbie Museum – 12 Different Collectors",
+      "date": "2026-09-07",
+      "time": "10:00 AM",
+      "venue": "Vintage Barbie Museum – Pop Up Shop",
       "url": null
     },
     {
-      "name": "Dust Bowls and Jewish Souls",
-      "date": "2026-08-25",
-      "time": "2:50 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-      "url": null
-    },
-    {
-      "name": "Sisters of Cinema: Queens of Pain",
-      "date": "2026-08-25",
-      "time": "7:00 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-      "url": null
-    },
-    {
-      "name": "Tuesdays in the Park Concert Series",
-      "date": "2026-08-25",
-      "time": "7:00 PM - 9:00 PM",
-      "venue": "Central Park, 1500 S Main St, Broken Arrow",
-      "url": null
-    },
-    {
-      "name": "Midweek Meditation (Zoom only)",
-      "date": "2026-08-26",
+      "name": "Late Fame",
+      "date": "2026-09-07",
       "time": "12:00 PM",
-      "venue": "Shambhala Meditation Center of Tulsa",
-      "url": null
-    },
-    {
-      "name": "Dust Bowls and Jewish Souls",
-      "date": "2026-08-26",
-      "time": "1:00 PM",
       "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
       "url": null
     },
     {
-      "name": "Little Garden Explorers",
-      "date": "2026-08-26",
-      "time": "9:30 AM",
-      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "name": "Cars 20th Anniversary",
+      "date": "2026-09-07",
+      "time": "12:40 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "url": null
+    },
+    {
+      "name": "Gumby in 4K",
+      "date": "2026-09-07",
+      "time": "3:10 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "url": null
+    },
+    {
+      "name": "Happy Hour at Saturn Room",
+      "date": "2026-09-07",
+      "time": "4:00 PM",
+      "venue": "Saturn Room",
+      "url": null
+    },
+    {
+      "name": "Happy Hour with Free Pool + $3 PBR Tallboys all day at Caz’s Pub",
+      "date": "2026-09-07",
+      "time": "5:00 PM",
+      "venue": "Caz’s Pub",
+      "url": null
+    },
+    {
+      "name": "Meatball Mondays at The Swedes Bistro",
+      "date": "2026-09-07",
+      "time": "5:00 PM",
+      "venue": "Púlpito 154 (at Olas Altas), Col. Amapas, 48390 Puerto Vallarta, Mexico",
       "url": null
     }
   ]
