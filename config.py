@@ -9,6 +9,18 @@ from datetime import datetime
 CITY_NAME = "Tulsa"
 CITY_STATE = "OK"
 
+# ---------------------------------------------------------------------------
+# CITY-SPECIFIC GEO. Added 2026-09-07 after LexingtonGays was found scraping
+# Oklahoma for months. Bounding box is "lat_min,lon_min,lat_max,lon_max" from
+# OpenStreetMap Nominatim. sync_from_tulsa.py preserves config.py, so these
+# stay correct per city while the scraper that reads them stays shared.
+# ---------------------------------------------------------------------------
+CITY_BBOX = "36.05,-96.05,36.25,-95.85"  # Tulsa, OK - EXACT original hardcoded
+# value from scraper/eventbrite_meetup.py. Deliberately NOT widened to the full
+# OSM city boundary: TulsaGays is the live earning site and this box is proven,
+# so the 2026-09-07 refactor preserves its behaviour byte for byte.
+
+
 # Load .env if present
 _env_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
 if os.path.exists(_env_file):

@@ -125,12 +125,41 @@ def _is_tulsa_area(name: str = "", url: str = "", venue: str = "",
 
     return True
 
-# Tulsa bounding box: SW lat/lon, NE lat/lon
-# Format for Eventbrite API: "lat_min,lng_min,lat_max,lng_max"
-TULSA_BBOX = "36.05,-96.05,36.25,-95.85"
+# ---------------------------------------------------------------------------
+# CITY GEO, derived from this site's own config (2026-09-07).
+#
+# WHY: these three values used to be hardcoded and were copied city-to-city by
+# find-replace. On LexingtonGays all three still pointed at Oklahoma:
+#   LEXINGTON_BBOX  == Tulsa's exact box "36.05,-96.05,36.25,-95.85"
+#   eventbrite      d/ok--lexington    -> Lexington, OKLAHOMA (pop. ~2,000)
+#   meetup          us--ok--lexington  -> same, 25mi of which reaches OKC
+# The site scraped Oklahoma for months and geo_guard cleaned up downstream.
+# Deriving from config makes this file genuinely shared, as SHARED_FILES in
+# sync_from_tulsa.py already claims, so a sync can no longer plant a wrong city.
+#
+# FAIL CLOSED: if the city cannot be resolved we return None and the caller
+# SKIPS the scrape. Never guess, a confidently wrong city is worse than no data.
+# ---------------------------------------------------------------------------
+def _city_geo():
+    """Return (slug, bbox) for this site, or (None, None) if unresolvable."""
+    try:
+        import config as _cfg
+    except Exception:
+        return None, None
+    city = (getattr(_cfg, "CITY_NAME", "") or "").strip()
+    state = (getattr(_cfg, "CITY_STATE", "") or "").strip()
+    bbox = (getattr(_cfg, "CITY_BBOX", "") or "").strip() or None
+    if not city or not state:
+        return None, bbox
+    return f"{state.lower()}--{city.lower().replace(' ', '-')}", bbox
+
+
+CITY_SLUG, CITY_BBOX = _city_geo()
 
 EVENTBRITE_API = "https://www.eventbrite.com/api/v3/destination/search/"
-EVENTBRITE_SEARCH_URL = "https://www.eventbrite.com/d/ok--tulsa/{query}/"
+EVENTBRITE_SEARCH_URL = (
+    "https://www.eventbrite.com/d/" + CITY_SLUG + "/{query}/" if CITY_SLUG else ""
+)
 
 
 def _iso_to_time(iso: str) -> str:
@@ -260,7 +289,7 @@ class EventbriteScraper(BaseScraper):
                     params={
                         "page_size": 50,
                         "q": term,
-                        "bbox": TULSA_BBOX,
+                        "bbox": CITY_BBOX,
                     },
                     timeout=15,
                 )
@@ -424,14 +453,22 @@ class MeetupScraper(BaseScraper):
 
     source_name = "meetup"
 
-    # location uses Meetup's canonical us--ok--tulsa slug: the free-text
-    # "Tulsa, OK" form gets ignored when Meetup can't geocode it and falls back
-    # to IP geolocation - which, with the machine in Puerto Vallarta, returned
-    # Mexico City events (2026-07-06, 8 CDMX leaks in W28).
-    SEARCH_URL = ("https://www.meetup.com/find/?keywords={query}"
-                  "&location=us--ok--tulsa&distance=twentyFiveMiles")
+    # Location slug comes from config via CITY_SLUG. The free-text "City, ST"
+    # form gets ignored when Meetup cannot geocode it and falls back to IP
+    # geolocation, which with the machine in Puerto Vallarta returned Mexico
+    # City events (2026-07-06, 8 CDMX leaks in W28). Empty when unresolvable,
+    # and scrape() skips rather than guessing a city.
+    SEARCH_URL = (
+        "https://www.meetup.com/find/?keywords={query}"
+        "&location=us--" + CITY_SLUG + "&distance=twentyFiveMiles"
+        if CITY_SLUG else ""
+    )
 
     def scrape(self) -> List[Dict]:
+        if not self.SEARCH_URL:
+            logger.error("[meetup] no CITY_NAME/CITY_STATE in config; skipping "
+                         "rather than scraping the wrong city")
+            return []
         events = []
         seen_names = set()
 

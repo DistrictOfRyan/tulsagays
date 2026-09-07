@@ -44,6 +44,8 @@ CITY_DOMAINS = {
         "gilcrease.org",
         "woodyguthriecenter.org",
         "counciloakmenschorale",
+        "greencountrybears",
+        "aaoklahoma",
     ],
     "oklahoma city": ["okcmoa.com", "myriadgardens.org"],
     "lexington": ["lexpridecenter.org", "lexpridefest.org", "pflaglexington.org"],
@@ -116,6 +118,51 @@ def foreign_city(ev: dict, city: str) -> str | None:
     return _path_city(ev, city_l)
 
 
+# ---------------------------------------------------------------------------
+# STATE-level guard (added 2026-09-07 after G204 recurred on LexingtonGays).
+#
+# The city lists above are whack-a-mole: they only catch domains someone already
+# noticed. Two Oklahoma sources still reached the Kentucky site:
+#   aaoklahoma.org/meetings/?tsml-region=lexington   -> Lexington, OKLAHOMA
+#   greencountrybears.com                            -> Green Country = Tulsa metro
+# The first is the nastiest shape of this bug: the foreign source carries OUR
+# city's name in its query string, so every city-name check reads it as local.
+#
+# The rule: match state tokens against the URL HOST ONLY, never the description.
+# A host that names a state which is not this site's state is foreign, whatever
+# its venue string or query parameters claim.
+# ---------------------------------------------------------------------------
+STATE_HOST_TOKENS = {
+    "oklahoma": "OK", "greencountry": "OK", "green-country": "OK", "okeq": "OK",
+    "kentucky": "KY", "kygov": "KY",
+    "tennessee": "TN", "arkansas": "AR", "missouri": "MO", "kansas": "KS",
+    "colorado": "CO", "texas": "TX", "nebraska": "NE", "iowa": "IA",
+    "illinois": "IL", "indiana": "IN", "ohio": "OH", "virginia": "VA",
+}
+
+
+def _hosts(ev: dict) -> list:
+    urls = [str(ev.get("url") or "")] + [str(u) for u in (ev.get("source_urls") or [])]
+    out = []
+    for u in urls:
+        if not u:
+            continue
+        out.append(re.sub(r"^https?://", "", u).split("/")[0].lower())
+    return out
+
+
+def foreign_state(ev: dict, state: str) -> str | None:
+    """Return the OTHER state's code if the event HOST names a non-local state."""
+    st = (state or "").strip().upper()
+    if not st:
+        return None
+    for host in _hosts(ev):
+        for token, code in STATE_HOST_TOKENS.items():
+            if token in host and code != st:
+                return code
+    return None
+
+
 def filter_events(events: list, city: str, state: str = "") -> tuple[list, list]:
     """Split events into (kept, dropped). Dropped carry a _dropped_reason."""
     kept, dropped = [], []
@@ -124,6 +171,10 @@ def filter_events(events: list, city: str, state: str = "") -> tuple[list, list]
             kept.append(ev)
             continue
         other = foreign_city(ev, city)
+        if not other:
+            st = foreign_state(ev, state)
+            if st:
+                other = st
         if other:
             ev = dict(ev)
             ev["_dropped_reason"] = f"geo_guard: belongs to {other}, not {city}"
