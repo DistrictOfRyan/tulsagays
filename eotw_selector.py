@@ -24,6 +24,7 @@ never auto-wins EOTW — _sort_key deprioritizes source=recurring within tiers.
 
 import json
 import os
+import re as _re
 from datetime import datetime
 from typing import Dict, List, Optional
 
@@ -222,6 +223,31 @@ _TRUSTED_LGBTQ_SRCS = {
     "slack_unite_lgbtq_plus",
     "okeq",               # Oklahomans for Equality — primary LGBTQ org, always trusted
     "okeq_calendar",      # OKEQ calendar scraper
+    # LGBTQ ORGANISATIONS' OWN INSTAGRAM FEEDS (added 2026-09-07). These are the
+    # accounts of queer venues and queer orgs, so anything they post is a gay
+    # event by definition — the venue signature check below cannot see it when
+    # the event is held somewhere else. That is not hypothetical: W37's
+    # "HotMess Kickball Fall 2026 Free Open Play" is the Tulsa LGBTQ rec league,
+    # but it is played at McClure Park Softball Field, so name and venue carry no
+    # queer token and it scored strict_lgbtq=False. Wednesday then filled its
+    # three slides with a comedy club, a Philbrook kids' garden class and a
+    # gallery talk while a real gay event sat unfeatured — exactly what William
+    # meant by "there's nothing really gay on them".
+    # DELIBERATELY NOT trusted here, even though config.LGBTQ_SOURCES lists them:
+    # facebook_events, manual, recurring, community_groups, circle_cinema,
+    # philbrook_museum, aa_meetings. Those are venues-that-host or catch-all
+    # feeds; trusting them would make almost every event "gay" and empty this
+    # check of meaning.
+    "hotmess_sports",     # HotMess Sports Tulsa — LGBTQ rec sports league
+    "club_majestic_ig",   # Club Majestic — LGBTQ nightclub
+    "dvl_ig",             # DVL Club & Lounge — woman-owned LGBTQ bar
+    "tulsa_eagle_ig",     # Tulsa Eagle — levi/leather LGBTQ bar
+    "ybr_ig",             # Yellow Brick Road — Tulsa's lesbian bar
+    "pflag_ig",           # PFLAG Tulsa
+    "pflag_tulsa",
+    "homo_hotel",         # HHHH — William's own monthly LGBTQ mixer
+    "council_oak",        # Council Oak Men's Chorale
+    "circles_lgbtq",
 }
 
 # Keywords that make an event explicitly LGBTQ-relevant for Tier 5.
@@ -309,6 +335,39 @@ _STRICT_LGBTQ_KW = {
 }
 
 
+# WORD-BOUNDARY MATCHING (added 2026-09-07). This set was matched with a plain
+# `kw in text` substring test, and the short acronyms in it silently fired inside
+# ordinary words. The live example: "igra" (Oklahoma's IGRA gay rodeo) matched
+# inside "imm-IGRA-tion", so "Immigration Updates – Town Hall Series" at the
+# University of Tulsa scored strict_lgbtq=True and took a featured slide on
+# W37 Tuesday. William: "the immigration updates town hall series is not an event
+# that I would go to. It's not a fun thing. I'm not sure why that's on there."
+# "eba" (Equality Business Alliance) would do the same inside "debate"/"rebate",
+# and "trans" inside "transportation"/"transit"/"translation".
+#
+# This is a KNOWN, ALREADY-SOLVED bug class in this repo: scraper/relevance.py
+# grew compile_lgbtq_keywords() with word boundaries on 2026-07-07 after "bi"
+# matched inside "bingo". That fix was applied to the six scraper modules and
+# never to this file. Same medicine here.
+#
+# Multi-word phrases keep plain substring semantics (they cannot false-fire);
+# single tokens get \b boundaries. Hyphenated forms like "non-binary" are matched
+# with the hyphen treated as part of the token.
+_STRICT_SINGLE = {k for k in _STRICT_LGBTQ_KW if " " not in k}
+_STRICT_PHRASE = {k for k in _STRICT_LGBTQ_KW if " " in k}
+_STRICT_RE = _re.compile(
+    r"(?<![a-z0-9])(?:" + "|".join(_re.escape(k) for k in sorted(_STRICT_SINGLE, key=len, reverse=True))
+    + r")(?![a-z0-9])"
+)
+
+
+def _strict_kw_hit(text: str) -> bool:
+    """True if text carries a strict LGBTQ keyword as a WORD, not a substring."""
+    if any(p in text for p in _STRICT_PHRASE):
+        return True
+    return bool(_STRICT_RE.search(text))
+
+
 def _is_lgbtq_strict(e: Dict) -> bool:
     """Stricter LGBTQ check for slide generation. Source-trusted OR keyword
     in name/venue only — NOT description, which lets too many "everyone
@@ -328,7 +387,7 @@ def _is_lgbtq_strict(e: Dict) -> bool:
     if any(sig in venue for sig in _sigs):
         return True
     text = name + " " + venue
-    return any(kw in text for kw in _STRICT_LGBTQ_KW)
+    return _strict_kw_hit(text)
 
 
 # Tulsa gay bars / queer venues — by address and name. An event here counts as

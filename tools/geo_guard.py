@@ -66,6 +66,23 @@ CITY_VENUE_MARKERS = {
         "cain's ballroom",
     ],
     "oklahoma city": ["myriad botanical", "paseo arts"],
+    # Added 2026-09-07 (W37). Facebook events for Puerto Vallarta bars and for
+    # HotMess Sports' out-of-state chapters were shipping in the Tulsa deck.
+    # facebook.com/events/<id> URLs carry no geography, so CITY_DOMAINS and
+    # _path_city could never see them and only the venue string was left.
+    # tools/fb_event_truth.py is the real fix (it asks Facebook where the event
+    # is); these markers are the backstop for when Facebook serves no og: card.
+    "mexico": ["puerto vallarta", "lazaro cardenas", "olas altas", "col. amapas",
+               "jalisco", "méxico", ", mexico", "sayulita", "cdmx",
+               "ciudad de méxico", "guadalajara"],
+    "out of state": ["north charleston", ", knoxville", ", chattanooga",
+                     "mobile, al", ", columbia, sc", ", overbrook",
+                     # HotMess Sports is a NATIONAL league and its other-city
+                     # chapters kept landing in the Tulsa deck. Little Rock is
+                     # the one that nearly shipped: it rode into a real Tulsa
+                     # event through name-similarity dedup (see _dedup_day).
+                     "little rock", ", ar,", ", tn,", ", sc,", ", al,",
+                     "kanis park", "victor ashe park", "oyster city"],
 }
 
 

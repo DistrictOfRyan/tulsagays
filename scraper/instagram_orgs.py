@@ -312,6 +312,82 @@ class InstagramOrgScraper(BaseScraper):
         return monday <= dt <= sunday
 
     # ── auth-free public fetch (primary) ────────────────────────────────────────
+    # ── Graph API business_discovery (official, credentialed, NOT rate-limited) ──
+    def _fetch_via_graph(self) -> List[Dict]:
+        """Read a venue's recent posts through Meta's own business_discovery edge.
+
+        WHY (2026-09-07). On W37 all NINE venue Instagram accounts returned zero
+        posts: the logged-out public endpoint answered HTTP 429 for every handle,
+        and the instagrapi session fallback was dead ("No @tulsagays IG session at
+        ~/.credentials/ig_settings_tulsagays.json"). Both tiers down means the gay
+        bars - who publish ONLY on Instagram - contributed nothing at all, which
+        is why that Monday's deck had, in William's words, "nothing really gay on
+        them" for half the week. It also starved the YBR partner rule of its only
+        approved source, so the deck fell back to a stale flyer and a 2023
+        Facebook event, and THAT is what blocked the post entirely.
+
+        business_discovery is a third path that shares no failure mode with the
+        other two: it is the documented Graph API edge, authenticated with the
+        TulsaGays page token we already hold for posting, and it needs no scraping
+        session and no 2FA. Measured the same morning the other two were dead, it
+        returned fresh posts for @tulsaeagle (newest that day), @dvltulsa,
+        @clubmajestictulsa and @pflagtulsa.
+
+        LIMIT: business_discovery only resolves BUSINESS/CREATOR accounts. A
+        personal account (YBR's @tulsaybr, at time of writing) answers code 110
+        "Invalid user id", so it still depends on the other tiers. That is a real
+        gap, not a bug here - and for YBR specifically the partner rule already
+        says the right answer is to under-promote rather than invent an event.
+        """
+        import os as _os
+        import json as _json
+        import urllib.parse as _up
+        import urllib.request as _ur
+
+        token = _os.environ.get("TULSAGAYS_PAGE_ACCESS_TOKEN", "")
+        ig_id = ""
+        try:
+            cfg_path = Path(__file__).resolve().parent.parent / "meta_api_config.json"
+            ig_id = str(_json.loads(cfg_path.read_text(encoding="utf-8"))
+                        .get("instagram_business_account_id") or "")
+        except Exception:
+            ig_id = ""
+        if not token or not ig_id:
+            return []
+
+        for user in self.usernames:
+            fields = (f"business_discovery.username({user})"
+                      f"{{username,media.limit({POSTS_TO_SCAN})"
+                      f"{{caption,timestamp,permalink}}}}")
+            url = (f"https://graph.facebook.com/v21.0/{ig_id}?"
+                   + _up.urlencode({"fields": fields, "access_token": token}))
+            try:
+                raw = _ur.urlopen(url, timeout=25).read()
+                media = ((_json.loads(raw).get("business_discovery") or {})
+                         .get("media") or {}).get("data") or []
+            except Exception as e:
+                # code 110 = not a business/creator account. Normal for some
+                # venues; try the next handle rather than treating it as an error.
+                logger.debug("[%s] business_discovery @%s unavailable: %s",
+                             self.source_name, user, str(e)[:80])
+                continue
+
+            posts = []
+            for m in media:
+                caption = (m.get("caption") or "").strip()
+                if not caption:
+                    continue
+                posts.append({
+                    "caption": caption,
+                    "url": m.get("permalink") or self.profile_url,
+                    "posted_on": (m.get("timestamp") or "")[:10],
+                })
+            if posts:
+                logger.info("[%s] business_discovery @%s returned %d captioned posts",
+                            self.source_name, user, len(posts))
+                return posts
+        return []
+
     def _fetch_public(self) -> List[Dict]:
         """Read recent posts via Instagram's public web-profile JSON.
 
@@ -456,7 +532,13 @@ class InstagramOrgScraper(BaseScraper):
         # a full scrape is exactly what 429'd it to zero and silently dropped all
         # gay-venue events for months. Try the reliable tier first; only fall back
         # to the public/instagrapi tiers if the web session is down.
-        posts = self._fetch_via_web()
+        # GRAPH API FIRST (added 2026-09-07). business_discovery is the only tier
+        # that is both credentialed and officially supported, so it does not 429
+        # and does not expire the way a scraped session does. On the morning both
+        # other tiers were dead it was the only one returning posts at all.
+        posts = self._fetch_via_graph()
+        if not posts:
+            posts = self._fetch_via_web()
         if not posts:
             posts = self._fetch_public()
         if not posts:

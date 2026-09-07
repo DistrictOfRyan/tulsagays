@@ -70,5 +70,13 @@
     "source": "rendered_sites/Discovery Lab",
     "since": "2026-06-23",
     "status": "open"
+  },
+  {
+    "id": "instagram-automation-profile-session",
+    "item": "Instagram automation profile session",
+    "reason": "no valid session for: instagram. Fix: python tools/ig_profile_login.py (a login, so it needs your hands). Blocks every IG-only org (@tcc_pride, bars, HotMess) and the FB group blast.",
+    "source": "check_ig_profile_session",
+    "since": "2026-09-02 08:22",
+    "status": "open"
   }
 ]

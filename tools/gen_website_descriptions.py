@@ -90,22 +90,35 @@ def flamingo_score(ev: dict) -> int:
 # ── Named event descriptions (keyword → description) ─────────────────────────
 # Keys are lowercase substrings that must appear in the event name.
 NAMED_DESCRIPTIONS = {
+    # EVERGREEN ONLY (rewritten 2026-09-07). This entry used to open "First
+    # Friday. The DoubleTree. The gays." and close "every first Friday of the
+    # month", and it named Paws in Need Tulsa as the charity. By September 2026
+    # all four facts were wrong: the event had moved to the SECOND Friday
+    # (Labor Day took the first), the venue was the Hilton Garden Inn Tulsa
+    # South, and the charity was Council Oak Men's Chorale. It rendered on the
+    # W37 COVER slide directly beneath a venue line that correctly read "Hilton
+    # Garden Inn Tulsa South" - a slide contradicting itself about WILLIAM'S OWN
+    # event.
+    #
+    # This is the same failure that made YBR complain in July: a hardcoded flyer
+    # outliving the thing it described ([[feedback_tulsagays_ybr_ig_only]]).
+    # A hardcoded bank entry may describe what an event IS, never WHEN or WHERE
+    # this month's instance happens or who it benefits - those move, and the live
+    # scrape already carries them. Keep it dateless, venueless and charity-less.
     "homo hotel happy hour": (
-        "First Friday. The DoubleTree. The gays. Every month, Homo Hotel Happy Hour takes a "
-        "downtown hotel bar and turns it into the most genuinely welcoming room in Tulsa for "
-        "exactly two hours, and before you tell me you're tired or you don't know anyone who's "
-        "going, I need you to understand that this event was specifically designed for the person "
-        "who shows up knowing nobody and leaves knowing seven people by name. This month HHHH is "
-        "raising money for Paws in Need Tulsa, which provides vet care, food, and support for pets "
-        "belonging to families facing hardship, because apparently we are also saving animals while "
-        "being fabulous, which is very on brand. "
-        "Free admission. Raffle tickets available. Nearly all proceeds go directly to Paws in Need, "
-        "so your presence is doing actual good in the world even if you spend the whole two hours "
-        "working up the courage to approach someone with a great outfit. "
-        "Show up at 6. Order something (the drinks are hotel-priced, which is your warning to bring "
-        "the nice-night-out budget). Talk to whoever is standing next to you at the bar, because "
-        "they showed up for the same reason you did. No cover. No dress code. Just the best two "
-        "hours this city offers every first Friday of the month."
+        "Homo Hotel Happy Hour takes a hotel bar and turns it into the most genuinely "
+        "welcoming room in Tulsa for exactly two hours, and before you tell me you're "
+        "tired or you don't know anyone who's going, I need you to understand that this "
+        "event was specifically designed for the person who shows up knowing nobody and "
+        "leaves knowing seven people by name. Free admission, every time. There is a "
+        "charity raffle at every event, and nearly all of it goes straight to the cause, "
+        "so your presence is doing actual good in the world even if you spend the whole "
+        "two hours working up the courage to approach someone with a great outfit. "
+        "Order something (the drinks are hotel-priced, which is your warning to bring the "
+        "nice-night-out budget). Talk to whoever is standing next to you at the bar, "
+        "because they showed up for the same reason you did. No cover. No dress code. "
+        "Check the date and the room before you drive: HHHH moves hotels every month, "
+        "and it is not always the first Friday."
     ),
     "lambda bowling league": (
         "Monday night LGBTQ+ bowling at AMF Sheridan Lanes, and before you tell me bowling isn't "
@@ -812,6 +825,32 @@ def _find_description(ev: dict, score: int) -> str:
     name = ev.get('name', '').lower()
     venue = ev.get('venue', '').lower()
 
+    # A LIVE, SUBSTANTIAL SCRAPED DESCRIPTION BEATS THE HARDCODED BANK
+    # (added 2026-09-07). The named registry is a FALLBACK for events we know but
+    # could not read this week, not an override. On W37 the 4H record already
+    # carried the correct, current copy off the live source ("Labor Day stole our
+    # First Friday, so September's Homo Hotel Happy Hour moves to the SECOND
+    # Friday: September 11, 6 to 8 PM at the Hilton Garden Inn Tulsa South") and
+    # the bank threw it away for a stale April blurb naming the DoubleTree.
+    # Anything the scrape actually said about THIS instance outranks a static
+    # paragraph written months ago.
+    # ...but only if it is actually a DESCRIPTION. A scraped blob is often the
+    # ticketing page's furniture, and length is no filter: Damon Darling's raw
+    # text is 200+ chars of "If you are seeing the showtime you want to attend is
+    # SOLD OUT - Click Here to join our Wait List! ... All shows are 18+ with
+    # valid ID unless stated otherwise." That is website chrome, and preferring
+    # it over the bank put it straight onto the W37 Wednesday slide.
+    _CHROME_MARKERS = (
+        "click here", "join our wait list", "you will be notified",
+        "unless stated otherwise", "no refunds", "all sales are final",
+        "see website for details", "buy tickets now", "read more",
+        "subscribe", "sign up here", "terms and conditions", "privacy policy",
+        "javascript", "cookies", "your browser",
+    )
+    _live = (ev.get('description') or '').strip()
+    if len(_live) >= 200 and not any(m in _live.lower() for m in _CHROME_MARKERS):
+        return _live
+
     # Check named registry
     for key, desc in NAMED_DESCRIPTIONS.items():
         if key in name or key in venue:
@@ -1283,19 +1322,52 @@ def _desc_generic(ev, score):
     return base
 
 
+_DANGLING = {
+    "and", "or", "but", "so", "because", "that", "which", "who", "with", "for",
+    "to", "of", "in", "on", "at", "by", "from", "as", "the", "a", "an", "is",
+    "are", "was", "were", "if", "when", "while", "than", "then", "into", "about",
+}
+
+
 def _smart_trim(text: str, n: int) -> str:
-    """Trim to <=n chars WITHOUT cutting mid-word (W28 slides shipped copy
-    ending "...actually a" / "...being i"). Prefer the last full sentence."""
+    """Trim to <=n chars without leaving a fragment.
+
+    A SHORT COMPLETE SENTENCE BEATS A LONG BROKEN ONE (fixed 2026-09-07). The
+    old rule only accepted a sentence boundary at index >= n//2 and otherwise
+    fell straight to a word cut. So an event whose first sentence ended early
+    got the worst of both: the boundary was rejected for being "too soon" and
+    the text was chopped mid-clause instead. W37's Wednesday slide shipped
+    "...the crowd they pull skews curious, inclusive, and." - a sentence cut
+    after a conjunction with a period welded on.
+
+    Now ANY sentence boundary is preferred over a mid-clause cut, however early,
+    and when there is genuinely no boundary the trailing dangling words are
+    dropped rather than punctuated into a false sentence.
+    """
     t = (text or "").strip()
     if len(t) <= n:
         return t
     cut = t[:n]
+
+    # 1) Best: the latest sentence end at or past the halfway mark.
+    best = -1
     for sep in ('. ', '! ', '? '):
         i = cut.rfind(sep)
-        if i >= n // 2:
-            return cut[:i + 1].strip()
-    i = cut.rfind(' ')
-    return (cut[:i] if i > 0 else cut).rstrip(' ,;:.') + '.'
+        if i > best:
+            best = i
+    if best >= n // 2:
+        return cut[:best + 1].strip()
+    # 2) Still better than a fragment: an EARLY sentence end. Short and whole.
+    if best > 0:
+        return cut[:best + 1].strip()
+
+    # 3) No sentence boundary at all. Cut on a word and strip any trailing
+    #    connective, so we never punctuate a dangling clause into a "sentence".
+    words = cut.split()
+    while words and words[-1].strip(",;:.").lower() in _DANGLING:
+        words.pop()
+    out = " ".join(words).rstrip(" ,;:.")
+    return (out + ".") if out else cut.rstrip(" ,;:.") + "."
 
 
 # ── Claude API description generator ─────────────────────────────────────────

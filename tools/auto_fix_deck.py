@@ -165,6 +165,35 @@ def _apply_fixes(week: str, review: dict, dry_run: bool) -> list:
                     actions.append(f"{day}: suppressed corrupt-time '{e.get('name')}' "
                                    f"(time={e.get('time')!r})")
 
+    # 1b) Deterministic: the YBR PARTNER-SOURCE rule (added 2026-09-07).
+    #
+    # final_deck_review.deterministic_pass hard-blocks a featured Yellow Brick
+    # Road event whose source is not 'ybr_ig'. Until now this healer could not
+    # touch that class at all - it only ever read the LLM's duplicate/cancelled
+    # verdicts - so a single stale YBR row dead-ended the ENTIRE Monday post.
+    # That is not hypothetical: W31, W32, W33 and W37 all ended as "PREP BLOCKED
+    # at preflight after self-repair", and W37's block was one YBR flyer that a
+    # manual ledger had projected onto four consecutive Wednesdays.
+    #
+    # The repair is the rule's own remedy, written down in
+    # [[feedback_tulsagays_ybr_ig_only]]: "If the IG scrape has a bad week, YBR
+    # simply isn't featured - under-promote a partner rather than post a ghost
+    # event." So suppress the offending row and let the day fill from the pool.
+    # This never relaxes the gate; it just stops the gate from costing a week.
+    def _is_ybr(e):
+        v = (e.get("venue") or "").lower()
+        return ("yellow brick" in v) or ("ybr" in v) or ("2630 e 15th" in v)
+
+    for day in DAYS:
+        for e in fbd.get(day, []):
+            if _is_ybr(e) and (e.get("source") or "") != "ybr_ig":
+                src = _find_source(events, e)
+                if src and (dry_run or _suppress(src)):
+                    actions.append(
+                        f"{day}: suppressed YBR event from source="
+                        f"'{e.get('source')}' '{e.get('name')}' - partner rule: only "
+                        f"live @tulsaybr (ybr_ig) events may be featured")
+
     # 2) LLM verdict: duplicate / cancelled per day (the authoritative gate).
     day_reports = review.get("llm_day_reports", {}) or {}
 

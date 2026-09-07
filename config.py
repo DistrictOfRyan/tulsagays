@@ -15,6 +15,19 @@ CITY_STATE = "OK"
 # OpenStreetMap Nominatim. sync_from_tulsa.py preserves config.py, so these
 # stay correct per city while the scraper that reads them stays shared.
 # ---------------------------------------------------------------------------
+# Cities that count as LOCAL for this site. Read by tools/fb_event_truth.py, which
+# compares an event against Facebook's own og: metadata: a Facebook event whose
+# city is not in this list is dropped as a geo leak. Added 2026-09-07 after the
+# W37 deck was found carrying Puerto Vallarta events plus HotMess Sports chapters
+# in Mobile, Columbia, Charleston and Knoxville - none of which geo_guard could
+# see, because facebook.com/events/<id> URLs carry no geography at all.
+# CITY-SPECIFIC: sync_from_tulsa.py preserves config.py, so each city keeps its own.
+METRO_CITIES = [
+    "Tulsa", "Tulsa County", "Broken Arrow", "Sand Springs", "Jenks", "Bixby",
+    "Owasso", "Sapulpa", "Catoosa", "Claremore", "Glenpool", "Collinsville",
+    "Skiatook", "Coweta", "Wagoner", "Kiefer", "Sperry", "Turley", "Oakhurst",
+]
+
 CITY_BBOX = "36.05,-96.05,36.25,-95.85"  # Tulsa, OK - EXACT original hardcoded
 # value from scraper/eventbrite_meetup.py. Deliberately NOT widened to the full
 # OSM city boundary: TulsaGays is the live earning site and this box is proven,

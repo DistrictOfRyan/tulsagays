@@ -231,6 +231,10 @@ def _dedup_day(ev_list):
             key = (name_norm[:40], date)
 
         idx = seen.get(key)
+        # Same guard on the exact-key path: a suppressed record and a live one
+        # are never the same event for merge purposes, even under an identical key.
+        if idx is not None and bool(result[idx].get('never_feature')) != bool(ev.get('never_feature')):
+            idx = None
         if idx is None:
             # Fuzzy fallback: a near-identical name on the SAME date is the
             # same real event scraped twice — OR same venue + date with
@@ -242,6 +246,26 @@ def _dedup_day(ev_list):
             except Exception:
                 _sev = lambda _a, _b: False
             for _j, _ex in enumerate(result):
+                # A SUPPRESSED record must never merge with a live one
+                # (added 2026-09-07). never_feature means "we decided not to
+                # publish this", and a record we refuse to publish has no
+                # business donating its fields to one we do.
+                #
+                # Live failure: W37 Wednesday shipped "HotMess Kickball Fall 2026
+                # Free Open Play" at "Kanis Park Rd, Little Rock, AR". The real
+                # Tulsa event (source hotmess_sports, McClure Park Softball
+                # Field) was fuzzy-matched against "HotMess Sports Columbia: Free
+                # Kickball Open Play" - a DIFFERENT city's chapter that
+                # fb_event_truth had already suppressed as foreign - because the
+                # two names share hotmess/free/kickball/open/play and clear the
+                # 0.55 token-overlap bar. The merge then adopted the Little Rock
+                # address as a venue "upgrade" and the slide would have sent
+                # Tulsa readers to Arkansas.
+                #
+                # Suppression is a decision, so honour it here too: it must not
+                # be quietly undone by a name-similarity heuristic.
+                if bool(_ex.get('never_feature')) != bool(ev.get('never_feature')):
+                    continue
                 if _ex.get('date', '') == date and (
                         _fuzzy_same(ev.get('name', ''), _ex.get('name', ''))
                         or _sev(ev, _ex)):
@@ -529,6 +553,30 @@ def cmd_generate(post_type="weekday"):
         "okeq health",        # recurring clinic — never feature
         "zoom only",          # online-only events — not in-person community events
         "midweek meditation", # recurring online meditation
+        # CIVIC / INFORMATIONAL, added 2026-09-07. William, on seeing the W37
+        # deck: "the immigration updates town hall series is not an event that I
+        # would go to. It's not a fun thing. I'm not sure why that's on there."
+        # These matter to the community and belong on the WEBSITE; they are just
+        # never the thing you put on a slide to sell somebody's Tuesday night.
+        # Deprioritized, never dropped.
+        "town hall",
+        "updates - town hall",
+        "info session",
+        "information session",
+        "informational meeting",
+        "public forum",
+        "listening session",
+        "know your rights",
+        "legislative update",
+        "candidate forum",
+        "board meeting",
+        "annual meeting",
+        "orientation",
+        "volunteer training",
+        "tax prep",
+        "job fair",
+        "resume workshop",
+        "fafsa",
     }
     # Venue-level deprioritization REMOVED 2026-06-12 (William): Majestic and
     # other gay-bar special events are featurable. Weekly bar filler is still
@@ -656,6 +704,21 @@ def cmd_generate(post_type="weekday"):
         "lego", "family fun", "homeschool", "sensory",
     )
     _AGGREGATOR_SRC = {"meetup", "extended_calendars", "eventbrite"}
+
+    # Titles that already LED a day earlier this week. A multi-day cinema run
+    # ("Cars 20th Anniversary", "Late Fame") is one event per day as far as the
+    # scraper is concerned, and _dedup_day only collapses WITHIN a day, so the
+    # same movie held a featured slot on Monday, Tuesday AND Wednesday of W37.
+    # William, 2026-09-07, looking at that deck: "We're not really highlighting
+    # gay events. They're like 1 and 2 stars for a lot of days, and there's
+    # nothing really gay on them." Repeating one 2-flamingo screening three days
+    # running is what made the week look empty. Demote, never ban: on a genuinely
+    # thin day a repeat still beats a blank slot.
+    _featured_titles_used: set = set()
+
+    def _norm_title(e) -> str:
+        import re as _re
+        return _re.sub(r"[^a-z0-9]+", " ", (e.get("name") or "").lower()).strip()
 
     def _rebalance_featured(day_events):
         """Pick the 3 BEST featured events per day, per William's rules:
@@ -787,8 +850,33 @@ def cmd_generate(post_type="weekday"):
             except Exception:
                 _fl = 4 if lg else 1
             fl_bucket = 0 if _fl >= 4 else (1 if _fl >= 2 else 2)
+            # VENUE-INHERITED queerness is weaker than queerness of the event
+            # itself. Circle Cinema is an affirming venue, so _is_lgbtq_strict
+            # says True for every screening it hosts - which floated "Cars 20th
+            # Anniversary" and "Gumby in 4K" into featured slots as though they
+            # were gay events (William 2026-09-07: "there's nothing really gay on
+            # them"). If the event's own NAME carries no queer signal and its
+            # flamingo score is only 2, its queerness is the room's, not its own.
+            _own_queer_signal = any(k in (e.get("name") or "").lower() for k in (
+                "drag", "queer", "gay", "lgbt", "pride", "trans", "lesbian", "dyke",
+                "sapphic", "bi-con", "bicon", "homo", "gaymer", "ball", "cabaret",
+                "burlesque", "talent night", "open talent", "showcase", "revue"))
+            venue_only_queer = lg and not _own_queer_signal and _fl < 4
+            # A title that already led an earlier day this week sinks behind
+            # anything fresh, so one multi-day cinema run cannot own the deck.
+            repeat_lead = _norm_title(e) in _featured_titles_used
+            # CIVIC / INFORMATIONAL sinks below anything you would actually go out
+            # for. _ALWAYS_DEPRIORITIZE only reached tiebreak #8 via
+            # _slide_priority, which is far too late to stop a 1-flamingo town hall
+            # taking a slide (W37 Tuesday). Give it a bucket of its own, above the
+            # flamingo bucket, so "not a fun thing" outranks "technically queer".
+            civic = any(kw in (e.get("name") or "").lower()
+                        for kw in _ALWAYS_DEPRIORITIZE)
             return (
                 0 if lg else 1,            # 1) gay events lead, always
+                1 if civic else 0,         # 1a) fun beats civic/informational, always
+                1 if repeat_lead else 0,   # 1b) a fresh event beats one that already led a day
+                1 if venue_only_queer else 0,  # 1c) queer-in-itself beats queer-by-venue
                 fl_bucket,                 # 2) gay-friendly (2-3🦩) beats mostly-straight (1🦩)
                 1 if junk else 0,          # 3) clean-titled events lead over junk-named ones
                 1 if rec else 0,           # 4) ONE-TIME events lead over weekly/recurring (top signal)
@@ -881,6 +969,9 @@ def cmd_generate(post_type="weekday"):
         # Remaining eligible events keep their rank order behind the featured 3
         # (they drive the "N more events" count). Services never appear here.
         tail = [e for e in feat_pool if id(e) not in seen]
+        # Remember what led this day so later days prefer something fresh.
+        for _t in top:
+            _featured_titles_used.add(_norm_title(_t))
         return top + tail
 
     # Deduplicate FIRST (collapse same-event variants, incl. the combined
@@ -977,6 +1068,14 @@ def cmd_generate(post_type="weekday"):
                 "source": e.get("source", ""), "url": e.get("url", ""),
                 "description": e.get("description", ""),
                 "website_description": e.get("website_description", ""),
+                # THE FIELD THAT ACTUALLY RENDERS ON THE SLIDE (added 2026-09-07).
+                # content/image_maker.py draws `slide_description or description`,
+                # but _slim never copied slide_description, so the manifest
+                # preflight validates showed an empty slot and preflight fell back
+                # to judging the RAW scraped `description`. That is wrong in both
+                # directions: it flags raw ticketing chrome that never renders, and
+                # it cannot see a bad slide_description that does. Carry it.
+                "slide_description": e.get("slide_description", ""),
                 "flamingo": _flscore(e),
                 "never_feature": bool(e.get("never_feature")),
                 "lgbtq_relevant": bool(e.get("lgbtq_relevant")),

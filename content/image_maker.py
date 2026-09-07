@@ -332,6 +332,20 @@ def _flamingo_score(ev: dict) -> int:
             return 4
         if source in _LGBTQ_COMMUNITY_SOURCES and source != 'manual':
             return 4
+        # An event posted by an LGBTQ ORGANISATION'S OWN account is a queer event
+        # even when it happens somewhere neutral (added 2026-09-07). Every rule
+        # above reads the NAME or the VENUE, so "HotMess Kickball Fall 2026 Free
+        # Open Play" at McClure Park Softball Field - the Tulsa LGBTQ rec league,
+        # straight off @hotmesssportstulsa - fell all the way through to 1
+        # flamingo and read on the slide as a mostly-straight event. William:
+        # "They're like 1 and 2 stars for a lot of days, and there's nothing
+        # really gay on them." The org that posted it IS the queer signal.
+        try:
+            from eotw_selector import _TRUSTED_LGBTQ_SRCS as _TRUSTED
+            if (source or '').lower() in _TRUSTED:
+                return 4
+        except Exception:
+            pass
 
     # 3 — affirming spaces: church/meditation/cultural venues that publicly welcome LGBTQ
     if any(kw in content for kw in _THREE_FL_KW):

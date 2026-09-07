@@ -131,7 +131,7 @@ SITES: List[Tuple[str, str, str, bool]] = [
     ("https://calendar.utulsa.edu/", "University of Tulsa", "university", False),
     ("https://tulsa.okstate.edu/calendar/", "OSU-Tulsa", "university", False),
     ("https://www.oru.edu/events/", "ORU", "university", False),
-    ("https://www.tulsacc.edu/campus-life/events/", "Tulsa Community College", "university", False),
+    ("https://www.tulsacc.edu/about-tcc/events/", "Tulsa Community College", "university", False),  # 2026-09-02: /campus-life/events/ had gone 404; /about-tcc/events/ returns 200
 
     # LGBTQ+ SPECIFIC (return ALL events, no keyword filter)
     # 2026-07-06: tulsapride.org rebuilt (Astra WP); /events/ is now 404, so

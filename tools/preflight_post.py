@@ -196,6 +196,78 @@ def _week_range(week_key):
         return mon, date.fromordinal(mon.toordinal() + 6)
 
 
+_DAYNAMES = {
+    "mon": 0, "monday": 0,
+    "tue": 1, "tues": 1, "tuesday": 1,
+    "wed": 2, "weds": 2, "wednesday": 2,
+    "thu": 3, "thur": 3, "thurs": 3, "thursday": 3,
+    "fri": 4, "friday": 4,
+    "sat": 5, "saturday": 5,
+    "sun": 6, "sunday": 6,
+}
+_MONTHS = {
+    "jan": 1, "january": 1, "feb": 2, "february": 2, "mar": 3, "march": 3,
+    "apr": 4, "april": 4, "may": 5, "jun": 6, "june": 6, "jul": 7, "july": 7,
+    "aug": 8, "august": 8, "sep": 9, "sept": 9, "september": 9,
+    "oct": 10, "october": 10, "nov": 11, "november": 11, "dec": 12, "december": 12,
+}
+# "Mon 9/8" / "Tues 9/9," / "Thurs 9/10"
+_DN_SLASH = re.compile(
+    r"\b(" + "|".join(sorted(_DAYNAMES, key=len, reverse=True)) + r")\b\.?,?\s+(\d{1,2})/(\d{1,2})\b",
+    re.IGNORECASE)
+# "Friday, Sept 11" / "Sat Oct 4"
+_DN_MONTH = re.compile(
+    r"\b(" + "|".join(sorted(_DAYNAMES, key=len, reverse=True)) + r")\b\.?,?\s+(" +
+    "|".join(sorted(_MONTHS, key=len, reverse=True)) + r")\.?\s+(\d{1,2})\b",
+    re.IGNORECASE)
+
+
+def _check_daynames(text, week_key, where, errors, warnings):
+    """HARD BLOCK a caption whose weekday label disagrees with its own date.
+
+    Added 2026-09-07. The W37 deck shipped preflight with 0 errors while saying
+    "Tulsa Area Prime Timers, Mon 9/8" (9/8 was a Tuesday) and "HotMess Kickball,
+    Tues 9/9" (a Wednesday). The scraped source data had both dates right; the
+    caption's day names were a day early. Nothing in the pipeline compared the
+    two, so a reader planning by day name would have shown up on the wrong day.
+
+    Every other date check here validates the EVENT RECORDS. This one validates
+    the prose a human actually reads, which is the only thing the audience sees.
+    """
+    if not text:
+        return
+    try:
+        monday, _sunday = _week_range(week_key)
+        year = monday.year
+    except Exception:
+        return
+
+    def _flag(said, real, datestr, snippet):
+        errors.append(
+            f"[dayname] {where} says '{said} {datestr}' but {datestr} is a {real}. "
+            f"Fix the day name or the date: ...{snippet}...")
+
+    for m in _DN_SLASH.finditer(text):
+        said, mm, dd = m.group(1).lower(), int(m.group(2)), int(m.group(3))
+        try:
+            actual = date(year, mm, dd)
+        except ValueError:
+            continue
+        if actual.weekday() != _DAYNAMES[said]:
+            _flag(m.group(1), actual.strftime("%A"), f"{mm}/{dd}",
+                  text[max(0, m.start() - 40):m.end() + 20].replace("\n", " "))
+
+    for m in _DN_MONTH.finditer(text):
+        said, mon_s, dd = m.group(1).lower(), m.group(2).lower(), int(m.group(3))
+        try:
+            actual = date(year, _MONTHS[mon_s], dd)
+        except (ValueError, KeyError):
+            continue
+        if actual.weekday() != _DAYNAMES[said]:
+            _flag(m.group(1), actual.strftime("%A"), f"{m.group(2)} {dd}",
+                  text[max(0, m.start() - 40):m.end() + 20].replace("\n", " "))
+
+
 def _check_desc(ev, errors, warnings, is_eotw=False, posted=True):
     # "posted" = this event appears on a carousel slide (featured) or is an EOTW,
     # i.e. it actually goes out in the FB/IG post. Website-only filler events
@@ -696,6 +768,8 @@ def run(week_key=None):
         try:
             cap = json.load(open(cap_path, encoding="utf-8")).get("caption", "")
             _check_anonymity(cap, f"caption ({os.path.basename(cap_path)})", errors, warnings)
+            _check_daynames(cap, week_key, f"caption ({os.path.basename(cap_path)})",
+                            errors, warnings)
         except Exception:
             pass
 
@@ -724,6 +798,169 @@ def run(week_key=None):
                 warnings.append(f"[links] EOTW '{e.get('name')}' URL not reachable ({str(ex)[:50]}): {url}")
     except ImportError:
         warnings.append("[links] requests not available — skipped live link check")
+
+    # ── FRAGMENTS AND RAW SCRAPER CHROME ────────────────────────────────
+    # Added 2026-09-07 after both shipped onto the W37 Wednesday slide:
+    #   "...the crowd they pull skews curious, inclusive, and."   (fragment)
+    #   "If you are seeing the showtime you want to attend is SOLD OUT - Click
+    #    Here to join our Wait List! ... All shows are 18+ with valid ID unless
+    #    stated otherwise."                                       (website chrome)
+    # The length and voice checks passed both: the fragment was long enough and
+    # carried no banned phrase, and the ticketing boilerplate reads like ordinary
+    # prose. Neither is a description of an event.
+    # DELIBERATELY NARROW. English ends sentences with prepositions all the time
+    # ("that is what these evenings are for", "how you become part of that"), and
+    # a first pass at this list flagged three such lines as fragments. A gate that
+    # cries wolf gets ignored, so this holds only the words that essentially never
+    # close a well-formed sentence.
+    _DANGLE = ("and", "or", "but", "the", "a", "an", "because", "which",
+               "while", "than", "whose", "into")
+    _CHROME = ("click here", "join our wait list", "you will be notified",
+               "unless stated otherwise", "see website for details",
+               "tickets available online", "no refunds or exchanges",
+               "doors open at the time listed on your ticket",
+               "read more", "learn more »", "buy tickets now", "sign up here",
+               "subscribe to our newsletter", "all sales are final")
+    for _e in (list(eotw) + featured_all):
+        _nm = _e.get("name") or ""
+        # Judge only what a READER actually sees. image_maker draws
+        # `slide_description or description`, and the website shows
+        # website_description; the raw scraped `description` is an input, not
+        # output, so checking it directly produced a false block on Damon
+        # Darling (whose slide copy was already clean).
+        _fields = {"website_description": (_e.get("website_description") or "").strip()}
+        _fields["slide (rendered)"] = ((_e.get("slide_description") or "").strip()
+                                       or (_e.get("description") or "").strip())
+        for _fld, _v in _fields.items():
+            if not _v:
+                continue
+            _last = _v.rstrip().rstrip(".!?").split()
+            if _last and _last[-1].strip(",;:").lower() in _DANGLE:
+                errors.append(
+                    f"[fragment] '{_nm}' {_fld} ends mid-clause on '{_last[-1]}' — "
+                    f"a truncated sentence, not copy: \"...{_v[-70:]}\"")
+            _hits = [c for c in _CHROME if c in _v.lower()]
+            if _hits:
+                errors.append(
+                    f"[chrome] '{_nm}' {_fld} is raw website boilerplate, not a "
+                    f"description (contains {_hits[:2]})")
+
+    # ── A SLIDE MUST NOT CONTRADICT ITSELF ──────────────────────────────
+    # Added 2026-09-07. The W37 COVER rendered "First Friday. The DoubleTree.
+    # The gays." immediately below a venue line reading "@ Hilton Garden Inn
+    # Tulsa South" - for Friday SEPTEMBER 11, the second Friday. Three
+    # contradictions on one slide, about William's own event, from a hardcoded
+    # description written months earlier. Every existing check passed it: the
+    # copy was long enough, in voice, and carried no banned phrase. Nothing
+    # compared the WORDS against the event's own date and venue fields.
+    #
+    # These two checks are cheap and purely factual, so they cannot nag: a
+    # "first Friday" claim is checked against the day of the month, and a
+    # rotating-venue event's copy is checked for a DIFFERENT venue name.
+    import calendar as _cal
+    _ROT_VENUE_WORDS = ("doubletree", "double tree", "campbell hotel", "aloft",
+                        "courtyard", "hilton garden", "the mayo", "hyatt",
+                        "marriott", "holiday inn", "equality center",
+                        "tulsa artist fellowship", "starlite", "hunt club",
+                        "mother road")
+    for _e in (list(eotw) + featured_all):
+        _nm = _e.get("name") or ""
+        _dsc = " ".join(str(_e.get(k) or "") for k in
+                        ("description", "website_description", "slide_description")).lower()
+        _ven = (_e.get("venue") or "").lower()
+        _dt = str(_e.get("date") or "")
+        if not _dsc:
+            continue
+        # 1) "first Friday" (or first/second/third <weekday>) vs the real date.
+        _m = re.match(r"(\d{4})-(\d{2})-(\d{2})$", _dt)
+        if _m and "first friday" in _dsc:
+            _dayn = int(_m.group(3))
+            if _dayn > 7:
+                _wk = (_dayn - 1) // 7 + 1
+                _ord = {2: "second", 3: "third", 4: "fourth", 5: "fifth"}.get(_wk, f"{_wk}th")
+                # Copy that NAMES the real week is not contradicting itself, it is
+                # explaining a move. W37's 4H legitimately reads "Labor Day stole
+                # our First Friday, so September's Homo Hotel Happy Hour moves to
+                # the SECOND Friday" - flagging that would train the gate to be
+                # ignored, which is worse than not having it.
+                _acknowledges = (f"{_ord} friday" in _dsc
+                                 or "moves to" in _dsc or "moved to" in _dsc
+                                 or "not the first" in _dsc or "not first" in _dsc)
+                if not _acknowledges:
+                    errors.append(
+                        f"[contradiction] '{_nm}' copy says 'first Friday' but the event falls on "
+                        f"{_dt}, day {_dayn} — the {_ord} week of the month, and the copy never "
+                        f"says so. Stale hardcoded copy.")
+        # 2) A rotating-venue event whose copy names a DIFFERENT venue.
+        _named = [w for w in _ROT_VENUE_WORDS if w in _dsc]
+        _wrong = [w for w in _named if w not in _ven]
+        if _wrong and _ven:
+            errors.append(
+                f"[contradiction] '{_nm}' is at '{_e.get('venue')}' but its copy names "
+                f"{_wrong} — the slide contradicts its own venue line")
+
+    # ── IS THIS DECK ACTUALLY GAY? ──────────────────────────────────────
+    # Added 2026-09-07. William, on the W37 slides: "We're not really highlighting
+    # gay events. They're like 1 and 2 stars for a lot of days, and there's nothing
+    # really gay on them." The selection logic was only half the story - that
+    # morning ALL NINE venue Instagram accounts returned zero posts, so the gay
+    # bars contributed nothing and the ranker had only civic and cinema filler to
+    # choose from. Thinness like that used to ship in silence. Surface it, and
+    # name the most likely cause so the reader is not left guessing.
+    try:
+        import json as _json
+        _thin = []
+        for _day, _evs in featured_by_day.items():
+            if _evs and max((_e.get("flamingo") or 0) for _e in _evs) < 4:
+                _thin.append(_day)
+        if _thin:
+            _hint = ""
+            try:
+                _h = _json.load(open(os.path.join(os.path.dirname(post_dir), "..",
+                                                  "ig_scrape_health.json"), encoding="utf-8"))
+                if _h.get("fetch_failed") or _h.get("venues_with_posts", 1) == 0:
+                    _hint = (f" — venue Instagram was DARK on the last scrape "
+                             f"({_h.get('venues_with_posts')}/{_h.get('venues_attempted')} "
+                             f"venues returned posts), which is almost certainly why. "
+                             f"Re-run scraper/instagram_orgs.py before posting.")
+            except Exception:
+                pass
+            warnings.append(f"[gay-density] {len(_thin)} day(s) have no featured event above "
+                            f"3 flamingos ({', '.join(_thin)}){_hint}")
+    except Exception:
+        pass
+
+    # ── FACEBOOK TRUTH (date + city, from Facebook itself) ──────────────
+    # Added 2026-09-07. A Facebook event id is a permanent handle to Facebook's
+    # own record, so we can ask it what the event's real date and city are. On
+    # W37 that question found 20 wrong rows in a 47-event Facebook set: eight
+    # events from 2023/2024/2025 projected onto this week, four dated months
+    # away, and eight outside the Tulsa metro entirely (Puerto Vallarta, plus
+    # HotMess Sports chapters in Mobile, Columbia, Charleston and Knoxville).
+    # Every other layer was blind to all of it - geo_guard is a blocklist and a
+    # facebook.com/events/<id> URL carries no geography, and July's stale-date
+    # fix only ever covered Instagram.
+    #
+    # ONLY featured/EOTW slots block. A wrong event in the long tail is a website
+    # bug worth a warning; a wrong event on a SLIDE is a ghost we publish. Cards
+    # are cached 30 days, so this is a handful of live fetches, and an
+    # unverifiable event is a warning, never a block: a Facebook outage must not
+    # empty the deck. See tools/fb_event_truth.py.
+    try:
+        from tools.fb_event_truth import audit as _fb_audit
+        _res = _fb_audit(week_key)
+        _featured_keys = {(e.get("name"), e.get("date")) for e in featured_all}
+        for _f in _res["findings"]:
+            _where = "featured" if (_f["name"], _f["date"]) in _featured_keys else "listing"
+            _line = (f"[fb-truth] {_f['verdict']} on {_where} event "
+                     f"'{_f['name']}' ({_f['date']}): {_f['reason']}")
+            if _f["verdict"] == "unknown" or _where != "featured":
+                warnings.append(_line)
+            else:
+                errors.append(_line)
+    except Exception as _e:
+        warnings.append(f"[fb-truth] could not verify Facebook events against "
+                        f"Facebook ({str(_e)[:90]}) — ghosts would not be caught this run")
 
     # ── TEXT OVERFLOW / OVERLAP ─────────────────────────────────────────
     layout_path = os.path.join(post_dir, "layout_report.json")

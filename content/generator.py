@@ -264,6 +264,30 @@ def _is_refusal(text: str) -> bool:
     return any(low.startswith(m) or f" {m}" in low[:60] for m in _REFUSAL_MARKERS)
 
 
+_WEEKDAY_NAMES = ("monday", "tuesday", "wednesday", "thursday", "friday",
+                  "saturday", "sunday")
+
+
+def _has_wrong_weekday(text: str, date_str: str) -> bool:
+    """True if `text` names a day of the week that does NOT match the event's
+    actual date. The voice-pass LLM occasionally invents a plausible-sounding
+    but wrong weekday in flavor copy (e.g. "Wednesday night" for a Sunday
+    event) — caught live 2026-08-28 on a Broadway Clubhouse post that shipped
+    to Facebook/Instagram before anyone read it. A date-grounded fact like the
+    day of the week must never be left to the model's imagination."""
+    if not date_str:
+        return False
+    try:
+        actual = datetime.strptime(date_str, "%Y-%m-%d").strftime("%A").lower()
+    except Exception:
+        return False
+    low = (text or "").lower()
+    for name in _WEEKDAY_NAMES:
+        if name in low and name != actual:
+            return True
+    return False
+
+
 def generate_post_caption(
     events: list[dict],
     post_type: str = "weekend",
@@ -517,8 +541,22 @@ def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "so
             # timeout default raised 120 -> 300 (2026-06-12): W23/W24 enrichment
             # batches timed out at 120s, fell back to rule-based templates, and
             # shipped 165 pool-filler descriptions to the website.
+            # --strict-mcp-config with an EMPTY server map (added 2026-09-07).
+            # WHY: `timeout=` above cannot actually save us without this. On
+            # 2026-09-07 a generate-all sat for 8+ minutes at 1.45s CPU - fully
+            # blocked, not slow - because this call spawned claude.exe, which
+            # spawned its configured MCP servers (`npx @playwright/mcp --browser
+            # chromium` and `computer-use-mcp --yolo`). When subprocess.run hits
+            # its timeout it kills the direct child, then keeps draining the
+            # pipes; the surviving MCP GRANDCHILDREN still hold the stdout handle,
+            # so EOF never arrives and the "timeout" blocks forever. Killing the
+            # three processes by hand let the render finish in seconds.
+            # A headless copy-enrichment call has no business driving a browser,
+            # so start no servers at all. This makes the timeout real, and is
+            # also much faster to start up.
             r = subprocess.run(
-                [claude_bin, "-p", "--model", model],
+                [claude_bin, "-p", "--model", model,
+                 "--strict-mcp-config", "--mcp-config", '{"mcpServers":{}}'],
                 input=merged,
                 capture_output=True,
                 text=True,
@@ -741,6 +779,14 @@ def voice_enrich(events: list[dict], budget_s: int = 240, batch: int = 6) -> dic
             got = parsed.get(local, {})
             # A refusal is never valid copy: drop it so the rule-based fallback runs.
             if _is_refusal(got.get("S")) or _is_refusal(got.get("L")):
+                got = {}
+            # A wrong day-of-week is a fact the model invented, not a voice
+            # choice — never ship it. Drop to rule-based, which only ever
+            # states the day it was handed.
+            ev_date = events[k].get("date", "")
+            if _has_wrong_weekday(got.get("S"), ev_date) or _has_wrong_weekday(got.get("L"), ev_date):
+                print(f"[voice_enrich] dropped wrong-weekday copy for "
+                      f"{events[k].get('name', '')[:40]!r} (date={ev_date})")
                 got = {}
             if got.get("S"):
                 # Strip em dashes at the SOURCE so every downstream consumer
