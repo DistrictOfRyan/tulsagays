@@ -1,7 +1,7 @@
 {
   "week": "2026-W37",
-  "generated_at": "2026-09-07T06:25:21.994590",
-  "total_events": 237,
+  "generated_at": "2026-09-07T10:59:33.259697",
+  "total_events": 277,
   "events": [
     {
       "name": "Homo Hotel Happy Hour",
@@ -209,6 +209,21 @@
       "never_feature": true
     },
     {
+      "name": "HotMess Kickball Fall 2026 Free Open Play",
+      "date": "2026-09-09",
+      "time": "6:30 PM",
+      "venue": "McClure Park Softball Field",
+      "description": "HotMess Sports Tulsa, the LGBTQ+ rec sports league (kickball, dodgeball, sand volleyball, and more). All skill levels welcome, the whole point is showing up and having a blast. Details and registration on Instagram @hotmesssportstulsa.",
+      "url": "https://www.instagram.com/p/DcpH1uCmovD/",
+      "source_urls": [
+        "https://www.instagram.com/p/DcpH1uCmovD/",
+        "https://www.facebook.com/events/1582044883497049/"
+      ],
+      "priority": 1,
+      "source": "hotmess_sports",
+      "lgbtq_relevant": true
+    },
+    {
       "name": "OKEQ Health Clinic",
       "date": "2026-09-10",
       "time": "9:00 AM",
@@ -268,10 +283,7 @@
       "from_upcoming_ledger": true,
       "resurfaced_from_upcoming": true,
       "lgbtq_relevant": true,
-      "never_feature": true,
-      "sanity_flags": [
-        "LLM wanted to drop (protected source): children-only programming (Girl Scout troop)"
-      ]
+      "never_feature": true
     },
     {
       "name": "Free Drop-In Therapy Sessions",
@@ -323,8 +335,8 @@
     {
       "name": "Homo Hotel Happy Hour (4H)",
       "date": "2026-09-11",
-      "time": "6:00 PM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "time": "6:00 PM - 8:00 PM",
+      "venue": "Hilton Garden Inn Tulsa South, 8202 S 100th E Ave, Tulsa OK 74133",
       "description": "September 11, 2026 | 6:00 pm - 8:00 pm Join us for fun, networking, and to support Tulsa’s thriving LGBTQIA+ community! 4H: Homo Hotel Happy Hour is a rotating monthly LGBTQIA+ happy hour that supports our community and local hotels. We meet on the first Friday of each month at 7 pm. The event is open to everyone. Each month we \"take over\" a different hotel bar... no special setup, just great comp",
       "url": "https://www.facebook.com/groups/homohotelhappyhour/",
       "source_urls": [
@@ -334,9 +346,8 @@
       "priority": 1,
       "source": "okeq",
       "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: name appears truncated/garbled with '(4H)'"
-      ]
+      "venue_override_from": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "venue_override_applied": true
     },
     {
       "name": "Positively Grateful",
@@ -380,10 +391,22 @@
       "from_upcoming_ledger": true,
       "resurfaced_from_upcoming": true,
       "lgbtq_relevant": true,
-      "never_feature": true,
-      "sanity_flags": [
-        "LLM wanted to drop (protected source): explicitly marked as cancelled"
-      ]
+      "never_feature": true
+    },
+    {
+      "name": "Two Eyes Movie Tulsa Screening with Live Q&A",
+      "date": "2026-09-13",
+      "time": "5:00 PM",
+      "venue": "Circle Cinema",
+      "description": "PFLAG Tulsa is parents, families, and allies showing up for 2SLGBTQIA+ Tulsans: monthly meetings, education, and advocacy. Everyone is welcome. Details at tulsapflag.org and @pflagtulsa.",
+      "url": "https://www.instagram.com/p/Dc_Yp0rDQR5/",
+      "source_urls": [
+        "https://www.instagram.com/p/Dc_Yp0rDQR5/"
+      ],
+      "priority": 1,
+      "source": "pflag_ig",
+      "lgbtq_relevant": true,
+      "never_feature": true
     },
     {
       "name": "Sunday Showdown Open Talent Night",
@@ -430,10 +453,7 @@
       "priority": 2,
       "source": "rendered_sites",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing time; venue is vague ('Tulsa, OK')"
-      ]
+      "community_event": true
     },
     {
       "name": "Labor Day | OPEN UNTIL 5 PM",
@@ -448,10 +468,52 @@
       "priority": 2,
       "source": "rendered_sites",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: entry format looks like hours description, not event"
-      ]
+      "community_event": true
+    },
+    {
+      "name": "Members-Only Early Access Hours",
+      "date": "2026-09-07",
+      "time": "",
+      "venue": "Discovery Lab",
+      "description": "",
+      "url": "https://discoverylab.org/events/event/5696592/date/2026-09-07",
+      "source_urls": [
+        "https://discoverylab.org/events/event/5696592/date/2026-09-07"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Little Lab: Early Learners Program (Ages 0–4)",
+      "date": "2026-09-07",
+      "time": "",
+      "venue": "Discovery Lab",
+      "description": "",
+      "url": "https://discoverylab.org/events/event/5696585/date/2026-09-07",
+      "source_urls": [
+        "https://discoverylab.org/events/event/5696585/date/2026-09-07"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Labor Day (College Closed)",
+      "date": "2026-09-07",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "description": "",
+      "url": "https://calendar.tulsacc.edu/",
+      "source_urls": [
+        "https://calendar.tulsacc.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
     },
     {
       "name": "Suicide Prevention Tables - Fall 2026",
@@ -466,10 +528,112 @@
       "priority": 2,
       "source": "rendered_sites",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing time"
-      ]
+      "community_event": true
+    },
+    {
+      "name": "EMG research study sign-up",
+      "date": "2026-09-07",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Labor Day",
+      "date": "2026-09-07",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Flag Football Registration",
+      "date": "2026-09-07",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Gilman Scholarship Open: Get up to $5,000 for Study Abroad",
+      "date": "2026-09-07",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "New Issue of The Collegian Published",
+      "date": "2026-09-07",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "International & Graduate Student Kick-Off @ St. Philip Neri",
+      "date": "2026-09-07",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Super Smash Bros Crew Tryouts",
+      "date": "2026-09-07",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
     },
     {
       "name": "Vintage Barbie Museum – 12 Different Collectors",
@@ -539,44 +703,7 @@
       ],
       "priority": 2,
       "source": "facebook_events",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: missing time; verify if this is paid training or community class"
-      ]
-    },
-    {
-      "name": "Meatball Mondays at The Swedes Bistro",
-      "date": "2026-09-07",
-      "time": "5:00 PM",
-      "venue": "Púlpito 154 (at Olas Altas), Col. Amapas, 48390 Puerto Vallarta, Mexico",
-      "description": "",
-      "url": "https://www.facebook.com/events/1050416607507240/",
-      "source_urls": [
-        "https://www.facebook.com/events/1050416607507240/"
-      ],
-      "priority": 2,
-      "source": "facebook_events",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM wanted to drop (protected source): wrong location (Puerto Vallarta, Mexico)"
-      ]
-    },
-    {
-      "name": "Money Ball Karaoke",
-      "date": "2026-09-07",
-      "time": "9:00 PM",
-      "venue": "Lazaro Cardenas 341, 48380 Puerto Vallarta, Mexico",
-      "description": "",
-      "url": "https://www.facebook.com/events/1797525357921100/",
-      "source_urls": [
-        "https://www.facebook.com/events/1797525357921100/"
-      ],
-      "priority": 2,
-      "source": "facebook_events",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM wanted to drop (protected source): wrong location (Puerto Vallarta, Mexico)"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "Late Fame",
@@ -635,6 +762,42 @@
       "lgbtq_relevant": true
     },
     {
+      "name": "Impromptu “Indian Taco” - Taco Tuesday (pre-Monty Python movie meetup-eat up)",
+      "date": "2026-09-08",
+      "time": "10:30 PM",
+      "venue": "",
+      "description": "",
+      "url": "https://www.meetup.com/tulsa-shenanigans-society/events/316381377/",
+      "source_urls": [
+        "https://www.meetup.com/tulsa-shenanigans-society/events/316381377/"
+      ],
+      "priority": 2,
+      "source": "meetup",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "sanity_flags": [
+        "missing venue"
+      ]
+    },
+    {
+      "name": "Resume Builder Session - Get a free flash drive with a resume template!",
+      "date": "2026-09-08",
+      "time": "3:00 PM",
+      "venue": "NORTH HALL",
+      "description": "Join Career Services in building a great resume in preparation for the career fair. During this event you will receive a flash drive with a resume template preloaded to give you that fresh start to your resume. You will then be walked through, step by step, to drafting an application ready resume. \n\n \n\nRSVP on Cowboy Central.\n\n \n\nAt the Fall 2026 Career Fair, Employers will have the option to host on-campus interviews directly following the fair. Make certain that your resume is ready and in",
+      "url": "https://events.tulsa.okstate.edu/event/resume-builder-session",
+      "source_urls": [
+        "https://events.tulsa.okstate.edu/event/resume-builder-session"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "venue_conflict": [
+        "NORTH HALL"
+      ]
+    },
+    {
       "name": "Form Your Union: Labor Day Relationship Building Event",
       "date": "2026-09-08",
       "time": "2:00 PM",
@@ -668,6 +831,21 @@
       "community_event": true
     },
     {
+      "name": "Employee Convocation (No Classes)",
+      "date": "2026-09-08",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "description": "",
+      "url": "https://calendar.tulsacc.edu/",
+      "source_urls": [
+        "https://calendar.tulsacc.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
       "name": "Suicide Prevention Tables - Fall 2026",
       "date": "2026-09-08",
       "time": "",
@@ -680,10 +858,22 @@
       "priority": 2,
       "source": "rendered_sites",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing time"
-      ]
+      "community_event": true
+    },
+    {
+      "name": "EMG research study sign-up",
+      "date": "2026-09-08",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
     },
     {
       "name": "Cycle With Katie",
@@ -698,10 +888,22 @@
       "priority": 2,
       "source": "rendered_sites",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing time"
-      ]
+      "community_event": true
+    },
+    {
+      "name": "Flag Football Registration",
+      "date": "2026-09-08",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
     },
     {
       "name": "Hogue Gallery | Josh Butts: LIGHT•WEIGHT: Paintings from the Wilderness",
@@ -716,10 +918,7 @@
       "priority": 2,
       "source": "rendered_sites",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: likely duplicate of #25; missing time"
-      ]
+      "community_event": true
     },
     {
       "name": "Immigration Updates – Town Hall Series",
@@ -734,10 +933,7 @@
       "priority": 2,
       "source": "rendered_sites",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing time"
-      ]
+      "community_event": true
     },
     {
       "name": "Free Tuesday Lunch at St. Philip Neri",
@@ -752,10 +948,173 @@
       "priority": 2,
       "source": "rendered_sites",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing time"
-      ]
+      "community_event": true
+    },
+    {
+      "name": "Baptist Collegiate Ministries Mentor Lunch",
+      "date": "2026-09-08",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Wesley Men’s Group",
+      "date": "2026-09-08",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Student Organization Trainings",
+      "date": "2026-09-08",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "French Conversation Group",
+      "date": "2026-09-08",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Yoga With Leta",
+      "date": "2026-09-08",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "SAFE Lab Tutoring Sessions",
+      "date": "2026-09-08",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Graduate School Virtual Drop-in Event",
+      "date": "2026-09-08",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "never_feature": true,
+      "community_event": true
+    },
+    {
+      "name": "Pre-Health Interview Prep Workshop",
+      "date": "2026-09-08",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Back to School with Best Buddies",
+      "date": "2026-09-08",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Wesley Study Night",
+      "date": "2026-09-08",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "September Gallery Hours",
+      "date": "2026-09-08",
+      "time": "",
+      "venue": "Living Arts of Tulsa",
+      "description": "Living Arts of Tulsa is open for viewing Tuesday - Saturday from 12:00 - 4:00 PM and does not charge admission to view exhibitions!",
+      "url": "https://livingarts.org/calendar/september-gallery-hours/",
+      "source_urls": [
+        "https://livingarts.org/calendar/september-gallery-hours/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
     },
     {
       "name": "SALT Yoga at Guthrie Green!",
@@ -786,7 +1145,6 @@
       "lgbtq_relevant": true,
       "never_feature": true,
       "sanity_flags": [
-        "LLM: missing time and venue",
         "missing venue"
       ]
     },
@@ -988,10 +1346,7 @@
       ],
       "priority": 2,
       "source": "tulsa_arts_district",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM wanted to drop (protected source): business/professional training (website marketing seminar)"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "Eric Tarr at The Hunt Club",
@@ -1033,10 +1388,7 @@
       ],
       "priority": 2,
       "source": "tulsa_arts_district",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: event name truncated ('Taking Care: Th...')"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "Rabbitt and the Roses at The Hunt Club",
@@ -1166,18 +1518,6 @@
       "lgbtq_relevant": true
     },
     {
-      "name": "HotMess Kickball Free Open Play",
-      "date": "2026-09-09",
-      "time": "6:30 PM",
-      "venue": "Yellow Brick Road, 2630 E 15th St",
-      "description": "",
-      "website_description": "",
-      "url": "https://www.instagram.com/p/DcpH1uCmovD/",
-      "priority": 2,
-      "source": "manual",
-      "lgbtq_relevant": true
-    },
-    {
       "name": "Monty Python & Holy Grail",
       "date": "2026-09-09",
       "time": "12:00 AM",
@@ -1192,7 +1532,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: midnight (12:00 AM) implausible for movie; missing venue",
         "missing venue"
       ]
     },
@@ -1209,10 +1548,7 @@
       ],
       "priority": 2,
       "source": "philbrook_museum",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM wanted to drop (protected source): children-only program (Little Garden Explorers, Ages unclear but 'Little' suggests children)"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "DJ | Gus",
@@ -1273,10 +1609,7 @@
       "priority": 2,
       "source": "rendered_sites",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing time"
-      ]
+      "community_event": true
     },
     {
       "name": "Suicide Prevention Tables - Fall 2026",
@@ -1291,10 +1624,7 @@
       "priority": 2,
       "source": "rendered_sites",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing time"
-      ]
+      "community_event": true
     },
     {
       "name": "Student Resource Fair",
@@ -1310,10 +1640,37 @@
       "source": "rendered_sites",
       "lgbtq_relevant": false,
       "never_feature": true,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing time"
-      ]
+      "community_event": true
+    },
+    {
+      "name": "EMG research study sign-up",
+      "date": "2026-09-09",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Flag Football Registration",
+      "date": "2026-09-09",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
     },
     {
       "name": "Hogue Gallery | Josh Butts: LIGHT•WEIGHT: Paintings from the Wilderness",
@@ -1328,10 +1685,22 @@
       "priority": 2,
       "source": "rendered_sites",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: duplicate of #25 and #59; missing time"
-      ]
+      "community_event": true
+    },
+    {
+      "name": "Prepare for the Fair: How to Research Companies",
+      "date": "2026-09-09",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
     },
     {
       "name": "101 Archer Gallery | Back for Blood: Never Whistle",
@@ -1346,10 +1715,22 @@
       "priority": 2,
       "source": "rendered_sites",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing time"
-      ]
+      "community_event": true
+    },
+    {
+      "name": "WOW – Worship on Wednesday",
+      "date": "2026-09-09",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
     },
     {
       "name": "Little Blue House | Free Veggie Lunch",
@@ -1364,10 +1745,97 @@
       "priority": 2,
       "source": "rendered_sites",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: missing time"
-      ]
+      "community_event": true
+    },
+    {
+      "name": "HIIT Pilates With Amber",
+      "date": "2026-09-09",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "SAFE Lab Tutoring Sessions",
+      "date": "2026-09-09",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "CAPS: Anxiety Toolbox Group",
+      "date": "2026-09-09",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Yoga with Jamie",
+      "date": "2026-09-09",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "League of Legends Varsity Team Tryouts",
+      "date": "2026-09-09",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "September Gallery Hours",
+      "date": "2026-09-09",
+      "time": "",
+      "venue": "Living Arts of Tulsa",
+      "description": "Living Arts of Tulsa is open for viewing Tuesday - Saturday from 12:00 - 4:00 PM and does not charge admission to view exhibitions!",
+      "url": "https://livingarts.org/calendar/september-gallery-hours/",
+      "source_urls": [
+        "https://livingarts.org/calendar/september-gallery-hours/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
     },
     {
       "name": "Damon Darling",
@@ -1402,9 +1870,6 @@
       "community_event": true,
       "venue_conflict": [
         "Tulsa, OK"
-      ],
-      "sanity_flags": [
-        "LLM: missing time; unclear what 'Archers' event is"
       ]
     },
     {
@@ -1419,10 +1884,7 @@
       ],
       "priority": 2,
       "source": "tulsa_arts_district",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: event name truncated"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "Permanent Exhibits and “Thin Wild Mercury: Dylan 1966” + “Face Value” at Bob Dylan Center",
@@ -1436,10 +1898,7 @@
       ],
       "priority": 2,
       "source": "tulsa_arts_district",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: event name truncated"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "Lunch Specials at Elgin Park",
@@ -1510,10 +1969,7 @@
       ],
       "priority": 2,
       "source": "tulsa_arts_district",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: event name truncated"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "21 and Up – Chrysalis Salon & Spa – Free Admission",
@@ -1601,10 +2057,7 @@
       ],
       "priority": 2,
       "source": "tulsa_arts_district",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: likely duplicate of #136 (same time and venue, same deal)"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "Karaoke Wednesdays",
@@ -1632,10 +2085,7 @@
       ],
       "priority": 2,
       "source": "facebook_events",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: 8 AM open mic is implausible morning timing"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "Open Mic @ New Story Brewing",
@@ -1663,10 +2113,7 @@
       ],
       "priority": 2,
       "source": "facebook_events",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: missing time; venue is vague"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "Fall Willowswish Camp Haunted & 😈",
@@ -1680,27 +2127,7 @@
       ],
       "priority": 2,
       "source": "facebook_events",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: missing time; emoji/garbled in event name"
-      ]
-    },
-    {
-      "name": "Comedy Drag Karaoke",
-      "date": "2026-09-09",
-      "time": "9:00 PM",
-      "venue": "Lazaro Cardenas 341, 48380 Puerto Vallarta, Mexico",
-      "description": "",
-      "url": "https://www.facebook.com/events/1410922587606866/",
-      "source_urls": [
-        "https://www.facebook.com/events/1410922587606866/"
-      ],
-      "priority": 2,
-      "source": "facebook_events",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM wanted to drop (protected source): wrong location (Puerto Vallarta, Mexico) — drag event is LGBTQ+ but still geographically wrong"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "HotMess Sports Columbia: Free Kickball Open Play",
@@ -1711,15 +2138,11 @@
       "url": "https://www.facebook.com/events/1054660593949686/",
       "source_urls": [
         "https://www.facebook.com/events/1054660593949686/",
-        "https://www.facebook.com/events/1582044883497049/",
         "https://www.facebook.com/events/1741078133819386/"
       ],
       "priority": 2,
       "source": "facebook_events",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM wanted to drop (protected source): wrong location (Little Rock, Arkansas)"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "The 2026 Irish Hooleys: \"Cassie & Maggie\"",
@@ -1807,7 +2230,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: 10:30 PM is implausibly late for 'Sippin Series' (daytime activity)",
         "missing venue"
       ]
     },
@@ -1840,10 +2262,7 @@
       "source": "meetup",
       "lgbtq_relevant": false,
       "never_feature": true,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: 11:00 PM is implausibly late for a writing workshop"
-      ]
+      "community_event": true
     },
     {
       "name": "Fish Feeding",
@@ -1904,6 +2323,36 @@
       "community_event": true
     },
     {
+      "name": "EMG research study sign-up",
+      "date": "2026-09-10",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "Flag Football Registration",
+      "date": "2026-09-10",
+      "time": "",
+      "venue": "University of Tulsa",
+      "description": "",
+      "url": "https://calendar.utulsa.edu/",
+      "source_urls": [
+        "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
       "name": "Episcopal Campus Ministry Morning Prayer Time",
       "date": "2026-09-10",
       "time": "",
@@ -1942,6 +2391,21 @@
       "url": "https://calendar.utulsa.edu/",
       "source_urls": [
         "https://calendar.utulsa.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "September Gallery Hours",
+      "date": "2026-09-10",
+      "time": "",
+      "venue": "Living Arts of Tulsa",
+      "description": "Living Arts of Tulsa is open for viewing Tuesday - Saturday from 12:00 - 4:00 PM and does not charge admission to view exhibitions!",
+      "url": "https://livingarts.org/calendar/september-gallery-hours/",
+      "source_urls": [
+        "https://livingarts.org/calendar/september-gallery-hours/"
       ],
       "priority": 2,
       "source": "rendered_sites",
@@ -2054,6 +2518,20 @@
       "lgbtq_relevant": true
     },
     {
+      "name": "The New Kidz",
+      "date": "2026-09-10",
+      "time": "11:00 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "Club Majestic, Tulsa's flagship LGBTQ+ nightclub downtown. Details on Instagram @clubmajestictulsa.",
+      "url": "https://www.instagram.com/p/Dc9SSpYTDaj/",
+      "source_urls": [
+        "https://www.instagram.com/p/Dc9SSpYTDaj/"
+      ],
+      "priority": 2,
+      "source": "club_majestic_ig",
+      "lgbtq_relevant": true
+    },
+    {
       "name": "Live Music Thursdays @ Roof Sixty Six",
       "date": "2026-09-10",
       "time": "8 PM CST",
@@ -2079,10 +2557,7 @@
       ],
       "priority": 2,
       "source": "facebook_events",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: Venue zip code truncated (741 vs complete)"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "Trivia Night",
@@ -2164,14 +2639,16 @@
       "source_urls": [
         "https://www.facebook.com/events/1612885660509968/",
         "https://www.facebook.com/events/1753928452624425/",
-        "https://www.facebook.com/events/1564291442019231/"
+        "https://www.facebook.com/events/1564291442019231/",
+        "https://www.facebook.com/events/3226598217547698/"
       ],
       "priority": 2,
       "source": "facebook_events",
       "lgbtq_relevant": true,
       "venue_conflict": [
         "Big Top Brewing Company",
-        "731 NW 23rd St, Oklahoma City, OK 73103-1417, United States"
+        "731 NW 23rd St, Oklahoma City, OK 73103-1417, United States",
+        "Event by HotMess Sports"
       ]
     },
     {
@@ -2187,10 +2664,7 @@
       "priority": 2,
       "source": "the_vanguard_tulsa",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: Name truncated/garbled: 'LOW TICKETS Fox N' Vead'"
-      ]
+      "community_event": true
     },
     {
       "name": "Late Fame",
@@ -2246,10 +2720,7 @@
       ],
       "priority": 2,
       "source": "philbrook_museum",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: Storytime may be children-only programming"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "In the Garden of Sin : A Nine Inch Nails Cabaret`",
@@ -2271,8 +2742,8 @@
     {
       "name": "Homo Hotel Happy Hour at Hilton Garden Inn South (Second Friday!)",
       "date": "2026-09-11",
-      "time": "11:00 PM",
-      "venue": "Tulsa Hilton Garden Inn South",
+      "time": "6:00 PM - 8:00 PM",
+      "venue": "Hilton Garden Inn Tulsa South, 8202 S 100th E Ave, Tulsa OK 74133",
       "description": "Road trip, Tulsa! Labor Day stole our First Friday, so September's Homo Hotel Happy Hour moves to the SECOND Friday: September 11, 6 to 8 PM at the Hilton Garden Inn Tulsa South (8202 S 100th E Ave, near 81st and Mingo, right off Highway 169). We're taking the party to South Tulsa this month, and th",
       "url": "https://www.meetup.com/tulsa-4h-homo-hotel-happy-hour/events/316260337/",
       "source_urls": [
@@ -2283,9 +2754,8 @@
       "from_upcoming_ledger": true,
       "resurfaced_from_upcoming": true,
       "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: 11:00 PM is implausibly late for Happy Hour"
-      ]
+      "venue_override_from": "Tulsa Hilton Garden Inn South",
+      "venue_override_applied": true
     },
     {
       "name": "Practical Magic 2/Dinner at Hideaway Pizza",
@@ -2336,10 +2806,7 @@
       "priority": 2,
       "source": "meetup",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: 12:00 AM (midnight) implausible for Movie on the Green; likely should be PM"
-      ]
+      "community_event": true
     },
     {
       "name": "Ray Wylie Hubbard",
@@ -2488,6 +2955,24 @@
       "community_event": true
     },
     {
+      "name": "Markets 101 Seminar | OSU LEAD Week",
+      "date": "2026-09-11",
+      "time": "11:30 AM",
+      "venue": "NORTH HALL",
+      "description": "OSU LEAD Week is a collaboration between BOK Financial and Hargis Leadership Institute that offers leadership development through workshops, networking, community engagement and fun activities.\n\n \n\nAs part of OSU LEAD Week, all students are invited to a financial seminar happening here at OSU-Tulsa! Steve Wyett, Chief Investment Strategist for BOK Financial & OSU alum, will discuss navigating financial markets and offer insight on personal finance.\n\n \n\nRegistration for Markets 101 is encouraged",
+      "url": "https://events.tulsa.okstate.edu/event/markets-101",
+      "source_urls": [
+        "https://events.tulsa.okstate.edu/event/markets-101"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true,
+      "venue_conflict": [
+        "NORTH HALL"
+      ]
+    },
+    {
       "name": "Suicide Prevention Tables - Fall 2026",
       "date": "2026-09-11",
       "time": "",
@@ -2511,6 +2996,21 @@
       "url": "https://calendar.tulsacc.edu/",
       "source_urls": [
         "https://calendar.tulsacc.edu/"
+      ],
+      "priority": 2,
+      "source": "rendered_sites",
+      "lgbtq_relevant": false,
+      "community_event": true
+    },
+    {
+      "name": "September Gallery Hours",
+      "date": "2026-09-11",
+      "time": "",
+      "venue": "Living Arts of Tulsa",
+      "description": "Living Arts of Tulsa is open for viewing Tuesday - Saturday from 12:00 - 4:00 PM and does not charge admission to view exhibitions!",
+      "url": "https://livingarts.org/calendar/september-gallery-hours/",
+      "source_urls": [
+        "https://livingarts.org/calendar/september-gallery-hours/"
       ],
       "priority": 2,
       "source": "rendered_sites",
@@ -2609,6 +3109,34 @@
       "lgbtq_relevant": true
     },
     {
+      "name": "Bad Boys On The Block",
+      "date": "2026-09-11",
+      "time": "9:30 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "Club Majestic, Tulsa's flagship LGBTQ+ nightclub downtown. Details on Instagram @clubmajestictulsa.",
+      "url": "https://www.instagram.com/p/Dc9SzDylMld/",
+      "source_urls": [
+        "https://www.instagram.com/p/Dc9SzDylMld/"
+      ],
+      "priority": 2,
+      "source": "club_majestic_ig",
+      "lgbtq_relevant": true
+    },
+    {
+      "name": "Ho You Think You Can Dance",
+      "date": "2026-09-11",
+      "time": "10:30 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "description": "Club Majestic, Tulsa's flagship LGBTQ+ nightclub downtown. Details on Instagram @clubmajestictulsa.",
+      "url": "https://www.instagram.com/p/Dc9SzDylMld/",
+      "source_urls": [
+        "https://www.instagram.com/p/Dc9SzDylMld/"
+      ],
+      "priority": 2,
+      "source": "club_majestic_ig",
+      "lgbtq_relevant": true
+    },
+    {
       "name": "Tulsa Live Music Showcase featuring Mingo Drive and Mellosplat",
       "date": "2026-09-11",
       "time": "6 PM CST",
@@ -2676,10 +3204,7 @@
       ],
       "priority": 2,
       "source": "facebook_events",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM wanted to drop (protected source): Minor-league sports game (Tulsa Oilers)"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "TULSA EAGLE WHITE PARTY WITH DJ HAZE",
@@ -2922,10 +3447,7 @@
       "priority": 2,
       "source": "rendered_sites",
       "lgbtq_relevant": false,
-      "community_event": true,
-      "sanity_flags": [
-        "LLM: Likely duplicate of #225 (The Bison Bash, different venue/details)"
-      ]
+      "community_event": true
     },
     {
       "name": "DJ | Oreo",
@@ -3162,10 +3684,7 @@
       ],
       "priority": 2,
       "source": "community_groups",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: Likely duplicate of #243 (Elote Drag Brunch, same venue/date, different seating times)"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "LIVE MUSIC !!! Band Name Here",
@@ -3179,10 +3698,7 @@
       ],
       "priority": 2,
       "source": "facebook_events",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM: Band name 'Band Name Here' is placeholder text, truncated/garbled"
-      ]
+      "lgbtq_relevant": true
     },
     {
       "name": "Happy Hour!",
@@ -3340,7 +3856,6 @@
       "lgbtq_relevant": false,
       "community_event": true,
       "sanity_flags": [
-        "LLM: 10:30 PM is implausibly late for a meal service",
         "missing venue"
       ]
     },
@@ -3436,6 +3951,20 @@
       "lgbtq_relevant": true
     },
     {
+      "name": "Matt Axton and Bad Moon at Tulsa Time House Concerts",
+      "date": "2026-09-13",
+      "time": "6:30 PM CST",
+      "venue": "Tulsa, OK, United States",
+      "description": "",
+      "url": "https://www.facebook.com/events/1559324965135508/",
+      "source_urls": [
+        "https://www.facebook.com/events/1559324965135508/"
+      ],
+      "priority": 2,
+      "source": "facebook_events",
+      "lgbtq_relevant": true
+    },
+    {
       "name": "9 to 5 : A DOLLY TRIBUTE SHOW & LOOK A LIKE CONTEST",
       "date": "2026-09-13",
       "time": "5 PM CST",
@@ -3453,7 +3982,7 @@
       "name": "TAFF Closing Party Featuring Branjae & DJ Kylie (FREE EVENT!)",
       "date": "2026-09-13",
       "time": "",
-      "venue": "queenrosearthouse",
+      "venue": "Event by Twisted Arts",
       "description": "",
       "url": "https://www.facebook.com/events/775385652325084/",
       "source_urls": [
@@ -3464,45 +3993,6 @@
       "lgbtq_relevant": true
     },
     {
-      "name": "FIESTAS PATRIAS EN PUERTO VALLARTA, SAYULITA, TEQUILA Y MÁS",
-      "date": "2026-09-13",
-      "time": "",
-      "venue": "Puerto Vallarta, Jalisco. México",
-      "description": "",
-      "url": "https://www.facebook.com/events/1277946417828861/",
-      "source_urls": [
-        "https://www.facebook.com/events/1277946417828861/"
-      ],
-      "priority": 2,
-      "source": "facebook_events",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM wanted to drop (protected source): Event is in Puerto Vallarta, Mexico, not Tulsa"
-      ]
-    },
-    {
-      "name": "HotMess Sports Charleston: Free Kickball Open Play",
-      "date": "2026-09-13",
-      "time": "11 AM CST",
-      "venue": "Park Circle Ball Field, North Charleston",
-      "description": "",
-      "url": "https://www.facebook.com/events/1759128401979296/",
-      "source_urls": [
-        "https://www.facebook.com/events/1759128401979296/",
-        "https://www.facebook.com/events/4445398532382261/",
-        "https://www.facebook.com/events/4591257821158081/",
-        "https://www.facebook.com/events/1381366880551311/",
-        "https://www.facebook.com/events/4395015154145926/",
-        "https://www.facebook.com/events/1607073971008218/"
-      ],
-      "priority": 2,
-      "source": "facebook_events",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM wanted to drop (protected source): Event is in Charleston, SC, not Tulsa"
-      ]
-    },
-    {
       "name": "HotMess Sports Knoxville: Free Sand Volleyball Open Play",
       "date": "2026-09-13",
       "time": "4:30 PM CST",
@@ -3511,23 +4001,6 @@
       "url": "https://www.facebook.com/events/3984522025176627/",
       "source_urls": [
         "https://www.facebook.com/events/3984522025176627/"
-      ],
-      "priority": 2,
-      "source": "facebook_events",
-      "lgbtq_relevant": true,
-      "sanity_flags": [
-        "LLM wanted to drop (protected source): Event is in Knoxville, TN, not Tulsa"
-      ]
-    },
-    {
-      "name": "Matt Axton and Bad Moon at Tulsa Time House Concerts",
-      "date": "2026-09-13",
-      "time": "6:30 PM CST",
-      "venue": "Shared by Susan Cram",
-      "description": "",
-      "url": "https://www.facebook.com/events/1559324965135508/",
-      "source_urls": [
-        "https://www.facebook.com/events/1559324965135508/"
       ],
       "priority": 2,
       "source": "facebook_events",
