@@ -2,21 +2,12 @@
   "api_version": "1",
   "city": "Tulsa, OK",
   "publisher": "Tulsa Gays",
-  "generated_at": "2026-09-07T12:44:15Z",
+  "generated_at": "2026-09-07T19:57:21Z",
   "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
   "count": 8,
   "events": [
     {
-      "name": "Fall Season Infusion Class",
-      "date": "2026-09-07",
-      "time": "",
-      "venue": "410 N Main St.,Unit A,Tulsa,74103,US",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Vintage Barbie Museum – 12 Different Collectors",
+      "name": "Vintage Barbie Museum - 12 Different Collectors",
       "date": "2026-09-07",
       "time": "10:00 AM",
       "venue": "Vintage Barbie Museum – Pop Up Shop",
@@ -70,10 +61,19 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "Meatball Mondays at The Swedes Bistro",
+      "name": "MONDAY MOVIE NIGHT",
       "date": "2026-09-07",
-      "time": "5:00 PM",
-      "venue": "Púlpito 154 (at Olas Altas), Col. Amapas, 48390 Puerto Vallarta, Mexico",
+      "time": "6 PM CST",
+      "venue": "1338 E 3rd St, Tulsa, OK",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Granite Rapids Moon",
+      "date": "2026-09-07",
+      "time": "7:40 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"

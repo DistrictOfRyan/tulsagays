@@ -1,13 +1,6 @@
 [
   {
-    "name": "Fall Season Infusion Class",
-    "venue": "410 N Main St.,Unit A,Tulsa,74103,US",
-    "date": "2026-09-07",
-    "day_short": "MON",
-    "time": ""
-  },
-  {
-    "name": "Vintage Barbie Museum \u2013 12 Different Collectors",
+    "name": "Vintage Barbie Museum - 12 Different Collectors",
     "venue": "Vintage Barbie Museum \u2013 Pop Up Shop",
     "date": "2026-09-07",
     "day_short": "MON",
@@ -49,10 +42,17 @@
     "time": "5:00 PM"
   },
   {
-    "name": "Meatball Mondays at The Swedes Bistro",
-    "venue": "P\u00falpito 154 (at Olas Altas), Col. Amapas, 48390 Puerto Vallarta, Mexico",
+    "name": "MONDAY MOVIE NIGHT",
+    "venue": "1338 E 3rd St, Tulsa, OK",
     "date": "2026-09-07",
     "day_short": "MON",
-    "time": "5:00 PM"
+    "time": "6 PM CST"
+  },
+  {
+    "name": "Granite Rapids Moon",
+    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+    "date": "2026-09-07",
+    "day_short": "MON",
+    "time": "7:40 PM"
   }
 ]
