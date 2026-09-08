@@ -67,10 +67,22 @@ def probe(cookie_db: Path = COOKIE_DB) -> dict:
                     "WHERE host_key LIKE ? AND name = ? "
                     "ORDER BY expires_utc DESC LIMIT 1",
                     (f"%{site}%", cookie)).fetchone()
+                # Count every cookie for the host too. A bare "MISSING" reads as
+                # "no cookies at all for this site", which sends the next reader
+                # hunting a broken profile. On 2026-09-08 instagram showed MISSING
+                # while the jar held 5 live instagram.com cookies - all pre-login
+                # device cookies (csrftoken, datr, ig_did, mid, wd) with the auth
+                # cookie absent. Naming the cookie makes that distinction obvious.
+                host_n = con.execute(
+                    "SELECT COUNT(*) FROM cookies WHERE host_key LIKE ?",
+                    (f"%{site}%",)).fetchone()[0]
+                out.setdefault("host_cookie_counts", {})[site] = host_n
                 if not row:
-                    out["sites"][site] = "MISSING"
+                    out["sites"][site] = (
+                        f"MISSING({cookie}); {host_n} other {site} cookie(s) present"
+                        if host_n else f"MISSING({cookie}); no {site} cookies at all")
                 elif row[0] and row[0] < now_us:
-                    out["sites"][site] = "EXPIRED"
+                    out["sites"][site] = f"EXPIRED({cookie})"
                 else:
                     out["sites"][site] = "present"
         finally:
@@ -87,6 +99,15 @@ def probe(cookie_db: Path = COOKIE_DB) -> dict:
                          "web-session tier and the FB group blast are dark")
         return out
     bad = [s for s, v in out["sites"].items() if v != "present"]
+    if bad and out["total_cookies"]:
+        good = [s for s, v in out["sites"].items() if v == "present"]
+        if good:
+            # Built-in control: another site authenticating from the SAME jar proves
+            # the profile, the sqlite read and the decrypt path are all fine, so the
+            # failure is that one site's auth, not the mechanism.
+            out["control"] = (f"CONTROL: {', '.join(sorted(good))} IS authenticated from this "
+                              f"same profile, so the profile/cookie store is healthy; the gap is "
+                              f"{', '.join(sorted(bad))} auth specifically.")
     if bad:
         out["detail"] = "no valid session for: " + ", ".join(sorted(bad))
         return out
@@ -166,6 +187,21 @@ def main() -> int:
         print(f"  cookies: {v['total_cookies']} total  sites: {v['sites']}")
         if not v["ok"]:
             print(f"  FIX (William's hands, it is a login): {v['fix']}")
+            if "instagram" in str(v.get("detail", "")):
+                # 2026-09-08: an IG security alert fired for a "new login" from this machine
+                # (Windows/Chrome, Puerto Vallarta) while THIS profile still had no session.
+                # The login had gone into the real Chrome "Default" profile, which held a live
+                # sessionid + ds_user_id, so the automation stayed dead and it looked like the
+                # login had simply failed. Check that before asking him to log in again.
+                for _l in (
+                    "  NOTE: a login can land in the WRONG Chrome profile and look like a failure here.",
+                    "        Before asking him again, check whether a real Chrome profile already has one:",
+                    "          %LOCALAPPDATA%/Google/Chrome/User Data/<profile>/Network/Cookies",
+                    "          select name from cookies where host_key like '%instagram.com%';",
+                    "        sessionid + ds_user_id there = he DID log in, just not into this",
+                    "        automation profile. Re-run the fix against THIS profile path.",
+                ):
+                    print(_l)
             print("  Affects: instagram_orgs tier 3 (@tcc_pride and every IG-only "
                   "org) AND posting/group_blast.py")
     if v.get("error"):
