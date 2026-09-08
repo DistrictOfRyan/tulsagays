@@ -34,6 +34,7 @@ import json
 import os
 import re
 import sys
+from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -207,7 +208,7 @@ def reconcile(canonical_path=CANONICAL_FILE, orphan_path=ORPHAN_FILE, dry_run=Fa
     meta["canonical_source"] = str(canonical_path).replace("\\", "/")
     meta["deprecated_mirrors"] = [str(orphan_path).replace("\\", "/")]
     meta["dedupe_guard"] = "tools/directory_dedupe.py :: already_contacted() — call before any outreach"
-    meta["reconciled"] = "2026-07-15"
+    meta["reconciled"] = date.today().isoformat()
 
     summary = {
         "canonical_before": len(existing),
