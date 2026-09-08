@@ -250,6 +250,70 @@ nav a.newsletter-cta:hover { border-color: var(--tg-pink); color: var(--tg-pink)
 }
 .day-divider { height: 1px; background: var(--line); margin-bottom: 18px; border: none; }
 
+/* ── Day-header FOMO tagline ──
+   Added 2026-09-08. Copy comes from content/image_maker.py DAY_FOOTER_TAGLINES
+   (one fixed line per weekday) and is emitted by tools/gen_website_html.py.
+   Before this the seven day headers were bare weekday nouns and the site had no
+   page-level narrative between the hero and the event rows. */
+.day-fomo {
+    font-size: 0.98rem;
+    line-height: 1.45;
+    color: var(--text-secondary);
+    max-width: 46ch;
+    margin: 0 0 14px;
+    padding-left: 12px;
+    border-left: 2px solid var(--tg-pink);
+}
+@media (max-width: 640px) {
+    .day-fomo { font-size: 0.9rem; max-width: none; }
+}
+
+/* ── FAQ section ──
+   Added 2026-09-08 with the FAQPage schema. Visible copy and JSON-LD must stay
+   in sync: a schema answer with no on-page counterpart is the classic reason
+   Google drops an FAQ rich result. <details> gives keyboard + screen-reader
+   behaviour for free. */
+.faq-section { margin: 3.5rem auto 2.5rem; max-width: 760px; padding: 0 1rem; }
+.faq-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.9rem;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.25rem;
+}
+.faq-item { border-top: 1px solid var(--line); }
+.faq-item:last-of-type { border-bottom: 1px solid var(--line); }
+.faq-q {
+    cursor: pointer;
+    padding: 0.95rem 2rem 0.95rem 0;
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    position: relative;
+    list-style: none;
+}
+.faq-q::-webkit-details-marker { display: none; }
+.faq-q::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 0.85rem;
+    color: var(--tg-pink);
+    font-size: 1.35rem;
+    line-height: 1;
+}
+.faq-item[open] .faq-q::after { content: '-'; }
+.faq-item[open] .faq-q { color: var(--tg-pink); }
+.faq-a {
+    padding: 0 0 1.1rem;
+    font-size: 0.97rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+.faq-a a { color: var(--tg-pink); text-decoration: underline; word-break: break-word; }
+
 /* ── Earlier This Week divider ── */
 .earlier-this-week { display: flex; align-items: center; gap: 12px; margin: 36px 0 26px; }
 .earlier-this-week::before, .earlier-this-week::after { content: ''; flex: 1; height: 1px; background: var(--line); }

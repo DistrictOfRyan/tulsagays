@@ -24,6 +24,7 @@ never auto-wins EOTW — _sort_key deprioritizes source=recurring within tiers.
 
 import json
 import os
+import re
 import re as _re
 from datetime import datetime
 from typing import Dict, List, Optional
@@ -472,7 +473,36 @@ def _sort_key(e: Dict) -> tuple:
 # Main selector
 # ---------------------------------------------------------------------------
 
-def select_eotw(events_this_week: List[Dict]) -> Optional[Dict]:
+def _has_venue(e: dict) -> bool:
+    """True when the event knows where it is.
+
+    Venue guard (2026-09-08). LexingtonGays shipped an Event of the Week whose
+    scraped record carried venue "" (the sanity report had already flagged it
+    "missing venue"), so docs/index.html rendered <div class="featured-where">
+    </div> on the single most prominent block of the site while the description
+    told the reader to "find your people by the light rig". A hero event that
+    cannot say which building it is in reproduces the exact "I don't know where
+    to go" problem the site exists to remove.
+
+    Relative-date junk ("in 3 days", "Tomorrow") leaks into the venue field from
+    Eventbrite and Google Events, so those count as no venue too.
+    """
+    v = (e.get("venue") or "").split(",")[0].strip()
+    if len(v) < 3:
+        return False
+    if _VENUE_NOT_A_PLACE_RE.match(v):
+        return False
+    return True
+
+
+_VENUE_NOT_A_PLACE_RE = re.compile(
+    r'^(in\s+(a|an|\d+)\s+(day|days|hour|hours|week|weeks|month|months)'
+    r'|today|tonight|tomorrow|yesterday|tba|tbd|online|virtual'
+    r'|this\s+\w+|next\s+\w+)$', re.I)
+
+
+def select_eotw(events_this_week: List[Dict],
+                _venue_pass: bool = False) -> Optional[Dict]:
     """
     Return the single best Event of the Week from events already filtered
     to the current Mon-Sun window.  Returns None when no suitable LGBTQ
@@ -493,6 +523,19 @@ def select_eotw(events_this_week: List[Dict]) -> Optional[Dict]:
         e for e in events_this_week
         if not _is_skip(e) and (e.get("source") or "").lower() != "recurring"
     ]
+
+    # Venue guard (2026-09-08) — see _has_venue. Run the whole tier ladder first
+    # over candidates that have a venue; only if NOTHING with a venue qualifies
+    # do we fall through to the full pool (and then the page template renders an
+    # honest fallback instead of an empty div). Implemented as a pre-pass so
+    # every tier below is untouched and the ranking rules stay in one place.
+    if not _venue_pass:
+        _with_venue = [e for e in events_this_week if _has_venue(e)]
+        if len(_with_venue) != len(events_this_week):
+            _best = select_eotw(_with_venue, _venue_pass=True)
+            if _best is not None:
+                return _best
+
 
     # Tier 0 — Homo Hotel Happy Hour
     pool = sorted([e for e in eligible if _is_hh(e)], key=_sort_key)

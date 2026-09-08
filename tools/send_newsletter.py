@@ -26,7 +26,9 @@ import config  # noqa: E402
 
 KIT = json.loads((Path.home() / ".credentials" / "kit_config.json").read_text(encoding="utf-8"))
 API = "https://api.kit.com/v4"
-SITE = "https://www.tulsagays.com"
+# Host from config.SITE_URL (city-specific, NEVER_SYNC) so it matches docs/CNAME.
+# See the 2026-09-08 note in tools/post_weekly.py.
+SITE = (getattr(config, "SITE_URL", "") or "").rstrip("/")
 
 
 def _hdr():

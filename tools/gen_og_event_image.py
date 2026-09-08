@@ -58,7 +58,10 @@ center(d, "TULSA GAYS", font("georgiab.ttf", 132), 222, WHITE, tracking=4)
 d.rectangle([(W / 2 - 220, 392), (W / 2 + 220, 398)], fill=BERRY)
 
 # Tagline
-center(d, "Every LGBTQ+ event in Tulsa, every week.", font("georgiai.ttf", 38), 430, MUTED)
+# Frequency claim, not a coverage claim (2026-09-08). This used to read
+# "Every LGBTQ+ event in Tulsa, every week.", the same absolute the homepage
+# carried while data/coverage_report.json recorded 34 of 36 sources covered.
+center(d, "Queer Tulsa, week by week.", font("georgiai.ttf", 38), 430, MUTED)
 
 # Pride accent bar near the bottom
 bar_w, bar_h, by = 360, 10, 510

@@ -51,8 +51,13 @@ WEEK_KEY   = config.current_week_key()
 SLIDES_DIR = ROOT / "data" / "posts" / WEEK_KEY
 DOCS_DIR   = ROOT / "docs" / "posts" / WEEK_KEY
 
-# GitHub Pages public URL base (www.tulsagays.com is the custom domain)
-SITE_BASE  = f"https://www.tulsagays.com/posts/{WEEK_KEY}"
+# GitHub Pages public URL base. Host comes from config.SITE_URL (city-specific,
+# NEVER_SYNC) so it always matches that city's docs/CNAME. Hardcoding the Tulsa
+# host here is what gave LexingtonGays two canonical hosts: sync_from_tulsa.py
+# rewrites "https://www.tulsagays.com" to "https://www.<domain>", which forced a
+# www on a site whose CNAME is the bare domain. (2026-09-08)
+SITE_HOST  = (getattr(config, "SITE_URL", "") or "").rstrip("/")
+SITE_BASE  = f"{SITE_HOST}/posts/{WEEK_KEY}"
 
 WEEK_OPENERS = [
     "Okay. We need to talk about what's happening in Tulsa this week.",
@@ -335,7 +340,7 @@ def validate_slides(slides: list[Path]) -> None:
 def host_slides_for_ig(slides: list[Path]) -> list[str]:
     """Copy slides to docs/posts/{week-key}/, push to git, return public URLs.
 
-    The docs/ folder is served via GitHub Pages at www.tulsagays.com.
+    The docs/ folder is served via GitHub Pages at config.SITE_URL.
     Public URLs allow the Instagram Graph API to fetch the images.
     """
     DOCS_DIR.mkdir(parents=True, exist_ok=True)

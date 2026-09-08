@@ -7,6 +7,24 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 import config
 
+# ── Day-header FOMO copy ──────────────────────────────────────────────────
+# The seven best lines in the project were written for the social graphics and
+# never reached the website: content/image_maker.py:96 DAY_FOOTER_TAGLINES, e.g.
+# "Everyone you know is out tonight. You know that, right?" (Friday). Searched
+# every file under docs/ on 2026-09-08: zero of the seven appeared anywhere, and
+# the seven day headers were bare weekday nouns (<h2>Monday</h2>) with no
+# page-level narrative at all.
+#
+# Read from image_maker so the copy lives in ONE place and cannot drift between
+# the graphics and the site. Keyed by day name, so the same day always renders
+# the same line: the page is stable between runs and diffs stay clean.
+try:
+    from content.image_maker import DAY_FOOTER_TAGLINES as _DAY_FOMO
+except Exception as _e_fomo:          # never let a graphics dep break the site build
+    print(f"[warn] day-header FOMO copy unavailable ({_e_fomo}); "
+          f"day headers will render without a tagline")
+    _DAY_FOMO = {}
+
 wk = config.current_week_key()
 with open(f'data/events/{wk}_all.json', encoding='utf-8') as f:
     raw = json.load(f)
@@ -615,6 +633,9 @@ for day in DAYS_ORDERED:
     lines.append(f'        <section class="day-section" style="--day-color:var({css_var})">')
     lines.append(f'            <h2 class="day-title" style="color:var({css_var})">{day}</h2>')
     lines.append(f'            <div class="day-date">{date_str}</div>')
+    _fomo = (_DAY_FOMO.get(day) or '').strip()
+    if _fomo:
+        lines.append(f'            <p class="day-fomo">{esc(_fomo)}</p>')
     lines.append(f'            <hr class="day-divider">')
     lines.append(f'            <div class="events-list">')
 
@@ -819,8 +840,30 @@ if eotw:
         _eday = _edate
     _ewhen = f'{_eday} &middot; {_etime}' if _etime else _eday
 
-    _evenue_raw = _e.get('venue', '')
+    # Venue for the hero block. Fall back through the same fields the event
+    # CARDS use (venue, then location) so the most prominent block on the page
+    # is never less informative than a row further down it.
+    _evenue_raw = (_e.get('venue') or '').strip() or (_e.get('location') or '').strip()
     _evenue = _evenue_raw.split(',')[0].strip() if _evenue_raw else ''
+
+    # Honest fallback (2026-09-08). This div shipped EMPTY on lexingtongays.com:
+    # 12 of the 13 scraped events for 2026-W37 carried venue "" (the sanity
+    # report had already flagged "missing venue" on the pick), so the single
+    # most prominent element of the site said WHEN but not WHERE, while the
+    # generated description told the reader to "find your people by the light
+    # rig". eotw_selector._has_venue now prefers a candidate that knows its own
+    # address, but when a whole week of scraped events has none there is nothing
+    # to prefer, so say that plainly and point at the one place the address does
+    # exist (the organizer's own listing) instead of rendering a blank.
+    _eurl_raw = (_e.get('url') or '').strip()
+    if _evenue:
+        _ewhere_html = esc(_evenue)
+    elif _eurl_raw.startswith('http'):
+        _ewhere_html = ('Venue not listed by the organizer. '
+                        f'<a href="{esc(_eurl_raw)}" target="_blank" rel="noopener">'
+                        'Check the listing for the address</a>.')
+    else:
+        _ewhere_html = f'Venue not announced yet. {esc(_SITE_CITY)}, {esc(_SITE_STATE)}.'
 
     _edesc = (_e.get('website_description') or _e.get('description') or '').strip()
     # Trim to ~3 sentences for the banner
@@ -837,7 +880,7 @@ if eotw:
             <div class="featured-name"><span class="gold">{esc(_gold_part)}</span> <span class="peacock">{esc(_pink_part)}</span></div>
             <div class="diamond-sep"><div class="diamond"></div></div>
             <div class="featured-when">{_ewhen}</div>
-            <div class="featured-where">{esc(_evenue)}</div>
+            <div class="featured-where">{_ewhere_html}</div>
             <div class="featured-desc">{esc(_edesc_short)}</div>
             {_elink}
         </div>
@@ -863,6 +906,65 @@ def _iso_start(date_str, time_str):
             h += 12
         return f"{date_str}T{h:02d}:{int(m.group(2) or 0):02d}:00-05:00"
     return date_str  # date-only startDate is valid
+
+# ── Canonical rendered-event list (2026-09-08) ────────────────────────────
+# tools/export_feed.py used to build docs/api/feed.json from
+# docs/events-current.json, which is the TOP-8 blog-widget file written by
+# tools/elevate_blog.py (`week_events[:8]`). Result on 2026-09-07: feed.json
+# declared "event_count": 8 while this page rendered 270 cards, and
+# docs/llms.txt advertises that feed to AI crawlers as "this week's LGBTQ+
+# events". Crawlers were getting 3% of the week.
+# all_flat is the EXACT set of cards this page renders, and the exact set the
+# Event JSON-LD below is built from, so dump it here and let the feed read it.
+# That makes feed count == card count by construction instead of by
+# re-implementing this file's filters somewhere else.
+# Written under data/ (not docs/) so it is not a new public publish artifact.
+try:
+    _rendered_path = os.path.join('data', 'events', f'{wk}_rendered.json')
+    with open(_rendered_path, 'w', encoding='utf-8') as _rf:
+        json.dump({'week': wk,
+                   'generated': datetime.now().strftime('%Y-%m-%d'),
+                   'count': len(all_flat),
+                   'events': all_flat}, _rf, ensure_ascii=False, indent=1)
+    print(f"[rendered] wrote {_rendered_path}: {len(all_flat)} events "
+          f"(authoritative card count for tools/export_feed.py)")
+except Exception as _erf:
+    print(f"[warn] could not write rendered-event list: {_erf}")
+
+# ── Scale + coverage line (2026-09-08) ────────────────────────────────────
+# The homepage claimed it listed "every" LGBTQ+ event in Tulsa, twice, while
+# data/coverage_report.json recorded 34 of 36 tracked organizations covered
+# (94.4%). It also never stated the one large, defensible number it does own.
+# So: no absolute claim, and every figure here is re-derived from a file on
+# each run instead of being typed into the HTML where it would go stale.
+# Numbers NEVER get invented: any figure whose source file is unreadable is
+# dropped from the sentence rather than guessed or placeheld.
+# The region is opt-in per city: a page with no <!-- COVERAGE --> marker (e.g.
+# LexingtonGays, which has no api/feed.json or coverage report) is untouched.
+if '<!-- COVERAGE -->' in _html2:
+    _bits = [f"We found {len(all_flat)} queer events in {_SITE_CITY} this week"]
+    _src_n = None
+    try:
+        with open(os.path.join('docs', 'api', 'feed.json'), encoding='utf-8') as _sf:
+            _src_n = int(json.load(_sf).get('source_count') or 0) or None
+    except Exception:
+        _src_n = None
+    if _src_n:
+        _bits[0] += f" across the {_src_n} sources we watch"
+    _bits[0] += "."
+    try:
+        with open(os.path.join('data', 'coverage_report.json'), encoding='utf-8') as _cf:
+            _cov = json.load(_cf)
+        _cvd, _tot = int(_cov.get('covered')), int(_cov.get('total'))
+        if _tot > 0 and 0 <= _cvd <= _tot:
+            _bits.append(f"Of the {_tot} LGBTQ+ organizations we track here, "
+                         f"{_cvd} are covered. We do not claim to have all of it.")
+    except Exception:
+        pass
+    _html2 = re.sub(r'<!-- COVERAGE -->.*?<!-- /COVERAGE -->',
+                    lambda _m: '<!-- COVERAGE -->' + ' '.join(_bits) + '<!-- /COVERAGE -->',
+                    _html2, flags=re.DOTALL)
+    print(f"[coverage] stamped scale line: {' '.join(_bits)}")
 
 _events_ld = []
 for _ev in all_flat:

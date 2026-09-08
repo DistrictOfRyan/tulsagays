@@ -1,8 +1,8 @@
-"""Keep docs/sitemap.xml honest — freshness + dead-URL self-heal.
+"""Keep docs/sitemap.xml honest: freshness + dead-URL self-heal.
 
 AEO fix (2026-07-10). Two problems this closes, both flagged in the AEO audit:
   1. The homepage (and archive) change WEEKLY, but their <lastmod> was frozen at
-     2026-04-28 — throwing away the single strongest freshness signal on the #1 page.
+     2026-04-28, throwing away the single strongest freshness signal on the #1 page.
   2. The sitemap shipped URLs that 404 (top-monthly-events.html, gay-tulsa-guide.html).
      A sitemap full of dead links erodes crawl trust for Google AND AI crawlers.
 
@@ -23,9 +23,15 @@ from urllib.parse import urlsplit
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOCS = os.path.join(REPO, "docs")
 SITEMAP = os.path.join(DOCS, "sitemap.xml")
-BASE = "https://www.tulsagays.com"
 
-# Pages that genuinely change every week — stamp these to the current Monday.
+# Host from config.SITE_URL rather than a literal (2026-09-08). A hardcoded
+# host silently stamps NOTHING on a city whose CNAME disagrees, because the
+# <loc> never matches. LexingtonGays hit exactly that class of bug.
+sys.path.insert(0, REPO)
+import config  # noqa: E402
+BASE = (getattr(config, "SITE_URL", "") or "").rstrip("/")
+
+# Pages that genuinely change every week: stamp these to the current Monday.
 WEEKLY_PATHS = {"/", "/archive.html"}
 
 
@@ -75,7 +81,7 @@ def main(argv: list[str]) -> int:
             for u in missing:
                 print("   ✗", u)
             return 1
-        print(f"[sitemap-check] OK — every sitemap URL resolves to a real file "
+        print(f"[sitemap-check] OK, every sitemap URL resolves to a real file "
               f"({sum(1 for _ in _split_url_blocks(xml))} urls)")
         return 0
 

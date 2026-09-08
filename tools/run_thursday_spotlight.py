@@ -24,6 +24,15 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import config  # noqa: E402
+
+
+def _site() -> str:
+    """Public site origin for this city, from config.SITE_URL (city-specific and
+    in sync_from_tulsa.py's NEVER_SYNC list, so it always matches docs/CNAME).
+    Added 2026-09-08: this file used to hardcode the Tulsa host, and the sync
+    rewrote it to https://www.<domain> for every new city, which is how
+    LexingtonGays ended up publishing two different canonical hosts."""
+    return (getattr(config, "SITE_URL", "") or "").rstrip("/")
 from content.image_maker import make_engagement_slide  # noqa: E402
 from tools.social_lib import (  # noqa: E402
     load_meta_config,
@@ -124,7 +133,7 @@ def _article_html(title: str, slug: str, hero_p: str, sections: list[tuple[str, 
         from content.generator import strip_em_dashes as _sed
     except Exception:
         _sed = lambda t: (t or "").replace(" — ", ", ").replace("—", ", ").replace("–", "-")
-    canonical = f"https://www.tulsagays.com/blog/{slug}.html"
+    canonical = f"{_site()}/blog/{slug}.html"
     hero_p = _sed(hero_p)
     title_e = html.escape(_sed(title), quote=True)
     sections_html = "\n".join(
@@ -166,7 +175,7 @@ def _article_html(title: str, slug: str, hero_p: str, sections: list[tuple[str, 
 <div class="post-body">
 <p>{html.escape(hero_p)}</p>
 {sections_html}
-<p><a href="https://www.tulsagays.com/">See the rest of this week's queer Tulsa events.</a></p>
+<p><a href="{_site()}/">See the rest of this week's queer events.</a></p>
 </div>
 </main>
 </body>
@@ -330,7 +339,7 @@ def main() -> int:
     if img_path.stat().st_size < 30_000:
         raise RuntimeError("Generated spotlight image too small; aborting.")
     public_img_url = public_url_for(str(out_rel / img_name))
-    public_blog_url = f"https://www.tulsagays.com/blog/{slug}.html"
+    public_blog_url = f"{_site()}/blog/{slug}.html"
     print(f"public_img_url={public_img_url}\npublic_blog_url={public_blog_url}")
 
     try:

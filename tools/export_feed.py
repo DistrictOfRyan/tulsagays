@@ -22,6 +22,25 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
 from scraper import dynamic_sources as dyn
 
+# Event source, in priority order (2026-09-08 fix).
+#
+# THE BUG: this module used to read only docs/events-current.json. That file is
+# NOT the week's events. tools/elevate_blog.py writes it as the top-8 feed for a
+# small blog-page widget (`for e in week_events[:8]`). So docs/api/feed.json
+# shipped "event_count": 8 while docs/index.html rendered 270 event cards for
+# the same day, and docs/llms.txt advertises this endpoint to AI crawlers as
+# "Machine-readable feed of this week's LGBTQ+ Tulsa events". Crawlers following
+# llms.txt received 3% of the week, half of it Circle Cinema showtimes.
+#
+# THE FIX: prefer data/events/<week>_rendered.json, which tools/gen_website_html.py
+# writes as the EXACT list of events it renders as cards (same list the homepage
+# Event JSON-LD is built from). Feed count then equals card count by construction.
+# Fall back to <week>_all.json (pre-filter, still the whole week) and only then to
+# the 8-item widget file, so a partial repo still produces something.
+RENDERED_FILE = os.path.join(config.DATA_DIR, "events",
+                             f"{config.current_week_key()}_rendered.json")
+WEEK_ALL_FILE = os.path.join(config.DATA_DIR, "events",
+                             f"{config.current_week_key()}_all.json")
 EVENTS_CURRENT = os.path.join(config.PROJECT_DIR, "docs", "events-current.json")
 COVERAGE_FILE = os.path.join(config.DATA_DIR, "coverage_report.json")
 OUT_DIR = os.path.join(config.PROJECT_DIR, "docs", "api")
@@ -47,14 +66,23 @@ def _source_count():
     return n
 
 
-def build_feed(date_str=None):
-    events = []
-    if os.path.exists(EVENTS_CURRENT):
+def _load_events():
+    """Return (events, source_path) using the best available week source."""
+    for path in (RENDERED_FILE, WEEK_ALL_FILE, EVENTS_CURRENT):
+        if not os.path.exists(path):
+            continue
         try:
-            data = json.load(open(EVENTS_CURRENT, encoding="utf-8"))
-            events = data.get("events", []) if isinstance(data, dict) else data
+            data = json.load(open(path, encoding="utf-8"))
         except Exception:
-            events = []
+            continue
+        evs = data.get("events", []) if isinstance(data, dict) else data
+        if isinstance(evs, list) and evs:
+            return [e for e in evs if isinstance(e, dict)], path
+    return [], None
+
+
+def build_feed(date_str=None):
+    events, src_path = _load_events()
 
     coverage = {}
     if os.path.exists(COVERAGE_FILE):
@@ -66,8 +94,14 @@ def build_feed(date_str=None):
         except Exception:
             coverage = {}
 
+    # NOTE (2026-09-08): deliberately NO per-event site URL here. The /e/ share
+    # pages are named by tools/gen_website_html.py::_card_id, which slugs
+    # name-date-HOUR (formatted hour, 60-char truncation, collision suffixes) and
+    # is NOT the same scheme as the Event JSON-LD @id in that same file. Emitting
+    # a third guess at the slug would publish links that 404, so the feed carries
+    # only the organizer url the event actually has.
     slim = [{"name": e.get("name"), "date": e.get("date"), "time": e.get("time"),
-             "venue": e.get("venue"), "url": e.get("url")} for e in events if isinstance(e, dict)]
+             "venue": e.get("venue"), "url": e.get("url")} for e in events]
 
     return {
         "schema_version": SCHEMA_VERSION,
@@ -77,6 +111,7 @@ def build_feed(date_str=None):
         "coverage": coverage,
         "source_count": _source_count(),
         "event_count": len(slim),
+        "events_source": os.path.relpath(src_path, config.PROJECT_DIR).replace("\\", "/") if src_path else None,
         "events": slim,
     }
 
@@ -85,8 +120,9 @@ def run(date_str=None):
     os.makedirs(OUT_DIR, exist_ok=True)
     feed = build_feed(date_str)
     json.dump(feed, open(OUT_FILE, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
-    print(f"[export_feed] wrote {OUT_FILE}: {feed['event_count']} events, "
-          f"{feed['source_count']} sources, coverage {feed['coverage'].get('coverage_pct')}%")
+    print(f"[export_feed] wrote {OUT_FILE}: {feed['event_count']} events "
+          f"(from {feed['events_source']}), {feed['source_count']} sources, "
+          f"coverage {feed['coverage'].get('coverage_pct')}%")
     return feed
 
 
