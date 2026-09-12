@@ -249,6 +249,17 @@ _TRUSTED_LGBTQ_SRCS = {
     "homo_hotel",         # HHHH — William's own monthly LGBTQ mixer
     "council_oak",        # Council Oak Men's Chorale
     "circles_lgbtq",
+    # qlist (added 2026-09-12). scraper/qlist.py: "LGBTQ+ event aggregator for
+    # Tulsa" — unlike facebook_events/manual/recurring above, qlist.app only
+    # ever lists queer events, so it belongs with the trusted orgs, not the
+    # catch-all feeds. config.LGBTQ_SOURCES already tags it "always-LGBTQ" and
+    # weekend_carousel.py's _QUEER_SOURCES already trusts it for headline sort;
+    # this file had simply never picked it up. Gap found on W37's "Sunday
+    # Showcase" (qlist, no venue, description literally "Sunday drag and talent
+    # showcase") scoring strict_lgbtq=False and rendering "Mostly Straight" on
+    # the Saturday-preview carousel next to lower-novelty events correctly
+    # tagged Super Gay / Very LGBTQIA+.
+    "qlist",
 }
 
 # Keywords that make an event explicitly LGBTQ-relevant for Tier 5.
