@@ -170,6 +170,13 @@ class FacebookEventsScraper(PlaywrightBaseScraper):
             headless=True,
             args=["--no-sandbox", "--disable-setuid-sandbox"],
         )
+        # TIME ZONE IS PART OF THE FACT (2026-09-15). Facebook renders event
+        # times in the BROWSER's zone. This scrape runs from Puerto Vallarta
+        # (UTC-6, no DST), so W38 shipped every Facebook time one hour early:
+        # a 7:00 PM Tulsa event (CDT) rendered "6 PM CST". Pin the context to
+        # the site's zone and an English locale so the page states Tulsa time
+        # with Tulsa's own label; _parse_fb_date then converts any label that
+        # still disagrees (belt and braces, see scraper/tz_guard.py).
         self._context = self._browser.new_context(
             storage_state=SESSION_FILE,
             user_agent=(
@@ -178,6 +185,8 @@ class FacebookEventsScraper(PlaywrightBaseScraper):
                 "Chrome/134.0.0.0 Safari/537.36"
             ),
             viewport={"width": 1280, "height": 800},
+            timezone_id=getattr(config, "TIMEZONE", None) or "America/Chicago",
+            locale="en-US",
         )
 
     def _stop_browser(self):
@@ -393,6 +402,25 @@ class FacebookEventsScraper(PlaywrightBaseScraper):
         return events
 
     def _parse_fb_date(self, date_line: str) -> Tuple[str, str]:
+        """Parse Facebook's human-readable date strings into (YYYY-MM-DD, time_str),
+        converting any tz-labelled time ("6 PM CST") into the site's local time
+        and stripping the label (2026-09-15, see scraper/tz_guard.py)."""
+        date_str, time_str = self._parse_fb_date_raw(date_line)
+        if time_str:
+            try:
+                from scraper.tz_guard import fix_tz_labeled_time
+                fixed, changed, note, day_delta = fix_tz_labeled_time(time_str, date_str)
+                if changed:
+                    logger.info(f"[facebook_events] tz-fixed '{time_str}' -> '{fixed}' ({note})")
+                time_str = fixed
+                if day_delta and date_str:
+                    date_str = (datetime.strptime(date_str, "%Y-%m-%d")
+                                + timedelta(days=day_delta)).strftime("%Y-%m-%d")
+            except Exception as _e:  # never let the guard break the scrape
+                logger.warning(f"[facebook_events] tz guard skipped: {_e}")
+        return date_str, time_str
+
+    def _parse_fb_date_raw(self, date_line: str) -> Tuple[str, str]:
         """Parse Facebook's human-readable date strings into (YYYY-MM-DD, time_str)."""
         if not date_line:
             return "", ""
@@ -403,7 +431,10 @@ class FacebookEventsScraper(PlaywrightBaseScraper):
 
         # Relative: "Today at 7 PM", "Tomorrow at 10 PM"
         dl = date_line.lower()
-        time_match = re.search(r'at\s+(\d+(?::\d+)?\s*[AP]M)', date_line, re.IGNORECASE)
+        # Keep a trailing tz label ("7 PM CST") so _parse_fb_date can convert it;
+        # the old pattern dropped the label and with it the only proof the hour
+        # was rendered in the wrong zone (2026-09-15).
+        time_match = re.search(r'at\s+(\d+(?::\d+)?\s*[AP]M(?:\s+(?:UTC|GMT|[ECMP][SD]T))?)', date_line, re.IGNORECASE)
         time_str = time_match.group(1).strip() if time_match else ""
 
         if dl.startswith("today"):
@@ -422,16 +453,31 @@ class FacebookEventsScraper(PlaywrightBaseScraper):
         # Absolute: "Fri, Apr 24 at 6 PM" or "Apr 24 at 6 PM"
         # Strip recurring-event suffix: "at 6 PM and 34 more" -> "at 6 PM"
         date_line = re.sub(r'\s+and\s+\d+\s+more.*$', '', date_line, flags=re.IGNORECASE)
-        m = re.match(r'(?:\w+,\s+)?(\w+\s+\d+)(?:\s+at\s+(.+))?', date_line)
+        m = re.match(r'(?:(\w+),\s+)?(\w+\s+\d+)(?:\s+at\s+(.+))?', date_line)
         if m:
-            date_part = m.group(1).strip()   # "Apr 24"
-            time_part = (m.group(2) or "").strip()
+            wd_name = (m.group(1) or "").strip()      # "Fri" (may be absent)
+            date_part = m.group(2).strip()            # "Apr 24"
+            time_part = (m.group(3) or "").strip()
             for fmt in ("%b %d", "%B %d"):
                 try:
-                    dt = datetime.strptime(date_part, fmt).replace(year=today.year)
-                    return dt.strftime("%Y-%m-%d"), time_part
+                    dt = datetime.strptime(date_part, fmt)
                 except ValueError:
                     continue
+                # A weekday name is a claim about the YEAR. "Fri, Sep 19" cannot
+                # be 2026 (a Saturday); resolve_yearless picks the year whose
+                # calendar agrees, and returns '' for a stale/contradictory pair
+                # instead of inventing a date (2026-09-15, tz_guard).
+                try:
+                    from scraper.tz_guard import resolve_yearless, weekday_index
+                    resolved = resolve_yearless(dt.month, dt.day,
+                                                weekday_idx=weekday_index(wd_name),
+                                                today=today)
+                except Exception:
+                    resolved = dt.replace(year=today.year).strftime("%Y-%m-%d")
+                if not resolved:
+                    logger.info(f"[facebook_events] dropped stale/contradictory date line '{date_line}'")
+                    return "", time_part
+                return resolved, time_part
 
         return "", time_str
 

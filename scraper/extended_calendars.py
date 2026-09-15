@@ -43,6 +43,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from scraper.base import BaseScraper
 from scraper import dynamic_sources as _dyn
 from scraper.relevance import compile_lgbtq_keywords
+from scraper.tz_guard import iso_to_local
 
 logger = logging.getLogger(__name__)
 
@@ -234,9 +235,10 @@ class ExtendedCalendarsScraper(BaseScraper):
                     if not name:
                         continue
                     start = item.get("startDate", "")
-                    date_str = str(start)[:10] if start else ""
-                    time_str = str(start)[11:16] if start and "T" in str(start) else ""
+                    date_str, time_str = iso_to_local(str(start or ""))
                     location = item.get("location", {})
+                    if isinstance(location, list):  # schema.org allows a list of Places (2026-09-15)
+                        location = next((l for l in location if isinstance(l, (dict, str)) and l), {})
                     venue = site_name
                     if isinstance(location, dict):
                         venue = location.get("name", site_name) or site_name

@@ -20,6 +20,7 @@ from typing import List, Dict, Optional
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from scraper.base import BaseScraper
 from scraper.relevance import compile_lgbtq_keywords
+from scraper.tz_guard import iso_to_local
 
 logger = logging.getLogger(__name__)
 
@@ -163,14 +164,12 @@ EVENTBRITE_SEARCH_URL = (
 
 
 def _iso_to_time(iso: str) -> str:
-    """'2026-07-16T18:00:00-05:00' -> '6:00 PM'. Empty on failure."""
-    m = re.search(r"T(\d{2}):(\d{2})", iso or "")
-    if not m:
+    """ISO start -> '6:00 PM' in Tulsa local time (UTC-aware via tz_guard). Empty on failure."""
+    _, hm = iso_to_local(iso or "")
+    if not hm:
         return ""
-    h, mnt = int(m.group(1)), m.group(2)
-    ap = "AM" if h < 12 else "PM"
-    h12 = h % 12 or 12
-    return f"{h12}:{mnt} {ap}"
+    h, mnt = int(hm[:2]), hm[3:5]
+    return f"{h % 12 or 12}:{mnt} {'AM' if h < 12 else 'PM'}"
 
 
 def _backfill_dates_from_detail(scraper, events: List[Dict], cap: int = 35) -> List[Dict]:
@@ -217,7 +216,8 @@ def _backfill_dates_from_detail(scraper, events: List[Dict], cap: int = 35) -> L
             if start:
                 break
         if start:
-            ev["date"] = start[:10]
+            _d, _ = iso_to_local(start)
+            ev["date"] = _d or start[:10]
             if not ev.get("time"):
                 ev["time"] = _iso_to_time(start)
             logger.info(f"[{scraper.source_name}] backfilled date {ev['date']} for '{ev.get('name','')[:40]}'")
@@ -340,11 +340,9 @@ class EventbriteScraper(BaseScraper):
         # Dates
         start = item.get("start_date") or item.get("start", {})
         if isinstance(start, dict):
-            date_str = start.get("local", "")[:10] if start.get("local") else ""
-            time_str = start.get("local", "")[11:16] if start.get("local") and "T" in start.get("local", "") else ""
+            date_str, time_str = iso_to_local(start.get("local") or start.get("utc") or "")
         elif isinstance(start, str):
-            date_str = start[:10]
-            time_str = ""
+            date_str, time_str = iso_to_local(start)
         else:
             date_str = ""
             time_str = ""
@@ -399,11 +397,10 @@ class EventbriteScraper(BaseScraper):
                     if not name:
                         continue
                     start = item.get("startDate", "")
-                    date_str = start[:10] if start else ""
-                    time_str = ""
-                    if "T" in start:
-                        time_str = start.split("T")[1][:5]
+                    date_str, time_str = iso_to_local(str(start or ""))
                     location = item.get("location", {})
+                    if isinstance(location, list):  # schema.org allows a list of Places (2026-09-15)
+                        location = next((l for l in location if isinstance(l, (dict, str)) and l), {})
                     venue = ""
                     if isinstance(location, dict):
                         venue = location.get("name", "")
@@ -515,11 +512,10 @@ class MeetupScraper(BaseScraper):
                         continue
                     start = item.get("startDate", "")
                     # Pull both date and time from the ISO timestamp.
-                    date_str = start[:10] if start else ""
-                    time_str = ""
-                    if "T" in start:
-                        time_str = start.split("T")[1][:5]
+                    date_str, time_str = iso_to_local(str(start or ""))
                     location = item.get("location", {})
+                    if isinstance(location, list):  # schema.org allows a list of Places (2026-09-15)
+                        location = next((l for l in location if isinstance(l, (dict, str)) and l), {})
                     venue = ""
                     if isinstance(location, dict):
                         venue = location.get("name", "")

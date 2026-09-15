@@ -104,6 +104,35 @@ def _recent_posts_by_group():
     return seen
 
 
+def _write_ledger(week, header: dict, results: list):
+    """Write data/posts/<week>/group_blast_results.json, MERGING with what is
+    already there. A straggler pass used to overwrite the week's ledger with only
+    its own results, erasing pass 1's live/pending groups and with them the
+    cooldown that stops a third run from posting the deck again (2026-09-15)."""
+    ledger = ROOT / "data" / "posts" / week / "group_blast_results.json"
+    ledger.parent.mkdir(parents=True, exist_ok=True)
+    merged = {}
+    try:
+        for r in json.loads(ledger.read_text(encoding="utf-8")).get("results", []):
+            if r.get("id"):
+                merged[r["id"]] = r
+    except Exception:
+        pass
+    for r in results:
+        prev = merged.get(r.get("id"))
+        # Never let a later error/skip entry hide an earlier live/pending post.
+        if prev and prev.get("status") in ("live", "pending") and r.get("status") not in ("live", "pending"):
+            continue
+        merged[r.get("id")] = r
+    body = dict(header)
+    body["results"] = list(merged.values())
+    try:
+        ledger.write_text(json.dumps(body, indent=2), encoding="utf-8")
+    except Exception:
+        pass
+    return ledger
+
+
 def _on_cooldown(group, recent, now):
     ts = recent.get(group["id"])
     if not ts:
@@ -451,6 +480,12 @@ def run(dry_run=False, headed=False, week=None):
             r = _post_to_group(page, g, image_paths)
             r["at"] = datetime.now(timezone.utc).isoformat()
             results.append(r)
+            # Record each group the moment it posts (2026-09-15). The ledger was
+            # written only after the loop, so W38's first blast, which never
+            # reached that line, left no cooldown trace and a rerun posted the
+            # deck a second time into all 14 groups.
+            _write_ledger(week, {"week": week, "ran_at": now.isoformat(), "page": PAGE_NAME,
+                                 "partial": True}, results)
             print(f"  [{r['status']:9}] {g['name']}"
                   + (f"  ({r.get('error')})" if r.get("error") else ""))
             if i < len(plan) - 1:
@@ -466,9 +501,7 @@ def run(dry_run=False, headed=False, week=None):
         "skipped_cooldown": [g["name"] for g in skipped_cd],
         "results": results,
     }
-    ledger = ROOT / "data" / "posts" / week / "group_blast_results.json"
-    ledger.parent.mkdir(parents=True, exist_ok=True)
-    ledger.write_text(json.dumps(out, indent=2), encoding="utf-8")
+    ledger = _write_ledger(week, {k: v for k, v in out.items() if k != "results"}, results)
     print(f"\nledger -> {ledger}")
     print(f"counts: {out['counts']}")
     return out

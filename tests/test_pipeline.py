@@ -426,6 +426,176 @@ def test_ig_date_anchor_contract():
         check("instagram_orgs importable", False, str(e))
 
 
+def test_tulsa_eagle_ig_extraction():
+    """The Tulsa Eagle's OWN captions, and what the extractor must do with them.
+
+    MEASURED 2026-09-09 against 14 real @tulsaeagle posts (2026-08-27..09-08),
+    read from the venue's live post pages and stored verbatim in
+    tests/fixtures/tulsa_eagle_ig_captions_2026-09-09.json.
+
+    The standing diagnosis said the Eagle "publishes no dated events" and that
+    its programming was undated recurring nights. That was WRONG, and it had the
+    module's comment block and the domain SKILL.md agreeing with it. What the
+    Eagle actually does is post ONCE A DAY, ON THE DAY, at ~12:03pm CT (all 12
+    image posts land within a two-minute window at 17:03 UTC), and each caption
+    names 2-3 real events with real times. Extraction works fine; the venue
+    simply gives ZERO days of forward notice, so a weekly deck built on Monday
+    can only ever see the days that have already happened.
+
+    This test locks the four real defects found in that measurement:
+      1. NO FABRICATED EVENTS. The 2026-08-30 caption says "after your brunchin
+         & lunchin" and announces no brunch at all; substring cue matching found
+         "brunch" inside "brunchin" and the regex path emitted "Drag Brunch at
+         Tulsa Eagle" - a party that did not exist, on the public deck.
+      2. NO GREETING BANNERS AS EVENT NAMES. Three of twelve regex-path events
+         were named "HAPPY MONDAY DIRTY BIRDS !!!" / "Happy Thursday Boys and
+         Girls !!!!" / "Happy HumpDay you Dirty Birds !! !", and one of those
+         was in-week and would have shipped.
+      3. NO STAFF-SHIFT PROSE AS EVENT NAMES ("ISAAC opens today @2 to get your
+         week started with $5 well cocktails all day").
+      4. NO DATE THE CAPTION DOES NOT CLAIM. The LLM tier dated the Sunday
+         2026-09-06 "LABOR DAY COOKOUT @4" to Monday 2026-09-07 because that was
+         Labor Day; the announce window (+1 day) and the in-week filter both
+         waved it through.
+
+    Both directions are checked: real dated events survive, and undatable or
+    unsupported ones are still dropped.
+    """
+    print("Tulsa Eagle IG extraction (real captions, 2026-09-09):")
+    from scraper.instagram_orgs import InstagramOrgScraper as IOS
+
+    fx = os.path.join(ROOT, "tests", "fixtures",
+                      "tulsa_eagle_ig_captions_2026-09-09.json")
+    try:
+        with open(fx, encoding="utf-8") as f:
+            posts = json.load(f)
+    except Exception as e:
+        check("Eagle caption fixture readable", False, str(e))
+        return
+    check("fixture holds the 14 measured captions", len(posts) == 14, f"got {len(posts)}")
+
+    VENUE = "Tulsa Eagle, 1338 E 3rd St"
+    by_date = {p["posted_on"]: p["caption"] for p in posts}
+    names = {d: IOS._derive_event_name(c, VENUE) for d, c in by_date.items()}
+
+    # ---- 1. never invent an event -------------------------------------------
+    brunch_caption = by_date["2026-08-30"]
+    check("2026-08-30 caption really does say 'brunchin'",
+          "brunchin" in brunch_caption)
+    check("2026-08-30 caption announces no drag brunch",
+          "drag" not in brunch_caption.lower())
+    check("no fabricated 'Drag Brunch' from 'brunchin & lunchin'",
+          "Drag Brunch" not in names["2026-08-30"], names["2026-08-30"])
+    check("a bare 'brunch' cue never prints 'Drag'",
+          "Drag" not in IOS._derive_event_name("sunday brunch at 11", VENUE))
+    check("a real drag brunch still reads as one",
+          IOS._derive_event_name("DRAG BRUNCH sunday at 11", VENUE)
+          == "Drag Brunch at Tulsa Eagle")
+
+    # ---- 2. greeting banners are never event names --------------------------
+    for d in ("2026-09-07", "2026-09-03", "2026-09-02", "2026-08-30"):
+        n = names[d]
+        check(f"{d}: greeting is not the event name",
+              not n.lower().startswith(("happy", "its ", "it's ", "welcome to")), n)
+    check("bare greeting line is rejected as a title",
+          IOS._looks_like_a_title("HAPPY MONDAY DIRTY BIRDS") is False)
+
+    # ---- 3. staff-shift prose is never an event name ------------------------
+    for d, n in names.items():
+        low = n.lower()
+        check(f"{d}: name is not shift prose",
+              not any(w in low for w in (" opens ", " opens", "has got you",
+                                         "takes over", "to get your")), n)
+
+    # ---- 4. the venue's OWN name for the night wins -------------------------
+    expected = {
+        "2026-09-08": "Tulsa Eagle Tuesday Karaoke",
+        "2026-09-07": "Monday Movie Night",
+        "2026-09-05": "LEATHER NIGHT",
+        "2026-09-04": "TouchTunes Friday",
+        "2026-09-03": "Thirsty Thursday",
+        "2026-09-02": "Underwear Night",
+        "2026-08-29": "ICAO: COMEDY SHOW",
+        "2026-08-28": "ROBO-TECHNO PARTY",
+    }
+    for d, want in expected.items():
+        check(f"{d}: named '{want}'", names[d] == want, f"got {names[d]!r}")
+
+    # A caption that names nothing must fall back to the venue label, never to
+    # a sentence of caption prose.
+    check("undated 'THIS WEEKEND' post yields the generic venue label",
+          names["2026-08-27"] == "Event at Tulsa Eagle", names["2026-08-27"])
+
+    # ---- 5. every caption's date must resolve to its own post date ----------
+    # The Eagle posts day-of, so this is the whole ballgame: a caption dated to
+    # any other day is a mis-date.
+    for d, c in by_date.items():
+        got = IOS._resolve_relative_date(c.lower(), d)
+        check(f"{d}: no-LLM date resolves to the post date or not at all",
+              got in (d, ""), f"got {got!r}")
+
+    # ---- 6. caption-support guard: both directions --------------------------
+    cookout = by_date["2026-09-06"]
+    check("the real mis-date is refused (Sun cookout dated Mon)",
+          IOS._date_supported_by_caption("2026-09-07", cookout, "2026-09-06") is False)
+    check("the honest same-day date is accepted",
+          IOS._date_supported_by_caption("2026-09-06", cookout, "2026-09-06") is True)
+    check("a real advance post with an explicit date survives (Majestic 8/27)",
+          IOS._date_supported_by_caption(
+              "2026-08-27", "THURSDAY AUGUST 27TH Tulsa Supreme Beach Party",
+              "2026-08-09") is True)
+    check("an explicit slash date survives",
+          IOS._date_supported_by_caption("2026-08-15", "SATURDAY 8/15 doors at 9",
+                                         "2026-08-01") is True)
+    check("a bare weekday named in the caption survives",
+          IOS._date_supported_by_caption("2026-09-11", "join us FRIDAY for the party",
+                                         "2026-09-09") is True)
+    check("the WRONG weekday is refused",
+          IOS._date_supported_by_caption("2026-09-12", "join us FRIDAY for the party",
+                                         "2026-09-09") is False)
+    check("'tomorrow' survives",
+          IOS._date_supported_by_caption("2026-09-10", "dance party tomorrow at 9",
+                                         "2026-09-09") is True)
+    check("a date the caption never claims is refused",
+          IOS._date_supported_by_caption("2026-09-11", "come hang with us @2 today",
+                                         "2026-09-09") is False)
+
+    # ---- 7. the announce window is NOT what loses the Eagle ----------------
+    # Verified rather than assumed (it was the prime suspect): every one of the
+    # Eagle's day-of posts has gap 0, so the window drops nothing here. Do not
+    # loosen MAX_ANNOUNCE_GAP_DAYS "to make the Eagle work" - it is not the cause.
+    for d in by_date:
+        check(f"{d}: announce window keeps a day-of post",
+              IOS._within_announce_window(d, d) is True)
+
+    # ---- 8. truncation must not silently discard a good extraction ---------
+    src = os.path.join(ROOT, "scraper", "instagram_orgs.py")
+    with open(src, encoding="utf-8") as f:
+        code = f.read()
+    check("extraction token budget is large enough for a daily poster",
+          "MAX_EXTRACT_TOKENS = 4000" in code)
+    check("max_tokens=1500 is gone from both LLM tiers",
+          "max_tokens=1500" not in code and '"max_tokens": 1500' not in code)
+    check("truncated LLM JSON salvages its complete events",
+          "salvaged" in code and "LLM JSON truncated" in code)
+
+    # ---- 9. the web-session tier must survive an HTML (walled) response ----
+    # On 2026-09-09 all 9 venues logged "Unexpected token '<'" and the web tier
+    # returned 0 posts while the session was in fact alive (ds_user_id present):
+    # Instagram answers a walled/rate-limited API call with HTTP 200 + an HTML
+    # login page, so `await r.json()` threw SyntaxError, and that exception
+    # escaped PAST the topsearch fallback into the outer catch. A fallback you
+    # can never reach is not a fallback.
+    web = os.path.join(ROOT, "scraper", "instagram_web.py")
+    with open(web, encoding="utf-8") as f:
+        wcode = f.read()
+    check("every JSON parse in the web tier is guarded", "const jparse" in wcode)
+    check("no unguarded await r1.json() remains",
+          "await r1.json()" not in wcode)
+    check("an HTML wall is reported as such, not as a SyntaxError",
+          "non-JSON (HTML wall)" in wcode)
+
+
 def test_anonymity_allowlist():
     """The account is anonymous, so preflight warns on any standalone 'ryan' /
     'william' / 'hunt'. Real Tulsa venues carry those words in their own names
@@ -604,6 +774,7 @@ def main():
     test_w28_saturday_dedup_and_cancelled()
     test_w32_venue_relocation()
     test_ig_date_anchor_contract()
+    test_tulsa_eagle_ig_extraction()
     test_anonymity_allowlist()
     test_final_deck_review()
     print()

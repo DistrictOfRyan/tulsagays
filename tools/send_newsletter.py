@@ -123,6 +123,32 @@ def content_guard(week_key):
         return False, f"only {len(days_with)}/7 days populated", stats
     if total < 10:
         return False, f"only {total} featured events (need >=10)", stats
+    # FACT GATES (2026-09-15). W38's newsletter "This week in queer Tulsa:
+    # Fringe Festival" auto-sent Tuesday 10 AM, after the social posts had been
+    # retracted for a 2025 festival and wrong times, because this guard only
+    # checked that a manifest existed. A send now needs the same proof a post does.
+    post_dir = ROOT / "data" / "posts" / week_key
+    pf = post_dir / "preflight_status.json"
+    try:
+        pfd = json.loads(pf.read_text(encoding="utf-8"))
+    except Exception:
+        return False, "no readable preflight_status.json: preflight has not passed this deck", stats
+    if pfd.get("errors"):
+        return False, f"preflight has {len(pfd['errors'])} blocking error(s)", stats
+    if pf.stat().st_mtime < man_path.stat().st_mtime:
+        return False, "preflight predates the current slide_manifest.json (deck changed since it passed)", stats
+    try:
+        tr = json.loads((post_dir / "truth_report.json").read_text(encoding="utf-8"))
+        if "confirmed" not in tr:
+            return False, "truth_report.json predates positive confirmations; re-run verify_week_truth.py", stats
+    except Exception:
+        return False, "no truth_report.json (source re-verification never ran)", stats
+    retraction = post_dir / "retraction_log.json"
+    if retraction.exists() and retraction.stat().st_mtime > pf.stat().st_mtime:
+        return False, "this week was retracted and no preflight has passed since", stats
+    sent = post_dir / "newsletter_sent.json"
+    if sent.exists():
+        return False, f"a newsletter already went out for {week_key} ({sent.name}); pass --force for a deliberate correction", stats
     return True, "ok", stats
 
 
@@ -162,6 +188,13 @@ def main():
         print("FAILED:", e.code, e.read().decode()[:300])
         return 1
     b = d.get("broadcast", d)
+    if send:
+        try:
+            (ROOT / "data" / "posts" / week / "newsletter_sent.json").write_text(json.dumps(
+                {"week": week, "broadcast_id": b.get("id"), "subject": subj,
+                 "sent_at": payload.get("send_at")}, indent=2), encoding="utf-8")
+        except Exception:
+            pass
     print(f"{'SENT' if send else 'DRAFT created'}: broadcast id={b.get('id')} | status={b.get('status')}")
     print(f"  subject: {subj}")
     print(f"  edit/send in Kit: https://app.kit.com/broadcasts/{b.get('id')}")

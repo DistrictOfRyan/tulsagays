@@ -311,8 +311,17 @@ class RenderedSitesScraper(BaseScraper):
         from bs4 import BeautifulSoup
         if strat == "json_ld":
             soup = BeautifulSoup(html, "html.parser")
-            return self._extract_json_ld_from_soup(
+            evs = self._extract_json_ld_from_soup(
                 soup, spec["name"], int(spec.get("priority", 2)))
+            # A room name alone ("Riffs", "Track 5.") is meaningless to a reader;
+            # anchor it to the complex when the spec names one.
+            parent = spec.get("venue_parent")
+            if parent:
+                for ev in evs:
+                    v = (ev.get("venue") or "").strip().rstrip(".")
+                    if v and v != spec["name"] and parent.lower() not in v.lower():
+                        ev["venue"] = f"{v} at {parent}"
+            return evs
         return self._extract_dom(html, spec)
 
     def scrape(self) -> List[Dict]:

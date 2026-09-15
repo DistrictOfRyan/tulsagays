@@ -22,6 +22,16 @@ CORE = [
     "tools/preflight_post.py", "tools/gen_website_html.py", "tools/postrun_verify.py",
     "tools/clean_event_data.py", "tools/send_newsletter.py", "posting/group_blast.py",
     "tests/test_pipeline.py",
+    "scraper/tz_guard.py", "tools/verify_week_truth.py", "posting/group_retract.py",
+    "scraper/eventbrite_meetup.py", "scraper/okeq_calendar.py",
+]
+
+# Fact-accuracy guards (2026-09-15, after W38 shipped a 2025 festival, every
+# Meetup time 5h late and Facebook times 1h early). tz_guard's selftest also
+# fails if any scraper reintroduces raw ISO time slicing.
+SELFTESTS = [
+    ("tz_guard selftest", ["scraper/tz_guard.py"]),
+    ("verify_week_truth selftest", ["tools/verify_week_truth.py", "--selftest"]),
 ]
 
 
@@ -47,6 +57,15 @@ def main():
     if r.returncode != 0:
         fails.append("test_pipeline")
         sys.stderr.write(r.stderr)
+
+    print("=== verify_all: fact-accuracy guards ===")
+    for label, args in SELFTESTS:
+        r = run([PY, *args])
+        if r.returncode != 0:
+            fails.append(label)
+            print(r.stdout[-3000:] + r.stderr[-1000:])
+        else:
+            print(f"  [ok] {label}")
 
     print()
     if fails:

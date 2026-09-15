@@ -88,7 +88,15 @@ class TulsaArtsDistrictScraper(BaseScraper):
         if not text:
             return ""
         text = re.sub(r"<[^>]+>", " ", text)
-        return html.unescape(text).strip()
+        text = html.unescape(text)
+        # The Events Calendar excerpt carries its "Add to calendar" widget
+        # (Google Calendar / iCalendar / Outlook 365 / Outlook Live) and a stray
+        # "@"; every W38 Arts District row shipped that as its website copy
+        # (2026-09-15). Strip it, then collapse whitespace.
+        text = re.sub(r"\bAdd to calendar\b|\bGoogle Calendar\b|\biCalendar\b|\bOutlook 365\b|\bOutlook Live\b",
+                      " ", text, flags=re.I)
+        text = re.sub(r"\s+", " ", text).strip()
+        return "" if re.fullmatch(r"[@\W]*", text) else text
 
     def _parse_api_event(self, item: Dict) -> Dict | None:
         name = self._clean(item.get("title", ""))

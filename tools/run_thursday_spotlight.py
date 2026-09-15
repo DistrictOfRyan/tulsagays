@@ -289,6 +289,10 @@ def main() -> int:
     events = payload.get("events", payload) if isinstance(payload, dict) else payload
     if not isinstance(events, list):
         events = []
+    # Never spotlight a row the source-of-truth pass hid or barred from featuring
+    # (2026-09-15: W38's 2025 Fringe Festival was Event of the Week).
+    events = [e for e in events if isinstance(e, dict)
+              and not e.get("hide_from_site") and not e.get("never_feature")]
 
     spotlight_log = _load_spotlight_log()
     recent_keys = {row.get("subject_key") for row in spotlight_log[-NO_REPEAT_WEEKS:]}

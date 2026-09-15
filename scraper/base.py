@@ -158,6 +158,12 @@ class BaseScraper:
                 start = item.get("startDate", "") or ""
                 date_str, time_str = self._split_schema_datetime(start)
                 location = item.get("location", {})
+                # schema.org allows a LIST of Places. Hard Rock Tulsa emits
+                # [{"@type":"Place","name":"Riffs"}]; treating only dict/str as a
+                # location sent every Riffs / Amp Bar / Track 5 act to the spec's
+                # "Hard Rock Live Tulsa" (10 wrong W38 venues, 2026-09-15).
+                if isinstance(location, list):
+                    location = next((l for l in location if isinstance(l, (dict, str)) and l), {})
                 venue = venue_default
                 if isinstance(location, dict):
                     venue = location.get("name", venue_default) or venue_default
@@ -187,25 +193,10 @@ class BaseScraper:
           - Naive local time  -> pass through unchanged (existing behavior).
         Falls back to the naive slice on any parse failure.
         """
-        if not start:
-            return "", ""
-        date_str = start[:10]
-        if "T" not in start:
-            return date_str, ""
-        time_part = start.split("T", 1)[1]
-        if time_part[:5] in ("00:00",):
-            return date_str, ""  # date-only placeholder
-        has_zone = time_part.endswith("Z") or re.search(r"[+-]\d{2}:?\d{2}$", time_part)
-        if not has_zone:
-            return date_str, time_part[:5]
-        try:
-            from datetime import datetime
-            from zoneinfo import ZoneInfo
-            iso = start.replace("Z", "+00:00")
-            dt = datetime.fromisoformat(iso).astimezone(ZoneInfo("America/Chicago"))
-            return dt.strftime("%Y-%m-%d"), dt.strftime("%H:%M")
-        except Exception:
-            return date_str, time_part[:5]
+        # Delegates to the shared guard so every scraper converts the same way
+        # (2026-09-15: eight call sites had re-implemented this as a raw slice).
+        from scraper.tz_guard import iso_to_local
+        return iso_to_local(start, midnight_utc_is_placeholder=True)
 
     def scrape(self) -> List[Dict]:
         """Override in subclasses. Must return a list of event dicts."""
@@ -241,11 +232,27 @@ class BaseScraper:
             "%A, %b %d",
             "%a, %B %d",
         ]
+        # A leading weekday name ("Friday, September 19") is a claim about the
+        # YEAR when the year itself is missing. 2026-09-15: a 2025 festival page
+        # was stamped with the current year because nobody compared the two.
+        _wd_idx = None
+        try:
+            from scraper.tz_guard import resolve_yearless as _resolve_yearless,                 weekday_index as _weekday_index
+            _wd_m = re.match(r"^\s*([A-Za-z]{3,9})\.?,?\s+", date_str)
+            if _wd_m:
+                _wd_idx = _weekday_index(_wd_m.group(1))
+        except Exception:
+            _resolve_yearless = None
         for fmt in formats:
             try:
                 dt = datetime.strptime(date_str, fmt)
-                # If year is 1900 (no year in format), assume current year
+                # If year is 1900 (no year in format), resolve it honestly
                 if dt.year == 1900:
+                    if _resolve_yearless is not None:
+                        resolved = _resolve_yearless(dt.month, dt.day, weekday_idx=_wd_idx)
+                        if not resolved:
+                            return ""   # stale (last year's date) or contradictory
+                        return resolved
                     dt = dt.replace(year=datetime.now().year)
                 return dt.strftime("%Y-%m-%d")
             except ValueError:
@@ -259,6 +266,16 @@ class BaseScraper:
             date_str, re.I)
         if m:
             mon, day, yr = m.group(1), m.group(2), m.group(3)
+            if not yr and _resolve_yearless is not None:
+                # Weekday immediately before the month token ("Fri, Sep 19 7pm")
+                _pre = date_str[:m.start()]
+                _wd2 = re.search(r"([A-Za-z]{3,9})\.?,?\s*$", _pre)
+                _idx = _weekday_index(_wd2.group(1)) if _wd2 else None
+                try:
+                    _mo = datetime.strptime(mon[:3], "%b").month
+                    return _resolve_yearless(_mo, int(day), weekday_idx=_idx)
+                except ValueError:
+                    return ""
             yr = yr or str(datetime.now().year)
             try:
                 dt = datetime.strptime(f"{mon} {day} {yr}", "%b %d %Y")

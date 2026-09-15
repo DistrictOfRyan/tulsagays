@@ -151,10 +151,16 @@ class OKEQCalendarScraper(BaseScraper):
         time_str = time_m.group(1).upper() if time_m else ""
 
         # URL
-        link = li.find("a", href=True)
-        url = link["href"] if link else ""
-        if url and not url.startswith("http"):
-            url = "https://okeq.org" + url
+        # Skip contact links: the first <a> is often a mailto:/tel:, which was
+        # glued onto the domain and shipped as "https://okeq.orgmailto:..."
+        # (5 broken W38 website links, 2026-09-15).
+        url = ""
+        for link in li.find_all("a", href=True):
+            href = link["href"].strip()
+            if not href or href.lower().startswith(("mailto:", "tel:", "javascript:", "#")):
+                continue
+            url = href if href.startswith("http") else "https://okeq.org/" + href.lstrip("/")
+            break
 
         # Description: full details text minus the title
         desc = details_text.replace(name, "").strip()[:400]

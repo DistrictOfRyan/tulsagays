@@ -204,6 +204,17 @@ def sanitize_pitch(text: str) -> str:
     low = raw.lower()
     if _tc.URL_RE.search(raw) or "fbclid" in low or ".com/" in low:
         return ""
+    # Belt-and-suspenders on top of voice_enrich's own gate: this is the one
+    # chokepoint every pitch passes through no matter the source, so it is
+    # where a leaked-internal-content bug gets caught even if a future code
+    # path calls the LLM without going through voice_enrich. See
+    # content.generator._is_contaminated for the incident this exists for.
+    try:
+        from content.generator import _is_contaminated
+        if _is_contaminated(raw):
+            return ""
+    except Exception:
+        pass
     if _tc.REL_DATE_PHRASE_RE.search(raw) or _tc.REL_DATE_BARE_RE.search(raw):
         return ""
     # A single token this long cannot wrap and will overflow the slide.

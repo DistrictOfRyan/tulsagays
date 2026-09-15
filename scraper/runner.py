@@ -649,8 +649,38 @@ def _location_text(event: Dict) -> str:
     ]).lower()
 
 
+# Multi-city organisations whose NAME carries the chapter city ("HotMess Sports
+# Charleston: Free Corn Hole Open Play"). Facebook event pages carry no
+# geography, the venue reads "Tulsa, OK" by default, so the name is the only
+# signal. W37 and W38 both listed Charleston, Sarasota, Mobile, Columbia and
+# Knoxville chapters on tulsagays.com. (2026-09-15)
+_CHAPTER_ORG_RX = re.compile(
+    r"\b(hotmess\s+sports|stonewall\s+sports|varsity\s+gay\s+league|pride\s+bowling)\s+"
+    r"([A-Za-z][A-Za-z .'-]{2,30}?)\s*(?::|-|\||$|\bfree\b|\bopen\b|\bkickball\b|\bdodgeball\b|\bvolleyball\b|\bcorn\b|\bsand\b|\bbowling\b)",
+    re.IGNORECASE)
+
+
+def _chapter_city_out_of_region(name: str) -> str:
+    """Return the foreign chapter city named in `name`, or '' when the event is
+    local (or the org has no city in the name)."""
+    m = _CHAPTER_ORG_RX.search(name or "")
+    if not m:
+        return ""
+    city = m.group(2).strip(" .:-").lower()
+    if not city or len(city) < 3:
+        return ""
+    local = [c.lower() for c in getattr(config, "METRO_CITIES", [])] + ["tulsa", "oklahoma", "ok", "okc", "oklahoma city"]
+    if any(city == c or city.startswith(c + " ") or c.startswith(city) for c in local):
+        return ""
+    return city
+
+
 def _is_out_of_region(event: Dict) -> bool:
     """True if the event is clearly outside the Tulsa metro / Oklahoma."""
+    _chapter = _chapter_city_out_of_region(event.get("name", ""))
+    if _chapter:
+        logger.debug(f"[filter] chapter-city out of region: '{event.get('name')}' ({_chapter})")
+        return True
     loc = _location_text(event).strip()
     if not loc:
         return False  # no location info — cannot judge, keep it
@@ -1412,11 +1442,40 @@ def main():
     # 5. Sort by priority then date
     sorted_events = sort_events(unique_events)
 
-    # 5b. Normalize all time strings to 12-hour AM/PM format
+    # 5b. Normalize all time strings to 12-hour AM/PM format, converting any
+    # foreign time-zone label first (2026-09-15: "6 PM CST" from a browser in
+    # Mexico is 7:00 PM in Tulsa during CDT; 39 of 44 Facebook rows shipped an
+    # hour early in W38). Source-agnostic on purpose: any scraper that renders
+    # a tz label gets corrected here, not just Facebook.
+    _tz_fixed = 0
+    try:
+        from scraper.tz_guard import fix_tz_labeled_time as _fix_tz
+    except Exception:
+        _fix_tz = None
     for ev in sorted_events:
         raw_t = (ev.get("time") or "").strip()
-        if raw_t:
-            ev["time"] = _normalize_time_str(raw_t)
+        if not raw_t:
+            continue
+        if _fix_tz is not None:
+            try:
+                fixed, changed, note, day_delta = _fix_tz(raw_t, ev.get("date"))
+                if changed or fixed != raw_t:
+                    if changed:
+                        _tz_fixed += 1
+                        ev["tz_fixed_from"] = raw_t
+                        logger.info(f"[tz] '{ev.get('name')}': '{raw_t}' -> '{fixed}' ({note})")
+                    raw_t = fixed
+                    if day_delta and ev.get("date"):
+                        try:
+                            ev["date"] = (datetime.strptime(ev["date"], "%Y-%m-%d")
+                                          + timedelta(days=day_delta)).strftime("%Y-%m-%d")
+                        except ValueError:
+                            pass
+            except Exception as _tze:
+                logger.warning(f"[tz] guard skipped for '{ev.get('name')}': {_tze}")
+        ev["time"] = _normalize_time_str(raw_t)
+    if _tz_fixed:
+        logger.info(f"[tz] converted {_tz_fixed} time(s) from a foreign time-zone label to local time")
 
     # 5c. Sanity checker — quarantines off-topic/junk/implausible events the
     # keyword filters missed (2026-W24 shipped Owasso civic meetings, kids

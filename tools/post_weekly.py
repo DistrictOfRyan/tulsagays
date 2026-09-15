@@ -691,12 +691,49 @@ def main():
                         caption, flags=_re.S)[0].rstrip()
     print(f"[OK] Caption loaded ({len(caption)} chars)")
 
+    # Step 2.5: DUPLICATE-POST GUARD (2026-09-15). W38 went out TWICE on the
+    # Page and on Instagram (4:02/4:19 PM FB, 4:04/4:20 PM IG): post_results.json
+    # was written only at the very end, so a run that died after publishing left
+    # no trace and the rerun published again. Now every publish is recorded the
+    # moment it succeeds, and a rerun for a week that already has a live post is
+    # refused. After a deliberate retraction, pass --repost.
+    ledger_path = SLIDES_DIR / "post_ledger.json"
+    if not DRY_RUN and "--repost" not in sys.argv:
+        prior = []
+        for p in (ledger_path, SLIDES_DIR / "post_results.json"):
+            try:
+                d = json.loads(p.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            for k in ("fb_post_id", "ig_post_id"):
+                v = str(d.get(k) or "")
+                if v and not v.startswith(("FAILED", "dry_run")) and not d.get("dry_run"):
+                    prior.append(f"{p.name}:{k}={v}")
+        if prior:
+            print(f"\n[STOP] {WEEK_KEY} already has live post(s): {', '.join(prior)}\n"
+                  f"       Posting again would duplicate the carousel. If those posts were\n"
+                  f"       retracted on purpose, rename the ledgers and re-run with --repost.")
+            sys.exit(1)
+
+    def _record(key: str, value) -> None:
+        if DRY_RUN:
+            return
+        try:
+            cur = json.loads(ledger_path.read_text(encoding="utf-8")) if ledger_path.exists() else {"week": WEEK_KEY}
+        except Exception:
+            cur = {"week": WEEK_KEY}
+        cur[key] = value
+        cur[f"{key}_at"] = datetime.now().isoformat()
+        ledger_path.write_text(json.dumps(cur, indent=2), encoding="utf-8")
+
     # Step 3: Host slides on tulsagays.com for IG public URLs
     print("\n[HOSTING] Publishing slides to tulsagays.com...")
     public_urls = host_slides_for_ig(slides)
 
     # Step 4: Post to Facebook (binary upload, no external hosting needed)
     fb_result = post_fb_carousel(slides, caption)
+    _record("fb_post_id", fb_result.get("post_id"))
+    _record("photo_ids", fb_result.get("photo_ids"))
 
     # Step 5: Post to Instagram (needs public URLs)
     try:
@@ -705,6 +742,7 @@ def main():
         print(f"\n[WARN] Instagram post failed: {e}")
         print("       Facebook post is live. Report IG failure to William.")
         ig_post_id = f"FAILED: {e}"
+    _record("ig_post_id", ig_post_id)
 
     # Step 6: Save results
     save_results(fb_result, ig_post_id)

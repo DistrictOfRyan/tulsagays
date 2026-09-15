@@ -613,6 +613,97 @@ def run(week_key=None):
         warnings.append("[sanity] no sanity report for this week — "
                         "run tools/sanity_check_events.py after the scrape")
 
+    # ── SOURCE-OF-TRUTH RE-VERIFICATION (2026-09-15) ──────────────────
+    # Every gate above validates the deck against ITSELF. W38 passed preflight
+    # with 0 errors and shipped a 2025 Fringe Festival as Event of the Week,
+    # 39 Facebook times an hour early, 10 Meetup times five hours early and a
+    # 2025 "Escandalo": William heard about it from the organisers.
+    # tools/verify_week_truth.py re-reads every row's SOURCE and writes
+    # truth_report.json. Here: a confirmed, unfixed disagreement on a
+    # featured/EOTW row is a HARD BLOCK; on any other shown row a warning; a
+    # missing report is a HARD BLOCK (the prep chain writes it; by hand it is
+    # `python tools/verify_week_truth.py --fix`, ~3 minutes).
+    _truth_path = os.path.join(post_dir, "truth_report.json")
+    _fk = {(e.get("name"), e.get("date")) for e in eotw + featured_all}
+    if not os.path.exists(_truth_path):
+        errors.append("[truth] no truth_report.json for this week — run "
+                      "`python tools/verify_week_truth.py --fix` after the scrape "
+                      "(source re-verification is mandatory since 2026-09-15)")
+    else:
+        try:
+            import time as _time
+            _tr = json.load(open(_truth_path, encoding="utf-8"))
+            _age_h = (_time.time() - os.path.getmtime(_truth_path)) / 3600.0
+            if _age_h > 24:
+                warnings.append(f"[truth] truth_report.json is {_age_h:.0f}h old — re-run verify_week_truth.py")
+            # 2026-09-15 (tightened same day): a confirmed, unfixed disagreement
+            # blocks on ANY row, not just featured/EOTW. The website lists every
+            # row, and William's inbox filled with organisers of NON-featured
+            # events (Ecstatic Dance, Meetup groups). Only organizer-submitted
+            # rows (review_only) stay warnings: their word beats a web page.
+            _n_block = 0
+            for _f in _tr.get("findings", []):
+                if _f.get("fixed"):
+                    continue
+                _line = (f"[truth] {_f.get('verdict')}: '{_f.get('name')}' {_f.get('date')} "
+                         f"{_f.get('time') or ''} — {_f.get('reason')}")
+                if _f.get("review_only") and (_f.get("name"), _f.get("date")) not in _fk:
+                    warnings.append(_line + " (organizer-submitted: confirm with them)")
+                    continue
+                _where = "featured/EOTW" if (_f.get("name"), _f.get("date")) in _fk else "website row"
+                errors.append(_line + f" ({_where}: re-run verify_week_truth.py --fix, or fix/drop the row)")
+                _n_block += 1
+            # A FEATURED or EOTW slot must be POSITIVELY confirmed: by its source
+            # (truth 'confirmed') or by a recorded human check on the row
+            # (human_verified with an evidence_url). "Nobody found it wrong" is
+            # not enough for the cover people act on (2026-09-15: W38's corrected
+            # EOTW was a Google Form link no machine could read).
+            _conf = {(c.get("name"), c.get("date")) for c in _tr.get("confirmed", [])}
+            if "confirmed" not in _tr:
+                errors.append("[truth] truth_report.json predates positive confirmations — re-run verify_week_truth.py")
+            else:
+                try:
+                    _raw_all = json.load(open(os.path.join(config.DATA_DIR, "events", f"{week_key}_all.json"),
+                                              encoding="utf-8"))
+                    _raw_all = _raw_all.get("events", []) if isinstance(_raw_all, dict) else _raw_all
+                except Exception:
+                    _raw_all = []
+                _rows_by_key = {(e.get("name"), e.get("date")): e for e in _raw_all if isinstance(e, dict)}
+                for _k in sorted(_fk, key=lambda k: (str(k[1]), str(k[0]))):
+                    _row = _rows_by_key.get(_k, {})
+                    _hv = _row.get("human_verified") or {}
+                    if _k in _conf or (_hv.get("evidence_url") and _hv.get("action") != "hidden"):
+                        continue
+                    errors.append(f"[truth] featured/EOTW '{_k[0]}' {_k[1]} is not confirmed by its source or a "
+                                  f"recorded human check — verify it (set human_verified with evidence_url) or unfeature it")
+        except Exception as _te:
+            errors.append(f"[truth] truth_report.json unreadable ({_te}) — re-run verify_week_truth.py")
+
+    # Per-row tripwires that need no network: a weekday name in the copy that
+    # contradicts the row's own date (stale yearless page), and a time still
+    # carrying a foreign time-zone label (the runner's tz fix did not run).
+    try:
+        from scraper.tz_guard import weekday_mismatch_in_text as _wd_mis, foreign_tz_label as _ftz
+        _fk_all = eotw + featured_all
+        _fk_set = {(e.get("name"), e.get("date")) for e in _fk_all}
+        for _e in _fk_all + [x for x in all_shown if (x.get("name"), x.get("date")) not in _fk_set]:
+            _is_f = (_e.get("name"), _e.get("date")) in _fk_set
+            _txt = " ".join(str(_e.get(k) or "") for k in
+                            ("name", "description", "website_description", "slide_description"))
+            _r = _wd_mis(_txt, _e.get("date") or "")
+            if _r:
+                (errors if _is_f else warnings).append(
+                    f"[dayname] {'featured' if _is_f else 'shown'} '{_e.get('name')}': {_r}")
+            _lab = _ftz(_e.get("time") or "", _e.get("date") or "")
+            if _lab:
+                (errors if _is_f else warnings).append(
+                    f"[tz] {'featured' if _is_f else 'shown'} '{_e.get('name')}' time '{_e.get('time')}' "
+                    f"carries foreign tz label {_lab} — the hour is shifted; re-run the scrape/tz fix")
+            elif re.search(r"(?<![A-Za-z])(UTC|GMT|[ECMP][SD]T)(?![A-Za-z])", _e.get("time") or ""):
+                warnings.append(f"[tz] '{_e.get('name')}' time '{_e.get('time')}' still carries a tz label — normalize it")
+    except Exception as _tz_e:
+        warnings.append(f"[tz] tripwire skipped: {_tz_e}")
+
     # ── SLIDE COPY VOICE (the hero cards people actually see) ──
     # The W24 embarrassment was templated filler ON THE SLIDES. That is the
     # hard block: FEATURED + EOTW copy must be real Alicia/RuPaul/Dolly voice,
@@ -718,12 +809,25 @@ def run(week_key=None):
         "</system-reminder>", "TASK_COMPLETE", "As an AI", "I cannot",
         "assistant:", "<commentary>", "tool_use", "ANTHROPIC",
     ]
+    try:
+        from content.generator import CLI_FAILURE_SIGNATURES as _CLI_SIGS
+    except Exception:
+        _CLI_SIGS = ("spend limit", "usage limit", "raise it at", "claude.ai/settings", "api error",
+                     "failed to authenticate", "session expired", "rate limit", "credit balance")
+
     def _scan_harness(text, where):
         if not text:
             return
         for m in HARNESS_MARKERS:
             if m.lower() in text.lower():
                 errors.append(f"[harness-leak] {where} contains internal marker '{m}' — must NEVER post")
+        # LLM/CLI status text saved as copy (W26 "API Error: Unable to connect";
+        # W38 2026-09-15 caption "You've hit your monthly spend limit · raise it
+        # at claude.ai/settings/usage", which passed this gate).
+        for s in _CLI_SIGS:
+            if s in text.lower():
+                errors.append(f"[harness-leak] {where} contains CLI status text '{s}' — an LLM error was saved as copy")
+                break
     for e in eotw + all_shown:
         _scan_harness(e.get("description", ""), f"'{e.get('name')}' short")
         _scan_harness(e.get("website_description", ""), f"'{e.get('name')}' long")
@@ -756,6 +860,11 @@ def run(week_key=None):
             except Exception:
                 pass
         _scan_harness(cleaned, f"caption ({os.path.basename(cap_path)})")
+        # A real weekly caption points people to the site. A caption that does not
+        # mention tulsagays.com is not the generated post copy (2026-09-15).
+        if "tulsagays.com" not in cleaned.lower():
+            errors.append(f"[caption] {os.path.basename(cap_path)} does not mention tulsagays.com — "
+                          f"not real post copy (starts: {cleaned[:60]!r})")
 
     # ── ANONYMITY (account must never reveal who runs it) ───────────────
     for e in eotw + all_shown:
@@ -778,6 +887,13 @@ def run(week_key=None):
         url = (e.get("url") or "").strip()
         if url and not re.match(r"^https?://", url):
             errors.append(f"[links] '{e.get('name')}' has malformed URL: {url}")
+    # A contact link glued onto a domain ("https://okeq.orgmailto:...") shipped as
+    # a broken "more info" link on W38 website cards (2026-09-15). Any shown row.
+    for e in eotw + all_shown:
+        for u in [e.get("url")] + list(e.get("source_urls") or []):
+            if re.search(r"https?://[^/\s]+(?:mailto:|tel:)", str(u or ""), re.I):
+                errors.append(f"[links] '{e.get('name')}' has a contact link glued onto a domain: {u}")
+                break
     # EOTW links should actually resolve (best-effort; network issues = warning).
     try:
         import requests

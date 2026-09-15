@@ -97,6 +97,11 @@ def run_pre():
     print(f"  [ok] scrape produced {n} events", flush=True)
     # 3. Clean recurring scraper artifacts before slides render.
     step("Clean event data", [PY, "tools/clean_event_data.py"], timeout=300)
+    # 3b. Source-of-truth pass (2026-09-15). main.py scrape already runs it; this
+    #     re-runs after cleaning so the report matches the rows that render.
+    #     Exit 1 = unfixable disagreements remain; preflight hard-blocks on them.
+    step("Verify rows against their sources", [PY, "tools/verify_week_truth.py", "--fix", "--quiet"],
+         timeout=1200, required=False)
     # 4. Generate slides — FAST rule-based path (no nested-CLI hang).
     step("Generate carousel (rule-based)", [PY, "main.py", "generate-all"],
          timeout=900, env=_env(TULSAGAYS_RULE_ENRICH="1"))

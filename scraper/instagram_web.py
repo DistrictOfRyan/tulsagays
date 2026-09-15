@@ -51,23 +51,37 @@ async (user) => {
     // uid resolution, two paths: web_profile_info started returning HTTP 400
     // for most business/professional handles (2026-07-22) while topsearch
     // still resolves every account — try profile first, fall back to search.
+    // EVERY parse is guarded (fixed 2026-09-09). Instagram answers a walled or
+    // rate-limited API call with HTTP 200 + an HTML login page, so `r.json()`
+    // throws SyntaxError. Unguarded, that SyntaxError escaped past the topsearch
+    // fallback into the outer catch and killed the handle outright - which is why
+    // on 2026-09-09 all 9 venues logged "Unexpected token '<'" and the web tier
+    // returned 0 posts while the session was in fact still alive (ds_user_id
+    // present). A fallback you can never reach is not a fallback.
+    const jparse = async (r) => { try { return await r.json(); } catch (e) { return null; } };
     let uid = null, perr = '';
     const r1 = await fetch(`/api/v1/users/web_profile_info/?username=${user}`, {headers: H});
     if (r1.ok) {
-      const u = (await r1.json())?.data?.user;
-      if (u && u.id) uid = u.id;
+      const b1 = await jparse(r1);
+      if (b1 === null) { perr = 'profile returned non-JSON (HTML wall)'; }
+      else {
+        const u = b1?.data?.user;
+        if (u && u.id) uid = u.id;
+      }
     } else { perr = 'profile HTTP ' + r1.status; }
     if (!uid) {
       const rs = await fetch(`/web/search/topsearch/?query=${user}`, {headers: H});
       if (!rs.ok) return {err: (perr ? perr + '; ' : '') + 'topsearch HTTP ' + rs.status};
-      const j = await rs.json();
-      const hit = (j.users || []).find(x => x.user && x.user.username === user);
+      const js = await jparse(rs);
+      if (js === null) return {err: (perr ? perr + '; ' : '') + 'topsearch returned non-JSON (HTML wall)'};
+      const hit = (js.users || []).find(x => x.user && x.user.username === user);
       if (!hit) return {err: (perr ? perr + '; ' : '') + 'no uid via topsearch (private/renamed?)'};
       uid = hit.user.pk;
     }
     const r2 = await fetch(`/api/v1/feed/user/${uid}/?count=%d`, {headers: H});
     if (!r2.ok) return {err: 'feed HTTP ' + r2.status};
-    const j = await r2.json();
+    const j = await jparse(r2);
+    if (j === null) return {err: 'feed returned non-JSON (HTML wall)'};
     const bestImg = (o) => {
       const c = (o && o.image_versions2 && o.image_versions2.candidates) || [];
       return c.length ? c[0].url : '';

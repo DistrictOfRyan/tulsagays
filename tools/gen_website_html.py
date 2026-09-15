@@ -37,6 +37,13 @@ _GARBAGE_NAMES = {
     'event calendar', 'bruce goff event center',
 }
 def _is_garbage(ev):
+    # A row a truth check CONFIRMED wrong (last year's event, another city's
+    # chapter) is hidden from the site outright, not merely barred from the
+    # slides. W38 (2026-09-15) listed a 2025 "Escandalo" on tulsagays.com
+    # because fb_event_truth only set never_feature and this page lists
+    # never_feature rows on purpose (services, support groups).
+    if ev.get('hide_from_site') is True:
+        return True
     name = (ev.get('name') or '').strip()
     if not name or len(name) < 4:
         return True

@@ -295,8 +295,12 @@ def suppress(res: dict) -> int:
         if f["verdict"] == "unknown":
             continue
         ev = f["_ev"]
-        if ev.get("never_feature") is not True:
+        if ev.get("never_feature") is not True or ev.get("hide_from_site") is not True:
             ev["never_feature"] = True
+            # A confirmed ghost (wrong year, wrong city) is not a "list it but
+            # don't feature it" case like a support group: it is not an event
+            # this week at all. Hide it from the website too (2026-09-15).
+            ev["hide_from_site"] = True
             ev["_truth_verdict"] = f"{f['verdict']}: {f['reason']}"
             n += 1
     if n:

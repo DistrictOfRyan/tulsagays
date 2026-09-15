@@ -46,6 +46,16 @@ _UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
        "(KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36")
 POSTS_TO_SCAN = 12      # most recent posts to read each run
 
+# Output budget for one extraction call. Raised 1500 -> 4000 on 2026-09-09: a
+# venue that posts DAILY (the Tulsa Eagle posts every day at ~12:03pm CT, and each
+# caption carries 2-3 named events) needs ~2.7KB of JSON for 12 posts, and 1500
+# tokens truncated it mid-object. Truncated JSON did not degrade gracefully - it
+# failed json.loads(), _extract_with_llm returned None, and the whole venue silently
+# fell back to the far blunter regex path. That is how the good extractor's output
+# ("Monday Movie Night", "Gaymer Night", "Leather Night") got replaced by the
+# regex path's guesses without anything looking broken in the log.
+MAX_EXTRACT_TOKENS = 4000
+
 # Emoji / pictographic symbol ranges + ZWJ / variation selectors. Stripped from
 # caption-derived event names so the regex fallback path is as clean as the LLM path.
 _EMOJI_RX = re.compile(
@@ -129,20 +139,41 @@ ORGS: List[Dict] = [
         # main gay bar — the W24 Pride miss class of failure.
         "alt_usernames": ["tulsaeagleok"],
         "source_name": "tulsa_eagle_ig",
-        # WHY THIS VENUE OFTEN YIELDS 0 EVENTS (diagnosed 2026-08-20, gap G513).
-        # The fetch is NOT the problem: on 2026-08-20 @tulsaeagle returned 12 posts
-        # and still produced 0 events, while Club Majestic (12 posts) and DVL (11)
-        # produced 2 each from the same run. The Eagle's programming is RECURRING
-        # WEEKLY NIGHTS (karaoke, drag) rather than dated one-off events, and this
-        # module requires a parseable IN-WEEK DATE before it will emit anything - so
-        # an undated "every Friday" caption is correctly dropped and the venue reads
-        # as empty all week on the site.
-        # The fix is NOT to loosen the date requirement here (that would flood the
-        # week with undated noise). Recurring nights belong in the `recurring`
-        # scraper / data/recurring_confirmations.json, which currently has NO Eagle
-        # entry. Before adding one, CONFIRM the actual nights against the venue's own
-        # posts - secondary aggregators (Yelp/GayCities) list a Tue-karaoke /
-        # Fri-drag pattern but are not a publishable source on their own.
+        # WHY THIS VENUE YIELDS ALMOST NOTHING FOR A WEEKLY DECK
+        # (SETTLED 2026-09-09. Supersedes the 2026-08-20 / gap G513 diagnosis that
+        # used to sit here, which said the Eagle's programming was "RECURRING
+        # WEEKLY NIGHTS rather than dated one-off events" and that "an undated
+        # 'every Friday' caption is correctly dropped". That was WRONG on the facts
+        # and it sent three sessions looking for an extraction bug.)
+        #
+        # MEASURED against 14 real @tulsaeagle captions, 2026-08-27..09-08, read
+        # from the venue's own post pages and kept verbatim in
+        # tests/fixtures/tulsa_eagle_ig_captions_2026-09-09.json:
+        #   - Extraction WORKS. 22 events came out, correctly dated and correctly
+        #     named ("Monday Movie Night", "Gaymer Night", "Underwear Night",
+        #     "Leather Night", "Tulsa Eagle Tuesday Karaoke", "Thirsty Thursday").
+        #   - _within_announce_window drops NONE of them. It was the prime suspect
+        #     and it is exonerated: every gap is 0 days. Do NOT loosen
+        #     MAX_ANNOUNCE_GAP_DAYS "to make the Eagle work".
+        #   - Nothing is undated. Every caption is a day-of post.
+        #
+        # THE REAL CAUSE is a LOOKAHEAD MISMATCH, not a parsing failure. The Eagle
+        # posts ONCE A DAY, ON THE DAY, at ~12:03pm CT - all 12 image posts land
+        # inside a two-minute window at 17:03 UTC, which is a scheduled post. So it
+        # gives ZERO days of forward notice. A weekly deck built Monday morning can
+        # therefore only ever see the days that have already happened, and on a
+        # Monday-before-12:03pm run it sees NOTHING. That is arithmetic, not a bug:
+        # in-week yield from this venue == days already elapsed this week.
+        #
+        # THE FIX, and it is already in place: the Eagle's weekly nights now live in
+        # scraper/recurring.py, confirmed the way that file demands - the venue's
+        # OWN posts showing the same night at the same time in TWO separate weeks,
+        # with the two confirming post URLs recorded per entry. Five nights met that
+        # bar (Mon Movie Night + Gaymer Night, Tue Tea Party + Karaoke, Fri Happy
+        # Hour); the once-seen ones and the Sat/Sun 10pm parties, whose NAME changes
+        # every week, deliberately did not and must keep coming from this live scrape.
+        # This module still earns its keep: it is what catches the one-off (a Labor
+        # Day cookout, a comedy show) and what keeps the recurring ledger fresh.
         "default_venue": "Tulsa Eagle, 1338 E 3rd St",
         "priority": 2,
         "blurb": "Tulsa Eagle, Tulsa's levi-leather LGBTQ+ bar. "
@@ -252,6 +283,15 @@ class InstagramOrgScraper(BaseScraper):
     # Event-type cues → a clean display label. Ordered: first match wins, so list
     # the more specific phrases before the generic ones. Lets the regex path emit
     # "Dance Party at YBR" instead of the raw hype header "HEADS UP". (2026-06-20)
+    #
+    # MATCHED ON WORD BOUNDARIES since 2026-09-09, and the bare "brunch" cue no
+    # longer says "Drag". Both are the same real defect, caught on live Tulsa Eagle
+    # captions: the 2026-08-30 post ("MEGAN opens today @2 to get you started after
+    # your brunchin & lunchin !!!") announces no drag brunch and no brunch at all,
+    # yet substring matching found "brunch" inside "brunchin" and the regex path
+    # emitted "Drag Brunch at Tulsa Eagle" - a fabricated event, on the public deck,
+    # for a night the bar was running nothing of the kind. A cue may only fire on a
+    # whole word, and only "drag brunch"/"drag show"/"drag" may ever print "Drag".
     _EVENT_TYPE_CUES = [
         ("drag brunch", "Drag Brunch"), ("drag show", "Drag Show"),
         ("drag", "Drag Night"),
@@ -260,17 +300,43 @@ class InstagramOrgScraper(BaseScraper):
         ("talent", "Talent Night"), ("open mic", "Open Mic"),
         ("karaoke", "Karaoke Night"), ("bingo", "Bingo Night"),
         ("trivia", "Trivia Night"), ("watch party", "Watch Party"),
-        ("happy hour", "Happy Hour"), ("brunch", "Drag Brunch"),
+        ("happy hour", "Happy Hour"), ("brunch", "Brunch"),
         ("tea party", "Tea Party"), ("tea time", "Tea Time"),
         ("class", "Craft Class"), ("market", "Market"),
         ("fundraiser", "Fundraiser"), ("pride", "Pride Party"),
         ("party", "Party"), ("show", "Live Show"),
     ]
+    # Same cues, precompiled as whole-word patterns (see the note above).
+    # A trailing PLURAL is still the same cue ("see your talents!" is a talent
+    # night), so an optional s/es is allowed - but no "-ing"/"-in" suffix, which is
+    # what let "brunchin & lunchin" read as a brunch in the first place.
+    _EVENT_TYPE_RX = [(re.compile(r"(?<!\w)" + re.escape(cue) + r"(?:e?s)?(?!\w)", re.I), label)
+                      for cue, label in _EVENT_TYPE_CUES]
     # Lines that are pure hype banners, never the real event name.
+    #
+    # GREETING BANNERS ADDED 2026-09-09. The old pattern was anchored ^...$ on the
+    # whole line, so it only caught a line that was NOTHING but hype ("HEADS UP").
+    # Every Tulsa Eagle post opens with a greeting that carries trailing words -
+    # "HAPPY MONDAY DIRTY BIRDS !!!", "Happy Thursday Boys and Girls !!!!", "Happy
+    # HumpDay you Dirty Birds !! !", "ITS SUNDAYFUNDAY DIRTY BIRDIES !!!!!",
+    # "Welcome to the weekend Dirty Birds !!!" - so none of them matched, and on
+    # 2026-09-09 three of the Eagle's twelve regex-path events were named after the
+    # greeting instead of the event. One of those ("HAPPY MONDAY DIRTY BIRDS !!!")
+    # was in-week and would have shipped to the deck as an event title.
+    # _HYPE_RX stays whole-line (a line that is nothing but hype);
+    # _HYPE_PREFIX_RX catches a greeting that OPENS the line, whatever follows it.
     _HYPE_RX = re.compile(
         r"^\W*(heads?\s*up|this\s+(mon|tues?|wed|thurs?|fri|sat|sun)\w*|tonight|"
         r"tomorrow|today|come\s+(get|on)|reminder|now\s+open|attention|psa|"
         r"this\s+week(end)?|next\s+(week|sun\w*|sat\w*)|mark\s+your)\W*$", re.I)
+    _HYPE_PREFIX_RX = re.compile(
+        r"^\W*("
+        r"(happy|its|it's|welcome\s+to)\b"
+        r"|(good\s+)?(morning|afternoon|evening)\b"
+        r"|hey+\b|hi\b|hello\b|yo\b"
+        r"|(mon|tues?|wed|wednes|thurs?|thur|fri|satur|sun)day\s*funday\b"
+        r"|humpday\b"
+        r")", re.I)
 
     @classmethod
     def _venue_short(cls, venue: str) -> str:
@@ -288,17 +354,115 @@ class InstagramOrgScraper(BaseScraper):
         because bar posts open with an emoji hype banner ('HEADS UP', 'THIS
         SATURDAY'), not the event title. Falls back to the first non-hype line.
         """
-        low = caption.lower()
         venue_short = cls._venue_short(venue)
-        for cue, label in cls._EVENT_TYPE_CUES:
-            if cue in low:
+        # 1. The venue's OWN name for the night, when the caption states one.
+        named = cls._named_event(caption)
+        if named:
+            return named
+        # 2. An event-type cue, matched on whole words only.
+        for rx, label in cls._EVENT_TYPE_RX:
+            if rx.search(caption):
                 return f"{label} at {venue_short}" if venue_short else label
-        # No cue — first substantive (non-hype, non-empty) line.
+        # 3. No cue - first substantive line that actually reads as a title.
+        #    A line of staff-shift prose ("ISAAC opens today @2 to get your week
+        #    started with $5 well cocktails all day") is NOT an event name, and
+        #    printing one on the deck looks worse than the generic venue label.
+        #    Added 2026-09-09: four of the Eagle's twelve captions reached this
+        #    fallback and shipped that sentence as the event title.
         for line in caption.split("\n"):
+            stripped = line.strip()
             cleaned = cls._clean_name(line)
-            if cleaned and len(cleaned) >= 4 and not cls._HYPE_RX.match(line.strip()):
+            if (cleaned and len(cleaned) >= 4
+                    and not cls._HYPE_RX.match(stripped)
+                    and not cls._HYPE_PREFIX_RX.match(stripped)
+                    and not cls._NOT_A_NAME_RX.search(cleaned)):
                 return cleaned[:80]
         return f"Event at {venue_short}" if venue_short else "Community Event"
+
+    # A named night immediately before an "@<time>" marker. Bar captions are
+    # written this way ("Monday Movie Night @7", "TULSA EAGLE BINGO @3", "LEATHER
+    # NIGHT @10 w/DJ HAZE", "SPECIAL EDITION: SUNDAY KARAOKE @6"), and the name the
+    # venue chose beats any label this module could infer. Added 2026-09-09 after
+    # the cue table reduced every one of those to a generic "Karaoke Night at Tulsa
+    # Eagle" / "Party at Tulsa Eagle" - correct, but not what the bar called it.
+    # Two orders occur in real bar captions, so both are matched:
+    #   NAME then time  - "Monday Movie Night @7", "TULSA EAGLE BINGO @3"
+    #   time then NAME  - "ISAAC has got you @8 for Underwear Night"
+    _NAMED_AT_TIME_RX = re.compile(
+        r"(?:^|[\n!?.,]|\bfor\b|\bthen\b)\s*"
+        r"(?P<name>[A-Za-z][A-Za-z0-9'&:/\-]*(?:[ ]+[A-Za-z0-9'&:/\-]+){0,5}?)"
+        r"\s*@\s*\d{1,2}")
+    _NAMED_AFTER_TIME_RX = re.compile(
+        r"@\s*\d{1,2}(?::\d{2})?\s*(?:[ap]\.?m\.?)?\s*for\s+"
+        r"(?P<name>[A-Za-z][A-Za-z0-9'&:/\-]*(?:[ ]+[A-Za-z0-9'&:/\-]+){0,5})",
+        re.I)
+    # Words that mean the phrase is staff/shift prose, not an event title
+    # ("MEGAN opens today @2", "NATHAN has you all night long").
+    #
+    # NOTE (2026-09-09): "night", "day", "all" and "long" were in this list on the
+    # first pass and that was wrong - "night" is the single commonest word in a real
+    # bar-night title, so banning it threw away "Monday Movie Night", "Gaymer
+    # Night", "Underwear Night" and "Leather Night", i.e. exactly the names this
+    # function exists to find. The filler phrases are banned as PHRASES instead.
+    _NOT_A_NAME_RX = re.compile(
+        r"\b(opens?|opening|has|have|had|got|takes?|taking|starts?|starting|"
+        r"come|comes|hang|gets?|keeps?|you|your|yours|us|we|our|"
+        r"today|tonight|tomorrow|until|w/|sponsored)\b"
+        r"|\ball\s+(night|day)\b", re.I)
+
+    # Filler that a caption wraps around the real title. Cut, don't reject: the
+    # 2026-09-09 first pass threw away "Underwear Night" because the regex span ran
+    # on into "all night long", and printed "STEVEN and JUSTIN for LEATHER NIGHT"
+    # because the staff names sat in front of it.
+    _TRIM_AFTER_LAST = (" for ",)                     # keep what follows
+    _TRIM_BEFORE = (" then ", " with ", " w/", " all night", " all day",
+                    " until ", " sponsored", " to get", " to keep")
+    _LEAD_FILLER = ("the ", "a ", "an ", "our ", "your ", "this ")
+
+    @classmethod
+    def _trim_title(cls, cand: str) -> str:
+        """Strip caption filler from around a candidate title."""
+        out = (cand or "").strip()
+        for sep in cls._TRIM_AFTER_LAST:
+            i = out.lower().rfind(sep)
+            if i != -1:
+                out = out[i + len(sep):]
+        low = out.lower()
+        cut = len(out)
+        for sep in cls._TRIM_BEFORE:
+            i = low.find(sep)
+            if i != -1:
+                cut = min(cut, i)
+        out = out[:cut].strip()
+        changed = True
+        while changed:
+            changed = False
+            for lead in cls._LEAD_FILLER:
+                if out.lower().startswith(lead):
+                    out = out[len(lead):].lstrip()
+                    changed = True
+        return out.replace(" :", ":").strip(" ,-:")
+
+    @classmethod
+    def _looks_like_a_title(cls, cand: str) -> bool:
+        """True if `cand` reads as an event title rather than caption prose."""
+        if not cand or len(cand) < 4 or " " not in cand:
+            return False          # single word / too short to be a title
+        if cls._NOT_A_NAME_RX.search(cand):
+            return False          # staff-shift prose, not a title
+        if cls._HYPE_RX.match(cand) or cls._HYPE_PREFIX_RX.match(cand):
+            return False          # greeting banner
+        return True
+
+    @classmethod
+    def _named_event(cls, caption: str) -> str:
+        """The venue's own name for the night, or "" when none is stated."""
+        for rx in (cls._NAMED_AT_TIME_RX, cls._NAMED_AFTER_TIME_RX):
+            for m in rx.finditer(caption or ""):
+                cand = cls._trim_title(cls._clean_name(m.group("name")))
+                if cls._looks_like_a_title(cand):
+                    return cand[:80]
+        return ""
 
     @classmethod
     def _in_week(cls, date_str: str) -> bool:
@@ -568,13 +732,32 @@ class InstagramOrgScraper(BaseScraper):
         fresh = []
         for e in events:
             if self._within_announce_window(e.get("date", ""), e.get("_src_posted_on", "")):
-                e.pop("_src_posted_on", None)
                 fresh.append(e)
         dropped = len(events) - len(fresh)
-        # Guard 2 — keep only events inside the current Mon–Sun week.
-        in_week = [e for e in fresh if self._in_week(e.get("date", ""))]
-        logger.info("[%s] %d candidate events, %d dropped stale-projection, %d in current week",
-                    self.source_name, len(events), dropped, len(in_week))
+
+        # Guard 2 — caption support: the announcing post must actually claim the
+        # date. Catches an LLM-invented date that the window and the week filter
+        # both wave through (the 2026-09-09 "Labor Day Cookout" mis-date).
+        supported = []
+        for e in fresh:
+            if self._date_supported_by_caption(e.get("date", ""),
+                                               e.get("_src_caption", ""),
+                                               e.get("_src_posted_on", "")):
+                supported.append(e)
+            else:
+                logger.info("[%s] dropped unsupported date %s (post %s): %s",
+                            self.source_name, e.get("date"), e.get("_src_posted_on"),
+                            str(e.get("name"))[:50])
+        unsupported = len(fresh) - len(supported)
+        for e in supported:
+            e.pop("_src_posted_on", None)
+            e.pop("_src_caption", None)
+
+        # Guard 3 — keep only events inside the current Mon–Sun week.
+        in_week = [e for e in supported if self._in_week(e.get("date", ""))]
+        logger.info("[%s] %d candidate events, %d dropped stale-projection, "
+                    "%d dropped unsupported-date, %d in current week",
+                    self.source_name, len(events), dropped, unsupported, len(in_week))
         return in_week
 
     # An event dated more than this many days after its announcing post is treated
@@ -601,6 +784,65 @@ class InstagramOrgScraper(BaseScraper):
     # tighten this, the anchoring rules in _extract_with_llm are what keeps the
     # deck safe, so do not remove them.
     MAX_ANNOUNCE_GAP_DAYS = 31
+
+    # Month names for the explicit-date test below.
+    _MONTHS = {"jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+               "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12}
+
+    @classmethod
+    def _date_supported_by_caption(cls, event_date: str, caption: str,
+                                   posted_on: str) -> bool:
+        """True if the announcing caption can actually support `event_date`.
+
+        WHY (2026-09-09). The LLM tier is much better than the regex tier at
+        NAMING events, and it will also quietly invent a date the caption never
+        states. Measured on the Tulsa Eagle's own posts: the 2026-09-06 caption
+        ("ITS SUNDAYFUNDAY ... NATHAN & JUSTIN open @2 to get you ready for the
+        LABOR DAY COOKOUT @4") describes a Sunday-afternoon cookout, and the model
+        dated it 2026-09-07 because that was Labor Day. Both other guards passed it
+        (gap +1 is inside the announce window, and 09-07 is in the current week), so
+        a cookout that happened Sunday would have shipped to the deck as a Monday
+        event. The 2026-09-07 post itself names only Movie Night and Gaymer Night,
+        which is the contradiction that gives this away.
+
+        A date is supported when the caption gives a reason to believe it:
+          - it IS the post date (a day-of post, which is how bars post),
+          - the caption says "tomorrow" and it is the day after the post,
+          - the caption names that weekday, or
+          - the caption carries an explicit month/day that resolves to it.
+        Anything else is a date the post does not claim, so it is dropped. A
+        holiday NAME is deliberately not accepted as a date: "LABOR DAY COOKOUT"
+        says what the party is about, not which day it runs.
+        """
+        if not event_date:
+            return False
+        if not posted_on:
+            return True          # can't judge without an anchor; other guards apply
+        try:
+            ed = datetime.strptime(event_date[:10], "%Y-%m-%d")
+            pd = datetime.strptime(posted_on[:10], "%Y-%m-%d")
+        except (ValueError, TypeError):
+            return True
+        if ed.date() == pd.date():
+            return True
+        low = (caption or "").lower()
+        if (ed - pd).days == 1 and "tomorrow" in low:
+            return True
+        # The caption names the event's weekday ("THIS SATURDAY", "SUNDAYFUNDAY").
+        wd = ed.strftime("%A").lower()                     # e.g. "saturday"
+        if wd in low or wd[:3] in re.findall(r"[a-z]{3,}", low):
+            return True
+        # An explicit month/day in the caption: "8/15", "AUGUST 27TH", "27 Aug".
+        for mm, dd in re.findall(r"(\d{1,2})\s*/\s*(\d{1,2})", low):
+            if int(mm) == ed.month and int(dd) == ed.day:
+                return True
+        for mon, dd in re.findall(r"([a-z]{3,9})\s+(\d{1,2})(?:st|nd|rd|th)?", low):
+            if cls._MONTHS.get(mon[:3]) == ed.month and int(dd) == ed.day:
+                return True
+        for dd, mon in re.findall(r"(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]{3,9})", low):
+            if cls._MONTHS.get(mon[:3]) == ed.month and int(dd) == ed.day:
+                return True
+        return False
 
     @classmethod
     def _within_announce_window(cls, event_date: str, posted_on: str) -> bool:
@@ -675,7 +917,7 @@ class InstagramOrgScraper(BaseScraper):
                 client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
                 msg = client.messages.create(
                     model="claude-sonnet-4-5",
-                    max_tokens=1500,
+                    max_tokens=MAX_EXTRACT_TOKENS,
                     system=system,
                     messages=[{"role": "user", "content": user}],
                 )
@@ -707,8 +949,26 @@ class InstagramOrgScraper(BaseScraper):
         try:
             data = json.loads(m.group(0))
         except json.JSONDecodeError:
-            logger.warning("[%s] LLM JSON parse error — using regex fallback", self.source_name)
-            return None
+            # SALVAGE (2026-09-09) before giving up on the whole venue. A response
+            # cut off at max_tokens ends mid-object, and the events BEFORE the cut
+            # are complete and correct. Discarding them threw away a good
+            # extraction and handed the venue to the regex path, which is exactly
+            # what happened to the Eagle. Recover every whole {...} object.
+            salvaged = []
+            for om in re.finditer(r"\{[^{}]*\}", m.group(0), re.DOTALL):
+                try:
+                    obj = json.loads(om.group(0))
+                except json.JSONDecodeError:
+                    continue
+                if isinstance(obj, dict) and obj.get("name") and obj.get("date"):
+                    salvaged.append(obj)
+            if not salvaged:
+                logger.warning("[%s] LLM JSON parse error, nothing salvageable — "
+                               "using regex fallback", self.source_name)
+                return None
+            logger.warning("[%s] LLM JSON truncated — salvaged %d complete events",
+                           self.source_name, len(salvaged))
+            data = {"events": salvaged}
 
         events = []
         for item in data.get("events", []):
@@ -736,8 +996,10 @@ class InstagramOrgScraper(BaseScraper):
             )
             # Tag with the announcing post's date so the caller can reject stale
             # relative-date projections (a month-old "FRIDAY" post becoming this
-            # Friday — the 2026-07-27 YBR "DJ Kylie" bug).
+            # Friday — the 2026-07-27 YBR "DJ Kylie" bug), and with the caption
+            # itself so guard 2 can check the date against what the post says.
             ev["_src_posted_on"] = src_posted
+            ev["_src_caption"] = posts[idx]["caption"] if 0 <= idx < len(posts) else ""
             events.append(ev)
         logger.info("[%s] LLM extracted %d dated events", self.source_name, len(events))
         return events
@@ -752,7 +1014,7 @@ class InstagramOrgScraper(BaseScraper):
             return None
         body = json.dumps({
             "model": "deepseek-chat",
-            "max_tokens": 1500,
+            "max_tokens": MAX_EXTRACT_TOKENS,
             "messages": [{"role": "system", "content": system},
                          {"role": "user", "content": user}],
         }).encode("utf-8")
@@ -937,6 +1199,7 @@ class InstagramOrgScraper(BaseScraper):
                 priority=self.priority,
             )
             ev["_src_posted_on"] = p.get("posted_on", "")
+            ev["_src_caption"] = caption
             events.append(ev)
         logger.info("[%s] Regex fallback extracted %d dated events",
                     self.source_name, len(events))

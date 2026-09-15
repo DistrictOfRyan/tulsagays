@@ -128,6 +128,37 @@ def _time_problems(ev: dict) -> list:
     return problems
 
 
+# ── Rules: stale yearless dates + foreign time zones (2026-09-15) ────────────
+# W38 shipped a 2025 Fringe Festival as Event of the Week (page said "Friday,
+# September 19"; in 2026 that is a Saturday) and 39 Facebook times an hour
+# early ("6 PM CST" rendered by a browser in Mexico while Tulsa was on CDT).
+# The scrapers are fixed at source; these rules are the tripwire that DROPS a
+# row if either defect ever reaches the save step again.
+
+def _stale_date_problem(ev: dict) -> str:
+    try:
+        from scraper.tz_guard import weekday_mismatch_in_text
+    except Exception:
+        return ""
+    text = " ".join(str(ev.get(k) or "") for k in
+                    ("name", "description", "website_description", "raw_text",
+                     "context", "source_text", "date_text"))
+    reason = weekday_mismatch_in_text(text, ev.get("date") or "")
+    return f"stale yearless date: {reason}" if reason else ""
+
+
+def _tz_problem(ev: dict) -> str:
+    try:
+        from scraper.tz_guard import foreign_tz_label
+    except Exception:
+        return ""
+    lab = foreign_tz_label(ev.get("time") or "", ev.get("date") or "")
+    if lab:
+        return (f"time '{ev.get('time')}' carries foreign tz label {lab} - the runner's "
+                f"tz fix did not run; refusing to publish a shifted time")
+    return ""
+
+
 # ── Rules pass ───────────────────────────────────────────────────────────────
 
 def rules_pass(events: list) -> tuple:
@@ -140,6 +171,14 @@ def rules_pass(events: list) -> tuple:
         # here so manual/late additions and stale files get the same standard.
         if _is_junk_name(name):
             dropped.append((ev, "junk/navigation name"))
+            continue
+        _stale = _stale_date_problem(ev)
+        if _stale:
+            dropped.append((ev, _stale))
+            continue
+        _tz = _tz_problem(ev)
+        if _tz:
+            dropped.append((ev, _tz))
             continue
         # Under-18 programming that isn't explicitly LGBTQ — removed from the guide
         # (e.g. a pet-rock class / storytime at the library). Queer youth events are

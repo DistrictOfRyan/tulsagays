@@ -264,7 +264,8 @@
       "name": "DJ | Sir Juice",
       "date": "2026-06-18"
     },
-    "note": "Next.js site. MusicEvent JSON-LD with ISO startDate is nested under the WebPage node's mainEntity array; _extract_json_ld_from_soup was extended to traverse mainEntity/itemListElement. Verified 85 dated events. DOM date ('Thu, Jun 18 | 8:00 PM') is messier; JSON-LD is the clean source."
+    "note": "Next.js site. MusicEvent JSON-LD with ISO startDate is nested under the WebPage node's mainEntity array; _extract_json_ld_from_soup was extended to traverse mainEntity/itemListElement. Verified 85 dated events. DOM date ('Thu, Jun 18 | 8:00 PM') is messier; JSON-LD is the clean source. 2026-09-15: location is a LIST of Places (Riffs/Amp Bar/Track 5./Hard Rock Live); venue_parent anchors room names.",
+    "venue_parent": "Hard Rock Hotel & Casino Tulsa"
   },
   {
     "name": "River Spirit Casino",

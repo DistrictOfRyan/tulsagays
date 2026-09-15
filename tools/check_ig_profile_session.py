@@ -55,7 +55,33 @@ def probe(cookie_db: Path = COOKIE_DB) -> dict:
     tmp = Path(tempfile.gettempdir()) / f"ig_profile_ck_{os.getpid()}.db"
     try:
         # Copy first: Chrome holds a lock, and we must never write to the real jar.
-        shutil.copy(cookie_db, tmp)
+        # RETRY THE COPY (2026-09-09). On Windows a RUNNING Chrome can hold
+        # Default\Network\Cookies exclusively, so shutil.copy raises
+        # PermissionError - and that landed in the generic handler below as
+        # "probe error: [Errno 13] Permission denied", which scraper_health_check
+        # then wrote verbatim into blocked_on_william.json as a login William had
+        # to perform. He had that false blocker on his plate from 2026-09-02 to
+        # 2026-09-09 while the Instagram session was in fact ALIVE the whole time
+        # (verified: 11 instagram cookies, sessionid present, page HTML reports
+        # class "logged-in"). A transient lock is a RETRY, never a credential
+        # problem, and it must never be reported as one.
+        last_err = None
+        for attempt in range(4):
+            try:
+                shutil.copy(cookie_db, tmp)
+                last_err = None
+                break
+            except (PermissionError, OSError) as e:
+                last_err = e
+                time.sleep(1.5)
+        if last_err is not None:
+            out["detail"] = (
+                "profile BUSY: Chrome is running and holding the cookie DB "
+                f"({type(last_err).__name__}). This says nothing about the "
+                "session - re-run when the automation profile is idle. NOT a "
+                "login problem, so do not route it to William.")
+            out["busy"] = True
+            return out
         con = sqlite3.connect(str(tmp))
         try:
             out["total_cookies"] = con.execute(

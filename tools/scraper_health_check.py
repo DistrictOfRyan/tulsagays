@@ -354,11 +354,27 @@ def main():
         ig_session = _ig_probe()
         if ig_session["ok"]:
             _bi.resolve("instagram-automation-profile-session")
+        elif ig_session.get("busy") or ig_session.get("error"):
+            # A locked cookie DB or a probe crash is OUR problem to retry, not a
+            # login for William. Filing it as one is what put a false "no valid
+            # session for: instagram" item on his plate for a week (2026-09-09).
+            print(f"[health] ig-profile-session inconclusive, not filing: "
+                  f"{ig_session['detail']}")
         else:
+            # Name the site that actually lacks auth. The old text always said
+            # "every IG-only org", even when the probe's own control proved
+            # Instagram was fine and only Facebook auth was missing - which sent
+            # readers hunting a broken IG scraper that was not broken.
+            bad = [k for k, v in (ig_session.get("sites") or {}).items()
+                   if v != "present"] or ["instagram"]
+            scope = ("Blocks the FB group blast." if bad == ["facebook"]
+                     else "Blocks every IG-only org (@tcc_pride, bars, HotMess)."
+                     if bad == ["instagram"]
+                     else "Blocks every IG-only org and the FB group blast.")
             _bi.add("Instagram automation profile session",
-                    f"{ig_session['detail']}. Fix: {ig_session['fix']} "
-                    "(a login, so it needs your hands). Blocks every IG-only "
-                    "org (@tcc_pride, bars, HotMess) and the FB group blast.",
+                    f"{ig_session['detail']} (missing auth: {', '.join(bad)}). "
+                    f"Fix: {ig_session['fix']} (a login, so it needs your "
+                    f"hands). {scope}",
                     source="check_ig_profile_session", since=now)
     except Exception as e:
         print(f"[health] ig-profile-session probe skipped: {e}")

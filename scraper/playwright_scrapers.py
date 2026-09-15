@@ -26,6 +26,7 @@ from typing import List, Dict, Optional
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from scraper.base import BaseScraper
 from scraper.relevance import compile_lgbtq_keywords
+from scraper.tz_guard import iso_to_local
 
 logger = logging.getLogger(__name__)
 
@@ -98,8 +99,9 @@ def _parse_iso_datetime(raw: str):
     raw = raw.strip()
     try:
         if "T" in raw:
-            date_part = raw[:10]
-            time_part = raw[11:16]  # HH:MM
+            date_part, time_part = iso_to_local(raw)  # UTC-aware (tz_guard)
+            if not time_part:
+                return date_part, ""
             try:
                 dt = datetime.strptime(time_part, "%H:%M")
                 time_str = dt.strftime("%I:%M %p").lstrip("0")
@@ -393,6 +395,8 @@ class PlaywrightBaseScraper(BaseScraper):
                     start = item.get("startDate", "")
                     date_str, time_str = _parse_iso_datetime(start)
                     location = item.get("location", {})
+                    if isinstance(location, list):  # schema.org allows a list of Places (2026-09-15)
+                        location = next((l for l in location if isinstance(l, (dict, str)) and l), {})
                     loc_name = venue
                     if isinstance(location, dict):
                         loc_name = location.get("name", venue) or venue

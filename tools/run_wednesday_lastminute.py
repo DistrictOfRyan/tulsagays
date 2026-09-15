@@ -127,6 +127,9 @@ def main() -> int:
     live_events = payload.get("events", payload) if isinstance(payload, dict) else payload
     if not isinstance(live_events, list):
         live_events = []
+    # Rows the source-of-truth pass hid (stale page, wrong day, out of week)
+    # must never resurface mid-week (2026-09-15: W38's 2025 Fringe Festival).
+    live_events = [e for e in live_events if isinstance(e, dict) and not e.get("hide_from_site")]
 
     today = datetime.now().date()
     week_monday = today - timedelta(days=today.weekday())

@@ -56,18 +56,29 @@ def _parse_date_time(context: str):
         return '', ''
 
     month_name, day_num, year = month_day.group(1), int(month_day.group(2)), month_day.group(3)
-    year = int(year) if year else CURRENT_YEAR
     month_num = MONTHS[month_name]
 
-    # If the inferred date looks like it passed, bump year
-    try:
-        dt = datetime(year, month_num, int(day_num))
-        today = datetime.now()
-        if dt < today and year == CURRENT_YEAR:
-            dt = datetime(year + 1, month_num, int(day_num))
-        date_str = dt.strftime('%Y-%m-%d')
-    except ValueError:
-        return '', ''
+    if year:
+        try:
+            date_str = datetime(int(year), month_num, int(day_num)).strftime('%Y-%m-%d')
+        except ValueError:
+            return '', ''
+    else:
+        # NO YEAR ON THE PAGE (2026-09-15). twistedfest.org still lists the 2025
+        # inaugural Fringe Festival as "Friday, September 19 & Saturday,
+        # September 20". Sept 19 is a Friday only in 2025; the old code stamped
+        # the current year on it and the event became W38's Event of the Week
+        # for a weekend it did not exist in. The weekday the page states is a
+        # claim about the year: honour it. resolve_yearless returns '' when the
+        # only year that fits is in the past (a stale page), and we drop the row
+        # rather than publish a date the source never asserted.
+        from scraper.tz_guard import resolve_yearless, weekday_index
+        date_str = resolve_yearless(month_num, int(day_num),
+                                    weekday_idx=weekday_index(day_m.group(1)))
+        if not date_str:
+            logger.info(f"[twisted_arts] stale/contradictory yearless date rejected: "
+                        f"'{day_m.group(1)} {month_name} {day_num}'")
+            return '', ''
 
     # Extract time after "from"
     time_str = ''

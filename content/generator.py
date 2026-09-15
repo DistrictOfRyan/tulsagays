@@ -288,6 +288,36 @@ def _has_wrong_weekday(text: str, date_str: str) -> bool:
     return False
 
 
+_CONTAMINATION_MARKERS = (
+    "marketveep", "keona", "gmail draft", "mv gmail", "unsent since",
+    "needs william", "needs your send", "go-ahead", "in-session say-so",
+    "review request", "action inbox", "pending-william-actions",
+    "hunt & machine", "huntgrowth", "send token",
+)
+
+
+def _is_contaminated(text: str) -> bool:
+    """True if the model's output leaked unrelated internal/business content
+    instead of event copy, instead of a genuine description of the event.
+    The nested `claude -p` subprocess still loads William's global
+    CLAUDE.md/memory even from a neutral cwd (that context is user-level, not
+    project-level, so a neutral cwd never isolates it) — on a bad generation
+    the model can echo fragments of his CRM/action-inbox state instead of
+    writing about the event. Caught live 2026-09-11: a weekend-carousel pitch
+    for 'Ho You Think You Can Dance' came back as '**Four G2 review request
+    drafts** (Jordan Sappington, Sonia Worden...)' — private MarketVeep/Keona
+    client and draft-ID content, one Friday-autorelease dry-run away from
+    shipping to the public Facebook/Instagram feed. Markdown bold is also
+    never legitimate voice-pass output (the system prompt never asks for it),
+    so it doubles as a cheap generic tripwire for this whole failure class."""
+    if not text:
+        return False
+    if "**" in text:
+        return True
+    low = text.lower()
+    return any(m in low for m in _CONTAMINATION_MARKERS)
+
+
 def generate_post_caption(
     events: list[dict],
     post_type: str = "weekend",
@@ -472,6 +502,18 @@ def _record_llm_health(ok: bool, detail: str = ""):
         pass
 
 
+# Status/error text the claude CLI prints to stdout with exit 0. Matched anywhere
+# in a short output; also imported by tools/preflight_post.py as a hard block on
+# every caption and description, so a message like this can never be published.
+CLI_FAILURE_SIGNATURES = (
+    "spend limit", "usage limit", "limit reached", "raise it at", "claude.ai/settings",
+    "from=cc_cli", "/usage", "api error", "credit balance", "rate limit", "overloaded",
+    "unable to connect", "failed to authenticate", "invalid authentication",
+    "oauth session", "session expired", "please run /login", "not logged in",
+    "prompt is too long", "internal server error", "execution error",
+)
+
+
 def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "sonnet",
                      timeout: int = 300) -> str:
     """Shell out to the local `claude -p` CLI for description generation.
@@ -567,6 +609,15 @@ def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "so
                 env=env,
             )
             out = (r.stdout or "").strip()
+            # Prefix matching alone is whack-a-mole: W38 (2026-09-15) generated the
+            # caption "You've hit your monthly spend limit · raise it at
+            # claude.ai/settings/usage" because it starts with "You've". Any CLI
+            # status signature anywhere in a short output means failure.
+            _head = out[:400].lower()
+            if out and any(sig in _head for sig in CLI_FAILURE_SIGNATURES) and len(out) < 600:
+                _last_fail = out
+                print(f"[generator] claude CLI returned a status message, not copy: {out[:100]}")
+                continue
             if out and not out.lower().startswith(_err_prefixes):
                 _record_llm_health(True)
                 return out
@@ -780,6 +831,12 @@ def voice_enrich(events: list[dict], budget_s: int = 240, batch: int = 6) -> dic
             # A refusal is never valid copy: drop it so the rule-based fallback runs.
             if _is_refusal(got.get("S")) or _is_refusal(got.get("L")):
                 got = {}
+            # Nor is leaked internal/CRM content — see _is_contaminated.
+            if _is_contaminated(got.get("S")) or _is_contaminated(got.get("L")):
+                print(f"[voice_enrich] dropped CONTAMINATED copy for "
+                      f"{events[k].get('name', '')[:40]!r} — internal content leaked "
+                      f"into event copy, falling back to rule-based")
+                got = {}
             # A wrong day-of-week is a fact the model invented, not a voice
             # choice — never ship it. Drop to rule-based, which only ever
             # states the day it was handed.
@@ -947,7 +1004,7 @@ def _enrich_event_descriptions_impl(events: list[dict]) -> list[dict]:
                     kind = tag[-1].upper() if tag and tag[-1].isalpha() else "S"
                     num = int(tag.rstrip("SLsl")) - 1
                     desc = _strip_em_dashes(line[dot_idx + 1:].strip())
-                    if 0 <= num < len(batch) and desc and not _is_refusal(desc):
+                    if 0 <= num < len(batch) and desc and not _is_refusal(desc) and not _is_contaminated(desc):
                         orig_idx = batch[num][0]
                         if kind == "L":
                             events[orig_idx]["website_description"] = desc
@@ -986,7 +1043,7 @@ def _enrich_event_descriptions_impl(events: list[dict]) -> list[dict]:
                         kind = tag[-1].upper() if tag and tag[-1].isalpha() else "S"
                         num = int(tag.rstrip("SLsl")) - 1
                         desc = _strip_em_dashes(line[dot_idx + 1:].strip())
-                        if 0 <= num < len(batch) and desc and not _is_refusal(desc):
+                        if 0 <= num < len(batch) and desc and not _is_refusal(desc) and not _is_contaminated(desc):
                             orig_idx = batch[num][0]
                             if kind == "L":
                                 events[orig_idx]["website_description"] = desc

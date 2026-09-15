@@ -68,6 +68,24 @@ def cmd_scrape():
     events = run_scrapers()
     print(f"\nTotal events found: {len(events) if events else 0}")
 
+    # SOURCE-OF-TRUTH PASS (2026-09-15). Re-read every row's source page and
+    # adopt the source's date/time (or hide stale / out-of-week / foreign rows)
+    # BEFORE anything renders or gets mirrored to docs/. W38 shipped Fringe Fest
+    # a year late, every Meetup time 5h late and Facebook times 1h early because
+    # nothing compared the output to the source. Writes truth_report.json, which
+    # preflight_post.py requires. Non-fatal here: preflight is the hard gate.
+    try:
+        import subprocess, sys as _sys
+        _repo = os.path.dirname(os.path.abspath(__file__))
+        _tr = subprocess.run([_sys.executable, "tools/verify_week_truth.py", "--fix", "--quiet"],
+                             cwd=_repo, timeout=1200, capture_output=True, text=True,
+                             encoding="utf-8", errors="replace")
+        print(_tr.stdout[-2000:])
+        if _tr.returncode not in (0, 1):
+            print(f"WARN: verify_week_truth exited {_tr.returncode}: {_tr.stderr[-500:]}")
+    except Exception as _te:
+        print(f"WARN: source-of-truth pass failed to run ({_te}); preflight will block")
+
     # On Mondays, mirror the snapshot + full events JSON into docs/ so the
     # GitHub Actions mid-week workflows (lastminute, spotlight) can read them.
     # data/ is gitignored, so anything that lives only there is invisible to

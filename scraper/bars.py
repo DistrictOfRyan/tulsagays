@@ -18,6 +18,7 @@ from typing import List, Dict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from scraper.base import BaseScraper
+from scraper.tz_guard import iso_to_local
 
 logger = logging.getLogger(__name__)
 
@@ -107,7 +108,7 @@ class TulsaEagleScraper(BaseScraper):
                         start = item.get("startDate", "")
                         events.append(self.make_event(
                             name=name,
-                            date=start[:10] if start else "",
+                            date=iso_to_local(str(start or ""))[0],
                             venue="Tulsa Eagle",
                             url=item.get("url", ""),
                             priority=3,

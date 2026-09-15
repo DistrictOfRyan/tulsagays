@@ -90,6 +90,93 @@ RECURRING = [
     # HARD gate in tools/preflight_post.py (a featured YBR event MUST be ybr_ig).
     # Do NOT re-add hardcoded YBR nights here — see [[feedback_tulsagays_ybr_ig_only]].
 
+    # ── Tulsa Eagle, 1338 E 3rd St - CONFIRMED FROM THE VENUE'S OWN POSTS ─────
+    # Added 2026-09-09. The Eagle is Tulsa's main gay bar and it had contributed
+    # ZERO events to the deck from its own Instagram, all year. The standing
+    # diagnosis blamed the extractor. That was wrong: measured against 14 real
+    # @tulsaeagle captions (2026-08-27..09-08, stored verbatim in
+    # tests/fixtures/tulsa_eagle_ig_captions_2026-09-09.json), the extractor
+    # produced 22 correctly-dated, correctly-named events and the announce window
+    # dropped none of them. The venue simply posts ONCE A DAY, ON THE DAY, at
+    # ~12:03pm CT - all 12 image posts land inside a two-minute window at 17:03
+    # UTC. So it gives ZERO days of forward notice, and a Monday-morning weekly
+    # deck can never see Tuesday through Sunday no matter how well extraction works.
+    # That is why recurring is the right home for these, and the only one.
+    #
+    # THE BAR FOR BEING IN THIS LIST, set by two real failures above (the
+    # FABRICATED Saturn Room drag bingo, and the stale YBR flyer that published
+    # nights YBR was not running and cost partner trust): a night is listed only
+    # if the VENUE'S OWN posts show it on the SAME weekday at the SAME time in TWO
+    # SEPARATE WEEKS. Not a flyer, not an aggregator, not one sighting. Each entry
+    # below names the two posts that confirm it, so any future session can re-check
+    # the claim instead of trusting this comment.
+    #
+    # DELIBERATELY NOT LISTED - seen ONCE only, so unconfirmed by the rule above:
+    #   Underwear Night (Wed 8pm, 09-02 only), Thirsty Thursday + the "weekly Dart
+    #   Tourny" (Thu 2pm/6pm, 09-03 only), Tulsa Eagle Bingo (Sat 3pm, 09-05 only).
+    #   The Saturday and Sunday 10pm parties change name every week (Leather Night,
+    #   ICAO Comedy, Pop Bang, Robo-Techno, TouchTunes), so there is no recurring
+    #   NAME to publish - those must keep coming from the live IG scrape.
+    # Promote any of the above only after a second week's post confirms it.
+    {
+        "name": "Monday Movie Night",
+        "day": "Monday",
+        "freq": "weekly",
+        "time": "7:00 PM",
+        "venue": "Tulsa Eagle, 1338 E 3rd St",
+        "url": "https://www.instagram.com/tulsaeagle/",
+        "priority": 2,
+        # Confirmed: 2026-08-31 (/p/DctlNHNkb0q/, "THE BODYGUARD") and
+        # 2026-09-07 (/p/Dc_mpRxDIpd/, "9 TO 5"), both "@7 sponsored by Circle
+        # Cinema". The FILM changes weekly, so the name stays film-free here and
+        # the live IG scrape supplies the title when it runs.
+    },
+    {
+        "name": "Gaymer Night",
+        "day": "Monday",
+        "freq": "weekly",
+        "time": "8:00 PM",
+        "venue": "Tulsa Eagle, 1338 E 3rd St",
+        "url": "https://www.instagram.com/tulsaeagle/",
+        "priority": 2,
+        # Confirmed: 2026-08-31 (/p/DctlNHNkb0q/) and 2026-09-07
+        # (/p/Dc_mpRxDIpd/), both "Gaymer Night @8".
+    },
+    {
+        "name": "Tea Party Tuesday",
+        "day": "Tuesday",
+        "freq": "weekly",
+        "time": "2:00 PM - 8:00 PM",
+        "venue": "Tulsa Eagle, 1338 E 3rd St",
+        "url": "https://www.instagram.com/tulsaeagle/",
+        "priority": 3,
+        # Confirmed: 2026-09-01 (/p/DcwJ2RDCm71/) and 2026-09-08
+        # (/p/DdCLZsqFM8J/) - word-for-word identical captions, "$7 Long Island
+        # Iced Teas until 8PM". Priority 3: a drink special, not programming.
+    },
+    {
+        "name": "Tulsa Eagle Tuesday Karaoke",
+        "day": "Tuesday",
+        "freq": "weekly",
+        "time": "8:00 PM",
+        "venue": "Tulsa Eagle, 1338 E 3rd St",
+        "url": "https://www.instagram.com/tulsaeagle/",
+        "priority": 2,
+        # Confirmed: 2026-09-01 (/p/DcwJ2RDCm71/) and 2026-09-08
+        # (/p/DdCLZsqFM8J/), both "Tulsa Eagle Tuesday Karaoke @8 w/ KJ G-RAY".
+    },
+    {
+        "name": "Friday Happy Hour at Tulsa Eagle",
+        "day": "Friday",
+        "freq": "weekly",
+        "time": "2:00 PM - 8:00 PM",
+        "venue": "Tulsa Eagle, 1338 E 3rd St",
+        "url": "https://www.instagram.com/tulsaeagle/",
+        "priority": 3,
+        # Confirmed: 2026-08-28 (/p/Dcl2rmMlXMC/, "$4 Imports until 8PM") and
+        # 2026-09-04 (/p/Dc34PLCAcU7/, "Friday Happy Hour"). The 10pm Friday
+        # party is named differently every week, so it is NOT listed here.
+    },
     {
         "name": "Sunday Showdown Open Talent Night",
         "day": "Sunday",
