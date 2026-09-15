@@ -51,6 +51,20 @@ def main():
     else:
         print(f"  [ok] {len(present)} core modules compile")
 
+    # CI runs on a clean checkout. A test that reads an UNTRACKED fixture passes
+    # here and fails there: pipeline-tests #74/#75 (2026-09-15) broke because
+    # tests/fixtures/tulsa_eagle_ig_captions_2026-09-09.json was never committed
+    # while the test that reads it was. Fail locally before that can ship.
+    print("=== verify_all: test files tracked by git ===")
+    r = run(["git", "ls-files", "--others", "--exclude-standard", "tests"])
+    untracked = [l for l in (r.stdout or "").splitlines() if l.strip()]
+    if r.returncode == 0 and untracked:
+        fails.append("untracked test files")
+        print("  [X] untracked files under tests/ (CI will not have them): " + ", ".join(untracked)
+              + "\n      git add them, or remove the tests that depend on them.")
+    else:
+        print("  [ok] every file under tests/ is tracked")
+
     print("=== verify_all: regression suite ===")
     r = run([PY, "tests/test_pipeline.py"])
     sys.stdout.write(r.stdout)
