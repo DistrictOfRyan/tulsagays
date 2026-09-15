@@ -505,6 +505,31 @@ def _record_llm_health(ok: bool, detail: str = ""):
 # Status/error text the claude CLI prints to stdout with exit 0. Matched anywhere
 # in a short output; also imported by tools/preflight_post.py as a hard block on
 # every caption and description, so a message like this can never be published.
+def personal_claude_token() -> str:
+    """Token for the PERSONAL Claude account from ~/.credentials/claude_tokens.env.
+
+    Picks by LABEL, never by slot: the file has CLAUDE_TOKEN_<SLOT> plus
+    CLAUDE_TOKEN_<SLOT>_LABEL, and which slot is personal is not fixed. TulsaGays
+    is personal work, so the keona-work token is never used (task-runner
+    claude_handler._safe_chain, gap G406). Empty string when no personal token."""
+    import os as _o
+    try:
+        vals = {}
+        with open(_o.path.join(_o.path.expanduser("~"), ".credentials", "claude_tokens.env"),
+                  encoding="utf-8-sig") as fh:
+            for line in fh:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, _, v = line.partition("=")
+                    vals[k.strip()] = v.strip()
+        for slot in ("PRIMARY", "SECONDARY"):
+            if vals.get(f"CLAUDE_TOKEN_{slot}_LABEL", "").lower() == "personal" and vals.get(f"CLAUDE_TOKEN_{slot}"):
+                return vals[f"CLAUDE_TOKEN_{slot}"]
+    except Exception:
+        pass
+    return ""
+
+
 CLI_FAILURE_SIGNATURES = (
     "spend limit", "usage limit", "limit reached", "raise it at", "claude.ai/settings",
     "from=cc_cli", "/usage", "api error", "credit balance", "rate limit", "overloaded",
@@ -555,20 +580,12 @@ def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "so
     # and the runner's claude-tier tasks): default auth first, then each stored
     # fleet token. Nested-session env vars (CLAUDE_CODE_*) make `claude -p`
     # 401 when invoked from inside a live Claude Code session — strip them.
-    attempts = [None]
-    try:
-        _vals = {}
-        with open(_os.path.join(_os.path.expanduser("~"), ".credentials",
-                                "claude_tokens.env"), encoding="utf-8") as _tf:
-            for _line in _tf:
-                if "=" in _line and not _line.strip().startswith("#"):
-                    _k, _v = _line.split("=", 1)
-                    _vals[_k.strip()] = _v.strip()
-        for _key in ("CLAUDE_TOKEN_PRIMARY", "CLAUDE_TOKEN_SECONDARY"):
-            if _vals.get(_key):
-                attempts.append(_vals[_key])
-    except Exception:
-        pass
+    # PERSONAL token first, then the machine's default login. Never keona-work:
+    # the old order (default, PRIMARY=keona-work, SECONDARY) billed TulsaGays copy
+    # to Keona's account, and on 2026-09-15 keona-work was at its monthly spend
+    # limit, so its status text came back as the W38 caption (gap G406 rule).
+    _personal = personal_claude_token()
+    attempts = ([_personal] if _personal else []) + [None]
 
     _last_fail = ""
     for tok in attempts:
@@ -579,6 +596,7 @@ def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "so
                 env.pop(k, None)
         if tok:
             env["CLAUDE_CODE_OAUTH_TOKEN"] = tok
+        env["CLAUDE_FLEET_TASK_RUN"] = "1"  # headless data call: exempt from interactive Stop gates (2026-09-15)
         try:
             # timeout default raised 120 -> 300 (2026-06-12): W23/W24 enrichment
             # batches timed out at 120s, fell back to rule-based templates, and
@@ -597,7 +615,11 @@ def _call_claude_cli(user_prompt: str, system_prompt: str = "", model: str = "so
             # so start no servers at all. This makes the timeout real, and is
             # also much faster to start up.
             r = subprocess.run(
-                [claude_bin, "-p", "--model", model,
+                # --tools "" (2026-09-15): copy generation needs no tools. With the
+                # global CLAUDE.md + hooks loaded, even "reply with one word" became
+                # a multi-minute tool-using session and hit the 240s timeout; with
+                # tools off the same call answered in 11s.
+                [claude_bin, "-p", "--model", model, "--tools", "",
                  "--strict-mcp-config", "--mcp-config", '{"mcpServers":{}}'],
                 input=merged,
                 capture_output=True,

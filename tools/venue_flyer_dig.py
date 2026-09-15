@@ -48,11 +48,14 @@ VENUES = {
 
 
 def _claude_token() -> str:
+    """The PERSONAL-account token only. TulsaGays is personal work, and the fleet
+    rule (task-runner claude_handler._safe_chain, gap G406) forbids billing it to
+    the keona-work token. This used to return PRIMARY first, which is keona-work:
+    on 2026-09-15 that account was at its monthly spend limit (HTTP 429), so every
+    flyer read returned the limit message and the dig found 0 events."""
     try:
-        with open(os.path.expanduser("~/.credentials/claude_tokens.env")) as f:
-            vals = dict(l.strip().split("=", 1) for l in f
-                        if "=" in l and not l.strip().startswith("#"))
-        return vals.get("CLAUDE_TOKEN_PRIMARY") or vals.get("CLAUDE_TOKEN_SECONDARY") or ""
+        from content.generator import personal_claude_token
+        return personal_claude_token()
     except Exception:
         return ""
 
@@ -68,6 +71,7 @@ def _vision_events(image_path: str, venue: str, post_date: str, caption: str) ->
     tok = _claude_token()
     if tok:
         env["CLAUDE_CODE_OAUTH_TOKEN"] = tok
+    env["CLAUDE_FLEET_TASK_RUN"] = "1"  # headless data call: exempt from interactive Stop gates
     prompt = (
         f"Read the image file at {image_path} . It is an Instagram event flyer from "
         f"{venue}. The post was made on {post_date}. Caption: {caption[:300]}\n\n"
@@ -79,8 +83,10 @@ def _vision_events(image_path: str, venue: str, post_date: str, caption: str) ->
         '"time":..., "notes":...}. No prose, no markdown fences.'
     )
     try:
-        r = subprocess.run([claude_bin, "-p", "--model", "sonnet", "--allowedTools", "Read"],
-                           input=prompt, capture_output=True, text=True, timeout=240, env=env)
+        r = subprocess.run([claude_bin, "-p", "--model", "sonnet", "--tools", "Read",
+                            "--strict-mcp-config", "--mcp-config", '{"mcpServers":{}}'],
+                           input=prompt, capture_output=True, text=True, timeout=240, env=env,
+                           encoding="utf-8", errors="replace")  # captions carry emoji; cp1252 crashed stdin (2026-09-15)
     except Exception as e:
         print(f"    [vision] error: {e}")
         return []
@@ -94,10 +100,58 @@ def _vision_events(image_path: str, venue: str, post_date: str, caption: str) ->
         return []
 
 
+def _graph_posts(handle: str, limit: int = 12) -> list:
+    """Venue posts WITH image URLs through Meta's business_discovery edge.
+
+    Fallback added 2026-09-15. The dig read only the automation Chrome profile,
+    whose Instagram login had lapsed, so every Sunday dig since 2026-09-06 read
+    0 posts and filed 'IG login dead, needs William'. Meanwhile the main scraper
+    read 12 posts per venue through the Graph API on the live page token. That
+    route never needs a browser login; it only lacks personal accounts."""
+    import urllib.parse
+    token = os.environ.get("TULSAGAYS_PAGE_ACCESS_TOKEN", "")
+    if not token:
+        try:
+            import config  # loads .env
+            token = getattr(config, "TULSAGAYS_PAGE_ACCESS_TOKEN", "") or ""
+        except Exception:
+            token = ""
+    try:
+        ig_id = str(json.loads((ROOT / "meta_api_config.json").read_text(encoding="utf-8"))
+                    .get("instagram_business_account_id") or "")
+    except Exception:
+        ig_id = ""
+    if not token or not ig_id:
+        return []
+    fields = (f"business_discovery.username({handle}){{media.limit({limit})"
+              f"{{caption,timestamp,permalink,media_type,media_url,thumbnail_url,children{{media_url}}}}}}")
+    url = f"https://graph.facebook.com/v21.0/{ig_id}?" + urllib.parse.urlencode(
+        {"fields": fields, "access_token": token})
+    try:
+        media = ((json.loads(urllib.request.urlopen(url, timeout=30).read())
+                  .get("business_discovery") or {}).get("media") or {}).get("data") or []
+    except Exception as e:
+        print(f"    [graph] @{handle} unavailable: {str(e)[:100]}")
+        return []
+    posts = []
+    for m in media:
+        img = m.get("media_url") if m.get("media_type") != "VIDEO" else m.get("thumbnail_url")
+        kids = ((m.get("children") or {}).get("data") or [])
+        if not img and kids:
+            img = kids[0].get("media_url")
+        posts.append({"caption": (m.get("caption") or "").strip(), "url": m.get("permalink") or "",
+                      "posted_on": (m.get("timestamp") or "")[:10], "image_url": img or ""})
+    return posts
+
+
 def dig_venue(source_name: str, days: int = 21) -> list:
     handle, venue = VENUES[source_name]
     posts = iw.posts_for(source_name, [handle])
-    print(f"  {source_name} @{handle}: {len(posts)} posts")
+    via = "web session"
+    if not posts:
+        posts = _graph_posts(handle)
+        via = "graph api"
+    print(f"  {source_name} @{handle} [{via}]: {len(posts)} posts")
     cutoff = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
     sp = Path(os.environ.get("TEMP", "/tmp")) / "venue_flyers"
     sp.mkdir(parents=True, exist_ok=True)

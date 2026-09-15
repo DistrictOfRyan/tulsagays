@@ -1055,19 +1055,14 @@ class InstagramOrgScraper(BaseScraper):
         # the primary account token 401s as of 2026-07 and the fleet succeeds via
         # the secondary ("[account: personal, FALLBACK]" in runner.log). Try the
         # CLI's own auth first, then each stored token.
-        tokens = [None]
+        # Personal token only, then default login (2026-09-15): TulsaGays never
+        # runs on keona-work (gap G406), which was also at its spend limit.
         try:
-            vals = {}
-            for line in (Path.home() / ".credentials" / "claude_tokens.env").read_text(
-                    encoding="utf-8").splitlines():
-                if "=" in line and not line.strip().startswith("#"):
-                    k, v = line.split("=", 1)
-                    vals[k.strip()] = v.strip()
-            for key in ("CLAUDE_TOKEN_PRIMARY", "CLAUDE_TOKEN_SECONDARY"):
-                if vals.get(key):
-                    tokens.append(vals[key])
+            from content.generator import personal_claude_token
+            _personal = personal_claude_token()
         except Exception:
-            pass
+            _personal = ""
+        tokens = ([_personal] if _personal else []) + [None]
         for tok in tokens:
             try:
                 env = os.environ.copy()
@@ -1080,8 +1075,10 @@ class InstagramOrgScraper(BaseScraper):
                         env.pop(k, None)
                 if tok:
                     env["CLAUDE_CODE_OAUTH_TOKEN"] = tok
+                env["CLAUDE_FLEET_TASK_RUN"] = "1"  # headless data call: exempt from interactive Stop gates (2026-09-15)
                 r = subprocess.run(
-                    [exe, "-p", "--model", "claude-haiku-4-5-20251001"],
+                    [exe, "-p", "--model", "claude-haiku-4-5-20251001", "--tools", "",
+                     "--strict-mcp-config", "--mcp-config", '{"mcpServers":{}}'],
                     input=system + "\n\n" + user,
                     capture_output=True, text=True, encoding="utf-8",
                     errors="replace", timeout=180, env=env)
