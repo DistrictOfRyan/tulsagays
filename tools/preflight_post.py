@@ -860,6 +860,14 @@ def run(week_key=None):
             except Exception:
                 pass
         _scan_harness(cleaned, f"caption ({os.path.basename(cap_path)})")
+        # A model note posted above the real caption: W37 (2026-09-07) went out on
+        # Instagram and the Page opening with "HHHH is in this week's list (event
+        # #5/#9), so it leads with full hype per the rules." then a '---' line.
+        if re.match(r"^[^\n]{0,400}\n\s*\n?\s*-{3,}\s*\n", cleaned) or re.search(
+                r"\b(per the rules|as instructed|here is the caption|here's the caption|draft caption)\b",
+                cleaned[:400], re.I):
+            errors.append(f"[harness-leak] caption ({os.path.basename(cap_path)}) opens with a model note / "
+                          f"'---' separator above the real copy: {cleaned[:90]!r}")
         # A real weekly caption points people to the site. A caption that does not
         # mention tulsagays.com is not the generated post copy (2026-09-15).
         if "tulsagays.com" not in cleaned.lower():
