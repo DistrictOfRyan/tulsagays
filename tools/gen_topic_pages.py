@@ -23,6 +23,8 @@ import re
 import json
 import html
 import argparse
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
@@ -43,7 +45,7 @@ TOPICS = [
         "h1": "Gay Bars in Tulsa",
         "desc": "Every LGBTQ+ bar and nightlife spot in Tulsa, Oklahoma, with what each one is known for and what's happening there this week.",
         "intro": "Tulsa's queer nightlife punches well above the city's size. From a long-running leather and bear bar to the only lesbian bar in the state, here is every LGBTQ+ bar in Tulsa, what each is known for, and what is happening this week.",
-        "types": ["bar"], "event_kw": ["bar", "drag", "club", "happy hour"],
+        "types": ["bar"], "event_kw": ["bar", "drag", "club", "happy hour"], "venue_only": True,
         "faqs": [
             ("How many gay bars are in Tulsa?", "Tulsa has several dedicated LGBTQ+ bars including Tulsa Eagle, Yellow Brick Road (the state's lesbian bar), and Club Majestic, plus queer-friendly lounges like DVL."),
             ("What is the lesbian bar in Tulsa?", "Yellow Brick Road (YBR), on Cherry Street at 2630 E 15th St, is Tulsa's lesbian bar and one of the few remaining lesbian bars in the country."),
@@ -82,7 +84,7 @@ TOPICS = [
         "h1": "Affirming Churches in Tulsa",
         "desc": "LGBTQ+ affirming and welcoming churches and congregations in Tulsa, Oklahoma, with service times and community events.",
         "intro": "Faith and queerness are not at odds in Tulsa. These congregations are openly affirming, with welcoming services and LGBTQ+ community programming throughout the year.",
-        "types": ["church"], "event_kw": ["church", "service", "congregation", "affirming"],
+        "types": ["church"], "event_kw": ["church", "service", "congregation", "affirming"], "venue_only": True,
         "faqs": [
             ("What churches in Tulsa are LGBTQ+ affirming?", "All Souls Unitarian, Fellowship Congregational Church, and Metropolitan Community Church Tulsa are among the openly affirming congregations in Tulsa."),
             ("Does Fellowship Congregational have community groups?", "Yes, Fellowship Congregational Church hosts community programming including craft groups, and is openly LGBTQ+ affirming."),
@@ -121,10 +123,13 @@ def _load_census():
 
 
 def _load_events():
-    if not os.path.exists(EVENTS_CURRENT):
-        return []
-    d = json.load(open(EVENTS_CURRENT, encoding="utf-8"))
-    return d.get("events", []) if isinstance(d, dict) else d
+    # 2026-09-15: this used to read docs/events-current.json, the 8-event blog
+    # widget file (see the export_feed.py note on the same trap). The guides'
+    # "Happening this week" then showed a stale handful: gay-bars-in-tulsa.html,
+    # regenerated 09-15, still listed three 09-07 events. Use the same
+    # rendered-week source the homepage and feed use.
+    from tools.export_feed import _load_events as week_events
+    return week_events()[0]
 
 
 def _select_orgs(topic, census):
@@ -145,19 +150,57 @@ def _select_orgs(topic, census):
     return dedup
 
 
-def _select_events(topic, events):
+def _today():
+    return (os.environ.get("TOPIC_PAGES_TODAY")
+            or datetime.now(ZoneInfo("America/Chicago")).strftime("%Y-%m-%d"))
+
+
+def _select_events(topic, events, orgs=(), today=None, limit=8, per_day=2):
+    """Events for a guide, dated today through the next 6 days.
+
+    A guide page is evergreen and lives for weeks between regenerations, so an
+    event that already happened must never be listed as "happening this week".
+    Events AT one of the guide's own orgs rank first; bare keyword hits only fill
+    in, and never on topics flagged venue_only (a "bar" keyword put Cabin Boys
+    and PRHYME happy hours on the gay-bars guide). At most per_day per date, so
+    the list spans the week instead of stopping at tonight.
+    """
+    today = today or _today()
+    last = (datetime.strptime(today, "%Y-%m-%d") + timedelta(days=6)).strftime("%Y-%m-%d")
     kws = [k.lower() for k in topic.get("event_kw", [])]
-    hits = []
+    # A bare street alias ("boston ave" for Boston Avenue UMC) matches every
+    # venue on that street, which put Club Majestic drag shows on the churches
+    # guide. Street aliases only count with a house number ("302 south frankfort").
+    street_only = re.compile(r"[a-z .'-]+ (ave|avenue|st|street|blvd|rd|road|dr|drive)\.?")
+    org_names = [n.lower() for o in orgs
+                 for n in [o.get("name", "")] + list(o.get("aliases", []))
+                 if len(n or "") >= 4 and not street_only.fullmatch(n.lower().strip())]
+    at_org, by_kw = [], []
     for e in events:
+        d = str(e.get("date") or "")[:10]
+        if not (today <= d <= last):
+            continue
         blob = (str(e.get("name", "")) + " " + str(e.get("venue", ""))).lower()
-        if any(k in blob for k in kws):
-            hits.append(e)
-    return hits[:8]
+        if any(n in blob for n in org_names):
+            at_org.append(e)
+        elif not topic.get("venue_only") and any(k in blob for k in kws):
+            by_kw.append(e)
+    picked, per = [], {}
+    for pool in (at_org, by_kw):
+        for e in sorted(pool, key=lambda e: str(e.get("date") or "")):
+            d = str(e.get("date"))[:10]
+            if len(picked) < limit and per.get(d, 0) < per_day:
+                picked.append(e)
+                per[d] = per.get(d, 0) + 1
+    return sorted(picked, key=lambda e: str(e.get("date") or ""))
 
 
 # ── rendering ────────────────────────────────────────────────────────────────
 def esc(s):
-    return html.escape(str(s or ""), quote=True)
+    # Scraped titles carry en/em dashes ("Vintage Barbie Museum – Pop Up Shop");
+    # the site voice rule (voice_lint.py) bans them in reader-visible text.
+    s = re.sub(r"\s*[–—]\s*", " - ", str(s or ""))
+    return html.escape(s, quote=True)
 
 
 def _header(active=""):
@@ -330,17 +373,37 @@ def _update_sitemap(slugs):
     return added
 
 
+PREFERRED_SOURCE_STAMP = r"C:\Users\willi\.claude\scripts\add_preferred_source.py"
+
+
+def _restamp_preferred_source():
+    """Re-apply Google's Preferred Sources button, which the page writes above wipe.
+
+    add_preferred_source.py stamps pages in place (2026-08-20) and is idempotent,
+    but a regenerated page starts from the template again, so without this every
+    run silently removed the button from all guides (found 2026-09-15). Absent on
+    a clean CI checkout, where the stamp is simply skipped.
+    """
+    if not os.path.exists(PREFERRED_SOURCE_STAMP):
+        return
+    import subprocess
+    subprocess.run([sys.executable, PREFERRED_SOURCE_STAMP, "--root", GUIDES_DIR,
+                    "--domain", "tulsagays.com", "--label", "Tulsa Gays", "--apply"],
+                   capture_output=True, text=True, timeout=120)
+
+
 def run():
     os.makedirs(GUIDES_DIR, exist_ok=True)
     census, events = _load_census(), _load_events()
     written = []
     for t in TOPICS:
         orgs = _select_orgs(t, census)
-        evs = _select_events(t, events)
+        evs = _select_events(t, events, orgs)
         page = render_page(t, orgs, evs)
         open(os.path.join(GUIDES_DIR, f"{t['slug']}.html"), "w", encoding="utf-8").write(page)
         written.append((t["slug"], len(orgs), len(evs)))
     open(os.path.join(GUIDES_DIR, "index.html"), "w", encoding="utf-8").write(_render_index(TOPICS))
+    _restamp_preferred_source()
     added = _update_sitemap([t["slug"] for t in TOPICS])
     print(f"[topic-pages] wrote {len(written)} guides + index; sitemap +{added} urls")
     for slug, no, ne in written:

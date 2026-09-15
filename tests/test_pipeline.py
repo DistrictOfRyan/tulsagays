@@ -777,6 +777,14 @@ def main():
     test_tulsa_eagle_ig_extraction()
     test_anonymity_allowlist()
     test_final_deck_review()
+    test_topic_page_events()
+    # Defined below the __main__ guard until 2026-09-15, so main() never ran it.
+    print("html entities in event names:")
+    try:
+        test_html_entities_never_ship_in_event_names()
+        check("event names carry no HTML entities", True)
+    except AssertionError as e:
+        check("event names carry no HTML entities", False, str(e))
     print()
     if FAILS:
         print(f"[X] {len(FAILS)} FAILED: {', '.join(FAILS)}")
@@ -785,8 +793,39 @@ def main():
     sys.exit(0)
 
 
-if __name__ == "__main__":
-    main()
+def test_topic_page_events():
+    """Regression lock, 2026-09-15: guide pages listed events that had already happened.
+
+    /guides/gay-bars-in-tulsa.html, regenerated 09-15, said "Happening this week"
+    over three 09-07 events: gen_topic_pages read docs/events-current.json (the
+    8-item blog widget file) and never filtered by date. It also let a bare "bar"
+    keyword pull generic happy hours onto the gay-bars guide, and a "boston ave"
+    alias pull Club Majestic drag shows onto the churches guide.
+    """
+    print("guide page events:")
+    from tools import gen_topic_pages as g
+    orgs = [{"id": "eagle", "name": "Tulsa Eagle", "aliases": []},
+            {"id": "buumc", "name": "Boston Avenue UMC", "aliases": ["boston ave"]},
+            {"id": "dvl", "name": "DVL Club & Lounge", "aliases": ["302 south frankfort"]}]
+    events = [
+        {"name": "Old Bingo", "date": "2026-09-07", "venue": "Tulsa Eagle"},
+        {"name": "Tea Party Tuesday", "date": "2026-09-15", "venue": "Tulsa Eagle"},
+        {"name": "Happy Hour!", "date": "2026-09-16", "venue": "302 South Frankfort Avenue"},
+        {"name": "Happy Hour at PRHYME Bar", "date": "2026-09-15", "venue": "PRHYME"},
+        {"name": "Drag Night", "date": "2026-09-17", "venue": "Club Majestic, 124 N Boston Ave"},
+        {"name": "Far Future Bingo", "date": "2026-09-30", "venue": "Tulsa Eagle"},
+    ]
+    topic = {"event_kw": ["bar", "happy hour"], "venue_only": True}
+    names = [e["name"] for e in g._select_events(topic, events, orgs, today="2026-09-15")]
+    check("past events are never listed", "Old Bingo" not in names, names)
+    check("events past the 7-day window are not listed", "Far Future Bingo" not in names, names)
+    check("events at the guide's own venues are listed", "Tea Party Tuesday" in names, names)
+    check("address alias with a house number matches", "Happy Hour!" in names, names)
+    check("venue_only guides ignore bare keyword hits", "Happy Hour at PRHYME Bar" not in names, names)
+    check("a bare street alias never matches other venues", "Drag Night" not in names, names)
+    check("rendered text carries no en or em dash",
+          "–" not in g.esc("Vintage Barbie Museum – Pop Up Shop")
+          and "—" not in g.esc("a—b"))
 
 
 def test_html_entities_never_ship_in_event_names():
@@ -833,3 +872,7 @@ def test_html_entities_never_ship_in_event_names():
     snapshot = dict(ev)
     clean_html_artifacts(events)
     assert events[0] == snapshot
+
+
+if __name__ == "__main__":
+    main()
