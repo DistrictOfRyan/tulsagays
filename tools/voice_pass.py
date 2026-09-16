@@ -231,11 +231,23 @@ def run_voice_pass(week: str = None, budget_s: int = 240,
     # Deterministic sanitize of the voiced copy BEFORE persist+render, so a stray
     # em dash / banned cliche from the LLM can't hard-block the whole deck at
     # preflight (recurring Monday-post failure, fixed 2026-07-17). Idempotent.
+    # 2026-09-16: widened from `targets` to EVERY event. W38's EOTW (Fringe Festival)
+    # was never a voice target, so its SCRAPED description kept an em dash, and the
+    # Monday post was blocked at 3am, 9am catch-up, 10am and noon (W36 and W37 died
+    # at this same gate). Website copy has the same no-em-dash rule, and this is
+    # deterministic and idempotent, so there is no reason to clean only the voiced few.
+    # Voiced targets get the full sanitize; every other event gets ONLY the dash fix,
+    # because the full pass collapses whitespace and would flatten long website copy.
+    target_ids = {id(t) for t in targets}
     sanitized = 0
-    for ev in targets:
-        for fld in ("description", "website_description"):
+    for ev in all_events:
+        full = id(ev) in target_ids
+        for fld in ("description", "website_description", "slide_description"):
             orig = ev.get(fld) or ""
-            clean = _sanitize_copy(orig)
+            if full and fld != "slide_description":
+                clean = _sanitize_copy(orig)
+            else:
+                clean = orig.replace(" — ", ", ").replace("—", ", ").replace(" - - ", ", ")
             if clean != orig:
                 ev[fld] = clean
                 sanitized += 1
