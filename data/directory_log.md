@@ -365,3 +365,12 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 - WebSearch "new LGBTQ business Tulsa 2026 opened" / "queer-owned business Tulsa 2026" / "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (Il Seme, Cherry & Bark, Jo & June, Magic City Books, Yokozuna, KEO, India Palace, Lambrusco'z To Go, White Lion Pub, Dilly Diner) plus general guide/listicle pages (Yelp, GayCities, Tripadvisor, Rainbows in Revolt, GayBnB Travel, visittulsa.com). Duet Restaurant and Open Container surfaced again with no LGBTQ+ sourcing confirmed / already noted closed - still not added, consistent with prior scans.
 - Reddit r/tulsa (both query variants): no indexed results this scan (search surfaced only unrelated hotel-booking sites, same pattern as every prior scan).
 - Net result: nothing new found. No changes made to directory.html this scan.
+
+### Reviewed but NOT added (2026-09-17 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/): rendered its live inline member list again (same 6 current members: UniComm Solutions, Yoga Quest LLC, Doc J's Heat and Air, Littleton Legal PLLC, Edgewood Veterinary Hospital, Osteostrong Tulsa Midtown) - no net-new members since the 2026-07-30 scan, all confirmed already in the directory.
+- OkEq Food & Drink full re-check (50 listings): no net-new businesses. All 50 confirmed already in the directory or previously reviewed/held/skipped from prior scans.
+- Tulsa Remote LGBTQ guide: all 8 listed businesses (Tonsorial, il Seme, Cherry & Bark, YBR, The Donut Hole, Fulton Street, Jo & June, Magic City Books) and 5 resources (Studio 66, Black Queer Tulsa, Twisted Arts, H.O.P.E Testing, TACO) already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage found this scan (entertainment/culture and health/wellness headlines only, no new-business features).
+- WebSearch "new LGBTQ business Tulsa 2026 opened" / "queer-owned business Tulsa 2026" / "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (Il Seme, Jo & June, Dalesandro's, Dilly Diner, Elote Cafe, India Palace, Yokozuna, Lambrusco'z To Go) plus general guide/listicle pages (Yelp, GayCities, GayOut, Rainbows in Revolt, GayBnB Travel, visittulsa.com). No net-new finds.
+- Reddit r/tulsa (both query variants): no indexed results this scan (search surfaced only unrelated hotel-booking sites, same pattern as every prior scan).
+- Net result: nothing new found. No changes made to directory.html this scan.
