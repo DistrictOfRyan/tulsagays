@@ -74,9 +74,9 @@
   {
     "id": "instagram-automation-profile-session",
     "item": "Instagram automation profile session",
-    "reason": "no valid session for: instagram. Fix: python tools/ig_profile_login.py (a login, so it needs your hands). Blocks every IG-only org (@tcc_pride, bars, HotMess) and the FB group blast.",
+    "reason": "no valid session for: facebook (missing auth: facebook). Fix: python tools/ig_profile_login.py (a login, so it needs your hands). Blocks the FB group blast. CORRECTED 2026-09-09: this item said \"no valid session for: instagram\" from 2026-09-02, and that was false - Instagram IS authenticated in that profile (11 cookies, sessionid present, page reports logged-in). The IG venue scrape is not blocked on you; only Facebook auth (c_user) is missing.",
     "source": "check_ig_profile_session",
-    "since": "2026-09-02 08:22",
-    "status": "open"
+    "since": "2026-09-09 (corrected)",
+    "status": "resolved"
   }
 ]

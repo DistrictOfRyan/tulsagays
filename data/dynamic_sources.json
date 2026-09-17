@@ -7,7 +7,7 @@
       "added": "2026-08-15",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-09-06"
+      "last_checked": "2026-09-13"
     },
     {
       "url": "https://www.facebook.com/HotMessSports/events",
@@ -15,16 +15,33 @@
       "added": "2026-08-23",
       "via": "weekly-search:HotMess Sports Tulsa kickball dodgeball",
       "seen_count": 0,
-      "last_checked": "2026-09-06"
+      "last_checked": "2026-09-13"
     },
     {
       "url": "https://www.facebook.com/p/Oklahoma-Leather-Association-100087972230370/events",
       "name": "Oklahoma Leather Association FB",
       "added": "2026-09-05",
       "via": "web-search",
-      "last_seen_week": "2026-W35",
+      "last_seen_week": "2026-W37",
       "seen_count": 0,
-      "last_checked": "2026-09-06"
+      "last_checked": "2026-09-13"
+    },
+    {
+      "url": "https://www.facebook.com/p/Ghoul-Friends-Queer-Cabaret-61564254665053/events",
+      "name": "Ghoul Friends Queer Cabaret",
+      "added": "2026-09-12",
+      "via": "web-search",
+      "last_seen_week": "2026-W37",
+      "seen_count": 0,
+      "last_checked": "2026-09-13"
+    },
+    {
+      "url": "https://www.facebook.com/100091661965106/events",
+      "name": "Tulsa Tassel Coalition (Tulsa Burlesque Festival)",
+      "added": "2026-09-13",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-09-13"
     }
   ],
   "fb_groups": [
@@ -33,75 +50,41 @@
       "name": "Gay Tulsa (FB group)",
       "added": "2026-08-16",
       "via": "web-search",
-      "last_seen_week": "2026-W35",
+      "last_seen_week": "2026-W37",
       "seen_count": 0,
-      "last_checked": "2026-09-06"
+      "last_checked": "2026-09-13"
     },
     {
       "url": "https://www.facebook.com/groups/436526440885847/events",
       "name": "Black Queer (Tulsa) FB group",
       "added": "2026-08-16",
       "via": "web-search",
-      "last_seen_week": "2026-W35",
+      "last_seen_week": "2026-W37",
       "seen_count": 0,
-      "last_checked": "2026-09-06"
+      "last_checked": "2026-09-13"
+    },
+    {
+      "url": "https://www.facebook.com/groups/tulsa2s/events",
+      "name": "Tulsa Two Spirit Society Group",
+      "added": "2026-09-13",
+      "via": "web-search",
+      "last_seen_week": "2026-W37",
+      "seen_count": 0,
+      "last_checked": "2026-09-13"
     }
   ],
   "calendars": [
-    {
-      "url": "gaykickball.com/tulsa.html",
-      "name": "Gay Kickball Tulsa",
-      "category": "lgbtq",
-      "added": "2026-08-08",
-      "via": "web-search",
-      "seen_count": 0,
-      "last_checked": "2026-09-06"
-    },
-    {
-      "url": "tulsaareaprimetimers.com/calendars.html",
-      "name": "Tulsa Area Prime Timers",
-      "category": "lgbtq",
-      "added": "2026-08-08",
-      "via": "web-search",
-      "seen_count": 0,
-      "last_checked": "2026-09-06"
-    },
     {
       "url": "https://www.hopeuu.org/calendar/",
       "name": "Hope Unitarian Church",
       "category": "church",
       "added": "2026-09-06",
-      "via": "weekly-search:tulsa open and affirming congregation events"
+      "via": "weekly-search:tulsa open and affirming congregation events",
+      "seen_count": 0,
+      "last_checked": "2026-09-13"
     }
   ],
   "partner_keywords": [
-    {
-      "kw": "tulsa community college",
-      "name": "Tulsa Community College",
-      "added": "2026-08-02",
-      "via": "venue-miner",
-      "last_seen_week": "2026-W35",
-      "seen_count": 0,
-      "last_checked": "2026-09-06"
-    },
-    {
-      "kw": "in 6 days",
-      "name": "In 6 Days",
-      "added": "2026-08-02",
-      "via": "venue-miner",
-      "last_seen_week": "2026-W31",
-      "seen_count": 0,
-      "last_checked": "2026-09-06"
-    },
-    {
-      "kw": "tulsa area prime timers",
-      "name": "Tulsa Area Prime Timers",
-      "added": "2026-08-08",
-      "via": "web-search",
-      "last_seen_week": "2026-W33",
-      "seen_count": 0,
-      "last_checked": "2026-09-06"
-    },
     {
       "kw": "green country tourism",
       "name": "Green Country Tourism",
@@ -109,7 +92,7 @@
       "via": "venue-miner",
       "last_seen_week": "2026-W30",
       "seen_count": 0,
-      "last_checked": "2026-09-06"
+      "last_checked": "2026-09-13"
     },
     {
       "kw": "allie jensen memorial art gallery",
@@ -118,16 +101,16 @@
       "via": "web-search",
       "last_seen_week": "2026-W30",
       "seen_count": 0,
-      "last_checked": "2026-09-06"
+      "last_checked": "2026-09-13"
     },
     {
       "kw": "university of tulsa",
       "name": "University Of Tulsa",
       "added": "2026-08-23",
       "via": "venue-miner",
-      "last_seen_week": "2026-W35",
+      "last_seen_week": "2026-W37",
       "seen_count": 0,
-      "last_checked": "2026-09-06"
+      "last_checked": "2026-09-13"
     },
     {
       "kw": "tulsa leather community",
@@ -136,7 +119,7 @@
       "via": "web-search",
       "last_seen_week": "2026-W32",
       "seen_count": 0,
-      "last_checked": "2026-09-06"
+      "last_checked": "2026-09-13"
     },
     {
       "kw": "oklahoma leather association",
@@ -144,19 +127,33 @@
       "added": "2026-09-05",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-09-06"
+      "last_checked": "2026-09-13"
     },
     {
       "kw": "queer crafters club",
       "name": "Queer Crafters Club",
       "added": "2026-09-06",
-      "via": "weekly-search:tulsa queer makers market vendor event 2026"
+      "via": "weekly-search:tulsa queer makers market vendor event 2026",
+      "last_seen_week": "2026-W37",
+      "seen_count": 0,
+      "last_checked": "2026-09-13"
     },
     {
       "kw": "duet jazz restaurant",
       "name": "Duet Jazz Restaurant",
       "added": "2026-09-06",
-      "via": "venue-miner"
+      "via": "venue-miner",
+      "last_seen_week": "2026-W34",
+      "seen_count": 0,
+      "last_checked": "2026-09-13"
+    },
+    {
+      "kw": "tulsa tassel coalition",
+      "name": "Tulsa Tassel Coalition",
+      "added": "2026-09-13",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-09-13"
     }
   ],
   "retired": [
@@ -918,6 +915,66 @@
       "last_checked": "2026-09-06",
       "retired_reason": "never produced an event",
       "retired_at": "2026-09-06",
+      "from": "partner_keywords"
+    },
+    {
+      "url": "gaykickball.com/tulsa.html",
+      "name": "Gay Kickball Tulsa",
+      "category": "lgbtq",
+      "added": "2026-08-08",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-09-13",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-09-13",
+      "from": "calendars"
+    },
+    {
+      "url": "tulsaareaprimetimers.com/calendars.html",
+      "name": "Tulsa Area Prime Timers",
+      "category": "lgbtq",
+      "added": "2026-08-08",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-09-13",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-09-13",
+      "from": "calendars"
+    },
+    {
+      "kw": "tulsa community college",
+      "name": "Tulsa Community College",
+      "added": "2026-08-02",
+      "via": "venue-miner",
+      "last_seen_week": "2026-W37",
+      "seen_count": 0,
+      "last_checked": "2026-09-13",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-09-13",
+      "from": "partner_keywords"
+    },
+    {
+      "kw": "in 6 days",
+      "name": "In 6 Days",
+      "added": "2026-08-02",
+      "via": "venue-miner",
+      "last_seen_week": "2026-W31",
+      "seen_count": 0,
+      "last_checked": "2026-09-13",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-09-13",
+      "from": "partner_keywords"
+    },
+    {
+      "kw": "tulsa area prime timers",
+      "name": "Tulsa Area Prime Timers",
+      "added": "2026-08-08",
+      "via": "web-search",
+      "last_seen_week": "2026-W37",
+      "seen_count": 0,
+      "last_checked": "2026-09-13",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-09-13",
       "from": "partner_keywords"
     }
   ]

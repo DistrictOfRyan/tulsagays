@@ -1,5 +1,176 @@
 {
   "generated_at": null,
-  "count": 0,
-  "events": []
+  "count": 17,
+  "events": [
+    {
+      "name": "Look Who's Hosting Now! (hosted by Shanel Sterling & Londenn D. Raine, guest cohost Karma Eclectic, guest T Ali)",
+      "date": "2026-09-17",
+      "time": "Doors 9pm, Showtime 11pm",
+      "notes": "18 to enter",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DdTegogRIuh/",
+      "from_post": "2026-09-15"
+    },
+    {
+      "name": "Sensational Saturdays: FemmePower",
+      "date": "2026-09-19",
+      "time": "Doors 9pm, showtime 9:30pm-10:30pm",
+      "notes": "Hosted by Miss Gay Oklahoma America Femme Londenn Davenport Raine; performers Sophie Moon, Angela Doll, Little Miss MG, Paprika Cherry; 21+",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DdQdPq1R69q/",
+      "from_post": "2026-09-14"
+    },
+    {
+      "name": "Escándalo, hosted by La Franchesqua & King Laylo York, with Shanel Sterling & Kiana D. Jade",
+      "date": "2026-09-18",
+      "time": "Doors 9pm, Showtime 9:30pm",
+      "notes": "18+",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DdJPsuYxBzL/",
+      "from_post": "2026-09-11"
+    },
+    {
+      "name": "Sunday Showdown Open Talent Night",
+      "date": "2026-09-13",
+      "time": "Doors 9pm, Showtime 11pm",
+      "notes": "Featuring last winner Karma Eclectic; rotating hosts Natalia Masters, Shanel Sterling, Londenn D. Raine, Scrappy Legacy; contest limited to first 5 to sign up at door, bring 2 looks and 2 performances; 18 to enter, 21 to drink",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DdDfTujxv0h/",
+      "from_post": "2026-09-09"
+    },
+    {
+      "name": "Sunday Showdown: Open Talent Night",
+      "date": "2026-09-06",
+      "time": "Doors 9pm, Showtime 11pm",
+      "notes": "Labor Day Weekend edition; hosts Natalia Masters, Shanel Sterling, Londenn D. Raine, Scrappy Legacy; featuring last winner Little Miss MG; contest limited to first 6 sign-ups at door; 18 to enter",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Dc9S468zXn-/",
+      "from_post": "2026-09-06"
+    },
+    {
+      "name": "Bad Boys On The Block",
+      "date": "2026-09-11",
+      "time": "9:30pm-10:30pm, doors 9pm",
+      "notes": "Hosted by Scrappy Legacy, with Londenn D. Raine; performers Alexander Moonwalker, Sean Tylr Davis, A.J. Davenport; Legacy Entertainment; 18 to enter; followed by Ho You Think You Can Dance at Club Majestic, 124 N Boston Ave",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Dc9SzDylMld/",
+      "from_post": "2026-09-06"
+    },
+    {
+      "name": "The New Kidz",
+      "date": "2026-09-10",
+      "time": "Doors 9pm, Showtime 11pm",
+      "notes": "18 to enter; hosted by Shanel Sterling & Londenn D. Raine; featuring Lilly Belle, Karma Eclectic, Karmen Khameleon",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Dc9SSpYTDaj/",
+      "from_post": "2026-09-06"
+    },
+    {
+      "name": "Sunday Showdown Open Talent Night (Natalia Masters co-host debut)",
+      "date": "2026-09-06",
+      "time": "Doors 9pm, Sign-ups 9pm (limited to first 6), Showtime 11pm",
+      "notes": "Labor Day weekend; DJ Konnect before/after; 18 to enter; co-hosts Londenn D. Raine, Natalia Masters, Shanel Sterling",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Dc0b2e2xLwF/",
+      "from_post": "2026-09-03"
+    },
+    {
+      "name": "STARPOWER",
+      "date": "2026-09-05",
+      "time": "9:30 PM - 10:30 PM",
+      "notes": "Drag show featuring Shanel Sterling, Serenity Grace, Jason Waterfalls, Karma Marie Lee; followed by Shake It Up Saturday; doors 9pm, 21+",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DcztzbSEb7I/",
+      "from_post": "2026-09-03"
+    },
+    {
+      "name": "Monday Movie Night: The Best Little Whorehouse in Texas (sponsored by Circle Cinema)",
+      "date": "2026-09-14",
+      "time": "7:00 PM",
+      "notes": "Tulsa Eagle, 1338 E 3rd St, Tulsa OK",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DdRoLuxDEkt/",
+      "from_post": "2026-09-14"
+    },
+    {
+      "name": "The 9 to 5: Dolly Tribute Show",
+      "date": "2026-09-13",
+      "time": "6:00 PM",
+      "notes": "Part of Sunday Funday lineup with Steven & Justin (2-6) then Nathan (8-close); flyer graphic is generic 'Sunday Funday' text with no date shown, date taken from post date",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DdPDWUcoCB0/",
+      "from_post": "2026-09-13"
+    },
+    {
+      "name": "The Tulsa Eagle White Party w/ DJ Haze (feat. Nathan, Isaac & Justin)",
+      "date": "2026-09-11",
+      "time": "8:00 PM (party starts) / 10:00 PM (White Party)",
+      "notes": "Nathan, Isaac and Justin perform starting 8pm leading into The Tulsa Eagle White Party at 10pm with DJ Haze",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DdJ5ye-CPg3/",
+      "from_post": "2026-09-11"
+    },
+    {
+      "name": "White Party with DJ Haze",
+      "date": "2026-09-11",
+      "time": "10:00 PM",
+      "notes": "Friday night party at Tulsa Eagle",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/reel/DdIBSU_gRt4/",
+      "from_post": "2026-09-10"
+    },
+    {
+      "name": "Monday Movie Night: 9 to 5 (Circle Cinema)",
+      "date": "2026-09-07",
+      "time": "7:00 PM",
+      "notes": "Sponsored by Circle Cinema, at Tulsa Eagle, 1338 E 3rd St",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Dc_mpRxDIpd/",
+      "from_post": "2026-09-07"
+    },
+    {
+      "name": "Labor Day Cookout",
+      "date": "2026-09-06",
+      "time": "4:00 PM",
+      "notes": "Food, drinks, fundraising, chef Megan; donations welcome but not required",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Dc9BzS2GMZ4/",
+      "from_post": "2026-09-06"
+    },
+    {
+      "name": "Special Edition Sunday Karaoke with KJ-G Ray",
+      "date": "2026-09-06",
+      "time": "6:00 PM",
+      "notes": "Special edition karaoke following the Labor Day Cookout",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Dc9BzS2GMZ4/",
+      "from_post": "2026-09-06"
+    },
+    {
+      "name": "Yacht Rock Sing-Along",
+      "date": "2026-09-25",
+      "time": "6:30 PM",
+      "notes": "Hosted by Karma Eclectic, featuring Shanel Sterling & Porschelynn69, $10 per person, tickets at elotetulsa.com/events",
+      "venue": "Elote Cafe, 514 S Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DdFYCatDuZg/",
+      "from_post": "2026-09-09"
+    }
+  ]
 }

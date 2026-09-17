@@ -35,7 +35,6 @@
 .ev-foot{margin-top:36px;color:var(--text-muted);font-size:.85rem}
 .ev-foot a{color:var(--gold)}
 </style>
-<script async src="https://news.google.com/swg/js/v1/publisher.js" data-gps-preferred-source></script>
 </head>
 <body>
 <div class="ev-wrap">
@@ -43,50 +42,10 @@
 <h1 class="ev-name">The Five-Star Weekend by Elin Hilderbrand</h1>
 <p class="ev-when">Thursday, September 17 · 6:00 PM</p>
 <p class="ev-venue">The Bros Houligan</p>
-<p class="ev-desc">Hollis Shaw’s life seems picture-perfect. She’s the creator of the popular food blog Hungry with Hollis and is married to Matthew, a dreamy heart surgeon. But after she and Matthew get into a heated argument one snowy morning, he leaves for the airport and is killed in a car accident. The cracks in It's a Thursday thing, around 6:00 PM, over at The Bros Houligan. Put on the look, bring a friend or bring your nerve, and let Tulsa show you a good time.</p>
+<p class="ev-desc">Hollis Shaw’s life seems picture-perfect. She’s the creator of the popular food blog Hungry with Hollis and is married to Matthew, a dreamy heart surgeon. But after she and Matthew get into a heated argument one snowy morning, he leaves for the airport and is killed in a car accident. The cracks in. It's a Thursday thing, around 6:00 PM, over at The Bros Houligan. Put on the look, bring a friend or bring your nerve, and let Tulsa show you a good time.</p>
 <a class="ev-btn" href="https://www.meetup.com/wise-and-wonderful-women-over-50-book-club/events/315323053/" target="_blank" rel="noopener">Get tickets / more info &rarr;</a>
 <a class="ev-btn alt" href="https://www.tulsagays.com/?event=event-the-five-star-weekend-by-elin-hilderbrand-2026-09-17-6-00">See it on the full calendar &rarr;</a>
 <p class="ev-foot">Found via <a href="/">tulsagays.com</a>, every LGBTQ+ event in Tulsa, every week. <a href="/newsletter.html">Get the newsletter &rarr;</a></p>
 </div>
-<!-- gps-preferred-source:start -->
-<div class="gps-preferred" style="margin:0 0 1.25rem;padding:.85rem 1rem;border:1px solid rgba(128,128,128,.35);border-radius:10px;display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;font-size:.95rem;line-height:1.45">
-  <span>Want Tulsa Gays to show up more often in your Google results?</span>
-  <div google-add-preferred-source-btn data-theme="light" data-lang="en"></div>
-  <noscript><a href="https://www.google.com/preferences/source?q=tulsagays.com" rel="nofollow">Add Tulsa Gays as a preferred source in Google</a></noscript>
-</div>
-<script data-gps-preferred-source-track>
-/* Measure the button. Google renders it inside a cross-origin iframe, so a real
-   click is not observable from this page. Two things are: whether the button was
-   ever actually seen, and the window blur that fires when the pointer is over the
-   iframe and the user clicks into it. The second is a proxy, not a true click, and
-   the event name says so. Fires into gtag or dataLayer when either exists, and
-   does nothing at all when neither does. */
-(function () {
-  try {
-    var wrap = document.querySelector('.gps-preferred');
-    if (!wrap || !window.IntersectionObserver) return;
-    function send(name, extra) {
-      var p = Object.assign({ site: 'tulsagays.com', placement: 'footer' }, extra || {});
-      if (typeof window.gtag === 'function') { window.gtag('event', name, p); return; }
-      if (window.dataLayer && window.dataLayer.push) { p.event = name; window.dataLayer.push(p); }
-    }
-    var seen = false;
-    new IntersectionObserver(function (entries, obs) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting || seen) return;
-        seen = true; obs.disconnect();
-        send('preferred_source_impression');
-        var over = false;
-        wrap.addEventListener('mouseenter', function () { over = true; });
-        wrap.addEventListener('mouseleave', function () { over = false; });
-        window.addEventListener('blur', function () {
-          if (over) send('preferred_source_click_proxy');
-        });
-      });
-    }, { threshold: 0.5 }).observe(wrap);
-  } catch (e) {}
-})();
-</script>
-<!-- gps-preferred-source:end -->
 </body>
 </html>

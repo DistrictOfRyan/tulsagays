@@ -5,18 +5,11 @@
   "events": {
     "lambda bowling league": {
       "status": "active",
-      "last_verified": "2026-08-24",
+      "last_verified": "2026-09-17",
       "verified_venue": "AMF Sheridan Lanes, 3121 S Sheridan Rd",
       "verified_by": "live-scrape:qlist",
       "verified_through": null,
-      "note": "",
-      "pending_venue_conflict": {
-        "known_venue": "AMF Sheridan Lanes, 3121 S Sheridan Rd",
-        "live_venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-        "live_name": "Lambda Bowling League",
-        "source": "okeq",
-        "seen": "2026-09-07"
-      }
+      "note": ""
     },
     "osu tulsa queer support group": {
       "status": "active",
@@ -28,7 +21,7 @@
     },
     "gender outreach support group": {
       "status": "active",
-      "last_verified": "2026-09-07",
+      "last_verified": "2026-09-17",
       "verified_venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "verified_by": "live-scrape:community_groups",
       "verified_through": null,
@@ -44,7 +37,7 @@
     },
     "dragnificent! drag show": {
       "status": "active",
-      "last_verified": "2026-09-07",
+      "last_verified": "2026-09-17",
       "verified_venue": "Club Majestic",
       "verified_by": "live-scrape:community_groups",
       "verified_through": null,
@@ -76,7 +69,7 @@
     },
     "sunday showdown open talent night": {
       "status": "active",
-      "last_verified": "2026-09-07",
+      "last_verified": "2026-09-17",
       "verified_venue": "Club Majestic, 124 N Boston Ave",
       "verified_by": "live-scrape:manual",
       "verified_through": null,
@@ -201,6 +194,46 @@
       "verified_by": "seed-baseline",
       "verified_through": null,
       "note": ""
+    },
+    "monday movie night": {
+      "status": "active",
+      "last_verified": "2026-09-17",
+      "verified_venue": "Tulsa Eagle, 1338 E 3rd St, Tulsa, OK",
+      "verified_by": "live-scrape:manual",
+      "verified_through": null,
+      "note": "Venue's own IG, 2 weeks: 2026-08-31 /p/DctlNHNkb0q/ + 2026-09-07 /p/Dc_mpRxDIpd/, both '@7 sponsored by Circle Cinema'. Film varies weekly."
+    },
+    "gaymer night": {
+      "status": "active",
+      "last_verified": "2026-09-17",
+      "verified_venue": "Tulsa Eagle, 1338 E 3rd St, Tulsa, OK",
+      "verified_by": "live-scrape:manual",
+      "verified_through": null,
+      "note": "Venue's own IG, 2 weeks: 2026-08-31 /p/DctlNHNkb0q/ + 2026-09-07 /p/Dc_mpRxDIpd/, both 'Gaymer Night @8'."
+    },
+    "tea party tuesday": {
+      "status": "active",
+      "last_verified": "2026-09-16",
+      "verified_venue": "Tulsa Eagle, 1338 E 3rd St",
+      "verified_by": "live-scrape:tulsa_eagle_ig",
+      "verified_through": null,
+      "note": "Venue's own IG, 2 weeks: 2026-09-01 /p/DcwJ2RDCm71/ + 2026-09-08 /p/DdCLZsqFM8J/, identical captions, '$7 Long Islands until 8PM'."
+    },
+    "tulsa eagle tuesday karaoke": {
+      "status": "active",
+      "last_verified": "2026-09-17",
+      "verified_venue": "Tulsa Eagle, 1338 E 3rd St",
+      "verified_by": "live-scrape:tulsa_eagle_ig",
+      "verified_through": null,
+      "note": "Venue's own IG, 2 weeks: 2026-09-01 /p/DcwJ2RDCm71/ + 2026-09-08 /p/DdCLZsqFM8J/, both 'Tuesday Karaoke @8 w/ KJ G-RAY'."
+    },
+    "friday happy hour at tulsa eagle": {
+      "status": "active",
+      "last_verified": "2026-09-09",
+      "verified_venue": "Tulsa Eagle, 1338 E 3rd St",
+      "verified_by": "human:session-2026-09-09-ig-post-read",
+      "verified_through": null,
+      "note": "Venue's own IG, 2 weeks: 2026-08-28 /p/Dcl2rmMlXMC/ + 2026-09-04 /p/Dc34PLCAcU7/. The 10pm Friday party name varies and is NOT listed."
     }
   }
 }

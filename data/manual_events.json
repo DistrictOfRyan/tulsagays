@@ -846,5 +846,41 @@
     "url": "https://www.instagram.com/p/DccSw9VkQrU/",
     "source": "venue_flyer_dig",
     "priority": 2
+  },
+  {
+    "name": "Look Who's Hosting Now! (hosted by Shanel Sterling & Londenn D. Raine, guest cohost Karma Eclectic, guest T Ali)",
+    "date": "2026-09-17",
+    "time": "Doors 9pm, Showtime 11pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DdTegogRIuh/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Sensational Saturdays: FemmePower",
+    "date": "2026-09-19",
+    "time": "Doors 9pm, showtime 9:30pm-10:30pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DdQdPq1R69q/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Escándalo, hosted by La Franchesqua & King Laylo York, with Shanel Sterling & Kiana D. Jade",
+    "date": "2026-09-18",
+    "time": "Doors 9pm, Showtime 9:30pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DdJPsuYxBzL/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Yacht Rock Sing-Along",
+    "date": "2026-09-25",
+    "time": "6:30 PM",
+    "venue": "Elote Cafe, 514 S Boston Ave",
+    "url": "https://www.instagram.com/p/DdFYCatDuZg/",
+    "source": "venue_flyer_dig",
+    "priority": 2
   }
 ]
