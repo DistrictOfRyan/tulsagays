@@ -882,5 +882,16 @@
     "url": "https://www.instagram.com/p/DdFYCatDuZg/",
     "source": "venue_flyer_dig",
     "priority": 2
+  },
+  {
+    "name": "Sapphic Dance Party",
+    "date": "2026-10-01",
+    "time": "9:00 PM to 1:00 AM",
+    "venue": "473 Bar & Backyard",
+    "description": "All-ages, trans-inclusive LGBTQ+ dance party at 473. $10 advance.",
+    "url": "",
+    "source": "submission",
+    "priority": 2,
+    "source_note": "Submitted by Sapphic Dance 918 via event form, 2026-09-08. Venue address: 2224 E Admiral Blvd, Tulsa."
   }
 ]
