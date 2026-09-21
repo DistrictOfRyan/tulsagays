@@ -10,7 +10,7 @@
     "gaps": 2
   },
   "source_count": 244,
-  "event_count": 199,
+  "event_count": 198,
   "events_source": "data/events/2026-W39_rendered.json",
   "events": [
     {
@@ -266,7 +266,7 @@
       "url": "https://events.tulsa.okstate.edu/event/core-recovery"
     },
     {
-      "name": "Open Meditation, Tues.",
+      "name": "Open Meditation - Tues.",
       "date": "2026-09-22",
       "time": "1:30 PM",
       "venue": "Shambhala Meditation Center of Tulsa",
@@ -668,7 +668,7 @@
       "name": "Twisted Arts Film Fest: Downtown Screening",
       "date": "2026-09-24",
       "time": "7:00 PM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa, OK 74104",
       "url": "https://circlecinema.easy-ware-ticketing.com/eventsByMovie/A000003181"
     },
     {
@@ -698,13 +698,6 @@
       "time": "6:00 PM",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "url": "http://noh8campaign.com/?fbclid=IwcGRvZgFicmlkETE4SkdxcFNOMGhBVkhXbWFRc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHmZnxruIUxCaHiWFDCAwnTSV-wmj8743vBbs-uYM5_vFkFAvgrr62VAyDbPa"
-    },
-    {
-      "name": "Equality Business Alliance Networking Mixer",
-      "date": "2026-09-24",
-      "time": "6:00 PM - 7:30 PM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "https://okeq.org/eba/"
     },
     {
       "name": "Girl Scout Troop 7484",
@@ -1361,7 +1354,7 @@
       "name": "Broadway Clubhouse",
       "date": "2026-09-27",
       "time": "6:30 PM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "venue": "Lynn Riggs Theatre at the Dennis R. Neill Equality Center",
       "url": "https://www.facebook.com/groups/1049721904448898"
     },
     {
