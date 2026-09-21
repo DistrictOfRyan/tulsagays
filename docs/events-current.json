@@ -1,58 +1,58 @@
 [
   {
-    "name": "OSU vs TU After Party!!!",
-    "venue": "410 N Main St, Unit A, Tulsa, OK, United States, Oklahoma 74103",
-    "date": "2026-09-14",
-    "day_short": "MON",
-    "time": ""
-  },
-  {
-    "name": "Lunch Specials at Elgin Park",
-    "venue": "Elgin Park Brewery",
-    "date": "2026-09-14",
-    "day_short": "MON",
-    "time": "11:00 AM"
-  },
-  {
-    "name": "Lunch Special at Empire Slice House",
-    "venue": "Empire Slice House Tulsa / 84 Hospitality Group",
-    "date": "2026-09-14",
-    "day_short": "MON",
-    "time": "11:00 AM"
-  },
-  {
-    "name": "Happy Hour with Free Pool at Caz\u2019s Pub",
-    "venue": "Caz\u2019s Pub",
-    "date": "2026-09-14",
+    "name": "Study: Making Sense of the Bible",
+    "venue": "Wesley Foundation",
+    "date": "2026-09-21",
     "day_short": "MON",
     "time": "2:00 PM"
   },
   {
-    "name": "Happy Hour at in the raw v\u016b",
-    "venue": "in the raw v\u016b",
-    "date": "2026-09-14",
+    "name": "MONDAY MOVIE NIGHT",
+    "venue": "1338 E 3rd St, Tulsa, OK",
+    "date": "2026-09-21",
     "day_short": "MON",
-    "time": "3:00 PM"
+    "time": "7:00 PM"
   },
   {
-    "name": "Sunday & Monday Bar Special at PRHYME",
-    "venue": "PRHYME: Downtown Steakhouse",
-    "date": "2026-09-14",
+    "name": "Gaymer Night",
+    "venue": "Tulsa Eagle, 1338 E 3rd St",
+    "date": "2026-09-21",
     "day_short": "MON",
-    "time": "4:00 PM"
+    "time": "8:00 PM"
   },
   {
-    "name": "Happy Hour at Saturn Room",
-    "venue": "Saturn Room",
-    "date": "2026-09-14",
-    "day_short": "MON",
-    "time": "4:00 PM"
+    "name": "Tea Party Tuesday",
+    "venue": "Tulsa Eagle, 1338 E 3rd St",
+    "date": "2026-09-22",
+    "day_short": "TUE",
+    "time": "2:00 PM - 8:00 PM"
   },
   {
-    "name": "Cars 20th Anniversary",
-    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-09-14",
-    "day_short": "MON",
-    "time": "5:20 PM"
+    "name": "Tuesdays in the Park Concert Series",
+    "venue": "Central Park, 1500 S Main St, Broken Arrow",
+    "date": "2026-09-22",
+    "day_short": "TUE",
+    "time": "7:00 PM - 9:00 PM"
+  },
+  {
+    "name": "Billy Idol Tickets",
+    "venue": "Bok Center In Tulsa Oklahoma",
+    "date": "2026-09-22",
+    "day_short": "TUE",
+    "time": "7:30 PM"
+  },
+  {
+    "name": "Tulsa Eagle Tuesday Karaoke",
+    "venue": "Tulsa Eagle, 1338 E 3rd St",
+    "date": "2026-09-22",
+    "day_short": "TUE",
+    "time": "8:00 PM"
+  },
+  {
+    "name": "Bisexual Visibility Day",
+    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+    "date": "2026-09-23",
+    "day_short": "WED",
+    "time": ""
   }
 ]
