@@ -2,38 +2,31 @@
   "_comment": "Auto-grown by the weekly source-growth engine (tools/promote_sources.py). High-confidence Tulsa queer/queer-welcoming sources are appended here automatically; the scrapers merge these with their hardcoded lists at load time. Safe to hand-edit. Do not delete keys.",
   "fb_pages": [
     {
-      "url": "https://www.facebook.com/OKEQArtGallery/events",
-      "name": "Allie Jensen Memorial Art Gallery FB",
-      "added": "2026-08-15",
-      "via": "web-search",
-      "seen_count": 0,
-      "last_checked": "2026-09-13"
-    },
-    {
       "url": "https://www.facebook.com/HotMessSports/events",
       "name": "HotMess Sports Tulsa",
       "added": "2026-08-23",
       "via": "weekly-search:HotMess Sports Tulsa kickball dodgeball",
       "seen_count": 0,
-      "last_checked": "2026-09-13"
+      "last_checked": "2026-09-20",
+      "last_seen_week": "2026-W38"
     },
     {
       "url": "https://www.facebook.com/p/Oklahoma-Leather-Association-100087972230370/events",
       "name": "Oklahoma Leather Association FB",
       "added": "2026-09-05",
       "via": "web-search",
-      "last_seen_week": "2026-W37",
+      "last_seen_week": "2026-W38",
       "seen_count": 0,
-      "last_checked": "2026-09-13"
+      "last_checked": "2026-09-20"
     },
     {
       "url": "https://www.facebook.com/p/Ghoul-Friends-Queer-Cabaret-61564254665053/events",
       "name": "Ghoul Friends Queer Cabaret",
       "added": "2026-09-12",
       "via": "web-search",
-      "last_seen_week": "2026-W37",
+      "last_seen_week": "2026-W38",
       "seen_count": 0,
-      "last_checked": "2026-09-13"
+      "last_checked": "2026-09-20"
     },
     {
       "url": "https://www.facebook.com/100091661965106/events",
@@ -41,7 +34,7 @@
       "added": "2026-09-13",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-09-13"
+      "last_checked": "2026-09-20"
     }
   ],
   "fb_groups": [
@@ -50,27 +43,33 @@
       "name": "Gay Tulsa (FB group)",
       "added": "2026-08-16",
       "via": "web-search",
-      "last_seen_week": "2026-W37",
+      "last_seen_week": "2026-W38",
       "seen_count": 0,
-      "last_checked": "2026-09-13"
+      "last_checked": "2026-09-20"
     },
     {
       "url": "https://www.facebook.com/groups/436526440885847/events",
       "name": "Black Queer (Tulsa) FB group",
       "added": "2026-08-16",
       "via": "web-search",
-      "last_seen_week": "2026-W37",
+      "last_seen_week": "2026-W38",
       "seen_count": 0,
-      "last_checked": "2026-09-13"
+      "last_checked": "2026-09-20"
     },
     {
       "url": "https://www.facebook.com/groups/tulsa2s/events",
       "name": "Tulsa Two Spirit Society Group",
       "added": "2026-09-13",
       "via": "web-search",
-      "last_seen_week": "2026-W37",
+      "last_seen_week": "2026-W38",
       "seen_count": 0,
-      "last_checked": "2026-09-13"
+      "last_checked": "2026-09-20"
+    },
+    {
+      "url": "https://www.facebook.com/groups/649753022551343/events",
+      "name": "Oklahoma Lesbian Friends",
+      "added": "2026-09-20",
+      "via": "web-search"
     }
   ],
   "calendars": [
@@ -81,36 +80,18 @@
       "added": "2026-09-06",
       "via": "weekly-search:tulsa open and affirming congregation events",
       "seen_count": 0,
-      "last_checked": "2026-09-13"
+      "last_checked": "2026-09-20"
     }
   ],
   "partner_keywords": [
-    {
-      "kw": "green country tourism",
-      "name": "Green Country Tourism",
-      "added": "2026-08-09",
-      "via": "venue-miner",
-      "last_seen_week": "2026-W30",
-      "seen_count": 0,
-      "last_checked": "2026-09-13"
-    },
-    {
-      "kw": "allie jensen memorial art gallery",
-      "name": "Allie Jensen Memorial Art Gallery",
-      "added": "2026-08-15",
-      "via": "web-search",
-      "last_seen_week": "2026-W30",
-      "seen_count": 0,
-      "last_checked": "2026-09-13"
-    },
     {
       "kw": "university of tulsa",
       "name": "University Of Tulsa",
       "added": "2026-08-23",
       "via": "venue-miner",
-      "last_seen_week": "2026-W37",
+      "last_seen_week": "2026-W38",
       "seen_count": 0,
-      "last_checked": "2026-09-13"
+      "last_checked": "2026-09-20"
     },
     {
       "kw": "tulsa leather community",
@@ -119,7 +100,7 @@
       "via": "web-search",
       "last_seen_week": "2026-W32",
       "seen_count": 0,
-      "last_checked": "2026-09-13"
+      "last_checked": "2026-09-20"
     },
     {
       "kw": "oklahoma leather association",
@@ -127,16 +108,16 @@
       "added": "2026-09-05",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-09-13"
+      "last_checked": "2026-09-20"
     },
     {
       "kw": "queer crafters club",
       "name": "Queer Crafters Club",
       "added": "2026-09-06",
       "via": "weekly-search:tulsa queer makers market vendor event 2026",
-      "last_seen_week": "2026-W37",
+      "last_seen_week": "2026-W38",
       "seen_count": 0,
-      "last_checked": "2026-09-13"
+      "last_checked": "2026-09-20"
     },
     {
       "kw": "duet jazz restaurant",
@@ -145,7 +126,7 @@
       "via": "venue-miner",
       "last_seen_week": "2026-W34",
       "seen_count": 0,
-      "last_checked": "2026-09-13"
+      "last_checked": "2026-09-20"
     },
     {
       "kw": "tulsa tassel coalition",
@@ -153,7 +134,13 @@
       "added": "2026-09-13",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-09-13"
+      "last_checked": "2026-09-20"
+    },
+    {
+      "kw": "north hall",
+      "name": "North Hall",
+      "added": "2026-09-20",
+      "via": "venue-miner"
     }
   ],
   "retired": [
@@ -975,6 +962,41 @@
       "last_checked": "2026-09-13",
       "retired_reason": "never produced an event",
       "retired_at": "2026-09-13",
+      "from": "partner_keywords"
+    },
+    {
+      "url": "https://www.facebook.com/OKEQArtGallery/events",
+      "name": "Allie Jensen Memorial Art Gallery FB",
+      "added": "2026-08-15",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-09-20",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-09-20",
+      "from": "fb_pages"
+    },
+    {
+      "kw": "green country tourism",
+      "name": "Green Country Tourism",
+      "added": "2026-08-09",
+      "via": "venue-miner",
+      "last_seen_week": "2026-W30",
+      "seen_count": 0,
+      "last_checked": "2026-09-20",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-09-20",
+      "from": "partner_keywords"
+    },
+    {
+      "kw": "allie jensen memorial art gallery",
+      "name": "Allie Jensen Memorial Art Gallery",
+      "added": "2026-08-15",
+      "via": "web-search",
+      "last_seen_week": "2026-W30",
+      "seen_count": 0,
+      "last_checked": "2026-09-20",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-09-20",
       "from": "partner_keywords"
     }
   ]

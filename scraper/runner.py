@@ -271,8 +271,22 @@ def _venue_place_tokens(venue: str) -> set:
     # so a copy mention and the venue field agree on the same word.
     name_part = re.sub(r"['’]s\b", "", name_part)
     toks = _normalize(name_part).split()
-    return {t for t in toks
-            if t not in _VENUE_PLACE_GENERIC and not t.isdigit() and len(t) > 1}
+    result = {t for t in toks
+              if t not in _VENUE_PLACE_GENERIC and not t.isdigit() and len(t) > 1}
+
+    # An address-only venue string ("1338 E 3rd St, Tulsa, OK") carries none of
+    # its business name's tokens, so a copy mention of the business name ("at
+    # Tulsa Eagle") looks like a different place. Resolve it through the same
+    # address-fragment map clean_venue() uses (config.VENUE_NAME_MAP) and fold
+    # the resolved name's tokens in too.
+    low = (venue or "").lower()
+    for addr, name in getattr(config, "VENUE_NAME_MAP", {}).items():
+        if addr in low:
+            name_toks = _normalize(name).split()
+            result |= {t for t in name_toks
+                       if t not in _VENUE_PLACE_GENERIC and not t.isdigit() and len(t) > 1}
+
+    return result
 
 
 def _same_venue_place(venue_a: str, venue_b: str) -> bool:

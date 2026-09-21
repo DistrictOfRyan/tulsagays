@@ -669,11 +669,31 @@ def run(week_key=None):
                 except Exception:
                     _raw_all = []
                 _rows_by_key = {(e.get("name"), e.get("date")): e for e in _raw_all if isinstance(e, dict)}
+                # A recurring event that's tracked and FRESH in the recurring-
+                # confirmations ledger already carries real human evidence (the
+                # double-week venue-IG-post confirmation that ledger records) --
+                # the "RECURRING EVENT VERIFICATION" block above already trusts
+                # this same ledger for staleness; the truth gate must trust it
+                # too instead of demanding a second, separate proof. Matched by
+                # normalized NAME (not the row's current `source`), because a
+                # live-scraped duplicate can win the merge over the hardcoded
+                # `recurring` row and inherit its name without its provenance
+                # (e.g. "Monday Movie Night" merging in as source=facebook_events).
+                try:
+                    from scraper.recurring_verify import load_ledger as _rv_load, lookup_tier as _rv_tier
+                    _rv_ledger = _rv_load()
+                    _rv_today = date.today().isoformat()
+                except Exception:
+                    _rv_ledger = None
                 for _k in sorted(_fk, key=lambda k: (str(k[1]), str(k[0]))):
                     _row = _rows_by_key.get(_k, {})
                     _hv = _row.get("human_verified") or {}
                     if _k in _conf or (_hv.get("evidence_url") and _hv.get("action") != "hidden"):
                         continue
+                    if _rv_ledger is not None:
+                        _is_tracked, _tier, _, _ = _rv_tier(_k[0], _rv_today, _rv_ledger)
+                        if _is_tracked and _tier in ("fresh", "stale"):
+                            continue
                     errors.append(f"[truth] featured/EOTW '{_k[0]}' {_k[1]} is not confirmed by its source or a "
                                   f"recorded human check — verify it (set human_verified with evidence_url) or unfeature it")
         except Exception as _te:

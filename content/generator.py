@@ -432,6 +432,10 @@ Use these hashtags at the end (include all of them, separated by spaces):
 {hhhh_instruction} Don't just list everything -- curate it. Add personality. \
 Make people actually want to go. If an event is not in the list above, do not \
 mention it.
+
+Before the hashtags, add a short closing line that mentions tulsagays.com as \
+where to find the full list of events (every caption must reference \
+tulsagays.com somewhere -- this is a hard requirement, not optional).
 """
 
     # Try the API call, fall back to template if it fails. Pass the

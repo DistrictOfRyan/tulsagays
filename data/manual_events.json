@@ -893,5 +893,32 @@
     "source": "submission",
     "priority": 2,
     "source_note": "Submitted by Sapphic Dance 918 via event form, 2026-09-08. Venue address: 2224 E Admiral Blvd, Tulsa."
+  },
+  {
+    "name": "Pandora's Box (hosted by Scrappy Legacy, feat. Anthill Jackson, D. Composer, Koko the Doll, Death, special guest Briar Rose Lovethorn)",
+    "date": "2026-09-25",
+    "time": "Doors 9pm, showtime 9:30pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DdWJDjvRGUo/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Sunday Showdown: Open Talent Night",
+    "date": "2026-09-20",
+    "time": "Doors 9pm, Showtime 11pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DdVy9qBTw6I/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Imperial Court of All Oklahoma Sunday Funday Cook Out (charity cookout)",
+    "date": "2026-09-20",
+    "time": "4:00 PM - 7:00 PM",
+    "venue": "Tulsa Eagle, 1338 E 3rd St",
+    "url": "https://www.instagram.com/p/DdhFAttlBHL/",
+    "source": "venue_flyer_dig",
+    "priority": 2
   }
 ]

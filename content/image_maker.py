@@ -185,6 +185,10 @@ def clean_venue(raw: str) -> str:
     v = clean_text(raw or '').strip()
     if not v:
         return ''
+    # Scraper artifact: a stray comma right before a closing paren, e.g.
+    # "OKEQ (621 E 4th St,)" — strip it before the comma-split below runs,
+    # else the split chops the string mid-address and drops the ")".
+    v = re.sub(r',\s*\)', ')', v)
     low = v.lower()
     if any(low.startswith(j) for j in _VENUE_JUNK):
         return ''
@@ -1132,7 +1136,12 @@ def make_day_slide(day_name: str, events: List[Dict],
             nice_dt  = format_date(event.get("date", ""))
 
             # Name
-            name_lines_drawn = _wrap_to_width(draw, ev_name, f_name, W - PAD * 2)[:name_max_lines]
+            name_lines_all   = _wrap_to_width(draw, ev_name, f_name, W - PAD * 2)
+            name_lines_drawn = name_lines_all[:name_max_lines]
+            if len(name_lines_all) > name_max_lines and name_lines_drawn:
+                # Mark the cut so a clipped name never reads as the full name
+                # (e.g. "King Laylo York" silently becoming "King Laylo").
+                name_lines_drawn[-1] = name_lines_drawn[-1].rstrip() + "…"
             for ln in name_lines_drawn:
                 if y >= content_bottom:
                     break

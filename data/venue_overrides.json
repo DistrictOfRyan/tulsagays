@@ -37,6 +37,18 @@
       "venue": "Hilton Garden Inn Tulsa South, 8202 S 100th E Ave, Tulsa OK 74133",
       "time": "6:00 PM - 8:00 PM",
       "note": "September 2026 HHHH moved to the SECOND Friday (Sep 11) because Labor Day took the first. Venue confirmed 2026-09-07 against the first-party site homohotelhappyhour.com, which reads 'Date Friday, September 11, 2026 / Time 6:00 to 8:00 PM / Venue Hilton Garden Inn South' and '8202 S 100th E Ave, near 81st and Mingo'. Pool access included; charity is Council Oak Men's Chorale. The okeq scrape had it at the Dennis R. Neill Equality Center, which is STALE - exactly what the venue_varies guard exists to catch."
+    },
+    {
+      "match": "downtown screening",
+      "date": "2026-09-24",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa, OK 74104",
+      "note": "Twisted Arts Film Fest: Downtown Screening. OKEQ's calendar scrape defaults to its own building address (the same recurring OKEQ-default-address bug that hit QWC and HHHH) -- OKEQ's own live calendar (okeq.org/event-calendar/, read 2026-09-21) and twistedfest.org both confirm this screening is at Circle Cinema, 7:00-9:30pm."
+    },
+    {
+      "match": "broadway clubhouse",
+      "date": "2026-09-27",
+      "venue": "Lynn Riggs Theatre at the Dennis R. Neill Equality Center",
+      "note": "OKEQ's own live calendar (okeq.org/event-calendar/, read 2026-09-21) names the venue as 'Lynn Riggs Theater' -- a specific room inside the Equality Center building, not a plain 'Dennis R. Neill Equality Center' default. Matches the naming convention already used in data/manual_events.json."
     }
   ]
 }

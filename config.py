@@ -1410,6 +1410,10 @@ NON_LGBTQ_BLOCKLIST_CITY = [
     "golden eagles football", "golden eagles basketball",
     "tu football", "osu football", "ou football", "sooners football",
     "spe tulsa",
+    # Oklahoma City org that repeatedly scrapes into the Tulsa feed (W38: both a
+    # "Corn Hole" and "Kickball" open-play event, venue confirmed OKC — Wheeler
+    # Park/Eggeling Stadium is in Oklahoma City, not Tulsa).
+    "hotmess sports okc",
 ]
 
 # Address fragment â†’ display business name. Used by clean_venue() in image_maker.py
