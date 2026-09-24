@@ -374,3 +374,25 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 - WebSearch "new LGBTQ business Tulsa 2026 opened" / "queer-owned business Tulsa 2026" / "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (Il Seme, Jo & June, Dalesandro's, Dilly Diner, Elote Cafe, India Palace, Yokozuna, Lambrusco'z To Go) plus general guide/listicle pages (Yelp, GayCities, GayOut, Rainbows in Revolt, GayBnB Travel, visittulsa.com). No net-new finds.
 - Reddit r/tulsa (both query variants): no indexed results this scan (search surfaced only unrelated hotel-booking sites, same pattern as every prior scan).
 - Net result: nothing new found. No changes made to directory.html this scan.
+
+---
+
+## [2026-09-24] Soundpony
+- Category: bar
+- URL: https://www.thesoundpony.com/
+- Source: WebSearch ("queer-owned business Tulsa 2026") surfaced it via Autostraddle's Queer Girl City Guide: Tulsa, cross-verified with a second WebSearch describing it as "Tulsa's largest gay club." Address/hours confirmed via Yelp (updated September 2026, currently open) and visittulsa.com/downtowntulsa.com listings.
+- Notes: Bicycle-themed dive bar at 409 N Main St, Brady Arts District, next to Cain's Ballroom. Open daily 3pm-2am. Longtime Tulsa nightlife fixture with a strong mixed-queer crowd; referenced directly by tulsagays.com in the Autostraddle piece. A genuine omission from the directory despite being one of the most-cited queer-friendly venues in Tulsa across multiple independent sources. Added to Bars & Nightlife section and the JSON-LD schema (position 79, numberOfItems now 79).
+
+### Reviewed but NOT added (2026-09-24 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/): rendered its live inline member list again (same 6 current members: UniComm Solutions, Yoga Quest LLC, Doc J's Heat and Air, Littleton Legal PLLC, Edgewood Veterinary Hospital, Osteostrong Tulsa Midtown) - no net-new members since the 2026-07-30 scan, all confirmed already in the directory.
+- OkEq Food & Drink full re-check (50 listings): no net-new businesses. All 50 confirmed already in the directory or previously reviewed/held/skipped from prior scans.
+- Tulsa Remote LGBTQ guide: all listed businesses/resources already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage found this scan (only unrelated theatre/arts features - Twisted Arts Film Fest, TU Theatre, Celebrity Attractions).
+- WebSearch "new LGBTQ business Tulsa 2026 opened": no net-new finds beyond general guide/listicle pages already reviewed in prior scans.
+- WebSearch "queer-owned business Tulsa 2026": surfaced Soundpony (added above); il Seme, Cherry & Bark, Jo & June, Magic City Books, Tonsorial all already in directory.
+- WebSearch "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (Dalesandro's, Dilly Diner, Lambrusco'z To Go, Elote Cafe, Yokozuna, India Palace).
+- Reddit r/tulsa (both query variants): no indexed results this scan (search surfaced only unrelated hotel-booking sites, same pattern as every prior scan).
+- Net result: 1 new business added (Soundpony).
+
+### Source-list candidates for the Monday scrape (2026-09-24)
+- Soundpony (thesoundpony.com) hosts regular comedy shows, live music, and trivia nights. Worth checking for a public events calendar/Instagram as a candidate for the Monday scrape source list.
