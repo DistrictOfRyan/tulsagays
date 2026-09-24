@@ -1,58 +1,58 @@
 [
   {
-    "name": "Study: Making Sense of the Bible",
-    "venue": "Wesley Foundation",
-    "date": "2026-09-21",
-    "day_short": "MON",
-    "time": "2:00 PM"
-  },
-  {
-    "name": "MONDAY MOVIE NIGHT",
-    "venue": "1338 E 3rd St, Tulsa, OK",
-    "date": "2026-09-21",
-    "day_short": "MON",
-    "time": "7:00 PM"
-  },
-  {
-    "name": "Gaymer Night",
-    "venue": "Tulsa Eagle, 1338 E 3rd St",
-    "date": "2026-09-21",
-    "day_short": "MON",
-    "time": "8:00 PM"
-  },
-  {
-    "name": "Tea Party Tuesday",
-    "venue": "Tulsa Eagle, 1338 E 3rd St",
-    "date": "2026-09-22",
-    "day_short": "TUE",
-    "time": "2:00 PM - 8:00 PM"
-  },
-  {
-    "name": "Tuesdays in the Park Concert Series",
-    "venue": "Central Park, 1500 S Main St, Broken Arrow",
-    "date": "2026-09-22",
-    "day_short": "TUE",
-    "time": "7:00 PM - 9:00 PM"
-  },
-  {
-    "name": "Billy Idol Tickets",
-    "venue": "Bok Center In Tulsa Oklahoma",
-    "date": "2026-09-22",
-    "day_short": "TUE",
-    "time": "7:30 PM"
-  },
-  {
-    "name": "Tulsa Eagle Tuesday Karaoke",
-    "venue": "Tulsa Eagle, 1338 E 3rd St",
-    "date": "2026-09-22",
-    "day_short": "TUE",
-    "time": "8:00 PM"
-  },
-  {
     "name": "Bisexual Visibility Day",
     "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
     "date": "2026-09-23",
     "day_short": "WED",
     "time": ""
+  },
+  {
+    "name": "2026 Twisted Arts Film Festival",
+    "venue": "",
+    "date": "2026-09-23",
+    "day_short": "WED",
+    "time": ""
+  },
+  {
+    "name": "At the Place of Ghosts with The Dysphoria",
+    "venue": "",
+    "date": "2026-09-23",
+    "day_short": "WED",
+    "time": ""
+  },
+  {
+    "name": "Karaoke Wednesdays",
+    "venue": "Frequency Lounge",
+    "date": "2026-09-23",
+    "day_short": "WED",
+    "time": "10:00 PM"
+  },
+  {
+    "name": "HotMess Kickball Fall 2026 Registration Closes",
+    "venue": "Various venues, Tulsa (see @hotmesssportstulsa)",
+    "date": "2026-09-23",
+    "day_short": "WED",
+    "time": "11:59 PM"
+  },
+  {
+    "name": "Queering Body Image Group",
+    "venue": "MAIN HALL",
+    "date": "2026-09-23",
+    "day_short": "WED",
+    "time": "4:00 PM"
+  },
+  {
+    "name": "The Truth About Reading - with Teach for America",
+    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+    "date": "2026-09-23",
+    "day_short": "WED",
+    "time": "6:00 PM"
+  },
+  {
+    "name": "HotMess Kickball Free Open Play",
+    "venue": "McClure Park Softball Field",
+    "date": "2026-09-23",
+    "day_short": "WED",
+    "time": "6:30 PM"
   }
 ]
