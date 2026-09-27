@@ -87,6 +87,21 @@ def partner_keywords():
     return [e["kw"].lower() for e in _load()["partner_keywords"] if e.get("kw")]
 
 
+def all_names():
+    """Return every human-readable ``name`` across all dynamic source lists.
+
+    URLs alone miss matches like a census alias "relationships outside the
+    box" against a URL slug "relationships-outside-the-box" (space vs
+    hyphen) -- the name field is the reliable match surface for coverage
+    reporting.
+    """
+    data = _load()
+    out = []
+    for key in ("fb_pages", "fb_groups", "calendars", "partner_keywords"):
+        out.extend(e["name"] for e in data[key] if e.get("name"))
+    return out
+
+
 def merge_unique(base, additions):
     """Append ``additions`` to ``base`` preserving order, skipping duplicates.
 

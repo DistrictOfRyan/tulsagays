@@ -48,6 +48,7 @@ def _live_source_blob():
     parts += [u.lower() for u in dyn.fb_group_urls()]
     parts += [c[0].lower() for c in dyn.calendar_sites()]
     parts += [k.lower() for k in dyn.partner_keywords()]
+    parts += [n.lower() for n in dyn.all_names()]
     # hardcoded FB page/group lists
     try:
         from scraper import facebook_events as fbe
