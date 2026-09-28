@@ -435,6 +435,13 @@ def cmd_generate(post_type="weekday"):
         print("No events left after sanity rules.")
         return None
 
+    # A lone "12:00 AM" is a calendar feed's all-day marker (W40: a weeks-long
+    # McFarlin Library exhibit), not a start time. Blank it so it neither renders
+    # on a slide nor sorts ahead of every timed event of the day.
+    for _ev in events:
+        if re.fullmatch(r"\s*12:00\s*a\.?m\.?\s*", _ev.get("time") or "", re.I):
+            _ev["time"] = ""
+
     date_range = get_date_range(post_type)
 
     # Enrich events with exciting descriptions.
@@ -595,6 +602,16 @@ def cmd_generate(post_type="weekday"):
         "job fair",
         "resume workshop",
         "fafsa",
+        # Academic talks, added 2026-09-28: W40 replay put "CSG Guest Speaker
+        # Event: Proceduralism in Film & Games" (University of Tulsa) in the
+        # TOP PICK box because "film" is a fun word.
+        "guest speaker",
+        "speaker series",
+        "speaker event",
+        "lecture",
+        "colloquium",
+        "symposium",
+        "state of the university",
     }
     # Venue-level deprioritization REMOVED 2026-06-12 (William): Majestic and
     # other gay-bar special events are featurable. Weekly bar filler is still
@@ -711,12 +728,32 @@ def cmd_generate(post_type="weekday"):
         "album release", "album", "ep release", "improv", "stand-up", "standup",
         "tasting", "pop up", "pop-up", "movie night", "film", "exhibit",
         "opening reception", "art opening", "burlesque", "variety", "talent",
+        # W40 (2026-09-28): "2nd Annual Gay Ole Opry: Comin Out Country" hit
+        # none of the words above, so the week's biggest one-off queer show lost
+        # Thursday's third slot to the weekly DRAGNIFICENT on the fun tiebreak.
+        "opry", "hoedown", "rodeo", "annual",
     )
+    # Listings that are not a night out for the reader at all: a call for
+    # performers, a donor/member dinner. W40 put "Songwriter Showcase Auditions"
+    # in Tuesday's TOP PICK box and a Philbrook donor recognition dinner on
+    # Wednesday. They stay on the website; they never take a slide slot.
+    _NOT_AN_OUTING_KW = (
+        "audition", "tryout", "try-out", "casting call", "call for artists",
+        "call for entries", "call for submissions", "call for vendors",
+        "recognition dinner", "donor", "members only", "members-only",
+        "invitation only", "invite only", "private event",
+    )
+    # An ongoing exhibition is a place, not a night: it runs for weeks, its feed
+    # time is a midnight all-day marker, and "exhibit" made it read as a fun
+    # one-off. Only its opening/closing reception is a hero-worthy event.
+    _EXHIBIT_KW = ("exhibition", "exhibit")
+    _EXHIBIT_EVENT_KW = ("opening", "reception", "closing", "artist talk", "unveiling")
     # Kids' / daytime-library / family filler — real events, but they belong on
     # the website list, NOT in the featured slots over adult-appealing events.
     _KIDS_FILLER_KW = (
         "dino", "dinosaur", "pet rock", "weather show", "story time", "storytime",
         "toddler", "preschool", "baby", "kids", "children", "kid-friendly",
+        "little explorers", "garden explorers",   # W40: Philbrook's Little Garden Explorers
         "make and take", "corn husk", "corn-husk", "balloon-twisting",
         "balloon twisting", "bubble stage", "teen craft", "inspyral circus",
         "lego", "family fun", "homeschool", "sensory",
@@ -790,6 +827,9 @@ def cmd_generate(post_type="weekday"):
             # Exclude clear off-topic business/seminar spam.
             if not _is_lgbtq_strict(e) and any(k in combo for k in _JUNK_KW):
                 return False
+            # Auditions, donor dinners, invite-only: nothing for a reader to go to.
+            if any(k in combo for k in _NOT_AN_OUTING_KW):
+                return False
             # Everything else — LGBTQ events AND inclusive one-off community /
             # cultural happenings (art, festivals, concerts, markets, etc.) — is
             # featured-eligible. _rank still floats the fun, one-off picks up top.
@@ -835,6 +875,40 @@ def cmd_generate(post_type="weekday"):
                 return False  # performance nights are marquee, never demoted
             return any(k in combo for k in _BAR_UTILITY_KW)
 
+        def _flamingo(e):
+            try:
+                from content.image_maker import _flamingo_score as _flsc
+                return _flsc(e)
+            except Exception:
+                return 4 if _is_lgbtq_strict(e) else 1
+
+        def _venue_only_queer(e):
+            # VENUE-INHERITED queerness is weaker than queerness of the event
+            # itself. Circle Cinema is an affirming venue, so _is_lgbtq_strict
+            # says True for every screening it hosts - which floated "Cars 20th
+            # Anniversary" and "Gumby in 4K" into featured slots as though they
+            # were gay events (William 2026-09-07: "there's nothing really gay on
+            # them"). If the event's own NAME carries no queer signal and its
+            # flamingo score is only 2, its queerness is the room's, not its own.
+            _own_queer_signal = any(k in (e.get("name") or "").lower() for k in (
+                "drag", "queer", "gay", "lgbt", "pride", "trans", "lesbian", "dyke",
+                "sapphic", "bi-con", "bicon", "homo", "gaymer", "ball", "cabaret",
+                "burlesque", "talent night", "open talent", "showcase", "revue"))
+            return _is_lgbtq_strict(e) and not _own_queer_signal and _flamingo(e) < 4
+
+        def _civic(e):
+            # CIVIC / INFORMATIONAL sinks below anything you would actually go out
+            # for. _ALWAYS_DEPRIORITIZE only reached tiebreak #8 via
+            # _slide_priority, which is far too late to stop a 1-flamingo town hall
+            # taking a slide (W37 Tuesday). Give it a bucket of its own, above the
+            # flamingo bucket, so "not a fun thing" outranks "technically queer".
+            return any(kw in (e.get("name") or "").lower() for kw in _ALWAYS_DEPRIORITIZE)
+
+        def _ongoing_exhibit(e):
+            nm = (e.get("name") or "").lower()
+            return (any(k in nm for k in _EXHIBIT_KW)
+                    and not any(k in nm for k in _EXHIBIT_EVENT_KW))
+
         def _rank(e):
             # Classify on NAME + VENUE, never the generated description — so writing
             # voice copy can't reshuffle which events get featured (stable selection).
@@ -862,34 +936,13 @@ def cmd_generate(post_type="weekday"):
             # Among the community backfill, a gay-friendly 2-3 flamingo event
             # (art opening, Pride-adjacent, affirming venue) beats a pure-straight
             # 1-flamingo filler (farmers market, brewery bingo, generic jazz).
-            try:
-                from content.image_maker import _flamingo_score as _flsc
-                _fl = _flsc(e)
-            except Exception:
-                _fl = 4 if lg else 1
+            _fl = _flamingo(e)
             fl_bucket = 0 if _fl >= 4 else (1 if _fl >= 2 else 2)
-            # VENUE-INHERITED queerness is weaker than queerness of the event
-            # itself. Circle Cinema is an affirming venue, so _is_lgbtq_strict
-            # says True for every screening it hosts - which floated "Cars 20th
-            # Anniversary" and "Gumby in 4K" into featured slots as though they
-            # were gay events (William 2026-09-07: "there's nothing really gay on
-            # them"). If the event's own NAME carries no queer signal and its
-            # flamingo score is only 2, its queerness is the room's, not its own.
-            _own_queer_signal = any(k in (e.get("name") or "").lower() for k in (
-                "drag", "queer", "gay", "lgbt", "pride", "trans", "lesbian", "dyke",
-                "sapphic", "bi-con", "bicon", "homo", "gaymer", "ball", "cabaret",
-                "burlesque", "talent night", "open talent", "showcase", "revue"))
-            venue_only_queer = lg and not _own_queer_signal and _fl < 4
+            venue_only_queer = _venue_only_queer(e)
             # A title that already led an earlier day this week sinks behind
             # anything fresh, so one multi-day cinema run cannot own the deck.
             repeat_lead = _norm_title(e) in _featured_titles_used
-            # CIVIC / INFORMATIONAL sinks below anything you would actually go out
-            # for. _ALWAYS_DEPRIORITIZE only reached tiebreak #8 via
-            # _slide_priority, which is far too late to stop a 1-flamingo town hall
-            # taking a slide (W37 Tuesday). Give it a bucket of its own, above the
-            # flamingo bucket, so "not a fun thing" outranks "technically queer".
-            civic = any(kw in (e.get("name") or "").lower()
-                        for kw in _ALWAYS_DEPRIORITIZE)
+            civic = _civic(e)
             return (
                 0 if lg else 1,            # 1) gay events lead, always
                 1 if civic else 0,         # 1a) fun beats civic/informational, always
@@ -953,6 +1006,17 @@ def cmd_generate(post_type="weekday"):
         # day truly has nothing better. Drag/performance nights are marquee and
         # exempt. Hero preference: one-off LGBTQ > one-off fun community >
         # recurring LGBTQ performance > recurring LGBTQ non-utility > the rest.
+        #
+        # QUALITY FLOORS on the two "one-off" classes (2026-09-28, W40). The
+        # "fun" test is a keyword match, so on its own it handed the TOP PICK
+        # box to a 1-flamingo "Songwriter Showcase Auditions" (Tue), a
+        # 1-flamingo Cain's concert (Wed) and a weeks-long student art exhibit
+        # whose feed time was a 12:00 AM all-day marker (Mon), each over the
+        # day's 5-flamingo Eagle night. A non-gay one-off now has to be at least
+        # gay-friendly (2+ flamingos) and a real night out (not civic, kids,
+        # an ongoing exhibit, or the title that already led an earlier day)
+        # to take the box; a "one-off gay event" has to be queer in itself,
+        # not only by venue (a Circle Cinema screening is not a gay event).
         def _hero_rank(e):
             lg_e = _is_lgbtq_strict(e)
             rec_e = _recurring(e)
@@ -961,9 +1025,12 @@ def cmd_generate(post_type="weekday"):
             perf = any(k in combo for k in ("drag", "talent night", "open talent",
                                             "cabaret", "burlesque", "revue"))
             fun = any(k in combo for k in _FUN_KW)
-            if lg_e and not rec_e and not util:
+            kids = any(k in combo for k in _KIDS_FILLER_KW)
+            real_night_out = not (_civic(e) or kids or _ongoing_exhibit(e)
+                                  or _norm_title(e) in _featured_titles_used)
+            if lg_e and not rec_e and not util and real_night_out and not _venue_only_queer(e):
                 cls = 0          # one-off gay event — the ideal hero
-            elif not rec_e and fun and not util:
+            elif not rec_e and fun and not util and real_night_out and _flamingo(e) >= 2:
                 cls = 1          # one-off fun community event
             elif lg_e and rec_e and perf:
                 cls = 2          # recurring drag/performance — still marquee

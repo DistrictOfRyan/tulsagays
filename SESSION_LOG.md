@@ -1,3 +1,17 @@
+## [2026-09-28 12:30] W40 audit: TOP PICK boxes went to non-events; live site had wrong venues
+
+William asked "did tulsa gays run today? ... see that everything is valid and the most fun events are surfaced to the top". It ran: Monday snapshot 03:45, site refresh 03:59, venue fixes 09:26 (HHHH October at the Mayo Hotel, Miami NEOK Pride at Riverview Park), carousel images published 10:00 (the step right before post_weekly.py posts to FB/IG; the live post could not be checked from the cloud sandbox, Meta hosts are blocked there).
+
+**Slides (already out, not reposted):** the pink TOP PICK box went to a weeks-long McFarlin Library student exhibit shown at "12:00 AM" (Mon), 1-flamingo "Songwriter Showcase Auditions" (Tue, an audition call) and a 1-flamingo Cain's concert (Wed), each over the day's 5-flamingo Eagle night. Wednesday also carried Philbrook's under-5 "Little Garden Explorers" and the donor-only Phillips Society dinner. Saturday rated "Tulsa Pagan Pride Day" Super Gay. Thursday dropped the one-off "2nd Annual Gay Ole Opry" for the weekly DRAGNIFICENT because "opry" was not a fun word. Root cause: the 07-20 hero gate ranks any one-off with a fun KEYWORD above every recurring gay event, with no flamingo floor and no check that it is a night out at all.
+
+**Fixes (branch claude/confident-hawking-jsrugo):** hero class 1 now needs 2+ flamingos and a real night out (not civic/lecture, kids, an ongoing exhibit, or a repeat lead); class 0 needs queerness of its own, not the venue's. Auditions/donor/invite-only listings never take a slide. Lone "12:00 AM" = all-day marker (slides + site). "Pagan Pride" no longer reads as Pride. "Discover events" is a junk name. "support circle" never featured. Under-5 "garden/little explorers" screened. `invite` is a junk venue. New `test_w40_top_pick_quality` replays a W40-shaped week through cmd_generate: 14 of 15 checks fail on the old code, all pass now; verify_all green.
+
+**Live site patched by hand (the committed W40 JSON has no website copy, so a rebuild here would have wiped every blurb):** HHHH venue Mayo Hotel; Miami NEOK Pride moved off the Equality Center (EOTW banner, card, JSON-LD, event page) with a new blurb; "Discover events / Las Vegas" removed everywhere; Pagan Pride 2 flamingos; Club Majestic Latin night gets its venue and 5 flamingos. The next local site build regenerates these from data/ with the same results.
+
+**Open:** HotMess Kickball kickoff at YBR stays off the slides by the YBR partner rule (manual source, not @tulsaybr). Unconfirmed from public sources: Sapphic Dance Party is Thu 10/1 (one search result says Sat 10/3), Gay Ole Opry date/venue (OKEQ calendar only), Tiffany Haddish also has Fri 7:00 PM and Sat 8:45 PM shows the site does not list.
+
+---
+
 ## [2026-09-07 13:50] Recover the missed W37 Monday, and stop a missed week being silent
 
 William asked "did tulsagays run today? if not, why? fix it". It ran at 03:00, blocked at preflight at 07:44, and **four separate mechanisms called that success** - the poster returned `success: True` on "no prepped deck to release", both outcome contracts passed on `slide_manifest.json` existing (generate-all's artifact, not the gate's), and the alert was one fire-and-forget Telegram whose result was discarded. W36 (2026-08-31) had gone the same way, so **two consecutive Mondays were missed with no alarm**. Proven fixed in production, not in a test: the same scheduled poster logged `OK` at 08:00 and `FAILED ... MISSED THE WEEK` at 10:00 and 12:00 with the cause quoted off disk.

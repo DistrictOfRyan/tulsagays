@@ -35,6 +35,8 @@ events = raw if isinstance(raw, list) else raw.get('events', [])
 _GARBAGE_NAMES = {
     '(map)', 'stay connected!', 'our partners', 'event application',
     'event calendar', 'bruce goff event center',
+    # Facebook events-hub nav header (W40: listed Monday "at Las Vegas").
+    'discover events', 'find events', 'explore events', 'browse events',
 }
 def _is_garbage(ev):
     # A row a truth check CONFIRMED wrong (last year's event, another city's
@@ -165,6 +167,11 @@ def _flamingo_score(ev) -> int:
     name   = ev.get('name', '').lower()
     venue  = ev.get('venue', '').lower()   # raw, before address cleaning
     source = ev.get('source', '')
+    try:
+        from eotw_selector import strip_non_lgbtq_pride as _strip_pride
+        name = _strip_pride(name)   # "Tulsa Pagan Pride Day" is not Pride (W40)
+    except Exception:
+        pass
     content = f"{name} {venue}"
 
     if any(kw in content for kw in _NOT_GAY_GUARD):

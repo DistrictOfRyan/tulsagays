@@ -53,6 +53,7 @@ _SKIP_NAME_FRAGMENTS = {
     "bowling league", "bowling night",
     "aa meeting", "aa meetings",
     "support group",
+    "support circle",      # W40 replay: "Community Care Providers Support Circle" (OKEQ)
     "sound bath",
     "health clinic", "okeq health", "okeq senior",
     "(cancelled",
@@ -373,8 +374,23 @@ _STRICT_RE = _re.compile(
 )
 
 
+# "Pride" that is not LGBTQ Pride. W40 (2026-09-28): "Tulsa Pagan Pride Day", a
+# Pagan community festival, scored 5 flamingos / "Super Gay" on the Saturday
+# slide and ranked as a gay event. Remove these phrases before keyword matching.
+NON_LGBTQ_PRIDE_PHRASES = (
+    "pagan pride", "pride and prejudice", "pride & prejudice",
+)
+
+
+def strip_non_lgbtq_pride(text: str) -> str:
+    for p in NON_LGBTQ_PRIDE_PHRASES:
+        text = text.replace(p, " ")
+    return text
+
+
 def _strict_kw_hit(text: str) -> bool:
     """True if text carries a strict LGBTQ keyword as a WORD, not a substring."""
+    text = strip_non_lgbtq_pride(text)
     if any(p in text for p in _STRICT_PHRASE):
         return True
     return bool(_STRICT_RE.search(text))
@@ -430,6 +446,9 @@ _YOUTH_KW = (
     "girl scout", "boy scout", "cub scout", "4-h", "summer reading",
     "reading buddies", "craft time", "kids' ", "youth craft", "teen craft",
     "family storytime", "family fun day", "weather show", "junior ranger",
+    # Philbrook's "Little Garden Explorers" is drop-in play for children under 5;
+    # W40 put it on the Wednesday slide.
+    "garden explorers", "little explorers",
 )
 
 

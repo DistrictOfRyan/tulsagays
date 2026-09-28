@@ -303,8 +303,12 @@ def _flamingo_score(ev: dict) -> int:
     content = f"{name} {venue}"
 
     try:
-        from eotw_selector import _is_lgbtq_strict as _strict_lgbtq
+        from eotw_selector import (_is_lgbtq_strict as _strict_lgbtq,
+                                   strip_non_lgbtq_pride as _strip_pride)
         is_strict_lgbtq = _strict_lgbtq(ev)
+        # "Tulsa Pagan Pride Day" is not a Pride event (W40 rated it Super Gay).
+        name = _strip_pride(name)
+        content = f"{name} {venue}"
     except Exception:
         is_strict_lgbtq = False
 
