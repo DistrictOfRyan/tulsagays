@@ -377,6 +377,144 @@ def test_w28_saturday_dedup_and_cancelled():
               {"name": "Monthly Clothing Swap at YBR", "date": "2026-07-06", "venue": ybr}))
 
 
+def test_w40_top_pick_quality():
+    """Regression lock, 2026-09-28 (W40): the TOP PICK box went to non-events.
+
+    The shipped W40 deck led Monday with a weeks-long student art exhibit whose
+    feed time was a 12:00 AM all-day marker, led Tuesday with 1-flamingo
+    "Songwriter Showcase Auditions", put a donor-only Philbrook dinner and an
+    under-5 play session on Wednesday, rated "Tulsa Pagan Pride Day" Super Gay,
+    and left the one-off "2nd Annual Gay Ole Opry" off Thursday for the weekly
+    DRAGNIFICENT. Replays a synthetic week through the real cmd_generate
+    selection, sandboxed (temp data dir; no images, LLM or final review).
+    """
+    print("W40 TOP PICK quality locks:")
+    import tempfile
+    from datetime import datetime as _dt, timedelta as _td
+    from content.textclean import clean_time
+    from content.image_maker import _flamingo_score
+    from scraper.runner import _is_junk_name
+
+    pagan = ev("Tulsa Pagan Pride Day", "Tulsa, OK")
+    check("'Tulsa Pagan Pride Day' is NOT gay", es._is_lgbtq_strict(pagan) is False)
+    check("'Tulsa Pagan Pride Day' is not Super Gay", _flamingo_score(pagan) < 4)
+    check("real Pride still gay", es._is_lgbtq_strict(ev("Miami NEOK Pride", "Riverview Park")) is True)
+    check("lone 12:00 AM is an all-day marker", clean_time("12:00 AM") == "")
+    check("'Discover events' is a junk name", _is_junk_name("Discover events"))
+    check("'Little Garden Explorers' is youth programming",
+          es._is_youth_nongay(ev("Little Garden Explorers", "Philbrook Museum of Art")) is True)
+    check("support circle never featured",
+          es._is_skip(ev("Community Care Providers Support Circle", "Equality Center")) is True)
+
+    import config as _cfg
+    import main as _main
+    import content.image_maker as _im
+    import content.generator as _gen
+    import tools.final_deck_review as _fdr
+
+    mon = (_dt.now() - _td(days=_dt.now().weekday())).date()
+    day = lambda n: (mon + _td(days=n)).isoformat()
+    eagle = "Tulsa Eagle, 1338 E 3rd St"
+    week = [
+        # Monday: recurring Eagle nights vs a fake-midnight exhibit, an audition
+        # call and an academic talk
+        {"name": "Monday Movie Night", "venue": eagle, "date": day(0), "time": "7:00 PM", "source": "recurring"},
+        {"name": "Gaymer Night", "venue": eagle, "date": day(0), "time": "8:00 PM", "source": "recurring"},
+        {"name": "Spotlight Student Art Exhibition", "venue": "McFarlin Library", "date": day(0),
+         "time": "12:00 AM", "source": "extended_calendars"},
+        {"name": "Songwriter Showcase Auditions", "venue": "Tulsa Community College", "date": day(0),
+         "time": "", "source": "rendered_sites"},
+        {"name": "CSG Guest Speaker Event: Proceduralism in Film & Games", "venue": "University of Tulsa",
+         "date": day(0), "time": "", "source": "rendered_sites"},
+        {"name": "Discover events", "venue": "Las Vegas", "date": day(0), "time": "", "source": "facebook_events"},
+        # Tuesday: the annual queer show vs the weekly drag night
+        {"name": "Sapphic Dance Party", "venue": "473 Bar & Backyard", "date": day(1),
+         "time": "9:00 PM", "source": "manual"},
+        {"name": "PUNK ROCK PAJAMA PARTY w/GHOUL FRIENDS Queer Cabaret", "venue": "The Campbell Hotel",
+         "date": day(1), "time": "6:00 PM", "source": "eventbrite"},
+        {"name": "2nd Annual Gay Ole Opry: Comin Out Country",
+         "venue": "Dennis R. Neill Equality Center, 621 E 4th St", "date": day(1), "time": "7:00 PM",
+         "source": "okeq"},
+        {"name": "DRAGNIFICENT! at Club Majestic", "venue": "Club Majestic, 124 N Boston Ave",
+         "date": day(1), "time": "", "source": "qlist"},
+        # Wednesday: donor dinner, toddler program, 1-flamingo concert, Pagan Pride
+        {"name": "Tea Party Wednesday", "venue": eagle, "date": day(2), "time": "2:00 PM - 8:00 PM",
+         "source": "recurring"},
+        {"name": "Phillips Society Recognition Dinner", "venue": "Philbrook Museum of Art",
+         "date": day(2), "time": "5:30 PM", "source": "philbrook_museum"},
+        {"name": "Little Garden Explorers", "venue": "Philbrook Museum of Art", "date": day(2),
+         "time": "9:30 AM", "source": "philbrook_museum"},
+        {"name": "Cameron Whitcomb", "venue": "Cain's Ballroom", "date": day(2), "time": "",
+         "source": "cains_ballroom"},
+        {"name": "Tulsa Pagan Pride Day", "venue": "Tulsa, OK", "date": day(2), "time": "9:00 AM",
+         "source": "facebook_events"},
+        # The real W40 events of the week, so EOTW promotion cannot be what
+        # seats the Opry on Tuesday.
+        {"name": "Homo Hotel Happy Hour", "venue": "Mayo Hotel, 115 W 5th St, Tulsa", "date": day(4),
+         "time": "6:00 PM - 8:00 PM", "source": "homo_hotel"},
+        {"name": "Miami NEOK Pride", "venue": "George E. Francis Riverview Park, 700 S Main St, Miami, OK",
+         "date": day(5), "time": "12:00 PM", "source": "okeq"},
+    ]
+    for e in week:
+        e.setdefault("description", "")
+        e.setdefault("url", "")
+
+    cap = {}
+    saved = (_cfg.DATA_DIR, _cfg.EVENTS_DIR, _im.create_carousel, _im.save_carousel,
+             _gen.generate_post_caption, _fdr.run_for_week, os.environ.get("TULSAGAYS_SKIP_ENRICH"))
+
+    def _fake_carousel(*a, events_by_day=None, **k):
+        cap["ebd"] = events_by_day
+        return []
+
+    def _no_caption(*a, **k):
+        raise RuntimeError("no LLM in tests")
+
+    with tempfile.TemporaryDirectory() as tmp:
+        try:
+            _cfg.DATA_DIR = tmp
+            _cfg.EVENTS_DIR = os.path.join(tmp, "events")
+            os.makedirs(_cfg.EVENTS_DIR, exist_ok=True)
+            with open(os.path.join(_cfg.EVENTS_DIR, f"{_cfg.current_week_key()}_all.json"), "w",
+                      encoding="utf-8") as f:
+                json.dump({"events": week}, f)
+            _im.create_carousel = _fake_carousel
+            _im.save_carousel = lambda *a, **k: []
+            _gen.generate_post_caption = _no_caption
+            _fdr.run_for_week = lambda *a, **k: None
+            os.environ["TULSAGAYS_SKIP_ENRICH"] = "1"
+            import contextlib, io
+            with contextlib.redirect_stdout(io.StringIO()):
+                _main.cmd_generate("all")
+        except Exception as e:
+            check("W40 replay runs", False, repr(e))
+            return
+        finally:
+            (_cfg.DATA_DIR, _cfg.EVENTS_DIR, _im.create_carousel, _im.save_carousel,
+             _gen.generate_post_caption, _fdr.run_for_week, _skip) = saved
+            if _skip is None:
+                os.environ.pop("TULSAGAYS_SKIP_ENRICH", None)
+            else:
+                os.environ["TULSAGAYS_SKIP_ENRICH"] = _skip
+
+    ebd = cap.get("ebd") or {}
+    names = lambda d: [e.get("name") for e in ebd.get(d, [])]
+    m, t, w = names("Monday"), names("Tuesday"), names("Wednesday")
+    check("Monday TOP PICK is an Eagle night, not the exhibit/audition/lecture",
+          bool(m) and m[0] in ("Monday Movie Night", "Gaymer Night"), f"Monday: {m[:3]}")
+    check("audition call never on a slide", "Songwriter Showcase Auditions" not in m, f"Monday: {m}")
+    check("'Discover events' never on a slide", "Discover events" not in m, f"Monday: {m}")
+    check("fake 12:00 AM time blanked",
+          all(not e.get("time") for e in ebd.get("Monday", [])
+              if e.get("name") == "Spotlight Student Art Exhibition"))
+    check("annual Gay Ole Opry featured over weekly DRAGNIFICENT",
+          "2nd Annual Gay Ole Opry: Comin Out Country" in t[:3], f"Tuesday: {t[:3]}")
+    check("Wednesday TOP PICK is the gay event, not a 1-flamingo concert",
+          bool(w) and w[0] == "Tea Party Wednesday", f"Wednesday: {w[:3]}")
+    check("donor-only dinner never on a slide", "Phillips Society Recognition Dinner" not in w, f"Wednesday: {w}")
+    check("toddler program never on a slide", "Little Garden Explorers" not in w, f"Wednesday: {w}")
+
+
 # ── Final deck review (William 2026-07-09): the last-eyes pass over the
 # generated deck — cancelled, dupes, recurring-vs-one-off, best picks.
 def test_ig_date_anchor_contract():
@@ -772,6 +910,7 @@ def main():
     test_graphic_gate()
     test_ybr_highlighting()
     test_w28_saturday_dedup_and_cancelled()
+    test_w40_top_pick_quality()
     test_w32_venue_relocation()
     test_ig_date_anchor_contract()
     test_tulsa_eagle_ig_extraction()

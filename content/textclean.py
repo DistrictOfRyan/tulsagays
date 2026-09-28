@@ -39,6 +39,9 @@ JUNK_VENUE_EXACT = {
     'mas informacion', 'más información', 'get tickets', 'buy tickets',
     'tickets', 'tickets & info', 'more info', 'more information', 'mar',
     'online', 'virtual',
+    # Facebook's RSVP button text, scraped as the venue (W40: Miami NEOK Pride,
+    # Music on the Lawn).
+    'invite',
 }
 
 
@@ -83,6 +86,11 @@ def clean_time(raw: Optional[str]) -> str:
         if t not in seen:
             seen.add(t)
             times.append(t)
+    if len(times) == 1 and times[0] == "12:00 AM":
+        # A lone midnight start is a calendar feed's all-day marker, not a
+        # time: W40's weeks-long McFarlin Library exhibit rendered "12:00 AM"
+        # on the Monday slide and sorted ahead of every timed event that day.
+        return ""
     return f"{times[0]} - {times[1]}" if len(times) >= 2 else times[0]
 
 
@@ -179,6 +187,9 @@ def _selftest() -> int:
     chk(clean_time("9:45 PM") == "9:45 PM", "single time preserved")
     chk(clean_time("7:00 PM - 11:00 PM") == "7:00 PM - 11:00 PM", "clean range preserved")
     chk(clean_time("") == "", "empty time stays empty")
+    chk(clean_time("12:00 AM") == "", "lone midnight all-day marker dropped")
+    chk(clean_time("9:00 PM - 12:00 AM") == "9:00 PM - 12:00 AM",
+        "range ending at midnight preserved")
 
     chk(is_junk_venue("in 5 days") and is_junk_venue("Tomorrow")
         and is_junk_venue("TBD") and is_junk_venue("Obtener entradas"),

@@ -139,6 +139,9 @@ JUNK_NAMES = {
     # Org-site navigation text that scrapes as "events" (community_groups)
     "weekly events", "upcoming events", "stay connected", "our partners",
     "event application", "event calendar", "get your tickets",
+    # Facebook events-hub nav header, scraped as a Monday event "at Las Vegas" in
+    # W40 and published on tulsagays.com with a generated description.
+    "discover events", "find events", "explore events", "browse events",
 }
 
 # Compose city-specific values from config (with safe fallbacks for new-city scaffolds).

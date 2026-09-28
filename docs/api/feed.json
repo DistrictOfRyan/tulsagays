@@ -10,7 +10,7 @@
     "gaps": 2
   },
   "source_count": 245,
-  "event_count": 196,
+  "event_count": 195,
   "events_source": "data/events/2026-W40_rendered.json",
   "events": [
     {
@@ -166,13 +166,6 @@
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "Discover events",
-      "date": "2026-09-28",
-      "time": "",
-      "venue": "Las Vegas",
-      "url": ""
     },
     {
       "name": "Yoga With Leta",
@@ -850,7 +843,7 @@
       "name": "Homo Hotel Happy Hour",
       "date": "2026-10-02",
       "time": "6:00 PM - 8:00 PM",
-      "venue": "Homo Hotel",
+      "venue": "Mayo Hotel, 115 W 5th St",
       "url": ""
     },
     {
@@ -1067,7 +1060,7 @@
       "name": "First Friday Latin Infusion & Hoe You Think You Can Dance! Contest at Club Majestic",
       "date": "2026-10-02",
       "time": "",
-      "venue": "",
+      "venue": "Club Majestic, 124 N Boston Ave",
       "url": "https://qlist.app/events/Tulsa/First-Friday-Latin-Infusion-Hoe-You-Think-You-Can-Dance-Contest-at-Club-Majestic/44259"
     },
     {
@@ -1095,7 +1088,7 @@
       "name": "Miami NEOK Pride",
       "date": "2026-10-03",
       "time": "12:00 PM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "venue": "George E. Francis Riverview Park, 700 S Main St, Miami, OK",
       "url": "https://www.facebook.com/NEOKPride"
     },
     {
