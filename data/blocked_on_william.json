@@ -78,5 +78,13 @@
     "source": "check_ig_profile_session",
     "since": "2026-09-09 (corrected)",
     "status": "resolved"
+  },
+  {
+    "id": "instagram-automation-profile-session",
+    "item": "Instagram automation profile session",
+    "reason": "no valid session for: facebook (missing auth: facebook). Fix: python tools/ig_profile_login.py (a login, so it needs your hands). Blocks the FB group blast.",
+    "source": "check_ig_profile_session",
+    "since": "2026-09-25 02:50",
+    "status": "resolved"
   }
 ]

@@ -5,18 +5,11 @@
   "events": {
     "lambda bowling league": {
       "status": "active",
-      "last_verified": "2026-09-21",
+      "last_verified": "2026-09-28",
       "verified_venue": "AMF Sheridan Lanes, 3121 S Sheridan Rd",
       "verified_by": "live-scrape:qlist",
       "verified_through": null,
-      "note": "",
-      "pending_venue_conflict": {
-        "known_venue": "AMF Sheridan Lanes, 3121 S Sheridan Rd",
-        "live_venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-        "live_name": "Lambda Bowling League",
-        "source": "okeq",
-        "seen": "2026-09-23"
-      }
+      "note": ""
     },
     "osu tulsa queer support group": {
       "status": "active",
@@ -28,7 +21,7 @@
     },
     "gender outreach support group": {
       "status": "active",
-      "last_verified": "2026-09-23",
+      "last_verified": "2026-09-28",
       "verified_venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "verified_by": "live-scrape:community_groups",
       "verified_through": null,
@@ -44,7 +37,7 @@
     },
     "dragnificent! drag show": {
       "status": "active",
-      "last_verified": "2026-09-23",
+      "last_verified": "2026-09-28",
       "verified_venue": "Club Majestic",
       "verified_by": "live-scrape:community_groups",
       "verified_through": null,
@@ -76,7 +69,7 @@
     },
     "sunday showdown open talent night": {
       "status": "active",
-      "last_verified": "2026-09-23",
+      "last_verified": "2026-09-28",
       "verified_venue": "Club Majestic, 124 N Boston Ave",
       "verified_by": "live-scrape:manual",
       "verified_through": null,
@@ -172,7 +165,7 @@
     },
     "pflag tulsa monthly meeting": {
       "status": "active",
-      "last_verified": "2026-07-27",
+      "last_verified": "2026-09-28",
       "verified_venue": "110 S Hartford Ave, Suite 2516, Tulsa",
       "verified_by": "live-scrape:community_groups",
       "verified_through": null,
@@ -204,7 +197,7 @@
     },
     "monday movie night": {
       "status": "active",
-      "last_verified": "2026-09-23",
+      "last_verified": "2026-09-28",
       "verified_venue": "Tulsa Eagle, 1338 E 3rd St, Tulsa, OK",
       "verified_by": "live-scrape:manual",
       "verified_through": null,
@@ -212,7 +205,7 @@
     },
     "gaymer night": {
       "status": "active",
-      "last_verified": "2026-09-23",
+      "last_verified": "2026-09-28",
       "verified_venue": "Tulsa Eagle, 1338 E 3rd St, Tulsa, OK",
       "verified_by": "live-scrape:manual",
       "verified_through": null,

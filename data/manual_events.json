@@ -920,5 +920,32 @@
     "url": "https://www.instagram.com/p/DdhFAttlBHL/",
     "source": "venue_flyer_dig",
     "priority": 2
+  },
+  {
+    "name": "The Sunday Spotlight (Club Majestic & Kallaya) — All-Star Drag Show",
+    "date": "2026-10-27",
+    "time": "Doors 9pm, Show 10:30pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DdvhFTkudz5/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "La La Land",
+    "date": "2026-10-18",
+    "time": "9:45pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/Ddsv3k2Efmd/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "The Sunday Spotlight ft. Patty BouRey, Scrappy Legacy, Londenn D. Raine, Kallaya, Tracy La Louisianne, Shanel Sterling, Jared Lance",
+    "date": "2026-09-27",
+    "time": "Doors 9:00 PM, Show 10:30 PM",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DdpN2hWTfIT/",
+    "source": "venue_flyer_dig",
+    "priority": 2
   }
 ]

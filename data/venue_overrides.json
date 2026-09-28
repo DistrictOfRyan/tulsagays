@@ -39,6 +39,13 @@
       "note": "September 2026 HHHH moved to the SECOND Friday (Sep 11) because Labor Day took the first. Venue confirmed 2026-09-07 against the first-party site homohotelhappyhour.com, which reads 'Date Friday, September 11, 2026 / Time 6:00 to 8:00 PM / Venue Hilton Garden Inn South' and '8202 S 100th E Ave, near 81st and Mingo'. Pool access included; charity is Council Oak Men's Chorale. The okeq scrape had it at the Dennis R. Neill Equality Center, which is STALE - exactly what the venue_varies guard exists to catch."
     },
     {
+      "match": "homo hotel",
+      "month": "2026-10",
+      "venue": "Mayo Hotel, 115 W 5th St, Tulsa",
+      "time": "6:00 PM - 8:00 PM",
+      "note": "October 2026 HHHH First Friday (Fri Oct 2, 6-8 PM) at the Mayo Hotel, part of the 'Tulsa First Friday' series ('Cooler nights, same warm welcome'). Confirmed 2026-09-28 from HHHH's own Instagram @homohotelhappyhour (most recent post). homohotelhappyhour.com and okeq.org/event-calendar/ were both still showing the stale September (Hilton Garden Inn South) listing when checked the same day -- exactly the staleness pattern this registry exists to catch."
+    },
+    {
       "match": "downtown screening",
       "date": "2026-09-24",
       "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa, OK 74104",
@@ -49,6 +56,12 @@
       "date": "2026-09-27",
       "venue": "Lynn Riggs Theatre at the Dennis R. Neill Equality Center",
       "note": "OKEQ's own live calendar (okeq.org/event-calendar/, read 2026-09-21) names the venue as 'Lynn Riggs Theater' -- a specific room inside the Equality Center building, not a plain 'Dennis R. Neill Equality Center' default. Matches the naming convention already used in data/manual_events.json."
+    },
+    {
+      "match": "miami neok pride",
+      "date": "2026-10-03",
+      "venue": "George E. Francis Riverview Park, 700 S Main St, Miami, OK 74354",
+      "note": "OKEQ's calendar had defaulted this to its own Tulsa building address (Dennis R. Neill Equality Center) -- the same default-address bug class as QWC/HHHH/Twisted Arts/Broadway Clubhouse above. Confirmed 2026-09-28 by fetching the event's own Facebook page directly (facebookexternalhit UA): og:title '6th Annual Miami NEOK Pride 2026', og:url slug 'events/riverview-park/6th-annual-miami-neok-pride-2026/1342145834376254', description confirms Saturday Oct 3 2026. Street address for Riverview Park (Miami, OK -- this is Northeast Oklahoma Pride, not Miami FL) confirmed via miamiok.gov/facilities and TravelOK.com."
     }
   ]
 }
