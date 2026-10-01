@@ -1,51 +1,58 @@
 [
   {
-    "name": "American Doctor",
-    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-09-28",
-    "day_short": "MON",
-    "time": "12:00 PM"
+    "name": "DRAGNIFICENT! at Club Majestic",
+    "venue": "",
+    "date": "2026-10-01",
+    "day_short": "THU",
+    "time": ""
   },
   {
-    "name": "Study: Making Sense of the Bible",
-    "venue": "Wesley Foundation",
-    "date": "2026-09-28",
-    "day_short": "MON",
-    "time": "2:00 PM"
+    "name": "Storytime at Philbrook with Tulsa Zoo",
+    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+    "date": "2026-10-01",
+    "day_short": "THU",
+    "time": "10:00 AM"
+  },
+  {
+    "name": "DRAGNIFICENT! Drag Show",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "date": "2026-10-01",
+    "day_short": "THU",
+    "time": "10:00 PM"
+  },
+  {
+    "name": "Why Good Businesses Lose to Worse Competitors",
+    "venue": "Shared by Tulsa looks good on you",
+    "date": "2026-10-01",
+    "day_short": "THU",
+    "time": "11:00 AM"
+  },
+  {
+    "name": "Drag Roulette",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "date": "2026-10-01",
+    "day_short": "THU",
+    "time": "11:00 PM"
+  },
+  {
+    "name": "American Doctor",
+    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+    "date": "2026-10-01",
+    "day_short": "THU",
+    "time": "12:00 PM"
   },
   {
     "name": "Manhattan Short Film Fest",
     "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-09-28",
-    "day_short": "MON",
+    "date": "2026-10-01",
+    "day_short": "THU",
     "time": "2:00 PM"
   },
   {
-    "name": "Wild Inside",
-    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-09-28",
-    "day_short": "MON",
-    "time": "7:00 PM"
-  },
-  {
-    "name": "Monday Movie Night",
-    "venue": "Tulsa Eagle, 1338 E 3rd St",
-    "date": "2026-09-28",
-    "day_short": "MON",
-    "time": "7:00 PM"
-  },
-  {
-    "name": "Gaymer Night",
-    "venue": "Tulsa Eagle, 1338 E 3rd St",
-    "date": "2026-09-28",
-    "day_short": "MON",
-    "time": "8:00 PM"
-  },
-  {
-    "name": "American Doctor",
-    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-09-29",
-    "day_short": "TUE",
-    "time": "12:00 PM"
+    "name": "UNTITLED ART, HOUSTON 2026",
+    "venue": "Flagship / Tulsa Artist Fellowship, 112 N Boston Ave",
+    "date": "2026-10-01",
+    "day_short": "THU",
+    "time": "3:00\u202fPM15:00"
   }
 ]
