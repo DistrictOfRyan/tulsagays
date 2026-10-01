@@ -396,3 +396,32 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 
 ### Source-list candidates for the Monday scrape (2026-09-24)
 - Soundpony (thesoundpony.com) hosts regular comedy shows, live music, and trivia nights. Worth checking for a public events calendar/Instagram as a candidate for the Monday scrape source list.
+
+## [2026-10-01] In the Raw
+- Category: restaurant
+- URL: https://www.intherawsushi.com
+- Source: WebSearch ("In the Raw sushi Tulsa LGBTQ gay friendly") confirmed via GayCities Tulsa's dedicated LGBTQ+ restaurant guide listing (tulsa.gaycities.com/restaurants/61677-in-the-raw), plus general "gay friendly Tulsa restaurant 2026" search surfacing it independently.
+- Notes: Sushi and Japanese small plates with three Tulsa locations (Brookside at 3321 S Peoria Ave, downtown "In the Raw Vu" at 110 N Elgin Ave, and south Tulsa). A genuine omission despite appearing on the same travel guide that sourced Yokozuna, India Palace, and KEO in prior scans. Added to Restaurants & Food and the JSON-LD schema (position 80).
+
+## [2026-10-01] et al.
+- Category: restaurant
+- URL: https://www.exploretock.com/et-al---tulsa--tulsa
+- Source: OkEq Food & Drink member directory (okeq.org/food-drink/), cross-verified via WebSearch for ownership, address, and mission details (Tulsa World, Fox23, Luxiere).
+- Notes: Chef collective running six rotating pop-up concepts (Bischix, Butter Bar, Dumpling Night, Japanese Breakfast, Et Al Catering, Yuki) out of Foolish Things Coffee in the Cathedral District, 1001 S Main St. Built on an equal-pay model across the kitchen and a James Beard Award semifinalist for Best New Restaurant 2023. Same sourcing standard used for Freya Nordic Kitchen, Inheritance Kitchen, The Vault, and other OkEq Food & Drink additions in prior scans. Added to Restaurants & Food and the JSON-LD schema (position 81).
+
+## [2026-10-01] Manila Ice
+- Category: restaurant
+- URL: https://www.facebook.com/manilaicetulsa/
+- Source: OkEq Food & Drink member directory (okeq.org/food-drink/), cross-verified via WebSearch (TulsaPeople, Lobeck Taylor Family Foundation, Okie Food Trucks).
+- Notes: Filipino street food and halo halo food truck owned by Anthony and Missy Santos, operating since 2021 around Guthrie Green, LaFortune Park, and Mother Road Market's K66 Takeover Cafe. Same sourcing standard as the other two OkEq Food & Drink additions this scan. No fixed address, so listed as Organization type in the JSON-LD schema (position 82) rather than LocalBusiness.
+
+### Reviewed but NOT added (2026-10-01 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/): rendered its live inline member list again (same 6 current members: UniComm Solutions, Yoga Quest LLC, Doc J's Heat and Air, Littleton Legal PLLC, Edgewood Veterinary Hospital, Osteostrong Tulsa Midtown) - no net-new members since the 2026-07-30 scan, all confirmed already in the directory.
+- OkEq Food & Drink full re-check (50 listings): all 50 confirmed already in the directory, previously reviewed/held/skipped, or newly added above (et al., Manila Ice). Cruise-N Club, Queenies, Roppongi, PRHYME, Sisserou's, Farrell Bread, Valkyrie, Inner Circle Vodka Bar all confirmed already listed.
+- Tulsa Remote LGBTQ guide: all listed businesses/resources already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage found this scan (Oklahoma City civic/political items and theatre features only).
+- WebSearch "new LGBTQ business Tulsa 2026 opened": surfaced a "Queer Tulsa" photo exhibit at the Dennis R. Neill Equality Center (art exhibit, not a business - not added) plus already-reviewed guide/listicle pages.
+- WebSearch "queer-owned business Tulsa 2026": surfaced only already-directory businesses (Tonsorial, Il Seme, Cherry & Bark, Yellow Brick Road, Donut Hole, Jo & June, Magic City Books, Studio 66).
+- WebSearch "gay friendly Tulsa restaurant 2026": surfaced In the Raw (added above) and Brook Restaurant and Bar (already listed); rest already in directory.
+- Reddit r/tulsa (both query variants): no indexed results this scan, same pattern as every prior scan.
+- Net result: 3 new businesses added (In the Raw, et al., Manila Ice).
