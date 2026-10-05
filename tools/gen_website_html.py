@@ -503,6 +503,9 @@ def _card_id(name, date, hour):
 # Collected per-event data for /e/<id>.html share pages: dicts with keys
 # id, name, desc, when, venue, url
 _share_pages = []
+# id(event dict) -> the card id its /e/<id>.html share page is written under. The JSON-LD
+# @id must use THIS id (see the Event schema block below).
+_card_id_by_event = {}
 
 _DOMAIN_LABELS = {
     'eventbrite.com': 'Eventbrite',
@@ -688,6 +691,7 @@ for day in DAYS_ORDERED:
             # Stable id (matches the JS slug scheme) so shares deep-link AND
             # the per-event /e/<id>.html share page filename lines up.
             card_id = _card_id(ev_name, ev_date_iso, hour)
+            _card_id_by_event[id(ev)] = card_id
 
             lines.append('')
             _dt = esc((ev.get('time') or '').strip())
@@ -986,8 +990,16 @@ for _ev in all_flat:
     if not re.match(r'^\d{4}-\d{2}-\d{2}$', _d or ''):
         continue
     _venue = (_ev.get('venue') or '').split(',')[0].strip()
-    _slug = 'event-' + _slugify_js(f"{_ev.get('name','')}-{_d}-{_ev.get('time','')}")
-    _event_page = f"{SITE}/e/{_slug}"
+    # 2026-10-05: this @id used to be built from the FULL time ("7:00 PM" -> "-7-00-pm")
+    # while the share pages are written under the card id (display hour only, 60-char
+    # slug, de-dup suffix), so every @id 404'd. Google crawled them as pages: Search
+    # Console showed 22 indexed / 553 not indexed, 227 of these on the homepage alone.
+    # Now: the card's own share page, or a fragment id (never fetched as a page).
+    _cid = _card_id_by_event.get(id(_ev))
+    if _cid:
+        _event_page = f"{SITE}/e/{_cid}.html"
+    else:
+        _event_page = f"{SITE}/#event-" + _slugify_js(f"{_ev.get('name','')}-{_d}-{_ev.get('time','')}")
     _obj = {
         "@type": "Event",
         "@id": _event_page,
