@@ -14,13 +14,6 @@
     "time": "11:00 AM"
   },
   {
-    "name": "Harvey",
-    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-10-05",
-    "day_short": "MON",
-    "time": "11:00 AM"
-  },
-  {
     "name": "The History of Concrete",
     "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
     "date": "2026-10-05",
@@ -51,6 +44,13 @@
   {
     "name": "Happy Hour at Saturn Room",
     "venue": "Saturn Room209 N Boulder, Tulsa, OK, United States",
+    "date": "2026-10-05",
+    "day_short": "MON",
+    "time": "4:00 PM"
+  },
+  {
+    "name": "Sunday & Monday Bar Special at PRHYME",
+    "venue": "PRHYME: Downtown Steakhouse111 N Main Suite A, Tulsa, OK, United States",
     "date": "2026-10-05",
     "day_short": "MON",
     "time": "4:00 PM"

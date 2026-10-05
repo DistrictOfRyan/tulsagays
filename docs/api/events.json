@@ -2,7 +2,7 @@
   "api_version": "1",
   "city": "Tulsa, OK",
   "publisher": "Tulsa Gays",
-  "generated_at": "2026-10-05T10:10:30Z",
+  "generated_at": "2026-10-05T15:37:15Z",
   "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
   "count": 8,
   "events": [
@@ -20,15 +20,6 @@
       "date": "2026-10-05",
       "time": "11:00 AM",
       "venue": "Empire Slice House Tulsa / 84 Hospitality Group417 N Main Street, Tulsa, OK, United States",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Harvey",
-      "date": "2026-10-05",
-      "time": "11:00 AM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
@@ -74,6 +65,15 @@
       "date": "2026-10-05",
       "time": "4:00 PM",
       "venue": "Saturn Room209 N Boulder, Tulsa, OK, United States",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Sunday & Monday Bar Special at PRHYME",
+      "date": "2026-10-05",
+      "time": "4:00 PM",
+      "venue": "PRHYME: Downtown Steakhouse111 N Main Suite A, Tulsa, OK, United States",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
