@@ -41,9 +41,18 @@ BASE = "https://www.tulsagays.com"
 TOPICS = [
     {
         "slug": "gay-bars-in-tulsa",
-        "title": "Gay Bars in Tulsa: The Complete LGBTQ+ Nightlife Guide",
-        "h1": "Gay Bars in Tulsa",
-        "desc": "Every LGBTQ+ bar and nightlife spot in Tulsa, Oklahoma, with what each one is known for and what's happening there this week.",
+        # 2026-10-05: this page used to carry the SAME title as the long-form post
+        # /blog/gay-bars-tulsa.html ("Gay Bars in Tulsa: The Complete ... Guide"). Two
+        # near-identical pages for one query, neither linking the other, and Google
+        # had indexed neither (URL Inspection 2026-10-05: blog "Discovered - currently
+        # not indexed", guide unknown) while it ranked the travel guide #6 for "gay bars
+        # tulsa". Now: the blog post is THE guide; this page is "this week at the bars"
+        # and links to it (deep_dive), and the post links back here.
+        "title": "Tulsa Gay Bars This Week: What's On at Every LGBTQ+ Bar",
+        "h1": "Tulsa Gay Bars This Week",
+        "desc": "What's on this week at every LGBTQ+ bar in Tulsa, Oklahoma: drag, happy hours and parties, refreshed every Monday, plus a quick take on each bar.",
+        "deep_dive": ("/blog/gay-bars-tulsa.html",
+                      "Want the history and the feel of each bar before you go? Read our complete guide to Tulsa's gay bars."),
         "intro": "Tulsa's queer nightlife punches well above the city's size. From a long-running leather and bear bar to the only lesbian bar in the state, here is every LGBTQ+ bar in Tulsa, what each is known for, and what is happening this week.",
         "types": ["bar"], "event_kw": ["bar", "drag", "club", "happy hour"], "venue_only": True,
         "faqs": [
@@ -56,6 +65,8 @@ TOPICS = [
         "slug": "drag-shows-in-tulsa",
         "title": "Drag Shows in Tulsa: Where to See Drag Every Week",
         "h1": "Drag Shows in Tulsa",
+        "deep_dive": ("/blog/drag-tulsa-guide.html",
+                      "New to Tulsa drag? Read our full guide to every show, every night."),
         "desc": "Where to find drag shows in Tulsa, Oklahoma, from weekly bar performances to drag brunch, plus this week's lineup.",
         "intro": "Tulsa has a thriving drag scene with shows nearly every night of the week. Here is where to find drag in Tulsa, from high-energy bar performances to a laid-back drag brunch, plus what's on this week.",
         "types": [], "match_kw": ["drag", "majestic", "dragnificent", "elote", "house of drag"],
@@ -292,6 +303,11 @@ def render_page(topic, orgs, events):
     faq = "\n".join(
         f'<details class="faq"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>'
         for q, a in topic["faqs"])
+    # Link the weekly guide to its long-form post so the two support each other
+    # instead of competing for the same query (see the gay-bars-in-tulsa note).
+    deep = topic.get("deep_dive")
+    deep_block = (f'<p class="topic-deepdive"><a href="{deep[0]}">{esc(deep[1])}</a></p>'
+                  if deep else "")
     return f"""<!DOCTYPE html>
 <html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -318,6 +334,7 @@ def render_page(topic, orgs, events):
   <div class="week-header"><h1>{esc(topic['h1'])}</h1><div class="rainbow-bar rainbow-gradient"></div></div>
   <div class="about-content">
     <p class="topic-intro">{esc(topic['intro'])}</p>
+    {deep_block}
     <h2>The places &amp; groups</h2>
     <div class="topic-grid">{org_cards}</div>
     {events_block}
@@ -430,6 +447,9 @@ def _selftest():
     assert len(blocks) == 3, len(blocks)
     for b in blocks:
         json.loads(b)
+    # the weekly bars page links the long-form post and does not reuse its title
+    assert 'href="/blog/gay-bars-tulsa.html"' in page, "bars guide must link the long-form post"
+    assert "The Complete" not in bars_topic["title"], "bars guide title duplicates the blog post title"
     # church topic selects the church
     ct = next(t for t in TOPICS if t["slug"] == "queer-friendly-churches-tulsa")
     assert len(_select_orgs(ct, census)) == 1
