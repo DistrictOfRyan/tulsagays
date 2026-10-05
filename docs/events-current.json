@@ -1,58 +1,58 @@
 [
   {
-    "name": "DRAGNIFICENT! at Club Majestic",
-    "venue": "",
-    "date": "2026-10-01",
-    "day_short": "THU",
-    "time": ""
-  },
-  {
-    "name": "Storytime at Philbrook with Tulsa Zoo",
-    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-10-01",
-    "day_short": "THU",
-    "time": "10:00 AM"
-  },
-  {
-    "name": "DRAGNIFICENT! Drag Show",
-    "venue": "Club Majestic, 124 N Boston Ave",
-    "date": "2026-10-01",
-    "day_short": "THU",
-    "time": "10:00 PM"
-  },
-  {
-    "name": "Why Good Businesses Lose to Worse Competitors",
-    "venue": "Shared by Tulsa looks good on you",
-    "date": "2026-10-01",
-    "day_short": "THU",
+    "name": "Lunch Specials at Elgin Park",
+    "venue": "Elgin Park Brewery325 E Reconciliation Way, Tulsa, OK, United States",
+    "date": "2026-10-05",
+    "day_short": "MON",
     "time": "11:00 AM"
   },
   {
-    "name": "Drag Roulette",
-    "venue": "Club Majestic, 124 N Boston Ave",
-    "date": "2026-10-01",
-    "day_short": "THU",
-    "time": "11:00 PM"
+    "name": "Lunch Special at Empire Slice House",
+    "venue": "Empire Slice House Tulsa / 84 Hospitality Group417 N Main Street, Tulsa, OK, United States",
+    "date": "2026-10-05",
+    "day_short": "MON",
+    "time": "11:00 AM"
   },
   {
-    "name": "American Doctor",
+    "name": "Harvey",
     "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-10-01",
-    "day_short": "THU",
-    "time": "12:00 PM"
+    "date": "2026-10-05",
+    "day_short": "MON",
+    "time": "11:00 AM"
   },
   {
-    "name": "Manhattan Short Film Fest",
+    "name": "The History of Concrete",
     "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-10-01",
-    "day_short": "THU",
+    "date": "2026-10-05",
+    "day_short": "MON",
+    "time": "12:20 PM"
+  },
+  {
+    "name": "Study: Making Sense of the Bible",
+    "venue": "Wesley Foundation",
+    "date": "2026-10-05",
+    "day_short": "MON",
     "time": "2:00 PM"
   },
   {
-    "name": "UNTITLED ART, HOUSTON 2026",
-    "venue": "Flagship / Tulsa Artist Fellowship, 112 N Boston Ave",
-    "date": "2026-10-01",
-    "day_short": "THU",
-    "time": "3:00\u202fPM15:00"
+    "name": "Happy Hour with Free Pool at Caz\u2019s Pub",
+    "venue": "Caz's Pub21 E Reconciliation Way, Tulsa, OK, United States",
+    "date": "2026-10-05",
+    "day_short": "MON",
+    "time": "2:00 PM"
+  },
+  {
+    "name": "Happy Hour at in the raw v\u016b",
+    "venue": "in the raw v\u016b110 N Elgin Ave., Tulsa, OK, United States",
+    "date": "2026-10-05",
+    "day_short": "MON",
+    "time": "3:00 PM"
+  },
+  {
+    "name": "Happy Hour at Saturn Room",
+    "venue": "Saturn Room209 N Boulder, Tulsa, OK, United States",
+    "date": "2026-10-05",
+    "day_short": "MON",
+    "time": "4:00 PM"
   }
 ]
