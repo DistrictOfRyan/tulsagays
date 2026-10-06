@@ -264,10 +264,49 @@ STYLE = """    <style>
     </style>"""
 
 
-def _schema(topic, orgs):
+VENUE_FACTS_FILE = os.path.join(config.PROJECT_DIR, "VENUE_FACTS.md")
+
+
+def _verified_venues(path=VENUE_FACTS_FILE):
+    """{lowercased name: PostalAddress} for venues VENUE_FACTS.md marks plainly OPEN with a
+    street address. Anything closed, unverified, or addressless (Studio 66 must never get one)
+    is left out, so the schema only ever states what that file has verified."""
+    out = {}
+    try:
+        text = open(path, encoding="utf-8").read()
+    except OSError:
+        return out
+    for line in text.splitlines():
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) < 3 or cells[2].strip("* ").upper() != "OPEN":
+            continue
+        name, addr = cells[0], cells[1]
+        if not re.match(r"^\d+\s", addr):
+            continue
+        pa = {"@type": "PostalAddress", "streetAddress": re.split(r"[,;(]", addr)[0].strip(),
+              "addressLocality": "Tulsa", "addressRegion": "OK", "addressCountry": "US"}
+        zm = re.search(r"\b74\d{3}\b", addr)
+        if zm:
+            pa["postalCode"] = zm.group(0)
+        out[name.lower()] = pa
+    return out
+
+
+def _schema(topic, orgs, facts=None):
     url = f"{BASE}/guides/{topic['slug']}.html"
-    items = [{"@type": "ListItem", "position": i + 1,
-              "item": {"@type": "Organization", "name": o["name"]}}
+    # 2026-10-06: the bars guide typed every venue as a bare Organization with no address. Verified
+    # open bars are now BarOrPub (a LocalBusiness) with their VENUE_FACTS.md address, which is what
+    # Google's local results and AI assistants read. Unverified venues keep the plain type.
+    facts = _verified_venues() if facts is None else facts
+    is_bars = "bar" in set(topic.get("types", []))
+
+    def _node(o):
+        pa = facts.get(o["name"].lower()) if is_bars else None
+        if pa:
+            return {"@type": "BarOrPub", "name": o["name"], "address": pa}
+        return {"@type": "Organization", "name": o["name"]}
+
+    items = [{"@type": "ListItem", "position": i + 1, "item": _node(o)}
              for i, o in enumerate(orgs)]
     blocks = [
         {"@context": "https://schema.org", "@type": "CollectionPage",
@@ -450,6 +489,19 @@ def _selftest():
     # the weekly bars page links the long-form post and does not reuse its title
     assert 'href="/blog/gay-bars-tulsa.html"' in page, "bars guide must link the long-form post"
     assert "The Complete" not in bars_topic["title"], "bars guide title duplicates the blog post title"
+    # verified open bars become BarOrPub with an address; addressless or unverified stay Organization
+    facts = {"tulsa eagle": {"@type": "PostalAddress", "streetAddress": "1338 E 3rd St",
+                             "addressLocality": "Tulsa", "addressRegion": "OK", "addressCountry": "US"}}
+    sch = _schema(bars_topic, orgs, facts=facts)
+    assert '"@type": "BarOrPub", "name": "Tulsa Eagle"' in sch and "1338 E 3rd St" in sch, sch[:400]
+    assert '"@type": "Organization", "name": "YBR"' in sch
+    # the real VENUE_FACTS.md: open bars with street addresses parse; Studio 66 (roving, no address)
+    # and closed or unverified venues never do
+    real = _verified_venues()
+    if real:
+        assert {"tulsa eagle", "club majestic", "yellow brick road (ybr)"} <= set(real), sorted(real)
+        assert not {"studio 66", "the fur shop", "mixco", "lefty's on greenwood"} & set(real), sorted(real)
+        assert real["tulsa eagle"].get("postalCode") == "74120"
     # church topic selects the church
     ct = next(t for t in TOPICS if t["slug"] == "queer-friendly-churches-tulsa")
     assert len(_select_orgs(ct, census)) == 1
