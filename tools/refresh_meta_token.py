@@ -11,7 +11,8 @@ THE PROCESS IS CLOSED. Do not re-derive it. When the Meta page token dies
      token with the copy icon (starts with EAA).
   3. Run:  python tools/refresh_meta_token.py --short-token "<paste>"
      This exchanges it for a long-lived user token, derives the PERMANENT page
-     token, writes it to .env (TULSAGAYS_PAGE_ACCESS_TOKEN), and verifies
+     token, writes it to .env (TULSAGAYS_PAGE_ACCESS_TOKEN) plus
+     ~/.credentials/tulsagays_page_token.txt and the user env var, and verifies
      BOTH capabilities live:
        - page posting identity (me -> Tulsa Gays)
        - Instagram business_discovery (reads ANY public IG business account,
@@ -30,7 +31,7 @@ IG business account 17841441654786297 (@tulsagays).
 App secret: ~/.credentials/meta_app_secret_1468075241636760.txt
 """
 from __future__ import annotations
-import argparse, json, sys, urllib.error, urllib.parse, urllib.request
+import argparse, json, os, subprocess, sys, urllib.error, urllib.parse, urllib.request
 from pathlib import Path
 
 APP_ID = "1468075241636760"
@@ -76,6 +77,23 @@ def main() -> int:
     if not seen:
         out.append("TULSAGAYS_PAGE_ACCESS_TOKEN=" + page_tok)
     ENV.write_text("\n".join(out) + "\n", encoding="utf-8")
+
+    # Keep the off-drive copies in step. Readers outside this repo (the vault's
+    # token-health task, preflight_credentials.py, boost scout) read the user env
+    # var or ~/.credentials/tulsagays_page_token.txt first. The 07-16 refresh wrote
+    # .env only, the older token left in those two copies died, and the health check
+    # reported 'EXPIRED' on 2026-10-01 over a token nothing posted with. (2026-10-06)
+    print("    + syncing ~/.credentials/tulsagays_page_token.txt and the user env var ...")
+    cred = Path.home() / ".credentials"
+    tok_file = cred / "tulsagays_page_token.txt"
+    old = tok_file.read_text(encoding="utf-8").strip() if tok_file.exists() else ""
+    if old and old != page_tok:
+        with (cred / "meta_revoked_tokens.txt").open("a", encoding="utf-8") as f:
+            f.write(old + "\n")
+    tok_file.write_text(page_tok, encoding="utf-8")
+    subprocess.run(["powershell", "-NoProfile", "-Command",
+                    "[Environment]::SetEnvironmentVariable('TULSAGAYS_PAGE_ACCESS_TOKEN', $env:_TG_NEW, 'User')"],
+                   env={**os.environ, "_TG_NEW": page_tok}, check=False)
 
     print("4/4 verifying live...")
     me = get(f"{GRAPH}/me?access_token={page_tok}")
