@@ -53,6 +53,10 @@ TOPICS = [
         "desc": "What's on this week at every LGBTQ+ bar in Tulsa, Oklahoma: drag, happy hours and parties, refreshed every Monday, plus a quick take on each bar.",
         "deep_dive": ("/blog/gay-bars-tulsa.html",
                       "Want the history and the feel of each bar before you go? Read our complete guide to Tulsa's gay bars."),
+        "first_time_lead": "First time at one of these bars? Read what to expect at",
+        "first_time": [("/blog/first-time-club-majestic-tulsa.html", "Club Majestic"),
+                       ("/blog/first-time-tulsa-eagle.html", "the Tulsa Eagle"),
+                       ("/blog/first-time-ybr-tulsa.html", "Yellow Brick Road")],
         "intro": "Tulsa's queer nightlife punches well above the city's size. From a long-running leather and bear bar to the only lesbian bar in the state, here is every LGBTQ+ bar in Tulsa, what each is known for, and what is happening this week.",
         "types": ["bar"], "event_kw": ["bar", "drag", "club", "happy hour"], "venue_only": True,
         "faqs": [
@@ -347,6 +351,13 @@ def render_page(topic, orgs, events):
     deep = topic.get("deep_dive")
     deep_block = (f'<p class="topic-deepdive"><a href="{deep[0]}">{esc(deep[1])}</a></p>'
                   if deep else "")
+    # Optional second line of 'first time at ...' links (SEO 2026-10-06): the first-time posts were
+    # linked only from the blog index, and Google listed them as unknown.
+    ft = topic.get("first_time")
+    if ft:
+        _links = [f'<a href="{h}">{esc(t)}</a>' for h, t in ft]
+        deep_block += ('\n    <p class="topic-deepdive">' + esc(topic["first_time_lead"]) + ' '
+                       + ', '.join(_links[:-1]) + ', or ' + _links[-1] + '.</p>')
     return f"""<!DOCTYPE html>
 <html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
