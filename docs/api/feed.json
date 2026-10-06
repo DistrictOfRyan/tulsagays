@@ -10,7 +10,7 @@
     "gaps": 2
   },
   "source_count": 249,
-  "event_count": 225,
+  "event_count": 224,
   "events_source": "data/events/2026-W41_rendered.json",
   "events": [
     {
@@ -1244,13 +1244,6 @@
       "time": "7:30 PM",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "url": "https://web.charityengine.net/blrwps"
-    },
-    {
-      "name": "Tulsa Pride Festival & Parade",
-      "date": "2026-10-10",
-      "time": "",
-      "venue": "Tulsa Arts District / Pride Street, downtown Tulsa",
-      "url": "https://tulsapride.org/"
     },
     {
       "name": "Tulsa Community College Theatre 2026 - 2027 Season",

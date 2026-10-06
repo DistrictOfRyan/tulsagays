@@ -1,7 +1,7 @@
 {
   "week": "2026-W41",
   "generated_at": "2026-10-05T03:46:05.511893",
-  "total_events": 242,
+  "total_events": 241,
   "events": [
     {
       "name": "Lambda Bowling League",
@@ -273,21 +273,6 @@
       "sanity_flags": [
         "LLM: potential duplicate: same time (6:00 PM) and venue as #14 (Dennis R. Neill)"
       ]
-    },
-    {
-      "name": "Tulsa Pride Festival & Parade",
-      "date": "2026-10-10",
-      "time": "",
-      "venue": "Tulsa Arts District / Pride Street, downtown Tulsa",
-      "description": "The big one. Oklahomans for Equality's Tulsa Pride parade and festival takes over downtown, drag, vendors, music, and the whole community out loud.",
-      "website_description": "Tulsa Pride is the main event, Oklahomans for Equality's flagship parade and festival that fills downtown's Tulsa Arts District with floats, drag, vendors, food, and the entire community out and proud. Note that OKEQ moved the big Pride to the second Saturday of October, so this, not June, is Tulsa's marquee Pride. Best-time tip: stake out a parade spot early, then flow into the festival, wear sunscreen and comfortable shoes, and pace yourself because this one goes all day.",
-      "url": "https://tulsapride.org/",
-      "priority": 1,
-      "source": "manual",
-      "from_upcoming_ledger": true,
-      "resurfaced_from_upcoming": true,
-      "lgbtq_relevant": true,
-      "source_urls": []
     },
     {
       "name": "Rainbow Harvest",
