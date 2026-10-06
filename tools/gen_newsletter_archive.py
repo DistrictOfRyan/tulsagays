@@ -64,6 +64,11 @@ def render_archive(broadcasts):
             )
         items = "\n".join(rows)
 
+    # SEO 2026-10-06: an archive with zero issues is an empty page. Google listed /issues/ as
+    # 'Discovered - currently not indexed' (and it was in the sitemap for 4 months). While there
+    # is nothing to archive, keep it out of the index; it flips to index,follow by itself the
+    # first time a sent broadcast exists. Sitemap entry: re-add /issues/ when that happens.
+    robots = 'index, follow' if broadcasts else 'noindex, follow'
     return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,7 +76,7 @@ def render_archive(broadcasts):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Newsletter Archive | Tulsa Gays</title>
 <meta name="description" content="Past issues of the TulsaGays weekly LGBTQ+ event newsletter for Tulsa, Oklahoma.">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="{robots}">
 <link rel="canonical" href="{SITE}/issues/">
 <meta property="og:title" content="Newsletter Archive: Tulsa Gays">
 <meta property="og:description" content="Every weekly LGBTQ+ event digest we've sent, archived and public.">
