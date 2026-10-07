@@ -1,112 +1,142 @@
 {
   "generated_at": null,
-  "count": 18,
+  "count": 19,
   "events": [
     {
-      "name": "The Sunday Spotlight (Club Majestic & Kallaya) — All-Star Drag Show",
-      "date": "2026-10-27",
+      "name": "The Rocky Horror Picture Show",
+      "date": "2026-10-11",
+      "time": "9:30 PM & 11:00 PM",
+      "notes": "Two showings; table reservations available, message shanelsterling",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DeFkX5HEYp5/",
+      "from_post": "2026-10-04"
+    },
+    {
+      "name": "The Rocky Horror Picture Show",
+      "date": "2026-10-15",
+      "time": "10:00 PM",
+      "notes": "Table reservations for this date are full per caption",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DeFkX5HEYp5/",
+      "from_post": "2026-10-04"
+    },
+    {
+      "name": "Pandora's Box",
+      "date": "2026-10-23",
+      "time": "Doors 9pm, Showtime 9:30pm-10:30pm",
+      "notes": "Hosted by Scrappy Legacy, Legacy Entertainment. Performers: Anthill Jackson, D. Composer, Talon Ray, special guest Virtue, Death, Dali Darko. 18 to enter.",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DeFh2GMTdsT/",
+      "from_post": "2026-10-04"
+    },
+    {
+      "name": "Sunday Showdown Open Talent Night (feat. Karma Marie Lee)",
+      "date": "2026-10-04",
+      "time": "Doors 9pm, Showtime 11pm",
+      "notes": "18 to enter; contest limited to first 5 to sign up at the door, bring 2 looks and 2 performances; rotating hosts Natalia Masters, Scrappy Legacy, Londenn D. Raine, Shanel Sterling",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DeAkgxNROkA/",
+      "from_post": "2026-10-02"
+    },
+    {
+      "name": "Bad Boys On The Block",
+      "date": "2026-10-09",
+      "time": "Doors 9pm, show 9:30pm-10:30pm",
+      "notes": "Legacy Entertainment, hosted by Scrappy Legacy, with Londenn D Raine; featuring Stevie Phoenix, Anthill Jackson, Kenzo Zane Paige, Apollo Davenport Brooks; 18+",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Dd9ixPpT0jp/",
+      "from_post": "2026-10-01"
+    },
+    {
+      "name": "The Rocky Horror Picture Show - Drag Performance",
+      "date": "2026-10-11",
+      "time": "Doors 9pm, Showtimes 9:30pm & 11pm",
+      "notes": "18+. Cast: Shanel Sterling as Frank-N-Furter, Will Vaughn as Brad Majors, Finley S. Paige as Janet Weiss, Franchesqua as Narrator, Anita Richards as Riff Raff, Londenn D. Raine as Magenta, King Laylo York as Eddie/Dr. Scott, Scrappy Legacy as Rocky, Karma Eclectic as Columbia.",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Dd89bAYxzfh/",
+      "from_post": "2026-10-01"
+    },
+    {
+      "name": "The Rocky Horror Picture Show - Drag Performance",
+      "date": "2026-10-15",
+      "time": "Doors 9pm, Showtimes 9:30pm & 11pm",
+      "notes": "18+. Cast: Shanel Sterling as Frank-N-Furter, Will Vaughn as Brad Majors, Finley S. Paige as Janet Weiss, Franchesqua as Narrator, Anita Richards as Riff Raff, Londenn D. Raine as Magenta, King Laylo York as Eddie/Dr. Scott, Scrappy Legacy as Rocky, Karma Eclectic as Columbia.",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Dd89bAYxzfh/",
+      "from_post": "2026-10-01"
+    },
+    {
+      "name": "STARPOWER: Witch, Please! (ft. Shanel Sterling, Patty BouRey, Vivian Vendetta-Sinclaire)",
+      "date": "2026-10-03",
+      "time": "9:30pm-10:30pm",
+      "notes": "Followed by Shake It Up Saturday; doors open at 9pm; 21 to enter; Club Majestic, 124 N Boston Ave",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Dd7Sz_vkRvL/",
+      "from_post": "2026-09-30"
+    },
+    {
+      "name": "Drag Roulette",
+      "date": "2026-10-01",
+      "time": "11:00 PM (doors 9pm)",
+      "notes": "Spooky Season kickoff; Queens perform audience requests; with Shanel Sterling, Londenn D. Raine, Kiana D. Jade, and Nala Jade; 18 to enter",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/Dd3lzr4RoE6/",
+      "from_post": "2026-09-29"
+    },
+    {
+      "name": "The Sunday Spotlight",
+      "date": "2026-09-27",
       "time": "Doors 9pm, Show 10:30pm",
-      "notes": "18+ to enter. Cast: Patty BouRey, Scrappy Legacy, Londenn D. Raine, Kallaya, Tracy La Louisianne (Miss Gay America), Shanel Sterling, Jared Lance (Gay America Esquire). Flyer graphic itself reads 'September 27th' but caption explicitly states 'SUNDAY NIGHT 10/27' — used caption date as authoritative.",
+      "notes": "Club Majestic & Kallaya present an all-star drag show featuring Patty BouRey, Scrappy Legacy, Londenn D. Raine, Kallaya, Tracy La Louisianne (Miss Gay America), Shanel Sterling, Jared Lance (Gay America Esquire). 18 to enter. Described as a new monthly show on the last Sunday of each month, but this flyer is for the specific 9/27 date.",
       "venue": "Club Majestic, 124 N Boston Ave",
       "source": "venue_flyer_dig",
       "url": "https://www.instagram.com/p/DdvhFTkudz5/",
       "from_post": "2026-09-26"
     },
     {
-      "name": "La La Land",
+      "name": "La La Land (one-night premiere) ft. Fonda LaFemme, Tracy La Louisianne & Elle Laganda",
       "date": "2026-10-18",
-      "time": "9:45pm",
-      "notes": "One-night-only live entertainment premiere at Club Majestic featuring Fonda LaFemme, Tracy La Louisianne (Miss Gay America 2026), and Elle Laganda. Presented by Anthony Christopher. Tickets: lalalandtulsa.eventbrite.com",
+      "time": "9:45 PM",
+      "notes": "Live singing, immersive entertainment, comedy. Presented by Anthony Christopher. Tickets: lalalandtulsa.eventbrite.com",
       "venue": "Club Majestic, 124 N Boston Ave",
       "source": "venue_flyer_dig",
       "url": "https://www.instagram.com/p/Ddsv3k2Efmd/",
       "from_post": "2026-09-25"
     },
     {
-      "name": "Pandora's Box (hosted by Scrappy Legacy, feat. Anthill Jackson, D. Composer, Koko the Doll, Death, special guest Briar Rose Lovethorn)",
-      "date": "2026-09-25",
-      "time": "9:30pm-10:30pm, doors 9pm, 18 to enter",
-      "notes": "Followed by Ho You Think You Can Dance",
-      "venue": "Club Majestic, 124 N Boston Ave",
+      "name": "Monday Movie Night: Pretty Woman (sponsored by Circle Cinema)",
+      "date": "2026-09-28",
+      "time": "7:00 PM",
+      "notes": "Tulsa Eagle, 1338 E 3rd St, Tulsa OK; free screening of Pretty Woman",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
       "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DdpPUeXxx59/",
-      "from_post": "2026-09-23"
+      "url": "https://www.instagram.com/p/Dd1rPlhCWM4/",
+      "from_post": "2026-09-28"
     },
     {
-      "name": "The Sunday Spotlight ft. Patty BouRey, Scrappy Legacy, Londenn D. Raine, Kallaya, Tracy La Louisianne, Shanel Sterling, Jared Lance",
-      "date": "2026-09-27",
-      "time": "Doors 9:00 PM, Show 10:30 PM",
-      "notes": "Club Majestic & Kallaya present; hosted by Kallaya and Londenn D. Raine; message Kallaya on social media for table reservations",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DdpN2hWTfIT/",
-      "from_post": "2026-09-23"
-    },
-    {
-      "name": "Tulsa Supreme Season 5 Finale",
-      "date": "2026-09-24",
-      "time": "Doors 9pm, Showtime 10:30pm",
-      "notes": "Hosted by Londenn Davenport Raine (Miss Gay Oklahoma America Femme); contestants Saturn, Angela, Odey, Shanel, Sophie Moon, Bobcatte Keugar, Venus Medley, Nikki Fae; guest judge from the audience; 18 to enter",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DdlQZA6zKUq/",
-      "from_post": "2026-09-22"
-    },
-    {
-      "name": "Sunday Showdown Open Talent Night",
-      "date": "2026-09-20",
-      "time": "Doors 9pm, Showtime 11pm",
-      "notes": "18 to enter; talent contest limited to first 5 to sign up at door; bring 2 looks and 2 performances; rotating hosts Natalia Masters, Scrappy Legacy, Londenn D. Raine, Shanel Sterling; featuring last winner Briar Rose Lovethorn",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DdVy9qBTw6I/",
-      "from_post": "2026-09-16"
-    },
-    {
-      "name": "Femme Power (Sensational Saturdays)",
-      "date": "2026-09-19",
-      "time": "9:30pm-10:30pm show, doors 9pm, dance/party after at Shake It Up Saturday",
-      "notes": "Hosted by Miss Gay Oklahoma America Femme Londenn Davenport Raine; performers Sophie Moon, Angela Doll, Little Miss MG, Paprika Cherry; 21 to enter",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DdVy1SCFSbH/",
-      "from_post": "2026-09-16"
-    },
-    {
-      "name": "Escándalo Latin Drag Show + $100 Dance Competition",
-      "date": "2026-09-18",
-      "time": "Doors 9pm, Escándalo 9:30pm, Dance Contest 12:30am",
-      "notes": "Hosted by La Franchesqua & King Laylo York, featuring Shanel Sterling and Kiana D. Jade; dance contest sign-up at DJ booth by midnight, limit 4 contestants, 18+",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DdVyYj-ld4o/",
-      "from_post": "2026-09-16"
-    },
-    {
-      "name": "Look Who's Hosting Now! ft. Shanel Sterling & Londenn D. Raine (Guest Cohost: Karma Eclectic, Guest: T Ali)",
-      "date": "2026-09-17",
-      "time": "Doors 9pm, Showtime 11pm",
-      "notes": "18 to enter. Hosted by Shanel Sterling and Londenn D. Raine, guest cohost Karma Eclectic, guest T Ali.",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DdTegogRIuh/",
-      "from_post": "2026-09-15"
-    },
-    {
-      "name": "FemmePower (Sensational Saturdays)",
-      "date": "2026-09-19",
-      "time": "Doors 9pm, showtime 9:30pm-10:30pm",
-      "notes": "Hosted by Londenn Davenport Raine (Miss Gay Oklahoma America Femme); performers Sophie Moon, Angela Doll, Little Miss MG, Paprika Cherry; 21+",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DdQdPq1R69q/",
-      "from_post": "2026-09-14"
-    },
-    {
-      "name": "Saturday Afternoon Fun w/ Steven",
+      "name": "Steven - Saturday Afternoon",
       "date": "2026-09-26",
       "time": "2:00 PM",
-      "notes": "Host Steven; wristbands provided",
+      "notes": "Saturday afternoon fun with Steven; part of lineup leading to Color Code Party 10",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "source": "venue_flyer_dig",
+      "url": "https://www.instagram.com/p/DdwhvrbDRFw/",
+      "from_post": "2026-09-26"
+    },
+    {
+      "name": "Isaac, Kay Kay, and Justin",
+      "date": "2026-09-26",
+      "time": "8:00 PM",
+      "notes": "Get you ready for the Tulsa Eagle Color Code Party 10",
       "venue": "Tulsa Eagle, 1338 E 3rd St",
       "source": "venue_flyer_dig",
       "url": "https://www.instagram.com/p/DdwhvrbDRFw/",
@@ -115,8 +145,8 @@
     {
       "name": "Tulsa Eagle Color Code Party 10 w/ DJ Scandal",
       "date": "2026-09-26",
-      "time": "8:00 PM (party at 10 PM)",
-      "notes": "Hosts Isaac, Kay Kay, and Justin get you ready starting at 8; DJ Scandal spins; wristbands provided",
+      "time": "10:00 PM",
+      "notes": "Wristbands provided",
       "venue": "Tulsa Eagle, 1338 E 3rd St",
       "source": "venue_flyer_dig",
       "url": "https://www.instagram.com/p/DdwhvrbDRFw/",
@@ -126,41 +156,21 @@
       "name": "Tulsa Eagle One Hit Wonder Party 10 w/ DJ Scandal",
       "date": "2026-09-25",
       "time": "8:00 PM",
-      "notes": "Hosted by Nathan, Megan and Justin; follows $4 import bottle Friday happy hour",
+      "notes": "Hosted by Nathan, Megan and Justin; preceded by $4 Import Bottles Happy Hour with Isaac 2-8PM",
       "venue": "Tulsa Eagle, 1338 E 3rd St",
       "source": "venue_flyer_dig",
       "url": "https://www.instagram.com/p/Ddt81xzjfMk/",
       "from_post": "2026-09-25"
     },
     {
-      "name": "Monday Movie Night: Steel Magnolias",
-      "date": "2026-09-21",
-      "time": "7:00 PM",
-      "notes": "Presented with Circle Cinema at Tulsa Eagle, 1338 E 3rd St, Tulsa OK",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "name": "Scream Queens Drag Brunch",
+      "date": "2026-10-10",
+      "time": "11:00 AM & 1:30 PM",
+      "notes": "Hosted by Shanel Sterling at Elote Cafe; two shows; performers include Giscellien, DTechRaine, Karma Eclectic & Finley S Paige; tickets at elotetulsa.com",
+      "venue": "Elote Cafe, 514 S Boston Ave",
       "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DdjpwZVjBEc/",
-      "from_post": "2026-09-21"
-    },
-    {
-      "name": "Imperial Court of All Oklahoma: Sunday Funday Cook Out (Imperial Court Cookout 4)",
-      "date": "2026-09-20",
-      "time": "4:00 PM - 7:00 PM",
-      "notes": "Hot dogs and hamburgers, $5 suggested donation, benefits Reign 18 Charities & Partners (501c3), at Tulsa Eagle",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DdhFAttlBHL/",
-      "from_post": "2026-09-20"
-    },
-    {
-      "name": "Dammit Rustiy Memorial Gospel Show (Imperial Court of All Oklahoma, Reign 18 Charities)",
-      "date": "2026-09-18",
-      "time": "Social 7PM, Show 8PM",
-      "notes": "21+; hosts/emcees Empress 18 The Dragoness, Empress 15 Lotti Dah, Emperor 18 Jekyll, Emperor 17 Hyde; all performers welcome, music submissions were due 09/16/2026",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/Ddb7cVLFaQU/",
-      "from_post": "2026-09-18"
+      "url": "https://www.instagram.com/p/Dd889t4Efdn/",
+      "from_post": "2026-10-01"
     },
     {
       "name": "Yacht Rock Sing Along",
@@ -173,14 +183,14 @@
       "from_post": "2026-09-24"
     },
     {
-      "name": "918 Day with DJ Hersh-Yo-Self",
-      "date": "2026-09-18",
-      "time": "6:00 PM - 8:00 PM",
-      "notes": "All-vinyl DJ set on the patio at Elote Cafe; puffy tacos & margaritas for downtown Tulsa 918 Day festivities",
-      "venue": "Elote Cafe, 514 S Boston Ave",
+      "name": "Ghoul Friends Queer Cabaret: Punk Rock Pajama Party (with Quintron & Miss Pussycat, Kater Tot, What the Felt, Lady Jade, Little Miss MG)",
+      "date": "2026-10-01",
+      "time": "Doors 6pm, Show 7pm",
+      "notes": "@ The Campbell Hotel Renaissance Square, Tulsa, OK. 21+, $30 VIP / $20 GA. Puppets, performances, vendors.",
+      "venue": "Tulsa House of Drag",
       "source": "venue_flyer_dig",
-      "url": "https://www.instagram.com/p/DdcEiz6OO0R/",
-      "from_post": "2026-09-18"
+      "url": "https://www.instagram.com/p/Dd-S3z8CYXt/",
+      "from_post": "2026-10-02"
     }
   ]
 }

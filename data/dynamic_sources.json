@@ -2,31 +2,22 @@
   "_comment": "Auto-grown by the weekly source-growth engine (tools/promote_sources.py). High-confidence Tulsa queer/queer-welcoming sources are appended here automatically; the scrapers merge these with their hardcoded lists at load time. Safe to hand-edit. Do not delete keys.",
   "fb_pages": [
     {
-      "url": "https://www.facebook.com/HotMessSports/events",
-      "name": "HotMess Sports Tulsa",
-      "added": "2026-08-23",
-      "via": "weekly-search:HotMess Sports Tulsa kickball dodgeball",
-      "seen_count": 0,
-      "last_checked": "2026-09-27",
-      "last_seen_week": "2026-W39"
-    },
-    {
       "url": "https://www.facebook.com/p/Oklahoma-Leather-Association-100087972230370/events",
       "name": "Oklahoma Leather Association FB",
       "added": "2026-09-05",
       "via": "web-search",
-      "last_seen_week": "2026-W39",
+      "last_seen_week": "2026-W40",
       "seen_count": 0,
-      "last_checked": "2026-09-27"
+      "last_checked": "2026-10-04"
     },
     {
       "url": "https://www.facebook.com/p/Ghoul-Friends-Queer-Cabaret-61564254665053/events",
       "name": "Ghoul Friends Queer Cabaret",
       "added": "2026-09-12",
       "via": "web-search",
-      "last_seen_week": "2026-W39",
+      "last_seen_week": "2026-W40",
       "seen_count": 0,
-      "last_checked": "2026-09-27"
+      "last_checked": "2026-10-04"
     },
     {
       "url": "https://www.facebook.com/100091661965106/events",
@@ -34,7 +25,7 @@
       "added": "2026-09-13",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-09-27"
+      "last_checked": "2026-10-04"
     },
     {
       "url": "https://www.facebook.com/rainbowruntulsa/events",
@@ -42,7 +33,13 @@
       "added": "2026-09-26",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-09-27"
+      "last_checked": "2026-10-04"
+    },
+    {
+      "url": "https://www.facebook.com/housechurchtulsa/events",
+      "name": "House Church Tulsa",
+      "added": "2026-10-04",
+      "via": "weekly-search:tulsa affirming church craft club events"
     }
   ],
   "fb_groups": [
@@ -51,18 +48,18 @@
       "name": "Tulsa Two Spirit Society Group",
       "added": "2026-09-13",
       "via": "web-search",
-      "last_seen_week": "2026-W39",
+      "last_seen_week": "2026-W40",
       "seen_count": 0,
-      "last_checked": "2026-09-27"
+      "last_checked": "2026-10-04"
     },
     {
       "url": "https://www.facebook.com/groups/649753022551343/events",
       "name": "Oklahoma Lesbian Friends",
       "added": "2026-09-20",
       "via": "web-search",
-      "last_seen_week": "2026-W39",
+      "last_seen_week": "2026-W40",
       "seen_count": 0,
-      "last_checked": "2026-09-27"
+      "last_checked": "2026-10-04"
     }
   ],
   "calendars": [
@@ -73,26 +70,37 @@
       "added": "2026-09-06",
       "via": "weekly-search:tulsa open and affirming congregation events",
       "seen_count": 0,
-      "last_checked": "2026-09-27"
+      "last_checked": "2026-10-04"
     },
     {
       "url": "https://okeq.org/okeq-events/relationships-outside-the-box/",
       "name": "Relationships Outside the Box (OKEQ)",
       "category": "org",
       "added": "2026-09-27",
-      "via": "weekly-search:Relationships Outside the Box Tulsa OKEQ facebook events"
+      "via": "weekly-search:Relationships Outside the Box Tulsa OKEQ facebook events",
+      "seen_count": 0,
+      "last_checked": "2026-10-04"
+    },
+    {
+      "url": "tulsapac.com/prism",
+      "name": "PRISM (Tulsa PAC LGBTQ youth program)",
+      "category": "lgbtq",
+      "added": "2026-10-03",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-10-04"
+    },
+    {
+      "url": "mixedusetulsa.com",
+      "name": "Mixed-Use Space Tulsa (MUST)",
+      "category": "lgbtq",
+      "added": "2026-10-03",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-10-04"
     }
   ],
   "partner_keywords": [
-    {
-      "kw": "university of tulsa",
-      "name": "University Of Tulsa",
-      "added": "2026-08-23",
-      "via": "venue-miner",
-      "last_seen_week": "2026-W39",
-      "seen_count": 0,
-      "last_checked": "2026-09-27"
-    },
     {
       "kw": "tulsa leather community",
       "name": "Tulsa Leather Community (TLC)",
@@ -100,7 +108,7 @@
       "via": "web-search",
       "last_seen_week": "2026-W32",
       "seen_count": 0,
-      "last_checked": "2026-09-27"
+      "last_checked": "2026-10-04"
     },
     {
       "kw": "oklahoma leather association",
@@ -108,16 +116,16 @@
       "added": "2026-09-05",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-09-27"
+      "last_checked": "2026-10-04"
     },
     {
       "kw": "queer crafters club",
       "name": "Queer Crafters Club",
       "added": "2026-09-06",
       "via": "weekly-search:tulsa queer makers market vendor event 2026",
-      "last_seen_week": "2026-W39",
+      "last_seen_week": "2026-W40",
       "seen_count": 0,
-      "last_checked": "2026-09-27"
+      "last_checked": "2026-10-04"
     },
     {
       "kw": "duet jazz restaurant",
@@ -126,7 +134,7 @@
       "via": "venue-miner",
       "last_seen_week": "2026-W34",
       "seen_count": 0,
-      "last_checked": "2026-09-27"
+      "last_checked": "2026-10-04"
     },
     {
       "kw": "tulsa tassel coalition",
@@ -134,16 +142,16 @@
       "added": "2026-09-13",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-09-27"
+      "last_checked": "2026-10-04"
     },
     {
       "kw": "north hall",
       "name": "North Hall",
       "added": "2026-09-20",
       "via": "venue-miner",
-      "last_seen_week": "2026-W39",
+      "last_seen_week": "2026-W40",
       "seen_count": 0,
-      "last_checked": "2026-09-27"
+      "last_checked": "2026-10-04"
     },
     {
       "kw": "gay kickball tulsa",
@@ -151,7 +159,27 @@
       "added": "2026-09-26",
       "via": "web-search",
       "seen_count": 0,
-      "last_checked": "2026-09-27"
+      "last_checked": "2026-10-04"
+    },
+    {
+      "kw": "mixed-use space tulsa",
+      "name": "Mixed-Use Space Tulsa (MUST)",
+      "added": "2026-10-03",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-10-04"
+    },
+    {
+      "kw": "track 5 at hard rock hotel & casino tulsa",
+      "name": "Track 5 At Hard Rock Hotel & Casino Tulsa",
+      "added": "2026-10-04",
+      "via": "venue-miner"
+    },
+    {
+      "kw": "riffs at hard rock hotel & casino tulsa",
+      "name": "Riffs At Hard Rock Hotel & Casino Tulsa",
+      "added": "2026-10-04",
+      "via": "venue-miner"
     }
   ],
   "retired": [
@@ -1033,6 +1061,30 @@
       "retired_reason": "never produced an event",
       "retired_at": "2026-09-27",
       "from": "fb_groups"
+    },
+    {
+      "url": "https://www.facebook.com/HotMessSports/events",
+      "name": "HotMess Sports Tulsa",
+      "added": "2026-08-23",
+      "via": "weekly-search:HotMess Sports Tulsa kickball dodgeball",
+      "seen_count": 0,
+      "last_checked": "2026-10-04",
+      "last_seen_week": "2026-W39",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-10-04",
+      "from": "fb_pages"
+    },
+    {
+      "kw": "university of tulsa",
+      "name": "University Of Tulsa",
+      "added": "2026-08-23",
+      "via": "venue-miner",
+      "last_seen_week": "2026-W40",
+      "seen_count": 0,
+      "last_checked": "2026-10-04",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-10-04",
+      "from": "partner_keywords"
     }
   ]
 }

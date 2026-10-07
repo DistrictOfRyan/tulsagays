@@ -495,7 +495,9 @@ SOURCES = {
     # â”€â”€ Trans Support â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "taco_ok": {
         "name": "Trans Advocacy Coalition of Oklahoma (TACO)",
-        "url": "https://transadvocacyok.org/events",
+        # transadvocacyok.org was hijacked 2026-06-18 into a gambling site; do not
+        # fetch or link it. Real current home (confirmed 2026-10-05) is Facebook.
+        "url": "https://www.facebook.com/transadvocacyok/",
         "priority": 2,
         "type": "community",
         "description": "Weekly meetings, advocacy, Trans Day of Remembrance, youth programs",

@@ -947,5 +947,86 @@
     "url": "https://www.instagram.com/p/DdpN2hWTfIT/",
     "source": "venue_flyer_dig",
     "priority": 2
+  },
+  {
+    "name": "The Rocky Horror Picture Show",
+    "date": "2026-10-11",
+    "time": "9:30 PM & 11:00 PM",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DeFkX5HEYp5/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "The Rocky Horror Picture Show",
+    "date": "2026-10-15",
+    "time": "10:00 PM",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DeFkX5HEYp5/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Pandora's Box",
+    "date": "2026-10-23",
+    "time": "Doors 9pm, Showtime 9:30pm-10:30pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DeFh2GMTdsT/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Sunday Showdown Open Talent Night (feat. Karma Marie Lee)",
+    "date": "2026-10-04",
+    "time": "Doors 9pm, Showtime 11pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DeAkgxNROkA/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Bad Boys On The Block",
+    "date": "2026-10-09",
+    "time": "Doors 9pm, show 9:30pm-10:30pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/Dd9ixPpT0jp/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "The Rocky Horror Picture Show - Drag Performance",
+    "date": "2026-10-11",
+    "time": "Doors 9pm, Showtimes 9:30pm & 11pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/Dd89bAYxzfh/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "The Rocky Horror Picture Show - Drag Performance",
+    "date": "2026-10-15",
+    "time": "Doors 9pm, Showtimes 9:30pm & 11pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/Dd89bAYxzfh/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "La La Land (one-night premiere) ft. Fonda LaFemme, Tracy La Louisianne & Elle Laganda",
+    "date": "2026-10-18",
+    "time": "9:45 PM",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/Ddsv3k2Efmd/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Scream Queens Drag Brunch",
+    "date": "2026-10-10",
+    "time": "11:00 AM & 1:30 PM",
+    "venue": "Elote Cafe, 514 S Boston Ave",
+    "url": "https://www.instagram.com/p/Dd889t4Efdn/",
+    "source": "venue_flyer_dig",
+    "priority": 2
   }
 ]

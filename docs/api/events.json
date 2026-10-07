@@ -2,78 +2,78 @@
   "api_version": "1",
   "city": "Tulsa, OK",
   "publisher": "Tulsa Gays",
-  "generated_at": "2026-10-05T15:37:15Z",
+  "generated_at": "2026-10-07T23:55:43Z",
   "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
   "count": 8,
   "events": [
     {
-      "name": "Lunch Specials at Elgin Park",
-      "date": "2026-10-05",
-      "time": "11:00 AM",
+      "name": "PRIDE Worship Night",
+      "date": "2026-10-07",
+      "time": "",
+      "venue": "",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Steve Hofstetter at Bricktown Comedy Club - Tulsa",
+      "date": "2026-10-07",
+      "time": "",
+      "venue": "FRI, FEB 26, 2027 AT 9:45 PM",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Queering Body Image Group",
+      "date": "2026-10-07",
+      "time": "4:00 PM",
+      "venue": "MAIN HALL",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "White Claws and PBR Tallboys at Hunt Club",
+      "date": "2026-10-07",
+      "time": "4:00 PM",
+      "venue": "The Hunt Club224 N Main, Tulsa, OK, United States",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Midweek Market at Santa Fe Square!",
+      "date": "2026-10-07",
+      "time": "4:30 PM",
+      "venue": "Sante Fe Square415 E 2nd St, Tulsa, Oklahoma, United States",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Food Truck Wednesday: Evening Edition",
+      "date": "2026-10-07",
+      "time": "5:00 PM",
+      "venue": "Guthrie Green111 E Reconciliation Way, Tulsa, OK, United States",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Wing Wednesday – Half Price Traditional Wings at Elgin Park",
+      "date": "2026-10-07",
+      "time": "5:00 PM",
       "venue": "Elgin Park Brewery325 E Reconciliation Way, Tulsa, OK, United States",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
-      "name": "Lunch Special at Empire Slice House",
-      "date": "2026-10-05",
-      "time": "11:00 AM",
-      "venue": "Empire Slice House Tulsa / 84 Hospitality Group417 N Main Street, Tulsa, OK, United States",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "The History of Concrete",
-      "date": "2026-10-05",
-      "time": "12:20 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Study: Making Sense of the Bible",
-      "date": "2026-10-05",
-      "time": "2:00 PM",
-      "venue": "Wesley Foundation",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Happy Hour with Free Pool at Caz’s Pub",
-      "date": "2026-10-05",
-      "time": "2:00 PM",
-      "venue": "Caz's Pub21 E Reconciliation Way, Tulsa, OK, United States",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Happy Hour at in the raw vū",
-      "date": "2026-10-05",
-      "time": "3:00 PM",
-      "venue": "in the raw vū110 N Elgin Ave., Tulsa, OK, United States",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Happy Hour at Saturn Room",
-      "date": "2026-10-05",
-      "time": "4:00 PM",
-      "venue": "Saturn Room209 N Boulder, Tulsa, OK, United States",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Sunday & Monday Bar Special at PRHYME",
-      "date": "2026-10-05",
-      "time": "4:00 PM",
-      "venue": "PRHYME: Downtown Steakhouse111 N Main Suite A, Tulsa, OK, United States",
+      "name": "Kids Eat Free!!!! with purchase of an adult entre at The Chowhouse",
+      "date": "2026-10-07",
+      "time": "5:00 PM",
+      "venue": "The Chowhouse18 E Reconciliation Way, Tulsa, OK, United States",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"

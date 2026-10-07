@@ -1,58 +1,58 @@
 [
   {
-    "name": "Lunch Specials at Elgin Park",
+    "name": "PRIDE Worship Night",
+    "venue": "",
+    "date": "2026-10-07",
+    "day_short": "WED",
+    "time": ""
+  },
+  {
+    "name": "Steve Hofstetter at Bricktown Comedy Club - Tulsa",
+    "venue": "FRI, FEB 26, 2027 AT 9:45 PM",
+    "date": "2026-10-07",
+    "day_short": "WED",
+    "time": ""
+  },
+  {
+    "name": "Queering Body Image Group",
+    "venue": "MAIN HALL",
+    "date": "2026-10-07",
+    "day_short": "WED",
+    "time": "4:00 PM"
+  },
+  {
+    "name": "White Claws and PBR Tallboys at Hunt Club",
+    "venue": "The Hunt Club224 N Main, Tulsa, OK, United States",
+    "date": "2026-10-07",
+    "day_short": "WED",
+    "time": "4:00 PM"
+  },
+  {
+    "name": "Midweek Market at Santa Fe Square!",
+    "venue": "Sante Fe Square415 E 2nd St, Tulsa, Oklahoma, United States",
+    "date": "2026-10-07",
+    "day_short": "WED",
+    "time": "4:30 PM"
+  },
+  {
+    "name": "Food Truck Wednesday: Evening Edition",
+    "venue": "Guthrie Green111 E Reconciliation Way, Tulsa, OK, United States",
+    "date": "2026-10-07",
+    "day_short": "WED",
+    "time": "5:00 PM"
+  },
+  {
+    "name": "Wing Wednesday \u2013 Half Price Traditional Wings at Elgin Park",
     "venue": "Elgin Park Brewery325 E Reconciliation Way, Tulsa, OK, United States",
-    "date": "2026-10-05",
-    "day_short": "MON",
-    "time": "11:00 AM"
+    "date": "2026-10-07",
+    "day_short": "WED",
+    "time": "5:00 PM"
   },
   {
-    "name": "Lunch Special at Empire Slice House",
-    "venue": "Empire Slice House Tulsa / 84 Hospitality Group417 N Main Street, Tulsa, OK, United States",
-    "date": "2026-10-05",
-    "day_short": "MON",
-    "time": "11:00 AM"
-  },
-  {
-    "name": "The History of Concrete",
-    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-10-05",
-    "day_short": "MON",
-    "time": "12:20 PM"
-  },
-  {
-    "name": "Study: Making Sense of the Bible",
-    "venue": "Wesley Foundation",
-    "date": "2026-10-05",
-    "day_short": "MON",
-    "time": "2:00 PM"
-  },
-  {
-    "name": "Happy Hour with Free Pool at Caz\u2019s Pub",
-    "venue": "Caz's Pub21 E Reconciliation Way, Tulsa, OK, United States",
-    "date": "2026-10-05",
-    "day_short": "MON",
-    "time": "2:00 PM"
-  },
-  {
-    "name": "Happy Hour at in the raw v\u016b",
-    "venue": "in the raw v\u016b110 N Elgin Ave., Tulsa, OK, United States",
-    "date": "2026-10-05",
-    "day_short": "MON",
-    "time": "3:00 PM"
-  },
-  {
-    "name": "Happy Hour at Saturn Room",
-    "venue": "Saturn Room209 N Boulder, Tulsa, OK, United States",
-    "date": "2026-10-05",
-    "day_short": "MON",
-    "time": "4:00 PM"
-  },
-  {
-    "name": "Sunday & Monday Bar Special at PRHYME",
-    "venue": "PRHYME: Downtown Steakhouse111 N Main Suite A, Tulsa, OK, United States",
-    "date": "2026-10-05",
-    "day_short": "MON",
-    "time": "4:00 PM"
+    "name": "Kids Eat Free!!!! with purchase of an adult entre at The Chowhouse",
+    "venue": "The Chowhouse18 E Reconciliation Way, Tulsa, OK, United States",
+    "date": "2026-10-07",
+    "day_short": "WED",
+    "time": "5:00 PM"
   }
 ]
