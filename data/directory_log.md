@@ -424,4 +424,22 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 - WebSearch "queer-owned business Tulsa 2026": surfaced only already-directory businesses (Tonsorial, Il Seme, Cherry & Bark, Yellow Brick Road, Donut Hole, Jo & June, Magic City Books, Studio 66).
 - WebSearch "gay friendly Tulsa restaurant 2026": surfaced In the Raw (added above) and Brook Restaurant and Bar (already listed); rest already in directory.
 - Reddit r/tulsa (both query variants): no indexed results this scan, same pattern as every prior scan.
+
+## [2026-10-08] Spiritual Rose
+- Category: retail
+- URL: https://www.spiritualrose.net
+- Source: WebSearch ("queer-owned business Tulsa 2026" surfaced it via a "Top LGBTQ Owned Businesses in Tulsa" Yelp listing), cross-verified on the business's Alignable profile.
+- Notes: Woman-owned metaphysical and spiritual supply shop at 2929 S Harvard Ave in midtown (crystals, tarot, candles, incense, bath goods). Its own Alignable profile states its values plainly: "standing with our LGBTQ+ soul siblings, multi-faith fellowship and cooperation, and racial equality." Yelp's own business page could not be fetched (403), but the Alignable quote clears the same explicit-support bar used for other safe-space additions. Added to Vintage & Shopping.
+
+### Reviewed but NOT added (2026-10-08 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/): same 6 current members as every prior scan, all already in the directory.
+- OkEq Food & Drink (50 listings): all 50 confirmed already in the directory or previously reviewed/held.
+- Tulsa Remote LGBTQ guide: all listed businesses/resources (Tonsorial, il Seme, Cherry & Bark, YBR, The Donut Hole, Fulton Street, Jo & June, Magic City Books, Studio 66, Black Queer Tulsa, Twisted Arts, H.O.P.E Testing, TACO) already in the directory.
+- The Gayly homepage: no new Tulsa business coverage this scan, just a Tulsa Pride 2026 recap article and a TU Theatre feature, neither a business listing.
+- WebSearch "new LGBTQ business Tulsa 2026": surfaced a September 2026 Tulsa Flyer piece on a "Queer Tulsa" photo exhibit by Liz Cousins at the Equality Center (an art exhibit, not a business, not added) plus already-reviewed guide pages.
+- WebSearch "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (il Seme, Lefty's, Dalesandro's, Lambrusco'z To Go, The Brook, Cherry & Bark).
+- "Back 2 Earth" and "Alibi's" (surfaced generically in gay-bar searches): verified both are out of state (Portland, OR and Oklahoma City, OK respectively), not Tulsa businesses, not added.
+- "The Queer Emporium" (Wikipedia hit): verified as a now-closed Cardiff, Wales shop, unrelated to Tulsa, not added.
+- Tulsa Eagle: already confirmed in the directory (Instagram link), no update needed.
+- Reddit r/tulsa (both query variants): no indexed results this scan, same pattern as every prior scan.
 - Net result: 3 new businesses added (In the Raw, et al., Manila Ice).
