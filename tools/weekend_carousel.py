@@ -86,6 +86,13 @@ _QUEER_DRAW = (
     "drag", "queer", "lgbt", "gay", "lesbian", "trans", "nonbinary", "non-binary",
     "pride", "cabaret", "burlesque", "ball", "kiki", "bear", "dyke", "sapphic",
 )
+# Word-boundary matcher for the above. A plain substring check let "ball"
+# match "Ballroom" (Cain's Ballroom, a general-interest concert venue) and
+# "gay"/"bear"/"trans" are similarly prone to landing inside unrelated words
+# ("Houndmouth" at Cain's Ballroom got a false +25 queer-draw bonus this way
+# and outranked genuinely queer events for Friday's top slot, 2026-W41).
+_QUEER_DRAW_RE = re.compile(
+    r"\b(" + "|".join(re.escape(k) for k in _QUEER_DRAW) + r")\b", re.I)
 
 # Never headline these on a weekend hype post (services, support, admin).
 _NEVER_HEADLINE = (
@@ -146,6 +153,11 @@ def _clean_venue(raw: str) -> str:
 # the carousel, the website generator and the slide renderer cannot drift.
 from content import textclean as _tc  # noqa: E402
 from content.textclean import clean_time, scrub_copy  # noqa: E402
+
+# Same date + venue + >=2 shared distinctive name words = one real event under
+# two titles. Reuse the Monday pipeline's proven matcher rather than a second
+# implementation (W28 postmortem: name-only dedup missed exactly this case).
+from scraper.runner import _same_event_by_venue  # noqa: E402
 
 
 # Marks of raw, un-voiced scraper text: run-on concatenation from stripped
@@ -291,7 +303,7 @@ _QUEER_VENUES = (
 def _is_queer_draw(e: Dict) -> bool:
     """True if this reads as a queer event: by name, by venue, or by source."""
     blob = f"{e.get('name','')} {e.get('venue','')} {e.get('source','')}".lower()
-    if any(k in blob for k in _QUEER_DRAW):
+    if _QUEER_DRAW_RE.search(blob):
         return True
     if (e.get("source") or "").lower() in _QUEER_SOURCES:
         return True
@@ -438,6 +450,7 @@ def select(events: List[Dict],
         if prev is None or _richness(e) > _richness(prev):
             best[key] = e
     pool = list(best.values())
+    pool = _dedupe_cross_title(pool)
 
     scored = []
     for e in pool:
@@ -549,6 +562,29 @@ def _run_key(e: Dict) -> str:
 def _richness(e: Dict) -> int:
     return sum(1 for k in ("time", "venue", "url", "description",
                            "website_description") if e.get(k))
+
+
+def _dedupe_cross_title(pool: List[Dict]) -> List[Dict]:
+    """Second dedup pass: same date + same venue + shared distinctive name
+    words is one real event scraped under two different titles.
+
+    The name-key pass above only catches exact post-normalization matches.
+    It missed a real case live on W40: "Miami NEOK Pride" (source okeq) vs
+    "6th Annual Miami NEOK Pride 2026" (source facebook_events) — same date,
+    same venue, same 12:00 PM time, different enough titles to dodge the name
+    key, and it shipped as two of Saturday's four headline slots. Reuses the
+    Monday pipeline's own matcher so there is one definition of "same event,
+    different title" in the codebase.
+    """
+    kept: List[Dict] = []
+    for e in pool:
+        dup_idx = next((i for i, existing in enumerate(kept)
+                        if _same_event_by_venue(e, existing)), None)
+        if dup_idx is None:
+            kept.append(e)
+        elif _richness(e) > _richness(kept[dup_idx]):
+            kept[dup_idx] = e
+    return kept
 
 
 def _dedupe_weeklies(weeklies: List[Dict]) -> List[Dict]:
