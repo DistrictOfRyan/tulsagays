@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "city": "Tulsa",
-  "generated": "2026-10-11",
+  "generated": "2026-10-12",
   "license": "Free to use with attribution to tulsagays.com",
   "coverage": {
     "coverage_pct": 94.4,
@@ -10,1429 +10,1492 @@
     "gaps": 2
   },
   "source_count": 247,
-  "event_count": 203,
-  "events_source": "data/events/2026-W41_rendered.json",
+  "event_count": 212,
+  "events_source": "data/events/2026-W42_rendered.json",
   "events": [
     {
       "name": "Lambda Bowling League",
-      "date": "2026-10-05",
+      "date": "2026-10-12",
       "time": "7:00 PM",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "url": "https://www.facebook.com/groups/4177858394"
     },
     {
-      "name": "Monday Movie Night: The Wolfman",
-      "date": "2026-10-05",
+      "name": "MONDAY MOVIE NIGHT",
+      "date": "2026-10-12",
       "time": "7:00 PM",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "url": "https://www.instagram.com/p/DeHsvpGFHpx/"
+      "venue": "1338 E 3rd St, Tulsa, OK",
+      "url": "https://www.facebook.com/events/1020496194370061/"
     },
     {
       "name": "Gaymer Night",
-      "date": "2026-10-05",
+      "date": "2026-10-12",
       "time": "8:00 PM",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "url": "https://www.instagram.com/p/DeHsvpGFHpx/"
-    },
-    {
-      "name": "Tulsa State Fair",
-      "date": "2026-10-05",
-      "time": "All day",
-      "venue": "Expo Square, 4145 E 21st St, Tulsa, OK 74114",
-      "url": "https://www.tulsastatefair.com/"
-    },
-    {
-      "name": "Night Out Painting @ Smitty's Garage-71st Tulsa",
-      "date": "2026-10-05",
-      "time": "",
-      "venue": "Created by Myria Brown",
-      "url": "https://www.facebook.com/events/1614114923697341/"
-    },
-    {
-      "name": "Tea Party Tuesday",
-      "date": "2026-10-06",
-      "time": "2:00 PM - 8:00 PM",
       "venue": "Tulsa Eagle, 1338 E 3rd St",
       "url": "https://www.instagram.com/tulsaeagle/"
     },
     {
-      "name": "OSU Tulsa Queer Support Group",
-      "date": "2026-10-06",
-      "time": "6:00 PM",
-      "venue": "OSU Tulsa Campus, 700 N Greenwood Ave",
-      "url": "https://events.tulsa.okstate.edu"
+      "name": "Orange you excited for Homecoming? | Road to Homecoming (for students)",
+      "date": "2026-10-12",
+      "time": "8:00 AM",
+      "venue": "NORTH HALL",
+      "url": "https://events.tulsa.okstate.edu/event/orange-you-excited-for-homecoming-road-to-homecoming"
     },
     {
-      "name": "Tulsa Eagle Tuesday Karaoke",
-      "date": "2026-10-06",
-      "time": "8:00 PM",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "url": "https://www.instagram.com/p/DeKRdlZAqON/"
-    },
-    {
-      "name": "OKEQ Health Clinic",
-      "date": "2026-10-06",
+      "name": "University Store Order Pickup | Oct. 12-16",
+      "date": "2026-10-12",
       "time": "9:00 AM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "venue": "NORTH HALL",
+      "url": "https://events.tulsa.okstate.edu/event/university-store-pickup-october"
+    },
+    {
+      "name": "COWBOY CARRYOUT - Ant's Homestyle Geechie Cuisine",
+      "date": "2026-10-12",
+      "time": "11:30 AM",
+      "venue": "NORTH HALL",
+      "url": "https://events.tulsa.okstate.edu/event/cowboy-carryout-ants-homestyle-geechie-cuisine"
+    },
+    {
+      "name": "The History of Concrete",
+      "date": "2026-10-12",
+      "time": "12:00 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "url": "https://circlecinema.easy-ware-ticketing.com/eventsByMovie/A000003240"
+    },
+    {
+      "name": "Study: Making Sense of the Bible",
+      "date": "2026-10-12",
+      "time": "2:00 PM",
+      "venue": "Wesley Foundation",
+      "url": "https://calendar.utulsa.edu/event/study-making-sense-of-the-bible/2026-10-12/"
+    },
+    {
+      "name": "Tai Chi",
+      "date": "2026-10-12",
+      "time": "2:30 PM",
+      "venue": "NORTH HALL",
+      "url": "https://events.tulsa.okstate.edu/event/tai-chi"
+    },
+    {
+      "name": "Mile Mondays",
+      "date": "2026-10-12",
+      "time": "3:00 PM",
+      "venue": "NORTH HALL",
+      "url": "https://events.tulsa.okstate.edu/event/mile-mondays"
+    },
+    {
+      "name": "Tarot Practice Circle with Valorie Lewis",
+      "date": "2026-10-12",
+      "time": "5:00 PM",
+      "venue": "",
+      "url": "https://www.meetup.com/awkwardly-zen-a-safe-place-for-your-spiritual-path-ok/events/316754636/"
+    },
+    {
+      "name": "Monday Night Jazz",
+      "date": "2026-10-12",
+      "time": "5:00 PM",
+      "venue": "Tulsa, OK",
       "url": ""
     },
     {
-      "name": "OKEQ Senior's",
-      "date": "2026-10-06",
-      "time": "10:00 AM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": ""
-    },
-    {
-      "name": "Tuesdays in the Park Concert Series",
-      "date": "2026-10-06",
-      "time": "7:00 PM - 9:00 PM",
-      "venue": "Central Park, 1500 S Main St, Broken Arrow",
-      "url": "https://www.artsok.org/"
-    },
-    {
-      "name": "Tulsa State Fair",
-      "date": "2026-10-06",
-      "time": "All day",
-      "venue": "Expo Square, 4145 E 21st St, Tulsa, OK 74114",
-      "url": "https://www.tulsastatefair.com/"
+      "name": "Indigenous Day at Cain’s Ballroom",
+      "date": "2026-10-12",
+      "time": "7:30 PM",
+      "venue": "Cain's Ballroom",
+      "url": "https://www.cainsballroom.com/event/indigenous-day-at-cains-ballroom/cains-ballroom/tulsa--oklahoma/"
     },
     {
       "name": "Spotlight Student Art Exhibition | McFarlin Library",
-      "date": "2026-10-06",
+      "date": "2026-10-12",
       "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
+      "venue": "McFarlin Library",
+      "url": "https://calendar.utulsa.edu/event/spotlight-student-art-exhibition-mcfarlin-library/2026-10-12/"
     },
     {
-      "name": "Good Deed Day",
-      "date": "2026-10-06",
+      "name": "Indigenous Peoples' Day | OPEN UNTIL 5 PM",
+      "date": "2026-10-12",
       "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
+      "venue": "Discovery Lab",
+      "url": "https://discoverylab.org/events/event/6413707"
     },
     {
-      "name": "Cycle With Katie",
-      "date": "2026-10-06",
+      "name": "Members-Only Early Access Hours",
+      "date": "2026-10-12",
       "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
+      "venue": "Discovery Lab",
+      "url": "https://discoverylab.org/events/event/5696592/date/2026-10-12"
+    },
+    {
+      "name": "Little Lab: Early Learners Program (Ages 0 to 4)",
+      "date": "2026-10-12",
+      "time": "",
+      "venue": "Discovery Lab",
+      "url": "https://discoverylab.org/events/event/5696585/date/2026-10-12"
+    },
+    {
+      "name": "Food and Hygiene Drive",
+      "date": "2026-10-12",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
+    },
+    {
+      "name": "Safety Stations",
+      "date": "2026-10-12",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
     },
     {
       "name": "Indigenous Independence: America at 250",
-      "date": "2026-10-06",
+      "date": "2026-10-12",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
-      "name": "Free Tuesday Lunch at St. Philip Neri",
-      "date": "2026-10-06",
+      "name": "Baptist Collegiate Ministries Free Lunch Monday",
+      "date": "2026-10-12",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
-      "name": "Baptist Collegiate Ministries Mentor Lunch",
-      "date": "2026-10-06",
+      "name": "Lunch with Gregory of Nyssa",
+      "date": "2026-10-12",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
-      "name": "Wesley Men’s Group",
-      "date": "2026-10-06",
+      "name": "Yoga With Bea",
+      "date": "2026-10-12",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
-      "name": "French Conversation Group",
-      "date": "2026-10-06",
-      "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "Yoga With Leta",
-      "date": "2026-10-06",
-      "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "OK-Share Library Signup Event",
-      "date": "2026-10-06",
+      "name": "la Tertulia",
+      "date": "2026-10-12",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
       "name": "SAFE Lab Tutoring Sessions",
-      "date": "2026-10-06",
+      "date": "2026-10-12",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
-      "name": "Tuesdays with Ted",
-      "date": "2026-10-06",
+      "name": "CAPS: Culture & Calm",
+      "date": "2026-10-12",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
-      "name": "Asbury Campus Fellowship Bible Study",
-      "date": "2026-10-06",
-      "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "The Pumpkin Project",
-      "date": "2026-10-06",
-      "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "Best Buddies Karaoke Night",
-      "date": "2026-10-06",
-      "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "Kevin Dettmar, Punk in 50 Pieces: Punk, Post-Punk, New Wave and the Five Years that Changed Popular Music Forever",
-      "date": "2026-10-06",
-      "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "Pup and PJs",
-      "date": "2026-10-06",
-      "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "Wesley Study Night",
-      "date": "2026-10-06",
-      "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "Kappa Phi Christian Sisterhood",
-      "date": "2026-10-06",
-      "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "UKirk Campus Ministry Prayer Hour",
-      "date": "2026-10-06",
-      "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "Queer Women's Collective Tulsa",
-      "date": "2026-10-07",
-      "time": "5:30 PM",
-      "venue": "Yellow Brick Road Pub, 2630 E 15th St, Tulsa",
-      "url": "https://www.facebook.com/queerwomenscollectivetulsa"
-    },
-    {
-      "name": "Underwear Night",
-      "date": "2026-10-07",
-      "time": "8:00 PM",
-      "venue": "Tulsa Eagle",
-      "url": "https://www.instagram.com/p/DeM2dzrAZ5A/"
-    },
-    {
-      "name": "Lambda Unity Group (LGBTQ+ AA Meeting)",
-      "date": "2026-10-07",
-      "time": "",
-      "venue": "Fellowship Congregational Church, Tulsa",
-      "url": "https://aaoklahoma.org/meetings/lambda-unity/"
-    },
-    {
-      "name": "OKEQ Health Clinic",
-      "date": "2026-10-07",
-      "time": "9:00 AM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
-    },
-    {
-      "name": "Queering Body Image Group",
-      "date": "2026-10-07",
-      "time": "4:00 PM",
-      "venue": "MAIN HALL",
-      "url": "https://events.tulsa.okstate.edu/event/body-image"
-    },
-    {
-      "name": "Smart Recovery Meetings",
-      "date": "2026-10-07",
-      "time": "6:30 PM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "https://okeq.orgmailto:joseph.nowicki@va.gov"
-    },
-    {
-      "name": "Tulsa Leather Community (TLC) Oklahoma",
-      "date": "2026-10-07",
-      "time": "6:30 PM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "https://qlist.app/events/Tulsa/Tulsa-Leather-Community-TLC-Oklahoma/44257"
-    },
-    {
-      "name": "Gender Support Group",
-      "date": "2026-10-07",
-      "time": "7:00 PM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "https://okeq.org/transgender-support/"
-    },
-    {
-      "name": "PRIDE Worship Night",
-      "date": "2026-10-07",
-      "time": "",
-      "venue": "",
-      "url": "https://qlist.app/events/Tulsa/PRIDE-Worship-Night/44256"
-    },
-    {
-      "name": "Tulsa Community College Theatre 2026 to 2027 Season",
-      "date": "2026-10-07",
-      "time": "",
-      "venue": "Tulsa Community College",
-      "url": "https://calendar.tulsacc.edu/"
-    },
-    {
-      "name": "Midweek Meditation (Zoom only)",
-      "date": "2026-10-07",
-      "time": "7:00 AM",
-      "venue": "Shambhala Meditation Center of Tulsa",
-      "url": "https://tulsa.shambhala.org/event/867666-midweek-meditation-zoom-only"
-    },
-    {
-      "name": "Vast Bank Art Show: Neon Cowboy by Alexis Frazier,",
-      "date": "2026-10-07",
-      "time": "7:30 AM",
-      "venue": "Vast Bank110 N. Elgin, Tulsa, OK, United States",
-      "url": "https://thetulsaartsdistrict.org/event/vast-bank-art-show-neon-cowboy-by-alexis-frazier/2026-10-07/"
-    },
-    {
-      "name": "Little Garden Explorers",
-      "date": "2026-10-07",
-      "time": "9:30 AM",
-      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-      "url": "https://www.philbrook.org/events/little-garden-explorers-37394"
-    },
-    {
-      "name": "Tai Chi",
-      "date": "2026-10-07",
-      "time": "12:30 PM",
-      "venue": "NORTH HALL",
-      "url": "https://events.tulsa.okstate.edu/event/tai-chi"
-    },
-    {
-      "name": "World Mental Health Day",
-      "date": "2026-10-07",
-      "time": "2:00 PM",
-      "venue": "NORTH HALL",
-      "url": "https://events.tulsa.okstate.edu/event/world-mental-health-day-7288"
-    },
-    {
-      "name": "Trauma Skills Group",
-      "date": "2026-10-07",
-      "time": "3:00 PM",
-      "venue": "MAIN HALL",
-      "url": "https://events.tulsa.okstate.edu/event/trauma-skills"
-    },
-    {
-      "name": "White Claws and PBR Tallboys at Hunt Club",
-      "date": "2026-10-07",
-      "time": "4:00 PM",
-      "venue": "The Hunt Club224 N Main, Tulsa, OK, United States",
-      "url": "https://thetulsaartsdistrict.org/event/white-claws-and-pbr-tallboys-at-hunt-club-2024-12-18-2025-06-25-2025-12-17-2026-06-24/2026-10-07/"
-    },
-    {
-      "name": "Midweek Market at Santa Fe Square!",
-      "date": "2026-10-07",
-      "time": "4:30 PM",
-      "venue": "Sante Fe Square415 E 2nd St, Tulsa, Oklahoma, United States",
-      "url": "https://thetulsaartsdistrict.org/event/midweek-market-at-santa-fe-square/2026-10-07/"
-    },
-    {
-      "name": "Mobility Workshop",
-      "date": "2026-10-07",
-      "time": "5:00 PM",
-      "venue": "NORTH HALL",
-      "url": "https://events.tulsa.okstate.edu/event/mobility"
-    },
-    {
-      "name": "Food Truck Wednesday: Evening Edition",
-      "date": "2026-10-07",
-      "time": "5:00 PM",
-      "venue": "Guthrie Green111 E Reconciliation Way, Tulsa, OK, United States",
-      "url": "https://thetulsaartsdistrict.org/event/food-truck-wednesday-evening-edition/2026-10-07/"
-    },
-    {
-      "name": "Wing Wednesday, Half Price Traditional Wings at Elgin Park",
-      "date": "2026-10-07",
-      "time": "5:00 PM",
-      "venue": "Elgin Park Brewery325 E Reconciliation Way, Tulsa, OK, United States",
-      "url": "https://thetulsaartsdistrict.org/event/wing-wednesday-half-price-traditional-wings-at-elgin-park-2025-12-17/2026-10-07/"
-    },
-    {
-      "name": "Kids Eat Free!!!! with purchase of an adult entre at The Chowhouse",
-      "date": "2026-10-07",
-      "time": "5:00 PM",
-      "venue": "The Chowhouse18 E Reconciliation Way, Tulsa, OK, United States",
-      "url": "https://thetulsaartsdistrict.org/event/kids-eat-free-with-purchase-of-an-adult-entre-at-the-chowhouse-3-2025-12-10/2026-10-07/"
-    },
-    {
-      "name": "Winesday! at The TAVERN",
-      "date": "2026-10-07",
-      "time": "5:00 PM",
-      "venue": "The Tavern201 N Main, Tulsa, OK, United States",
-      "url": "https://thetulsaartsdistrict.org/event/winesday-at-the-tavern-2020-05-27-2024-06-26-2024-12-18-2024-12-18-2025-06-25-2025-11-26/2026-10-07/"
-    },
-    {
-      "name": "Sweata Weatha Swiggin Series 🍂🥃🌰 (NOTE!! Date change)",
-      "date": "2026-10-07",
-      "time": "5:30 PM",
-      "venue": "",
-      "url": "https://www.meetup.com/tulsa-area-women-get-up-and-get-out/events/316270220/"
-    },
-    {
-      "name": "Settle Into Stillness, Roots and Wings Tour: Sound Journey at Cain’s Ballroom",
-      "date": "2026-10-07",
-      "time": "5:30 PM",
-      "venue": "Cain's Ballroom423 N Main, Tulsa, OK, United States",
-      "url": "https://thetulsaartsdistrict.org/event/settle-into-stillness-roots-and-wings-tour-sound-journey-at-cains-ballroom/"
-    },
-    {
-      "name": "Thundersleet presents Beth Turner Birthday Celebration at The Hunt Club",
-      "date": "2026-10-07",
-      "time": "5:30 PM",
-      "venue": "The Hunt Club224 N Main, Tulsa, OK, United States",
-      "url": "https://thetulsaartsdistrict.org/event/beth-turner-and-carmen-frances-at-the-hunt-club/2026-10-07/"
-    },
-    {
-      "name": "Settle Into Stillness - Roots & Wings Tour",
-      "date": "2026-10-07",
-      "time": "6:00 PM - 8:00 PM",
-      "venue": "yogaQuest, Tulsa",
-      "url": "https://www.tulsayogaquest.com/events/settle-into-stillness-2026"
-    },
-    {
-      "name": "Dungeons and Dragons Group for Interpersonal Goals",
-      "date": "2026-10-07",
-      "time": "6:00 PM",
-      "venue": "MAIN HALL",
-      "url": "https://events.tulsa.okstate.edu/event/dnd"
-    },
-    {
-      "name": "Inspyral Circus Jam at Guthrie Green",
-      "date": "2026-10-07",
-      "time": "6:00 PM",
-      "venue": "Guthrie Green111 E Reconciliation Way, Tulsa, OK, United States",
-      "url": "https://thetulsaartsdistrict.org/event/inspyral-circus-jam-at-guthrie-green-2/2026-10-07/"
-    },
-    {
-      "name": "Transformation Conference: V5",
-      "date": "2026-10-07",
-      "time": "7:00 PM",
-      "venue": "",
-      "url": "https://www.eventbrite.com/e/transformation-conference-v5-tickets-1774852133509"
-    },
-    {
-      "name": "Hart of the Mountains",
-      "date": "2026-10-07",
-      "time": "7:00 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-      "url": "https://circlecinema.easy-ware-ticketing.com/events"
-    },
-    {
-      "name": "The History of Concrete",
-      "date": "2026-10-07",
-      "time": "8:00 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-      "url": "https://circlecinema.easy-ware-ticketing.com/eventsByMovie/A000003240"
-    },
-    {
-      "name": "Tulsa State Fair",
-      "date": "2026-10-07",
-      "time": "All day",
-      "venue": "Expo Square, 4145 E 21st St, Tulsa, OK 74114",
-      "url": "https://www.tulsastatefair.com/"
-    },
-    {
-      "name": "Spotlight Student Art Exhibition | McFarlin Library",
-      "date": "2026-10-07",
-      "time": "",
-      "venue": "McFarlin Library",
-      "url": "https://calendar.utulsa.edu/event/spotlight-student-art-exhibition-mcfarlin-library/2026-10-07/"
-    },
-    {
-      "name": "Anxiety Reset",
-      "date": "2026-10-07",
-      "time": "",
-      "venue": "Tulsa Community College",
-      "url": "https://calendar.tulsacc.edu/"
-    },
-    {
-      "name": "Food and Hygiene Drive",
-      "date": "2026-10-07",
-      "time": "",
-      "venue": "Tulsa Community College",
-      "url": "https://calendar.tulsacc.edu/"
-    },
-    {
-      "name": "Waffle Days",
-      "date": "2026-10-07",
-      "time": "",
-      "venue": "Tulsa Community College",
-      "url": "https://calendar.tulsacc.edu/"
-    },
-    {
-      "name": "An Evening with John Green",
-      "date": "2026-10-07",
-      "time": "",
-      "venue": "Tulsa Community College",
-      "url": "https://calendar.tulsacc.edu/"
-    },
-    {
-      "name": "Fresh Check Day",
-      "date": "2026-10-07",
-      "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "101 Archer Gallery | Back for Blood: Never Whistle",
-      "date": "2026-10-07",
-      "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "WOW, Worship on Wednesday",
-      "date": "2026-10-07",
-      "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "Little Blue House | Free Veggie Lunch",
-      "date": "2026-10-07",
-      "time": "",
-      "venue": "University of Tulsa",
-      "url": "https://calendar.utulsa.edu/"
-    },
-    {
-      "name": "Money Mind$et: Banking Smart Workshop",
-      "date": "2026-10-07",
+      "name": "C. S. Lewis Book Club",
+      "date": "2026-10-12",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
       "name": "HIIT Pilates With Amber",
-      "date": "2026-10-07",
+      "date": "2026-10-12",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
-      "name": "Yoga with Jamie",
-      "date": "2026-10-07",
+      "name": "EMG research study sign-up",
+      "date": "2026-10-12",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
-      "name": "QPR Training: CPR for Mental Health",
-      "date": "2026-10-07",
+      "name": "Baptist Collegiate Ministries Mentor Lunch",
+      "date": "2026-10-12",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
-      "name": "Steve Hofstetter at Bricktown Comedy Club - Tulsa",
-      "date": "2026-10-07",
+      "name": "Yoga With Leta",
+      "date": "2026-10-12",
       "time": "",
-      "venue": "FRI, FEB 26, 2027 AT 9:45 PM",
-      "url": "https://www.facebook.com/events/1046581331092707/"
+      "venue": "University of Tulsa",
+      "url": "https://calendar.utulsa.edu/"
     },
     {
-      "name": "DRAGNIFICENT! Drag Show",
-      "date": "2026-10-08",
-      "time": "10:00 PM",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "url": "https://downtowntulsa.com/do/dragnificent-at-club-majestic-1"
+      "name": "OSU Tulsa Queer Support Group",
+      "date": "2026-10-13",
+      "time": "6:00 PM",
+      "venue": "OSU Tulsa Campus, 700 N Greenwood Ave",
+      "url": "https://events.tulsa.okstate.edu"
     },
     {
-      "name": "The New Kidz",
-      "date": "2026-10-08",
-      "time": "11:00 PM",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "url": "https://www.instagram.com/p/DeM8T5AzdCY/"
-    },
-    {
-      "name": "DRAGNIFICENT! at Club Majestic",
-      "date": "2026-10-08",
-      "time": "",
-      "venue": "",
-      "url": "https://qlist.app/events/Tulsa/DRAGNIFICENT-at-Club-Majestic/44249"
+      "name": "Tulsa Eagle Tuesday Karaoke",
+      "date": "2026-10-13",
+      "time": "8:00 PM",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "url": "https://www.instagram.com/tulsaeagle/"
     },
     {
       "name": "OKEQ Health Clinic",
-      "date": "2026-10-08",
+      "date": "2026-10-13",
       "time": "9:00 AM",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
+      "url": ""
     },
     {
-      "name": "Happy Hour!",
-      "date": "2026-10-08",
-      "time": "4:00 PM",
-      "venue": "302 South Frankfort Avenue, Tulsa, OK",
-      "url": "https://www.facebook.com/events/880316451163299/"
-    },
-    {
-      "name": "Queer Crafters Club",
-      "date": "2026-10-08",
-      "time": "6:00 PM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "https://qlist.app/events/Tulsa/Queer-Crafters-Club/44258"
-    },
-    {
-      "name": "Girl Scout Troop 7484",
-      "date": "2026-10-08",
-      "time": "6:30 PM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "https://okeq.orgmailto:t.marler@cox.net"
-    },
-    {
-      "name": "Sapphic Dance Party at 473",
-      "date": "2026-10-08",
-      "time": "9:00 PM",
-      "venue": "Four. Seven. Three. (473)",
-      "url": "https://www.eventbrite.com/e/sapphic-dance-party-at-473-tickets-1999463079896"
-    },
-    {
-      "name": "The Woman in Black",
-      "date": "2026-10-08",
-      "time": "",
-      "venue": "Theatre Tulsa",
-      "url": "https://givebutter.com/womantt"
-    },
-    {
-      "name": "Storytime at Philbrook",
-      "date": "2026-10-08",
+      "name": "OKEQ Senior's",
+      "date": "2026-10-13",
       "time": "10:00 AM",
-      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-      "url": "https://www.philbrook.org/events/storytime-at-philbrook-37396"
-    },
-    {
-      "name": "The History of Concrete",
-      "date": "2026-10-08",
-      "time": "12:20 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-      "url": "https://circlecinema.easy-ware-ticketing.com/eventsByMovie/A000003240"
-    },
-    {
-      "name": "Global Vision Awards Gala",
-      "date": "2026-10-08",
-      "time": "4:30 PM",
-      "venue": "Tulsa, OK",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "url": ""
     },
     {
-      "name": "Blues Society of Tulsa Blues Challenge",
-      "date": "2026-10-08",
-      "time": "5:00 PM",
-      "venue": "Shared by Blues Society of Tulsa",
-      "url": "https://www.facebook.com/events/1560615515476464/"
+      "name": "Neurodivergent Support Group",
+      "date": "2026-10-13",
+      "time": "3:00 PM",
+      "venue": "MAIN HALL",
+      "url": "https://events.tulsa.okstate.edu/event/neurodivergent-support"
     },
     {
-      "name": "Money Multiplier Masterclass (FREE)",
-      "date": "2026-10-08",
-      "time": "5:30 PM",
-      "venue": "",
-      "url": "https://www.eventbrite.com/e/money-multiplier-masterclass-free-tickets-2002608271248"
+      "name": "QueerLit Collective Fundraiser: Dinner, Drinks & Story Time with Shanel Sterling",
+      "date": "2026-10-13",
+      "time": "6:00 PM - 9:00 PM",
+      "venue": "Elote Cafe, 514 S Boston Ave",
+      "url": "https://www.instagram.com/p/DeVSRA4jrvy/"
     },
     {
-      "name": "Shut Up & Write!® at Handmade Broken Arrow",
-      "date": "2026-10-08",
+      "name": "Once Upon A Drag",
+      "date": "2026-10-13",
       "time": "6:00 PM",
-      "venue": "Handmade",
-      "url": "https://www.meetup.com/shutupandwritetulsa/events/316617547/"
+      "venue": "Elote Cafe & Catering",
+      "url": "https://www.facebook.com/events/2163799460899054/"
     },
     {
-      "name": "Fitness on the Green - RunWalk Tulsa",
-      "date": "2026-10-08",
-      "time": "6:00 PM",
-      "venue": "Guthrie Green",
-      "url": ""
-    },
-    {
-      "name": "2nd Thursday Game Night: A Singles Social Event",
-      "date": "2026-10-08",
-      "time": "6:30 PM",
-      "venue": "Studio Nine18",
-      "url": "https://www.eventbrite.com/e/2nd-thursday-game-night-a-singles-social-event-tickets-1991928379404"
-    },
-    {
-      "name": "Veg out at Copaneazi's Pizza South",
-      "date": "2026-10-08",
-      "time": "6:30 PM",
-      "venue": "Copaneazi's",
-      "url": "https://www.meetup.com/owasso-book-study-meetup-group/events/316426230/"
-    },
-    {
-      "name": "MIX Workshop: The Art of Gin & Food Pairing",
-      "date": "2026-10-08",
-      "time": "6:30 PM",
-      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-      "url": "https://www.philbrook.org/events/mix-workshop-the-art-of-gin-food-pairing-37475"
-    },
-    {
-      "name": "Christmas Rehearsal - Thurs., Oct 8th",
-      "date": "2026-10-08",
-      "time": "6:30 PM",
-      "venue": "Shared by Tulsa Metro Sound",
-      "url": "https://www.facebook.com/events/28544557801819486/"
-    },
-    {
-      "name": "FOUR DAYS IN THE ILLINOIS COUNTRY; OR “L’ESPRIT DE L’ESCALIER”",
-      "date": "2026-10-08",
-      "time": "6:30 PM",
-      "venue": "Flagship / Tulsa Artist Fellowship, 112 N Boston Ave",
-      "url": "https://www.tulsaartistfellowship.org/calendar/four-days-in-the-illinois-country-or-lesprit-de-lescalier"
-    },
-    {
-      "name": "Your Fun&Social Fall Plans: Bowling + Beers + New Friends 🍂🎳",
-      "date": "2026-10-08",
+      "name": "Tulsa Area Prime Timers",
+      "date": "2026-10-13",
       "time": "7:00 PM",
-      "venue": "",
-      "url": "https://www.meetup.com/socialintrovertsoftulsa/events/316316667/"
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": "http://www.tulsaareaprimetimers.com/"
     },
     {
-      "name": "DJ | 2 Legit",
-      "date": "2026-10-08",
-      "time": "7:00 PM",
-      "venue": "Riffs at Hard Rock Hotel & Casino Tulsa",
-      "url": ""
+      "name": "Tuesdays in the Park Concert Series",
+      "date": "2026-10-13",
+      "time": "7:00 PM - 9:00 PM",
+      "venue": "Central Park, 1500 S Main St, Broken Arrow",
+      "url": "https://www.artsok.org/"
     },
     {
-      "name": "Green Country Bears Monthly Meetup",
-      "date": "2026-10-08",
-      "time": "7:00 PM",
-      "venue": "Restaurant (varies, check website)",
-      "url": "https://greencountrybears.com/"
-    },
-    {
-      "name": "Tulsa State Fair",
-      "date": "2026-10-08",
-      "time": "All day",
-      "venue": "Expo Square, 4145 E 21st St, Tulsa, OK 74114",
-      "url": "https://www.tulsastatefair.com/"
-    },
-    {
-      "name": "Journey",
-      "date": "2026-10-08",
+      "name": "The Living Tombstone",
+      "date": "2026-10-13",
       "time": "",
-      "venue": "BOK Center",
-      "url": "https://www.bokcenter.com/events/detail/journey-26"
+      "venue": "Tulsa Theater",
+      "url": "https://tulsatheater.com/event/the-living-tombstone/tulsa-theater/"
     },
     {
-      "name": "TCC Concert Band & Community Band Concert",
-      "date": "2026-10-08",
+      "name": "Tulsa Community College Theatre 2026 to 2027 Season",
+      "date": "2026-10-13",
       "time": "",
       "venue": "Tulsa Community College",
       "url": "https://calendar.tulsacc.edu/"
     },
     {
-      "name": "Episcopal Campus Ministry Morning Prayer Time",
-      "date": "2026-10-08",
+      "name": "COWBOY CARRYOUT - Nealbrew",
+      "date": "2026-10-13",
+      "time": "8:00 AM",
+      "venue": "NORTH HALL",
+      "url": "https://events.tulsa.okstate.edu/event/cowboy-carryout-nealbrew"
+    },
+    {
+      "name": "COWBOY CARRYOUT - Sticky Rice Food Truck",
+      "date": "2026-10-13",
+      "time": "12:00 PM",
+      "venue": "PARKING LOT A",
+      "url": "https://events.tulsa.okstate.edu/event/cowboy-carryout-sticky-rice-food-truck"
+    },
+    {
+      "name": "Core and Recovery",
+      "date": "2026-10-13",
+      "time": "12:30 PM",
+      "venue": "NORTH HALL",
+      "url": "https://events.tulsa.okstate.edu/event/core-recovery"
+    },
+    {
+      "name": "Open Meditation, Tues.",
+      "date": "2026-10-13",
+      "time": "1:30 PM",
+      "venue": "Shambhala Meditation Center of Tulsa",
+      "url": "https://tulsa.shambhala.org/event/867595-open-meditation-tues"
+    },
+    {
+      "name": "The History of Concrete",
+      "date": "2026-10-13",
+      "time": "2:30 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "url": "https://circlecinema.easy-ware-ticketing.com/eventsByMovie/A000003240"
+    },
+    {
+      "name": "Tabata Tuesdays",
+      "date": "2026-10-13",
+      "time": "3:00 PM",
+      "venue": "NORTH HALL",
+      "url": "https://events.tulsa.okstate.edu/event/tabata-tuesdays"
+    },
+    {
+      "name": "Rabbit Proof Fence",
+      "date": "2026-10-13",
+      "time": "7:00 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "url": "https://circlecinema.easy-ware-ticketing.com/events"
+    },
+    {
+      "name": "FULLY OPTIMIZED: THRASH DANCE IN UNITY",
+      "date": "2026-10-13",
+      "time": "7:30 PM - 9:00 PM",
+      "venue": "Flagship / Tulsa Artist Fellowship, 112 N Boston Ave",
+      "url": "https://www.tulsaartistfellowship.org/calendar/fully-optimized-thrash-dance-in-unity"
+    },
+    {
+      "name": "Food and Hygiene Drive",
+      "date": "2026-10-13",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
+    },
+    {
+      "name": "Oktoberfest 2026",
+      "date": "2026-10-13",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
+    },
+    {
+      "name": "Safety Stations",
+      "date": "2026-10-13",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
+    },
+    {
+      "name": "Paw Pals - Therapy Dogs",
+      "date": "2026-10-13",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
+    },
+    {
+      "name": "Spotlight Student Art Exhibition | McFarlin Library",
+      "date": "2026-10-13",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
-      "name": "Core With Leta",
-      "date": "2026-10-08",
+      "name": "Cycle With Katie",
+      "date": "2026-10-13",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
-      "name": "Free Thursday Lunch at Wesley",
-      "date": "2026-10-08",
+      "name": "Indigenous Independence: America at 250",
+      "date": "2026-10-13",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
-      "name": "Dead Theologians Society",
-      "date": "2026-10-08",
+      "name": "Free Tuesday Lunch at St. Philip Neri",
+      "date": "2026-10-13",
+      "time": "",
+      "venue": "University of Tulsa",
+      "url": "https://calendar.utulsa.edu/"
+    },
+    {
+      "name": "Wesley Men’s Group",
+      "date": "2026-10-13",
+      "time": "",
+      "venue": "University of Tulsa",
+      "url": "https://calendar.utulsa.edu/"
+    },
+    {
+      "name": "French Conversation Group",
+      "date": "2026-10-13",
+      "time": "",
+      "venue": "University of Tulsa",
+      "url": "https://calendar.utulsa.edu/"
+    },
+    {
+      "name": "Asbury Campus Fellowship Bible Study",
+      "date": "2026-10-13",
+      "time": "",
+      "venue": "University of Tulsa",
+      "url": "https://calendar.utulsa.edu/"
+    },
+    {
+      "name": "Wesley Study Night",
+      "date": "2026-10-13",
+      "time": "",
+      "venue": "University of Tulsa",
+      "url": "https://calendar.utulsa.edu/"
+    },
+    {
+      "name": "Kappa Phi Christian Sisterhood",
+      "date": "2026-10-13",
+      "time": "",
+      "venue": "University of Tulsa",
+      "url": "https://calendar.utulsa.edu/"
+    },
+    {
+      "name": "Under the Influence Film Series with President Stacy Leeds",
+      "date": "2026-10-13",
+      "time": "",
+      "venue": "University of Tulsa",
+      "url": "https://calendar.utulsa.edu/"
+    },
+    {
+      "name": "UKirk Campus Ministry Prayer Hour",
+      "date": "2026-10-13",
       "time": "",
       "venue": "University of Tulsa",
       "url": "https://calendar.utulsa.edu/"
     },
     {
       "name": "October Gallery Hours",
-      "date": "2026-10-08",
+      "date": "2026-10-13",
       "time": "",
       "venue": "Living Arts of Tulsa",
       "url": "https://livingarts.org/calendar/october-gallery-hours/"
     },
     {
-      "name": "Exploring Fiber Arts: Crochet Made Easy",
-      "date": "2026-10-08",
+      "name": "Sarper Güven",
+      "date": "2026-10-13",
+      "time": "",
+      "venue": "Bricktown Comedy Club Tulsa",
+      "url": "https://bricktowntulsa-com.seatengine.com/shows/379645"
+    },
+    {
+      "name": "Lambda Unity Group (LGBTQ+ AA Meeting)",
+      "date": "2026-10-14",
+      "time": "",
+      "venue": "Fellowship Congregational Church, Tulsa",
+      "url": "https://aaoklahoma.org/meetings/lambda-unity/"
+    },
+    {
+      "name": "OKEQ Health Clinic",
+      "date": "2026-10-14",
+      "time": "9:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
+    },
+    {
+      "name": "(Off-site) Fair Housing: Legal Aid Services of Oklahoma",
+      "date": "2026-10-14",
+      "time": "12:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": "https://okeq.orgmailto:alyssa.bryant@laok.org"
+    },
+    {
+      "name": "Name & Gender Correction Clinic",
+      "date": "2026-10-14",
+      "time": "5:30 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": "https://qlist.app/events/Tulsa/Name-Gender-Correction-Clinic/44262"
+    },
+    {
+      "name": "Smart Recovery Meetings",
+      "date": "2026-10-14",
+      "time": "6:30 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": "https://okeq.orgmailto:joseph.nowicki@va.gov"
+    },
+    {
+      "name": "Gender Support Group",
+      "date": "2026-10-14",
+      "time": "7:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": "https://okeq.org/transgender-support/"
+    },
+    {
+      "name": "Non-binary Support Group",
+      "date": "2026-10-14",
+      "time": "7:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": ""
+    },
+    {
+      "name": "Transgender Men's Support Group (Private Group)",
+      "date": "2026-10-14",
+      "time": "7:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": ""
+    },
+    {
+      "name": "Dogstar: ALL IN NOW TOUR",
+      "date": "2026-10-14",
+      "time": "",
+      "venue": "Tulsa Theater",
+      "url": "https://tulsatheater.com/event/dogstar-all-in-now-tour/tulsa-theater/"
+    },
+    {
+      "name": "Tulsa Community College Theatre 2026 to 2027 Season",
+      "date": "2026-10-14",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
+    },
+    {
+      "name": "Midweek Meditation (Zoom only)",
+      "date": "2026-10-14",
+      "time": "7:00 AM",
+      "venue": "Shambhala Meditation Center of Tulsa",
+      "url": "https://tulsa.shambhala.org/event/867667-midweek-meditation-zoom-only"
+    },
+    {
+      "name": "Little Garden Explorers",
+      "date": "2026-10-14",
+      "time": "9:30 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": "https://www.philbrook.org/events/little-garden-explorers-37395"
+    },
+    {
+      "name": "#AskAnArchivist Day",
+      "date": "2026-10-14",
+      "time": "10:00 AM",
+      "venue": "MAIN HALL",
+      "url": "https://events.tulsa.okstate.edu/event/askanarchivist-day"
+    },
+    {
+      "name": "Fall Break at Fallbrook",
+      "date": "2026-10-14",
+      "time": "10:00 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": "https://www.philbrook.org/events/fall-break-at-fallbrook-37430"
+    },
+    {
+      "name": "COWBOY CARRYOUT - The Mexican Way",
+      "date": "2026-10-14",
+      "time": "11:30 AM",
+      "venue": "MAIN HALL",
+      "url": "https://events.tulsa.okstate.edu/event/cowboy-carryout-the-mexican-way-636"
+    },
+    {
+      "name": "Fall Break Skates",
+      "date": "2026-10-14",
+      "time": "1:00 PM",
+      "venue": "Shared by Skates Roller Skating Entertainment Center",
+      "url": "https://www.facebook.com/events/28179889494940359/"
+    },
+    {
+      "name": "Proud and Loud | Road to Homecoming",
+      "date": "2026-10-14",
+      "time": "2:00 PM",
+      "venue": "NORTH HALL",
+      "url": "https://events.tulsa.okstate.edu/event/proud-and-loud-road-to-homecoming"
+    },
+    {
+      "name": "The History of Concrete",
+      "date": "2026-10-14",
+      "time": "5:20 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "url": "https://circlecinema.easy-ware-ticketing.com/eventsByMovie/A000003240"
+    },
+    {
+      "name": "An Evening Concert with True Loves - Presented by Guthrie Green & Aspen Ideas: Economy",
+      "date": "2026-10-14",
+      "time": "6:30 PM",
+      "venue": "Guthrie Green",
+      "url": ""
+    },
+    {
+      "name": "Food and Hygiene Drive",
+      "date": "2026-10-14",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
+    },
+    {
+      "name": "Last Days to Drop Fall Second 8-Week Classes With a Full Refund",
+      "date": "2026-10-14",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
+    },
+    {
+      "name": "Safety Stations",
+      "date": "2026-10-14",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
+    },
+    {
+      "name": "Glow Zumba",
+      "date": "2026-10-14",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
+    },
+    {
+      "name": "Spotlight Student Art Exhibition | McFarlin Library",
+      "date": "2026-10-14",
+      "time": "",
+      "venue": "University of Tulsa",
+      "url": "https://calendar.utulsa.edu/"
+    },
+    {
+      "name": "Indigenous Independence: America at 250",
+      "date": "2026-10-14",
+      "time": "",
+      "venue": "University of Tulsa",
+      "url": "https://calendar.utulsa.edu/"
+    },
+    {
+      "name": "101 Archer Gallery | Back for Blood: Never Whistle",
+      "date": "2026-10-14",
+      "time": "",
+      "venue": "University of Tulsa",
+      "url": "https://calendar.utulsa.edu/"
+    },
+    {
+      "name": "WOW, Worship on Wednesday",
+      "date": "2026-10-14",
+      "time": "",
+      "venue": "University of Tulsa",
+      "url": "https://calendar.utulsa.edu/"
+    },
+    {
+      "name": "Little Blue House | Free Veggie Lunch",
+      "date": "2026-10-14",
+      "time": "",
+      "venue": "University of Tulsa",
+      "url": "https://calendar.utulsa.edu/"
+    },
+    {
+      "name": "HIIT Pilates With Amber",
+      "date": "2026-10-14",
+      "time": "",
+      "venue": "University of Tulsa",
+      "url": "https://calendar.utulsa.edu/"
+    },
+    {
+      "name": "October Gallery Hours",
+      "date": "2026-10-14",
       "time": "",
       "venue": "Living Arts of Tulsa",
-      "url": "https://livingarts.org/calendar/exploring-fiber-arts-crochet-made-easy-2/"
+      "url": "https://livingarts.org/calendar/october-gallery-hours/"
+    },
+    {
+      "name": "Open Mic Night",
+      "date": "2026-10-14",
+      "time": "",
+      "venue": "Bricktown Comedy Club Tulsa",
+      "url": "https://bricktowntulsa-com.seatengine.com/shows/384893"
+    },
+    {
+      "name": "Rocky Horror Picture Show",
+      "date": "2026-10-15",
+      "time": "10:00 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "url": "https://www.instagram.com/p/Dd89bAYxzfh/"
+    },
+    {
+      "name": "DRAGNIFICENT! Drag Show",
+      "date": "2026-10-15",
+      "time": "10:00 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "url": "https://downtowntulsa.com/do/dragnificent-at-club-majestic-1"
+    },
+    {
+      "name": "OKEQ Health Clinic",
+      "date": "2026-10-15",
+      "time": "9:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
+    },
+    {
+      "name": "Tulsa Pride x EBA Happy Hour",
+      "date": "2026-10-15",
+      "time": "5:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": ""
+    },
+    {
+      "name": "OkEq Board Meeting",
+      "date": "2026-10-15",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": ""
+    },
+    {
+      "name": "Queer Crafters Club",
+      "date": "2026-10-15",
+      "time": "6:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": "https://qlist.app/events/Tulsa/Queer-Crafters-Club/44258"
+    },
+    {
+      "name": "Girl Scout Troop 7484",
+      "date": "2026-10-15",
+      "time": "6:30 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": "https://okeq.orgmailto:t.marler@cox.net"
+    },
+    {
+      "name": "Fallbrook Storytime: Leaf Man & Leaf Art",
+      "date": "2026-10-15",
+      "time": "10:00 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": "https://www.philbrook.org/events/fallbrook-storytime-leaf-man-leaf-art-37358"
+    },
+    {
+      "name": "Fall Break at Fallbrook",
+      "date": "2026-10-15",
+      "time": "10:00 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": "https://www.philbrook.org/events/fall-break-at-fallbrook-37431"
+    },
+    {
+      "name": "The History of Concrete",
+      "date": "2026-10-15",
+      "time": "12:00 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "url": "https://circlecinema.easy-ware-ticketing.com/eventsByMovie/A000003240"
+    },
+    {
+      "name": "Third Thursday Jazz at the Tulsa Club Hotel featuring Angie Cockrell",
+      "date": "2026-10-15",
+      "time": "4:30 PM",
+      "venue": "Tulsa, OK",
+      "url": ""
+    },
+    {
+      "name": "Tulsa's Best Burger Club",
+      "date": "2026-10-15",
+      "time": "5:30 PM",
+      "venue": "",
+      "url": "https://www.meetup.com/tulsa-shenanigans-society/events/313992890/"
+    },
+    {
+      "name": "SERIES #6: COUPLES SENSUAL BACHATA CLASS",
+      "date": "2026-10-15",
+      "time": "6:00 PM",
+      "venue": "",
+      "url": "https://www.eventbrite.com/e/series-6-couples-sensual-bachata-class-tickets-1976378886452"
+    },
+    {
+      "name": "Remarkably Bright Creatures by Shelby Van Pelt",
+      "date": "2026-10-15",
+      "time": "6:00 PM",
+      "venue": "Yokozuna",
+      "url": "https://www.meetup.com/wise-and-wonderful-women-over-50-book-club/events/312501359/"
+    },
+    {
+      "name": "Shut Up & Write!® at Handmade Broken Arrow",
+      "date": "2026-10-15",
+      "time": "6:00 PM",
+      "venue": "Handmade",
+      "url": "https://www.meetup.com/shutupandwritetulsa/events/316716466/"
+    },
+    {
+      "name": "DJ | Ryno",
+      "date": "2026-10-15",
+      "time": "6:00 PM",
+      "venue": "Riffs at Hard Rock Hotel & Casino Tulsa",
+      "url": ""
+    },
+    {
+      "name": "Fitness on the Green - RunWalk Tulsa",
+      "date": "2026-10-15",
+      "time": "6:00 PM",
+      "venue": "Guthrie Green",
+      "url": ""
+    },
+    {
+      "name": "The 66 Kicks HOOTENANNY!",
+      "date": "2026-10-15",
+      "time": "8:00 PM",
+      "venue": "",
+      "url": "https://www.eventbrite.com/e/the-66-kicks-hootenanny-tickets-1998991038006"
+    },
+    {
+      "name": "Pop 2000 Tour",
+      "date": "2026-10-15",
+      "time": "8:00 PM",
+      "venue": "Hard Rock Live at Hard Rock Hotel & Casino Tulsa",
+      "url": ""
+    },
+    {
+      "name": "Boy Band Radio",
+      "date": "2026-10-15",
+      "time": "9:30 PM",
+      "venue": "Riffs at Hard Rock Hotel & Casino Tulsa",
+      "url": ""
+    },
+    {
+      "name": "The Oak Ridge Boys",
+      "date": "2026-10-15",
+      "time": "",
+      "venue": "River Spirit Casino",
+      "url": "https://www.etix.com/ticket/p/70807548/the-oak-ridge-boys-tulsa-the-cove-at-river-spirit-casino-resort"
+    },
+    {
+      "name": "Food and Hygiene Drive",
+      "date": "2026-10-15",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
+    },
+    {
+      "name": "Let’s TACO ’bout Safety Fair",
+      "date": "2026-10-15",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
+    },
+    {
+      "name": "Paw Pals - Therapy Dogs",
+      "date": "2026-10-15",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
+    },
+    {
+      "name": "October Gallery Hours",
+      "date": "2026-10-15",
+      "time": "",
+      "venue": "Living Arts of Tulsa",
+      "url": "https://livingarts.org/calendar/october-gallery-hours/"
+    },
+    {
+      "name": "Exploring Nichos: Miniature Altars",
+      "date": "2026-10-15",
+      "time": "",
+      "venue": "Living Arts of Tulsa",
+      "url": "https://livingarts.org/calendar/exploring-nichos-miniature-altars/"
+    },
+    {
+      "name": "JD Clayton",
+      "date": "2026-10-15",
+      "time": "",
+      "venue": "Mercury Lounge",
+      "url": "http://www.prekindle.com/event/27243-jd-clayton-tulsa"
+    },
+    {
+      "name": "Belmont",
+      "date": "2026-10-15",
+      "time": "",
+      "venue": "The Vanguard, 222 N Main St, Tulsa, OK",
+      "url": "https://www.thevanguardtulsa.com/shows/belmont-super-sometimes-15-oct"
+    },
+    {
+      "name": "Andrew Dismukes",
+      "date": "2026-10-15",
+      "time": "",
+      "venue": "Bricktown Comedy Club Tulsa",
+      "url": "https://bricktowntulsa-com.seatengine.com/shows/383022"
     },
     {
       "name": "Friday Happy Hour at Tulsa Eagle",
-      "date": "2026-10-09",
+      "date": "2026-10-16",
       "time": "2:00 PM - 8:00 PM",
       "venue": "Tulsa Eagle, 1338 E 3rd St",
       "url": "https://www.instagram.com/tulsaeagle/"
     },
     {
-      "name": "Bad Boys On The Block",
-      "date": "2026-10-09",
+      "name": "Escándalo - Tulsa Pride Weekend Dance Competition",
+      "date": "2026-10-16",
       "time": "9:30 PM",
       "venue": "Club Majestic, 124 N Boston Ave",
-      "url": "https://www.instagram.com/p/DeM8974lAwU/"
+      "url": "https://www.instagram.com/p/DeWZ8Qgkf8L/"
     },
     {
-      "name": "BLOOD ON THE DANCE FLOOR DISCO with DR SMILO",
-      "date": "2026-10-09",
+      "name": "TULSA EAGLE COUNTRY NIGHT WITH DJ B-BANISHED",
+      "date": "2026-10-16",
       "time": "10:00 PM",
       "venue": "1338 E 3rd St, Tulsa, OK",
-      "url": "https://www.facebook.com/events/1610733320690449/"
+      "url": "https://www.facebook.com/events/2165088927555078/"
     },
     {
       "name": "Free Drop-In Therapy Sessions",
-      "date": "2026-10-09",
+      "date": "2026-10-16",
       "time": "9:00 AM",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "url": ""
     },
     {
       "name": "OKEQ Health Clinic",
-      "date": "2026-10-09",
+      "date": "2026-10-16",
       "time": "1:00 PM",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
     },
     {
-      "name": "AFFIRMING",
-      "date": "2026-10-09",
+      "name": "AFFIRMING: Cancelled",
+      "date": "2026-10-16",
       "time": "6:00 PM",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "url": ""
     },
     {
       "name": "Positively Grateful",
-      "date": "2026-10-09",
+      "date": "2026-10-16",
       "time": "6:00 PM",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "url": ""
     },
     {
       "name": "Weekend Karaoke: Friday and Saturday Nights at Elote Cafe",
-      "date": "2026-10-09",
+      "date": "2026-10-16",
       "time": "7:00 PM",
       "venue": "Elote Cafe & Catering",
-      "url": "https://www.elotetulsa.com/events/weekend-karaoke-fridays-and-saturdays-at-elote-cafe-x7nx5-398rh"
+      "url": "https://www.elotetulsa.com/events/weekend-karaoke-fridays-and-saturdays-at-elote-cafe-x7nx5-xhbfy"
     },
     {
-      "name": "Art Crawl on 66 (Red Fork)",
-      "date": "2026-10-09",
-      "time": "Evening",
-      "venue": "Historic Red Fork District, Tulsa",
-      "url": "https://www.tulsapeople.com/about-town/route-66-centennial-events-in-tulsa-and-surrounding-areas/article_098457f8-0335-496f-ba71-29c6b1ef0f72.html"
+      "name": "Equality Center Closed",
+      "date": "2026-10-16",
+      "time": "",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": ""
     },
     {
-      "name": "The History of Concrete",
-      "date": "2026-10-09",
-      "time": "12:20 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-      "url": "https://circlecinema.easy-ware-ticketing.com/eventsByMovie/A000003240"
+      "name": "Family Nature Walk",
+      "date": "2026-10-16",
+      "time": "10:00 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": "https://www.philbrook.org/events/family-nature-walk-37365"
+    },
+    {
+      "name": "Fall Break at Fallbrook",
+      "date": "2026-10-16",
+      "time": "10:00 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": "https://www.philbrook.org/events/fall-break-at-fallbrook-37432"
+    },
+    {
+      "name": "AZ Zen Zoom - Friday - A safe place to discuss your spiritual path",
+      "date": "2026-10-16",
+      "time": "12:00 PM",
+      "venue": "",
+      "url": "https://www.meetup.com/awkwardly-zen-a-safe-place-for-your-spiritual-path-ok/events/316725242/"
     },
     {
       "name": "Route 66 Pumpkin Festival",
-      "date": "2026-10-09",
+      "date": "2026-10-16",
       "time": "4:30 PM",
       "venue": "Tulsa, OK",
       "url": ""
     },
     {
-      "name": "MIX 2026",
-      "date": "2026-10-09",
-      "time": "6:30 PM",
-      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-      "url": "https://www.philbrook.org/events/mix-2026-37180"
+      "name": "Friday Night CANASTA - HAND & FOOT",
+      "date": "2026-10-16",
+      "time": "5:30 PM",
+      "venue": "",
+      "url": "https://www.meetup.com/cards-laughs-food-fun/events/316728286/"
     },
     {
-      "name": "DJ | Tnice",
-      "date": "2026-10-09",
+      "name": "Allies Zine Training Series",
+      "date": "2026-10-16",
+      "time": "6:00 PM - 8:00 PM",
+      "venue": "Oklahoma City / Tulsa area",
+      "url": "https://www.freedomoklahoma.org/events/allies-zine-training-series"
+    },
+    {
+      "name": "The Unholy Matrimony of Tabitha Litch and Suzy Specter",
+      "date": "2026-10-16",
+      "time": "6:00 PM",
+      "venue": "Studio 308",
+      "url": "https://www.eventbrite.com/e/the-unholy-matrimony-of-tabitha-litch-and-suzy-specter-tickets-1998518298028"
+    },
+    {
+      "name": "🎸 Four Intense Bands, One Rockhard Night 🎸",
+      "date": "2026-10-16",
+      "time": "6:00 PM",
+      "venue": "",
+      "url": "https://www.meetup.com/tulsa-shenanigans-society/events/313661354/"
+    },
+    {
+      "name": "Premier Partner Event: Mediumship Gallery with Valorie Lewis",
+      "date": "2026-10-16",
+      "time": "6:00 PM",
+      "venue": "",
+      "url": "https://www.meetup.com/awkwardly-zen-a-safe-place-for-your-spiritual-path-ok/events/316754446/"
+    },
+    {
+      "name": "DJ | Ryno",
+      "date": "2026-10-16",
+      "time": "6:00 PM",
+      "venue": "Riffs at Hard Rock Hotel & Casino Tulsa",
+      "url": ""
+    },
+    {
+      "name": "Shadows Beneath the Canvas: A Philbrook Murder Mystery by Ginny Myers Sain",
+      "date": "2026-10-16",
+      "time": "6:00 PM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": "https://www.philbrook.org/events/shadows-beneath-the-canvas-a-philbrook-murder-mystery-by-ginny-myers-sain-37351"
+    },
+    {
+      "name": "DJ | Dust",
+      "date": "2026-10-16",
       "time": "7:00 PM",
       "venue": "Amp Bar at Hard Rock Hotel & Casino Tulsa",
       "url": ""
     },
     {
-      "name": "Nanyehi",
-      "date": "2026-10-09",
+      "name": "Films at the Museum: Little Shop of Horrors (1986)",
+      "date": "2026-10-16",
+      "time": "7:00 PM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
+      "url": "https://www.philbrook.org/events/films-at-the-museum-little-shop-of-horrors-1986-37498"
+    },
+    {
+      "name": "Opening Night",
+      "date": "2026-10-16",
       "time": "7:30 PM",
-      "venue": "Hard Rock Live at Hard Rock Hotel & Casino Tulsa",
-      "url": ""
+      "venue": "Shared by BBH Productions of Tulsa",
+      "url": "https://www.facebook.com/events/1603792517825056/"
     },
     {
-      "name": "Houndmouth",
-      "date": "2026-10-09",
+      "name": "Time Machine",
+      "date": "2026-10-16",
       "time": "8:00 PM",
-      "venue": "Cain's Ballroom",
-      "url": "https://www.cainsballroom.com/event/houndmouth/cains-ballroom/tulsa--oklahoma/"
-    },
-    {
-      "name": "Jason Pritchett",
-      "date": "2026-10-09",
-      "time": "8:00 PM",
-      "venue": "Track 5 at Hard Rock Hotel & Casino Tulsa",
-      "url": ""
-    },
-    {
-      "name": "Michele and Soupbone at Mooney’s Sunset Bar and Grill Grand Lake",
-      "date": "2026-10-09",
-      "time": "8:00 PM",
-      "venue": "Bryson Day Travieso",
-      "url": "https://www.facebook.com/events/2544138926106323/"
-    },
-    {
-      "name": "DJ | 2 Legit",
-      "date": "2026-10-09",
-      "time": "9:00 PM",
       "venue": "Riffs at Hard Rock Hotel & Casino Tulsa",
       "url": ""
     },
     {
-      "name": "Hans Kim",
-      "date": "2026-10-09",
-      "time": "9:45 PM",
-      "venue": "Bricktown Comedy Club Tulsa",
-      "url": "https://bricktowntulsa-com.seatengine.com/shows/353273"
+      "name": "Blanco Brown",
+      "date": "2026-10-16",
+      "time": "10:00 PM",
+      "venue": "Track 5 at Hard Rock Hotel & Casino Tulsa",
+      "url": ""
     },
     {
-      "name": "Tulsa State Fair",
-      "date": "2026-10-09",
-      "time": "All day",
-      "venue": "Expo Square, 4145 E 21st St, Tulsa, OK 74114",
-      "url": "https://www.tulsastatefair.com/"
+      "name": "Members-Only Night at Discovery Lab",
+      "date": "2026-10-16",
+      "time": "",
+      "venue": "Discovery Lab",
+      "url": "https://discoverylab.org/events/event/5696619/date/2026-10-16"
     },
     {
-      "name": "ROCK THE BLOCK",
-      "date": "2026-10-09",
+      "name": "Staind",
+      "date": "2026-10-16",
       "time": "",
       "venue": "BOK Center",
-      "url": "https://www.bokcenter.com/events/detail/rocktheblock-ella26"
+      "url": "https://www.bokcenter.com/events/detail/staind-26"
     },
     {
-      "name": "ELLA LANGLEY",
-      "date": "2026-10-09",
+      "name": "Woody Guthrie Prize 2026",
+      "date": "2026-10-16",
       "time": "",
-      "venue": "BOK Center",
-      "url": "https://www.bokcenter.com/events/detail/ella-langley-26"
+      "venue": "Cain's Ballroom",
+      "url": "https://www.cainsballroom.com/event/woody-guthrie-prize-2026/cains-ballroom/tulsa--oklahoma/"
     },
     {
-      "name": "XFN 413",
-      "date": "2026-10-09",
+      "name": "Travis Tritt",
+      "date": "2026-10-16",
       "time": "",
       "venue": "River Spirit Casino",
-      "url": "https://www.etix.com/ticket/p/66943286/xfn-413-tulsa-the-cove-at-river-spirit-casino-resort"
+      "url": "https://www.etix.com/ticket/p/63332431/travis-tritt-tulsa-the-cove-at-river-spirit-casino-resort"
     },
     {
-      "name": "October OK So: THRILLER",
-      "date": "2026-10-09",
+      "name": "Food and Hygiene Drive",
+      "date": "2026-10-16",
+      "time": "",
+      "venue": "Tulsa Community College",
+      "url": "https://calendar.tulsacc.edu/"
+    },
+    {
+      "name": "OK So Tulsa GREATEST HITS",
+      "date": "2026-10-16",
       "time": "",
       "venue": "Living Arts of Tulsa",
-      "url": "https://livingarts.org/calendar/october-ok-so-thriller/"
+      "url": "https://livingarts.org/calendar/ok-so-tulsa-greatest-hits/"
     },
     {
-      "name": "Bob Dylan Center Presents: An Evening with Nellie McKay",
-      "date": "2026-10-09",
+      "name": "The Free Samples",
+      "date": "2026-10-16",
       "time": "",
       "venue": "LowDown Tulsa",
       "url": "https://lowdowntulsa.com/shows"
     },
     {
-      "name": "Casper McWade Birthday Double Headline!",
-      "date": "2026-10-09",
+      "name": "The Poppa Foster Goodtime Band",
+      "date": "2026-10-16",
       "time": "",
       "venue": "Mercury Lounge",
-      "url": "http://www.prekindle.com/event/62286-casper-mcwade-birthday-double-headline-tulsa"
+      "url": "http://www.prekindle.com/event/12124-the-poppa-foster-goodtime-band-tulsa"
     },
     {
-      "name": "Heroes and Villains Halloween Party",
-      "date": "2026-10-09",
-      "time": "",
-      "venue": "Shared by Pup Hoss - Haus of Hoss",
-      "url": "https://www.facebook.com/events/3281097468739269/"
-    },
-    {
-      "name": "King Iso - Ghetto Psycho Tour",
-      "date": "2026-10-09",
+      "name": "HOARSEMAN | Alive Again",
+      "date": "2026-10-16",
       "time": "",
       "venue": "The Vanguard, 222 N Main St, Tulsa, OK",
-      "url": "https://www.thevanguardtulsa.com/shows/king-iso-ghetto-psycho-tour-09-oct"
+      "url": "https://www.thevanguardtulsa.com/shows/hoarseman-16-oct"
     },
     {
-      "name": "Drag Brunch : oct. 10th - scream queens (halloween)",
-      "date": "2026-10-10",
-      "time": "10:00 AM",
-      "venue": "Elote Cafe & Catering, 514 S Boston Ave",
-      "url": "https://www.elotetulsa.com/events/hsab4zd9y2ab6zb-25nfx-f4tbb-a9yxz-5pk5x-4na56-t4d69-t8m43-k9s9t-9crd9-n35zx-pc8gs-lmgfs-6bxya-hnsaa-522rl-a3l5w-3ezh6-f77jp"
-    },
-    {
-      "name": "Scream Queens Drag Brunch",
-      "date": "2026-10-10",
-      "time": "11:00 AM - 1:30 PM",
-      "venue": "Elote Cafe, 514 S Boston Ave",
-      "url": "https://www.instagram.com/p/Dd889t4Efdn/"
-    },
-    {
-      "name": "Kowboy Hugs and Drag Queen Kisses Benefit Show",
-      "date": "2026-10-10",
-      "time": "6:00 PM",
-      "venue": "Shared by Stacy Gorley",
-      "url": "https://www.facebook.com/events/27418475814492956/"
-    },
-    {
-      "name": "GPRA OCT SHOW",
-      "date": "2026-10-10",
-      "time": "7:00 PM",
+      "name": "TULSA EAGLE BINGO WITH BRIAN",
+      "date": "2026-10-17",
+      "time": "3:00 PM",
       "venue": "1338 E 3rd St, Tulsa, OK",
-      "url": "https://www.facebook.com/events/1395278825450713/"
+      "url": "https://www.facebook.com/events/1095616609723274/"
     },
     {
-      "name": "WAR OF THE WORLDS TECHNO PARTY WITH DJ HAZE",
-      "date": "2026-10-10",
+      "name": "Scary Ol' B*tches",
+      "date": "2026-10-17",
+      "time": "9:30 PM",
+      "venue": "Club Majestic, 124 N Boston Ave",
+      "url": "https://www.instagram.com/p/DeWaKDMxMyz/"
+    },
+    {
+      "name": "TULSA EAGLE TIME WARP - WITH DJ MARKZ",
+      "date": "2026-10-17",
       "time": "10:00 PM",
       "venue": "1338 E 3rd St, Tulsa, OK",
-      "url": "https://www.facebook.com/events/4371234119793548/"
+      "url": "https://www.facebook.com/events/1633558341663802/"
     },
     {
-      "name": "Drag Brunch Presented by Elote",
-      "date": "2026-10-10",
+      "name": "ACT Pride Table",
+      "date": "2026-10-17",
+      "time": "9:00 AM",
+      "venue": "",
+      "url": "https://www.meetup.com/act-ok/events/316412357/"
+    },
+    {
+      "name": "Tulsa Pride 2026",
+      "date": "2026-10-17",
+      "time": "10:00 AM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": "https://l.facebook.com/l.php?u=https%3A%2F%2Ftulsapride.org%2Fsponsorships%2F%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExVXREZ25CYzdoZzBkbTdCT3NydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR6EKOKV91VFu99ris019Y8304FyQEMRdHZW0HTDHuTadCAZ1wU3g5xkEWhUQQ_aem_ijqPDBdQUaKqFZ0SjqYdaw&h=AUDwJOVhLBpXWaJPNRfmtGmjzYV4ABNj7iDgyrDLPgQUAnENeXmmgwouYXN6Vl8hHa8TGs5Faf8mfkAq9pFoPj_zjybkjePMBoE6BVBuo3FjdT_4cq97J2ss95vGs-QOFOm-Ci152eXZn6kK&__tn__=q&c[0]=AUCIxZhdn83OlvuPdcPoODXNGYMQOPBOCw8iBXJrEC5eQ4chJY1vfjkxkZ3xICPhj8eN3_8bCl5vnXRP1JLPeBJjbIK05IR28-R_jiQpS7J4OG5NEpXj8cShMsXeyc8a5yod9x2IjHF422SBONMzusLkhu6SIaSM-Fg"
+    },
+    {
+      "name": "OKEQ Tulsa TTRPGs",
+      "date": "2026-10-17",
+      "time": "12:00 PM",
+      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+      "url": "https://okeq.orgmailto:okeqtulsattrpg@gmail.com"
+    },
+    {
+      "name": "Walking in the pride parade",
+      "date": "2026-10-17",
+      "time": "3:00 PM",
+      "venue": "Boston Avenue United Methodist Church",
+      "url": "https://www.facebook.com/events/1087922326949231/"
+    },
+    {
+      "name": "Tulsa Pride Festival & Parade",
+      "date": "2026-10-17",
       "time": "",
-      "venue": "Bryson Day Travieso",
-      "url": "https://www.facebook.com/events/1341615200775056/"
+      "venue": "E 6th St & S Frankfort Ave, downtown Tulsa",
+      "url": "https://tulsapride.org/"
     },
     {
-      "name": "Rainbow Harvest",
-      "date": "2026-10-10",
-      "time": "1:00 PM",
+      "name": "Equality Center Closed",
+      "date": "2026-10-17",
+      "time": "",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "https://forms.gle/WXMVSfEJpav4Lg4p8"
+      "url": ""
     },
     {
-      "name": "Happy Hour!",
-      "date": "2026-10-10",
-      "time": "4:00 PM",
-      "venue": "302 South Frankfort Avenue, Tulsa, OK",
-      "url": "https://www.facebook.com/events/880316451163299/"
+      "name": "CLASSICS: VERDI REQUIEM",
+      "date": "2026-10-17",
+      "time": "",
+      "venue": "Tulsa Symphony",
+      "url": "https://www.tulsasymphony.org/calendar/classics-2"
     },
     {
-      "name": "Best Little Rocky Whorehouse Picture Show",
-      "date": "2026-10-10",
-      "time": "7:30 PM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "https://web.charityengine.net/blrwps"
+      "name": "Brush Creek Bazaar",
+      "date": "2026-10-17",
+      "time": "9:00 AM",
+      "venue": "",
+      "url": "https://www.eventbrite.com/e/brush-creek-bazaar-tickets-1991943937940"
     },
     {
-      "name": "Second Saturday Half Day Practice",
-      "date": "2026-10-10",
-      "time": "4:00 AM",
-      "venue": "Shambhala Meditation Center of Tulsa",
-      "url": "https://tulsa.shambhala.org/event/867640-second-saturday-half-day-practice"
+      "name": "Art at the Source with Connie Segall",
+      "date": "2026-10-17",
+      "time": "9:00 AM",
+      "venue": "Shared by Pamela Watson",
+      "url": "https://www.facebook.com/events/1032636729755814/"
     },
     {
       "name": "Fall Mindful Meditation with AT EASE Meditation",
-      "date": "2026-10-10",
+      "date": "2026-10-17",
       "time": "10:00 AM",
       "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-      "url": "https://www.philbrook.org/events/fall-mindful-meditation-with-at-ease-meditation-37263"
-    },
-    {
-      "name": "Fallbrook Saturday",
-      "date": "2026-10-10",
-      "time": "10:00 AM",
-      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-      "url": "https://www.philbrook.org/events/fallbrook-saturday-37480"
-    },
-    {
-      "name": "Hominy Indigenous Heritage Day 4th Annual Meat Pie Contest",
-      "date": "2026-10-10",
-      "time": "10:00 AM",
-      "venue": "Shared by Hominy Heritage Association",
-      "url": "https://www.facebook.com/events/1029804959503255/"
+      "url": "https://www.philbrook.org/events/fall-mindful-meditation-with-at-ease-meditation-37264"
     },
     {
       "name": "Shut Up & Write!® at Foolish Things",
-      "date": "2026-10-10",
+      "date": "2026-10-17",
       "time": "10:30 AM",
       "venue": "Foolish Things Coffee",
-      "url": "https://www.meetup.com/shutupandwritetulsa/events/316637464/"
+      "url": "https://www.meetup.com/shutupandwritetulsa/events/316736515/"
     },
     {
-      "name": "Campus Tulsa Presents \"What's Next?!\"",
-      "date": "2026-10-10",
-      "time": "11:00 AM",
-      "venue": "Guthrie Green",
-      "url": "https://events.tulsa.okstate.edu/event/campus-tulsa-presents-whats-next"
-    },
-    {
-      "name": "Leadership for an Age of Higher Consciousness",
-      "date": "2026-10-10",
-      "time": "11:00 AM",
-      "venue": "Shared by Brittany Bailey",
-      "url": "https://www.facebook.com/events/913322431612236/"
-    },
-    {
-      "name": "2nd Saturday Silent: Ella Cinders",
-      "date": "2026-10-10",
-      "time": "11:00 AM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-      "url": "https://circlecinema.easy-ware-ticketing.com/events"
-    },
-    {
-      "name": "The History of Concrete",
-      "date": "2026-10-10",
-      "time": "11:30 AM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-      "url": "https://circlecinema.easy-ware-ticketing.com/eventsByMovie/A000003240"
+      "name": "Tulsa Hills Michaels Boo Bash",
+      "date": "2026-10-17",
+      "time": "12:00 PM",
+      "venue": "Shared by Michaels Craft Store- Tulsa Hills",
+      "url": "https://www.facebook.com/events/1613895510370309/"
     },
     {
       "name": "NEVERMORE SEASON: Punkin Family Comedy Show",
-      "date": "2026-10-10",
+      "date": "2026-10-17",
       "time": "1:00 PM",
       "venue": "",
-      "url": "https://www.eventbrite.com/e/nevermore-season-punkin-family-comedy-show-tickets-1999140777882"
+      "url": "https://www.eventbrite.com/e/nevermore-season-punkin-family-comedy-show-tickets-1999141090818"
     },
     {
-      "name": "Docent-Led Tour: Collection Highlights",
-      "date": "2026-10-10",
-      "time": "2:00 PM",
-      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-      "url": "https://www.philbrook.org/events/docent-led-tour-collection-highlights-37376"
-    },
-    {
-      "name": "Second Saturday Coffee Cupping at Vast",
-      "date": "2026-10-10",
+      "name": "TFA TOURS | BROTHELS & BOOTLEGGERS: A Blue Dome District Tour",
+      "date": "2026-10-17",
       "time": "4:30 PM",
       "venue": "Tulsa, OK",
       "url": ""
     },
     {
-      "name": "Roughneck Roller Derby October 10th Double Header",
-      "date": "2026-10-10",
-      "time": "5:00 PM",
-      "venue": "Rhema Ninowski Recreation Center (NRC)",
-      "url": "https://www.eventbrite.com/e/roughneck-roller-derby-october-10th-double-header-tickets-1984589410350"
+      "name": "DJ | Ryno",
+      "date": "2026-10-17",
+      "time": "6:00 PM",
+      "venue": "Riffs at Hard Rock Hotel & Casino Tulsa",
+      "url": ""
     },
     {
-      "name": "Canvas & Couture 'Fire Frost & Fashion' Fashion Show",
-      "date": "2026-10-10",
-      "time": "5:00 PM",
-      "venue": "Atlas Lifestyle Building",
-      "url": "https://www.eventbrite.com/e/canvas-couture-fire-frost-fashion-fashion-show-tickets-1994579250230"
-    },
-    {
-      "name": "Blackwood CultureFest 2026",
-      "date": "2026-10-10",
-      "time": "5:30 PM",
-      "venue": "907 S Detroit Ave",
-      "url": "https://www.eventbrite.com/e/blackwood-culturefest-2026-tickets-2002895749102"
-    },
-    {
-      "name": "Samuel J Comroe",
-      "date": "2026-10-10",
-      "time": "6:30 PM",
+      "name": "Chris Kattan",
+      "date": "2026-10-17",
+      "time": "6:00 PM",
       "venue": "Bricktown Comedy Club Tulsa",
-      "url": "https://bricktowntulsa-com.seatengine.com/shows/368440"
+      "url": "https://bricktowntulsa-com.seatengine.com/shows/389821"
     },
     {
-      "name": "Psychic Slumber Party (sliding scale paid event)",
-      "date": "2026-10-10",
+      "name": "Beats On 66 Fright Night",
+      "date": "2026-10-17",
+      "time": "6:00 PM",
+      "venue": "Shared by Brandon Mull",
+      "url": "https://www.facebook.com/events/2082044662684458/"
+    },
+    {
+      "name": "DWA (Drinking With Atheists)",
+      "date": "2026-10-17",
       "time": "7:00 PM",
       "venue": "",
-      "url": "https://www.meetup.com/awkwardly-zen-a-safe-place-for-your-spiritual-path-ok/events/316799441/"
+      "url": "https://www.meetup.com/act-ok/events/316412287/"
     },
     {
-      "name": "DJ | Tnice",
-      "date": "2026-10-10",
+      "name": "DJ | Dust",
+      "date": "2026-10-17",
       "time": "7:00 PM",
       "venue": "Amp Bar at Hard Rock Hotel & Casino Tulsa",
       "url": ""
     },
     {
-      "name": "Riverbend with special guest Q&A",
-      "date": "2026-10-10",
-      "time": "7:00 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-      "url": "https://circlecinema.easy-ware-ticketing.com/events"
-    },
-    {
-      "name": "The 66 Kicks Improv Comedy Show: HALLOWEEN SPECIAL!",
-      "date": "2026-10-10",
-      "time": "7:30 PM",
-      "venue": "",
-      "url": "https://www.eventbrite.com/e/the-66-kicks-improv-comedy-show-halloween-special-tickets-1999145119869"
-    },
-    {
-      "name": "Nanyehi",
-      "date": "2026-10-10",
-      "time": "7:30 PM",
+      "name": "Lil' Kim",
+      "date": "2026-10-17",
+      "time": "8:00 PM",
       "venue": "Hard Rock Live at Hard Rock Hotel & Casino Tulsa",
       "url": ""
     },
     {
-      "name": "Saxophonist Joyce Spencer Live at LowDown Tulsa!",
-      "date": "2026-10-10",
-      "time": "8:00 PM",
-      "venue": "Shared by John Taylor",
-      "url": "https://www.facebook.com/events/1065363145872863/"
-    },
-    {
-      "name": "Charlie McCabe",
-      "date": "2026-10-10",
+      "name": "Truck Stop Gamblers",
+      "date": "2026-10-17",
       "time": "8:00 PM",
       "venue": "Track 5 at Hard Rock Hotel & Casino Tulsa",
       "url": ""
     },
     {
-      "name": "Zodiac",
-      "date": "2026-10-10",
-      "time": "8:00 PM",
-      "venue": "Riffs at Hard Rock Hotel & Casino Tulsa",
-      "url": ""
-    },
-    {
-      "name": "DJ | 2 Legit",
-      "date": "2026-10-10",
-      "time": "9:00 PM",
-      "venue": "Riffs at Hard Rock Hotel & Casino Tulsa",
-      "url": ""
-    },
-    {
-      "name": "Tulsa State Fair",
-      "date": "2026-10-10",
-      "time": "All day",
-      "venue": "Expo Square, 4145 E 21st St, Tulsa, OK 74114",
-      "url": "https://www.tulsastatefair.com/"
-    },
-    {
-      "name": "CECE WINANS",
-      "date": "2026-10-10",
+      "name": "BLACK MOTH ART MARKET 2026",
+      "date": "2026-10-17",
       "time": "",
-      "venue": "BOK Center",
-      "url": "https://www.bokcenter.com/events/detail/cece-winans-26"
+      "venue": "1142 S. Harvard Ave, Tulsa, OK, United States, Oklahoma 74112",
+      "url": "https://allevents.in/tulsa/black-moth-art-market-2026/200029976065919"
     },
     {
-      "name": "Starbomb featuring DJ Commander Meouch",
-      "date": "2026-10-10",
+      "name": "Zoo Nights",
+      "date": "2026-10-17",
       "time": "",
-      "venue": "Cain's Ballroom",
-      "url": "https://www.cainsballroom.com/event/starbomb-featuring-dj-commander-meouch/cains-ballroom/tulsa--oklahoma/"
+      "venue": "Tulsa Zoo",
+      "url": "https://www.tulsazoo.org/zoo-nights"
     },
     {
       "name": "Food and Hygiene Drive",
-      "date": "2026-10-10",
+      "date": "2026-10-17",
       "time": "",
       "venue": "Tulsa Community College",
       "url": "https://calendar.tulsacc.edu/"
     },
     {
-      "name": "I Can’t Sew a Book Buncher with Center for Creativity",
-      "date": "2026-10-10",
+      "name": "Dean DeMerritt Jazz Tribe (6:30 p.m.)",
+      "date": "2026-10-17",
       "time": "",
-      "venue": "Tulsa Community College",
-      "url": "https://calendar.tulsacc.edu/"
+      "venue": "LowDown Tulsa",
+      "url": "https://lowdowntulsa.com/shows"
     },
     {
-      "name": "I Can’t Weave with 108 Contemporary",
-      "date": "2026-10-10",
-      "time": "",
-      "venue": "Tulsa Community College",
-      "url": "https://calendar.tulsacc.edu/"
-    },
-    {
-      "name": "Skeleton Workshop: Skeleton Template Version",
-      "date": "2026-10-10",
-      "time": "",
-      "venue": "Living Arts of Tulsa",
-      "url": "https://livingarts.org/calendar/skeleton-workshop-skeleton-template-version/"
-    },
-    {
-      "name": "Jared Hard Album Release Show",
-      "date": "2026-10-10",
+      "name": "Tristan Roberson",
+      "date": "2026-10-17",
       "time": "",
       "venue": "Mercury Lounge",
-      "url": "http://www.prekindle.com/event/38278-jared-hard-album-release-show-tulsa"
+      "url": "http://www.prekindle.com/event/87865-tristan-roberson-tulsa"
     },
     {
-      "name": "Cherokee Art Market",
-      "date": "2026-10-10",
-      "time": "",
-      "venue": "Hard Rock Hotel & Casino Tulsa",
-      "url": "https://www.facebook.com/events/1228263469235912/"
-    },
-    {
-      "name": "United We Dance: Festival Energy. All Night. (18+)",
-      "date": "2026-10-10",
+      "name": "Cody Hibbard",
+      "date": "2026-10-17",
       "time": "",
       "venue": "The Vanguard, 222 N Main St, Tulsa, OK",
-      "url": "https://www.thevanguardtulsa.com/shows/united-we-dance-festival-energy-all-night-18-10-oct"
+      "url": "https://www.thevanguardtulsa.com/shows/cody-hibbard-17-oct"
     },
     {
-      "name": "The Rocky Horror Picture Show",
-      "date": "2026-10-11",
-      "time": "9:30 PM - 11:00 PM",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "url": "https://www.instagram.com/p/DeFkX5HEYp5/"
+      "name": "Drag Bingo: BOO BITCHES",
+      "date": "2026-10-18",
+      "time": "3:00 PM",
+      "venue": "Bricktown Comedy Club Tulsa",
+      "url": "https://bricktowntulsa-com.seatengine.com/shows/388589"
     },
     {
-      "name": "The Sunday Showdown! Open Talent Night",
-      "date": "2026-10-11",
-      "time": "",
+      "name": "OKLAHOMA LEATHER ASSOCIATION COOKOUT",
+      "date": "2026-10-18",
+      "time": "3:00 PM",
+      "venue": "1338 E 3rd St, Tulsa, OK",
+      "url": "https://www.facebook.com/events/1692527162345987/"
+    },
+    {
+      "name": "SUNDAY SERENADE KARAOKE WITH KJ THOMAS",
+      "date": "2026-10-18",
+      "time": "6:00 PM",
+      "venue": "1338 E 3rd St, Tulsa, OK",
+      "url": "https://www.facebook.com/events/4514518298822272/"
+    },
+    {
+      "name": "La La Land",
+      "date": "2026-10-18",
+      "time": "9:45 PM",
       "venue": "Club Majestic, 124 N Boston Ave",
-      "url": "https://qlist.app/events/Tulsa/The-Sunday-Showdown-Open-Talent-Night/44248"
+      "url": "https://www.instagram.com/p/Ddsv3k2Efmd/"
+    },
+    {
+      "name": "Sunday Showcase",
+      "date": "2026-10-18",
+      "time": "11:00 PM",
+      "venue": "Club Majestic",
+      "url": "https://www.instagram.com/p/DeWa1sUEUWX/"
     },
     {
       "name": "All Souls Unitarian Sunday Services",
-      "date": "2026-10-11",
+      "date": "2026-10-18",
       "time": "10:00 AM - 11:15 AM",
       "venue": "All Souls Unitarian Church, 2952 S Peoria Ave",
       "url": "https://allsoulschurch.org"
     },
     {
       "name": "Karaoke Brunch!",
-      "date": "2026-10-11",
+      "date": "2026-10-18",
       "time": "11:00 AM",
       "venue": "302 South Frankfort Avenue, Tulsa, OK",
       "url": "https://www.facebook.com/events/897060935988926/"
     },
     {
-      "name": "Jim Henson’s Labyrinth: In Concert 40th Anniversary",
-      "date": "2026-10-11",
+      "name": "Black Queer Tulsa Monthly Brunch",
+      "date": "2026-10-18",
       "time": "",
-      "venue": "Tulsa Theater",
-      "url": "https://tulsatheater.com/event/jim-hensons-labyrinth-in-concert-40th-anniversary/tulsa-theater/"
+      "venue": "Various locations, Tulsa",
+      "url": "https://www.blackqueertulsa.org/events"
     },
     {
-      "name": "Fall Films at the Museum: You've Got Mail (1998)",
-      "date": "2026-10-11",
-      "time": "12:00 PM",
-      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-      "url": "https://www.philbrook.org/events/fall-films-at-the-museum-you-ve-got-mail-1998-37274"
+      "name": "TRAIL TUNES",
+      "date": "2026-10-18",
+      "time": "",
+      "venue": "Tulsa Symphony",
+      "url": "https://www.tulsasymphony.org/calendar/trail-tunes"
     },
     {
-      "name": "Fallbrook Sunday",
-      "date": "2026-10-11",
-      "time": "12:00 PM",
-      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-      "url": "https://www.philbrook.org/events/fallbrook-sunday-37483"
+      "name": "Fitness on the Green - Zumba with Ariane",
+      "date": "2026-10-18",
+      "time": "10:30 AM",
+      "venue": "Guthrie Green",
+      "url": ""
     },
     {
-      "name": "My Brother's Killer- Documentary Screening and Discussion",
-      "date": "2026-10-11",
-      "time": "12:15 PM",
-      "venue": "Circle Cinema",
-      "url": "https://www.eventbrite.com/e/my-brothers-killer-documentary-screening-and-discussion-tickets-2001690440993"
+      "name": "Tulsa Speed Dating for Singles Age 50s/60s â¥ Oklahoma at American Solera",
+      "date": "2026-10-18",
+      "time": "1:00 PM",
+      "venue": "",
+      "url": "https://www.eventbrite.com/e/tulsa-speed-dating-for-singles-age-50s60s-oklahoma-at-american-solera-tickets-1999039798851"
     },
     {
-      "name": "Bowling & Socializing @ AMF Sheridan Lanes",
-      "date": "2026-10-11",
-      "time": "2:00 PM",
-      "venue": "AMF Sheridan Lanes",
-      "url": "https://www.meetup.com/connective_gatherings_tulsa/events/316628749/"
-    },
-    {
-      "name": "The History of Concrete",
-      "date": "2026-10-11",
-      "time": "2:40 PM",
+      "name": "TUFFest Block A",
+      "date": "2026-10-18",
+      "time": "1:00 PM",
       "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-      "url": "https://circlecinema.easy-ware-ticketing.com/eventsByMovie/A000003240"
+      "url": "https://circlecinema.easy-ware-ticketing.com/events"
     },
     {
-      "name": "Conscious Conversations (second Sunday monthly)",
-      "date": "2026-10-11",
-      "time": "3:00 PM",
-      "venue": "Shared by Open Eye Yoga and Healing Space",
-      "url": "https://www.facebook.com/events/1982366042625469/"
+      "name": "TUFFest Double Feature",
+      "date": "2026-10-18",
+      "time": "1:00 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "url": "https://circlecinema.easy-ware-ticketing.com/events"
+    },
+    {
+      "name": "ACT Book Club",
+      "date": "2026-10-18",
+      "time": "1:15 PM",
+      "venue": "",
+      "url": "https://www.meetup.com/act-ok/events/316412324/"
     },
     {
       "name": "Route 66 Pumpkin Festival",
-      "date": "2026-10-11",
+      "date": "2026-10-18",
       "time": "4:30 PM",
       "venue": "Tulsa, OK",
       "url": ""
     },
     {
-      "name": "**New Date** 🎠 Rides, Games & Cows",
-      "date": "2026-10-11",
-      "time": "5:30 PM",
-      "venue": "",
-      "url": "https://www.meetup.com/tulsa-shenanigans-society/events/315684558/"
+      "name": "Saxual Healing - Live Music",
+      "date": "2026-10-18",
+      "time": "6:30 PM",
+      "venue": "Studio 308",
+      "url": "https://www.eventbrite.com/e/saxual-healing-live-music-tickets-2003186511781"
     },
     {
-      "name": "Yoga Nidra",
-      "date": "2026-10-11",
-      "time": "5:45 PM - 6:45 PM",
-      "venue": "yogaQuest, Tulsa",
-      "url": "https://www.tulsayogaquest.com/events/yoga-nidra-1-a9fy8"
+      "name": "Exitwounds & Nailed Shut",
+      "date": "2026-10-18",
+      "time": "7:00 PM",
+      "venue": "Shared by Daniel Anthony Castleberry",
+      "url": "https://www.facebook.com/events/1527569021832664/"
     },
     {
-      "name": "Comedy Death Match",
-      "date": "2026-10-11",
-      "time": "6:00 PM",
-      "venue": "Bricktown Comedy Club Tulsa",
-      "url": "https://bricktowntulsa-com.seatengine.com/shows/385365"
+      "name": "Strawberry Colored Glasses",
+      "date": "2026-10-18",
+      "time": "7:30 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "url": "https://circlecinema.easy-ware-ticketing.com/events"
     },
     {
-      "name": "Tulsa State Fair",
-      "date": "2026-10-11",
-      "time": "All day",
-      "venue": "Expo Square, 4145 E 21st St, Tulsa, OK 74114",
-      "url": "https://www.tulsastatefair.com/"
+      "name": "Members-Only Hours",
+      "date": "2026-10-18",
+      "time": "",
+      "venue": "Discovery Lab",
+      "url": "https://discoverylab.org/events/event/5696594"
     },
     {
       "name": "Food and Hygiene Drive",
-      "date": "2026-10-11",
+      "date": "2026-10-18",
       "time": "",
       "venue": "Tulsa Community College",
       "url": "https://calendar.tulsacc.edu/"
     },
     {
-      "name": "LIVE`Stream@!~ USKA Karaoke Cup Qualifier, Tulsa 2026 - Livestream",
-      "date": "2026-10-11",
+      "name": "Peter Case",
+      "date": "2026-10-18",
       "time": "",
-      "venue": "Messages",
-      "url": "https://www.facebook.com/events/1468074041845640/"
-    },
-    {
-      "name": "Joe Jordan - The Heart Sessions Tour",
-      "date": "2026-10-11",
-      "time": "",
-      "venue": "The Vanguard, 222 N Main St, Tulsa, OK",
-      "url": "https://www.thevanguardtulsa.com/shows/joe-jordan-the-heart-sessions-tour-11-oct"
+      "venue": "LowDown Tulsa",
+      "url": "https://lowdowntulsa.com/shows"
     }
   ]
 }
