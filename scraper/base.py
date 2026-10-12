@@ -133,9 +133,11 @@ class BaseScraper:
                     continue
                 # "Events"/"events": SeatEngine (and some venue platforms) render
                 # a schema.org Place whose event list hangs off a non-standard
-                # "Events" key. Non-Event dicts pulled up here are filtered out
-                # below by the @type check, so this is safe and additive.
-                for key in ("mainEntity", "itemListElement", "Events", "events"):
+                # "Events" key. "hasPart": museum/cultural CollectionPage markup
+                # (Philbrook: 10 real Events hung off hasPart, 2026-10-12) nests
+                # its event list there instead. Non-Event dicts pulled up here
+                # are filtered out below by the @type check, so this is safe and additive.
+                for key in ("mainEntity", "itemListElement", "Events", "events", "hasPart"):
                     nested = node.get(key)
                     if isinstance(nested, list):
                         items.extend(n for n in nested if isinstance(n, dict))

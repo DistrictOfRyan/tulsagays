@@ -34,7 +34,6 @@ Sources covered:
 
 import sys
 import os
-import json
 import logging
 import time
 from typing import List, Dict, Optional, Tuple
@@ -43,7 +42,6 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from scraper.base import BaseScraper
 from scraper import dynamic_sources as _dyn
 from scraper.relevance import compile_lgbtq_keywords
-from scraper.tz_guard import iso_to_local
 
 logger = logging.getLogger(__name__)
 
@@ -106,7 +104,10 @@ SITES: List[Tuple[str, str, str, bool]] = [
     ("https://www.gatheringplace.org/parkcalendar/", "Gathering Place", "museum", False),
     ("https://www.tulsagardencenter.com/events/", "Tulsa Garden Center", "museum", False),
     ("https://www.okaquarium.org/events/", "Oklahoma Aquarium", "museum", False),
-    ("https://discoverylab.org/events/", "Discovery Lab", "museum", False),
+    # Discovery Lab RETIRED 2026-10-05: /events/ has no JSON-LD, no calendar
+    # widget, and no dated markup at all (only "Every Monday" style recurring
+    # programming blurbs) -- auto-repair correctly could not re-derive a
+    # working extraction because there is nothing structured to extract.
     ("https://101archer.com/events/", "101 Archer", "museum", False),
 
     # PERFORMING ARTS
@@ -155,7 +156,8 @@ SITES: List[Tuple[str, str, str, bool]] = [
     # NEIGHBORHOOD / NICHE
     ("https://www.brooksidetulsa.com/events/", "Brookside Tulsa", "neighborhood", False),
     ("https://www.cherrystreetfarmersmarket.com/events/", "Cherry Street Farmers Market", "neighborhood", False),
-    ("https://www.tulsafarmersmarket.org/events/", "Tulsa Farmers' Market", "neighborhood", False),
+    # 2026-10-05: /events/ 404s; Squarespace moved the collection to /upcoming-events
+    ("https://www.tulsafarmersmarket.org/upcoming-events", "Tulsa Farmers' Market", "neighborhood", False),
 ]
 
 # Merge in calendar sites discovered + promoted by the weekly source-growth
@@ -211,48 +213,20 @@ class ExtendedCalendarsScraper(BaseScraper):
         return events
 
     def _extract_json_ld(self, soup, site_name: str) -> List[Dict]:
-        """Extract Event items from JSON-LD blocks."""
-        events = []
-        for script in soup.find_all("script", type="application/ld+json"):
-            try:
-                raw = script.string
-                if not raw:
-                    continue
-                data = json.loads(raw)
-                items = data if isinstance(data, list) else [data]
-                for item in items:
-                    if not isinstance(item, dict):
-                        continue
-                    # Handle @graph wrapper
-                    if item.get("@type") == "WebPage" and "@graph" in item:
-                        items = item["@graph"]
-                        continue
-                    if item.get("@type") not in ("Event", "SocialEvent", "MusicEvent", "DanceEvent",
-                                                   "ComedyEvent", "TheaterEvent", "ScreeningEvent",
-                                                   "ExhibitionEvent", "Festival", "SportsEvent"):
-                        continue
-                    name = item.get("name", "")
-                    if not name:
-                        continue
-                    start = item.get("startDate", "")
-                    date_str, time_str = iso_to_local(str(start or ""))
-                    location = item.get("location", {})
-                    if isinstance(location, list):  # schema.org allows a list of Places (2026-09-15)
-                        location = next((l for l in location if isinstance(l, (dict, str)) and l), {})
-                    venue = site_name
-                    if isinstance(location, dict):
-                        venue = location.get("name", site_name) or site_name
-                    elif isinstance(location, str):
-                        venue = location or site_name
-                    description = str(item.get("description", ""))[:500]
-                    event_url = item.get("url", "")
-                    events.append(self.make_event(
-                        name=name, date=date_str, time=time_str,
-                        venue=venue, description=description, url=event_url, priority=2
-                    ))
-            except Exception:
-                continue
-        return events
+        """Extract Event items from JSON-LD blocks.
+
+        Delegates to the shared BaseScraper helper (2026-10-12). This method used
+        to carry its own duplicate parser that never got the shared method's
+        fixes: its "@graph" unwrap only fired when the wrapping node's own
+        @type=="WebPage" (misses the common Yoast shape where @graph sits beside
+        @context with no @type at all, e.g. TulsaKids), and it never looked
+        inside mainEntity/hasPart at all, so Hard Rock Live Tulsa (43 real
+        MusicEvents nested under a WebPage's mainEntity) and Philbrook (10 real
+        Events nested under a CollectionPage's hasPart) silently returned 0
+        events despite valid structured data on the page. Diagnosed live
+        2026-10-12 per project tulsagays-extended-calendars-extraction-bug.
+        """
+        return self._extract_json_ld_from_soup(soup, venue_default=site_name, priority=2)
 
     def _extract_localist(self, soup, site_name: str, base_url: str) -> List[Dict]:
         """Extract events from Localist platform (used by Tulsa Library, UTulsa, OSU-Tulsa)."""
