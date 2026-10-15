@@ -443,3 +443,20 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 - Tulsa Eagle: already confirmed in the directory (Instagram link), no update needed.
 - Reddit r/tulsa (both query variants): no indexed results this scan, same pattern as every prior scan.
 - Net result: 3 new businesses added (In the Raw, et al., Manila Ice).
+
+## [2026-10-15] Wildflower Salon & Boutique
+- Category: services (hair salon / boutique)
+- URL: https://www.yelp.com/biz/wildflower-salon-and-boutique-tulsa
+- Source: WebSearch ("queer-owned business Tulsa 2026") surfaced it via Yelp's "Top 10 LGBTQ Owned Businesses in Tulsa, OK" category listing, cross-verified for address/phone/established-date via MapQuest, Birdeye, and a staffing listing (helpwanted.com).
+- Notes: Hair salon and boutique at 8278 E 41st St, East Tulsa, open since 2021 (opened shortly after the COVID lockdown), specializing in blondes, lived-in color, and texture. Phone (918) 200-7748. Sourcing tier matches prior single-source Yelp-category additions (Spiritual Rose, 2026-10-08): the business appears in Yelp's self-reported LGBTQ-owned-business category rather than carrying its own explicit public statement -- Yelp itself returned 403 to WebFetch, and the business's Facebook/Birdeye pages carry no additional LGBTQ+ language, so this rests on the Yelp category tag alone. Added to Tattoo & Beauty and the JSON-LD schema (position 84). Also corrected a stale JSON-LD numberOfItems value (was 82 while 83 ListItems already existed from the 2026-10-08 Spiritual Rose addition; now 84).
+
+### Reviewed but NOT added (2026-10-15 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/): same 6 current members as every prior scan (UniComm Solutions, Yoga Quest LLC, Doc J's Heat and Air, Littleton Legal PLLC, Edgewood Veterinary Hospital, Osteostrong Tulsa Midtown), all already in the directory.
+- OkEq Food & Drink (50 listings): all 50 confirmed already in the directory or previously reviewed/held/skipped from prior scans.
+- Tulsa Remote LGBTQ guide: all listed businesses/resources (Tonsorial, il Seme, Cherry & Bark, YBR, The Donut Hole, Fulton Street, Jo & June, Magic City Books, Studio 66, Black Queer Tulsa, Twisted Arts, H.O.P.E Testing, TACO) already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage this scan (only unrelated Falsettos/Les Miserables theatre mentions).
+- WebSearch "new LGBTQ business Tulsa 2026 opened": surfaced a 2026-10-15 Tulsa Flyer piece on the Queer Women's Collective (a social meetup group that rotates among existing LGBTQ+-friendly venues, not a business itself -- not added) plus already-reviewed guide pages.
+- WebSearch "queer-owned business Tulsa 2026": surfaced Wildflower Salon & Boutique (added above); il Seme, Spiritual Rose, Tonsorial, Fulton Street, Studio 66 all already in directory.
+- WebSearch "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (Lambrusco'z To Go, KEO, Dalesandro's, The Brook, India Palace, Elgin Park Brewery, Empire Slice House, Ant's Homestyle Geechie Cuisine).
+- Reddit r/tulsa (both query variants): no indexed results this scan, same pattern as every prior scan.
+- Net result: 1 new business added (Wildflower Salon & Boutique).
