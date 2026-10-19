@@ -10,7 +10,7 @@
     "gaps": 2
   },
   "source_count": 245,
-  "event_count": 248,
+  "event_count": 247,
   "events_source": "data/events/2026-W43_rendered.json",
   "events": [
     {
@@ -1003,7 +1003,7 @@
     {
       "name": "Barron Ryan and Friends",
       "date": "2026-10-22",
-      "time": "7:00 PM",
+      "time": "7:30 PM",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "url": "https://app.dvforms.net/api/dv/qvd28x"
     },
@@ -1188,13 +1188,6 @@
       "time": "1:00 PM",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "url": "https://www.patientfusion.com/external/appointment/a320b001-5843-4ef7-886d-4478d3170c50?origin=doctor"
-    },
-    {
-      "name": "All Nations 2S Powwow",
-      "date": "2026-10-23",
-      "time": "4:00 PM",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "https://forms.gle/r9Hyenu8djUN9Yr16?fbclid=IwcGRvZgFleHRuA2FlbQIxMABicmlkETFTRFRyQlJiU21FVXFweFNic3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHs9JLHd5gucvLO7b7Ah44fYU97YhiafiTmhCVjsu5Tk-e3AgHXJe3w_BWBws_aem_o058iimbZkTAD42FkXtbXw"
     },
     {
       "name": "Dinner & Drag: Oct. 23rd - Halloween!",
@@ -1439,7 +1432,7 @@
       "date": "2026-10-24",
       "time": "5:00 PM",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "https://www.google.com/url?q=https://www.thirdspacetulsa.org/make-em-laugh&sa=D&source=calendar&ust=1786892777603818&usg=AOvVaw29gfjc7h7cvwkOv3fwfKcd"
+      "url": "https://www.thirdspacetulsa.org/make-em-laugh"
     },
     {
       "name": "BLUE OCTOBER",
@@ -1633,7 +1626,7 @@
     {
       "name": "Drag the Native Vote",
       "date": "2026-10-25",
-      "time": "2:00 PM",
+      "time": "3:00 PM",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
       "url": "https://www.facebook.com/twospiritcenter/"
     },
