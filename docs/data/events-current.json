@@ -1,58 +1,58 @@
 [
   {
-    "name": "Fall Break at Fallbrook",
-    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-10-14",
-    "day_short": "WED",
-    "time": "10:00 AM"
+    "name": "Lunch Specials at Elgin Park",
+    "venue": "Elgin Park Brewery",
+    "date": "2026-10-19",
+    "day_short": "MON",
+    "time": "11:00 AM"
   },
   {
-    "name": "Queering Body Image Group",
-    "venue": "MAIN HALL",
-    "date": "2026-10-14",
-    "day_short": "WED",
-    "time": "4:00 PM"
-  },
-  {
-    "name": "Midweek Meditation (Zoom only)",
-    "venue": "Shambhala Meditation Center of Tulsa",
-    "date": "2026-10-14",
-    "day_short": "WED",
-    "time": "7:00 AM"
+    "name": "Lunch Special at Empire Slice House",
+    "venue": "Empire Slice House Tulsa / 84 Hospitality Group",
+    "date": "2026-10-19",
+    "day_short": "MON",
+    "time": "11:00 AM"
   },
   {
     "name": "The History of Concrete",
     "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-10-14",
-    "day_short": "WED",
-    "time": "7:30 PM"
+    "date": "2026-10-19",
+    "day_short": "MON",
+    "time": "12:40 PM"
   },
   {
-    "name": "Underwear Night",
-    "venue": "Tulsa Eagle, 1338 E 3rd St",
-    "date": "2026-10-14",
-    "day_short": "WED",
-    "time": "8:00 PM"
+    "name": "Study: Making Sense of the Bible",
+    "venue": "Wesley Foundation",
+    "date": "2026-10-19",
+    "day_short": "MON",
+    "time": "2:00 PM"
   },
   {
-    "name": "Little Garden Explorers",
-    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-10-14",
-    "day_short": "WED",
-    "time": "9:30 AM"
+    "name": "Happy Hour with Free Pool at Caz\u2019s Pub",
+    "venue": "Caz\u2019s Pub",
+    "date": "2026-10-19",
+    "day_short": "MON",
+    "time": "2:00 PM"
   },
   {
-    "name": "Fallbrook Storytime: Leaf Man & Leaf Art",
-    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-10-15",
-    "day_short": "THU",
-    "time": "10:00 AM"
+    "name": "Happy Hour at in the raw v\u016b",
+    "venue": "in the raw v\u016b",
+    "date": "2026-10-19",
+    "day_short": "MON",
+    "time": "3:00 PM"
   },
   {
-    "name": "Fall Break at Fallbrook",
-    "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
-    "date": "2026-10-15",
-    "day_short": "THU",
-    "time": "10:00 AM"
+    "name": "Sunday & Monday Bar Special at PRHYME",
+    "venue": "PRHYME: Downtown Steakhouse",
+    "date": "2026-10-19",
+    "day_short": "MON",
+    "time": "4:00 PM"
+  },
+  {
+    "name": "Happy Hour at Saturn Room",
+    "venue": "Saturn Room",
+    "date": "2026-10-19",
+    "day_short": "MON",
+    "time": "4:00 PM"
   }
 ]

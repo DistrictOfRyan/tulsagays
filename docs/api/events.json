@@ -2,14 +2,32 @@
   "api_version": "1",
   "city": "Tulsa, OK",
   "publisher": "Tulsa Gays",
-  "generated_at": "2026-10-12T14:50:57Z",
+  "generated_at": "2026-10-19T14:32:37Z",
   "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
   "count": 8,
   "events": [
     {
+      "name": "Lunch Specials at Elgin Park",
+      "date": "2026-10-19",
+      "time": "11:00 AM",
+      "venue": "Elgin Park Brewery",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Lunch Special at Empire Slice House",
+      "date": "2026-10-19",
+      "time": "11:00 AM",
+      "venue": "Empire Slice House Tulsa / 84 Hospitality Group",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
       "name": "The History of Concrete",
-      "date": "2026-10-12",
-      "time": "12:00 PM",
+      "date": "2026-10-19",
+      "time": "12:40 PM",
       "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
       "url": "",
       "lgbtq_relevant": true,
@@ -17,7 +35,7 @@
     },
     {
       "name": "Study: Making Sense of the Bible",
-      "date": "2026-10-12",
+      "date": "2026-10-19",
       "time": "2:00 PM",
       "venue": "Wesley Foundation",
       "url": "",
@@ -25,55 +43,37 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "MONDAY MOVIE NIGHT",
-      "date": "2026-10-12",
-      "time": "7:00 PM",
-      "venue": "1338 E 3rd St, Tulsa, OK",
+      "name": "Happy Hour with Free Pool at Caz’s Pub",
+      "date": "2026-10-19",
+      "time": "2:00 PM",
+      "venue": "Caz’s Pub",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
-      "name": "Gaymer Night",
-      "date": "2026-10-12",
-      "time": "8:00 PM",
-      "venue": "Tulsa Eagle, 1338 E 3rd St",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "The History of Concrete",
-      "date": "2026-10-13",
-      "time": "2:30 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Tabata Tuesdays",
-      "date": "2026-10-13",
+      "name": "Happy Hour at in the raw vū",
+      "date": "2026-10-19",
       "time": "3:00 PM",
-      "venue": "NORTH HALL",
+      "venue": "in the raw vū",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
-      "name": "Once Upon A Drag",
-      "date": "2026-10-13",
-      "time": "6:00 PM",
-      "venue": "Elote Cafe & Catering",
+      "name": "Sunday & Monday Bar Special at PRHYME",
+      "date": "2026-10-19",
+      "time": "4:00 PM",
+      "venue": "PRHYME: Downtown Steakhouse",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
-      "name": "QueerLit Collective Fundraiser: Dinner, Drinks & Story Time with Shanel Sterling",
-      "date": "2026-10-13",
-      "time": "6:00 PM - 9:00 PM",
-      "venue": "Elote Cafe, 514 S Boston Ave",
+      "name": "Happy Hour at Saturn Room",
+      "date": "2026-10-19",
+      "time": "4:00 PM",
+      "venue": "Saturn Room",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
