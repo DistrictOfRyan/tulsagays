@@ -244,7 +244,8 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 - Category: services
 - URL: https://unicomm-solutions.com/
 - Source: OkEq Equality Business Alliance (okeq.org/eba/) - page rendered a live current-member list for the first time in tracked scans (prior scans logged it as auth/JS-gated with no inline list)
-- Notes: IT support, VoIP, and managed services firm at 624 S Denver Ave Ste 300, Tulsa, owner Scott Dye. Current paying member of the relaunched EBA.
+- Notes: IT support, VoIP, and managed services firm in Tulsa, owner Scott Dye. Current paying member of the relaunched EBA.
+- OWNER REQUEST 2026-10-21 (Instagram DM to @tulsagays): service-area business, do not list a street address. Keep name, website, and Equality Business Alliance affiliation. Never re-add an address.
 
 ## [2026-07-30] Yoga Quest LLC
 - Category: health
