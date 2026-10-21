@@ -80,28 +80,39 @@ def fetch_engagement(post_id, access_token=None):
         print("[engagement] requests library not installed.")
         return None
 
-    token = access_token or config.META_ACCESS_TOKEN
+    # 2026-10-20: META_ACCESS_TOKEN is unset in .env; the posting pipeline uses the page-token
+    # resolver (config.TULSAGAYS_PAGE_ACCESS_TOKEN), so fall back to it.
+    token = access_token or config.META_ACCESS_TOKEN or getattr(config, "TULSAGAYS_PAGE_ACCESS_TOKEN", "")
     if not token:
         print("[engagement] No Meta access token configured.")
         return None
 
     try:
-        url = f"https://graph.facebook.com/v19.0/{post_id}/insights"
-        params = {
-            "metric": "impressions,reach,saved,likes,comments",
-            "access_token": token,
-        }
-        resp = requests.get(url, params=params, timeout=10)
-        resp.raise_for_status()
-        data = resp.json()
-
+        # 2026-10-20: the insights call used to raise_for_status() inside this try, so any
+        # insights error (permission, deprecated metric) returned None BEFORE the plain
+        # like_count/comments_count read below, which instagram_basic allows. All 19
+        # carousels in engagement_log.json had empty engagement because of it. Insights is
+        # now optional; the media-field counts are always read.
         metrics = {}
-        for item in data.get("data", []):
-            name = item.get("name", "")
-            values = item.get("values", [{}])
-            metrics[name] = values[0].get("value", 0) if values else 0
+        insights_error = None
+        try:
+            url = f"https://graph.facebook.com/v19.0/{post_id}/insights"
+            params = {
+                "metric": "impressions,reach,saved,likes,comments",
+                "access_token": token,
+            }
+            resp = requests.get(url, params=params, timeout=10)
+            if resp.ok:
+                for item in resp.json().get("data", []):
+                    name = item.get("name", "")
+                    values = item.get("values", [{}])
+                    metrics[name] = values[0].get("value", 0) if values else 0
+            else:
+                insights_error = f"HTTP {resp.status_code}: {resp.text[:160]}"
+        except Exception as e:
+            insights_error = str(e)[:160]
 
-        # Also fetch basic media fields for likes/comments counts
+        # Basic media fields for likes/comments counts
         media_url = f"https://graph.facebook.com/v19.0/{post_id}"
         media_params = {
             "fields": "like_count,comments_count",
@@ -112,6 +123,10 @@ def fetch_engagement(post_id, access_token=None):
             media_data = media_resp.json()
             metrics["likes"] = media_data.get("like_count", metrics.get("likes", 0))
             metrics["comments"] = media_data.get("comments_count", metrics.get("comments", 0))
+        elif not metrics:
+            print(f"[engagement] No metrics for {post_id}: insights {insights_error}; "
+                  f"media HTTP {media_resp.status_code}: {media_resp.text[:160]}")
+            return None
 
         engagement = {
             "likes": metrics.get("likes", 0),
