@@ -31,8 +31,8 @@ REAUTH_NOTE = """
 ## [{ts}] TulsaGays FB group login expired - 2-min re-auth needed
 - The saved Facebook session for the group blast went dead (FB logged it out). The daily keepalive cannot self-heal a true logout.
 - Until you re-auth, the Monday carousel will post to FB page + Instagram + website automatically, but NOT to the 11 FB groups.
-- FIX (2 min, any time before Monday): run `cd C:\\Users\\willi\\tulsagays && python tools/fb_profile_login.py` and log into Facebook in the REAL Chrome window that opens, then close it. (Use fb_profile_login.py, NOT capture_group_auth.py — the latter opens Chrome-for-Testing, which Google blocks at login.)
-- NOTE: FB force-logs-out this automation profile every ~2 weeks regardless of the keepalive. This re-auth is expected periodically; it is not a one-time "permanent" fix.
+- FIX (2 min, any time before Monday): run `cd C:\\Users\\willi\\tulsagays && python tools/fb_profile_login.py` and log into Facebook in the Chrome window that opens. The window closes itself once the session is saved to data/fb_session.json and proven headless.
+- NOTE (2026-10-22): the old "logged out every ~2 weeks" pattern was DPAPI, not Facebook: the persistent profile lost its cookies on every Chrome exit while Windows could not open its DPAPI keys (10/7-10/21). The session now lives in data/fb_session.json, which needs no DPAPI, so a login only has to happen again if Facebook itself ends the session.
 """
 
 
@@ -56,7 +56,7 @@ def _flag_dead():
 
 def main():
     if not AUTH_PATH.exists():
-        print("[keepalive] no auth file yet - run capture_group_auth.py once.")
+        print("[keepalive] no saved session (data/fb_session.json) - run tools/fb_profile_login.py once.")
         _flag_dead()
         return 3
     ok = refresh()

@@ -36,7 +36,31 @@ PROFILE_COOKIES = os.path.join(
 
 
 def check_group_profile():
-    """Read the group-blast Chrome profile's cookie jar directly.
+    """Health of the store the group blast actually uses.
+
+    Since 2026-10-22 the group blast (tools/group_session.py) loads THIS file,
+    data/fb_session.json, instead of the persistent data/fb_auto_profile, whose
+    cookies depended on DPAPI and were lost on every Chrome exit while DPAPI was
+    broken (10/7-10/21; ~/.claude/drafts/security/dpapi-2026-10-22.md). So the
+    group half is healthy exactly when this store holds c_user + xs; main()'s
+    live check below then proves the session itself.
+
+    Returns (ok: bool, detail: str). Never raises.
+    """
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        from tools.group_session import STATE_PATH, state_path
+        if os.path.abspath(str(STATE_PATH)) == os.path.abspath(SESSION_FILE):
+            return (bool(state_path()),
+                    "group blast shares data/fb_session.json"
+                    + ("" if state_path() else " -- no c_user/xs saved; run tools/fb_profile_login.py"))
+    except Exception:
+        pass
+    return check_legacy_profile()
+
+
+def check_legacy_profile():
+    """Read the old group-blast Chrome profile's cookie jar directly.
 
     Returns (ok: bool, detail: str). Never raises -- a store we cannot read is
     reported as unknown rather than silently passing.
@@ -90,7 +114,7 @@ def main():
         sys.exit(2)
 
     group_ok, group_detail = check_group_profile()
-    print(f"[group blast  ] data/fb_auto_profile: "
+    print(f"[group blast  ] data/fb_session.json: "
           f"{'OK' if group_ok else 'DEAD'} ({group_detail})")
     print("[scraper/page ] data/fb_session.json: checking...")
 

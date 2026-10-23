@@ -1,56 +1,41 @@
 """
-One-time Instagram login into the dedicated TulsaGays automation profile.
+One-time Instagram login for the TulsaGays web-session scraper.
 
-Same pattern as fb_profile_login.py (real Chrome, dedicated user-data-dir) and
-the SAME profile dir — one profile carries both the FB and IG web sessions.
+scraper/instagram_web.py reads venue feeds through Instagram's own web API from
+a logged-in session (every API-side login is walled, and both YBR accounts are
+personal, so business_discovery can never read them). This opens a real Chrome
+window at the Instagram login page; log in as the account the scraper should
+read as (@tulsagays is the intent; on 2026-10-22 the saved session was
+@districtofryan). The script saves the Instagram cookies into
+data/fb_session.json (the Facebook login there is kept), proves them headless,
+closes the window, and runs the two-round restart test.
 
-Why this exists (2026-07-06): every API-side Instagram login is walled
-(instagrapi -> bloks challenge; FB-OAuth mint -> dead-ends at /accounts/login),
-and BOTH YBR accounts (@tulsaybr, @imvalpal) are personal accounts, so Meta App
-Review / business_discovery can never read them. A normal WEB session in real
-Chrome is the only path — and once it exists, scraper/instagram_web.py drives
-this profile headless to read venue feeds via Instagram's own web API
-(/api/v1/users/web_profile_info + /api/v1/feed/user), verified working
-2026-07-06 from a logged-in session.
+WHY (2026-10-22): this used to leave the login inside data/fb_auto_profile.
+Chrome seals that profile's cookies with DPAPI, and while DPAPI was broken
+(10/7-10/21) every Chrome exit dropped them. data/fb_session.json needs no DPAPI.
+Root cause: ~/.claude/drafts/security/dpapi-2026-10-22.md
 
-William logs in ONCE as @tulsagays (solving any checkpoint in the window), then
-closes it. The login persists for months like the FB one.
-
-Usage: python tools/ig_profile_login.py
+Usage: python tools/ig_profile_login.py [--wait MINUTES]
 """
-import subprocess
 import sys
 from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-ROOT = Path(__file__).resolve().parent.parent
-PROFILE = ROOT / "data" / "fb_auto_profile"
-
-CHROME_CANDIDATES = [
-    r"C:\Program Files\Google\Chrome\Application\chrome.exe",
-    r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
-]
+VAULT_SCRIPTS = Path.home() / ".claude" / "scripts"
 
 
 def main():
-    chrome = next((c for c in CHROME_CANDIDATES if Path(c).exists()), None)
-    if not chrome:
-        print("Chrome not found in standard locations."); return 1
-    PROFILE.mkdir(parents=True, exist_ok=True)
-    subprocess.Popen([
-        chrome,
-        f"--user-data-dir={PROFILE}",
-        "--no-first-run",
-        "--no-default-browser-check",
-        "https://www.instagram.com/accounts/login/",
-    ])
-    print("Opened the dedicated TulsaGays automation Chrome at the Instagram login page.")
-    print("1. Log in as @tulsagays (username tulsagays + its password).")
-    print("2. Solve any 'suspicious login' checkpoint in the window if Instagram asks.")
-    print("3. If asked 'Save your login info?' click Save.")
-    print("4. Close that Chrome window. The session is saved to the dedicated profile.")
-    print(f"Profile dir: {PROFILE}")
-    return 0
+    wait = 30
+    if "--wait" in sys.argv:
+        wait = int(sys.argv[sys.argv.index("--wait") + 1])
+    sys.path.insert(0, str(VAULT_SCRIPTS))
+    try:
+        import storage_session
+    except ImportError as e:
+        print(f"Cannot load {VAULT_SCRIPTS / 'storage_session.py'}: {e}")
+        return 2
+    print("Log into Instagram in the Chrome window that opens; solve any checkpoint there.")
+    return storage_session.capture("tulsagays-ig", wait_min=wait)
 
 
 if __name__ == "__main__":

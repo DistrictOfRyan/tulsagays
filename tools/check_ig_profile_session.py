@@ -37,6 +37,13 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 PROFILE = REPO / "data" / "fb_auto_profile"
 COOKIE_DB = PROFILE / "Default" / "Network" / "Cookies"
+# 2026-10-22: instagram_web.py and group_blast.py no longer drive the persistent
+# profile. Both load data/fb_session.json (Playwright storage_state) via
+# tools/group_session.py, because the profile's cookies depended on DPAPI and were
+# lost on every Chrome exit while DPAPI was broken (10/7-10/21). probe() with no
+# argument therefore checks that store. The sqlite path stays for an explicit
+# cookie-DB argument (the selftest's synthetic jars).
+STATE = REPO / "data" / "fb_session.json"
 
 # ds_user_id is the cookie scraper/instagram_web.py itself gates on; c_user is
 # the Facebook equivalent the group blast needs. Track both, because the
@@ -45,8 +52,62 @@ REQUIRED = {"instagram": "ds_user_id", "facebook": "c_user"}
 FIX = "python tools/ig_profile_login.py"
 
 
-def probe(cookie_db: Path = COOKIE_DB) -> dict:
-    """Return a verdict dict. Never raises."""
+def probe_state(state_path: Path = STATE) -> dict:
+    """Verdict for the storage_state store the automation actually uses. Never raises."""
+    out = {"ok": False, "profile": str(state_path), "total_cookies": 0,
+           "sites": {}, "detail": "", "fix": FIX}
+    try:
+        cookies = json.loads(Path(state_path).read_text(encoding="utf-8")).get("cookies", [])
+    except FileNotFoundError:
+        out["detail"] = f"no saved session at {state_path}"
+        return out
+    except Exception as e:                       # noqa: BLE001 - never break a run
+        out["detail"] = f"probe error: {e}"
+        out["error"] = True
+        return out
+    out["total_cookies"] = len(cookies)
+    now = time.time()
+    for site, cookie in REQUIRED.items():
+        host = [c for c in cookies if site in c.get("domain", "")]
+        out.setdefault("host_cookie_counts", {})[site] = len(host)
+        hit = [c for c in host if c.get("name") == cookie and c.get("value")]
+        if not hit:
+            out["sites"][site] = (f"MISSING({cookie}); {len(host)} other {site} cookie(s) present"
+                                  if host else f"MISSING({cookie}); no {site} cookies at all")
+        elif all(0 < c.get("expires", -1) < now for c in hit):
+            out["sites"][site] = f"EXPIRED({cookie})"
+        else:
+            out["sites"][site] = "present"
+    return _finish(out)
+
+
+def _finish(out: dict) -> dict:
+    if out["total_cookies"] == 0:
+        out["detail"] = ("cookie jar is EMPTY (0 cookies) - both the Instagram "
+                         "web-session tier and the FB group blast are dark")
+        return out
+    bad = [s for s, v in out["sites"].items() if v != "present"]
+    if bad and out["total_cookies"]:
+        good = [s for s, v in out["sites"].items() if v == "present"]
+        if good:
+            # Built-in control: another site authenticating from the SAME jar proves
+            # the store, the read and the decrypt path are all fine, so the
+            # failure is that one site's auth, not the mechanism.
+            out["control"] = (f"CONTROL: {', '.join(sorted(good))} IS authenticated from this "
+                              f"same store, so the store is healthy; the gap is "
+                              f"{', '.join(sorted(bad))} auth specifically.")
+    if bad:
+        out["detail"] = "no valid session for: " + ", ".join(sorted(bad))
+        return out
+    out["ok"] = True
+    out["detail"] = "instagram + facebook sessions present"
+    return out
+
+
+def probe(cookie_db: Path = None) -> dict:
+    """Return a verdict dict. Never raises. No argument = the live storage_state store."""
+    if cookie_db is None:
+        return probe_state(STATE)
     out = {"ok": False, "profile": str(PROFILE), "total_cookies": 0,
            "sites": {}, "detail": "", "fix": FIX}
     if not cookie_db.exists():
@@ -119,27 +180,7 @@ def probe(cookie_db: Path = COOKIE_DB) -> dict:
         return out
     finally:
         tmp.unlink(missing_ok=True)
-
-    if out["total_cookies"] == 0:
-        out["detail"] = ("cookie jar is EMPTY (0 cookies) - both the Instagram "
-                         "web-session tier and the FB group blast are dark")
-        return out
-    bad = [s for s, v in out["sites"].items() if v != "present"]
-    if bad and out["total_cookies"]:
-        good = [s for s, v in out["sites"].items() if v == "present"]
-        if good:
-            # Built-in control: another site authenticating from the SAME jar proves
-            # the profile, the sqlite read and the decrypt path are all fine, so the
-            # failure is that one site's auth, not the mechanism.
-            out["control"] = (f"CONTROL: {', '.join(sorted(good))} IS authenticated from this "
-                              f"same profile, so the profile/cookie store is healthy; the gap is "
-                              f"{', '.join(sorted(bad))} auth specifically.")
-    if bad:
-        out["detail"] = "no valid session for: " + ", ".join(sorted(bad))
-        return out
-    out["ok"] = True
-    out["detail"] = "instagram + facebook sessions present"
-    return out
+    return _finish(out)
 
 
 def _selftest() -> int:
@@ -188,6 +229,22 @@ def _selftest() -> int:
     v = probe(d / "nope.db")
     ok &= (not v["ok"])
     print(f"  no db                -> ok={v['ok']} :: {v['detail'][:60]}")
+
+    # 6-7. The storage_state store (the default since 2026-10-22), both directions.
+    exp = time.time() + 86400 * 30
+    st = d / "state.json"
+    st.write_text(json.dumps({"cookies": [
+        {"name": "ds_user_id", "value": "1", "domain": ".instagram.com", "expires": exp},
+        {"name": "c_user", "value": "1", "domain": ".facebook.com", "expires": exp}]}), encoding="utf-8")
+    v = probe_state(st)
+    ok &= v["ok"]
+    print(f"  state both present   -> ok={v['ok']} :: {v['detail'][:60]}")
+    st.write_text(json.dumps({"cookies": [
+        {"name": "ds_user_id", "value": "1", "domain": ".instagram.com", "expires": exp},
+        {"name": "datr", "value": "1", "domain": ".facebook.com", "expires": exp}]}), encoding="utf-8")
+    v = probe_state(st)
+    ok &= (not v["ok"] and "facebook" in v["detail"])
+    print(f"  state fb missing     -> ok={v['ok']} :: {v['detail'][:60]}")
 
     shutil.rmtree(d, ignore_errors=True)
     print("SELFTEST", "PASS" if ok else "FAIL")

@@ -247,12 +247,13 @@ def run(week: str, discover: bool = False, headed: bool = False, since_hours: in
     results = []
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:
-        ctx = pw.chromium.launch_persistent_context(
-            str(PROFILE_DIR), channel="chrome", headless=not headed,
-            args=["--no-first-run", "--no-default-browser-check"],
-            viewport={"width": 1280, "height": 1000}, locale="en-US",
-            timezone_id="America/Chicago")
-        page = ctx.pages[0] if ctx.pages else ctx.new_page()
+        # 2026-10-22: in-memory context from data/fb_session.json (tools/group_session.py),
+        # not the DPAPI-dependent data/fb_auto_profile, same as the blast it retracts.
+        from tools.group_session import open_context
+        browser, ctx = open_context(pw, headless=not headed,
+                                    viewport={"width": 1280, "height": 1000}, locale="en-US",
+                                    timezone_id="America/Chicago")
+        page = ctx.new_page()
         page.set_default_timeout(20000)
         page.set_default_navigation_timeout(35000)
         try:
@@ -315,7 +316,7 @@ def run(week: str, discover: bool = False, headed: bool = False, since_hours: in
                 time.sleep(4)
         finally:
             try:
-                ctx.close()
+                browser.close()
             except Exception:
                 pass
     out = {"week": week, "ran_at": datetime.now(timezone.utc).isoformat(), "discover": discover,

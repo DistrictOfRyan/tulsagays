@@ -1,50 +1,41 @@
 """
-One-time login into the dedicated TulsaGays FB automation profile.
+One-time Facebook login for the TulsaGays automation.
 
-Opens REAL Google Chrome (not Playwright's Chromium, which Facebook blocks at
-login) pointed at a dedicated user-data-dir. William logs into Facebook once with
-his personal account (the one that manages the Tulsa Gays page). After that, the
-weekly group blast drives this profile headless via launch_persistent_context —
-FB trusts real Chrome and the login persists for months, with the daily keepalive
-keeping it warm. THIS is the one manual step, and it should only ever happen once
-(plus the rare re-login if FB force-logs-out).
+Opens real Google Chrome (plain chrome.exe, not a Playwright browser) on the
+dedicated data/fb_auto_profile, at facebook.com/login. William logs in with the
+account that manages the Tulsa Gays Page. The script then reads the live
+session over the DevTools port, proves it in a separate headless browser, saves
+it into data/fb_session.json (Facebook cookies only; the Instagram login in that
+file is kept), closes the window, and runs the two-round restart test.
 
-Usage: python tools/fb_profile_login.py
+WHY (2026-10-22): this used to leave the login inside the persistent profile and
+let the group blast reuse the profile. Chrome seals that profile's cookies with
+DPAPI, and while DPAPI was broken (10/7-10/21) every Chrome exit dropped the
+login, so this "one-time" step kept coming back. The jobs now read
+data/fb_session.json (tools/group_session.py), which needs no DPAPI.
+Root cause: ~/.claude/drafts/security/dpapi-2026-10-22.md
+
+Usage: python tools/fb_profile_login.py [--wait MINUTES]
 """
-import subprocess
 import sys
 from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-ROOT = Path(__file__).resolve().parent.parent
-PROFILE = ROOT / "data" / "fb_auto_profile"
-
-CHROME_CANDIDATES = [
-    r"C:\Program Files\Google\Chrome\Application\chrome.exe",
-    r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
-]
+VAULT_SCRIPTS = Path.home() / ".claude" / "scripts"
 
 
 def main():
-    chrome = next((c for c in CHROME_CANDIDATES if Path(c).exists()), None)
-    if not chrome:
-        print("Chrome not found in standard locations."); return 1
-    PROFILE.mkdir(parents=True, exist_ok=True)
-    # Separate --user-data-dir => its own Chrome instance, independent of the
-    # user's normal Chrome (no profile-lock conflict).
-    subprocess.Popen([
-        chrome,
-        f"--user-data-dir={PROFILE}",
-        "--no-first-run",
-        "--no-default-browser-check",
-        "https://www.facebook.com/login",
-    ])
-    print("Opened a dedicated Chrome window for TulsaGays automation.")
-    print("1. Log into Facebook with the account that manages the Tulsa Gays page.")
-    print("2. (Optional) Switch to 'using Facebook as Tulsa Gays' — the blast also does this each run.")
-    print("3. Close that Chrome window. The login is saved to the dedicated profile.")
-    print(f"Profile dir: {PROFILE}")
-    return 0
+    wait = 30
+    if "--wait" in sys.argv:
+        wait = int(sys.argv[sys.argv.index("--wait") + 1])
+    sys.path.insert(0, str(VAULT_SCRIPTS))
+    try:
+        import storage_session
+    except ImportError as e:
+        print(f"Cannot load {VAULT_SCRIPTS / 'storage_session.py'}: {e}")
+        return 2
+    print("Log into Facebook in the Chrome window that opens (the account that manages the Tulsa Gays Page).")
+    return storage_session.capture("tulsagays-fb", wait_min=wait)
 
 
 if __name__ == "__main__":

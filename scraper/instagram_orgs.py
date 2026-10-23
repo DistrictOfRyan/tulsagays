@@ -194,6 +194,10 @@ ORGS: List[Dict] = [
         # events and posts them on her IG, often before the venue account does, so
         # she's a reliable second feed for YBR nights. Handles are walked in order
         # until one returns posts, so this also covers a venue-account rename.
+        # 2026-10-22: @tulsaybr is live (4,681 followers, linked from YBR's FB page)
+        # but answers "page isn't available" to the scraper's login (@districtofryan),
+        # most likely its 21+ age gate; @ybrtulsa does not resolve. @imvalpal carries
+        # YBR in the web-session tier until that changes.
         "alt_usernames": ["ybrtulsa", "imvalpal"],
         "source_name": "ybr_ig",
         "default_venue": "Yellow Brick Road, 2630 E 15th St",
