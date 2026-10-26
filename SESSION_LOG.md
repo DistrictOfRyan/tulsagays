@@ -1,3 +1,14 @@
+## [2026-10-26 15:10] Audit @tulsagays IG DMs: are submitted events reaching the calendar?
+
+William asked whether events people DM to @tulsagays make the calendar, and how to handle the replies. Of 6 events DM'd Aug 9 - Oct 26, 5 were listed, but only because a scraper or an email caught the same event: no DM has ever reached the tip queue (Graph token lacks instagram_manage_messages, live 403 code 230; instagrapi DM session gone). The one that existed only as a DM'd flyer, Rainbow Reconstruction (weekly Thu queer Bible study, College Hill Presbyterian), was missed.
+
+**Done:** venue dig playbook step 0 now reads the Business Suite IG inbox weekly, and dm_instagrapi no longer points at the banned password re-login (`8e58d0f`, `f011ebf` on main, not pushed). With William's per-message yes, sent Kai (KAI'NIVAL Oct 31 is live) and @t.o.poetic (does Rainbow Reconstruction still meet?), both verified in-thread; rewrote the Business Suite auto-reply, which re-fired on every returning conversation (Kai got it 4x). Moved 2 bait-spam threads to spam. Queued the missed flyer as tip029; rejected 4 FeedSpot newsletter "tips". All Business Suite work ran in an isolated headless context from data/fb_session.json, because other sessions held the shared Chrome.
+
+**Main artifact:** `data/venue_dig_playbook.md` step 0; `data/event_tips_inbox.json` tip029
+**Open items:** tip029 waits on the organizer's reply (ledger tulsagays-rainbow-reconstruction, check 2026-11-02). Aaron Roberts' 2 DMs are app-only "Unsupported message" types (receipt tulsagays-aaron-roberts-dm).
+
+---
+
 ## [2026-09-28 12:30] W40 audit: TOP PICK boxes went to non-events; live site had wrong venues
 
 William asked "did tulsa gays run today? ... see that everything is valid and the most fun events are surfaced to the top". It ran: Monday snapshot 03:45, site refresh 03:59, venue fixes 09:26 (HHHH October at the Mayo Hotel, Miami NEOK Pride at Riverview Park), carousel images published 10:00 (the step right before post_weekly.py posts to FB/IG; the live post could not be checked from the cloud sandbox, Meta hosts are blocked there).
