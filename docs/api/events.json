@@ -2,33 +2,15 @@
   "api_version": "1",
   "city": "Tulsa, OK",
   "publisher": "Tulsa Gays",
-  "generated_at": "2026-10-26T15:56:01Z",
+  "generated_at": "2026-10-26T17:58:09Z",
   "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
   "count": 8,
   "events": [
-    {
-      "name": "Intersex Awareness Day",
-      "date": "2026-10-26",
-      "time": "",
-      "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
     {
       "name": "Frida's Bingo",
       "date": "2026-10-26",
       "time": "",
       "venue": "Bar Frida y Restaurante",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "You Can See Everything",
-      "date": "2026-10-26",
-      "time": "12:30 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
@@ -74,6 +56,24 @@
       "date": "2026-10-26",
       "time": "8:00 PM",
       "venue": "Tulsa Eagle, 1338 E 3rd St",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Tabata Tuesdays",
+      "date": "2026-10-27",
+      "time": "3:00 PM",
+      "venue": "NORTH HALL",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Sisters of Cinema: Faster Pussycat! Kill! Kill!",
+      "date": "2026-10-27",
+      "time": "7:00 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"

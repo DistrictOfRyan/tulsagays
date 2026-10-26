@@ -1,24 +1,10 @@
 [
   {
-    "name": "Intersex Awareness Day",
-    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-    "date": "2026-10-26",
-    "day_short": "MON",
-    "time": ""
-  },
-  {
     "name": "Frida's Bingo",
     "venue": "Bar Frida y Restaurante",
     "date": "2026-10-26",
     "day_short": "MON",
     "time": ""
-  },
-  {
-    "name": "You Can See Everything",
-    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-10-26",
-    "day_short": "MON",
-    "time": "12:30 PM"
   },
   {
     "name": "Study: Making Sense of the Bible",
@@ -54,5 +40,19 @@
     "date": "2026-10-26",
     "day_short": "MON",
     "time": "8:00 PM"
+  },
+  {
+    "name": "Tabata Tuesdays",
+    "venue": "NORTH HALL",
+    "date": "2026-10-27",
+    "day_short": "TUE",
+    "time": "3:00 PM"
+  },
+  {
+    "name": "Sisters of Cinema: Faster Pussycat! Kill! Kill!",
+    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+    "date": "2026-10-27",
+    "day_short": "TUE",
+    "time": "7:00 PM"
   }
 ]

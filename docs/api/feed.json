@@ -10,7 +10,7 @@
     "gaps": 2
   },
   "source_count": 245,
-  "event_count": 193,
+  "event_count": 191,
   "events_source": "data/events/2026-W44_rendered.json",
   "events": [
     {
@@ -273,13 +273,6 @@
       "url": "https://www.instagram.com/tulsaeagle/"
     },
     {
-      "name": "The Sunday Spotlight (Club Majestic & Kallaya) - All-Star Drag Show",
-      "date": "2026-10-27",
-      "time": "10:30 PM",
-      "venue": "Club Majestic, 124 N Boston Ave",
-      "url": "https://www.instagram.com/p/DdvhFTkudz5/"
-    },
-    {
       "name": "TAFF 2024",
       "date": "2026-10-27",
       "time": "",
@@ -306,13 +299,6 @@
       "time": "3:00 PM",
       "venue": "MAIN HALL",
       "url": "https://events.tulsa.okstate.edu/event/neurodivergent-support"
-    },
-    {
-      "name": "Tuesdays in the Park Concert Series",
-      "date": "2026-10-27",
-      "time": "7:00 PM - 9:00 PM",
-      "venue": "Central Park, 1500 S Main St, Broken Arrow",
-      "url": "https://www.artsok.org/"
     },
     {
       "name": "Tulsa Community College Theatre 2026 - 2027 Season",
@@ -849,14 +835,14 @@
     {
       "name": "IMPERIAL COURT OCTOBER SHOW",
       "date": "2026-10-30",
-      "time": "7:00 PM",
-      "venue": "Event by Tulsa Eagle",
+      "time": "6:00 PM",
+      "venue": "Tulsa Eagle, 1338 E 3rd St",
       "url": "https://www.facebook.com/events/2374561123084280/"
     },
     {
       "name": "TULSA EAGLE LATIN NIGHT WITH DJ BLEIZ",
       "date": "2026-10-30",
-      "time": "10:00 PM",
+      "time": "9:00 PM",
       "venue": "1338 E 3rd St, Tulsa, OK",
       "url": "https://www.facebook.com/events/1600676008450727/"
     },
@@ -1096,12 +1082,12 @@
       "date": "2026-10-31",
       "time": "7:30 PM",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "https://www.google.com/url?q=https://www.tulsashakespeare.com/hamlet&sa=D&source=calendar&ust=1788101358161267&usg=AOvVaw3mXcFn401o41f3cOfJLjhd"
+      "url": "https://www.tulsashakespeare.com/hamlet"
     },
     {
       "name": "Halloween Costume Contest",
       "date": "2026-10-31",
-      "time": "9:00 PM",
+      "time": "",
       "venue": "DVL Club & Lounge, 302 S Frankfort Ave",
       "url": "https://www.instagram.com/p/De0SoOqmHLW/"
     },
@@ -1327,7 +1313,7 @@
       "date": "2026-11-01",
       "time": "3:00 PM",
       "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
-      "url": "https://www.google.com/url?q=https://www.tulsashakespeare.com/hamlet&sa=D&source=calendar&ust=1788101380387460&usg=AOvVaw2rgLDawDkGBU2rGy7S8445"
+      "url": "https://www.tulsashakespeare.com/hamlet"
     },
     {
       "name": "First Sunday Cafe",
