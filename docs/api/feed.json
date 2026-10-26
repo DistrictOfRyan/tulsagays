@@ -10,7 +10,7 @@
     "gaps": 2
   },
   "source_count": 245,
-  "event_count": 191,
+  "event_count": 193,
   "events_source": "data/events/2026-W44_rendered.json",
   "events": [
     {
@@ -28,6 +28,13 @@
       "url": "https://www.facebook.com/events/2125311835071761/"
     },
     {
+      "name": "Queens & Split Screens (Gayming Night)",
+      "date": "2026-10-26",
+      "time": "7:00 PM",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
+      "url": "https://www.instagram.com/p/De5Ela4y6nW/"
+    },
+    {
       "name": "Gaymer Night",
       "date": "2026-10-26",
       "time": "8:00 PM",
@@ -42,10 +49,10 @@
       "url": ""
     },
     {
-      "name": "Tulsa Community College Theatre 2026 to 2027 Season",
+      "name": "Tulsa Community College Theatre 2026 - 2027 Season",
       "date": "2026-10-26",
       "time": "",
-      "venue": "Tulsa Community College",
+      "venue": "",
       "url": "https://calendar.tulsacc.edu/"
     },
     {
@@ -266,7 +273,7 @@
       "url": "https://www.instagram.com/tulsaeagle/"
     },
     {
-      "name": "The Sunday Spotlight (Club Majestic & Kallaya), All-Star Drag Show",
+      "name": "The Sunday Spotlight (Club Majestic & Kallaya) - All-Star Drag Show",
       "date": "2026-10-27",
       "time": "10:30 PM",
       "venue": "Club Majestic, 124 N Boston Ave",
@@ -308,10 +315,10 @@
       "url": "https://www.artsok.org/"
     },
     {
-      "name": "Tulsa Community College Theatre 2026 to 2027 Season",
+      "name": "Tulsa Community College Theatre 2026 - 2027 Season",
       "date": "2026-10-27",
       "time": "",
-      "venue": "Tulsa Community College",
+      "venue": "",
       "url": "https://calendar.tulsacc.edu/"
     },
     {
@@ -336,7 +343,7 @@
       "url": "https://circlecinema.easy-ware-ticketing.com/eventsByMovie/A000003267"
     },
     {
-      "name": "Open Meditation, Tues.",
+      "name": "Open Meditation - Tues.",
       "date": "2026-10-27",
       "time": "1:30 PM",
       "venue": "Shambhala Meditation Center of Tulsa",
@@ -518,6 +525,13 @@
       "url": "https://aaoklahoma.org/meetings/lambda-unity/"
     },
     {
+      "name": "Open Stage with Jason Waterfalls",
+      "date": "2026-10-28",
+      "time": "",
+      "venue": "Yellow Brick Road, 2630 E 15th St",
+      "url": "https://www.instagram.com/p/DezT0x0x5IK/"
+    },
+    {
       "name": "OKEQ Health Clinic",
       "date": "2026-10-28",
       "time": "9:00 AM",
@@ -539,10 +553,10 @@
       "url": "https://okeq.org/transgender-support/"
     },
     {
-      "name": "Tulsa Community College Theatre 2026 to 2027 Season",
+      "name": "Tulsa Community College Theatre 2026 - 2027 Season",
       "date": "2026-10-28",
       "time": "",
-      "venue": "Tulsa Community College",
+      "venue": "",
       "url": "https://calendar.tulsacc.edu/"
     },
     {
@@ -700,17 +714,17 @@
       "url": "https://okeq.orgmailto:t.marler@cox.net"
     },
     {
-      "name": "Tauren Wells, Air1 Worship Now Tour",
+      "name": "Tauren Wells - Air1 Worship Now Tour",
       "date": "2026-10-29",
       "time": "",
       "venue": "Tulsa Theater",
       "url": "https://tulsatheater.com/event/tauren-wells-air1-worship-now-tour/tulsa-theater/"
     },
     {
-      "name": "Tulsa Community College Theatre 2026 to 2027 Season",
+      "name": "Tulsa Community College Theatre 2026 - 2027 Season",
       "date": "2026-10-29",
       "time": "",
-      "venue": "Tulsa Community College",
+      "venue": "",
       "url": "https://calendar.tulsacc.edu/"
     },
     {
@@ -903,10 +917,10 @@
       "url": "https://www.instagram.com/p/DesDdDAixty/"
     },
     {
-      "name": "Tulsa Community College Theatre 2026 to 2027 Season",
+      "name": "Tulsa Community College Theatre 2026 - 2027 Season",
       "date": "2026-10-30",
       "time": "",
-      "venue": "Tulsa Community College",
+      "venue": "",
       "url": "https://calendar.tulsacc.edu/"
     },
     {
