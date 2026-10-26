@@ -1,58 +1,58 @@
 [
   {
-    "name": "Lunch Specials at Elgin Park",
-    "venue": "Elgin Park Brewery",
-    "date": "2026-10-19",
+    "name": "Intersex Awareness Day",
+    "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+    "date": "2026-10-26",
     "day_short": "MON",
-    "time": "11:00 AM"
+    "time": ""
   },
   {
-    "name": "Lunch Special at Empire Slice House",
-    "venue": "Empire Slice House Tulsa / 84 Hospitality Group",
-    "date": "2026-10-19",
+    "name": "Frida's Bingo",
+    "venue": "Bar Frida y Restaurante",
+    "date": "2026-10-26",
     "day_short": "MON",
-    "time": "11:00 AM"
+    "time": ""
   },
   {
-    "name": "The History of Concrete",
+    "name": "You Can See Everything",
     "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-    "date": "2026-10-19",
+    "date": "2026-10-26",
     "day_short": "MON",
-    "time": "12:40 PM"
+    "time": "12:30 PM"
   },
   {
     "name": "Study: Making Sense of the Bible",
     "venue": "Wesley Foundation",
-    "date": "2026-10-19",
+    "date": "2026-10-26",
     "day_short": "MON",
     "time": "2:00 PM"
   },
   {
-    "name": "Happy Hour with Free Pool at Caz\u2019s Pub",
-    "venue": "Caz\u2019s Pub",
-    "date": "2026-10-19",
+    "name": "MONDAY MOVIE NIGHT",
+    "venue": "1338 E 3rd St, Tulsa, OK",
+    "date": "2026-10-26",
     "day_short": "MON",
-    "time": "2:00 PM"
+    "time": "7:00 PM"
   },
   {
-    "name": "Happy Hour at in the raw v\u016b",
-    "venue": "in the raw v\u016b",
-    "date": "2026-10-19",
+    "name": "EDM@Ed\u2019s Monday Monster Mash",
+    "venue": "Shared by Zack Sparrow",
+    "date": "2026-10-26",
     "day_short": "MON",
-    "time": "3:00 PM"
+    "time": "7:00 PM"
   },
   {
-    "name": "Sunday & Monday Bar Special at PRHYME",
-    "venue": "PRHYME: Downtown Steakhouse",
-    "date": "2026-10-19",
+    "name": "Noir Nights: Secret Film",
+    "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+    "date": "2026-10-26",
     "day_short": "MON",
-    "time": "4:00 PM"
+    "time": "7:00 PM"
   },
   {
-    "name": "Happy Hour at Saturn Room",
-    "venue": "Saturn Room",
-    "date": "2026-10-19",
+    "name": "Gaymer Night",
+    "venue": "Tulsa Eagle, 1338 E 3rd St",
+    "date": "2026-10-26",
     "day_short": "MON",
-    "time": "4:00 PM"
+    "time": "8:00 PM"
   }
 ]
