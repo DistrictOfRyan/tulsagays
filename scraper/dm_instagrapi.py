@@ -8,7 +8,7 @@ that's instagrapi today, official API once/if approved.)
 
 Reuses the proven @tulsagays session loader in posting/ig_api.py. If the session is
 invalid, every function degrades to a no-op with a clear reason — it NEVER crashes the
-daily ingest. Do NOT "fix" an invalid session with scripts/ig_login_api.py: a password
+daily ingest. Do NOT "fix" an invalid session with a password re-login script: that
 login hits Instagram's bloks challenge wall every time (2026-07). While this reader is
 dark, @tulsagays DMs are read by hand in Meta Business Suite during the weekly venue
 dig (data/venue_dig_playbook.md, step 0). On 2026-10-26 that inbox held two copies of
