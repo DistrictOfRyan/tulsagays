@@ -7,8 +7,12 @@ the confirmation reply. (William: "do what's best for long-term automation" — 
 that's instagrapi today, official API once/if approved.)
 
 Reuses the proven @tulsagays session loader in posting/ig_api.py. If the session is
-invalid (expired / needs a 2FA re-login via scripts/ig_login_api.py), every function
-degrades to a no-op with a clear reason — it NEVER crashes the daily ingest.
+invalid, every function degrades to a no-op with a clear reason — it NEVER crashes the
+daily ingest. Do NOT "fix" an invalid session with scripts/ig_login_api.py: a password
+login hits Instagram's bloks challenge wall every time (2026-07). While this reader is
+dark, @tulsagays DMs are read by hand in Meta Business Suite during the weekly venue
+dig (data/venue_dig_playbook.md, step 0). On 2026-10-26 that inbox held two copies of
+a weekly-event flyer this reader never saw.
 
 What it produces: the same normalized message dict scraper/dm_sources.py emits, plus a
 `flyer_images` list of downloaded image paths (a single DM can carry MULTIPLE flyers —
@@ -99,7 +103,8 @@ def read_dm_tips(cl, seen_ids: set, download_dir: str = FLYER_DIR) -> tuple[list
 
     Skips message_ids already in seen_ids. Returns (messages, error)."""
     if cl is None:
-        return [], "SESSION_INVALID (re-auth: python scripts/ig_login_api.py)"
+        return [], ("SESSION_INVALID (DMs not read automatically; read them in Business "
+                    "Suite per data/venue_dig_playbook.md step 0)")
     try:
         threads = cl.direct_threads(amount=THREADS_TO_SCAN)
     except Exception as e:

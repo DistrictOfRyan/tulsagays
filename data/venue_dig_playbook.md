@@ -5,6 +5,13 @@
 Weekly, before the Monday post prep (Sunday or Monday morning). Runs in a live session (needs the authed browser + vision — cannot be fully unattended).
 
 ## How (the loop)
+0. **Read the @tulsagays Instagram DMs first** (added 2026-10-26). Nothing reads them automatically: the Graph token lacks `instagram_manage_messages` (code 230) and the instagrapi DM session is gone, so `tulsagays-dm-tip-ingest` only sees post comments. Open `https://business.facebook.com/latest/inbox/instagram_direct?asset_id=1086906044497675` in the personal Chrome and work every thread newer than the last dig:
+   - **Event flyer or details** → `python tools/add_tip.py add --text "<what the flyer says>" --channel ig --submitted-by "@handle"`, then review/approve as usual. Open each image with vision; most submissions arrive as a flyer with no text.
+   - **Correction to a listed event** → fix the row in `data/manual_events.json` / `venue_overrides.json` the same day.
+   - **Directory request** (add/remove/edit a listing) → apply it and log it in `data/directory_log.md`.
+   - **Spam** ("my roommate thinks you're cute", "text me on snap", "I'm messaging from my alt") → Move to spam. Never reply.
+   - **Replies to people are messages** → draft them and get William's yes before sending (stage-never-send).
+   The Business Suite auto-reply answers each person's first message by telling them to email events@tulsagays.com. Many people send the flyer here and never email, so this step is the only place those events get caught (2026-10-26: a weekly Thursday queer Bible study at College Hill Presbyterian, sent twice in August, never reached the calendar).
 1. In a session, resolve the personal Chrome (browser-operations: personal = "personal chrome" deviceId 394a57e9-09a3-4b8c-9a5f-52729cc6454a) and `select_browser` it. It's already logged into Facebook/Instagram.
 2. For each venue below, open their Instagram profile, screenshot the recent posts grid, and OPEN each event-looking flyer post. Read the flyer WITH VISION (dates, times, theme names, host). Their FB Events tabs are mostly empty — IG is the source.
 3. Extract DATED one-off / themed events (skip the plain recurring baseline already in scraper/recurring.py, but DO capture the fun themed name when a recurring night has one — e.g. YBR's 2nd-Friday DJ Kylie night was themed "ZODIAC").
