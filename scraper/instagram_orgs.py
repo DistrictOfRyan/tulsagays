@@ -196,9 +196,13 @@ ORGS: List[Dict] = [
         # until one returns posts, so this also covers a venue-account rename.
         # 2026-10-22: @tulsaybr is live (4,681 followers, linked from YBR's FB page)
         # but answers "page isn't available" to the scraper's login (@districtofryan),
-        # most likely its 21+ age gate; @ybrtulsa does not resolve. @imvalpal carries
-        # YBR in the web-session tier until that changes.
-        "alt_usernames": ["ybrtulsa", "imvalpal"],
+        # most likely its 21+ age gate; @ybrtulsa does not resolve.
+        # 2026-10-26: @imvalpal REMOVED. In practice it is the owner's personal feed
+        # and carried no events, so falling back to it is how ybr_ig sat at 0 events
+        # from W35 to W44. instagram_web.py now re-reads a handle the login cannot
+        # see from a cookie-less page, which reaches @tulsaybr directly. Do not add
+        # @imvalpal back: an empty personal feed hides the real failure.
+        "alt_usernames": ["ybrtulsa"],
         "source_name": "ybr_ig",
         "default_venue": "Yellow Brick Road, 2630 E 15th St",
         # priority 1 (top tier, 2026-06-20 per William): YBR is Tulsa's only lesbian
@@ -682,9 +686,10 @@ class InstagramOrgScraper(BaseScraper):
 
     def _fetch_via_web(self) -> List[Dict]:
         """Tier 3 (2026-07-06): logged-in WEB session in the automation Chrome
-        profile. The only tier that reaches personal accounts (@tulsaybr,
-        @imvalpal) now that the public endpoint 429s and the instagrapi login is
-        bloks-walled. One-time human setup: tools/ig_profile_login.py."""
+        profile. The only tier that reaches personal accounts now that the public
+        endpoint 429s and the instagrapi login is bloks-walled. Since 2026-10-26 a
+        handle the login cannot see (@tulsaybr's age gate) is re-read from the
+        cookie-less page. One-time human setup: tools/ig_profile_login.py."""
         try:
             from scraper import instagram_web
             return instagram_web.posts_for(self.source_name, self.usernames)
