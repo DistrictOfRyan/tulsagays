@@ -922,15 +922,6 @@
     "priority": 2
   },
   {
-    "name": "The Sunday Spotlight (Club Majestic & Kallaya) — All-Star Drag Show",
-    "date": "2026-10-27",
-    "time": "Doors 9pm, Show 10:30pm",
-    "venue": "Club Majestic, 124 N Boston Ave",
-    "url": "https://www.instagram.com/p/DdvhFTkudz5/",
-    "source": "venue_flyer_dig",
-    "priority": 2
-  },
-  {
     "name": "La La Land",
     "date": "2026-10-18",
     "time": "9:45pm",
@@ -1026,6 +1017,131 @@
     "time": "11:00 AM & 1:30 PM",
     "venue": "Elote Cafe, 514 S Boston Ave",
     "url": "https://www.instagram.com/p/Dd889t4Efdn/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "La La Land - One-Night-Only Premiere",
+    "date": "2026-10-18",
+    "time": "9:45pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DeWa1sUEUWX/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Sensational Saturdays: Scary Ol' B*tches ft. Ivana B. Real, Shanel Sterling, Porsche Lynn, Mia Inez Adams",
+    "date": "2026-10-17",
+    "time": "Doors 9pm, Showtime 9:30pm-10:30pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DeWaKDMxMyz/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Escándalo - Tulsa Pride Weekend Dance Competition",
+    "date": "2026-10-16",
+    "time": "Doors 9pm, showtime 9:30pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DeWZ8Qgkf8L/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "The Rocky Horror Picture Show - Drag Cast Performance",
+    "date": "2026-10-11",
+    "time": "Doors 9pm, Showtimes 9:30pm & 11pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/Dd89bAYxzfh/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "The Rocky Horror Picture Show - Drag Cast Performance",
+    "date": "2026-10-15",
+    "time": "Doors 9pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/Dd89bAYxzfh/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "QueerLit Collective Fundraiser: Dinner, Drinks & Story Time with Shanel Sterling",
+    "date": "2026-10-13",
+    "time": "6:00-9:00 PM",
+    "venue": "Elote Cafe, 514 S Boston Ave",
+    "url": "https://www.instagram.com/p/DeVSRA4jrvy/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Kai'n Ival(e) Art Fest",
+    "date": "2026-10-31",
+    "time": "7:00 PM",
+    "venue": "Private venue, RSVP required (contact 918-888-6842 or @upflykai)",
+    "description": "Honey, this one's invite-only and worth the ask. KLASSIC's throwing an art fest with vendors, a costume contest, live performers, face painting, even an open mic, so text or DM for your RSVP and come ready to be a little extra.",
+    "website_description": "Kai'n Ival(e) Art Fest from KLASSIC lands Halloween night, 7-9 PM, private event with RSVP required. Expect vendors, food, drinks, an art expose, a costume contest, live performers, activities, face painting, and an open mic, pay-what-you-can. RSVP by phone at 918-888-6842 or DM @upflykai for the location.",
+    "url": "",
+    "source": "submission",
+    "priority": 3,
+    "lgbtq_relevant": true,
+    "source_note": "Tip via DM EMAIL from outstandingoriginal29@gmail.com captured 2026-10-10 18:30; reviewed before publish"
+  },
+  {
+    "name": "The Spooky Sunday Spotlight (Halloween edition)",
+    "date": "2026-10-25",
+    "time": "Doors 9PM, Show 10:30PM",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DenF23hR5ZW/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "La La Land (Anthony Christopher Presents) feat. Fonda LaFemme, Tracy La Louisianne (Miss Gay America 2026), Elle Laganda",
+    "date": "2026-10-18",
+    "time": "9:45pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DeWa1sUEUWX/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "KLA Cookout (Oklahoma Leather Association fundraiser)",
+    "date": "2026-10-18",
+    "time": "3:00 PM - 5:00 PM",
+    "venue": "Tulsa Eagle, 1338 E 3rd St",
+    "url": "https://www.instagram.com/p/DepLLo1icGE/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Dinner & Drag: Halloween",
+    "date": "2026-10-23",
+    "time": "6:30 PM",
+    "venue": "Elote Cafe, 514 S Boston Ave",
+    "url": "https://www.instagram.com/p/Dehd4fGFYQ3/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Queens & Split Screens (Gayming Night)",
+    "date": "2026-10-26",
+    "time": "7:00 PM",
+    "venue": "Yellow Brick Road, 2630 E 15th St",
+    "description": "Gayming night at YBR with Puyo Puyo and Tetris on Nintendo Switch, plus bois night, wrastlin, and free Piehole.",
+    "website_description": "Gayming night at Yellow Brick Road. Puyo Puyo and Tetris on Nintendo Switch, plus bois night, wrastlin, and free Piehole. Starts at 7 PM.",
+    "url": "https://www.instagram.com/p/De5Ela4y6nW/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Open Stage with Jason Waterfalls",
+    "date": "2026-10-28",
+    "time": "Sign-up 8pm, show 9pm",
+    "venue": "Yellow Brick Road, 2630 E 15th St",
+    "description": "Open stage at YBR with Jason Waterfalls, moved to this Wednesday. Bring your spooky talents. Free pool all night.",
+    "website_description": "Open stage at Yellow Brick Road with Jason Waterfalls, moved to this Wednesday. Bring your spooky talents. Sign-up at 8 PM, show at 9 PM. Free pool all night.",
+    "url": "https://www.instagram.com/p/DezT0x0x5IK/",
     "source": "venue_flyer_dig",
     "priority": 2
   }

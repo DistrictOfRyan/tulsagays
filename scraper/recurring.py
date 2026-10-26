@@ -264,6 +264,7 @@ RECURRING = [
         "name": "Tuesdays in the Park Concert Series",
         "day": "Tuesday",
         "freq": "weekly",
+        "months": [6],   # June only (artsok.org: every Tuesday in June); see the guard in scrape()
         "time": "7:00 PM - 9:00 PM",
         "venue": "Central Park, 1500 S Main St, Broken Arrow",
         "url": "https://www.artsok.org/",
@@ -362,6 +363,13 @@ class RecurringScraper(BaseScraper):
                 if date.weekday() != target_weekday:
                     continue
                 if not _matches_occurrence(date, entry["freq"]):
+                    continue
+                # Seasonal entries (2026-10-26): an optional "months" list limits an
+                # entry to those calendar months. Tuesdays in the Park runs ONLY in
+                # June (artsok.org), but "weekly" with no month limit projected it onto
+                # every Tuesday of the year and W44 featured a Broken Arrow summer
+                # concert on 10/27.
+                if entry.get("months") and date.month not in entry["months"]:
                     continue
 
                 date_str = date.strftime("%Y-%m-%d")
