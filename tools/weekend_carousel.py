@@ -101,6 +101,8 @@ _NEVER_HEADLINE = (
     "name change", "gender marker", "fafsa", "board meeting", "committee",
     "monthly meeting", "business meeting", "orientation", "rehearsal",
     "bowling league", "sunday service", "worship", "mass ",
+    # Kids programming (a School of Rock trunk-or-treat headlined W44 Saturday).
+    "trunk or treat", "trunk-or-treat",
 )
 
 # Venue strings the scrapers sometimes leave as junk (relative-date leakage).
@@ -299,13 +301,24 @@ _QUEER_VENUES = (
     "the hunt club", "renegades",
 )
 
+# Queer hosts by name or Instagram handle. Their events often arrive through a
+# general aggregator, so the source alone says "eventbrite" and nothing in the
+# title is queer. KLASSIC's KAI'NIVAL (Oct 31, via Eventbrite, venue line
+# "@upflykai") lost its slot to a kids' trunk-or-treat this way, 2026-W44.
+_QUEER_HOSTS_RE = re.compile(
+    r"\b(klassic|upflykai|tcc_pride|tcc pride|goff_fest|pflagtulsa|pflag|"
+    r"hotmesssportstulsa|hotmess sports|okeq|oklahomans for equality)\b", re.I)
+
 
 def _is_queer_draw(e: Dict) -> bool:
-    """True if this reads as a queer event: by name, by venue, or by source."""
+    """True if this reads as a queer event: by name, venue, source, or host."""
     blob = f"{e.get('name','')} {e.get('venue','')} {e.get('source','')}".lower()
     if _QUEER_DRAW_RE.search(blob):
         return True
     if (e.get("source") or "").lower() in _QUEER_SOURCES:
+        return True
+    host_blob = f"{blob} {e.get('description','')} {e.get('url','')}"
+    if _QUEER_HOSTS_RE.search(host_blob):
         return True
     venue = (e.get("venue") or "").lower()
     return any(v in venue for v in _QUEER_VENUES)
@@ -937,6 +950,19 @@ def _selftest() -> int:
     check(all(e.get("name") != "Coffee"
               for d in sel["headlines"].values() for e in d),
           "Friday morning coffee not selected")
+
+    # W44: a queer host's event scraped via Eventbrite still reads as queer,
+    # and a kids' trunk-or-treat never headlines.
+    kai = {"name": "KAI'NIVAL ART FESTIVAL", "source": "eventbrite",
+           "venue": "Private venue, RSVP required (contact @upflykai)",
+           "description": "KLASSIC's throwing an art fest."}
+    check(_is_queer_draw(kai), "queer host via aggregator counts as queer draw")
+    check(not _is_queer_draw({"name": "Fall Art Festival", "source": "eventbrite",
+                              "venue": "Guthrie Green"}),
+          "plain art festival is not a queer draw")
+    check(_blocked_from_headline({"name": "1st EVER Trunk or Treat at School of Rock",
+                                  "venue": "School of Rock"}),
+          "kids trunk-or-treat never headlines")
     cap = build_caption(sel)
     check("—" not in cap, "caption has no em dashes")
     check("tulsagays.com" in cap, "caption carries the URL")
