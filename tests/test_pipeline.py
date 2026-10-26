@@ -724,14 +724,19 @@ def test_tulsa_eagle_ig_extraction():
     # login page, so `await r.json()` threw SyntaxError, and that exception
     # escaped PAST the topsearch fallback into the outer catch. A fallback you
     # can never reach is not a fallback.
+    # 2026-10-23 (68dfca8) the tier stopped hand-building API calls and now reads
+    # the app's own PolarisProfilePostsQuery response, parsed in Python. Same
+    # invariant, new markers: the json.loads sits in a try that names the failure,
+    # and a walled page is identified from the page state, not a parse error.
     web = os.path.join(ROOT, "scraper", "instagram_web.py")
     with open(web, encoding="utf-8") as f:
         wcode = f.read()
-    check("every JSON parse in the web tier is guarded", "const jparse" in wcode)
+    check("every JSON parse in the web tier is guarded",
+          "posts query returned non-JSON" in wcode)
     check("no unguarded await r1.json() remains",
           "await r1.json()" not in wcode)
     check("an HTML wall is reported as such, not as a SyntaxError",
-          "non-JSON (HTML wall)" in wcode)
+          "login wall (session not accepted)" in wcode)
 
 
 def test_anonymity_allowlist():
