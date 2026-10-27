@@ -39,8 +39,10 @@ FB_PAGE_URL        = "https://www.facebook.com/profile.php?id=61575591958277"
 FB_GROUPS = [
     # ---- Tulsa LGBTQ (top priority) ----
     {"name": "Okie Gays", "id": "2612250565491228", "members": 6000,
-     "type": "lgbtq", "post": True, "moderated": False,
-     "notes": "Largest statewide LGBTQ group. High reach. Posted 2026-06-01."},
+     "type": "lgbtq", "post": False, "moderated": False,
+     "notes": "Largest statewide LGBTQ group. Posted 2026-06-01. DROPPED 2026-10-27 "
+              "(William): removed the W44 post within minutes; the Page's only "
+              "published post there is from May."},
     {"name": "Tulsa's LGBT Nightlife", "id": "220878821301627", "members": 2000,
      "type": "lgbtq", "post": True, "moderated": False,
      "notes": "Nightlife focus. Went LIVE 2026-06-01."},
@@ -75,8 +77,9 @@ FB_GROUPS = [
      "type": "lgbtq", "post": True, "moderated": True,
      "notes": "Large statewide. Private, moderated. Pending 2026-06-01."},
     {"name": "Oklahoma LGBT Event Group", "id": "193672804619496", "members": 2100,
-     "type": "lgbtq", "post": True, "moderated": True,
-     "notes": "Perfect-fit events group. Moderated. Pending 2026-06-01."},
+     "type": "lgbtq", "post": False, "moderated": True,
+     "notes": "Perfect-fit events group. Moderated. Pending 2026-06-01. DROPPED "
+              "2026-10-27 (William): declined the W44 post within minutes."},
     {"name": "pansexual/Graysexual LGBTQ+ in OKC", "id": "1097808421083168",
      "members": 1100, "type": "lgbtq_okc", "post": True, "moderated": None,
      "notes": "OKC; post statewide/Pride events."},
