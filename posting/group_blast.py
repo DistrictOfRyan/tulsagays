@@ -26,6 +26,7 @@ Cooldown: a group posted within COOLDOWN_DAYS (from any prior ledger) is skipped
 
 import argparse
 import json
+import re
 import sys
 import time
 from datetime import datetime, timezone, timedelta
@@ -43,6 +44,14 @@ AUTH_PATH = ROOT / "data" / "fb_group_auth.json"
 COOLDOWN_DAYS = 5
 PACE_SECONDS = 25          # gap between posts (spam-safety)
 PAGE_NAME = "Tulsa Gays"
+# Every status that means we clicked Post in that group. All of them put the group on
+# cooldown, so a rerun can never post the same deck into it twice (W38 went out twice).
+POSTED_STATUSES = ("live", "pending", "submitted", "removed", "declined")
+CONFIRM_WINDOW_MIN = 30
+# A content-view entry reads "Tulsa Gays | posted to | <group> | 13 minutes ago | ...".
+# Older entries render an obfuscated timestamp, so only a fresh post matches.
+_FRESH_ENTRY = re.compile(r"posted to \| [^|]+\| (just now|a minute ago|"
+                          r"(\d+) (seconds?|secs?|minutes?|mins?) ago) \|")
 
 
 def _gate(image_paths) -> None:
@@ -97,7 +106,7 @@ def _recent_posts_by_group():
         except Exception:
             continue
         for r in data.get("results", []):
-            if r.get("status") in ("live", "pending"):
+            if r.get("status") in POSTED_STATUSES:
                 gid, ts = r.get("id"), r.get("at")
                 if gid and ts and (gid not in seen or ts > seen[gid]):
                     seen[gid] = ts
@@ -120,8 +129,8 @@ def _write_ledger(week, header: dict, results: list):
         pass
     for r in results:
         prev = merged.get(r.get("id"))
-        # Never let a later error/skip entry hide an earlier live/pending post.
-        if prev and prev.get("status") in ("live", "pending") and r.get("status") not in ("live", "pending"):
+        # Never let a later error/skip entry hide an earlier post.
+        if prev and prev.get("status") in POSTED_STATUSES and r.get("status") not in POSTED_STATUSES:
             continue
         merged[r.get("id")] = r
     body = dict(header)
@@ -155,8 +164,16 @@ def _acting_as_page(page) -> bool:
         body = page.inner_text("body", timeout=8000).lower()
     except Exception:
         return False
-    return (PAGE_NAME.lower() in body
-            and ("professional dashboard" in body or "meta business suite" in body))
+    # 2026-10-27: FB renamed the Page menu item "Professional dashboard" to "Business
+    # dashboard", so a successful switch still read as a failure. The feed composer
+    # prompt names who is posting and never appears in the switcher preview, so it is
+    # the stronger signal; the dashboard labels stay as the fallback.
+    name = PAGE_NAME.lower()
+    if f"what's on your mind, {name}" in body or f"what’s on your mind, {name}" in body:
+        return True
+    return (name in body
+            and any(m in body for m in ("professional dashboard", "business dashboard",
+                                        "meta business suite")))
 
 
 def _switch_to_page(page):
@@ -176,7 +193,15 @@ def _switch_to_page(page):
         try:
             page.goto("https://www.facebook.com/", wait_until="domcontentloaded")
             page.wait_for_timeout(2500)
-            for sel in ('div[aria-label="Your profile"]', 'div[aria-label="Account"]'):
+            # 2026-10-27: FB relabelled the avatar button "Account, your profile" (role=
+            # button) and moved "Your profile" onto an inner <svg>. The two exact-match
+            # selectors below then matched nothing, the switcher never opened, and the
+            # blast aborted on the anonymity guard for W42-W44 (0 of 17 groups). The
+            # persistent profile it used before 10/22 already acted as a Page, which hid
+            # the stale selectors. Prefix match first, legacy labels kept as fallbacks.
+            for sel in ('div[role="button"][aria-label^="Account"]',
+                        '[aria-label="Your profile"]',
+                        'div[aria-label="Your profile"]', 'div[aria-label="Account"]'):
                 try:
                     page.locator(sel).first.click(timeout=4000); break
                 except Exception:
@@ -212,6 +237,33 @@ def _switch_to_page(page):
     # appears in the switcher preview), so we don't trust it to skip the switch.
     _do_switch()
     return _acting_as_page(page)
+
+
+def _confirm_outcome(page, url):
+    """Where did the post we just submitted land? Reads the Page's own content views
+    for the group (they list only Tulsa Gays' posts, newest first) and returns
+    live / pending / removed / declined for the first view whose newest entry is fresh,
+    or None when no view shows it.
+
+    2026-10-27: the old check called a post "live" whenever the page said "Comment as
+    Tulsa Gays", which shows under EVERY post in a group feed while acting as the Page.
+    W44 logged 8 live; these views showed 5 published, 2 pending, and Okie Gays had
+    removed its post within minutes."""
+    base = url.rstrip("/")
+    for view, status in (("my_posted_content", "live"), ("my_pending_content", "pending"),
+                         ("my_removed_content", "removed"), ("my_declined_content", "declined")):
+        try:
+            page.goto(f"{base}/{view}", wait_until="domcontentloaded", timeout=30000)
+            page.wait_for_timeout(4000)
+            main = page.locator('div[role="main"]')
+            txt = (main.first if main.count() else page.locator("body")).inner_text(timeout=6000)
+        except Exception:
+            continue
+        m = _FRESH_ENTRY.search(txt.replace("\n", " | ").lower())
+        if m and (not m.group(2) or m.group(3).startswith("sec")
+                  or int(m.group(2)) <= CONFIRM_WINDOW_MIN):
+            return status
+    return None
 
 
 def _composer_is_page(page) -> bool:
@@ -354,19 +406,19 @@ def _post_to_group(page, group, image_paths):
                 continue
         if not submitted:
             res["status"] = "error"; res["error"] = "Post button not found"; return res
+        submitted_at = time.monotonic()
 
-        # Verify outcome.
+        # Verify outcome: the Page's own content views are authoritative; the
+        # composer's "pending" notice is the fallback. "submitted" = Post was clicked
+        # but no view shows the post (still on cooldown, never counted as landed).
         page.wait_for_timeout(5000)
         try:
             body = page.inner_text("body", timeout=5000).lower()
         except Exception:
             body = ""
-        if "your post is pending" in body or "awaiting admin approval" in body:
-            res["status"] = "pending"
-        elif "comment as tulsa gays" in body:
-            res["status"] = "live"
-        else:
-            res["status"] = "submitted"   # posted but couldn't confirm state
+        dialog_pending = "your post is pending" in body or "awaiting admin approval" in body
+        res["status"] = _confirm_outcome(page, url) or ("pending" if dialog_pending else "submitted")
+        res["_since_submit"] = time.monotonic() - submitted_at
         return res
     except Exception as e:
         res["status"] = "error"; res["error"] = str(e)[:200]
@@ -451,9 +503,17 @@ def run(dry_run=False, headed=False, week=None):
                 "its Chrome-for-Testing browser is blocked at Google login).")
 
         if not _switch_to_page(page):
+            # Keep what FB showed: W42-W44 died here with nothing on disk, and the
+            # cause (renamed FB menu labels) took a separate debugging session to find.
+            shot = post_dir / "group_blast_switch_fail.png"
+            try:
+                page.screenshot(path=str(shot))
+            except Exception:
+                shot = "none"
             b.close()
             raise SystemExit("Could not confirm 'acting as Tulsa Gays Page'. "
-                             "Aborting (anonymity guard). Re-run --setup if login expired.")
+                             "Aborting (anonymity guard). If FB is logged in, its menu labels "
+                             f"changed: check _switch_to_page/_acting_as_page. Screenshot: {shot}")
         print(f"\n[ok] acting as {PAGE_NAME}\n")
 
         # Bounded ops so a single group can never wedge the whole run (the
@@ -470,6 +530,7 @@ def run(dry_run=False, headed=False, week=None):
                                 "at": datetime.now(timezone.utc).isoformat()})
                 break
             r = _post_to_group(page, g, image_paths)
+            since_submit = r.pop("_since_submit", 0)
             r["at"] = datetime.now(timezone.utc).isoformat()
             results.append(r)
             # Record each group the moment it posts (2026-09-15). The ledger was
@@ -481,7 +542,8 @@ def run(dry_run=False, headed=False, week=None):
             print(f"  [{r['status']:9}] {g['name']}"
                   + (f"  ({r.get('error')})" if r.get("error") else ""))
             if i < len(plan) - 1:
-                time.sleep(PACE_SECONDS)   # spam-safe pacing
+                # spam-safe pacing between Post clicks; outcome checks count toward it
+                time.sleep(max(0, PACE_SECONDS - since_submit))
         b.close()
 
     out = {
