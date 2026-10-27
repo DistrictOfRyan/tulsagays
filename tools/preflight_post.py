@@ -222,6 +222,55 @@ _DN_MONTH = re.compile(
     re.IGNORECASE)
 
 
+_DAY_FULL = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+_DAY_SHORT = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"]
+
+
+def correct_daynames(text, week_key):
+    """-> (text, fixes). Rewrite a caption's day name to match the date next to
+    it, using the same patterns _check_daynames blocks on (2026-10-27).
+
+    The date is the trustworthy half: it comes from the event record, while the
+    caption model works the weekday out itself (W37 "Mon 9/8" for a Tuesday; the
+    W44 replay "Thurs 10/30" for a Friday). main.py runs this on every generated
+    caption, so a wrong day name is fixed before the gate ever sees it."""
+    if not text:
+        return text, []
+    try:
+        year = _week_range(week_key)[0].year
+    except Exception:
+        return text, []
+    fixes = []
+
+    def _swap(m, said, actual):
+        real = actual.weekday()
+        if real == _DAYNAMES[said.lower()]:
+            return m.group(0)
+        new = _DAY_FULL[real] if len(said) >= 6 else (_DAY_SHORT[real] if len(said) > 3 else _DAY_FULL[real][:3])
+        if said.isupper():
+            new = new.upper()
+        elif said.islower():
+            new = new.lower()
+        fixes.append(f"{said} -> {new} ({m.group(0).strip()})")
+        return new + m.group(0)[len(said):]
+
+    def _slash(m):
+        try:
+            return _swap(m, m.group(1), date(year, int(m.group(2)), int(m.group(3))))
+        except ValueError:
+            return m.group(0)
+
+    def _month(m):
+        try:
+            return _swap(m, m.group(1), date(year, _MONTHS[m.group(2).lower()], int(m.group(3))))
+        except (ValueError, KeyError):
+            return m.group(0)
+
+    text = _DN_SLASH.sub(_slash, text)
+    text = _DN_MONTH.sub(_month, text)
+    return text, fixes
+
+
 def _check_daynames(text, week_key, where, errors, warnings):
     """HARD BLOCK a caption whose weekday label disagrees with its own date.
 
@@ -1236,6 +1285,15 @@ def _selftest_split() -> int:
     check(p3 is False, "any HARD error blocks even under the fallback mode")
     check(p4 is False, "a soft line the ladder never certified re-blocks")
     check(p5 is False, "acceptance needs mode fallback_confirmed_only, not just a list")
+    cap = ("Costume Contest both Thurs 10/30 at DVL. Round two Fri 10/31. "
+           "Queer Crafters Thursday, Oct 29 at 6pm. MONDAY 10/26 movie night.")
+    fixed, fx = correct_daynames(cap, "2026-W44")
+    errs = []
+    _check_daynames(fixed, "2026-W44", "caption", errs, [])
+    check("Fri 10/30" in fixed and "Sat 10/31" in fixed and len(fx) == 2,
+          f"wrong caption day names are rewritten to match the date: {fx}")
+    check("Thursday, Oct 29" in fixed and "MONDAY 10/26" in fixed, "correct ones are left alone")
+    check(not errs, "and the [dayname] gate passes the corrected caption")
     print("split selftest OK" if ok else "split selftest FAILED")
     return 0 if ok else 1
 

@@ -134,7 +134,14 @@ def _build_events_block(events: list[dict]) -> str:
     for i, ev in enumerate(events, 1):
         parts = [f"{i}. {ev.get('name', 'Unnamed Event')}"]
         if ev.get("date"):
-            parts.append(f"   Date: {ev['date']}")
+            # Name the weekday (2026-10-27): handed a bare ISO date the model works
+            # the weekday out itself and gets it wrong ("Thurs 10/30" for a Friday,
+            # W44 replay), which preflight's [dayname] check then HARD-blocks.
+            try:
+                _wd = datetime.strptime(ev["date"][:10], "%Y-%m-%d").strftime("%A")
+                parts.append(f"   Date: {ev['date']} ({_wd})")
+            except ValueError:
+                parts.append(f"   Date: {ev['date']}")
         if ev.get("time"):
             parts.append(f"   Time: {ev['time']}")
         if ev.get("venue"):

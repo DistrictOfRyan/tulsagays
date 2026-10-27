@@ -489,6 +489,15 @@ def cmd_generate(post_type="weekday"):
         caption = result["caption"]
         category_events = result["category_events"]
         print(f"Caption generated ({len(caption)} chars)")
+        # A day name that contradicts its own date HARD-blocks preflight; the date
+        # comes from the record, so fix the day name (2026-10-27).
+        try:
+            from tools.preflight_post import correct_daynames as _fix_days
+            caption, _dfix = _fix_days(caption, week_key)
+            if _dfix:
+                print(f"  [dayname] corrected {len(_dfix)} caption day name(s): {'; '.join(_dfix)}")
+        except Exception as _dfe:
+            print(f"  [dayname] caption day-name check skipped ({_dfe})")
     except Exception as e:
         print(f"Caption generation failed: {e}")
         print("Using fallback template...")
