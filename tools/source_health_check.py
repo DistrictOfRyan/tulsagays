@@ -42,9 +42,6 @@ USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 )
-PENDING_ACTIONS_PATH = os.path.join(
-    os.path.expanduser("~"), ".claude", "pending-william-actions.md"
-)
 
 FACEBOOK_DOMAINS = ("facebook.com", "fb.com", "fb.me")
 SLACK_DOMAINS = ("slack.com",)
@@ -717,28 +714,25 @@ def build_summary_lines(results: list, week_file: str, diff: dict | None = None,
     return lines
 
 
-def append_to_pending_actions(summary_lines: list):
-    """Append the health check results to pending-william-actions.md."""
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
-    header = f"## [{timestamp}] Tulsa Gays Source Health Check"
-    block = header + "\n" + "\n".join(f"- {line}" for line in summary_lines) + "\n\n"
+def post_to_dashboard(summary_lines: list):
+    """File the health check results on the TODAY dashboard.
 
+    Until 2026-10-27 this appended to pending-william-actions.md every week. A
+    source health report is a report, and the fixes in it are fleet work, so it
+    belongs on the dashboard, not in William's Action Inbox."""
+    import subprocess
+    sb = os.path.join(os.path.expanduser("~"), ".claude", "chief-of-staff", "submit_brief.py")
+    body = "\n".join(f"- {line}" for line in summary_lines)
     try:
-        # Read existing content
-        if os.path.exists(PENDING_ACTIONS_PATH):
-            with open(PENDING_ACTIONS_PATH, encoding="utf-8") as f:
-                existing = f.read()
-        else:
-            existing = ""
-
-        with open(PENDING_ACTIONS_PATH, "a", encoding="utf-8") as f:
-            if existing and not existing.endswith("\n"):
-                f.write("\n")
-            f.write(block)
-
-        print(f"\nSummary appended to: {PENDING_ACTIONS_PATH}")
+        if not os.path.exists(sb):
+            print(f"\nWARNING: {sb} not found; summary not filed")
+            return
+        r = subprocess.run([sys.executable, sb, "--task", "tulsagays-source-health",
+                            "--subject", "Tulsa Gays Source Health Check", "--priority", "low",
+                            "--body", body], capture_output=True, text=True, timeout=60)
+        print(f"\nSummary filed to the TODAY dashboard (rc={r.returncode})")
     except Exception as exc:
-        print(f"\nWARNING: Could not write to pending-william-actions.md: {exc}")
+        print(f"\nWARNING: Could not file the summary to the dashboard: {exc}")
 
 
 def _run_selftest() -> int:
@@ -916,8 +910,8 @@ def main():
     for line in summary_lines:
         print(line)
 
-    # Write to pending-william-actions.md
-    append_to_pending_actions(summary_lines)
+    # File on the TODAY dashboard (not the Action Inbox)
+    post_to_dashboard(summary_lines)
 
     # Exit with non-zero code if any P1 sources are dead
     dead_keys = {r["key"] for r in results if r["status"] in ("DEAD", "TIMEOUT")}

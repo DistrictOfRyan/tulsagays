@@ -43,8 +43,6 @@ sys.path.insert(0, str(ROOT))
 logging.disable(logging.CRITICAL)  # scrapers are noisy; the guard speaks for them
 
 HEALTH_FILE = ROOT / "data" / "scraper_health.json"
-# Vault action inbox (syncs to Obsidian + dashboard + Telegram digest).
-PENDING_ACTIONS = Path(r"C:\Users\willi\.claude\pending-william-actions.md")
 # Chief-of-staff brief submitter - folds onto the Desktop TODAY.html dashboard.
 SUBMIT_BRIEF = Path(r"C:\Users\willi\.claude\chief-of-staff\submit_brief.py")
 
@@ -265,20 +263,6 @@ def _write_health(results: list, now: str):
         indent=2), encoding="utf-8")
 
 
-def _alert_regressions(regressions: list, now: str):
-    """Append NEW breakage to the vault action inbox (dashboard + Telegram)."""
-    if not regressions or not PENDING_ACTIONS.parent.exists():
-        return False
-    lines = [f"\n## [{now}] TulsaGays scraper health: {len(regressions)} source(s) newly broken\n"]
-    for r in regressions:
-        why = r.get("error") or f"{r['raw']} raw rows, 0 with real dates" if r["status"] == JUNK else "0 events / unreachable"
-        lines.append(f"- {r['source']} -> {r['status']} ({why}) :: {r.get('url','')}")
-    lines.append("- Fix or mark known-dead. Full report: data/scraper_health.json\n")
-    with open(PENDING_ACTIONS, "a", encoding="utf-8") as f:
-        f.write("\n".join(lines))
-    return True
-
-
 def _push_dashboard(regressions: list, now: str) -> bool:
     """Surface NEW breakage + open blocked-on-William items on the TODAY
     dashboard, per William's rule that anything blocked on him must appear there
@@ -380,10 +364,10 @@ def main():
         print(f"[health] ig-profile-session probe skipped: {e}")
 
     _write_health(results, now)
-    alerted = False
     if not args.no_alert:
-        if regressions:
-            alerted = _alert_regressions(regressions, now)
+        # Newly broken sources are fleet work (fix it or mark it known-dead), so
+        # since 2026-10-27 they go to the TODAY dashboard only. _alert_regressions
+        # also wrote William's Action Inbox, a second copy of the same report.
         # Surface new breakage AND any open blocked-on-William items on TODAY.
         _push_dashboard(regressions, now)
 
@@ -413,7 +397,7 @@ def main():
         print(f"\n*** {len(regressions)} NEW REGRESSION(S) since last run ***")
         for r in regressions:
             print(f"  ! {r['source']} -> {r['status']}")
-        print(f"  Action inbox updated: {alerted}")
+        print(f"  Sent to the TODAY dashboard: {not args.no_alert}")
     if recovered:
         print(f"\n+++ {len(recovered)} RECOVERED since last run +++")
         for r in recovered:

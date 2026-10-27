@@ -4,7 +4,7 @@ Reads data/source_candidates.json (written by the weekly source-growth engine)
 and acts on every candidate still in "candidate" status:
 
     confidence >= AUTO_PROMOTE  -> append to data/dynamic_sources.json (LIVE)
-    QUEUE <= confidence < AUTO  -> append to pending-william-actions.md for review
+    QUEUE <= confidence < AUTO  -> file to the TODAY dashboard for review
     confidence <  QUEUE         -> mark rejected
 
 Promotion only ever APPENDS to a JSON data file -- it never edits scraper .py
@@ -31,7 +31,11 @@ from self_improve import source_registry as registry
 AUTO_PROMOTE_DEFAULT = 85
 QUEUE_DEFAULT = 60
 
+# Read-only since 2026-10-27: only consulted so ids queued there before the
+# switch to the dashboard are not filed a second time.
 PENDING_ACTIONS_FILE = r"C:\Users\willi\.claude\pending-william-actions.md"
+QUEUED_IDS_FILE = os.path.join(config.DATA_DIR, "source_review_queued.json")
+SUBMIT_BRIEF = os.path.join(os.path.expanduser("~"), ".claude", "chief-of-staff", "submit_brief.py")
 
 
 # ── dynamic_sources.json writing ─────────────────────────────────────────────
@@ -95,32 +99,48 @@ def _add_to_dynamic(data, cand, today) -> bool:
     return True
 
 
-# ── pending-william-actions.md queue ─────────────────────────────────────────
+# ── review queue (TODAY dashboard) ───────────────────────────────────────────
 def _queue_for_review(rows, today):
-    """Append a dated block of queued candidates. Skips ids already present."""
+    """File a dated block of medium-confidence candidates to the TODAY dashboard.
+    Skips ids already queued. Until 2026-10-27 this appended to William's Action
+    Inbox; reviewing a candidate source is fleet work a session can do, so it is
+    a dashboard report now (5 inbox entries in the archive came from here)."""
     if not rows:
         return 0
     existing = ""
     if os.path.exists(PENDING_ACTIONS_FILE):
         with open(PENDING_ACTIONS_FILE, "r", encoding="utf-8", errors="replace") as f:
             existing = f.read()
+    try:
+        with open(QUEUED_IDS_FILE, "r", encoding="utf-8") as f:
+            queued = set(json.load(f))
+    except Exception:
+        queued = set()
 
-    fresh = [r for r in rows if r["id"] not in existing]
+    fresh = [r for r in rows if r["id"] not in existing and r["id"] not in queued]
     if not fresh:
         return 0
 
-    lines = [f"\n## [{today}] TulsaGays source-growth: {len(fresh)} new source(s) to review\n"]
-    lines.append("Reply to approve; these were found but scored medium-confidence. "
-                 "To approve, add them to `data/dynamic_sources.json` (or tell me to).\n")
+    lines = ["These were found but scored medium-confidence. To approve one, add it "
+             "to `data/dynamic_sources.json`.\n"]
     for r in fresh:
         loc = r.get("url") or r.get("kw")
         lines.append(f"- **{r['name']}** ({r['type']}, conf {r['confidence']}) - {loc}  \n"
-                     f"  <!-- {r['id']} -->  \n"
-                     f"  {r['evidence']}\n")
-    block = "\n".join(lines)
-
-    with open(PENDING_ACTIONS_FILE, "a", encoding="utf-8") as f:
-        f.write(block)
+                     f"  {r['evidence']}  \n"
+                     f"  id: {r['id']}\n")
+    import subprocess
+    if not os.path.exists(SUBMIT_BRIEF):
+        print(f"[promote] {SUBMIT_BRIEF} not found; {len(fresh)} candidate(s) not filed")
+        return 0
+    rc = subprocess.run(
+        [sys.executable, SUBMIT_BRIEF, "--task", "tulsagays-source-growth", "--priority", "low",
+         "--subject", f"TulsaGays source-growth: {len(fresh)} new source(s) to review ({today})",
+         "--body", "\n".join(lines)],
+        capture_output=True, text=True, timeout=60).returncode
+    if rc != 0:
+        return 0
+    with open(QUEUED_IDS_FILE, "w", encoding="utf-8") as f:
+        json.dump(sorted(queued | {r["id"] for r in fresh}), f, indent=1)
     return len(fresh)
 
 

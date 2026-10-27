@@ -1233,14 +1233,22 @@ def _warn_missing_key_venues(events: List[Dict], week_key: str) -> None:
     )
     logger.warning("[key-venue] %s", msg)
     print(f"\n*** KEY VENUE ALERT ***\n{msg}\n")
+    # Dashboard, not the Action Inbox (2026-10-27). This used to append to
+    # pending-william-actions.md every week a venue went quiet (24 entries in the
+    # inbox archive), but the text is a fleet work order (check the venue's IG,
+    # add to manual_events.json, re-scrape), not a step only William can take.
+    # The weekly venue dig (task tulsagays-venue-dig) works it from the dashboard.
     try:
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
-        entry = (f"\n## [{timestamp}] TulsaGays key venue(s) silent — {week_key}\n"
-                 f"- {msg}\n")
-        with open(PENDING_ACTIONS_PATH, "a", encoding="utf-8") as f:
-            f.write(entry)
+        import subprocess
+        sb = os.path.join(os.path.expanduser("~"), ".claude", "chief-of-staff", "submit_brief.py")
+        if os.path.exists(sb):
+            subprocess.run(
+                [sys.executable, sb, "--task", "tulsagays-key-venues", "--priority", "low",
+                 "--subject", f"TulsaGays {week_key}: {len(missing)} key venue(s) returned 0 events",
+                 "--body", msg],
+                capture_output=True, text=True, timeout=60)
     except Exception as exc:
-        logger.error(f"[key-venue] Could not write pending action: {exc}")
+        logger.error(f"[key-venue] Could not file the dashboard brief: {exc}")
 
 
 # ── Flagship upcoming-event hold helpers ──────────────────────────────────────
