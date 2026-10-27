@@ -455,7 +455,15 @@ except Exception as _ed:
 # highlight exactly like the carousel (2026-07-20: the old single-pick path
 # ignored both and bannered a recurring Drag Brunch over the Fringe/PFLAG
 # partner heroes). Banner shows hero #1; every hero gets the featured star.
-_eotw_list = select_eotw_list(all_flat, week_key=config.current_week_key())
+# Same confirmed-row preference as the carousel (2026-10-27), so the site's
+# banner and the post's cover name the same event.
+try:
+    from tools.truth_status import load as _truth_load
+    _eotw_confirmed = _truth_load(config.current_week_key()).featurable
+except Exception:
+    _eotw_confirmed = None
+_eotw_list = select_eotw_list(all_flat, week_key=config.current_week_key(),
+                              confirmed=_eotw_confirmed)
 eotw = _eotw_list[0] if _eotw_list else None
 eotw_key = (eotw.get('name', ''), eotw.get('date', '')) if eotw else None
 eotw_keys = {(e.get('name', ''), e.get('date', '')) for e in _eotw_list}

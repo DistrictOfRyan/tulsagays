@@ -727,7 +727,8 @@ def _is_partner_special(e: Dict, partners: Optional[List[Dict]] = None) -> bool:
 
 
 def select_eotw_list(events_this_week: List[Dict],
-                     week_key: Optional[str] = None) -> List[Dict]:
+                     week_key: Optional[str] = None,
+                     confirmed=None, strict: bool = False) -> List[Dict]:
     """Return an ordered list of Events of the Week (usually 1, sometimes 2).
 
     Order of precedence:
@@ -737,7 +738,15 @@ def select_eotw_list(events_this_week: List[Dict],
          automatically; any remaining hero slot is filled by the marquee
          auto-pick (select_eotw). Capped at 2 to fit the stacked-cover layout.
       3. Single auto-selected EOTW when there are no partner events.
-    Returns [] if nothing qualifies."""
+    Returns [] if nothing qualifies.
+
+    `confirmed` (2026-10-27) is tools/truth_status.TruthStatus.featurable or
+    None. preflight hard-blocks an EOTW its source never confirmed, so: each
+    partner's hero is its best CONFIRMED special when it has one, and the
+    marquee pick runs over confirmed rows (plus Homo Hotel Happy Hour, William's
+    own night) before it may fall back to the whole week. `strict` is the prep
+    degrade ladder's confirmed-only rebuild: unconfirmed partner specials are
+    dropped and the HHHH exemption goes too. Manual pins are never filtered."""
     # 1. Human-pinned override always wins (a person verified it).
     manual = load_manual_eotw(week_key)
     if manual:
@@ -766,13 +775,18 @@ def select_eotw_list(events_this_week: List[Dict],
     heroes: List[Dict] = []
     seen_ids = set()
     if partners:
+        def _conf_rank(e):
+            return 0 if (confirmed is None or confirmed(e)) else 1
+
         best_by_partner: Dict[str, Dict] = {}
         for e in events_this_week:
             if not _is_partner_special(e, partners):
                 continue
+            if strict and confirmed is not None and not confirmed(e):
+                continue
             pname = _partner_of(e, partners)
             cur = best_by_partner.get(pname)
-            if cur is None or _sort_key(e) < _sort_key(cur):
+            if cur is None or (_conf_rank(e), _sort_key(e)) < (_conf_rank(cur), _sort_key(cur)):
                 best_by_partner[pname] = e
         for e in sorted(best_by_partner.values(), key=_sort_key):
             if id(e) not in seen_ids:
@@ -781,7 +795,12 @@ def select_eotw_list(events_this_week: List[Dict],
 
     # Fill any remaining hero slot (up to 2) with the marquee auto-pick.
     if len(heroes) < 2:
-        marquee = select_eotw([e for e in events_this_week if id(e) not in seen_ids])
+        rest = [e for e in events_this_week if id(e) not in seen_ids]
+        marquee = None
+        if confirmed is not None:
+            marquee = select_eotw([e for e in rest if confirmed(e) or (_is_hh(e) and not strict)])
+        if marquee is None:
+            marquee = select_eotw(rest)
         if marquee is not None and id(marquee) not in seen_ids:
             heroes.append(marquee)  # rounds out slot 2, or is the sole hero
             seen_ids.add(id(marquee))

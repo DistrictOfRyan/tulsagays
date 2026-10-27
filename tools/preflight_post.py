@@ -658,42 +658,23 @@ def run(week_key=None):
             # (human_verified with an evidence_url). "Nobody found it wrong" is
             # not enough for the cover people act on (2026-09-15: W38's corrected
             # EOTW was a Google Form link no machine could read).
-            _conf = {(c.get("name"), c.get("date")) for c in _tr.get("confirmed", [])}
             if "confirmed" not in _tr:
                 errors.append("[truth] truth_report.json predates positive confirmations — re-run verify_week_truth.py")
             else:
-                try:
-                    _raw_all = json.load(open(os.path.join(config.DATA_DIR, "events", f"{week_key}_all.json"),
-                                              encoding="utf-8"))
-                    _raw_all = _raw_all.get("events", []) if isinstance(_raw_all, dict) else _raw_all
-                except Exception:
-                    _raw_all = []
-                _rows_by_key = {(e.get("name"), e.get("date")): e for e in _raw_all if isinstance(e, dict)}
-                # A recurring event that's tracked and FRESH in the recurring-
-                # confirmations ledger already carries real human evidence (the
-                # double-week venue-IG-post confirmation that ledger records) --
-                # the "RECURRING EVENT VERIFICATION" block above already trusts
-                # this same ledger for staleness; the truth gate must trust it
-                # too instead of demanding a second, separate proof. Matched by
-                # normalized NAME (not the row's current `source`), because a
-                # live-scraped duplicate can win the merge over the hardcoded
-                # `recurring` row and inherit its name without its provenance
-                # (e.g. "Monday Movie Night" merging in as source=facebook_events).
-                try:
-                    from scraper.recurring_verify import load_ledger as _rv_load, lookup_tier as _rv_tier
-                    _rv_ledger = _rv_load()
-                    _rv_today = date.today().isoformat()
-                except Exception:
-                    _rv_ledger = None
+                # ONE definition of "confirmed" (tools/truth_status.py, 2026-10-27),
+                # shared with the featured picker, the EOTW pick and the healer. It
+                # accepts: the truth_report "confirmed" list; human_verified with an
+                # evidence_url on the row in {week}_all.json; or a recurring event
+                # tracked FRESH/STALE in the recurring-confirmations ledger (matched by
+                # NAME, because a live-scraped duplicate can win the merge over the
+                # hardcoded `recurring` row and inherit its name without its source).
+                # W40-W44 each blocked here because the picker had no idea this rule
+                # existed; now both sides read it from the same place.
+                from tools.truth_status import load as _truth_load
+                _ts = _truth_load(week_key)
                 for _k in sorted(_fk, key=lambda k: (str(k[1]), str(k[0]))):
-                    _row = _rows_by_key.get(_k, {})
-                    _hv = _row.get("human_verified") or {}
-                    if _k in _conf or (_hv.get("evidence_url") and _hv.get("action") != "hidden"):
+                    if _ts.confirmed({"name": _k[0], "date": _k[1]}):
                         continue
-                    if _rv_ledger is not None:
-                        _is_tracked, _tier, _, _ = _rv_tier(_k[0], _rv_today, _rv_ledger)
-                        if _is_tracked and _tier in ("fresh", "stale"):
-                            continue
                     errors.append(f"[truth] featured/EOTW '{_k[0]}' {_k[1]} is not confirmed by its source or a "
                                   f"recorded human check — verify it (set human_verified with evidence_url) or unfeature it")
         except Exception as _te:
@@ -1122,13 +1103,61 @@ def run(week_key=None):
     return _finish(week_key, post_dir, errors, warnings)
 
 
+# ── HARD vs SOFT (2026-10-27) ────────────────────────────────────────────────
+# Exactly ONE error class is SOFT: a featured/EOTW row that a machine could not
+# positively confirm. It is "unread", not "wrong" — the wrong classes (stale year,
+# foreign city, cancelled, duplicate, a source that disagrees with our date) all
+# have their own HARD errors above. Everything not matched here is HARD.
+#
+# A SOFT-only deck still FAILS this gate by default (exit 1), so every existing
+# caller keeps blocking. It passes only when the prep degrade ladder
+# (task-runner/tasks/tulsagays_weekly_prep.py) has already tried auto-verify, the
+# final healer round and a confirmed-only rebuild, and wrote approval_status.json
+# with mode "fallback_confirmed_only" listing these exact lines in
+# accepted_soft_errors. A different or extra soft line re-blocks, so a deck that
+# changes after the ladder certified it cannot ride the old acceptance.
+_SOFT_ERROR_RE = re.compile(
+    r"^\[truth\] featured/EOTW '.*' \S* is not confirmed by its source or a recorded human check")
+FALLBACK_MODE = "fallback_confirmed_only"
+
+
+def is_soft_error(line: str) -> bool:
+    return bool(_SOFT_ERROR_RE.match(line or ""))
+
+
+def split_errors(errors):
+    """-> (hard, soft)."""
+    soft = [e for e in errors if is_soft_error(e)]
+    return [e for e in errors if not is_soft_error(e)], soft
+
+
+def _fallback_accepts(post_dir, soft) -> bool:
+    try:
+        with open(os.path.join(post_dir, "approval_status.json"), encoding="utf-8") as f:
+            a = json.load(f)
+    except Exception:
+        return False
+    if a.get("mode") != FALLBACK_MODE:
+        return False
+    return bool(soft) and set(soft) <= set(a.get("accepted_soft_errors") or [])
+
+
 def _finish(week_key, post_dir, errors, warnings):
+    hard, soft = split_errors(errors)
+    accepted = bool(soft) and not hard and _fallback_accepts(post_dir, soft)
+    if accepted:
+        warnings = [f"[soft-accepted] {s} (degrade ladder: {FALLBACK_MODE})" for s in soft] + list(warnings)
+        errors = []
     passed = len(errors) == 0
     status = {
         "week_key": week_key,
         "passed": passed,
         "errors": errors,
         "warnings": warnings,
+        "hard_errors": hard,
+        "soft_errors": soft,
+        "soft_only": bool(soft) and not hard,
+        "fallback_accepted": accepted,
         "checked_at": None,  # stamped by caller env if needed
     }
     try:
@@ -1149,14 +1178,70 @@ def _finish(week_key, post_dir, errors, warnings):
         print(f"\n[!] {len(warnings)} warning(s):")
         for w in warnings:
             print(f"   - {w}")
-    if passed:
+    if passed and accepted:
+        print(f"\n[PASS-FALLBACK] {len(soft)} unconfirmed featured row(s) accepted by the "
+              f"degrade ladder ({FALLBACK_MODE}); no HARD error.")
+    elif passed:
         print(f"\n[PASS] safe to post (with {len(warnings)} warning(s) to eyeball).")
     else:
-        print(f"\n[BLOCKED] fix the {len(errors)} error(s) above before posting.")
+        print(f"\n[BLOCKED] fix the {len(errors)} error(s) above before posting "
+              f"({len(hard)} HARD, {len(soft)} SOFT).")
     print("=" * 68)
     return passed
 
 
+def _selftest_split() -> int:
+    """Offline proof of the HARD/SOFT split and the fallback acceptance rule."""
+    import tempfile
+    soft1 = ("[truth] featured/EOTW 'TAFF 2024' 2026-10-27 is not confirmed by its source or a "
+             "recorded human check — verify it (set human_verified with evidence_url) or unfeature it")
+    soft2 = soft1.replace("TAFF 2024", "The Sunday Spotlight (Club Majestic & Kallaya)").replace("10-27", "11-01")
+    hard = [
+        "[anonymity] caption reveals operator identity 'ryan'",
+        "[truth] stale_page: 'Fringe' 2026-09-18 7:00 PM — Facebook says 2025 (featured/EOTW: ...)",
+        "[truth] no truth_report.json for this week — run `python tools/verify_week_truth.py --fix`",
+        "[events] Sunday has only 2 featured event(s) — HARD RULE requires >=3 per day (fix scrape supply)",
+        "[harness-leak] caption contains CLI status text 'You've hit your monthly spend limit'",
+    ]
+    ok = True
+
+    def check(cond, msg):
+        nonlocal ok
+        print(("  ok   " if cond else "  FAIL ") + msg)
+        ok = ok and bool(cond)
+
+    check(is_soft_error(soft1) and is_soft_error(soft2), "unconfirmed featured rows are SOFT (apostrophes in names too)")
+    check(not any(is_soft_error(h) for h in hard), "anonymity / stale page / missing report / <3 featured / CLI text are HARD")
+    d = tempfile.mkdtemp(prefix="pf_split_")
+    _stdout = sys.stdout
+    try:
+        sys.stdout = open(os.devnull, "w", encoding="utf-8")
+        p1 = _finish("2026-W44", d, [soft1, soft2], [])
+        st1 = json.load(open(os.path.join(d, "preflight_status.json"), encoding="utf-8"))
+        with open(os.path.join(d, "approval_status.json"), "w", encoding="utf-8") as f:
+            json.dump({"mode": FALLBACK_MODE, "accepted_soft_errors": [soft1, soft2]}, f)
+        p2 = _finish("2026-W44", d, [soft1, soft2], [])
+        st2 = json.load(open(os.path.join(d, "preflight_status.json"), encoding="utf-8"))
+        p3 = _finish("2026-W44", d, [soft1, soft2, hard[0]], [])
+        soft3 = soft1.replace("TAFF 2024", "Some New Filler")
+        p4 = _finish("2026-W44", d, [soft1, soft3], [])
+        with open(os.path.join(d, "approval_status.json"), "w", encoding="utf-8") as f:
+            json.dump({"accepted_soft_errors": [soft1, soft2]}, f)
+        p5 = _finish("2026-W44", d, [soft1, soft2], [])
+    finally:
+        sys.stdout.close()
+        sys.stdout = _stdout
+    check(p1 is False and st1["soft_only"] is True and st1["hard_errors"] == [], "soft-only still BLOCKS by default and says soft_only")
+    check(p2 is True and st2["fallback_accepted"] and st2["errors"] == [], "the ladder's certified soft list passes")
+    check(p3 is False, "any HARD error blocks even under the fallback mode")
+    check(p4 is False, "a soft line the ladder never certified re-blocks")
+    check(p5 is False, "acceptance needs mode fallback_confirmed_only, not just a list")
+    print("split selftest OK" if ok else "split selftest FAILED")
+    return 0 if ok else 1
+
+
 if __name__ == "__main__":
+    if "--selftest-split" in sys.argv:
+        sys.exit(_selftest_split())
     wk = sys.argv[1] if len(sys.argv) > 1 else None
     sys.exit(0 if run(wk) else 1)

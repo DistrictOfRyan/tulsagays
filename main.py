@@ -466,9 +466,26 @@ def cmd_generate(post_type="weekday"):
 
     # Generate caption
     print("\nGenerating caption...")
+    # The caption names 3-5 events in the model's own words, chosen from the list
+    # it is handed, and no gate checks them against their source. Replaying W44
+    # with its 10/26 hand-checks stripped, the caption opened with two unconfirmed
+    # rows and rewrote the stale "TAFF 2024" row as "TAFF 2026 lands at Twisted
+    # Arts Tulsa tomorrow" (2026-10-27). Hand it only confirmed, featurable rows
+    # (tools/truth_status.py) whenever the week has enough of them.
+    _caption_events = events
+    try:
+        from tools.truth_status import load as _cap_truth_load
+        _cap_ts = _cap_truth_load(week_key)
+        _cap_pool = [e for e in events if not e.get("never_feature")
+                     and not e.get("hide_from_site") and _cap_ts.featurable(e)]
+        if len(_cap_pool) >= 8:
+            _caption_events = _cap_pool
+            print(f"  [truth] caption drawn from {len(_cap_pool)} confirmed rows (of {len(events)})")
+    except Exception as _cte:
+        print(f"  [truth] caption pool not narrowed ({_cte})")
     try:
         from content.generator import generate_post_caption
-        result = generate_post_caption(events, post_type, date_range)
+        result = generate_post_caption(_caption_events, post_type, date_range)
         caption = result["caption"]
         category_events = result["category_events"]
         print(f"Caption generated ({len(caption)} chars)")
@@ -771,6 +788,28 @@ def cmd_generate(post_type="weekday"):
     # thin day a repeat still beats a blank slot.
     _featured_titles_used: set = set()
 
+    # CONFIRMED FIRST (2026-10-27). preflight hard-blocks any featured/EOTW row a
+    # machine or a recorded check never confirmed, and this picker used to ignore
+    # that entirely: W40, W41, W42, W43 and W44 each featured a different
+    # unconfirmable filler and blocked, while W44's own truth_report.json listed
+    # 118 source-confirmed rows. The picker now reads the SAME definition the gate uses
+    # (tools/truth_status.py) and draws the featured 3 from confirmed rows,
+    # touching an unconfirmed row only when a day has fewer than 3 confirmed.
+    # TULSAGAYS_CONFIRMED_ONLY=1 is the prep degrade ladder's last rebuild: the
+    # Event of the Week then also has to be confirmed (no flagship exemption).
+    _confirmed_only = os.environ.get("TULSAGAYS_CONFIRMED_ONLY", "").strip().lower() in ("1", "true", "yes")
+    try:
+        from tools.truth_status import load as _truth_load
+        _truth = _truth_load(week_key)
+        print(f"  [truth] {len(_truth.confirmed_keys)} source-confirmed rows; featured picks prefer them"
+              + (" (CONFIRMED-ONLY rebuild)" if _confirmed_only else ""))
+    except Exception as _te:
+        print(f"  [truth] confirmation status unavailable ({_te}); featured picks ignore it")
+        _truth = None
+
+    def _featurable(e) -> bool:
+        return _truth is None or _truth.featurable(e)
+
     def _norm_title(e) -> str:
         import re as _re
         return _re.sub(r"[^a-z0-9]+", " ", (e.get("name") or "").lower()).strip()
@@ -966,10 +1005,11 @@ def cmd_generate(post_type="weekday"):
         feat_pool = sorted(eligible, key=_rank)
         target = min(3, len(feat_pool))
 
-        # FEATURE GAY EVENTS FIRST (William 2026-06-15). Fill every featured slot
-        # with genuinely LGBTQ events when the day has them; only backfill with
-        # inclusive community events when there aren't enough gay events that day.
-        lg = [e for e in feat_pool if _is_lgbtq_strict(e)]
+        # CONFIRMED FIRST, then everything else below exactly as before. The
+        # confirmed tier is filled gay-first; unconfirmed rows only top up a day
+        # that has fewer than `target` confirmed eligible rows.
+        confirmed_pool = [e for e in feat_pool if _featurable(e)]
+        unconfirmed_pool = [e for e in feat_pool if not _featurable(e)]
 
         # The featured 3 must be 3 DISTINCT events. _dedup_day runs first, but
         # if a rename slips past it (W28: the Elote brunch under two titles
@@ -982,18 +1022,17 @@ def cmd_generate(post_type="weekday"):
                 return False
             return any(_sev(e, p) for p in picked)
 
+        # FEATURE GAY EVENTS FIRST (William 2026-06-15). Fill every featured slot
+        # with genuinely LGBTQ events when the day has them; only backfill with
+        # inclusive community events when there aren't enough gay events that day.
+        # Applied inside each confirmation tier (confirmed first, see above).
         top, seen = [], set()
-        for e in lg:
-            if len(top) >= target:
-                break
-            if _dup_of_picked(e, top):
-                continue
-            top.append(e); seen.add(id(e))
-        for e in feat_pool:
-            if len(top) >= target:
-                break
-            if id(e) not in seen:
-                if _dup_of_picked(e, top):
+        for _tier_pool in (confirmed_pool, unconfirmed_pool):
+            lg = [e for e in _tier_pool if _is_lgbtq_strict(e)]
+            for e in lg + _tier_pool:
+                if len(top) >= target:
+                    break
+                if id(e) in seen or _dup_of_picked(e, top):
                     continue
                 top.append(e); seen.add(id(e))
         # TOP PICK QUALITY GATE (William 2026-07-20, recurring feedback finally
@@ -1043,7 +1082,9 @@ def cmd_generate(post_type="weekday"):
             return (cls, _rank(e))
 
         if top:
-            hero = min(feat_pool, key=_hero_rank)
+            # The hero box is a featured slot too: draw it from confirmed rows
+            # whenever the day has any.
+            hero = min(confirmed_pool or feat_pool, key=_hero_rank)
             if id(hero) != id(top[0]) and _hero_rank(hero) < _hero_rank(top[0]):
                 if id(hero) in {id(t) for t in top}:
                     top = [hero] + [t for t in top if id(t) != id(hero)]
@@ -1085,7 +1126,9 @@ def cmd_generate(post_type="weekday"):
     # the merged record (correct venue/address) rather than raw category_events.
     _all_deduped = [e for d in days_of_week for e in events_by_day[d]]
     from eotw_selector import select_eotw_list as _select_eotw_list
-    _eotw_list = _select_eotw_list(_all_deduped, week_key=week_key)
+    _eotw_list = _select_eotw_list(_all_deduped, week_key=week_key,
+                                   confirmed=(_featurable if _truth is not None else None),
+                                   strict=_confirmed_only)
     _preselected_eotw = _eotw_list[0] if _eotw_list else None
     if _eotw_list:
         for _i, _ev in enumerate(_eotw_list):
