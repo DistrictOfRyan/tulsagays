@@ -48,6 +48,28 @@ RECURRING = [
         "priority": 1,
     },
     {
+        "name": "Rainbow Reconstruction: Queer Study & Support Group",
+        "day": "Thursday",
+        "freq": "weekly",
+        "time": "7:00 PM - 8:30 PM",
+        "venue": "College Hill Presbyterian, 712 S Columbia Ave",
+        "url": "https://www.instagram.com/t.o.poetic/",
+        "priority": 2,
+        # Confirmed by the organizer, @t.o.poetic, in the @tulsagays IG DMs on 2026-10-26:
+        # asked "is Rainbow Reconstruction still meeting Thursdays 7 to 8:30 at College
+        # Hill Presbyterian?", answered "Yes! Every Thursday!". Also sent to us by Skye
+        # Arnold on 2026-08-12 and by @t.o.poetic in August (tip029). Their flyer says to
+        # text 918-405-7399 before a first visit.
+        "description": ("A queer Bible study and support group at College Hill Presbyterian that reads "
+                        "scripture from a progressive point of view, with room for every question and "
+                        "every doubt. No church membership needed."),
+        "website_description": ("Rainbow Reconstruction is a queer study and support group at College Hill "
+                                "Presbyterian that reads the Bible from a progressive point of view, with "
+                                "room for every question and every doubt. No church membership needed. "
+                                "Thursdays 7 to 8:30 PM at 712 S Columbia Ave. Text 918-405-7399 before "
+                                "your first visit to confirm it's on."),
+    },
+    {
         "name": "Lambda Unity Group (LGBTQ+ AA Meeting)",
         "day": "Wednesday",
         "freq": "weekly",
