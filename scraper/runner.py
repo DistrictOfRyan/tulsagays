@@ -1234,7 +1234,7 @@ def _warn_missing_key_venues(events: List[Dict], week_key: str) -> None:
     logger.warning("[key-venue] %s", msg)
     print(f"\n*** KEY VENUE ALERT ***\n{msg}\n")
     # Dashboard, not the Action Inbox (2026-10-27). This used to append to
-    # pending-william-actions.md every week a venue went quiet (24 entries in the
+    # William's Action Inbox every week a venue went quiet (12 entries in the
     # inbox archive), but the text is a fleet work order (check the venue's IG,
     # add to manual_events.json, re-scrape), not a step only William can take.
     # The weekly venue dig (task tulsagays-venue-dig) works it from the dashboard.
