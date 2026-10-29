@@ -210,9 +210,9 @@ ORGS: List[Dict] = [
         # FEATURE it and frame it as a welcome-all space every chance we get.
         "priority": 1,
         "blurb": "Yellow Brick Road is Tulsa's only lesbian bar and one of the last "
-                 "left in the whole country, and here's the thing the boys keep "
-                 "missing: everyone is welcome at the cave, not just the girls. Roll "
-                 "up, the whole community is invited. Details on Instagram @tulsaybr.",
+                 "left in the whole country. The boys often skip it, but everyone is "
+                 "welcome at the cave, not just the girls. Roll up, the whole "
+                 "community is invited. Details on Instagram @tulsaybr.",
     },
     {
         # DVL Club & Lounge (added 2026-06-18). Woman-owned LGBTQ+ bar in the
