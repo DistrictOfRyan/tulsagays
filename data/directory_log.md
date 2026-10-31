@@ -472,3 +472,73 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 - Reddit r/tulsa (both query variants): no indexed results this scan, same pattern as every prior scan.
 - Net result: 0 new businesses added. Directory and log unchanged in content; this entry is the scan record.
 - Net result: 1 new business added (Wildflower Salon & Boutique).
+
+### Reviewed but NOT added (2026-10-29 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/): same 6 current members as every prior scan (UniComm Solutions, Yoga Quest LLC, Doc J's Heat and Air, Littleton Legal PLLC, Edgewood Veterinary Hospital, Osteostrong Tulsa Midtown), no net-new members. UniComm's OWNER REQUEST (no street address) remains in effect, untouched.
+- OkEq Food & Drink (50 listings): re-fetched the full current list and grep-verified each name against docs/directory.html and this log. All 50 confirmed already carrying a directory card or a documented hold/skip reason from a prior scan (caterers, corporate food cos, chains, nonprofits out of scope per the 2026-06-11 skip note; Campbell Hotel held pending a Hotels & Lodging category; Triangle Coffee Roasters confirmed dead/closed; Wild Mike's out of scope). No change to any hold this scan.
+- Tulsa Remote LGBTQ guide: all 8 businesses and 5 resources listed (Tonsorial, il Seme, Cherry & Bark, YBR, The Donut Hole, Fulton Street, Jo & June, Magic City Books, Studio 66, Black Queer Tulsa, Twisted Arts, H.O.P.E Testing, TACO) already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage this scan (only unrelated Tulsa University Theatre "Falsettos" and Celebrity Attractions "Les Miserables" mentions, both theatre not business listings).
+- WebSearch "new LGBTQ business Tulsa 2026 opened": surfaced a 2026-10-29 Tulsa Flyer piece on Queer Life Drawing classes at Mixed-Use Space Tulsa (an art class series run by artist Mike Ward, not a business storefront - not added) and the Queer Women's Collective social meetup (already reviewed 2026-10-15, not a business). No net-new finds.
+- WebSearch "queer-owned business Tulsa 2026": surfaced Spiritual Rose, Wildflower Salon & Boutique, Tonsorial, il Seme, Fulton Street Books & Coffee - all already in the directory.
+- WebSearch "gay friendly Tulsa restaurant 2026": surfaced Lambrusco'z To Go, White Lion Pub, McNellie's, KEO, Yokozuna, The Brook - all confirmed already in the directory (verified by grep against docs/directory.html this scan).
+- Reddit r/tulsa (both query variants): no indexed results this scan, same pattern as every prior scan.
+
+## [2026-10-31] Keys For Life LLC
+- Category: arts/services (music education)
+- URL: https://keysforlifellc.com/
+- Source: OkEq Equality Business Alliance (okeq.org/eba/) full-roster re-fetch surfaced 16 additional member logos beyond the long-standing "6 current members" every prior scan since 2026-07-30 had confirmed seeing (apparently a page rendering/fetch gap in prior scans, not a recent OkEq roster change). Cross-verified via WebSearch (Facebook, keysforlifellc.com About page).
+- Notes: Founded by music educator Cel Wilson in summer 2022, explicitly "the only black and queer owned music education business in Tulsa, Oklahoma" per its own About page. Private 1-on-1 voice and piano lessons for adult BIPOC/queer vocalists and songwriters, centered on R&B, Soul, and Afrocentric genres. Phone (918) 928-1989, email info@keysforlifellc.com. Added to Arts & Culture with a Queer-Owned badge and the JSON-LD schema (position 85).
+
+## [2026-10-31] Kenya's Way, LLC
+- Category: health/services (counseling)
+- URL: https://kenyasway.org/
+- Source: OkEq Equality Business Alliance full-roster re-fetch (see note above), cross-verified via WebSearch (kenyasway.org service pages).
+- Notes: Private therapy practice run by Kenya Turner Washington, LCSW, offering individual, couples, and family therapy including an explicit "LGBTQIA+ individual therapy" service line. Phone 918-409-0815. Added to Health & Wellness with an LGBTQ+ Affirming badge and the JSON-LD schema (position 86).
+
+## [2026-10-31] Chrysalis Salon & Spa
+- Category: services (hair salon/spa)
+- URL: https://www.chrysalissalon.net/
+- Source: OkEq Equality Business Alliance full-roster re-fetch, cross-verified via WebSearch (Fresha, Birdeye, Tulsa Arts District venue page).
+- Notes: Salon and spa at 7 E Reconciliation Way in the Historic Tulsa Arts District, (918) 492-7477. Hair, facials, massage. Equality Business Alliance member, same sourcing tier used for Yoga Quest, OsteoStrong, and Edgewood Veterinary Hospital. Added to Tattoo & Beauty with an LGBTQ+ Ally badge and the JSON-LD schema (position 87).
+
+## [2026-10-31] Apollo Wellness Spa
+- Category: health/services (massage/spa)
+- URL: https://www.apollowellnessspa.com/
+- Source: OkEq Equality Business Alliance full-roster re-fetch, cross-verified via WebSearch (BBB, MapQuest).
+- Notes: Massage and facial spa at 1324 E 15th St on Cherry Street, (918) 850-6777, owned by Ernesto Alcala since 2021. Equality Business Alliance member, same Ally sourcing tier as Yoga Quest/OsteoStrong/Edgewood Vet. Added to Health & Wellness with an LGBTQ+ Ally badge and the JSON-LD schema (position 88).
+
+## [2026-10-31] Breck Aesthetics & Wellness
+- Category: health/services (med spa)
+- URL: https://breckaestheticsandwellness.com/
+- Source: OkEq Equality Business Alliance full-roster re-fetch, cross-verified via WebSearch (business site, MapQuest, LinkedIn).
+- Notes: Med spa with a South Tulsa clinic at 7715 E 111th St S #120 (Suites of Ravenwood, 111th & Memorial), owned by Breck Muller, PA. Botox, fillers, laser hair removal, IV therapy. Equality Business Alliance member, Ally sourcing tier. Added to Health & Wellness with an LGBTQ+ Ally badge and the JSON-LD schema (position 89).
+
+## [2026-10-31] Webb Wellness
+- Category: health/services (yoga/meditation)
+- URL: https://www.webbwellness.net/
+- Source: OkEq Equality Business Alliance full-roster re-fetch, cross-verified via WebSearch (NewsOn6, Facebook).
+- Notes: Yoga and meditation studio run by Sue Webb at 3306 Charles Page Blvd, (918) 760-1964. Equality Business Alliance member, Ally sourcing tier. Added to Health & Wellness with an LGBTQ+ Ally badge and the JSON-LD schema (position 90).
+
+## [2026-10-31] Taste the World Photography
+- Category: arts/services (photography)
+- URL: https://www.tastetheworldphotography.com/
+- Source: OkEq Equality Business Alliance full-roster re-fetch, cross-verified via WebSearch (Yellow Pages, MapQuest, Nextdoor).
+- Notes: Portrait photography studio (seniors, families, corporate) at 12211 E 52nd St #301, (918) 286-2384. Equality Business Alliance member, Ally sourcing tier. Added to Arts & Culture with an LGBTQ+ Ally badge and the JSON-LD schema (position 91).
+
+## [2026-10-31] Guiding Right Inc.
+- Category: health/services (nonprofit HIV/STI testing)
+- URL: https://guidingright.org/
+- Source: OkEq Equality Business Alliance full-roster re-fetch, cross-verified via WebSearch (guidingright.org, Network of Care, HeartLine OK).
+- Notes: Oklahoma's flagship Black health organization (est. 1999), Tulsa office at 4619 S Harvard Ave Ste 104, (918) 986-8400. Free HIV/Hepatitis C/STI testing, PrEP access, case management. Equality Business Alliance member; placed alongside H.O.P.E. Testing and Tulsa CARES (TACO) in Health & Wellness, same category logic as those existing health-resource cards. Added with an LGBTQ+ Ally badge and the JSON-LD schema (position 92).
+
+### Reviewed but NOT added (2026-10-31 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/) full roster: this scan's fetch rendered 22 member names total under 6 category headings, versus the 6 names every prior scan since 2026-07-30 confirmed seeing (a prior fetch/rendering gap, not a sudden roster expansion -- the page's own category structure places most of these, correctly or not, under "Sports | Fitness | Recreation"). Of the 16 names beyond the original 6: Keys For Life, Kenya's Way, Chrysalis Salon & Spa, Apollo Wellness Spa, Breck Aesthetics & Wellness, Webb Wellness, Taste the World Photography, and Guiding Right Inc. were added above after independent verification (real Tulsa address/phone/website each). The rest were held: Marketing Manifold (real marketing agency, but no Tulsa-specific address could be confirmed independently -- held pending address verification, consistent with past practice of not adding on an unconfirmed location); Matrix Service Company (large NYSE-listed industrial/energy-infrastructure contractor headquartered in Tulsa -- not a consumer-facing community business, same out-of-scope logic used for Bama Companies and Ingredion on the Food & Drink list); Hunger Free Oklahoma (general food-insecurity nonprofit, already held out of scope per the 2026-06-11 skip note, not specifically LGBTQ+-focused); Cultivate Strength (physical therapy/training studio, but independent sourcing found recent posts saying its physical location is closing at the end of this month -- not added while a closure is in progress); Running Dogs Music (relocated from Tulsa to Broken Arrow, OK over 30 years ago per its own history -- out of the directory's Tulsa scope); Energy Environments (its only findable page is hosted on Yoga Quest's own site, tulsayogaquest.com/energy-environments/, suggesting a program of the already-listed Yoga Quest rather than an independent business -- not added as a separate entry; worth re-checking in a future scan if it turns out to be independent); Hannah Phillips, Courtney Ivy, and "MAT" (logo-only entries on the EBA page with no identifiable business behind them found via search -- held, not added).
+- OkEq Food & Drink full re-check (50 listings): all 50 confirmed already in the directory or carrying a documented hold/skip reason from a prior scan. No change to any hold this scan.
+- Tulsa Remote LGBTQ guide: all 8 businesses and 5 resources listed (Tonsorial, il Seme, Cherry & Bark, YBR, The Donut Hole, Fulton Street, Jo & June, Magic City Books, Studio 66, Black Queer Tulsa, Twisted Arts, H.O.P.E Testing, TACO) already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage this scan (only an unrelated OKC health-clinic item).
+- WebSearch "new LGBTQ business Tulsa 2026 opened": surfaced only already-reviewed non-business items (Tulsa Pride 2026 vendor registration, the Queer Life Drawing class series, the Queer Women's Collective meetup, the "Queer Tulsa" photo exhibit). No net-new finds.
+- WebSearch "queer-owned business Tulsa 2026": surfaced Spiritual Rose, Wildflower Salon & Boutique, Soundpony, il Seme, Fulton Street Books & Coffee - all already in the directory.
+- WebSearch "gay friendly Tulsa restaurant 2026": surfaced India Palace, KEO, Lambrusco'z To Go, Brook Restaurant and Bar, Yokozuna, Dalesandro's - all confirmed already in the directory.
+- Reddit r/tulsa (both query variants): no indexed results this scan, same pattern as every prior scan.
+- Net result: 8 new businesses added (Keys For Life, Kenya's Way, Chrysalis Salon & Spa, Apollo Wellness Spa, Breck Aesthetics & Wellness, Webb Wellness, Taste the World Photography, Guiding Right Inc.).
+- Net result: 0 new businesses added. Directory and log unchanged in content; this entry is the scan record.
