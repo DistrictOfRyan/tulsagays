@@ -2,22 +2,31 @@
   "api_version": "1",
   "city": "Tulsa, OK",
   "publisher": "Tulsa Gays",
-  "generated_at": "2026-10-26T17:58:09Z",
+  "generated_at": "2026-11-02T10:00:20Z",
   "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
   "count": 8,
   "events": [
     {
-      "name": "Frida's Bingo",
-      "date": "2026-10-26",
-      "time": "",
-      "venue": "Bar Frida y Restaurante",
+      "name": "You Can See Everything",
+      "date": "2026-11-02",
+      "time": "12:30 PM",
+      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Scrabble Palooza!",
+      "date": "2026-11-02",
+      "time": "1:00 PM",
+      "venue": "Shared by SAC Gallery of Skiatook",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
       "name": "Study: Making Sense of the Bible",
-      "date": "2026-10-26",
+      "date": "2026-11-02",
       "time": "2:00 PM",
       "venue": "Wesley Foundation",
       "url": "",
@@ -25,8 +34,17 @@
       "city": "Tulsa, OK"
     },
     {
+      "name": "Press Conference and Petition Signing",
+      "date": "2026-11-02",
+      "time": "4:00 PM",
+      "venue": "Shared by Page Six Oklahoma",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
       "name": "MONDAY MOVIE NIGHT",
-      "date": "2026-10-26",
+      "date": "2026-11-02",
       "time": "7:00 PM",
       "venue": "1338 E 3rd St, Tulsa, OK",
       "url": "",
@@ -34,26 +52,8 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "EDM@Ed’s Monday Monster Mash",
-      "date": "2026-10-26",
-      "time": "7:00 PM",
-      "venue": "Shared by Zack Sparrow",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Noir Nights: Secret Film",
-      "date": "2026-10-26",
-      "time": "7:00 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
       "name": "Gaymer Night",
-      "date": "2026-10-26",
+      "date": "2026-11-02",
       "time": "8:00 PM",
       "venue": "Tulsa Eagle, 1338 E 3rd St",
       "url": "",
@@ -61,18 +61,18 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "Tabata Tuesdays",
-      "date": "2026-10-27",
-      "time": "3:00 PM",
-      "venue": "NORTH HALL",
+      "name": "Mix It Up! Camp (Ages 7-11)",
+      "date": "2026-11-02",
+      "time": "8:30 AM",
+      "venue": "Philbrook Museum of Art, 2727 S Rockford Rd, Tulsa",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
-      "name": "Sisters of Cinema: Faster Pussycat! Kill! Kill!",
-      "date": "2026-10-27",
-      "time": "7:00 PM",
+      "name": "You Can See Everything",
+      "date": "2026-11-03",
+      "time": "12:30 PM",
       "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
       "url": "",
       "lgbtq_relevant": true,
