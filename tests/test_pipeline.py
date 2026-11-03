@@ -899,6 +899,188 @@ def test_w32_venue_relocation():
           not has_override_for("Homo Hotel Happy Hour", "2026-12-04"))
 
 
+def test_event_schema_end_dates():
+    """Regression lock, 2026-11-03 (ledger slug tulsagays-schema-gaps).
+
+    The 2026-10-27 AI-search audit: 0 of 191 homepage Event items carried endDate.
+    The rules (tools/schema_fields.py): endDate ONLY when the record carries an end
+    time (explicit end_time, or a range in `time`); a lone start, "Evening", or an
+    unparseable end gives NO endDate; performer ONLY from a performer field. Also
+    locks the UTC offset: the generator hard-coded -05:00 (CDT) on every event, so
+    every November-March startDate was one hour off (Tulsa is -06:00 in CST).
+    """
+    print("event schema endDate / performer / offset:")
+    from tools.schema_fields import (iso_start, iso_end, parse_times,
+                                     add_optional_event_fields, event_performers)
+
+    def obj_for(ev):
+        return add_optional_event_fields({"@type": "Event", "name": ev.get("name", "x")}, ev)
+
+    # -- endDate appears only when an end time exists --------------------------
+    o = obj_for({"date": "2026-11-08", "time": "7:00 PM - 9:00 PM"})
+    check("range in `time` -> endDate (CST offset in November)",
+          o.get("endDate") == "2026-11-08T21:00:00-06:00", o.get("endDate"))
+    o = obj_for({"date": "2026-07-04", "time": "6:00 PM", "end_time": "8:00 PM"})
+    check("explicit end_time -> endDate (CDT offset in July)",
+          o.get("endDate") == "2026-07-04T20:00:00-05:00", o.get("endDate"))
+    for label, ev in [("lone start time", {"date": "2026-11-08", "time": "7:00 PM"}),
+                      ("'Evening'", {"date": "2026-11-08", "time": "Evening"}),
+                      ("'Afternoon - late'", {"date": "2026-11-08", "time": "Afternoon - late"}),
+                      ("no time at all", {"date": "2026-11-08", "time": ""}),
+                      ("end_time but NO start time", {"date": "2026-11-08", "time": "", "end_time": "9:00 PM"}),
+                      ("two times that are not a range", {"date": "2026-11-08", "time": "Doors 7:00 PM, Show 8:00 PM"}),
+                      ("unparseable end_time", {"date": "2026-11-08", "time": "7:00 PM", "end_time": "late"})]:
+        check(f"no endDate key when {label}", "endDate" not in obj_for(ev), obj_for(ev).get("endDate"))
+    check("no start time -> startDate stays date-only",
+          iso_start("2026-11-08", "Evening") == "2026-11-08")
+    # -- overnight and bad data ------------------------------------------------
+    check("10 PM - 2 AM ends the NEXT day",
+          iso_end("2026-11-07", "10:00 PM - 2:00 AM") == "2026-11-08T02:00:00-06:00")
+    check("end 23h after start (typo '7 PM - 6 PM') is omitted, not guessed",
+          iso_end("2026-11-07", "7:00 PM - 6:00 PM") is None)
+    check("explicit end_date earlier than start is omitted",
+          iso_end("2026-07-04", "7:00 PM", "9:00 PM", "2026-07-03") is None)
+    check("explicit end_date on a later day is honoured",
+          iso_end("2026-07-04", "7:00 PM", "1:00 AM", "2026-07-05") == "2026-07-05T01:00:00-05:00")
+    check("shared-meridiem range '7-9 PM' reads start 7 PM (was read as 9 PM)",
+          parse_times("7-9 PM") == ((19, 0), (21, 0)))
+    check("'9 Amazing' is not 9 AM", parse_times("9 Amazing") == (None, None))
+    # -- offset follows DST on the event's own date ----------------------------
+    check("offset: Mar 7 2026 is CST, Mar 8 (DST starts) is CDT",
+          iso_start("2026-03-07", "1:00 PM").endswith("-06:00")
+          and iso_start("2026-03-08", "1:00 PM").endswith("-05:00"))
+    check("offset: Oct 31 2026 is CDT, Nov 2 (after DST ends Nov 1) is CST",
+          iso_start("2026-10-31", "7:00 PM").endswith("-05:00")
+          and iso_start("2026-11-02", "7:00 PM").endswith("-06:00"))
+    # -- performer only from the record's own field ----------------------------
+    check("no performer inferred from the event name",
+          "performer" not in obj_for({"name": "DJ Oreo", "date": "2026-11-07", "time": "6:00 PM"}))
+    check("performer string -> Person",
+          event_performers({"performer": "Bedouine"}) == {"@type": "Person", "name": "Bedouine"})
+    check("performers list keeps source type and drops duplicates",
+          event_performers({"performers": [{"name": "A", "type": "MusicGroup"}, "B", "a"]})
+          == [{"@type": "MusicGroup", "name": "A"}, {"@type": "Person", "name": "B"}])
+    check("empty performer field -> none", event_performers({"performer": ""}) is None)
+
+    # -- the generator actually uses it (text lock like the sponsor-slot test) --
+    gw = open(os.path.join(ROOT, "tools", "gen_website_html.py"), encoding="utf-8").read()
+    check("homepage Event builder calls add_optional_event_fields",
+          "_add_event_opt(_obj, _ev)" in gw)
+    check("generator no longer hard-codes a -05:00 startDate offset",
+          'T{h:02d}:{int(m.group(2) or 0):02d}:00-05:00' not in gw)
+
+    # -- scraper keeps the source's own endDate / performer --------------------
+    from bs4 import BeautifulSoup
+    from scraper.base import BaseScraper
+    html = ('<script type="application/ld+json">' + json.dumps({
+        "@context": "https://schema.org", "@type": "Event", "name": "Showcase Night",
+        "startDate": "2026-11-07T19:00:00-06:00", "endDate": "2026-11-07T21:30:00-06:00",
+        "performer": [{"@type": "MusicGroup", "name": "The Teague Brothers"}],
+        "location": {"@type": "Place", "name": "Cain's Ballroom"}}) + '</script>'
+        '<script type="application/ld+json">' + json.dumps({
+        "@type": "Event", "name": "No End Listed", "startDate": "2026-11-07T20:00:00-06:00",
+        "location": {"@type": "Place", "name": "Mercury Lounge"}}) + '</script>'
+        '<script type="application/ld+json">' + json.dumps({
+        "@type": "Event", "name": "Garbage End", "startDate": "2026-11-07T20:00:00-06:00",
+        "endDate": "not a date", "location": {"@type": "Place", "name": "Mercury Lounge"}}) + '</script>')
+    evs = {e["name"]: e for e in BaseScraper()._extract_json_ld_from_soup(BeautifulSoup(html, "html.parser"))}
+    check("scraper: all three JSON-LD events still extracted", len(evs) == 3, list(evs))
+    check("scraper: source endDate kept as end_time",
+          evs["Showcase Night"].get("end_time") == "9:30 PM", evs["Showcase Night"].get("end_time"))
+    check("scraper: same-day end carries no end_date", "end_date" not in evs["Showcase Night"])
+    check("scraper: source performer kept",
+          evs["Showcase Night"].get("performer") == [{"@type": "MusicGroup", "name": "The Teague Brothers"}])
+    check("scraper: no endDate in source -> no end_time key", "end_time" not in evs["No End Listed"])
+    check("scraper: unparseable endDate -> no end_time and no crash", "end_time" not in evs["Garbage End"])
+    # end to end: the scraped record produces startDate + endDate through the same
+    # builder, after the runner's own time normaliser (step 5e turns "19:00" into
+    # "7:00 PM") exactly as it does before the website is generated.
+    from scraper.runner import _normalize_time_str
+    rec = {**evs["Showcase Night"]}
+    rec["time"] = _normalize_time_str(rec["time"])
+    built = obj_for(rec)
+    check("scraped record -> endDate 2026-11-07T21:30 CST",
+          built.get("endDate") == "2026-11-07T21:30:00-06:00", built.get("endDate"))
+    check("scraped record -> performer reaches the Event object",
+          built.get("performer") == {"@type": "MusicGroup", "name": "The Teague Brothers"},
+          built.get("performer"))
+
+
+def test_directory_schema_contacts():
+    """Regression lock, 2026-11-03 (ledger slug tulsagays-schema-gaps).
+
+    The 2026-10-27 audit: 0 telephone / 0 openingHours on every directory entry,
+    because docs/directory.html is hand-edited and had no source for them.
+    data/directory_contacts.json is that source (every value carries a `source`),
+    tools/directory_schema.py merges it. Locks: the page and the source stay in sync,
+    values are never invented or overwritten, Organization never gets openingHours.
+    """
+    print("directory JSON-LD telephone / openingHours:")
+    import re
+    from tools.directory_schema import (apply_contacts, load_contacts, validate_contact,
+                                        DIRECTORY_HTML, _LD_RX)
+    contacts = load_contacts()
+    html = open(DIRECTORY_HTML, encoding="utf-8").read()
+    new_html, rep = apply_contacts(html, contacts)
+    check("directory.html already carries every sourced contact (run tools/directory_schema.py)",
+          new_html == html and not rep["applied"], rep["applied"])
+    check("every contacts key matches a directory entry (no stale keys)",
+          not rep["unmatched"], rep["unmatched"])
+    check("no conflict between page and source", not rep["conflicts"], rep["conflicts"])
+
+    ld = next(json.loads(m.group(2)) for m in _LD_RX.finditer(html) if '"ItemList"' in m.group(2))
+    items = [i["item"] for i in ld["itemListElement"]]
+    by_name = {i["name"]: i for i in items}
+    check("directory has telephone on at least the sourced entries",
+          sum("telephone" in i for i in items) >= sum(1 for c in contacts.values() if c.get("telephone")))
+    check("openingHours only on LocalBusiness",
+          all(i["@type"] == "LocalBusiness" for i in items if "openingHours" in i))
+    check("no null or empty values in any directory entry",
+          not [i["name"] for i in items if any(v in (None, "") for v in i.values())])
+    check("no entry is named with a bare phone number (Trans Lifeline regression)",
+          not [i["name"] for i in items if re.fullmatch(r"[\d\s()+.-]+", i["name"])],
+          [i["name"] for i in items])
+    check("numberOfItems matches the ListItems", ld.get("numberOfItems") == len(items),
+          f"{ld.get('numberOfItems')} vs {len(items)}")
+    check("no JSON-LD description cut mid-word at the 300-char cap",
+          not [i["name"] for i in items if len(i.get("description", "")) == 300
+               and not i["description"].rstrip().endswith((".", "!", "?"))],
+          [i["name"] for i in items if len(i.get("description", "")) == 300])
+
+    # -- the tool's own rules, on a synthetic page -----------------------------
+    def page(item_type):
+        data = {"@type": "ItemList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "item": {"@type": item_type, "name": "Acme"}}]}
+        return '<script type="application/ld+json">\n' + json.dumps(data, indent=2) + '\n</script>'
+    src = {"Acme": {"telephone": "+1-918-555-0100", "openingHours": ["Mo-Fr 09:00-17:00"],
+                    "hours_as_of": "2026-11", "source": "test"}}
+    out, r = apply_contacts(page("LocalBusiness"), src)
+    item = json.loads(_LD_RX.search(out).group(2))["itemListElement"][0]["item"]
+    check("LocalBusiness gets telephone and openingHours",
+          item.get("telephone") == "+1-918-555-0100" and item.get("openingHours") == "Mo-Fr 09:00-17:00")
+    out2, r2 = apply_contacts(out, src)
+    check("re-applying is a no-op (idempotent)", out2 == out and not r2["applied"])
+    out3, r3 = apply_contacts(page("Organization"), src)
+    item3 = json.loads(_LD_RX.search(out3).group(2))["itemListElement"][0]["item"]
+    check("Organization gets telephone but never openingHours",
+          item3.get("telephone") and "openingHours" not in item3 and len(r3["skipped"]) == 1)
+    clash = json.loads(_LD_RX.search(out).group(2))
+    clash["itemListElement"][0]["item"]["telephone"] = "+1-918-555-9999"
+    _, r4 = apply_contacts('<script type="application/ld+json">' + json.dumps(clash) + '</script>', src)
+    check("a different value already on the page is a CONFLICT, never overwritten",
+          len(r4["conflicts"]) == 1)
+    check("a contact with no `source` is rejected",
+          bool(validate_contact("X", {"telephone": "+1-918-555-0100"})))
+    check("a malformed phone is rejected",
+          bool(validate_contact("X", {"telephone": "918-555-0100", "source": "t"})))
+    check("hours without hours_as_of are rejected",
+          bool(validate_contact("X", {"openingHours": ["Mo-Fr 09:00-17:00"], "source": "t"})))
+    check("a non-schema hours string is rejected",
+          bool(validate_contact("X", {"openingHours": ["Tue-Sat 5-9pm"], "hours_as_of": "t", "source": "t"})))
+    check("every real contact entry validates",
+          not [p for n, c in contacts.items() for p in validate_contact(n, c)])
+
+
 def main():
     print("=== TulsaGays pipeline regression suite ===")
     test_classifier()
@@ -922,6 +1104,8 @@ def main():
     test_anonymity_allowlist()
     test_final_deck_review()
     test_topic_page_events()
+    test_event_schema_end_dates()
+    test_directory_schema_contacts()
     # Defined below the __main__ guard until 2026-09-15, so main() never ran it.
     print("html entities in event names:")
     try:

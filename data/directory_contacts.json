@@ -1,0 +1,87 @@
+{
+  "_about": "Verified telephone / openingHours for docs/directory.html JSON-LD entries (2026-11-03, ledger slug tulsagays-schema-gaps). Keys are the exact JSON-LD `name`. Every entry carries a `source` naming the file and entry it was read from; an entry with no source is rejected by tools/directory_schema.py. Never add a value you did not read from a source. Add a phone/hours here when a directory-scan entry has a verified one, then run `python tools/directory_schema.py` (and commit this file with docs/directory.html). Phones are +1-NNN-NNN-NNNN. openingHours use schema.org strings ('Mo-Th 06:30-22:00') and are LocalBusiness-only; `hours_as_of` says when the hours were last verified so a stale one can be re-checked.",
+  "contacts": {
+    "QueerLit Collective": {
+      "telephone": "+1-539-200-0510",
+      "source": "data/directory_log.md, entry [2026-06-25] QueerLit Collective ('Contact: (539) 200-0510, office@queerlit.org')"
+    },
+    "Wildflower Salon & Boutique": {
+      "telephone": "+1-918-200-7748",
+      "source": "data/directory_log.md, entry [2026-10-15] Wildflower Salon & Boutique ('Phone (918) 200-7748')"
+    },
+    "Keys For Life": {
+      "telephone": "+1-918-928-1989",
+      "source": "data/directory_log.md, entry [2026-10-31] Keys For Life LLC ('Phone (918) 928-1989')"
+    },
+    "Kenya's Way": {
+      "telephone": "+1-918-409-0815",
+      "source": "data/directory_log.md, entry [2026-10-31] Kenya's Way, LLC ('Phone 918-409-0815')"
+    },
+    "Chrysalis Salon & Spa": {
+      "telephone": "+1-918-492-7477",
+      "source": "data/directory_log.md, entry [2026-10-31] Chrysalis Salon & Spa ('(918) 492-7477')"
+    },
+    "Apollo Wellness Spa": {
+      "telephone": "+1-918-850-6777",
+      "source": "data/directory_log.md, entry [2026-10-31] Apollo Wellness Spa ('(918) 850-6777')"
+    },
+    "Webb Wellness": {
+      "telephone": "+1-918-760-1964",
+      "source": "data/directory_log.md, entry [2026-10-31] Webb Wellness ('(918) 760-1964')"
+    },
+    "Taste the World Photography": {
+      "telephone": "+1-918-286-2384",
+      "source": "data/directory_log.md, entry [2026-10-31] Taste the World Photography ('(918) 286-2384')"
+    },
+    "Guiding Right": {
+      "telephone": "+1-918-986-8400",
+      "source": "data/directory_log.md, entry [2026-10-31] Guiding Right Inc. ('Tulsa office at 4619 S Harvard Ave Ste 104, (918) 986-8400')"
+    },
+    "Trans Lifeline": {
+      "telephone": "+1-877-565-8860",
+      "source": "docs/directory.html card 'Trans Lifeline' (tel:8775658860, '(877) 565-8860')"
+    },
+    "Diversity Family Health": {
+      "telephone": "+1-405-848-0026",
+      "source": "VENUE_FACTS.md line 40, Diversity Family Health ('(405) 848-0026. Verified July 2026.')"
+    },
+    "Fellowship Congregational UCC": {
+      "telephone": "+1-918-747-7777",
+      "source": "VENUE_FACTS.md line 128, Fellowship Congregational Church, UCC ('(918) 747-7777', OkEq faith directory, June 2026)"
+    },
+    "St. Dunstan's Episcopal Church": {
+      "telephone": "+1-918-492-7140",
+      "source": "VENUE_FACTS.md line 131, St. Dunstan's Episcopal Church ('(918) 492-7140', OkEq faith directory, June 2026)"
+    },
+    "Shades of Brown Coffee": {
+      "openingHours": ["Mo-Th 06:30-22:00", "Fr 06:30-23:00", "Sa-Su 07:00-23:00"],
+      "hours_as_of": "2026-04 (Yelp, as recorded in VENUE_FACTS.md)",
+      "source": "VENUE_FACTS.md line 55, Shades of Brown Coffee ('Verified Yelp April 2026. Mon-Thu 6:30am-10pm, Fri 6:30am-11pm, Sat-Sun 7am-11pm.')"
+    },
+    "FarmBar": {
+      "openingHours": ["Tu-Sa 17:00-21:00"],
+      "hours_as_of": "2026-04 (Yelp, as recorded in VENUE_FACTS.md)",
+      "source": "VENUE_FACTS.md line 74, FarmBar ('Verified Yelp April 2026. Tue-Sat 5-9pm.')"
+    },
+    "Dalesandro's Italian Cuisine": {
+      "openingHours": ["Tu-Th 18:00-22:00", "Fr-Sa 18:00-23:00"],
+      "hours_as_of": "2026-04 (Yelp, as recorded in VENUE_FACTS.md)",
+      "source": "VENUE_FACTS.md line 79, Dalesandro's Italian Cuisine ('Verified Yelp April 2026. Tue-Thu 6-10pm, Fri-Sat 6-11pm.')"
+    },
+    "American Solera": {
+      "openingHours": ["Mo-Th 16:00-21:00", "Fr-Sa 12:00-22:00", "Su 12:00-18:00"],
+      "hours_as_of": "2026-03 (Yelp, as recorded in VENUE_FACTS.md)",
+      "source": "VENUE_FACTS.md line 88, American Solera ('Verified Yelp March 2026. Mon-Thu 4-9pm, Fri-Sat 12-10pm, Sun 12-6pm.')"
+    },
+    "Charcuteray": {
+      "openingHours": ["Tu-Sa 10:00-18:00"],
+      "hours_as_of": "2026-07-09 (directory-scan)",
+      "source": "data/directory_log.md, entry [2026-07-09] Charcuteray ('Physical storefront, Tue-Sat 10am-6pm.')"
+    },
+    "Soundpony": {
+      "openingHours": ["Mo-Su 15:00-02:00"],
+      "hours_as_of": "2026-09-24 (directory-scan)",
+      "source": "data/directory_log.md, entry [2026-09-24] Soundpony ('Open daily 3pm-2am.')"
+    }
+  }
+}

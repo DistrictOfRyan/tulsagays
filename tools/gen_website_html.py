@@ -922,16 +922,12 @@ if eotw:
 #    — makes the week's events eligible for Google event rich-results and AI
 #    citation (the per-event /e/ pages are noindex, so this is where SEO value
 #    lives). nextlevel Rung 3: Discovery Layer.
-def _iso_start(date_str, time_str):
-    if not date_str:
-        return None
-    m = re.search(r'(\d{1,2})(?::(\d{2}))?\s*([ap]\.?m\.?)', (time_str or ''), re.I)
-    if m:
-        h = int(m.group(1)) % 12
-        if m.group(3).lower().startswith('p'):
-            h += 12
-        return f"{date_str}T{h:02d}:{int(m.group(2) or 0):02d}:00-05:00"
-    return date_str  # date-only startDate is valid
+# 2026-11-03 (ledger slug tulsagays-schema-gaps): start/end parsing and the optional
+# endDate / performer fields live in tools/schema_fields.py (pure + unit-tested in
+# tests/test_pipeline.py). The old inline version hard-coded "-05:00" (CDT) on every
+# event, which made every Nov-Mar startDate one hour off; the offset is now
+# America/Chicago's offset on the event's own date.
+from tools.schema_fields import iso_start as _iso_start, add_optional_event_fields as _add_event_opt
 
 # ── Canonical rendered-event list (2026-09-08) ────────────────────────────
 # tools/export_feed.py used to build docs/api/feed.json from
@@ -993,6 +989,7 @@ if '<!-- COVERAGE -->' in _html2:
     print(f"[coverage] stamped scale line: {' '.join(_bits)}")
 
 _events_ld = []
+_eventld_by_id = {}
 for _ev in all_flat:
     _d = _ev.get('date', '')
     if not re.match(r'^\d{4}-\d{2}-\d{2}$', _d or ''):
@@ -1024,6 +1021,9 @@ for _ev in all_flat:
         "organizer": {"@type": "Organization", "name": _SITE_BRAND, "url": SITE},
         "image": SITE + "/images/og-event.png",
     }
+    # endDate / performer ONLY when the source record has them (end_time, a
+    # "7:00 PM - 9:00 PM" range in `time`, or a performer field); never inferred.
+    _add_event_opt(_obj, _ev)
     _desc = (_ev.get('website_description') or _ev.get('description') or '').strip()
     if _desc:
         _obj["description"] = ' '.join(_desc.split())[:300]
@@ -1033,6 +1033,8 @@ for _ev in all_flat:
     else:
         _obj["url"] = _event_page
     _events_ld.append(_obj)
+    if _cid:
+        _eventld_by_id[_cid] = _obj
 
 if _events_ld:
     _itemlist = {
@@ -1086,6 +1088,17 @@ def _render_event_page(p):
     _when_html = f'<p class="ev-when">{esc(p["when"])}</p>' if p.get('when') else ''
     _venue_html = f'<p class="ev-venue">{esc(p["venue"])}</p>' if p.get('venue') else ''
     _desc_html = f'<p class="ev-desc">{esc(p["desc"])}</p>' if p.get('desc') else ''
+    # Event schema (2026-10-06 quarterly SEO audit): the homepage already carries
+    # this exact object in its ItemList, keyed by the same card id, so reuse it
+    # verbatim instead of re-deriving date/venue parsing a second time. Gives each
+    # share page its own crawlable Event markup instead of relying solely on the
+    # homepage ItemList @id reference.
+    _ld_obj = _eventld_by_id.get(_id)
+    _event_ld_html = ''
+    if _ld_obj:
+        _ld_full = {"@context": "https://schema.org", **_ld_obj}
+        _event_ld_html = ('<script type="application/ld+json">'
+                           + json.dumps(_ld_full, ensure_ascii=False) + '</script>\n')
     return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1109,7 +1122,7 @@ def _render_event_page(p):
 <meta name="twitter:title" content="{esc(_trunc(_name, 90))}">
 <meta name="twitter:description" content="{esc(_meta_desc)}">
 <meta name="twitter:image" content="{_img}">
-<link rel="icon" href="/favicon.ico">
+{_event_ld_html}<link rel="icon" href="/favicon.ico">
 <link rel="stylesheet" href="/style.css">
 <style>
 .ev-wrap{{max-width:680px;margin:0 auto;padding:48px 24px 64px}}

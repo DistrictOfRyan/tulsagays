@@ -173,11 +173,45 @@ class BaseScraper:
                     venue = location or venue_default
                 description = (item.get("description") or "")[:500]
                 url = item.get("url", "") or ""
-                events.append(self.make_event(
+                _ev = self.make_event(
                     name=name, date=date_str, time=time_str, venue=venue,
                     description=description, url=url, priority=priority,
-                ))
+                )
+                self._carry_schema_extras(_ev, item, date_str)
+                events.append(_ev)
         return events
+
+    @staticmethod
+    def _carry_schema_extras(ev: Dict, item: Dict, start_date: str) -> Dict:
+        """Keep the source's OWN endDate / performer on the event record.
+
+        2026-11-03 (ledger slug tulsagays-schema-gaps): this extractor read startDate
+        and dropped endDate and performer, so tulsagays.com's Event JSON-LD could never
+        carry either (2026-10-27 audit: 0 of 191 endDate, 2 of 191 performer). Additive
+        only: sets `end_time` ("9:00 PM") [+ `end_date` when the end falls on another
+        local day] and `performer` ([{"@type","name"}]) when the source published them;
+        nothing is guessed. The end goes through the same iso_to_local conversion as the
+        start. Wrapped so a malformed endDate can never cost a scraper its events.
+        """
+        try:
+            from scraper.tz_guard import iso_to_local
+            end_raw = item.get("endDate")
+            if isinstance(end_raw, str) and end_raw.strip() and ev.get("time"):
+                e_date, e_time = iso_to_local(end_raw.strip(), midnight_utc_is_placeholder=True)
+                if e_time and re.match(r"^\d{2}:\d{2}$", e_time):
+                    hh, mm = int(e_time[:2]), int(e_time[3:5])
+                    ev["end_time"] = f"{hh % 12 or 12}:{mm:02d} {'AM' if hh < 12 else 'PM'}"
+                    if e_date and start_date and e_date != start_date:
+                        ev["end_date"] = e_date
+            perf = item.get("performer")
+            if perf:
+                from tools.schema_fields import event_performers
+                norm = event_performers({"performer": perf})
+                if norm:
+                    ev["performer"] = norm if isinstance(norm, list) else [norm]
+        except Exception as exc:  # never let enrichment break extraction
+            logger.debug("schema extras skipped for %r: %s", ev.get("name"), exc)
+        return ev
 
     @staticmethod
     def _split_schema_datetime(start: str):
