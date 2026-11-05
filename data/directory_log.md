@@ -542,3 +542,19 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 - Reddit r/tulsa (both query variants): no indexed results this scan, same pattern as every prior scan.
 - Net result: 8 new businesses added (Keys For Life, Kenya's Way, Chrysalis Salon & Spa, Apollo Wellness Spa, Breck Aesthetics & Wellness, Webb Wellness, Taste the World Photography, Guiding Right Inc.).
 - Net result: 0 new businesses added. Directory and log unchanged in content; this entry is the scan record.
+
+## [2026-11-05] DVL Club & Lounge
+- Category: bar
+- URL: https://www.dvltulsa.com/
+- Source: WebSearch ("queer-owned business Tulsa 2026") surfaced it as "DVL Club & Lounge, a woman-owned LGBTQ+ bar in Tulsa's Blue Dome District"; cross-verified via a second WebSearch confirming owner Mindi Wilkin, address, and phone, plus Facebook (facebook.com/dvltulsa), downtowntulsa.com/go/club-dvl, and a NewsOn6 feature on a DVL K-pop night.
+- Notes: Woman-owned LGBTQ+ nightclub and lounge at 302 S Frankfort Ave, Blue Dome District. Live DJs, bottle service, a secret dance room, built around safety and inclusivity for women and the queer community. Open Fri/Sat 9pm-2am with themed nights (Galentine's, singles nights, EDM) through the week. A genuine omission despite being a current, actively-promoted Blue Dome bar (NewsOn6 covered a K-pop night there this year). Added to Bars & Nightlife and the JSON-LD schema (position 93, numberOfItems now 93).
+
+### Reviewed but NOT added (2026-11-05 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/): full-roster re-fetch surfaced the same 22 members confirmed in the 2026-10-31 scan, flagged by the fetch model as "new" because it lacked that scan's context: Running Dogs Music (already held, relocated to Broken Arrow decades ago, out of Tulsa scope) and Guiding Right (already added 2026-10-31, confirmed present in directory.html at line 1419/2723). No actual net-new members. UniComm's OWNER REQUEST (no street address) remains in effect, untouched.
+- OkEq Food & Drink (now showing 73 listings, up from the 50 tracked through 2026-10-31 -- the page appears to have expanded its visible roster, not added new businesses overnight): grep-verified the previously-flagged "new" names against directory.html and this log. St. Vitus Bar (line 1981/2131) and il Seme (line 434/2131) are both already in the directory. Wild Mike's Enterprises remains out of scope (Choctaw, OK, not Tulsa, per the 2026-06-11 skip note). Remaining listings all confirmed already carrying a directory card or a documented hold/skip reason from prior scans.
+- Tulsa Remote LGBTQ guide: all 8 businesses and 5 resources listed (Tonsorial, il Seme, Cherry & Bark, YBR, The Donut Hole, Fulton Street, Jo & June, Magic City Books, Studio 66, Black Queer Tulsa, Twisted Arts, H.O.P.E Testing, TACO) already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage this scan (only an unrelated OKC health-clinic archive item).
+- WebSearch "new LGBTQ owned business Tulsa Oklahoma November 2026": surfaced only already-reviewed guide/listicle pages (Yelp, Downtown Tulsa, OkEq, GayOut) and DVL (added above, also surfaced via the Spiritual Rose reference). No other net-new finds.
+- WebSearch "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (Brook Restaurant and Bar, KEO, India Palace, Lambrusco'z To Go, Lefty's on Greenwood, The People's Bakery).
+- Reddit r/tulsa (both query variants): no indexed results this scan, same pattern as every prior scan.
+- Net result: 1 new business added (DVL Club & Lounge).
