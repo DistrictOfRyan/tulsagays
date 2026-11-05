@@ -31,6 +31,7 @@ import config
 
 DOCS = os.path.join(config.PROJECT_DIR, "docs")
 GUIDES_DIR = os.path.join(DOCS, "guides")
+ORG_DIR = os.path.join(DOCS, "org")
 CENSUS_FILE = os.path.join(config.PROJECT_DIR, "tulsa_queer_org_census.json")
 EVENTS_CURRENT = os.path.join(DOCS, "events-current.json")
 SITEMAP = os.path.join(DOCS, "sitemap.xml")
@@ -330,11 +331,22 @@ def _schema(topic, orgs, facts=None):
     return "\n".join(f'<script type="application/ld+json">{json.dumps(b)}</script>' for b in blocks)
 
 
+def _org_card(o):
+    # 2026-11-05: org cards used to be bare text, so every /org/<id>.html profile
+    # was an orphan reachable only via sitemap.xml - Google flagged a stream of
+    # them "Discovered/Crawled - currently not indexed". Link the name when that
+    # org's profile actually exists on disk (gen_org_profiles.py only generates
+    # one once MIN_EVENTS/ANCHORS are met, so this must check the file, not the
+    # census entry).
+    name = esc(o["name"])
+    if os.path.isfile(os.path.join(ORG_DIR, f"{o['id']}.html")):
+        name = f'<a href="/org/{o["id"]}.html">{name}</a>'
+    return f'<div class="event-card"><h3>{name}</h3><p>{esc(o.get("note", ""))}</p></div>'
+
+
 def render_page(topic, orgs, events):
     url = f"{BASE}/guides/{topic['slug']}.html"
-    org_cards = "\n".join(
-        f'<div class="event-card"><h3>{esc(o["name"])}</h3>'
-        f'<p>{esc(o.get("note", ""))}</p></div>' for o in orgs) or "<p>Listings coming soon.</p>"
+    org_cards = "\n".join(_org_card(o) for o in orgs) or "<p>Listings coming soon.</p>"
     if events:
         ev = "\n".join(
             f'<li><strong>{esc(e.get("name"))}</strong> &middot; {esc(e.get("date"))} '

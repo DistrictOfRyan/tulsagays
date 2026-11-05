@@ -43,6 +43,21 @@ TYPE_TO_GUIDE = {
     "group": "lgbtq-organizations-tulsa", "event": "lgbtq-organizations-tulsa",
 }
 
+# 2026-11-05: these orgs all have census type "org"/"group" so TYPE_TO_GUIDE sent
+# their "See more" link to the generic lgbtq-organizations-tulsa guide, even though
+# gen_topic_pages' own match_kw for lgbtq-support-groups-tulsa ("support", "outreach",
+# "pflag", "relationships", "gender", "black queer") already selects every one of them
+# onto that page. The support-groups guide (tulsagays:indexing:f9d7a39b) had exactly
+# one inbound link site-wide; this gives it five more from org profiles that are
+# already topically listed there.
+ORG_GUIDE_OVERRIDE = {
+    "pflag_tulsa": "lgbtq-support-groups-tulsa",
+    "gender_outreach": "lgbtq-support-groups-tulsa",
+    "black_queer_tulsa": "lgbtq-support-groups-tulsa",
+    "rotb": "lgbtq-support-groups-tulsa",
+    "osu_tulsa_queer": "lgbtq-support-groups-tulsa",
+}
+
 
 def _aggregate_events(org, weeks=16):
     """Every distinct event matching this org's aliases across recent history."""
@@ -101,7 +116,7 @@ def _dashless(s):
 
 def render_org(org, events):
     url = f"{BASE}/org/{org['id']}.html"
-    guide = TYPE_TO_GUIDE.get(org.get("type"), "lgbtq-organizations-tulsa")
+    guide = ORG_GUIDE_OVERRIDE.get(org["id"]) or TYPE_TO_GUIDE.get(org.get("type"), "lgbtq-organizations-tulsa")
     if events:
         rows = "\n".join(
             f'<li><strong>{esc(_dashless(e.get("name")))}</strong> &middot; {esc(e.get("date"))} '
