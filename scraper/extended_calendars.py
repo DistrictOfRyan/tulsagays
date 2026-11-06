@@ -82,83 +82,97 @@ def _is_lgbtq_relevant(name: str, description: str = "") -> bool:
 # lgbtq_only=True   → return ALL events (LGBTQ-specific orgs)
 
 SITES: List[Tuple[str, str, str, bool]] = [
-    # TOURISM / CVB
-    ("https://travelok.com/listings/view_feature/category.lodging/city.tulsa", "TravelOK", "tourism", False),
-    ("https://www.greencountryok.com/cities/tulsa/festivals-events-in-tulsa", "Green Country Oklahoma", "tourism", False),
-    ("https://tulsago.com/experience", "TulsaGo", "tourism", False),
-
-    # NEWS / MEDIA
-    ("https://www.tulsakids.com/calendar/", "TulsaKids Magazine", "media", False),
+    # 2026-11-06 (F-3576): this list is now only the venues the generic static
+    # parser can actually read. The nightly health guard probed all 39 old
+    # entries and reported 44 DEAD sources while the same venues were covered,
+    # or had been documented dead months earlier, in data/rendered_site_specs.json.
+    # Every removed entry is kept in RETIRED_SITES below with its reason, and the
+    # rendered spec is the single place a venue is wired. Do not re-add a URL here
+    # that has a rendered spec; fix the spec instead.
     ("https://tulsa.events", "Tulsa Events", "media", False),
-
-    # CITY / GOVERNMENT
-    ("https://www.cityoftulsa.org/government/departments/parks-recreation/events/", "City of Tulsa", "city", False),
-
-    # MUSEUMS & CULTURAL
     ("https://philbrook.org/calendar/", "Philbrook Museum", "museum", False),
     ("https://woodyguthriecenter.org/events/", "Woody Guthrie Center", "museum", False),
-    ("https://www.greenwoodculturalcenter.com/events", "Greenwood Cultural Center", "museum", False),
-    # 2026-07-06: cert only valid for the apex host, www. fails TLS
-    ("https://1921tulsamassacre.org/events", "1921 Tulsa Race Massacre Memorial", "museum", False),
-    ("https://www.tulsazoo.org/events/", "Tulsa Zoo", "museum", False),
-    ("https://www.gatheringplace.org/parkcalendar/", "Gathering Place", "museum", False),
-    ("https://www.tulsagardencenter.com/events/", "Tulsa Garden Center", "museum", False),
-    ("https://www.okaquarium.org/events/", "Oklahoma Aquarium", "museum", False),
-    # Discovery Lab RETIRED 2026-10-05: /events/ has no JSON-LD, no calendar
-    # widget, and no dated markup at all (only "Every Monday" style recurring
-    # programming blurbs) -- auto-repair correctly could not re-derive a
-    # working extraction because there is nothing structured to extract.
-    ("https://101archer.com/events/", "101 Archer", "museum", False),
-
-    # PERFORMING ARTS
-    ("https://www.tulsapac.com/events/", "Tulsa PAC", "arts", False),
-    ("https://www.bokcenter.com/events", "BOK Center", "arts", False),
-    ("https://cainsballroom.com/events/", "Cain's Ballroom", "arts", False),
-    ("https://tulsatheater.com/events/", "Tulsa Theater", "arts", False),
     ("https://www.hardrockcasinotulsa.com/entertainment/", "Hard Rock Live Tulsa", "arts", False),
-    ("https://www.riverspirittulsa.com/entertainment/", "River Spirit Casino", "arts", False),
-    ("https://www.thechurchstudio.com/events/", "The Church Studio", "arts", False),
-    ("https://www.coxcentertulsa.com/events/", "Cox Business Convention Center", "arts", False),
-
-    # SPORTS / EXPO
-    ("https://www.milb.com/tulsa/schedule/", "Tulsa Drillers (ONEOK Field)", "sports", False),
-    ("https://www.fctulsa.com/schedule/", "FC Tulsa", "sports", False),
-    ("https://www.tulsaoilers.com/schedule/", "Tulsa Oilers", "sports", False),
-    ("https://www.exposquare.com/events/", "Expo Square", "sports", False),
-
-    # LIBRARIES
-    ("https://events.tulsalibrary.org/", "Tulsa City-County Library", "library", False),
-
-    # UNIVERSITIES
-    ("https://calendar.utulsa.edu/", "University of Tulsa", "university", False),
-    ("https://tulsa.okstate.edu/calendar/", "OSU-Tulsa", "university", False),
-    ("https://www.oru.edu/events/", "ORU", "university", False),
-    ("https://www.tulsacc.edu/about-tcc/events/", "Tulsa Community College", "university", False),  # 2026-09-02: /campus-life/events/ had gone 404; /about-tcc/events/ returns 200
-
-    # LGBTQ+ SPECIFIC (return ALL events, no keyword filter)
-    # 2026-07-06: tulsapride.org rebuilt (Astra WP); /events/ is now 404, so
-    # point at the homepage — announcements surface there until a new events
-    # path exists.
-    ("https://tulsapride.org/", "Tulsa Pride", "lgbtq", True),
-    # Goff Center / Goff Fest — celebrates gay architect Bruce Goff's legacy;
-    # programming includes an Annual Pride Celebration. Plain-HTML events page,
-    # reliable backup to the @goff_fest Instagram scraper.
-    ("https://goff-fest.com/events/", "Goff Center / Goff Fest", "lgbtq", True),
-
-    # TICKETING / AGGREGATORS
-    ("https://seatgeek.com/tulsa-oklahoma-tickets", "SeatGeek Tulsa", "ticketing", False),
+    # 2026-10-05: /events/ 404s; Squarespace moved the collection to /upcoming-events
+    ("https://www.tulsafarmersmarket.org/upcoming-events", "Tulsa Farmers' Market", "neighborhood", False),
     # 2026-07-06: Meetup REMOVED from this list. The find-page URL ignores
-    # userFreeform and geolocates by IP — from this machine (Mexico) it served
+    # userFreeform and geolocates by IP: from this machine (Mexico) it served
     # CDMX events that passed the LGBTQ filter labeled as Tulsa. Meetup is
     # covered by eventbrite_meetup.MeetupScraper, which pins
     # location=us--ok--tulsa explicitly. Never re-add an IP-geolocated URL here.
-
-    # NEIGHBORHOOD / NICHE
-    ("https://www.brooksidetulsa.com/events/", "Brookside Tulsa", "neighborhood", False),
-    ("https://www.cherrystreetfarmersmarket.com/events/", "Cherry Street Farmers Market", "neighborhood", False),
-    # 2026-10-05: /events/ 404s; Squarespace moved the collection to /upcoming-events
-    ("https://www.tulsafarmersmarket.org/upcoming-events", "Tulsa Farmers' Market", "neighborhood", False),
 ]
+
+# Removed 2026-11-06. name -> (old url, disposition, reason). "rendered" means the
+# venue is scraped by a data/rendered_site_specs.json spec of the same name, which
+# was verified to return dated events that day.
+RETIRED_SITES = {
+    "TravelOK": ("https://travelok.com/listings/view_feature/category.lodging/city.tulsa", "retired",
+                 "URL is a hotel/lodging directory, not events; tourism aggregator, venues are scraped directly"),
+    "Green Country Oklahoma": ("https://www.greencountryok.com/cities/tulsa/festivals-events-in-tulsa", "retired",
+                               "Simpleview widget yields 0 event blocks (re-verified 2026-07-06); low-value tourism aggregator"),
+    "TulsaGo": ("https://tulsago.com/experience", "rendered", "rendered json_ld spec, 21 dated events on 2026-11-06"),
+    "TulsaKids Magazine": ("https://www.tulsakids.com/calendar/", "retired",
+                           "events live in a cross-origin Time.ly iframe with no public feed (export/ics returns HTML); "
+                           "kids programming is quarantined by the sanity check anyway"),
+    "City of Tulsa": ("https://www.cityoftulsa.org/government/departments/parks-recreation/events/", "retired",
+                      "page is site chrome only; civic/government listings are dropped as off-topic by the runner"),
+    "Greenwood Cultural Center": ("https://www.greenwoodculturalcenter.com/events", "retired",
+                                  ".com shows a Wix 'domain not connected' page; the center moved to greenwoodculturalcenter.org "
+                                  "(Wix, client-rendered, no structured events as of 2026-11-06)"),
+    "1921 Tulsa Race Massacre Memorial": ("https://1921tulsamassacre.org/events", "retired",
+                                          "domain parked/expired (redirects to an ad page, invalid cert)"),
+    "Tulsa Zoo": ("https://www.tulsazoo.org/events/", "rendered",
+                  "rendered dom spec, 9 dated events on 2026-11-06 after the networkidle-timeout fix"),
+    "Gathering Place": ("https://www.gatheringplace.org/parkcalendar/", "rendered",
+                        "rendered json spec on the tokened SiteWrench API, wired 2026-11-06"),
+    "Tulsa Garden Center": ("https://www.tulsagardencenter.com/events/", "retired",
+                            "/events/ is a 404; site moved to tulsagardencenter.org whose /calendar has no structured events (2026-11-06)"),
+    "Oklahoma Aquarium": ("https://www.okaquarium.org/events/", "retired",
+                          "/events/ 404; /31/Events has dates only inside news prose, no repeatable event markup"),
+    "101 Archer": ("https://101archer.com/events/", "retired", "domain does not resolve (NXDOMAIN)"),
+    "Tulsa PAC": ("https://www.tulsapac.com/events/", "rendered",
+                  "tulsapac.com is a Ticketmaster Account Manager shell; the rendered 'Tulsa PAC' spec now reads Celebrity "
+                  "Attractions' Broadway series at the PAC (10 dated shows on 2026-11-06)"),
+    "BOK Center": ("https://www.bokcenter.com/events", "rendered", "rendered dom spec, 12 dated events on 2026-11-06"),
+    "Cain's Ballroom": ("https://cainsballroom.com/events/", "rendered",
+                        "rendered dom spec, 38 dated events on 2026-11-06 after the networkidle-timeout fix"),
+    "Tulsa Theater": ("https://tulsatheater.com/events/", "rendered", "rendered dom spec, 14 dated events on 2026-11-06"),
+    "River Spirit Casino": ("https://www.riverspirittulsa.com/entertainment/", "rendered",
+                            "static parse returned undated junk (JUNK); rendered dom spec returns 4 dated events"),
+    "The Church Studio": ("https://www.thechurchstudio.com/events/", "retired",
+                          "Tribe list view never renders and the REST feed is 404 (re-checked 2026-11-06); "
+                          "tickets sell per-event on Universe.com"),
+    "Cox Business Convention Center": ("https://www.coxcentertulsa.com/events/", "retired",
+                                       "hard Cloudflare challenge to every automated client"),
+    "Tulsa Drillers (ONEOK Field)": ("https://www.milb.com/tulsa/schedule/", "retired",
+                                     "mainstream sports, which the runner drops as off-topic"),
+    "FC Tulsa": ("https://www.fctulsa.com/schedule/", "retired", "mainstream sports, which the runner drops as off-topic"),
+    "Tulsa Oilers": ("https://www.tulsaoilers.com/schedule/", "retired", "mainstream sports, which the runner drops as off-topic"),
+    "Expo Square": ("https://www.exposquare.com/events/", "rendered",
+                    "rendered dom spec revived 2026-11-06 (horse/livestock and gun shows excluded)"),
+    "Tulsa City-County Library": ("https://events.tulsalibrary.org/", "rendered",
+                                  "rendered json spec on the Communico API, wired 2026-11-06 "
+                                  "(408 events/21 days parsed; weekly scrape keeps LGBTQ matches only)"),
+    "University of Tulsa": ("https://calendar.utulsa.edu/", "rendered",
+                            "calendar.utulsa.edu moved to Trumba on 2026-11-06 (CNAME utulsa.trumba.com, cert mismatch); "
+                            "rendered json spec reads trumba.com/calendars/utulsa.json"),
+    "OSU-Tulsa": ("https://tulsa.okstate.edu/calendar/", "rendered",
+                  "rendered json_ld spec on events.tulsa.okstate.edu, 24 dated events on 2026-11-06"),
+    "ORU": ("https://www.oru.edu/events/", "retired",
+            "404; the only ORU feed (student association Google Calendar) was abandoned in 2013"),
+    "Tulsa Community College": ("https://www.tulsacc.edu/about-tcc/events/", "rendered",
+                                "rendered json spec on calendar.tulsacc.edu LiveWhale, 100 dated events on 2026-11-06"),
+    "Tulsa Pride": ("https://tulsapride.org/", "retired",
+                    "homepage has no event list markup; the one annual date (Tulsa Pride Festival & Parade, 2026-10-17) is in "
+                    "data/manual_events.json and OKEQ's calendar is scraped by okeq_calendar"),
+    "Goff Center / Goff Fest": ("https://goff-fest.com/events/", "retired",
+                                "single annual June festival in free text; covered by data/manual_events.json and the "
+                                "@goff_fest Instagram source"),
+    "SeatGeek Tulsa": ("https://seatgeek.com/tulsa-oklahoma-tickets", "retired", "DataDome CAPTCHA to every automated client"),
+    "Brookside Tulsa": ("https://www.brooksidetulsa.com/events/", "retired", "domain now redirects to a realtor site"),
+    "Cherry Street Farmers Market": ("https://www.cherrystreetfarmersmarket.com/events/", "retired",
+                                     "domain does not resolve; the market runs under Tulsa Farmers' Market, which is still scraped"),
+}
 
 # Merge in calendar sites discovered + promoted by the weekly source-growth
 # engine (data/dynamic_sources.json). De-duped by URL.

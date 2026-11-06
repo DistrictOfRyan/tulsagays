@@ -100,19 +100,37 @@ class RenderedSitesScraper(BaseScraper):
         self._pw = None
 
     def _render(self, url: str, wait_until: str, wait_ms: int) -> Optional[str]:
+        pg = None
         try:
             br = self._ensure_browser()
             pg = br.new_page(user_agent=_UA)
-            pg.goto(url, timeout=30000, wait_until=wait_until or "domcontentloaded")
+            try:
+                pg.goto(url, timeout=30000, wait_until=wait_until or "domcontentloaded")
+            except Exception as e:
+                # "networkidle" never settles on sites that keep polling (analytics,
+                # chat widgets, ticketing beacons), but their DOM finished rendering
+                # long before the 30s cap. Until 2026-11-06 a timeout here threw the
+                # whole rendered page away, so Philbrook, Tulsa Zoo, Cain's Ballroom
+                # and Discovery Lab silently returned 0 events. Keep what rendered;
+                # only a navigation that never committed (still about:blank) or a
+                # non-timeout error (DNS, TLS) counts as a failed render.
+                if type(e).__name__ != "TimeoutError" or (pg.url or "about:blank") == "about:blank":
+                    raise
+                logger.info("[rendered_sites] %s: '%s' wait timed out, using the DOM as rendered",
+                            url, wait_until)
             if wait_ms:
                 pg.wait_for_timeout(int(wait_ms))
-            html = pg.content()
-            pg.close()
-            return html
+            return pg.content()
         except Exception as e:
             logger.warning("[rendered_sites] render failed %s: %s %s",
                            url, type(e).__name__, str(e)[:120])
             return None
+        finally:
+            if pg is not None:
+                try:
+                    pg.close()
+                except Exception:
+                    pass
 
     # ── date parsing ──────────────────────────────────────────────────────────
     @staticmethod
@@ -174,23 +192,45 @@ class RenderedSitesScraper(BaseScraper):
                 name = (t_el.get_text(" ", strip=True) if t_el else "").strip()
                 if not name or len(name) < 4:
                     continue
-                d_raw = ""
+                # Take the FIRST match that parses as a date, not just the first
+                # match. 2026-11-06: Eventbrite put an urgency label ("Going fast",
+                # "Almost full") in the first <p> of each card, so Magic City Books
+                # read the label as its date and returned 0 events.
+                date_str, d_els, date_idx = "", [], None
                 if date_sel:
-                    d_el = block.select_one(date_sel)
-                    if d_el is not None:
+                    d_els = block.select(date_sel)
+                    for i, d_el in enumerate(d_els):
                         d_raw = (d_el.get(date_attr, "") if date_attr else d_el.get_text(" ", strip=True)) or ""
+                        date_str = self._parse_date(d_raw, date_fmt)
+                        if date_str:
+                            date_idx = i
+                            break
                 elif date_attr:
-                    d_raw = block.get(date_attr, "")
-                date_str = self._parse_date(d_raw, date_fmt)
+                    date_str = self._parse_date(block.get(date_attr, ""), date_fmt)
                 if not date_str:
                     continue  # an event with no real date is useless downstream
+                # Optional per-event venue. An organizer page (a bookstore's
+                # Eventbrite) lists events held elsewhere; labelling them with the
+                # organizer's name sends readers to the wrong building.
+                #   venue_sel: CSS within the block
+                #   venue_after_date: true -> the venue_sel match right after the date
+                ev_venue = venue
+                vsel = spec.get("venue_sel")
+                if vsel:
+                    if spec.get("venue_after_date") and vsel == date_sel and date_idx is not None:
+                        v_cands = d_els[date_idx + 1:date_idx + 2]
+                    else:
+                        v_cands = block.select(vsel)[:1]
+                    v_txt = v_cands[0].get_text(" ", strip=True) if v_cands else ""
+                    if v_txt and len(v_txt) <= 120 and not self._parse_date(v_txt, "auto"):
+                        ev_venue = v_txt
                 url = base_url
                 if link_sel:
                     l_el = block.select_one(link_sel)
                     if l_el and l_el.get(link_attr):
                         url = urljoin(base_url, l_el.get(link_attr))
                 events.append(self.make_event(
-                    name=name, date=date_str, venue=venue, url=url, priority=priority))
+                    name=name, date=date_str, venue=ev_venue, url=url, priority=priority))
             except Exception:
                 continue
         return events
@@ -206,6 +246,8 @@ class RenderedSitesScraper(BaseScraper):
         except Exception as e:
             logger.warning("[rendered_sites] ical fetch failed %s: %s", ics, e)
             return []
+        if "BEGIN:VCALENDAR" in soup_text:
+            self.last_read = {"ok": True, "items": soup_text.count("BEGIN:VEVENT")}
         events = []
         venue = spec["name"]
         priority = int(spec.get("priority", 2))
@@ -234,10 +276,47 @@ class RenderedSitesScraper(BaseScraper):
         Spec fields: json_url (else url), json_path (dotted path to the list,
         e.g. 'upcoming' or 'events'), json_title_key (default 'title'),
         json_date_key (default 'startDate'), json_date_format
-        ('epoch_ms' | 'iso' | a strptime format)."""
+        ('epoch_ms' | 'iso' | a strptime format).
+
+        Added 2026-11-06 for APIs that need a date window or a page token:
+          json_params   query params; a dict/list value is sent JSON-encoded
+                        (Communico's req={...}). "{today}" and "{token}" are
+                        filled in every param, header and the json_url.
+          json_headers  extra request headers (e.g. X-Requested-With).
+          json_token_page + json_token_regex
+                        fetch this page and take regex group 1 as {token}
+                        (SiteWrench calendars rotate a per-page token)."""
         api = spec.get("json_url") or spec["url"]
+        ctx = {"{today}": datetime.now().strftime("%Y-%m-%d"), "{token}": ""}
+
+        def fill(val: str) -> str:
+            for k, v in ctx.items():
+                val = val.replace(k, v)
+            return val
+
+        if spec.get("json_token_page") and spec.get("json_token_regex"):
+            try:
+                tr = self.session.get(spec["json_token_page"], timeout=20)
+                tr.raise_for_status()
+                m = re.search(spec["json_token_regex"], tr.text)
+            except Exception as e:
+                logger.warning("[rendered_sites] %s: token page fetch failed: %s", spec["name"], e)
+                return []
+            if not m:
+                logger.warning("[rendered_sites] %s: token not found on %s",
+                               spec["name"], spec["json_token_page"])
+                return []
+            ctx["{token}"] = m.group(1)
+        params = None
+        if spec.get("json_params"):
+            params = {}
+            for k, v in spec["json_params"].items():
+                if isinstance(v, (dict, list)):
+                    v = json.dumps(v, separators=(",", ":"))
+                params[k] = fill(str(v))
+        headers = {k: fill(str(v)) for k, v in (spec.get("json_headers") or {}).items()} or None
         try:
-            r = self.session.get(api, timeout=20)
+            r = self.session.get(fill(api), params=params, headers=headers, timeout=20)
             r.raise_for_status()
             data = r.json()
         except Exception as e:
@@ -245,12 +324,18 @@ class RenderedSitesScraper(BaseScraper):
             return []
         # Walk dotted json_path to the list (supports top-level list too).
         node = data
+        path_ok = True
         for part in (spec.get("json_path") or "").split("."):
             if not part:
                 continue
-            if isinstance(node, dict):
-                node = node.get(part, [])
+            if isinstance(node, dict) and part in node:
+                node = node[part]
+            else:
+                path_ok = False  # key renamed/missing: a broken feed, never IDLE
+                node = []
         items = node if isinstance(node, list) else []
+        if path_ok and isinstance(node, list):
+            self.last_read = {"ok": True, "items": len(items)}
         tk = spec.get("json_title_key", "title")
         dk = spec.get("json_date_key", "startDate")
         dfmt = spec.get("json_date_format", "epoch_ms")
@@ -297,6 +382,34 @@ class RenderedSitesScraper(BaseScraper):
         return events
 
     def _scrape_spec(self, spec: Dict) -> List[Dict]:
+        """Extract one spec's events. `exclude_title_regex` (optional) drops
+        notices that share a calendar with real events ("Early Park Closure")."""
+        evs = self._scrape_spec_raw(spec)
+        rx = spec.get("exclude_title_regex")
+        if rx and evs:
+            pat = re.compile(rx)
+            evs = [e for e in evs if not pat.search(e.get("name", ""))]
+        return evs
+
+    @staticmethod
+    def _keep_for_production(spec: Dict, evs: List[Dict]) -> List[Dict]:
+        """`require_lgbtq_match` (optional) keeps only LGBTQ-keyword events in the
+        weekly scrape. For high-volume general feeds (the library runs ~285 events
+        a fortnight, almost all storytimes and classes) the trusted-venue path
+        would otherwise flood the website. The health guard calls _scrape_spec
+        directly, so it still measures whether the feed parses at all."""
+        if not spec.get("require_lgbtq_match"):
+            return evs
+        from scraper.extended_calendars import _is_lgbtq_relevant
+        return [e for e in evs if _is_lgbtq_relevant(e.get("name", ""), e.get("description", ""))]
+
+    def _scrape_spec_raw(self, spec: Dict) -> List[Dict]:
+        # last_read lets the health guard tell an API feed that answered with
+        # nothing scheduled (IDLE: a seasonal farmers market, a club calendar
+        # between terms) from one that failed to answer (DEAD). Set by the json
+        # and ical readers only; a DOM page with no matching blocks stays DEAD
+        # because that is indistinguishable from selector rot.
+        self.last_read = {"ok": False, "items": None}
         strat = spec.get("strategy", "dom")
         if strat == "dead" or not spec.get("enabled", True):
             return []
@@ -304,8 +417,20 @@ class RenderedSitesScraper(BaseScraper):
             return self._extract_ical(spec)
         if strat == "json":
             return self._extract_json(spec)
-        html = self._render(spec["url"], spec.get("wait_until", "domcontentloaded"),
-                             spec.get("wait_ms", 2000))
+        if spec.get("render") is False:
+            # Server-rendered page behind an anti-bot interstitial that challenges
+            # headless Chromium but not a plain HTTP client (108 Contemporary's
+            # SiteGround "Checking your browser...", 2026-11-06).
+            try:
+                r = self.session.get(spec["url"], timeout=20)
+                r.raise_for_status()
+                html = r.text
+            except Exception as e:
+                logger.warning("[rendered_sites] fetch failed %s: %s", spec["url"], e)
+                return []
+        else:
+            html = self._render(spec["url"], spec.get("wait_until", "domcontentloaded"),
+                                 spec.get("wait_ms", 2000))
         if not html:
             return []
         from bs4 import BeautifulSoup
@@ -332,8 +457,13 @@ class RenderedSitesScraper(BaseScraper):
                 if spec.get("strategy") == "dead" or not spec.get("enabled", True):
                     continue
                 try:
-                    ev = self._scrape_spec(spec)
-                    logger.info("[rendered_sites] %s: %d events", spec["name"], len(ev))
+                    raw = self._scrape_spec(spec)
+                    ev = self._keep_for_production(spec, raw)
+                    if len(ev) != len(raw):
+                        logger.info("[rendered_sites] %s: %d events (%d parsed, kept LGBTQ matches only)",
+                                    spec["name"], len(ev), len(raw))
+                    else:
+                        logger.info("[rendered_sites] %s: %d events", spec["name"], len(ev))
                     all_events.extend(ev)
                 except Exception as e:
                     logger.warning("[rendered_sites] %s crashed: %s", spec.get("name"), e)
@@ -369,7 +499,10 @@ if __name__ == "__main__":
             ev = s._scrape_spec(spec)
             dated = [e for e in ev if len(e.get("date", "")) == 10]
             flag = "" if dated else "  <-- 0 dated"
-            print(f"  {spec['name']:42s} {len(ev):3d} events ({len(dated)} dated){flag}")
+            kept = s._keep_for_production(spec, ev)
+            if len(kept) != len(ev):
+                flag += f"  (weekly scrape keeps {len(kept)} LGBTQ matches)"
+            print(f"  {spec['name']:42s} {len(ev):3d} events ({len(dated)} dated){flag}", flush=True)
             out.extend(ev)
     finally:
         s._close_browser()

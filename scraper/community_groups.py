@@ -24,21 +24,40 @@ class CommunityGroupsScraper(BaseScraper):
 
     # ── Websites to scrape ─────────────────────────────────────────────
     SOURCES = {
-        "black_queer_tulsa": "https://www.blackqueertulsa.org/",
         # studio_66 moved to its own scraper (scraper/studio66.py) — reads @studio.66_
         # via the authenticated instagrapi session. s66tulsa.com is a dead domain
         # (NXDOMAIN), so the old website fetch only produced DNS errors every run.
         "elote_events": "https://www.elotetulsa.com/events",
-        "green_country_bears": "https://greencountrybears.com/",
-        "pflag_tulsa": "https://tulsapflag.org/",
-        "council_oak_chorus": "https://www.counciloak.org/concerts",
         # taco_ok RETIRED 2026-06-18: transadvocacyok.org was hijacked and now
         # serves an Indonesian gambling site ("Agen5000"). Do not fetch.
-        "hotmess_sports": "https://www.hotmesssports.com/tulsa",
-        "pride_sports": "https://pridesportstulsa.leagueapps.com/leagues",
         # tulsa_house_of_drag RETIRED 2026-06-18: tulsahouseofdrag.com is NXDOMAIN.
-        "diva_royale": "https://www.divaroyale.com/dragquenshow-locations.html",
-        "queerlit_collective": "https://www.facebook.com/queerlitcollective",
+        # Eight more retired 2026-11-06 (F-3576), see RETIRED_SOURCES below.
+    }
+
+    # Removed 2026-11-06: each site was checked live that day and had no dated
+    # event listing, and each org is already carried by another source.
+    # key -> (old url, reason)
+    RETIRED_SOURCES = {
+        "black_queer_tulsa": ("https://www.blackqueertulsa.org/",
+            "homepage scrape returned 5 undated promo-blurb rows (JUNK); the site's Squarespace feed has 0 upcoming / "
+            "6 past events, and playwright_scrapers.BlackQueerTulsaScraper already reads /events"),
+        "green_country_bears": ("https://greencountrybears.com/",
+            "static info page with no dates, only 'second Thursday' prose; the meetup is in scraper/recurring.py"),
+        "pflag_tulsa": ("https://tulsapflag.org/",
+            "no event listing, only 'first Saturday' prose; meetings are in recurring.py and manual_events.json "
+            "through 2026-12, plus the @pflagtulsa Instagram source"),
+        "council_oak_chorus": ("https://www.counciloak.org/concerts",
+            "Wix page publishes no concerts; COMC concerts come from manual_events.json and its Facebook page, and "
+            "the rendered_sites spec watches /concerts"),
+        "hotmess_sports": ("https://www.hotmesssports.com/tulsa",
+            "SportsEngine page lists a season label, no dated games; the @hotmesssportstulsa Instagram is the live feed"),
+        "pride_sports": ("https://pridesportstulsa.leagueapps.com/leagues",
+            "LeagueApps lists no leagues (off-season) and its API answers 401; Gay Kickball Tulsa's Facebook events "
+            "page is a dynamic fb_pages source"),
+        "diva_royale": ("https://www.divaroyale.com/dragquenshow-locations.html",
+            "national drag-brunch chain with no Tulsa or Oklahoma location"),
+        "queerlit_collective": ("https://www.facebook.com/queerlitcollective",
+            "Facebook-only, unreadable without a login here; handled by the facebook_events page list and manual_events.json"),
     }
 
     # Squarespace event collections serve a clean JSON feed at ?format=json. The

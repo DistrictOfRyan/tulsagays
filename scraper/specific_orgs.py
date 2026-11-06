@@ -290,8 +290,14 @@ class UTulsaPrideClubScraper(BaseOrgScraper):
     """
 
     source_name = "utulsa_pride"
-    BASE_URL = "https://calendar.utulsa.edu"
-    EVENTS_URL = "https://calendar.utulsa.edu/wp-json/tribe/events/v1/events"
+    BASE_URL = "https://utulsa.trumba.com"
+    # MOVED 2026-11-06: calendar.utulsa.edu is now a CNAME to utulsa.trumba.com
+    # (checked against 8.8.8.8 and 1.1.1.1) and its TLS cert no longer matches,
+    # so the Tribe REST API below this line used to call is unreachable. TU's
+    # calendar now publishes Trumba's public feed; events=1000 returns the whole
+    # ~7-month window (619 events on 2026-11-06), so we filter locally instead of
+    # searching server-side.
+    EVENTS_URL = "https://www.trumba.com/calendars/utulsa.json"
     DEFAULT_VENUE = "University of Tulsa Campus"
     PRIORITY = 2
 
@@ -303,63 +309,69 @@ class UTulsaPrideClubScraper(BaseOrgScraper):
 
     def scrape(self) -> List[Dict]:
         events: List[Dict] = []
-        seen_ids = set()
+        try:
+            resp = self.session.get(self.EVENTS_URL, params={"events": 1000}, timeout=30)
+            resp.raise_for_status()
+            items = resp.json()
+        except Exception as e:
+            logger.warning("[%s] Trumba feed failed: %s", self.source_name, e)
+            return []
+        if not isinstance(items, list):
+            logger.warning("[%s] Trumba feed is not a list (%s)", self.source_name, type(items).__name__)
+            return []
 
-        for term in self.SEARCH_TERMS:
-            try:
-                resp = self.session.get(
-                    self.EVENTS_URL,
-                    params={"search": term, "per_page": 50},
-                    timeout=20,
-                )
-                resp.raise_for_status()
-                payload = resp.json()
-            except Exception as e:
-                logger.warning("[%s] search '%s' failed: %s",
-                               self.source_name, term, e)
+        def _rx(terms):
+            return re.compile(
+                r"(?<![a-z0-9])(?:" + "|".join(re.escape(t) for t in terms) + r")s?(?![a-z0-9])",
+                re.IGNORECASE)
+        term_rx = _rx(self.SEARCH_TERMS)
+        # "pride", "drag" and "trans" are ambiguous in body copy: on 2026-11-06 all
+        # seven TU basketball games matched on "show your Golden Hurricane pride".
+        # In a description only the unambiguous identity terms count; any term
+        # still counts in the title ("Pride Club Mixer").
+        desc_rx = _rx([t for t in self.SEARCH_TERMS if t not in ("pride", "drag", "trans")])
+        seen_ids = set()
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            ev_id = item.get("eventID")
+            if ev_id in seen_ids or str(item.get("canceled", "")).lower() == "true":
+                continue
+            seen_ids.add(ev_id)
+
+            name = _html.unescape(str(item.get("title", ""))).strip()
+            start = str(item.get("startDateTime", ""))
+            date = start[:10]
+            if not name or not re.match(r"\d{4}-\d{2}-\d{2}", date):
                 continue
 
-            for item in payload.get("events", []):
-                ev_id = item.get("id")
-                if ev_id in seen_ids:
-                    continue
-                seen_ids.add(ev_id)
+            desc = _html.unescape(re.sub(r"<[^>]+>", " ", str(item.get("description", ""))))
+            desc = re.sub(r"\s+", " ", desc).strip()
 
-                # Tribe returns HTML-escaped titles and HTML-blob descriptions.
-                name = _html.unescape(str(item.get("title", ""))).strip()
-                start = str(item.get("start_date", ""))
-                date = start[:10]
-                if not name or not re.match(r"\d{4}-\d{2}-\d{2}", date):
-                    continue
+            # Same two-step gate the server-side search gave us: a precise term
+            # must appear, and the shared relevance check must agree, so a passing
+            # mention of "pride" in an unrelated event stays out.
+            if not (term_rx.search(name) or desc_rx.search(desc)) or not _is_lgbtq_relevant(name, desc):
+                continue
 
-                desc = _html.unescape(
-                    re.sub(r"<[^>]+>", " ", str(item.get("description", "")))
-                )
-                desc = re.sub(r"\s+", " ", desc).strip()
+            venue = _html.unescape(re.sub(r"<[^>]+>", " ", str(item.get("location") or ""))).strip()
+            venue = re.sub(r"\s+", " ", venue) or self.DEFAULT_VENUE
+            time_str = ""
+            if not item.get("allDay"):
+                _, time_str = iso_to_local(start)  # Trumba startDateTime is naive local
 
-                # The API search matches body text too, so re-check relevance on
-                # title+description. Keeps a passing mention of "pride" in an
-                # unrelated event out of the feed.
-                if not _is_lgbtq_relevant(name, desc):
-                    continue
+            events.append(self.make_event(
+                name=name,
+                date=date,
+                time=time_str,
+                venue=venue,
+                description=desc[:600],
+                url=item.get("permaLinkUrl") or item.get("webLink") or self.BASE_URL,
+                priority=self.PRIORITY,
+            ))
 
-                venue = (item.get("venue") or {}).get("venue") or self.DEFAULT_VENUE
-                _, time_str = iso_to_local(start.replace(" ", "T", 1))  # Tribe start_date is naive local
-
-                events.append(self.make_event(
-                    name=name,
-                    date=date,
-                    time=time_str,
-                    venue=venue,
-                    description=desc[:600],
-                    url=item.get("url", "") or self.BASE_URL,
-                    priority=self.PRIORITY,
-                ))
-
-            self._random_delay()
-
-        logger.info("[%s] %d queer campus events across %d search terms",
-                    self.source_name, len(events), len(self.SEARCH_TERMS))
+        logger.info("[%s] %d queer campus events in %d Trumba rows",
+                    self.source_name, len(events), len(items))
         return events
 
 

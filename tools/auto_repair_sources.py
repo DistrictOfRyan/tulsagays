@@ -149,6 +149,12 @@ def main():
             spec = by_name.get(name)
             if not spec:
                 continue
+            # 2026-11-06: an API or iCal spec (json/ical) is read from a feed, not a
+            # page layout, so re-deriving DOM selectors can only replace a correct
+            # spec with a worse guess. Leave those for a person to re-point.
+            if spec.get("strategy") in ("json", "ical"):
+                escalated.append(name)
+                continue
             # Confirm it's actually broken right now (skip ones still working).
             current = _dated(s._scrape_spec(spec)) if spec.get("strategy") != "dead" else []
             if current:
@@ -168,16 +174,11 @@ def main():
                                 specs[i] = fixed
                                 break
                     continue
+            # 2026-11-06: no longer filed to the blocked-on-William registry. A
+            # scraper that needs re-pointing is fleet work, not his: the vault task
+            # (task-runner/tasks/tulsagays_auto_repair.py) files each "! ESCALATED"
+            # line below into the fleet repair queue.
             escalated.append(name)
-            if not args.dry_run:
-                try:
-                    from tools import blocked_items
-                    blocked_items.add(
-                        item=f"Repair TulsaGays scraper source: {name}",
-                        reason="auto-repair could not re-derive a working extraction; needs a human look",
-                        source=f"rendered_sites/{name}", since=f"{datetime.now():%Y-%m-%d}")
-                except Exception:
-                    pass
     finally:
         s._close_browser()
 
@@ -195,7 +196,7 @@ def main():
     for name, strat, n in repaired:
         print(f"  + REPAIRED {name} -> {strat} ({n} dated events)")
     for name in escalated:
-        print(f"  ! ESCALATED {name} -> blocked-on-William (TODAY dashboard)")
+        print(f"  ! ESCALATED {name} -> fleet repair queue (needs a person to re-point the spec)")
 
 
 if __name__ == "__main__":

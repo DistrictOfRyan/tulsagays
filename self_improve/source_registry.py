@@ -128,8 +128,30 @@ def known_keys() -> set:
         from scraper import extended_calendars as ec
         for site in getattr(ec, "SITES", []):
             keys.add(candidate_id("calendar", url=site[0]))
+        # 2026-11-06: retired static URLs stay "known" so discovery can never
+        # re-promote a dead page (or a venue now read by a rendered spec) back
+        # into the static list.
+        for (u, _disp, _why) in getattr(ec, "RETIRED_SITES", {}).values():
+            keys.add(candidate_id("calendar", url=u))
     except Exception as e:
         logger.debug("[registry] extended_calendars import skipped: %s", e)
+    try:
+        from scraper import community_groups as cg
+        for (u, _why) in getattr(cg.CommunityGroupsScraper, "RETIRED_SOURCES", {}).values():
+            keys.add(candidate_id("calendar", url=u))
+            keys.add(candidate_id("fb_page", url=u))
+    except Exception as e:
+        logger.debug("[registry] community_groups import skipped: %s", e)
+    try:
+        # Every rendered spec (live or dead) is already a decided source; its page
+        # and API URLs must not come back as new calendar candidates.
+        from scraper.rendered_sites import _load_specs
+        for spec in _load_specs():
+            for u in (spec.get("url"), spec.get("json_url"), spec.get("ics_url")):
+                if u:
+                    keys.add(candidate_id("calendar", url=u))
+    except Exception as e:
+        logger.debug("[registry] rendered_sites specs skipped: %s", e)
 
     return keys
 
