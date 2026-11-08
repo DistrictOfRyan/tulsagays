@@ -56,6 +56,18 @@ def _live_source_blob():
         parts += [u.lower() for u in getattr(fbe, "GROUP_URLS", [])]
     except Exception:
         pass
+    # Instagram-only orgs (studio66-style generalized pipeline) — username,
+    # alt usernames, and blurb text, so an IG-only org wired into ORGS counts
+    # as covered instead of showing as a false gap.
+    try:
+        from scraper import instagram_orgs as igo
+        for org in getattr(igo, "ORGS", []):
+            parts.append(org.get("username", "").lower())
+            parts += [u.lower() for u in org.get("alt_usernames", [])]
+            parts.append(org.get("source_name", "").lower())
+            parts.append(org.get("blurb", "").lower())
+    except Exception:
+        pass
     return " || ".join(parts)
 
 

@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0",
   "city": "Tulsa",
-  "generated": "2026-11-04",
+  "generated": "2026-11-08",
   "license": "Free to use with attribution to tulsagays.com",
   "coverage": {
-    "coverage_pct": 94.4,
-    "covered": 34,
+    "coverage_pct": 97.2,
+    "covered": 35,
     "total": 36,
-    "gaps": 2
+    "gaps": 1
   },
-  "source_count": 240,
+  "source_count": 202,
   "event_count": 221,
   "events_source": "data/events/2026-W45_rendered.json",
   "events": [

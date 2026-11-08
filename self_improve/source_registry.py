@@ -143,6 +143,24 @@ def known_keys() -> set:
     except Exception as e:
         logger.debug("[registry] community_groups import skipped: %s", e)
     try:
+        # Instagram-only orgs (generalized pipeline, scraper/instagram_orgs.py):
+        # each is keyed by its IG username, not a scrapeable URL, so without this
+        # a wired-in org (e.g. Loud & Queer Fest) keeps surfacing as a "new" find.
+        from scraper import instagram_orgs as igo
+        for org in getattr(igo, "ORGS", []):
+            handle = f"https://instagram.com/{org.get('username', '')}"
+            keys.add(candidate_id("fb_page", url=handle))
+            keys.add(candidate_id("calendar", url=handle))
+            for alt in org.get("alt_usernames", []):
+                alt_handle = f"https://instagram.com/{alt}"
+                keys.add(candidate_id("fb_page", url=alt_handle))
+                keys.add(candidate_id("calendar", url=alt_handle))
+            if org.get("source_name"):
+                keys.add(candidate_id("venue_keyword", kw=org["source_name"]))
+                keys.add(candidate_id("org_keyword", kw=org["source_name"]))
+    except Exception as e:
+        logger.debug("[registry] instagram_orgs import skipped: %s", e)
+    try:
         # Every rendered spec (live or dead) is already a decided source; its page
         # and API URLs must not come back as new calendar candidates.
         from scraper.rendered_sites import _load_specs
