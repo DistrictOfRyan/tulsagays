@@ -309,6 +309,7 @@ class Studio66Scraper(BaseScraper):
             posts = self._fetch_via_web_session()
         if not posts:
             logger.info("[studio_66] No captioned posts from any of the 3 paths — 0 events.")
+            self._record_fetch_health(0, 0, 0)
             return []
 
         events = self._extract_with_llm(posts)
@@ -319,7 +320,25 @@ class Studio66Scraper(BaseScraper):
         in_week = [e for e in events if self._in_week(e.get("date", ""))]
         logger.info("[studio_66] %d candidate events, %d in current week",
                     len(events), len(in_week))
+        self._record_fetch_health(len(posts), len(events), len(in_week))
         return in_week
+
+    @staticmethod
+    def _record_fetch_health(posts: int, candidates: int, in_week: int) -> None:
+        """2026-11-05 (F-2958): runner._warn_missing_key_venues only trusts a venue's '0 events'
+        as a quiet week when it can see the fetch returned posts. instagram_orgs writes that proof
+        to data/ig_scrape_health.json for its venues, but Studio 66 has its own scraper and never
+        wrote any, so it was briefed as a 'silent scrape failure' every quiet week (W44, W45) while
+        the graph-api tier was returning 12 posts. Write the same per-venue shape here."""
+        try:
+            d = Path(getattr(config, "DATA_DIR", "data")) / "fetch_health"
+            d.mkdir(parents=True, exist_ok=True)
+            (d / "studio_66.json").write_text(json.dumps({
+                "checked_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                "posts": int(posts), "events": int(candidates), "in_week": int(in_week),
+            }, indent=2), encoding="utf-8")
+        except Exception as exc:
+            logger.warning("[studio_66] could not write fetch health: %s", exc)
 
     # ── LLM extraction (preferred) ──────────────────────────────────────────────
     def _extract_with_llm(self, posts: List[Dict]) -> Optional[List[Dict]]:
@@ -363,7 +382,7 @@ class Studio66Scraper(BaseScraper):
         try:
             client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
             msg = client.messages.create(
-                model="claude-sonnet-4-5",
+                model="claude-sonnet-5-5",
                 max_tokens=1500,
                 system=system,
                 messages=[{"role": "user", "content": user}],
