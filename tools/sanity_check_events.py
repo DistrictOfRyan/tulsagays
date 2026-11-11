@@ -56,6 +56,7 @@ from scraper.runner import (  # noqa: E402
     _TIME_TOKEN_RX,
 )
 from eotw_selector import _is_youth_nongay  # noqa: E402  under-18 non-gay screen
+from scraper.welcome import unwelcoming_reason  # noqa: E402  "would a gay person be welcome?"
 
 
 # ── Rules: garbled / truncated names ─────────────────────────────────────────
@@ -186,6 +187,14 @@ def rules_pass(events: list) -> tuple:
         if _is_youth_nongay(ev):
             dropped.append((ev, "youth/under-18 programming (not LGBTQ)"))
             continue
+        # Not a place the average gay reader is welcome, or not open to them at
+        # all: non-affirming ministry programming, campus student-life calendars,
+        # straight singles mixers, anti-LGBTQ organisations, private bookings.
+        # (William 2026-11-11, on the W46 deck. Rules + rationale: scraper/welcome.py)
+        _unwelcome = unwelcoming_reason(ev)
+        if _unwelcome:
+            dropped.append((ev, f"not welcoming: {_unwelcome}"))
+            continue
         if not _is_lgbtq_relevant(ev):
             if _is_spam_noise(ev):
                 dropped.append((ev, "spam (career/investor/MLM noise)"))
@@ -219,6 +228,14 @@ _LLM_SYSTEM = (
     "networking, children-only programming, pro/minor-league sports games, paid "
     "professional training/certification courses, private trade conventions not open "
     "to casual attendees, and obvious non-events (bare 'presale'/'tickets' artifacts). "
+    "ALSO DROP anything the average gay reader would not be welcome at or could not "
+    "attend: non-affirming religious programming (campus ministries, Bible studies, "
+    "worship nights, Christian sororities; affirming congregations such as All Souls "
+    "Unitarian, Boston Avenue UMC or Trinity Episcopal are fine), university student-life "
+    "programming that is not a public performance or exhibition (tutoring, residence-hall "
+    "dinners, student fitness classes, homecoming for alumni and families, college sports), "
+    "straight singles mixers and speed dating, events run by groups that campaign against "
+    "LGBTQ people, and private bookings such as wedding receptions. "
     "IMPORTANT: an EMPTY time, venue, or date field is NOT evidence an event is fake — "
     "scrapers often miss fields. Never drop a real-sounding event for missing fields; "
     "FLAG it at most. Anything LGBTQ+ (drag, Pride, queer performance, gay icons like "
