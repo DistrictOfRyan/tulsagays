@@ -927,15 +927,17 @@ def cmd_generate(post_type="weekday"):
         # things are okay if they're big things but like some are not"). A
         # non-gay event earns a featured slot by being big and citywide
         # (scraper.welcome.is_big_event: the curated major-events list, a
-        # festival, parade, Route 66 Centennial event, art crawl, State Fair,
-        # BOK Center show or Broadway tour). A small one (a Circle Cinema
+        # festival, parade, Route 66 Centennial event, art crawl, State Fair),
+        # a gay-oriented concert or show ("Only if they're gay oriented ... pop
+        # stars and gay friendly artists"), or a play / musical / ballet / opera
+        # ("You can do plays in theaters"). A small one (a Circle Cinema
         # screening, a Philbrook tour, a comedy-club set) fills a slot only when
         # the day has fewer than 3 gay or big events, because the 3-per-day
         # HARD rule in preflight would otherwise block the whole post.
         def _big(e):
             try:
-                from scraper.welcome import is_big_event as _ibe
-                return bool(_ibe(e))
+                from scraper.welcome import earns_slide_without_being_gay as _eswbg
+                return bool(_eswbg(e))
             except Exception:
                 return False
 

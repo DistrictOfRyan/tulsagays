@@ -572,6 +572,13 @@ def test_w46_gay_first_and_welcoming():
           not is_big_event(w("The One", "Circle Cinema, 10 S Lewis Ave", source="circle_cinema")))
     check("a comedy-club set is not big", not is_big_event(w("Ari Matti", "Bricktown Comedy Club Tulsa")))
     check("'$5 First Friday at LowDown' is not big", not is_big_event(w("$5 First Friday at LowDown", "LowDown")))
+    from scraper.welcome import earns_slide_without_being_gay as slide_ok
+    check("a gay-oriented pop show earns a slot ('pop stars and gay friendly artists')",
+          slide_ok(w("Chappell Roan", "Cain's Ballroom")))
+    check("an arena show by a non-gay-oriented act does not", not slide_ok(w("Koe Wetzel", "BOK Center")))
+    check("a play at a theatre company earns a slot ('plays in theaters')", slide_ok(w("Rent", "Theatre Tulsa")))
+    check("a rock show at Tulsa Theater is not a play",
+          not slide_ok(w("W.A.S.P. -1984 TO HEADLESS", "Tulsa Theater")))
     check("an art sale is still Gay-Friendly",
           _flamingo_score(w("Red Heat Ceramics 6th Annual Ceramic Art Sale", "Tulsa, OK")) == 2)
 

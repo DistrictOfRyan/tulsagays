@@ -260,8 +260,96 @@ _SMALL_FORMAT_RX = _rx(
     r"junior olympics", r"trunk or treat", r"supper club", r"festival energy",
     r"film fest(?:ival)?", r"short films?", r"screenings?",
 )
-_BIG_VENUE_RX = _rx(r"bok center", r"celebrityattractions(?:\.com)?")
-_BROADWAY_RX = _rx(r"broadway", r"(?:the )?broadway musical")
+_BROADWAY_RX = _rx(r"broadway", r"celebrityattractions(?:\.com)?")
+
+# ── Gay-oriented concerts ────────────────────────────────────────────────────
+# William, 2026-11-11, on whether concerts count as big: "Only if they're gay
+# oriented. Like if it's something that gay people would like. So like pop stars
+# and gay friendly artists." An arena or a famous venue is not the test (a Koe
+# Wetzel show at the BOK Center does not qualify); the artist is. Pop divas,
+# current pop stars, queer and gay-icon artists, drag stars and queer comedians,
+# plus their tribute shows. Extend per city with config.GAY_APPEAL_ARTISTS_CITY.
+_GAY_APPEAL_ARTISTS = [
+    # pop divas and gay icons
+    "lady gaga", "madonna", "cher", "kylie minogue", "britney spears", "beyonce", "beyoncé",
+    "ariana grande", "dua lipa", "mariah carey", "whitney houston", "donna summer", "diana ross",
+    "janet jackson", "tina turner", "celine dion", "christina aguilera", "jennifer lopez",
+    "gloria estefan", "cyndi lauper", "bette midler", "barbra streisand", "liza minnelli",
+    "dolly parton", "reba mcentire", "reba", "shania twain", "kelly clarkson", "p!nk",
+    "katy perry", "taylor swift", "kesha", "gwen stefani", "spice girls", "paula abdul",
+    "debbie gibson", "abba", "village people", "elton john", "george michael", "boy george",
+    "culture club", "pet shop boys", "erasure", "scissor sisters", "the b-52s", "b-52s",
+    "blondie", "ricky martin", "shakira", "rosalía", "rosalia", "robyn", "lorde",
+    "florence \\+ the machine", "florence and the machine", "marina and the diamonds", "halsey",
+    "demi lovato", "miley cyrus", "selena gomez", "lizzo", "doja cat", "sza", "tove lo",
+    "jessie ware", "zara larsson",
+    # current pop stars
+    "chappell roan", "sabrina carpenter", "olivia rodrigo", "billie eilish", "benson boone",
+    "tate mcrae", "gracie abrams", "conan gray", "ava max", "harry styles", "charli xcx",
+    "carly rae jepsen", "addison rae", "doechii", "megan thee stallion", "kehlani",
+    # queer and gay-icon artists
+    "troye sivan", "sam smith", "kim petras", "lil nas x", "adam lambert", "years & years",
+    "olly alexander", "mika", "rufus wainwright", "frank ocean", "janelle monae", "janelle monáe",
+    "rina sawayama", "reneé rapp", "renee rapp", "hayley kiyoko", "king princess", "girl in red",
+    "muna", "boygenius", "phoebe bridgers", "lucy dacus", "julien baker", "tegan and sara",
+    "brandi carlile", "indigo girls", "melissa etheridge", "betty who", "allie x", "slayyyter",
+    "big freedia", "orville peck", "chely wright", "brandy clark", "kacey musgraves",
+    "lavender country", "paisley fields", "willi carlisle", "brothers osborne",
+    # drag stars and queer comedians
+    "rupaul", "trixie mattel", "katya", "bianca del rio", "jinkx monsoon", "alaska thunderfuck",
+    "sasha velour", "willam", "ginger minj", "latrice royale", "monét x change", "monet x change",
+    "margaret cho", "tig notaro", "wanda sykes", "hannah gadsby", "matteo lane", "joel kim booster",
+    "bowen yang", "fortune feimster", "cameron esposito", "randy rainbow", "kathy griffin", "sam jay",
+]
+_GAY_APPEAL_CUES = [r"disco", r"divas?", r"pop divas?", r"dancing queen"]
+
+
+def _gay_appeal_rx() -> re.Pattern:
+    extra = [str(a).lower() for a in (getattr(_config, "GAY_APPEAL_ARTISTS_CITY", []) or [])]
+    names = [re.escape(a) if "\\" not in a else a for a in _GAY_APPEAL_ARTISTS + extra]
+    return _rx(*(names + _GAY_APPEAL_CUES))
+
+
+_GAY_APPEAL_RX = _gay_appeal_rx()
+
+# ── Stage productions ────────────────────────────────────────────────────────
+# William, 2026-11-11: "You can do plays in theaters and stuff like that as well."
+# Plays, musicals, ballet and opera earn a slot like a big event. Detected from
+# the production (name) or a theatre COMPANY venue, never from a venue that only
+# has "theater" in its name: Tulsa Theater is a rock club (W.A.S.P., Dogstar).
+_STAGE_NAME_RX = _rx(
+    r"musicals?", r"ballet", r"nutcracker", r"opera", r"operetta", r"the play", r"a play",
+    r"new play", r"stage production", r"world premiere", r"shakespeare", r"one-act",
+    r"one act plays?", r"play reading", r"theat(?:re|er) production",
+)
+_STAGE_VENUE_RX = _rx(
+    r"theatre tulsa", r"american theatre company", r"tulsa ballet", r"tulsa opera",
+    r"heller theatre", r"tulsa spotlight theater", r"spotlight theater", r"theatre north",
+    r"playhouse", r"tulsa project theatre", r"world stage theatre",
+)
+# Not a performance for an audience.
+_STAGE_NOT_SHOW_RX = _rx(
+    r"auditions?", r"rehearsals?", r"class(?:es)?", r"camps?", r"workshops?", r"laboratory",
+    r"lab", r"season announcement", r"season tickets?", r"open house", r"gala", r"jr\.?",
+    r"junior", r"kids?", r"youth",
+)
+
+
+def is_gay_appeal_show(ev: Dict) -> bool:
+    """A concert or show by an artist gay audiences love (any venue)."""
+    return bool(_GAY_APPEAL_RX.search(ev.get("name") or ""))
+
+
+def is_stage_production(ev: Dict) -> bool:
+    """A play, musical, ballet or opera performance."""
+    name = ev.get("name") or ""
+    if _STAGE_NOT_SHOW_RX.search(name):
+        return False
+    if _BROADWAY_RX.search(name) or _BROADWAY_RX.search(_location_blob(ev)):
+        return True
+    if _STAGE_NAME_RX.search(name):
+        return True
+    return bool(_STAGE_VENUE_RX.search(ev.get("venue") or ""))
 
 
 def is_big_event(ev: Dict) -> bool:
@@ -269,12 +357,13 @@ def is_big_event(ev: Dict) -> bool:
     if (ev.get("source") or "").lower() == "major_tulsa":
         return True
     name = ev.get("name") or ""
-    if _BIG_NAME_RX.search(name) and not _SMALL_FORMAT_RX.search(name):
-        return True
-    loc = _location_blob(ev)
-    if _BIG_VENUE_RX.search(loc) or _BROADWAY_RX.search(name):
-        return True
-    return False
+    return bool(_BIG_NAME_RX.search(name) and not _SMALL_FORMAT_RX.search(name))
+
+
+def earns_slide_without_being_gay(ev: Dict) -> bool:
+    """The non-gay events allowed on a slide ahead of small filler: big citywide
+    events, gay-oriented concerts and shows, and stage productions."""
+    return is_big_event(ev) or is_gay_appeal_show(ev) or is_stage_production(ev)
 
 
 def _location_blob(ev: Dict) -> str:
@@ -397,6 +486,13 @@ if __name__ == "__main__":
         _ev("Zeeco Oktoberfest Tulsa", "River West Festival Park"),
         _ev("BENSON BOONE", "BOK Center"),
         _ev("The Notebook (Broadway Musical)", "Tulsa PAC"),
+        _ev("Chappell Roan: Visions of Damsels & Other Dangerous Things", "Cain's Ballroom"),
+        _ev("Dancing Queen: An ABBA Tribute", "Tulsa Theater"),
+        _ev("Trixie Mattel: Solo Tour", "Tulsa Theater"),
+        _ev("Rent", "Theatre Tulsa, 110 E 2nd St"),
+        _ev("The Nutcracker", "Tulsa PAC"),
+        _ev("Tulsa Opera: La Traviata", "Tulsa PAC"),
+        _ev("Out of Mind", "World Stage Theatre Company"),
     ]
     small = [
         _ev("The One", "Circle Cinema, 10 S Lewis Ave", source="circle_cinema"),
@@ -409,14 +505,20 @@ if __name__ == "__main__":
         _ev("(part 2) DCC Book Club: a Parade of Horribles", "Central Library"),
         _ev("Red Heat Ceramics 6th Annual Ceramic Art Sale", "Tulsa, OK"),
         _ev("Tanya Tucker", "Hard Rock Live at Hard Rock Hotel & Casino Tulsa"),
+        _ev("Koe Wetzel", "BOK Center"),
+        _ev("W.A.S.P. -1984 TO HEADLESS", "Tulsa Theater"),
+        _ev("Musical Laboratory", "Theatre Tulsa"),
+        _ev("Tulsa Community College Theatre 2026–2027 Season", "Tulsa Community College"),
+        _ev("Fletcher Jones Band", "Mercury Lounge"),
+        _ev("Annie Jr. Auditions", "Broken Arrow Community Playhouse"),
     ]
     failed = 0
     for e in big:
-        if not is_big_event(e):
+        if not earns_slide_without_being_gay(e):
             print(f"FAIL should be big: {e['name']!r}")
             failed += 1
     for e in small:
-        if is_big_event(e):
+        if earns_slide_without_being_gay(e):
             print(f"FAIL should be small: {e['name']!r}")
             failed += 1
     for e in drop:
