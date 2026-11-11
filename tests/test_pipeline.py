@@ -563,6 +563,15 @@ def test_w46_gay_first_and_welcoming():
                             source="community_groups")) == 5)
     check("Eagle karaoke still Super Gay",
           _flamingo_score(w("Tulsa Eagle Tuesday Karaoke", "Tulsa Eagle, 1338 E 3rd St", source="recurring")) == 5)
+    from scraper.welcome import is_big_event
+    check("Route 66 Centennial crawl is big", is_big_event(w("Route 66 Centennial Crawl", "Guthrie Green")))
+    check("State Fair is big", is_big_event(w("Tulsa State Fair", "Expo Square")))
+    check("a curated major event is big",
+          is_big_event(w("Zeeco Oktoberfest Tulsa", "River West Festival Park", source="major_tulsa")))
+    check("a Circle Cinema screening is not big",
+          not is_big_event(w("The One", "Circle Cinema, 10 S Lewis Ave", source="circle_cinema")))
+    check("a comedy-club set is not big", not is_big_event(w("Ari Matti", "Bricktown Comedy Club Tulsa")))
+    check("'$5 First Friday at LowDown' is not big", not is_big_event(w("$5 First Friday at LowDown", "LowDown")))
     check("an art sale is still Gay-Friendly",
           _flamingo_score(w("Red Heat Ceramics 6th Annual Ceramic Art Sale", "Tulsa, OK")) == 2)
 
@@ -582,6 +591,21 @@ def test_w46_gay_first_and_welcoming():
          "date": day(0), "time": "11:30 AM", "source": "rendered_sites", "url": "https://calendar.utulsa.edu/"},
         {"name": "Yoga With Bea", "venue": "University of Tulsa", "date": day(0), "time": "5:00 PM",
          "source": "rendered_sites", "url": "https://calendar.utulsa.edu/"},
+        # Wednesday: no gay event at all. Big citywide events must fill the
+        # slide ahead of small welcoming ones ("Some things are okay if they're
+        # big things but like some are not", William 2026-11-11).
+        {"name": "Route 66 Tulsa Birthday Bash & Veterans Day Parade", "venue": "Downtown Tulsa",
+         "date": day(2), "time": "", "source": "major_tulsa"},
+        {"name": "Route 66 Centennial Crawl", "venue": "Guthrie Green", "date": day(2), "time": "6:00 PM",
+         "source": "rendered_sites"},
+        {"name": "Tulsa State Fair", "venue": "Expo Square, 4145 E 21st St", "date": day(2), "time": "10:00 AM",
+         "source": "rendered_sites"},
+        {"name": "The One", "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa", "date": day(2), "time": "7:00 PM",
+         "source": "circle_cinema"},
+        {"name": "Docent-Led Tour: Collection Highlights", "venue": "Philbrook Museum of Art, 2727 S Rockford Rd",
+         "date": day(2), "time": "2:00 PM", "source": "philbrook_museum"},
+        {"name": "Ari Matti", "venue": "Bricktown Comedy Club Tulsa", "date": day(2), "time": "7:00 PM",
+         "source": "rendered_sites"},
         {"name": "DRAGNIFICENT! Drag Show", "venue": majestic, "date": day(3), "time": "10:00 PM",
          "source": "community_groups"},
         {"name": "Intelligent Singles Mixer in Tulsa OK", "venue": "Roof Sixty-Six Rooftop Bar",
@@ -666,6 +690,13 @@ def test_w46_gay_first_and_welcoming():
         check(f"'{gone}' is on no slide", gone not in shown)
     check("a private wedding reception is never Event of the Week",
           "Alistair Wedding Reception" not in eotw, f"EOTW: {eotw}")
+    wed = names("Wednesday")
+    big3 = {"Route 66 Tulsa Birthday Bash & Veterans Day Parade", "Route 66 Centennial Crawl", "Tulsa State Fair"}
+    check("a day with no gay event features the BIG events, not small filler",
+          set(wed[:3]) == big3, f"Wednesday: {wed[:3]}")
+    check("small welcoming events stay off the slide when big ones fill it",
+          not ({"The One", "Docent-Led Tour: Collection Highlights", "Ari Matti"} & set(wed[:3])),
+          f"Wednesday: {wed[:3]}")
 
 
 # ── Final deck review (William 2026-07-09): the last-eyes pass over the

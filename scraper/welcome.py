@@ -239,6 +239,44 @@ _CLOSED_AUDIENCE_RX = _rx(
 )
 
 
+# ── Big enough for a slide ───────────────────────────────────────────────────
+# William, 2026-11-11, after the first fix: "Some things are okay if they're big
+# things but like some are not." A NON-gay event may take a slide slot only when
+# it is a big, citywide thing: the curated major-events list
+# (data/major_tulsa_events.json, source "major_tulsa", his rule "we have to have
+# the major events"), a festival / parade / Route 66 Centennial event / art crawl
+# / state fair / fireworks, an arena show at the BOK Center, or a Broadway tour.
+# A Circle Cinema screening, a Philbrook docent tour, a comedian at Bricktown or
+# a DJ in a casino lounge is welcoming but small: it stays on the website and is
+# never on a slide.
+_BIG_NAME_RX = re.compile(
+    r"(?<![a-z0-9])(?:festivals?|fest|oktoberfest|mayfest|winterfest|juneteenth|"
+    r"(?<!a )parades?|centennial|100 years of route 66|route 66 birthday|state fair|"
+    r"street fair|art crawl|block party|carnival|fireworks|holiday lights|"
+    r"christmas lights|tulsa tough)(?![a-z0-9])", re.IGNORECASE)
+# Small formats that borrow a big word.
+_SMALL_FORMAT_RX = _rx(
+    r"book club", r"volunteers?", r"volunteer opportunity", r"co-?working",
+    r"junior olympics", r"trunk or treat", r"supper club", r"festival energy",
+    r"film fest(?:ival)?", r"short films?", r"screenings?",
+)
+_BIG_VENUE_RX = _rx(r"bok center", r"celebrityattractions(?:\.com)?")
+_BROADWAY_RX = _rx(r"broadway", r"(?:the )?broadway musical")
+
+
+def is_big_event(ev: Dict) -> bool:
+    """True for a big, citywide event that earns a slide slot without being gay."""
+    if (ev.get("source") or "").lower() == "major_tulsa":
+        return True
+    name = ev.get("name") or ""
+    if _BIG_NAME_RX.search(name) and not _SMALL_FORMAT_RX.search(name):
+        return True
+    loc = _location_blob(ev)
+    if _BIG_VENUE_RX.search(loc) or _BROADWAY_RX.search(name):
+        return True
+    return False
+
+
 def _location_blob(ev: Dict) -> str:
     urls = [ev.get("url") or ""] + list(ev.get("source_urls") or [])
     return " ".join([ev.get("venue") or "", ev.get("address") or ""] + urls).lower()
@@ -350,7 +388,37 @@ if __name__ == "__main__":
             desc="The Office of Resilience & Belonging and The Equality Center present a panel."),
         _ev("2026 FCA National Meet", "Falcon Club of America", source="google_events"),
     ]
+    big = [
+        _ev("Route 66 Tulsa Birthday Bash & Veterans Day Parade", "Downtown Tulsa", source="major_tulsa"),
+        _ev("Route 66 Centennial Crawl", "Guthrie Green"),
+        _ev("Bob Wills' Texas Playboys - Celebrating 100 Years of Route 66", "Guthrie Green"),
+        _ev("Tulsa State Fair", "Expo Square"),
+        _ev("First Friday Art Crawl", "Tulsa Arts District"),
+        _ev("Zeeco Oktoberfest Tulsa", "River West Festival Park"),
+        _ev("BENSON BOONE", "BOK Center"),
+        _ev("The Notebook (Broadway Musical)", "Tulsa PAC"),
+    ]
+    small = [
+        _ev("The One", "Circle Cinema, 10 S Lewis Ave", source="circle_cinema"),
+        _ev("Docent-Led Tour: Collection Highlights", "Philbrook Museum of Art", source="philbrook_museum"),
+        _ev("Ari Matti", "Bricktown Comedy Club Tulsa"),
+        _ev("DJ | Oreo", "Riffs at Hard Rock Hotel & Casino Tulsa"),
+        _ev("$5 First Friday at LowDown", "LowDown Tulsa"),
+        _ev("Manhattan Short Film Fest", "Circle Cinema, 10 S Lewis Ave", source="circle_cinema"),
+        _ev("Oktoberfest Volunteer Opportunity", "", source="meetup"),
+        _ev("(part 2) DCC Book Club: a Parade of Horribles", "Central Library"),
+        _ev("Red Heat Ceramics 6th Annual Ceramic Art Sale", "Tulsa, OK"),
+        _ev("Tanya Tucker", "Hard Rock Live at Hard Rock Hotel & Casino Tulsa"),
+    ]
     failed = 0
+    for e in big:
+        if not is_big_event(e):
+            print(f"FAIL should be big: {e['name']!r}")
+            failed += 1
+    for e in small:
+        if is_big_event(e):
+            print(f"FAIL should be small: {e['name']!r}")
+            failed += 1
     for e in drop:
         r = unwelcoming_reason(e)
         if not r:
@@ -361,5 +429,6 @@ if __name__ == "__main__":
         if r:
             print(f"FAIL should keep: {e['name']!r} ({r})")
             failed += 1
-    print(f"welcome selftest: {len(drop)} drops, {len(keep)} keeps, {failed} failures")
+    print(f"welcome selftest: {len(drop)} drops, {len(keep)} keeps, {len(big)} big, "
+          f"{len(small)} small, {failed} failures")
     raise SystemExit(1 if failed else 0)

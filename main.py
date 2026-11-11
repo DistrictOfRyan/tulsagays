@@ -923,6 +923,22 @@ def cmd_generate(post_type="weekday"):
                 return False  # performance nights are marquee, never demoted
             return any(k in combo for k in _BAR_UTILITY_KW)
 
+        # BIG THINGS ONLY (William 2026-11-11, after the gay-first fix: "Some
+        # things are okay if they're big things but like some are not"). A
+        # non-gay event earns a featured slot by being big and citywide
+        # (scraper.welcome.is_big_event: the curated major-events list, a
+        # festival, parade, Route 66 Centennial event, art crawl, State Fair,
+        # BOK Center show or Broadway tour). A small one (a Circle Cinema
+        # screening, a Philbrook tour, a comedy-club set) fills a slot only when
+        # the day has fewer than 3 gay or big events, because the 3-per-day
+        # HARD rule in preflight would otherwise block the whole post.
+        def _big(e):
+            try:
+                from scraper.welcome import is_big_event as _ibe
+                return bool(_ibe(e))
+            except Exception:
+                return False
+
         def _flamingo(e):
             try:
                 from content.image_maker import _flamingo_score as _flsc
@@ -993,6 +1009,7 @@ def cmd_generate(post_type="weekday"):
             civic = _civic(e)
             return (
                 0 if lg else 1,            # 1) gay events lead, always
+                0 if (lg or _big(e)) else 1,  # 1') then BIG non-gay events; small ones only fill a gap
                 1 if civic else 0,         # 1a) fun beats civic/informational, always
                 1 if repeat_lead else 0,   # 1b) a fresh event beats one that already led a day
                 1 if venue_only_queer else 0,  # 1c) queer-in-itself beats queer-by-venue
@@ -1095,16 +1112,18 @@ def cmd_generate(post_type="weekday"):
                 cls = 1          # recurring drag/performance — marquee
             elif own_gay and not util:
                 cls = 2          # other gay event (weekly socials, queer clubs)
-            elif not rec_e and fun and not util and real_night_out and _flamingo(e) >= 2:
-                cls = 3          # one-off fun, gay-friendly community event
+            elif _big(e) and not util and real_night_out:
+                cls = 3          # big citywide event (Route 66 Centennial, State Fair)
             elif lg_e and not util:
                 cls = 4          # queer only by venue (an affirming cinema's screening)
             elif lg_e:
                 cls = 5          # weekly gay-bar utility night
+            elif not rec_e and fun and not util and real_night_out and _flamingo(e) >= 2:
+                cls = 6          # small one-off, gay-friendly community event
             elif not util:
-                cls = 6
+                cls = 7
             else:
-                cls = 7          # non-gay bar utility — hero only if nothing else
+                cls = 8          # non-gay bar utility — hero only if nothing else
             return (cls, _rank(e))
 
         if top:
