@@ -1301,6 +1301,7 @@ LGBTQ_SOURCES = {
     "dvl_ig",            # @dvltulsa — woman-owned LGBTQ+ bar (Blue Dome); site calendar is JS-only, IG carries events
 
     "pflag_tulsa", "pflag_ig", "black_queer_tulsa", "freedom_oklahoma",
+    "tulsa_house_of_drag", "osq_and_a",  # IG feeds from William's listing map (2026-11-11)
     "utulsa_pride", "osu_tulsa",
     "tcc_pride",         # @tcc_pride — TCC's LGBTQ+ student org. Their events never
                          # reach calendar.tulsacc.edu (0 LGBTQ hits in all 323), so IG is the feed.

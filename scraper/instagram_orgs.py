@@ -246,6 +246,68 @@ ORGS: List[Dict] = [
                  "the whole point is showing up and having a blast. Details and "
                  "registration on Instagram @hotmesssportstulsa.",
     },
+    # ── From William's "Tulsa LGBTQ+ Events and Community Listing Map" ──────────
+    # (repo root PDF, committed 2026-10-21). William, 2026-11-11: "there's
+    # definitely more than three events each day that are gay in Tulsa. You've
+    # been skipping sites that I cued up for you." These five queer accounts are
+    # named in that map and were never in this list. Their websites carry no
+    # current dated events (blackqueertulsa.org lists 2022 events and a 2024 brunch
+    # list; tulsahouseofdrag.com is DNS-dead since 2026-04), so Instagram is the
+    # live feed. NOT added from the same map, because they are not queer sources:
+    # @gathertulsa (Gathering Place park), @witchworxtulsa (alternative spiritual),
+    # @magiccitybooks (bookstore).
+    {
+        # Drag event discovery account: "weekly and weekend" drag shows across venues.
+        "username": "tulsahouseofdrag",
+        "source_name": "tulsa_house_of_drag",
+        "default_venue": "Tulsa (see @tulsahouseofdrag for venue)",
+        "priority": 1,
+        "blurb": "Tulsa House of Drag posts the city's drag shows, brunches and pageants. "
+                 "Details on Instagram @tulsahouseofdrag.",
+    },
+    {
+        # Twisted Arts: Tulsa's queer arts collective and film festival. Its
+        # twistedfest.org calendar still lists 2024/2025 shows; IG is current.
+        "username": "twistedartstulsa",
+        "source_name": "twisted_arts",
+        "default_venue": "Tulsa (see @twistedartstulsa for venue)",
+        "priority": 1,
+        "blurb": "Twisted Arts is Tulsa's queer arts collective behind the Twisted Fest "
+                 "film festival, screenings, and performance nights. Details on Instagram "
+                 "@twistedartstulsa.",
+    },
+    {
+        # Black Queer Tulsa: the website is stale (2022 events), the brunch and
+        # Walk For Me Wednesday announcements now go out on social. NOTE: their
+        # monthly brunch is for Black queer folks only (blackqueertulsa.org/events);
+        # most of their other events are open to allies.
+        "username": "blackqueertulsa",
+        "source_name": "black_queer_tulsa",
+        "default_venue": "Tulsa (see @blackqueertulsa for venue)",
+        "priority": 1,
+        "blurb": "Black Queer Tulsa builds community and visibility for Black queer "
+                 "Tulsans. Details on Instagram @blackqueertulsa.",
+    },
+    {
+        # OSQ&A: listed in the map beside TU's LGBTQ library resources (campus queer
+        # student group). Campus events reach the guide only when queer, which this
+        # account's posts are by definition.
+        "username": "osq_and_a",
+        "source_name": "osq_and_a",
+        "default_venue": "University of Tulsa (see @osq_and_a)",
+        "priority": 2,
+        "blurb": "OSQ&A is a queer student group in Tulsa. Details on Instagram @osq_and_a.",
+    },
+    {
+        # Council Oak Men's Chorale, Tulsa's gay men's chorus. counciloak.org is a
+        # Wix site with no machine-readable concert dates.
+        "username": "counciloakmenschorale",
+        "source_name": "council_oak",
+        "default_venue": "Tulsa (see @counciloakmenschorale for venue)",
+        "priority": 1,
+        "blurb": "Council Oak Men's Chorale is Tulsa's gay men's chorus. Details on "
+                 "Instagram @counciloakmenschorale.",
+    },
 ]
 
 

@@ -320,6 +320,18 @@ RECURRING = [
         "venue": "Various locations, Tulsa",
         "url": "https://www.blackqueertulsa.org/events",
         "priority": 1,
+        # blackqueertulsa.org/events (read 2026-11-11): "While most of our events are
+        # open to non-Black friends, allies, and supporters, our monthly brunch is
+        # exclusively for Black queer folks." W46's slide invited everyone; say who
+        # it is for so no reader shows up and gets turned away.
+        "description": ("Black Queer Tulsa's monthly Sunday brunch at a Black- and queer-friendly "
+                        "spot. This one is for Black queer folks; BQT's other events welcome allies. "
+                        "The location is announced in their Facebook group."),
+        "website_description": ("Black Queer Tulsa's monthly Sunday brunch, held at a different Black- "
+                                "and queer-friendly restaurant each month. Per Black Queer Tulsa, the "
+                                "brunch is exclusively for Black queer folks, while most of their other "
+                                "events are open to friends and allies. Locations are announced in "
+                                "their private Facebook group; see blackqueertulsa.org/events."),
     },
 ]
 
@@ -400,10 +412,17 @@ class RecurringScraper(BaseScraper):
                     date=date_str,
                     time=entry.get("time", ""),
                     venue=entry.get("venue", ""),
-                    description="",
+                    # Hand-written copy on an entry used to be dropped here, so the
+                    # Rainbow Reconstruction, Tuesdays in the Park and Black Queer
+                    # Tulsa brunch descriptions never reached a slide or the site
+                    # (W46 invited everyone to a brunch that is for Black queer folks).
+                    description=entry.get("description", ""),
                     url=entry.get("url", ""),
                     priority=entry.get("priority", 2),
                 )
+                if entry.get("website_description"):
+                    ev["website_description"] = entry["website_description"]
+                    ev["copy_locked"] = True   # tools/gen_website_descriptions.py keeps it
                 # Flag rotating-venue events so the override/preflight layer knows
                 # not to trust a blank/stale venue (e.g. Queer Women's Collective).
                 if entry.get("venue_varies"):

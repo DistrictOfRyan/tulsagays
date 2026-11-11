@@ -225,7 +225,8 @@ _HOSTILE_ORG_RX = _rx(
     r"family policy council", r"promise keepers", r"focus on the family",
     r"american family association", r"alliance defending freedom",
 )
-_HOSTILE_NAME_RX = _rx(r"patriotism", r"pro-?life", r"maga", r"america first", r"gop")
+_HOSTILE_NAME_RX = _rx(r"patriotism", r"pro-?life", r"maga", r"america first", r"gop",
+                       r"conservatives")  # "Coffee with Conservatives" (Eventbrite 'gay' search)
 
 # ── closed_audience ──────────────────────────────────────────────────────────
 _CLOSED_AUDIENCE_RX = _rx(

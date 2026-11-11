@@ -250,6 +250,9 @@ _TRUSTED_LGBTQ_SRCS = {
     "homo_hotel",         # HHHH — William's own monthly LGBTQ mixer
     "council_oak",        # Council Oak Men's Chorale
     "circles_lgbtq",
+    # From William's listing map (2026-11-11): queer accounts added to the IG scraper.
+    "tulsa_house_of_drag",  # @tulsahouseofdrag, drag shows across venues
+    "osq_and_a",            # @osq_and_a, queer student group
     # qlist (added 2026-09-12). scraper/qlist.py: "LGBTQ+ event aggregator for
     # Tulsa" — unlike facebook_events/manual/recurring above, qlist.app only
     # ever lists queer events, so it belongs with the trusted orgs, not the
