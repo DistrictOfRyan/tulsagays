@@ -40,6 +40,12 @@
       "name": "House Church Tulsa",
       "added": "2026-10-04",
       "via": "weekly-search:tulsa affirming church craft club events"
+    },
+    {
+      "url": "https://www.facebook.com/OkEqTulsaPride/events",
+      "name": "Tulsa Pride (OkEq) FB",
+      "added": "2026-11-11",
+      "via": "william-listing-map"
     }
   ],
   "fb_groups": [
@@ -60,6 +66,36 @@
       "last_seen_week": "2026-W40",
       "seen_count": 0,
       "last_checked": "2026-10-04"
+    },
+    {
+      "url": "https://www.facebook.com/groups/queerexchangetulsa/events",
+      "name": "Queer Exchange Tulsa",
+      "added": "2026-11-11",
+      "via": "william-listing-map"
+    },
+    {
+      "url": "https://www.facebook.com/groups/circleslgbtq/events",
+      "name": "Circles LGBTQ+",
+      "added": "2026-11-11",
+      "via": "william-listing-map"
+    },
+    {
+      "url": "https://www.facebook.com/groups/920056358043761/events",
+      "name": "Intersectional queer social space (listing map)",
+      "added": "2026-11-11",
+      "via": "william-listing-map"
+    },
+    {
+      "url": "https://www.facebook.com/groups/648563533672801/events",
+      "name": "IndigiQueer (Indigenous LGBTQ)",
+      "added": "2026-11-11",
+      "via": "william-listing-map"
+    },
+    {
+      "url": "https://www.facebook.com/groups/112525672769614/events",
+      "name": "Tulsa Two Spirit",
+      "added": "2026-11-11",
+      "via": "william-listing-map"
     }
   ],
   "calendars": [

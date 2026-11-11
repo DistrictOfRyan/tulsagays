@@ -923,6 +923,24 @@ def cmd_generate(post_type="weekday"):
                 return False  # performance nights are marquee, never demoted
             return any(k in combo for k in _BAR_UTILITY_KW)
 
+        # BIG THINGS ONLY (William 2026-11-11, after the gay-first fix: "Some
+        # things are okay if they're big things but like some are not"). A
+        # non-gay event earns a featured slot by being big and citywide
+        # (scraper.welcome.is_big_event: the curated major-events list, a
+        # festival, parade, Route 66 Centennial event, art crawl, State Fair),
+        # a gay-oriented concert or show ("Only if they're gay oriented ... pop
+        # stars and gay friendly artists"), or a play / musical / ballet / opera
+        # ("You can do plays in theaters"). A small one (a Circle Cinema
+        # screening, a Philbrook tour, a comedy-club set) fills a slot only when
+        # the day has fewer than 3 gay or big events, because the 3-per-day
+        # HARD rule in preflight would otherwise block the whole post.
+        def _big(e):
+            try:
+                from scraper.welcome import earns_slide_without_being_gay as _eswbg
+                return bool(_eswbg(e))
+            except Exception:
+                return False
+
         def _flamingo(e):
             try:
                 from content.image_maker import _flamingo_score as _flsc
@@ -993,6 +1011,7 @@ def cmd_generate(post_type="weekday"):
             civic = _civic(e)
             return (
                 0 if lg else 1,            # 1) gay events lead, always
+                0 if (lg or _big(e)) else 1,  # 1') then BIG non-gay events; small ones only fill a gap
                 1 if civic else 0,         # 1a) fun beats civic/informational, always
                 1 if repeat_lead else 0,   # 1b) a fresh event beats one that already led a day
                 1 if venue_only_queer else 0,  # 1c) queer-in-itself beats queer-by-venue
@@ -1065,6 +1084,18 @@ def cmd_generate(post_type="weekday"):
         # an ongoing exhibit, or the title that already led an earlier day)
         # to take the box; a "one-off gay event" has to be queer in itself,
         # not only by venue (a Circle Cinema screening is not a gay event).
+        #
+        # GAY EVENTS OWN THE BOX (William 2026-11-11: "My Tulsa gays posts are
+        # showing a lot of things that aren't even gay ... I think we should show
+        # more gay things"). This used to rank "one-off fun community event" ABOVE
+        # every recurring gay event, so a 2-flamingo straight one-off beat the
+        # weekly drag show and the queer socials. W46 shipped Sunday's TOP PICK as
+        # "Homecoming Weekend Brunch for Parents, Families & Alumni" (University of
+        # Tulsa) over the Black Queer Tulsa brunch and Club Majestic's talent night.
+        # Now every gay event that is not weekly bar filler outranks every non-gay
+        # event. Bar-utility nights (darts, trivia, karaoke) still never headline
+        # over a real outing (William 2026-07-20/22), and a non-gay one-off only
+        # gets the box on a day with no gay event at all.
         def _hero_rank(e):
             lg_e = _is_lgbtq_strict(e)
             rec_e = _recurring(e)
@@ -1076,18 +1107,25 @@ def cmd_generate(post_type="weekday"):
             kids = any(k in combo for k in _KIDS_FILLER_KW)
             real_night_out = not (_civic(e) or kids or _ongoing_exhibit(e)
                                   or _norm_title(e) in _featured_titles_used)
-            if lg_e and not rec_e and not util and real_night_out and not _venue_only_queer(e):
+            own_gay = lg_e and not _venue_only_queer(e)
+            if own_gay and not rec_e and not util and real_night_out:
                 cls = 0          # one-off gay event — the ideal hero
-            elif not rec_e and fun and not util and real_night_out and _flamingo(e) >= 2:
-                cls = 1          # one-off fun community event
-            elif lg_e and rec_e and perf:
-                cls = 2          # recurring drag/performance — still marquee
+            elif own_gay and rec_e and perf:
+                cls = 1          # recurring drag/performance — marquee
+            elif own_gay and not util:
+                cls = 2          # other gay event (weekly socials, queer clubs)
+            elif _big(e) and not util and real_night_out:
+                cls = 3          # big citywide event (Route 66 Centennial, State Fair)
             elif lg_e and not util:
-                cls = 3          # other recurring gay (non-utility)
+                cls = 4          # queer only by venue (an affirming cinema's screening)
+            elif lg_e:
+                cls = 5          # weekly gay-bar utility night
+            elif not rec_e and fun and not util and real_night_out and _flamingo(e) >= 2:
+                cls = 6          # small one-off, gay-friendly community event
             elif not util:
-                cls = 4
+                cls = 7
             else:
-                cls = 5          # weekly bar-utility — hero only if nothing else
+                cls = 8          # non-gay bar utility — hero only if nothing else
             return (cls, _rank(e))
 
         if top:

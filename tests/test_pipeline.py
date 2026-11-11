@@ -515,6 +515,197 @@ def test_w40_top_pick_quality():
     check("toddler program never on a slide", "Little Garden Explorers" not in w, f"Wednesday: {w}")
 
 
+def test_w46_gay_first_and_welcoming():
+    """Regression lock, 2026-11-11 (W46). William: "My Tulsa gays posts are
+    showing a lot of things that aren't even gay in the events and that the
+    average gay person probably would not be welcome at."
+
+    The shipped W46 deck led Sunday with "Homecoming Weekend Brunch for Parents,
+    Families & Alumni" (University of Tulsa) over the Black Queer Tulsa brunch and
+    Club Majestic's talent night, badged a straight singles mixer and a Route 66
+    "VIP Party" Gay-Friendly ('art' matched inside 'party'), and the week's list
+    carried campus ministry lunches, Bible studies and a private wedding reception.
+    Replays a synthetic week through the real cmd_generate selection, sandboxed.
+    """
+    print("W46 gay-first + welcoming locks:")
+    import tempfile
+    from datetime import datetime as _dt, timedelta as _td
+    from content.image_maker import _flamingo_score
+    from scraper.welcome import unwelcoming_reason
+
+    # Pure locks: the welcome rule and the honest flamingo badge.
+    def w(name, venue="", url="", source="rendered_sites", desc=""):
+        return {"name": name, "venue": venue, "url": url, "source": source, "description": desc}
+    check("campus ministry lunch is not welcoming",
+          bool(unwelcoming_reason(w("Baptist Collegiate Ministries Free Lunch Monday", "University of Tulsa"))))
+    check("Bible study is not welcoming",
+          bool(unwelcoming_reason(w("Asbury Campus Fellowship Bible Study", "University of Tulsa"))))
+    check("straight singles mixer is not welcoming",
+          bool(unwelcoming_reason(w("Intelligent Singles Mixer in Tulsa OK", "Roof Sixty-Six Rooftop Bar"))))
+    check("private wedding reception is dropped even at the Equality Center",
+          bool(unwelcoming_reason(w("Alistair Wedding Reception",
+                                    "Dennis R. Neill Equality Center, 621 E 4th St", source="okeq"))))
+    check("affirming congregation's worship stays",
+          not unwelcoming_reason(w("Sunday Worship", "All Souls Unitarian Church")))
+    check("Boston Avenue UMC (affirming) stays",
+          not unwelcoming_reason(w("Advent Worship Service", "Boston Avenue United Methodist")))
+    check("a public campus recital stays",
+          not unwelcoming_reason(w("David B. Waters Trust String Quartet Recital", "University of Tulsa")))
+    check("a queer event on campus stays",
+          not unwelcoming_reason(w("TU Pride Alumni Mixer", "University of Tulsa")))
+    check("a gay singles night stays", not unwelcoming_reason(w("Gay Singles Mixer", "Tulsa Eagle, 1338 E 3rd St")))
+    check("'VIP Party' is not Gay-Friendly ('art' inside 'party')",
+          _flamingo_score(w("Oklahoma Route 66 Centennial Celebration VIP Party", "OKPOP Museum")) == 1)
+    check("rooftop singles mixer is not Gay-Friendly",
+          _flamingo_score(w("Intelligent Singles Mixer in Tulsa OK", "Roof Sixty-Six Rooftop Bar")) == 1)
+    check("drag brunch still Super Gay",
+          _flamingo_score(w("Drag Brunch : nov. 11th - gone cuntry", "Elote Cafe & Catering",
+                            source="community_groups")) == 5)
+    check("Eagle karaoke still Super Gay",
+          _flamingo_score(w("Tulsa Eagle Tuesday Karaoke", "Tulsa Eagle, 1338 E 3rd St", source="recurring")) == 5)
+    from scraper.welcome import is_big_event
+    check("Route 66 Centennial crawl is big", is_big_event(w("Route 66 Centennial Crawl", "Guthrie Green")))
+    check("State Fair is big", is_big_event(w("Tulsa State Fair", "Expo Square")))
+    check("a curated major event is big",
+          is_big_event(w("Zeeco Oktoberfest Tulsa", "River West Festival Park", source="major_tulsa")))
+    check("a Circle Cinema screening is not big",
+          not is_big_event(w("The One", "Circle Cinema, 10 S Lewis Ave", source="circle_cinema")))
+    check("a comedy-club set is not big", not is_big_event(w("Ari Matti", "Bricktown Comedy Club Tulsa")))
+    check("'$5 First Friday at LowDown' is not big", not is_big_event(w("$5 First Friday at LowDown", "LowDown")))
+    from scraper.welcome import earns_slide_without_being_gay as slide_ok
+    check("a gay-oriented pop show earns a slot ('pop stars and gay friendly artists')",
+          slide_ok(w("Chappell Roan", "Cain's Ballroom")))
+    check("an arena show by a non-gay-oriented act does not", not slide_ok(w("Koe Wetzel", "BOK Center")))
+    check("a play at a theatre company earns a slot ('plays in theaters')", slide_ok(w("Rent", "Theatre Tulsa")))
+    check("a rock show at Tulsa Theater is not a play",
+          not slide_ok(w("W.A.S.P. -1984 TO HEADLESS", "Tulsa Theater")))
+    check("an art sale is still Gay-Friendly",
+          _flamingo_score(w("Red Heat Ceramics 6th Annual Ceramic Art Sale", "Tulsa, OK")) == 2)
+
+    import config as _cfg
+    import main as _main
+    import content.image_maker as _im
+    import content.generator as _gen
+    import tools.final_deck_review as _fdr
+
+    mon = (_dt.now() - _td(days=_dt.now().weekday())).date()
+    day = lambda n: (mon + _td(days=n)).isoformat()
+    eagle = "Tulsa Eagle, 1338 E 3rd St"
+    majestic = "Club Majestic, 124 N Boston Ave"
+    week = [
+        {"name": "Monday Movie Night", "venue": eagle, "date": day(0), "time": "7:00 PM", "source": "recurring"},
+        {"name": "Baptist Collegiate Ministries Free Lunch Monday", "venue": "University of Tulsa",
+         "date": day(0), "time": "11:30 AM", "source": "rendered_sites", "url": "https://calendar.utulsa.edu/"},
+        {"name": "Yoga With Bea", "venue": "University of Tulsa", "date": day(0), "time": "5:00 PM",
+         "source": "rendered_sites", "url": "https://calendar.utulsa.edu/"},
+        # Wednesday: no gay event at all. Big citywide events must fill the
+        # slide ahead of small welcoming ones ("Some things are okay if they're
+        # big things but like some are not", William 2026-11-11).
+        {"name": "Route 66 Tulsa Birthday Bash & Veterans Day Parade", "venue": "Downtown Tulsa",
+         "date": day(2), "time": "", "source": "major_tulsa"},
+        {"name": "Route 66 Centennial Crawl", "venue": "Guthrie Green", "date": day(2), "time": "6:00 PM",
+         "source": "rendered_sites"},
+        {"name": "Tulsa State Fair", "venue": "Expo Square, 4145 E 21st St", "date": day(2), "time": "10:00 AM",
+         "source": "rendered_sites"},
+        {"name": "The One", "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa", "date": day(2), "time": "7:00 PM",
+         "source": "circle_cinema"},
+        {"name": "Docent-Led Tour: Collection Highlights", "venue": "Philbrook Museum of Art, 2727 S Rockford Rd",
+         "date": day(2), "time": "2:00 PM", "source": "philbrook_museum"},
+        {"name": "Ari Matti", "venue": "Bricktown Comedy Club Tulsa", "date": day(2), "time": "7:00 PM",
+         "source": "rendered_sites"},
+        {"name": "DRAGNIFICENT! Drag Show", "venue": majestic, "date": day(3), "time": "10:00 PM",
+         "source": "community_groups"},
+        {"name": "Intelligent Singles Mixer in Tulsa OK", "venue": "Roof Sixty-Six Rooftop Bar",
+         "date": day(3), "time": "6:00 PM", "source": "eventbrite"},
+        # The week's real Event-of-the-Week candidates, on Friday/Saturday, so EOTW
+        # promotion cannot be what seats a gay event in Sunday's box.
+        {"name": "Homo Hotel Happy Hour", "venue": "Mayo Hotel, 115 W 5th St, Tulsa", "date": day(4),
+         "time": "6:00 PM - 8:00 PM", "source": "homo_hotel"},
+        {"name": "Miami NEOK Pride", "venue": "George E. Francis Riverview Park, 700 S Main St, Miami, OK",
+         "date": day(5), "time": "12:00 PM", "source": "okeq"},
+        # Sunday: two recurring gay events vs a straight one-off "fun" festival
+        # (the class that used to outrank every recurring gay event for the box),
+        # the TU homecoming brunch, and a private booking on the OKEQ calendar.
+        {"name": "Sunday Showdown Open Talent Night", "venue": majestic, "date": day(6),
+         "time": "Doors 9 PM, Show 11 PM", "source": "recurring"},
+        {"name": "Black Queer Tulsa Monthly Brunch", "venue": "Various locations, Tulsa", "date": day(6),
+         "time": "", "source": "recurring"},
+        {"name": "Fall Harvest Art Festival", "venue": "Guthrie Green", "date": day(6), "time": "11:00 AM",
+         "source": "rendered_sites"},
+        {"name": "Homecoming Weekend Brunch for Parents, Families & Alumni", "venue": "University of Tulsa",
+         "date": day(6), "time": "", "source": "rendered_sites", "url": "https://calendar.utulsa.edu/"},
+        {"name": "Alistair Wedding Reception", "venue": "Dennis R. Neill Equality Center, 621 E 4th St",
+         "date": day(6), "time": "3:00 PM", "source": "okeq"},
+    ]
+    for e in week:
+        e.setdefault("description", "")
+        e.setdefault("url", "")
+
+    cap = {}
+    saved = (_cfg.DATA_DIR, _cfg.EVENTS_DIR, _im.create_carousel, _im.save_carousel,
+             _gen.generate_post_caption, _fdr.run_for_week, os.environ.get("TULSAGAYS_SKIP_ENRICH"))
+
+    def _fake_carousel(*a, events_by_day=None, featured_events=None, **k):
+        cap["ebd"] = events_by_day
+        cap["eotw"] = featured_events
+        return []
+
+    def _no_caption(*a, **k):
+        raise RuntimeError("no LLM in tests")
+
+    with tempfile.TemporaryDirectory() as tmp:
+        try:
+            _cfg.DATA_DIR = tmp
+            _cfg.EVENTS_DIR = os.path.join(tmp, "events")
+            os.makedirs(_cfg.EVENTS_DIR, exist_ok=True)
+            with open(os.path.join(_cfg.EVENTS_DIR, f"{_cfg.current_week_key()}_all.json"), "w",
+                      encoding="utf-8") as f:
+                json.dump({"events": week}, f)
+            _im.create_carousel = _fake_carousel
+            _im.save_carousel = lambda *a, **k: []
+            _gen.generate_post_caption = _no_caption
+            _fdr.run_for_week = lambda *a, **k: None
+            os.environ["TULSAGAYS_SKIP_ENRICH"] = "1"
+            import contextlib, io
+            with contextlib.redirect_stdout(io.StringIO()):
+                _main.cmd_generate("all")
+        except Exception as e:
+            check("W46 replay runs", False, repr(e))
+            return
+        finally:
+            (_cfg.DATA_DIR, _cfg.EVENTS_DIR, _im.create_carousel, _im.save_carousel,
+             _gen.generate_post_caption, _fdr.run_for_week, _skip) = saved
+            if _skip is None:
+                os.environ.pop("TULSAGAYS_SKIP_ENRICH", None)
+            else:
+                os.environ["TULSAGAYS_SKIP_ENRICH"] = _skip
+
+    ebd = cap.get("ebd") or {}
+    names = lambda d: [e.get("name") for e in ebd.get(d, [])]
+    shown = {n for d in ebd for n in names(d)}
+    eotw = [e.get("name") for e in (cap.get("eotw") or [])]
+    sun = names("Sunday")
+    check("Sunday TOP PICK is a gay event, not the straight festival or homecoming brunch",
+          bool(sun) and sun[0] in ("Sunday Showdown Open Talent Night", "Black Queer Tulsa Monthly Brunch"),
+          f"Sunday: {sun[:3]}")
+    check("both Sunday gay events are in the featured 3",
+          {"Sunday Showdown Open Talent Night", "Black Queer Tulsa Monthly Brunch"} <= set(sun[:3]),
+          f"Sunday: {sun[:3]}")
+    for gone in ("Homecoming Weekend Brunch for Parents, Families & Alumni", "Alistair Wedding Reception",
+                 "Intelligent Singles Mixer in Tulsa OK", "Baptist Collegiate Ministries Free Lunch Monday",
+                 "Yoga With Bea"):
+        check(f"'{gone}' is on no slide", gone not in shown)
+    check("a private wedding reception is never Event of the Week",
+          "Alistair Wedding Reception" not in eotw, f"EOTW: {eotw}")
+    wed = names("Wednesday")
+    big3 = {"Route 66 Tulsa Birthday Bash & Veterans Day Parade", "Route 66 Centennial Crawl", "Tulsa State Fair"}
+    check("a day with no gay event features the BIG events, not small filler",
+          set(wed[:3]) == big3, f"Wednesday: {wed[:3]}")
+    check("small welcoming events stay off the slide when big ones fill it",
+          not ({"The One", "Docent-Led Tour: Collection Highlights", "Ari Matti"} & set(wed[:3])),
+          f"Wednesday: {wed[:3]}")
+
+
 # ── Final deck review (William 2026-07-09): the last-eyes pass over the
 # generated deck — cancelled, dupes, recurring-vs-one-off, best picks.
 def test_ig_date_anchor_contract():
@@ -1098,6 +1289,7 @@ def main():
     test_ybr_highlighting()
     test_w28_saturday_dedup_and_cancelled()
     test_w40_top_pick_quality()
+    test_w46_gay_first_and_welcoming()
     test_w32_venue_relocation()
     test_ig_date_anchor_contract()
     test_tulsa_eagle_ig_extraction()

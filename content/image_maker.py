@@ -285,16 +285,28 @@ _THREE_FL_KW_GENERIC = [
     'recital', 'repertory', 'philharmonic',
 ]
 _THREE_FL_KW = _THREE_FL_KW_GENERIC + getattr(config, "AFFIRMING_VENUE_KEYWORDS_CITY", [])
+# 2 = "Gay-Friendly". That label is a CLAIM to the reader, so it has to be
+# earned by the kind of event or the venue, not by an activity word. Until
+# 2026-11-11 this list also held music, concert, comedy, dance, brunch, karaoke,
+# trivia, open mic, rooftop, bingo, scavenger, sketch, craft, workshop and
+# coffee, and it was matched as a SUBSTRING, so 'art' fired inside "party",
+# "start" and "heart". The W46 deck badged "Intelligent Singles Mixer" (rooftop),
+# "Homecoming Weekend Brunch for Parents, Families & Alumni" (brunch), an
+# OSU-Tulsa student "Mobility Workshop" and a Route 66 "VIP Party" (p-ART-y)
+# as Gay-Friendly. William: "a lot of things that aren't even gay". Drag
+# brunches, gay-bar karaoke and queer socials are unaffected: they score 5 or 4
+# on identity words, gay-bar venues and trusted queer sources above this tier.
 _TWO_FL_KW = [
-    'art', 'music', 'concert', 'gallery', 'theater', 'theatre', 'comedy',
-    'poetry', 'film', 'cinema', 'festival', 'cabaret', 'dance', 'live music',
-    'cultural', 'brunch', 'karaoke', 'trivia', 'open mic', 'rooftop',
-    'bingo', 'scavenger', 'sketch', 'craft', 'workshop', 'coffee',
+    'art', 'arts', 'gallery', 'poetry', 'film', 'cinema', 'festival', 'cultural',
     # Known Tulsa queer-friendly venues (consistent 2-flamingo rating regardless
     # of whether scraper captured "festival" in name vs. just the event title)
     'mother road market', 'guthrie green', 'magic city books', 'foolish things',
     '66 days of fun',
 ]
+# Whole-word matching for the 3- and 2-flamingo tiers (plural 's' allowed).
+from scraper.relevance import compile_keywords as _compile_kw  # noqa: E402
+_THREE_FL_RX = _compile_kw(_THREE_FL_KW)
+_TWO_FL_RX = _compile_kw(_TWO_FL_KW)
 
 def _flamingo_score(ev: dict) -> int:
     name    = ev.get('name', '').lower()
@@ -356,12 +368,12 @@ def _flamingo_score(ev: dict) -> int:
             pass
 
     # 3 — affirming spaces: church/meditation/cultural venues that publicly welcome LGBTQ
-    if any(kw in content for kw in _THREE_FL_KW):
+    if _THREE_FL_RX.search(content):
         return 3
 
     # 2 — gay-friendly cultural / arts / community events at non-affirming-specific venues
     # (Mother Road Market, Magic City Books, Guthrie Green, etc.)
-    if any(kw in content for kw in _TWO_FL_KW):
+    if _TWO_FL_RX.search(content):
         return 2
 
     # 1 — truly generic events with no LGBTQ angle (Memorial Day Run, suburban events)

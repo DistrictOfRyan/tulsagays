@@ -1480,7 +1480,7 @@ _HANDWRITTEN_SOURCES = {'manual', 'venue_flyer_dig', 'submission'}
 updated = 0
 kept = 0
 for ev in events:
-    if (ev.get('source') in _HANDWRITTEN_SOURCES
+    if ((ev.get('source') in _HANDWRITTEN_SOURCES or ev.get('copy_locked'))
             and (ev.get('website_description') or '').strip()):
         kept += 1
         continue
