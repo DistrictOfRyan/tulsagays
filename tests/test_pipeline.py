@@ -930,6 +930,234 @@ def test_tulsa_eagle_ig_extraction():
           "login wall (session not accepted)" in wcode)
 
 
+def test_ig_per_handle_trail():
+    """IG feed fix, 2026-11-11 (William: "fix the instagram feeds").
+
+    W40-W46 showed 0 events from most venue handles and the health file could
+    not say why: it held only {posts, events} per venue, the Graph tier logged
+    its failures at DEBUG, and nothing recorded which guard dropped what. This
+    locks the four changes that came out of that:
+      1. A post's time comes from its SHORTCODE (media id >> 23 = ms since
+         Instagram's epoch). Proven on all 14 real fixture posts. The logged-out
+         reader no longer opens each post page to read taken_at, so a handle the
+         login can't see (@tulsaybr) costs ONE logged-out page load, not ~13.
+      2. Post dates are Tulsa's calendar day. Graph's `timestamp[:10]` is the UTC
+         day; 16 of the 57 venue posts behind past IG events went up after 6pm
+         CST / 7pm CDT, so their "tonight" landed a day late, and a Sunday-night
+         post's "tonight" became Monday in the NEXT week's deck.
+      3. Every handle's trail is written to data/ig_scrape_health.json: the tier
+         and handle that answered, posts read, newest post, candidates, each
+         guard's drops, in-week events, and each failed tier's reason (Meta's
+         own error code, e.g. 190 = dead token, 110 = personal account).
+      4. The runner adds what its quality filter and dedup did per venue, since a
+         venue's night merged into a Facebook row counts as 0 for the venue.
+    """
+    print("IG per-handle trail (2026-11-11):")
+    import io
+    import tempfile
+    import time as _time
+    import urllib.error
+    import urllib.request
+    from datetime import datetime as _dt, timezone as _tz
+    from scraper import instagram_orgs as io_mod
+    from scraper import instagram_web as iw
+    from scraper.instagram_orgs import InstagramOrgScraper as IOS
+    from scraper.tz_guard import local_date_from_epoch, local_date_from_iso
+
+    fx = os.path.join(ROOT, "tests", "fixtures", "tulsa_eagle_ig_captions_2026-09-09.json")
+    with open(fx, encoding="utf-8") as f:
+        eagle = json.load(f)
+
+    # ---- 1. shortcode -> post time, against 14 real posts -------------------
+    hits = 0
+    for p in eagle:
+        code = p["url"].rstrip("/").split("/")[-1]
+        hits += local_date_from_epoch(iw.shortcode_taken_at(code)) == p["posted_on"]
+    check("shortcode date matches the post page on all 14 real Eagle posts",
+          hits == len(eagle) == 14, f"{hits}/{len(eagle)}")
+    ts = iw.shortcode_taken_at("DdCLZsqFM8J")          # 2026-09-08 post
+    check("decoded time is the Eagle's scheduled 17:03 UTC slot",
+          _dt.fromtimestamp(ts, _tz.utc).strftime("%H:%M") == "17:03", str(ts))
+    check("a long (share) code decodes from its first 11 chars",
+          iw.shortcode_taken_at("DdCLZsqFM8J" + "x" * 28) == ts)
+    check("garbage is not a post time",
+          iw.shortcode_taken_at("x") == 0 and iw.shortcode_taken_at("ZZZZZZZZZZZ") == 0
+          and iw.shortcode_taken_at("") == 0)
+
+    # ---- 2. Tulsa's calendar day, not UTC's ---------------------------------
+    check("Sun 7:31pm CST post (01:31 UTC Mon) is dated Sunday",
+          local_date_from_iso("2026-11-09T01:31:00+0000") == "2026-11-08")
+    check("Sun 11:30pm CDT post (04:30 UTC Mon) is dated Sunday",
+          local_date_from_iso("2026-09-14T04:30:00+0000") == "2026-09-13")
+    check("a midday post keeps its day", local_date_from_iso("2026-09-14T17:03:00Z") == "2026-09-14")
+    check("unreadable stamp is empty, never guessed", local_date_from_iso("soon") == "")
+
+    # ---- 3. Graph tier: local anchor, answered_by, Meta's error code --------
+    org = {"username": "dvltulsa", "source_name": "dvl_ig", "default_venue": "DVL"}
+    real_open, real_tok = urllib.request.urlopen, getattr(config, "TULSAGAYS_PAGE_ACCESS_TOKEN", "")
+    config.TULSAGAYS_PAGE_ACCESS_TOKEN = "test-token"
+    try:
+        body = json.dumps({"business_discovery": {"media": {"data": [
+            {"caption": "TONIGHT emo night", "timestamp": "2026-11-09T01:31:00+0000",
+             "permalink": "https://www.instagram.com/p/DfY1YZPx7w-/"}]}}}).encode()
+        urllib.request.urlopen = lambda *a, **k: io.BytesIO(body)
+        sc = IOS(org)
+        got = sc._fetch_via_graph()
+        check("graph post made Sunday evening is anchored to Sunday",
+              bool(got) and got[0]["posted_on"] == "2026-11-08", str(got[:1]))
+        check("graph tier records which handle answered",
+              sc.answered_by == ("graph", "dvltulsa"), str(sc.answered_by))
+
+        def _dead_token(*a, **k):
+            raise urllib.error.HTTPError(
+                "https://graph.facebook.com", 400, "Bad Request", {},
+                io.BytesIO(b'{"error":{"message":"Error validating access token: '
+                           b'Session has expired","code":190}}'))
+        urllib.request.urlopen = _dead_token
+        sc = IOS(org)
+        check("a dead token yields no posts", sc._fetch_via_graph() == [])
+        check("the dead token is recorded with Meta's code, not swallowed at DEBUG",
+              any("code 190" in e for e in sc.tier_errors.get("graph", [])),
+              str(sc.tier_errors))
+    finally:
+        urllib.request.urlopen = real_open
+        config.TULSAGAYS_PAGE_ACCESS_TOKEN = real_tok
+
+    # ---- 4. logged-out read: one page load, dates from the codes ------------
+    grid = {"x": {iw.LOGGED_OUT_CONN: {"edges": [
+        {"node": {"code": "DdCLZsqFM8J", "caption": {"text": "karaoke @8"}}},   # no taken_at
+        {"node": {"code": "", "caption": {"text": "alt only"},
+                  "accessibility_caption": "Photo by Ybr Tulsa on October 24, 2026."}},
+        {"node": {"code": "", "caption": {"text": "no date anywhere"}}},
+    ]}}}
+
+    class _Page:
+        def __init__(self):
+            self.loads = 0
+
+        def goto(self, *a, **k):
+            self.loads += 1
+
+        def wait_for_timeout(self, *a):
+            pass
+
+        def evaluate(self, js):
+            return [json.dumps(grid)]
+    pg = _Page()
+    real_sleep = _time.sleep
+    _time.sleep = lambda *a: None
+    try:
+        items, err = iw._loggedout_posts(pg, "tulsaybr")
+    finally:
+        _time.sleep = real_sleep
+    check("logged-out read is ONE page load (no per-post loads)", pg.loads == 1, str(pg.loads))
+    check("logged-out read reports no error", err == "", err)
+    dates = [i["posted_on"] for i in items]
+    check("a post with no taken_at is dated from its shortcode",
+          "2026-09-08" in dates, str(dates))
+    check("a post with no code still uses its alt-text date",
+          "2026-10-24" in dates, str(dates))
+    check("a post with no readable date is dropped, never guessed",
+          len(items) == 2, str(dates))
+
+    # ---- 5. scrape(): the per-handle trail adds up --------------------------
+    week = (_dt(2026, 9, 7), _dt(2026, 9, 13, 23, 59, 59))
+    real_wr = IOS._week_range
+    IOS._week_range = staticmethod(lambda: week)
+    try:
+        sc = IOS({"username": "tulsaeagle", "source_name": "tulsa_eagle_ig",
+                  "default_venue": "Tulsa Eagle, 1338 E 3rd St"})
+
+        def _graph():
+            sc.answered_by = ("graph", "tulsaeagle")
+            return [dict(p) for p in eagle]
+        sc._fetch_via_graph = _graph
+        sc._extract_with_llm = lambda posts: None        # offline: regex tier
+        out = sc.scrape()
+        h = sc.health
+    finally:
+        IOS._week_range = real_wr
+    check("trail names the tier and handle", h.get("tier") == "graph"
+          and h.get("handle") == "tulsaeagle", str(h.get("tier")))
+    check("trail counts posts and newest post", h.get("posts") == 14
+          and h.get("newest_post") == "2026-09-08", f"{h.get('posts')} {h.get('newest_post')}")
+    check("trail names the extractor", h.get("extractor") == "regex", h.get("extractor"))
+    parts = (h.get("dropped_announce_window", 0) + h.get("dropped_unsupported_date", 0)
+             + h.get("dropped_out_of_week", 0) + h.get("in_week", 0))
+    check("every candidate is accounted for (drops + in-week = candidates)",
+          parts == h.get("candidates") and h.get("candidates", 0) > 0,
+          f"{parts} vs {h.get('candidates')}")
+    check("in_week matches what scrape() returned", h.get("in_week") == len(out) > 0,
+          f"{h.get('in_week')} vs {len(out)}")
+
+    # ---- 6. module scrape() writes it, tier errors included -----------------
+    tmp = tempfile.mkdtemp()
+    hp = os.path.join(tmp, "ig_scrape_health.json")
+    saved = (io_mod.ORGS, io_mod.HEALTH_PATH, IOS._fetch_via_graph, IOS._fetch_via_web,
+             IOS._fetch_public, IOS._fetch_via_session, IOS._extract_with_llm, _time.sleep)
+    try:
+        io_mod.ORGS = [{"username": "pflagtulsa", "source_name": "pflag_ig"},
+                       {"username": "tulsaybr", "alt_usernames": ["ybrtulsa"],
+                        "source_name": "ybr_ig"}]
+        io_mod.HEALTH_PATH = hp
+        _time.sleep = lambda *a: None
+
+        def _g(self):
+            if self.username == "pflagtulsa":
+                self.answered_by = ("graph", "pflagtulsa")
+                return [{"caption": "x", "url": "u", "posted_on": "2026-09-01"}]
+            self._note("graph", "@tulsaybr: code 110: Invalid user id")
+            return []
+
+        def _w(self):
+            self._note("web", "@tulsaybr: not visible to this login; logged out: login wall")
+            return []
+        IOS._fetch_via_graph, IOS._fetch_via_web = _g, _w
+        IOS._fetch_public = lambda self: []
+        IOS._fetch_via_session = lambda self: []
+        IOS._extract_with_llm = lambda self, posts: None   # never a live LLM call in tests
+        io_mod.scrape()
+        with open(hp, encoding="utf-8") as f:
+            rec = json.load(f)
+    finally:
+        (io_mod.ORGS, io_mod.HEALTH_PATH, IOS._fetch_via_graph, IOS._fetch_via_web,
+         IOS._fetch_public, IOS._fetch_via_session, IOS._extract_with_llm, _time.sleep) = saved
+    pv = rec.get("per_venue", {})
+    check("health keeps the keys preflight + the outcome check read",
+          all(k in rec for k in ("fetch_failed", "venues_with_posts", "venues_attempted"))
+          and all("posts" in v and "events" in v for v in pv.values()))
+    check("health names the answering tier per handle",
+          pv.get("pflag_ig", {}).get("tier") == "graph", str(pv.get("pflag_ig")))
+    ybr = pv.get("ybr_ig", {})
+    check("a dark handle carries each tier's reason",
+          "code 110" in json.dumps(ybr.get("tier_errors"))
+          and "login wall" in json.dumps(ybr.get("tier_errors")), str(ybr)[:200])
+    check("health lists the configured handles", ybr.get("configured") == ["tulsaybr", "ybrtulsa"])
+
+    # ---- 7. runner half: filter + dedup survival per venue -------------------
+    a = {"source": "dvl_ig", "name": "Emo Night", "url": "https://www.instagram.com/p/AAA/",
+         "source_urls": ["https://www.instagram.com/p/AAA/"]}
+    b = {"source": "dvl_ig", "name": "Dating Game", "url": "https://www.instagram.com/p/BBB/",
+         "source_urls": ["https://www.instagram.com/p/BBB/"]}
+    fb = {"source": "facebook_events", "name": "DVL Dating Game",
+          "url": "https://facebook.com/events/1",
+          "source_urls": ["https://facebook.com/events/1", "https://www.instagram.com/p/BBB/"]}
+    web_twisted = {"source": "twisted_arts", "name": "Kimya Dawson",
+                   "url": "https://twistedfest.org/kimya-dawson/"}
+    with open(hp, "w", encoding="utf-8") as f:
+        json.dump({"per_venue": {"dvl_ig": {"posts": 12, "events": 2},
+                                 "twisted_arts": {"posts": 0, "events": 0}}}, f)
+    trail = io_mod.record_pipeline_survival([a, b, fb, web_twisted], [a, b, fb, web_twisted],
+                                            [a, fb, web_twisted], path=hp)
+    d = trail.get("dvl_ig", {})
+    check("dedup survival counts the venue's own rows",
+          d.get("after_quality_filter") == 2 and d.get("after_dedup") == 1, str(d))
+    check("dedup survival names the source that absorbed the venue's night",
+          d.get("merged_into") == ["facebook_events"], str(d.get("merged_into")))
+    check("a website row sharing the source name is not counted as Instagram",
+          "twisted_arts" not in trail, str(list(trail)))
+
+
 def test_anonymity_allowlist():
     """The account is anonymous, so preflight warns on any standalone 'ryan' /
     'william' / 'hunt'. Real Tulsa venues carry those words in their own names
@@ -1293,6 +1521,7 @@ def main():
     test_w32_venue_relocation()
     test_ig_date_anchor_contract()
     test_tulsa_eagle_ig_extraction()
+    test_ig_per_handle_trail()
     test_anonymity_allowlist()
     test_final_deck_review()
     test_topic_page_events()

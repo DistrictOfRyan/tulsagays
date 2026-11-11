@@ -22,6 +22,8 @@ that we discarded instead of checking. This module keeps them.
 Public helpers
     local_offset_hours(d)            -> int   (America/Chicago offset on that date)
     local_abbrev(d)                  -> "CDT" | "CST"
+    local_date_from_epoch(ts)        -> "YYYY-MM-DD" (Tulsa day of a UTC epoch time)
+    local_date_from_iso(stamp)       -> "YYYY-MM-DD" (Tulsa day of an offset ISO stamp)
     fix_tz_labeled_time(t, date)     -> (fixed_str, changed, note, day_delta)
     resolve_yearless(month, day, weekday_idx=None, today=None) -> "YYYY-MM-DD" | ""
     weekday_index(name)              -> 0..6 | None
@@ -106,6 +108,50 @@ def local_offset_hours(d=None) -> int:
     dd = _as_date(d)
     off = datetime(dd.year, dd.month, dd.day, 12, tzinfo=LOCAL_TZ).utcoffset()
     return int(round((off.total_seconds() if off else 0) / 3600))
+
+
+def local_date_from_epoch(epoch_s) -> str:
+    """'YYYY-MM-DD' in the site's local zone (America/Chicago) for a UTC epoch
+    time, or '' when it cannot be read.
+
+    Why (2026-11-11). Instagram post times arrive as UTC (Graph `timestamp`,
+    web `taken_at`). Slicing a UTC string, or converting with the scrape
+    machine's own zone (Puerto Vallarta, UTC-6 all year), gives the wrong
+    Tulsa day for any post made after 6pm CST / 7pm CDT. That date is the
+    anchor a "tonight" / "tomorrow" caption resolves against, so a Sunday-night
+    "tonight" post became a Monday event in the next week's deck. 16 of the 57
+    venue posts behind past IG events were posted in that evening window."""
+    try:
+        ts = float(epoch_s)
+    except (TypeError, ValueError):
+        return ""
+    if ts <= 0:
+        return ""
+    from datetime import timezone as _tz
+    try:
+        utc = datetime.fromtimestamp(ts, _tz.utc)
+    except (OverflowError, OSError, ValueError):
+        return ""
+    if LOCAL_TZ is not None:
+        return utc.astimezone(LOCAL_TZ).strftime("%Y-%m-%d")
+    off = local_offset_hours(utc.date())
+    return utc.astimezone(_tz(timedelta(hours=off))).strftime("%Y-%m-%d")
+
+
+def local_date_from_iso(stamp: str) -> str:
+    """local_date_from_epoch for an ISO-8601 string with an explicit offset
+    ('2026-11-09T01:31:00+0000', '...Z'). A stamp with no offset is already
+    local and keeps its own date. '' when unreadable."""
+    s = (stamp or "").strip()
+    if not s:
+        return ""
+    s2 = s[:-1] + "+0000" if s.endswith("Z") else s
+    for fmt in ("%Y-%m-%dT%H:%M:%S%z", "%Y-%m-%dT%H:%M:%S.%f%z"):
+        try:
+            return local_date_from_epoch(datetime.strptime(s2, fmt).timestamp())
+        except ValueError:
+            continue
+    return s[:10] if re.match(r"^\d{4}-\d{2}-\d{2}", s) else ""
 
 
 def local_abbrev(d=None) -> str:
