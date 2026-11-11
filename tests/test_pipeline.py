@@ -1158,6 +1158,88 @@ def test_ig_per_handle_trail():
           "twisted_arts" not in trail, str(list(trail)))
 
 
+def test_studio66_local_post_dates():
+    """Studio 66 dated every post by UTC (Graph `timestamp[:10]`, instagrapi's UTC
+    `taken_at`) or by the scrape machine's zone (`fromtimestamp`, Puerto Vallarta).
+    A post made after 6pm CST / 7pm CDT carried the NEXT day, the anchor its
+    "tonight" resolves to. Same defect and fix as instagram_orgs (2026-11-11).
+    One Sunday 7:31pm CST post (2026-11-09 01:31 UTC) is fed through each of the
+    three tiers that build posted_on; all must say Sunday. No live network call."""
+    print("Studio 66 post dates are Tulsa-local (2026-11-11):")
+    import io
+    import pathlib
+    import urllib.request
+    from datetime import datetime as _dt, timezone as _tz
+    import requests
+    from scraper.studio66 import Studio66Scraper, _local_date
+
+    SUN_EVE_UTC = 1794187860                 # 2026-11-09T01:31:00Z = Sun 11/8 7:31pm CST
+    caption = "TONIGHT bimbo summit afterparty"
+    sc = Studio66Scraper()
+
+    # Graph API tier: token from .env, posts from business_discovery.
+    real_read, real_open = pathlib.Path.read_text, urllib.request.urlopen
+
+    def _read(self, *a, **k):
+        if self.name == ".env":
+            return "TULSAGAYS_PAGE_ACCESS_TOKEN=test-token\n"
+        return real_read(self, *a, **k)
+    body = json.dumps({"business_discovery": {"media": {"data": [
+        {"caption": caption, "timestamp": "2026-11-09T01:31:00+0000",
+         "permalink": "https://www.instagram.com/p/DfY1YZPx7w-/"}]}}}).encode()
+    try:
+        pathlib.Path.read_text = _read
+        urllib.request.urlopen = lambda *a, **k: io.BytesIO(body)
+        g = sc._fetch_via_graph_api()
+    finally:
+        pathlib.Path.read_text, urllib.request.urlopen = real_read, real_open
+    check("graph tier dates a Sunday-evening post Sunday",
+          bool(g) and g[0]["posted_on"] == "2026-11-08", str(g[:1]))
+
+    # Public web-profile tier: taken_at_timestamp is UTC epoch seconds.
+    class _Resp:
+        status_code = 200
+
+        def json(self):
+            return {"data": {"user": {"edge_owner_to_timeline_media": {"edges": [
+                {"node": {"shortcode": "DfY1YZPx7w-", "taken_at_timestamp": SUN_EVE_UTC,
+                          "edge_media_to_caption": {"edges": [{"node": {"text": caption}}]}}}]}}}}
+    real_get = requests.get
+    try:
+        requests.get = lambda *a, **k: _Resp()
+        p = sc._fetch_public()
+    finally:
+        requests.get = real_get
+    check("public tier dates it Sunday, not by the scrape machine's zone",
+          bool(p) and p[0]["posted_on"] == "2026-11-08", str(p[:1]))
+
+    # instagrapi tier: taken_at is an aware UTC datetime (naive is read as UTC).
+    class _Media:
+        caption_text, code = caption, "DfY1YZPx7w-"
+
+        def __init__(self, aware):
+            t = _dt.fromtimestamp(SUN_EVE_UTC, _tz.utc)
+            self.taken_at = t if aware else t.replace(tzinfo=None)
+
+    class _Client:
+        def user_id_from_username(self, u):
+            return "1"
+
+        def user_medias(self, uid, amount=12):
+            return [_Media(True), _Media(False)]
+    real_client = Studio66Scraper._client
+    try:
+        Studio66Scraper._client = lambda self: _Client()
+        s = sc._fetch_via_session()
+    finally:
+        Studio66Scraper._client = real_client
+    check("instagrapi tier dates it Sunday (aware and naive UTC)",
+          [x["posted_on"] for x in s] == ["2026-11-08", "2026-11-08"],
+          str([x["posted_on"] for x in s]))
+    check("a midday post keeps its own day",
+          _local_date(int(_dt(2026, 11, 8, 18, 0, tzinfo=_tz.utc).timestamp())) == "2026-11-08")
+
+
 def test_anonymity_allowlist():
     """The account is anonymous, so preflight warns on any standalone 'ryan' /
     'william' / 'hunt'. Real Tulsa venues carry those words in their own names
@@ -1522,6 +1604,7 @@ def main():
     test_ig_date_anchor_contract()
     test_tulsa_eagle_ig_extraction()
     test_ig_per_handle_trail()
+    test_studio66_local_post_dates()
     test_anonymity_allowlist()
     test_final_deck_review()
     test_topic_page_events()

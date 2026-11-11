@@ -29,15 +29,29 @@ import sys
 import json
 import logging
 import re
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import List, Dict, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from scraper.base import BaseScraper
+from scraper.tz_guard import local_date_from_epoch, local_date_from_iso
 import config
 
 logger = logging.getLogger(__name__)
+
+
+def _local_date(epoch_s) -> str:
+    """Tulsa calendar day of a post's UTC epoch time, '' if unreadable.
+
+    WHY (2026-11-11). Every fetch tier used to date a post by UTC (Graph
+    `timestamp[:10]`, instagrapi's UTC `taken_at`) or by the scrape machine's
+    zone (`datetime.fromtimestamp`, Puerto Vallarta). A post made after 6pm CST /
+    7pm CDT then carried the NEXT day, and that date is the anchor "tonight" and
+    "tomorrow" resolve against, so the event landed a day late; a Sunday-night
+    post's "tonight" became Monday in the next week's deck. Same fix as
+    scraper/instagram_orgs.py, through the shared scraper/tz_guard.py."""
+    return local_date_from_epoch(epoch_s)
 
 # Same session file the @tulsagays engagement tasks use (off the synced drive).
 SETTINGS_FILE = Path.home() / ".credentials" / "ig_settings_tulsagays.json"
@@ -160,13 +174,8 @@ class Studio66Scraper(BaseScraper):
                 continue
             code = node.get("shortcode") or node.get("code")
             post_url = f"https://www.instagram.com/p/{code}/" if code else PROFILE_URL
-            ts = node.get("taken_at_timestamp")
-            posted_on = ""
-            if ts:
-                try:
-                    posted_on = datetime.fromtimestamp(int(ts)).strftime("%Y-%m-%d")
-                except (ValueError, OverflowError, OSError):
-                    posted_on = ""
+            # Tulsa's day, not the scrape machine's (Puerto Vallarta) - see _local_date.
+            posted_on = _local_date(node.get("taken_at_timestamp") or 0)
             posts.append({"caption": caption, "url": post_url, "posted_on": posted_on})
 
         logger.info("[studio_66] public endpoint returned %d captioned posts", len(posts))
@@ -192,7 +201,12 @@ class Studio66Scraper(BaseScraper):
             code = getattr(m, "code", None)
             post_url = f"https://www.instagram.com/p/{code}/" if code else PROFILE_URL
             taken = getattr(m, "taken_at", None)
-            posted_on = taken.strftime("%Y-%m-%d") if isinstance(taken, datetime) else ""
+            posted_on = ""
+            if isinstance(taken, datetime):
+                # instagrapi's taken_at is UTC; a naive one is read as UTC too.
+                if taken.tzinfo is None:
+                    taken = taken.replace(tzinfo=timezone.utc)
+                posted_on = _local_date(taken.timestamp())
             posts.append({"caption": caption, "url": post_url, "posted_on": posted_on})
         logger.info("[studio_66] session fallback returned %d captioned posts", len(posts))
         return posts
@@ -290,7 +304,8 @@ class Studio66Scraper(BaseScraper):
                 continue
             posts.append({"caption": caption,
                           "url": m.get("permalink") or PROFILE_URL,
-                          "posted_on": (m.get("timestamp") or "")[:10]})
+                          # Tulsa's day: timestamp[:10] is the UTC day (see _local_date).
+                          "posted_on": local_date_from_iso(m.get("timestamp") or "")})
         logger.info("[studio_66] graph-api tier returned %d captioned posts", len(posts))
         return posts
 
