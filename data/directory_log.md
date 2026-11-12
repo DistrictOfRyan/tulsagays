@@ -558,3 +558,27 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 - WebSearch "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (Brook Restaurant and Bar, KEO, India Palace, Lambrusco'z To Go, Lefty's on Greenwood, The People's Bakery).
 - Reddit r/tulsa (both query variants): no indexed results this scan, same pattern as every prior scan.
 - Net result: 1 new business added (DVL Club & Lounge).
+
+## [2026-11-12] Aguilar Brothers Lawn & Landscape
+- Category: services (landscaping)
+- URL: https://www.aguilarbrotherslawnlandscapellc.com/
+- Source: WebSearch ("queer-owned business Tulsa 2026") surfaced it on Yelp's "Top LGBTQ Owned Businesses in Tulsa, OK" category list; cross-verified via the business's own site (service area, phone) and Google Business/Nextdoor listings. Same sourcing tier as Wildflower Salon & Boutique and Spiritual Rose (Yelp category tag, business's own site silent on LGBTQ+ affiliation).
+- Notes: Family-owned lawn and landscape crew serving Tulsa, Broken Arrow, Bixby, Jenks, Owasso, and the metro. Phone (918) 986-5824. Mowing, sod installation, retaining walls, flower beds, mulch, French drains. Added to Pets & Other and the JSON-LD schema (position 94).
+
+## [2026-11-12] Solid Esthetics (Solid Spa House)
+- Category: services (esthetics/spa)
+- URL: https://www.yelp.com/biz/solid-esthetics-tulsa
+- Source: WebSearch ("queer-owned business Tulsa 2026") surfaced it on Yelp's "Top LGBTQ Owned Businesses in Tulsa, OK" category list; cross-verified via Birdeye (address) and Instagram @solid_spa_house. Same sourcing tier as Wildflower Salon & Boutique and Aguilar Brothers (Yelp category tag).
+- Notes: Women-owned co-working spa at 8232 E 71st St, South Tulsa, founded 2021 by Alice McCombs and Nina Price. Also tagged women-owned and Black-owned. Waxing and esthetics services. Added to Tattoo & Beauty and the JSON-LD schema (position 95).
+
+### Reviewed but NOT added (2026-11-12 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/): full roster re-fetch shows the same members confirmed in the 2026-10-31 scan (6 named with full details plus 16 logo-only names: Keys For Life, Running Dogs Music, Guiding-Right, Kenya's Way, Marketing Manifold, Apollo Wellness Spa, Hunger Free Oklahoma, Matrix Service Company, Webb Wellness, Hannah Phillips, Cultivate Strength, Breck Aesthetics, Energy-Environments, Chrysalis Salon & Spa, MAT, Courtney Ivy, Taste the World) - no net-new members. UniComm's OWNER REQUEST (no street address) remains in effect, untouched.
+- OkEq Food & Drink (50 listings): re-fetched and grep-verified; all 50 confirmed already carrying a directory card or a documented hold/skip reason from a prior scan. No change to any hold this scan.
+- Tulsa Remote LGBTQ guide: all 8 businesses and 5 resources listed (Tonsorial, il Seme, Cherry & Bark, YBR, The Donut Hole, Fulton Street, Jo & June, Magic City Books, Studio 66, Black Queer Tulsa, Twisted Arts, H.O.P.E Testing, TACO) already in the directory.
+- The Gayly homepage: no Tulsa-specific business coverage this scan (only a national diesel-supply story).
+- Wildflower Cafe (913 S Boulder Ave, former First Christian Church, Cathedral District): surfaced via "new LGBTQ business Tulsa 2026 opened" search as a recent relocation/reopening. No LGBTQ+ affiliation found independently -- the only inclusion-adjacent connection is that The Well, a separate faith community, meets there on Sundays. Not added for insufficient LGBTQ+ sourcing. Note: distinct business from the already-listed Wildflower Salon & Boutique (different name, different address, different category).
+- First Oklahoma Federal Credit Union: surfaced in a "queer-owned business Tulsa 2026" search summary alongside confirmed entries, but independent verification found no LGBTQ+ ownership or affiliation claim anywhere (own site, LinkedIn, Facebook, Tulsa World). Not added for insufficient sourcing.
+- HG Roofing & Home Renovation (HG Construction and Remodeling): Yelp's own profile lists it as Asian-owned and Black-owned; an LGBTQ-owned tag appeared only in a secondary "suggested businesses" listing, not confirmed on its primary Yelp page or own site. Held, same standard used for Duet Restaurant (insufficient LGBTQ+ sourcing).
+- WebSearch "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (FarmBar, Lambrusco'z To Go, Yokozuna, KEO, Elote Cafe).
+- Reddit r/tulsa (both query variants): no indexed results this scan, same pattern as every prior scan.
+- Net result: 2 new businesses added (Aguilar Brothers Lawn & Landscape, Solid Esthetics).
