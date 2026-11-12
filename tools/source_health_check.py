@@ -487,6 +487,47 @@ def load_recent_event_sources() -> dict:
     return counts, os.path.basename(latest)
 
 
+def _norm_domain(url: str) -> str:
+    """Bare lowercase host without a leading www., or '' when url has no host."""
+    d = _domain_of(url or "")
+    d = d.split("@")[-1].split(":")[0]
+    return d[4:] if d.startswith("www.") else d
+
+
+def load_recent_event_domains() -> dict:
+    """
+    Map host -> event count for the most recent *_all.json, using each event's
+    own url and source_urls.
+
+    Why (2026-11-02, work-order sweep F-3056): *_all.json tags most events with
+    a scraper FAMILY ("rendered_sites" 96, "eventbrite", "meetup"), not the
+    SOURCES key, so a source scraped by a family scraper looked like it
+    returned 0 events even when its events were in the deck. The host of the
+    event link lets run() attribute those events back to the source whose URL
+    lives on the same host.
+    """
+    files = sorted(glob.glob(os.path.join(EVENTS_DIR, "*_all.json")))
+    if not files:
+        return {}
+    try:
+        with open(files[-1], encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception:
+        return {}
+    events = data.get("events", []) if isinstance(data, dict) else data
+    out = {}
+    for evt in events:
+        if not isinstance(evt, dict):
+            continue
+        urls = [evt.get("url")]
+        su = evt.get("source_urls")
+        urls += su if isinstance(su, list) else [su]
+        for host in {_norm_domain(u) for u in urls if isinstance(u, str) and u.strip()}:
+            if host:
+                out[host] = out.get(host, 0) + 1
+    return out
+
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -508,6 +549,8 @@ def run() -> list:
         week_file = "none found"
         print("\nNo recent *_all.json found - skipping event count cross-reference.")
 
+    domain_counts = load_recent_event_domains()
+
     print(f"\nTesting {len(SOURCES)} sources (10s timeout each)...\n")
 
     results = []
@@ -517,6 +560,10 @@ def run() -> list:
         url = src.get("url", "").strip()
         priority = src.get("priority", 3)
         evt_count = event_counts.get(key, 0)
+        if evt_count == 0 and url:
+            # family-tagged events (rendered_sites, eventbrite, meetup...) still carry the
+            # source's own host in their link; count those so a working source is not "0 events".
+            evt_count = domain_counts.get(_norm_domain(url), 0)
 
         entry = {
             "key": key,

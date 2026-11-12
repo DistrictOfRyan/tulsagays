@@ -330,7 +330,7 @@ def _flamingo_score(ev: dict) -> int:
     _IDENTITY_KW = (
         'queer', 'lgbtq', 'lgbtqia',
         'gay', 'lesbian', 'sapphic', 'dyke',
-        'trans ', 'transgender', 'nonbinary', 'non-binary', 'two-spirit',
+        'trans ', 'transgender', 'nonbinary', 'non-binary', 'two-spirit', 'two spirit',
         'drag ', 'drag show', 'drag brunch', 'drag king', 'drag queen',
         'pride ', 'pride night', 'pride event', 'pride party',
         'homo hotel', 'hhhh',

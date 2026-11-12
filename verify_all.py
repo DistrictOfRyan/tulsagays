@@ -24,6 +24,8 @@ CORE = [
     "tests/test_pipeline.py",
     "scraper/tz_guard.py", "tools/verify_week_truth.py", "posting/group_retract.py",
     "scraper/eventbrite_meetup.py", "scraper/okeq_calendar.py",
+    "tools/schema_fields.py", "tools/directory_schema.py",
+    "scraper/base.py", "scraper/manual_input.py",
 ]
 
 # Fact-accuracy guards (2026-09-15, after W38 shipped a 2025 festival, every

@@ -243,6 +243,10 @@ _PREAMBLE_MARKERS = (
     "the brief", "the prompt", "the instructions", "as requested",
     "here's the caption", "here is the caption", "here's your caption",
     "writing this one", "fully specified", "voice rules",
+    # W43 2026-10-19: "Writing the caption now, curating the 4 strongest events
+    # from the list (skipping HHHH per instructions)." leaked to the top of a
+    # stored caption and none of the markers above matched it.
+    "writing the caption", "per instructions", "per the instructions",
 )
 
 
@@ -680,7 +684,7 @@ def _call_claude(user_prompt: str) -> str:
         return ""  # caller will use rule-based fallback
     client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
     message = client.messages.create(
-        model="claude-sonnet-4-5",
+        model="claude-sonnet-5-5",
         max_tokens=1200,
         system=_SYSTEM_PROMPT,
         messages=[{"role": "user", "content": user_prompt}],
@@ -1021,7 +1025,7 @@ def _enrich_event_descriptions_impl(events: list[dict]) -> list[dict]:
                     raise RuntimeError("claude CLI returned empty output (after retry)")
             else:
                 message = client.messages.create(
-                    model="claude-sonnet-4-5",
+                    model="claude-sonnet-5-5",
                     max_tokens=1200,
                     system=sys_prompt,
                     messages=[{"role": "user", "content": prompt}],
@@ -1056,7 +1060,7 @@ def _enrich_event_descriptions_impl(events: list[dict]) -> list[dict]:
                     print("[generator] Retrying batch via Anthropic API (SITES key)")
                     _client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
                     message = _client.messages.create(
-                        model="claude-sonnet-4-5",
+                        model="claude-sonnet-5-5",
                         max_tokens=2000,
                         system=sys_prompt,
                         messages=[{"role": "user", "content": prompt}],
@@ -1316,11 +1320,35 @@ def _rule_based_enrich(event: dict) -> str:
     # existing description if it's long enough.
     _FORCE_REWRITE_SRCS = {"okeq", "okeq_calendar"}
     _force_rewrite = src in _FORCE_REWRITE_SRCS
+    # A direct-address press-release opener ("Join fellow UTulsa students...",
+    # "Register by...") is copy written AT a specific subgroup, not reader-facing
+    # pitch copy — weekend_carousel.clean_pitch() already rejects this exact
+    # pattern, but this function's own "existing is long enough, keep it" shortcut
+    # didn't share that gate, so a rejected raw blurb re-entered through the
+    # fallback path (W42: Tulsa Pride Festival & Parade shipped the UTulsa
+    # volunteer-registration blurb verbatim as the carousel's top-pick copy).
+    _raw_opener = bool(_re.match(
+        r"^(join|register|tickets|presented by|meets the)\b", existing, _re.IGNORECASE))
     if (existing and len(existing) > 80
             and not any(a in existing.lower() for a in _scraper_artifacts)
             and not _is_scraper_artifact(existing)   # also rejects raw HTML tags/entities
+            and not _raw_opener
             and not _force_rewrite):
         return existing  # already has a good description
+
+    # The scraped `description` got rejected above, but a hand-written
+    # `website_description` (e.g. a manual curation pass) is often sitting
+    # right there unused — pull a pitch-length line from it before falling
+    # back to generic voice-bank copy keyed only on the event name.
+    if existing:
+        web_desc = (event.get("website_description") or "").strip()
+        if (web_desc and web_desc != existing and len(web_desc) > 80
+                and not _is_scraper_artifact(web_desc)
+                and not _re.match(r"^(join|register|tickets|presented by|meets the)\b",
+                                   web_desc, _re.IGNORECASE)):
+            first = _re.split(r"(?<=[.!?])\s+", web_desc.strip())[0].strip()
+            if 40 <= len(first) <= 200:
+                return first
 
     at_venue = f" at {venue}" if venue else ""
     at_time  = f" at {time}" if time else ""

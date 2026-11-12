@@ -94,6 +94,12 @@ def scrape() -> List[Dict]:
             "priority": priority,
             "source": "manual",
         }
+        # Curated end time / named performer (2026-11-03, tulsagays-schema-gaps):
+        # carried through so the homepage Event JSON-LD can emit endDate / performer.
+        # Passed on only when the curator wrote them; never derived.
+        for _k in ("end_time", "end_date", "performer", "performers"):
+            if item.get(_k):
+                event[_k] = item[_k]
 
         # Log source_note for traceability but don't include in event dict
         source_note = item.get("source_note", "")

@@ -96,6 +96,42 @@ def check_legacy_profile():
     return False, f"missing {', '.join(missing)} -- re-run tools/fb_profile_login.py"
 
 
+def heal_scraper_from_profile(p):
+    """Re-seed fb_session.json from the live group-blast profile.
+
+    Added 2026-10-15: both stores are the same Facebook account, so one login in
+    tools/fb_profile_login.py can feed both. Before this, a dead scraper store sent
+    William to fb_login.py for a SECOND manual login even while the profile was live.
+    Returns True only when the exported state carries c_user + xs. Never raises.
+    """
+    try:
+        ctx = p.chromium.launch_persistent_context(
+            os.path.join(config.DATA_DIR, "fb_auto_profile"),
+            channel="chrome", headless=True, viewport={"width": 1280, "height": 900},
+        )
+    except Exception as exc:
+        print(f"heal skipped: profile unavailable ({str(exc)[:80]})")
+        return False
+    try:
+        page = ctx.pages[0] if ctx.pages else ctx.new_page()
+        page.goto("https://www.facebook.com/", timeout=30000, wait_until="domcontentloaded")
+        import time as _t
+        _t.sleep(4)
+        names = {c["name"] for c in ctx.cookies("https://www.facebook.com")}
+        if "c_user" in names and "xs" in names:
+            ctx.storage_state(path=SESSION_FILE)
+            return True
+        return False
+    except Exception as exc:
+        print(f"heal failed: {str(exc)[:80]}")
+        return False
+    finally:
+        try:
+            ctx.close()
+        except Exception:
+            pass
+
+
 LOGIN_MARKERS = [
     'id="loginbutton"',
     'name="login"',
@@ -119,9 +155,14 @@ def main():
     print("[scraper/page ] data/fb_session.json: checking...")
 
     if not os.path.exists(SESSION_FILE):
-        print(f"ERROR: No session file at {SESSION_FILE}")
-        print("Run tools/fb_login.py first.")
-        sys.exit(1)
+        print(f"No session file at {SESSION_FILE}")
+        if group_ok:
+            with sync_playwright() as p:
+                if heal_scraper_from_profile(p):
+                    print("HEALED: scraper/page store seeded from the live group profile.")
+        if not os.path.exists(SESSION_FILE):
+            print("Run tools/fb_profile_login.py (one login feeds both stores).")
+            sys.exit(1)
 
     print(f"Checking FB session: {SESSION_FILE}")
 
@@ -173,11 +214,15 @@ def main():
         if expired:
             reason = "Facebook showed a login wall" if marker_hit else "no c_user auth cookie present"
             print(f"SESSION EXPIRED (scraper/page store) -- {reason}.")
-            print("Re-run: python tools/fb_login.py")
-            if not group_ok:
-                print("ALSO DEAD (group blast store): re-run "
-                      "python tools/fb_profile_login.py")
             browser.close()
+            if group_ok and heal_scraper_from_profile(p):
+                print("HEALED: scraper/page store re-seeded from the live group "
+                      "profile (no second login needed).")
+                print("OVERALL: PASS -- both Facebook stores are live.")
+                sys.exit(0)
+            print("Re-run: python tools/fb_profile_login.py (ONE login feeds both "
+                  "stores; the next run of this checker re-seeds fb_session.json "
+                  "from it, so fb_login.py is no longer needed)")
             sys.exit(1)
 
         # Session is valid -- save refreshed cookies

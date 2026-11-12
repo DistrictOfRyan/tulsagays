@@ -180,8 +180,20 @@ def run_post(dry=False):
               "TULSAGAYS_PAGE_ACCESS_TOKEN and re-run --post.", flush=True)
         sys.exit(1)
     # 5. Post to FB page + Instagram (graphics).
-    step("Post to FB + Instagram", [PY, "tools/post_weekly.py"],
-         timeout=900, env=_env(TULSAGAYS_SKIP_ENRICH="1"))
+    # post_weekly exits 3 on PARTIAL (one channel live, one failed). Keep going so
+    # the group blast and newsletter still run for the channel that IS live; the
+    # success gate at the end fails loud and names the dark channel.
+    if not step("Post to FB + Instagram", [PY, "tools/post_weekly.py"],
+                timeout=900, env=_env(TULSAGAYS_SKIP_ENRICH="1"), required=False):
+        res = os.path.join(config.DATA_DIR, "posts", WEEK, "post_results.json")
+        try:
+            outcome = json.load(open(res, encoding="utf-8")).get("outcome")
+        except Exception:
+            outcome = None
+        if outcome != "PARTIAL":
+            print("  [X] FAILED (required step): Post to FB + Instagram", flush=True)
+            sys.exit(1)
+        print("  [!] PARTIAL post: continuing to the group blast; the success gate will fail loud.", flush=True)
     # 6. Blast the GRAPHICS to FB groups. Two passes: the per-run wall-clock cap
     #    may not reach every group in one pass; the 5-day cooldown makes the 2nd
     #    pass skip everything already posted, so it only picks up stragglers.

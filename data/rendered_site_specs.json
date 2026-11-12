@@ -567,7 +567,7 @@
     "lgbtq_only": false,
     "wait_until": "networkidle",
     "wait_ms": 2500,
-    "note": "WordPress, NO Events Calendar (Tribe) plugin (/wp-json/tribe/events/v1/events = 404; no event post type). community-events is a blog category id=53 with count=1 (single 2023 post, publish-date not event-date). WP API: https://allsoulschurch.org/wp-json/wp/v2/posts?categories=53 -> stale. Not a real event feed. Their live events likely live on a calendar page not given here."
+    "note": "2026-11-06: All Souls events are read by scraper/churches.py from the WordPress posts API (each event is an announcement post with a 'Details at a Glance' / When: / Date: block; 4 upcoming events parsed on 2026-11-06). /calendar is an iframe of secure.accessacs.com, which does not resolve or connect. Keep this spec dead. | WordPress, NO Events Calendar (Tribe) plugin (/wp-json/tribe/events/v1/events = 404; no event post type). community-events is a blog category id=53 with count=1 (single 2023 post, publish-date not event-date). WP API: https://allsoulschurch.org/wp-json/wp/v2/posts?categories=53 -> stale. Not a real event feed. Their live events likely live on a calendar page not given here."
   },
   {
     "name": "Great Plains Rodeo Association",
@@ -934,5 +934,21 @@
     "sample": "August 2026 SOTA Meeting (2026-08-20, MP 544)",
     "note": "Added 2026-09-02 by tulsagays-campus-sources-verify. TCC's OFFICIAL student-club events API (Presence/Involve), unauthenticated JSON, no session and no rate limit. Exists because TCC Pride (org uri 'tcc-pride-2') is registered here, giving their events a path that does NOT depend on the Instagram session -- which was found fully dark on 2026-09-02 (all three IG tiers dead). TCC Pride had 0 events posted here at wiring time, so a 0 from this source is expected until they start using it; the college-wide feed carried 4 events total. Orgs list: https://api.presence.io/tulsacc/v1/organizations (77 orgs). Note the /events endpoint IGNORES ?organizationUri= -- it always returns the whole campus feed, so filtering happens downstream via the runner relevance gate.",
     "json_link_prefix": "/event/"
+  },
+  {
+    "name": "Songkick Tulsa",
+    "url": "https://www.songkick.com/metro-areas/1826-us-tulsa",
+    "strategy": "json_ld",
+    "enabled": true,
+    "priority": 3,
+    "lgbtq_only": false,
+    "wait_until": "domcontentloaded",
+    "wait_ms": 3000,
+    "metro_only": true,
+    "sample": {
+      "name": "Three Days Grace @ BOK Center",
+      "date": "2026-11-06"
+    },
+    "note": "ADDED 2026-11-06, moved here from scraper/ticketing_sites.py, which asked for metro id 29100 (Tulsa is 1826). Plain HTTP clients get HTTP 406 with an empty body on every Songkick cache MISS; a CDN HIT (the London metro page) answered 200, which is how the block showed up as per-request rather than a dead site. Headless Chromium gets the full page: 50 MusicEvent JSON-LD rows, 2026-11-06..2026-11-21, all dated. metro_only drops the metro's Fort Smith AR (3), Pocola (2) and Ramona (1) rows. Songkick lists some shows twice under two concert ids (Three Days Grace at BOK Center, 7pm and 10am on 11-06); runner dedupe merges same name/date/venue. Venues overlap the BOK, Cain's, Hard Rock and River Spirit specs; new coverage is The Vanguard, Drifter's Theater, The Whittier Bar and The Shrine. Priority 3 like the old ticketing module, so concerts fill the website without taking slide slots."
   }
 ]

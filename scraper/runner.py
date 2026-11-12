@@ -1211,6 +1211,40 @@ def _write_pending_action(message: str, week_key: str) -> None:
         logger.error(f"[content-gate] Could not write pending action: {exc}")
 
 
+def _ig_fetch_ok(src: str, max_age_hours: float = 48.0) -> bool:
+    """True when this run's Instagram fetch for `src` returned posts (see ig_scrape_health.json).
+
+    False when there is no fresh health record for the venue, the whole fetch failed or
+    degraded, or the venue returned no posts, so the caller keeps treating it as a possible
+    silent failure."""
+    data_dir = getattr(config, "DATA_DIR", "data")
+
+    def _fresh(stamp: str) -> bool:
+        age = datetime.now() - datetime.strptime(stamp or "", "%Y-%m-%d %H:%M")
+        return timedelta(hours=-1) <= age <= timedelta(hours=max_age_hours)
+
+    # 2026-11-05 (F-2958): a venue with its own scraper (Studio 66) records its fetch result in
+    # data/fetch_health/<src>.json, since instagram_orgs' shared file never covers it.
+    try:
+        with open(os.path.join(data_dir, "fetch_health", f"{src}.json"), encoding="utf-8") as f:
+            own = json.load(f)
+        if _fresh(own.get("checked_at", "")):
+            return int(own.get("posts", 0)) > 0
+    except Exception:
+        pass
+    try:
+        path = os.path.join(data_dir, "ig_scrape_health.json")
+        with open(path, encoding="utf-8") as f:
+            h = json.load(f)
+        if not _fresh(h.get("checked_at", "")):
+            return False
+        if h.get("fetch_failed") or h.get("fetch_degraded"):
+            return False
+        return int((h.get("per_venue", {}).get(src) or {}).get("posts", 0)) > 0
+    except Exception:
+        return False
+
+
 def _warn_missing_key_venues(events: List[Dict], week_key: str) -> None:
     """Loud, NON-halting alert when a must-cover venue returns 0 events.
 
@@ -1223,6 +1257,19 @@ def _warn_missing_key_venues(events: List[Dict], week_key: str) -> None:
     missing = {src: label for src, label in KEY_VENUE_SOURCES.items() if src not in present}
     if not missing:
         return
+    # 2026-11-02 (work-order sweep F-2958 / F-3399): "0 events" is only a SILENT-FAILURE signal when
+    # the Instagram fetch itself failed. instagram_orgs records per-venue fetch results in
+    # data/ig_scrape_health.json; a venue whose fetch returned posts but no in-week event captions
+    # is a quiet week or a flyer-only account (the Sunday tulsagays-venue-dig reads flyers into
+    # manual_events.json). Log those, and brief only the venues we cannot show were fetched.
+    quiet = {src: label for src, label in missing.items() if _ig_fetch_ok(src)}
+    if quiet:
+        logger.info("[key-venue] 0 in-week events but the Instagram fetch succeeded (quiet week or "
+                    "flyer-only; the weekly venue dig covers flyers): %s",
+                    ", ".join(sorted(quiet.values())))
+        missing = {src: label for src, label in missing.items() if src not in quiet}
+        if not missing:
+            return
     labels = ", ".join(sorted(missing.values()))
     msg = (
         f"{len(missing)} key venue(s) returned 0 events this week: {labels}. "

@@ -6,7 +6,7 @@ Replaces two dead routes in the Wednesday blog task (2026-09-15):
     592105005223"). That API is also officially limited to JobPosting and
     BroadcastEvent pages, so pinging it for blog posts was the wrong tool anyway.
 
-The GA4 service account (claude-ops/tulsagays/google_service_account.json) holds
+The GA4 service account (~/.credentials/tulsagays-analytics-sa.json) holds
 siteFullUser on https://www.tulsagays.com/ in Search Console, which is enough to
 PUT a sitemap. Proven live 2026-09-15: PUT -> 204, then GET showed
 lastSubmitted updated and isPending true.
@@ -22,7 +22,7 @@ import sys
 import urllib.parse
 from pathlib import Path
 
-SA_FILE = Path(r"C:\Users\willi\claude-ops\tulsagays\google_service_account.json")
+SA_FILE = Path(r"C:\Users\willi\.credentials\tulsagays-analytics-sa.json")
 SITE = "https://www.tulsagays.com/"
 SITEMAP = "https://www.tulsagays.com/sitemap.xml"
 

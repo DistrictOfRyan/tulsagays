@@ -72,6 +72,23 @@ def _post_checks(week, data_dir):
     last = wk_rows[-1]
     if not (last.get("fb_posted") or last.get("ig_posted") or last.get("groups_live")):
         errs.append(f"{week} distribution row shows no successful FB/IG/group delivery: {last}")
+    # Every channel post_weekly ATTEMPTED must have delivered (2026-10-07). The
+    # check above passes when any one channel landed, which is how W39 and W41
+    # read as posted while the Instagram carousel never went out.
+    try:
+        pr = json.load(open(os.path.join(data_dir, "posts", week, "post_results.json"), encoding="utf-8"))
+        chans = pr.get("channels") if isinstance(pr.get("channels"), dict) else {}
+        dark = {k: v.get("error", v.get("status")) for k, v in chans.items() if v.get("status") != "ok"}
+        if not chans:
+            ig = str(pr.get("ig_post_id") or "")
+            if ig.startswith("FAILED"):
+                dark["instagram"] = ig[len("FAILED: "):] if ig.startswith("FAILED: ") else ig
+        if dark:
+            errs.append(f"{week} PARTIAL: " + "; ".join(f"{k} FAILED: {str(v)[:200]}" for k, v in dark.items()))
+    except FileNotFoundError:
+        pass
+    except Exception as e:
+        errs.append(f"{week} post_results.json unreadable: {e}")
     # Website freshness: docs/index.html must show THIS week's date range (the
     # 2026-06-15 run left the homepage a week stale because Step 3 never ran).
     try:

@@ -47,6 +47,10 @@ HEALTH_FILE = ROOT / "data" / "scraper_health.json"
 SUBMIT_BRIEF = Path(r"C:\Users\willi\.claude\chief-of-staff\submit_brief.py")
 
 OK, JUNK, DEAD, SKIP = "OK", "JUNK", "DEAD", "SKIP"
+# IDLE (2026-11-06): an API/iCal feed that ANSWERED with zero items - the read
+# path is proven, nothing is scheduled (a farmers market off-season, a campus club
+# between terms). Not broken, so not DEAD, and never handed to auto-repair.
+IDLE = "IDLE"
 
 
 def _is_dated(ev: dict) -> bool:
@@ -99,7 +103,17 @@ def _probe_extended_calendars() -> list:
     for url, name, category, lgbtq_only in ec.SITES:
         t0 = time.time()
         try:
-            ev = s._scrape_site(url, name, lgbtq_only)
+            # Health probe always skips the LGBTQ-relevance filter (lgbtq_only=True
+            # disables it in _scrape_site) so a general venue with zero matching
+            # events THIS WEEK isn't misclassified as DEAD (extraction broken) --
+            # it measures "can we still parse the page", not "is there a match
+            # today". Production scraping (scraper.extended_calendars's own
+            # .scrape()) still applies the real per-site lgbtq_only flag.
+            # Diagnosed live 2026-10-14: Hard Rock Live Tulsa, Philbrook, Tulsa
+            # Events, Woody Guthrie Center, River Spirit Casino, University of
+            # Tulsa, and Tulsa Farmers' Market all extracted real events (4-44
+            # each) but reported DEAD because none were LGBTQ-relevant that week.
+            ev = s._scrape_site(url, name, True)
             dated = sum(1 for e in ev if _is_dated(e))
             out.append({"source": f"extended_calendars/{name}", "url": url,
                         "raw": len(ev), "dated": dated,
@@ -128,10 +142,15 @@ def _probe_rendered_sites() -> list:
             try:
                 ev = s._scrape_spec(spec)
                 dated = sum(1 for e in ev if _is_dated(e))
-                out.append({"source": f"rendered_sites/{spec['name']}", "url": spec.get("url", ""),
-                            "raw": len(ev), "dated": dated,
-                            "status": _classify(len(ev), dated),
-                            "secs": round(time.time() - t0, 1)})
+                status = _classify(len(ev), dated)
+                row = {"source": f"rendered_sites/{spec['name']}", "url": spec.get("url", ""),
+                       "raw": len(ev), "dated": dated, "status": status,
+                       "secs": round(time.time() - t0, 1)}
+                read = getattr(s, "last_read", {}) or {}
+                if status == DEAD and read.get("ok") and read.get("items") == 0:
+                    row["status"] = IDLE
+                    row["error"] = "feed answered with 0 items (nothing scheduled)"
+                out.append(row)
             except Exception as e:
                 out.append({"source": f"rendered_sites/{spec['name']}", "url": spec.get("url", ""),
                             "raw": 0, "dated": 0, "status": DEAD,
@@ -201,7 +220,7 @@ def _module_level_checks(full: bool) -> list:
 MUST_SOURCES = {
     "okeq":   "OKEQ / Equality Center calendar (their events were promised highlight)",
     "slack":  "TulsaRemote Slack #events-local + #unite-lgbtq-plus",
-    "ybr_ig": "YBR - @tulsaybr/@imvalpal Instagram (web-session tier)",
+    "ybr_ig": "YBR - @tulsaybr Instagram (web-session tier; logged-out page when the login is age-gated)",
 }
 
 
@@ -226,6 +245,12 @@ def _check_must_sources() -> list:
                 "error": "" if n else f"0 events in {wk} from MUST-scrape source ({why})",
                 "url": "",
             })
+    except FileNotFoundError:
+        # 2026-11-02 (F-3576): the nightly 2:50am run on a Monday fires BEFORE that week's scrape has
+        # written <week>_all.json, so this counted a not-yet-existing file as a DEAD source and
+        # inflated the headline (DEAD=44 included it). Nothing was scraped yet, so nothing is dead.
+        rows.append({"source": "must:_check", "raw": 0, "dated": 0, "status": SKIP,
+                     "error": f"week file {wk}_all.json not written yet (scrape has not run)", "url": ""})
     except Exception as e:
         rows.append({"source": "must:_check", "raw": 0, "dated": 0, "status": DEAD,
                      "error": f"could not read week file: {e}", "url": ""})
@@ -257,7 +282,7 @@ def _load_prev() -> dict:
 def _write_health(results: list, now: str):
     HEALTH_FILE.parent.mkdir(parents=True, exist_ok=True)
     summary = {s: sum(1 for r in results if r["status"] == s)
-               for s in (OK, JUNK, DEAD, SKIP)}
+               for s in (OK, JUNK, DEAD, IDLE, SKIP)}
     HEALTH_FILE.write_text(json.dumps(
         {"checked_at": now, "summary": summary, "results": results},
         indent=2), encoding="utf-8")
@@ -376,6 +401,8 @@ def main():
                           "ok": sum(1 for r in results if r["status"] == OK),
                           "junk": sum(1 for r in results if r["status"] == JUNK),
                           "dead": sum(1 for r in results if r["status"] == DEAD),
+                          "idle": sum(1 for r in results if r["status"] == IDLE),
+                          "dead_sources": [r["source"] for r in results if r["status"] == DEAD],
                           "regressions": [r["source"] for r in regressions],
                           "recovered": [r["source"] for r in recovered]}, indent=2))
         return
@@ -383,8 +410,13 @@ def main():
     ok = [r for r in results if r["status"] == OK]
     junk = [r for r in results if r["status"] == JUNK]
     dead = [r for r in results if r["status"] == DEAD]
+    idle = [r for r in results if r["status"] == IDLE]
     print(f"TulsaGays scraper health - {now}")
-    print(f"  OK={len(ok)}  JUNK={len(junk)}  DEAD={len(dead)}  (total {len(results)})")
+    print(f"  OK={len(ok)}  JUNK={len(junk)}  DEAD={len(dead)}  IDLE={len(idle)}  (total {len(results)})")
+    if idle:
+        print("\nIDLE (feed answered, nothing scheduled - read path proven):")
+        for r in idle:
+            print(f"  - {r['source']}")
     if junk:
         print("\nJUNK (returns rows but no real dates - the Elote failure mode):")
         for r in junk:

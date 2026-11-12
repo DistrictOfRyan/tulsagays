@@ -1144,5 +1144,167 @@
     "url": "https://www.instagram.com/p/DezT0x0x5IK/",
     "source": "venue_flyer_dig",
     "priority": 2
+  },
+  {
+    "name": "Friendsgiving Holiday Potluck",
+    "date": "2026-11-22",
+    "time": "4:00 PM",
+    "venue": "Yellow Brick Road, 2630 E 15th St",
+    "url": "https://www.instagram.com/p/DfAW55Qx4C1/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Halloween Sunday Showcase (18+ Halloween Party, Costume Contest & Drag Show feat. Natalia Masters, Scrappy Legacy, Londenn D. Raine, Shanel Sterling)",
+    "date": "2026-11-01",
+    "time": "Doors 9pm, Show 11pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DfI4IVgxFiR/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Fright Nights – Halloween Sunday Showcase Drag Show",
+    "date": "2026-11-01",
+    "time": null,
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DfDswWexmzY/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Halloween Party (18+)",
+    "date": "2026-11-01",
+    "time": null,
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DfDsMrrxxuU/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Fright Nights: Halloween Sunday Showcase Drag Show & Costume Contest (18+)",
+    "date": "2026-11-01",
+    "time": "9:00 PM",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DexyWC_RfuL/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Elote's Drag Brunch",
+    "date": "2026-11-14",
+    "time": "11:00 & 1:30",
+    "venue": "Elote Cafe, 514 S Boston Ave",
+    "url": "https://www.instagram.com/p/DfAVjkVkT6K/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Holiday Potluck (Friendsgiving)",
+    "date": "2026-11-22",
+    "time": "4:00 PM",
+    "venue": "Yellow Brick Road, 2630 E 15th St",
+    "url": "https://www.instagram.com/p/DfAW55Qx4C1/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Turkeyoke (Thanksgiving Karaoke hosted by Eric)",
+    "date": "2026-11-26",
+    "time": "9:00 PM",
+    "venue": "Yellow Brick Road, 2630 E 15th St",
+    "url": "https://www.instagram.com/p/DfaTex0RkND/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Sunday Showdown: Open Talent Night",
+    "date": "2026-11-08",
+    "time": "Doors 9pm, Showtime 11pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DfasPflxHZa/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Sensational Saturdays presents Family Affair",
+    "date": "2026-11-21",
+    "time": "Doors 9pm, Showtime 9:30pm-10:30pm, 21 to Enter",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DfZIGTozGSQ/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Bad Boys On The Block (Legacy Entertainment, hosted by Scrappy Legacy, special guests Pierce Pendragon & Apollo Davenport)",
+    "date": "2026-11-13",
+    "time": "Doors 9pm, Showtime 9:30pm-10:30pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DfY1YZPx7w-/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Pandora's Box",
+    "date": "2026-11-27",
+    "time": "9:30pm-10:30pm (doors 9pm)",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DfY1PpfRJK3/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Trans Remembrance Day Fundraiser",
+    "date": "2026-11-22",
+    "time": "Doors 9:00pm, Showtime 9:30pm",
+    "venue": "Club Majestic, 124 N Boston Ave",
+    "url": "https://www.instagram.com/p/DfY1AJjR_HV/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Gone Country Drag Brunch",
+    "date": "2026-11-14",
+    "time": "11:00 AM & 1:30 PM",
+    "venue": "Elote Cafe, 514 S Boston Ave",
+    "url": "https://www.instagram.com/p/DfXyk0Oj4-M/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Elote Drag Brunch (Country-themed, hosted by Chanel Sterling)",
+    "date": "2026-11-14",
+    "time": "11:00 AM & 1:30 PM",
+    "venue": "Elote Cafe, 514 S Boston Ave",
+    "url": "https://www.instagram.com/p/DfAVjkVkT6K/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Elote Dinner & Drag (Amy H. Graves Tulsa Tour)",
+    "date": "2026-11-27",
+    "time": "6:30 PM",
+    "venue": "Tulsa House of Drag",
+    "url": "https://www.instagram.com/p/Dfft-HLJZ6i/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "Ganga, Gowns & Grooves (Amy H. Graves Tulsa Tour)",
+    "date": "2026-11-28",
+    "time": "9:30 PM",
+    "venue": "Tulsa House of Drag",
+    "url": "https://www.instagram.com/p/Dfft-HLJZ6i/",
+    "source": "venue_flyer_dig",
+    "priority": 2
+  },
+  {
+    "name": "The Sunday Showcase (Amy H. Graves Tulsa Tour)",
+    "date": "2026-11-29",
+    "time": "10:30 PM",
+    "venue": "Tulsa House of Drag",
+    "url": "https://www.instagram.com/p/Dfft-HLJZ6i/",
+    "source": "venue_flyer_dig",
+    "priority": 2
   }
 ]

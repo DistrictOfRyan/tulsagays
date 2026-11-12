@@ -3,18 +3,27 @@ Post the weekly carousel to Facebook and Instagram.
 
 Usage:
     python tools/post_weekly.py              # post this week's slides
-    python tools/post_weekly.py --dry-run    # validate only, no posting
+    python tools/post_weekly.py --dry-run    # validate only: no posting, no git push
+    python tools/post_weekly.py --ig-only    # recovery: Facebook is live, publish the same deck to IG only
+    python tools/post_weekly.py --selftest-channels   # offline proof of the IG guard + PARTIAL reporting
 
 Steps:
   1. Validate slides (all 9 present, >50KB each)
-  2. Copy slides to docs/posts/{week-key}/ and git push for public URLs
+  2. Build an Instagram-safe JPEG of each slide (tools/ig_media_guard.py), copy
+     slides + JPEGs to docs/posts/{week-key}/ and git push
   3. Post multi-image carousel to Facebook page (binary upload)
-  4. Post carousel to Instagram (uses GitHub Pages public URLs)
-  5. Save post IDs to meta_api_config.json and data/posts/{week}/post_results.json
+  4. Wait until every JPEG is publicly served byte-for-byte, then post the
+     carousel to Instagram with only those verified URLs
+  5. Save post IDs, per-channel status and the outcome (OK / PARTIAL / FAILED)
+     to meta_api_config.json, post_ledger.json and post_results.json
+
+Exit code: 0 = every attempted channel is live, 3 = PARTIAL (Facebook live,
+Instagram failed, or the reverse), 1 = nothing went out.
 """
 
 import json
 import os
+import re
 import sys
 import shutil
 import subprocess
@@ -28,6 +37,14 @@ sys.path.insert(0, str(ROOT))
 import config
 
 DRY_RUN = "--dry-run" in sys.argv
+IG_ONLY = "--ig-only" in sys.argv
+
+# How long to wait for GitHub Pages to serve the pushed Instagram JPEGs before
+# falling back to the commit-pinned raw.githubusercontent.com copy. W39's deploy
+# took 8 minutes and W41's took 73; the old code waited a fixed 50 seconds.
+IG_URL_WAIT_S = 240
+_GUARD_FETCH = None          # test hook: fake HTTP for ig_media_guard
+_TRACK_ENGAGEMENT = True     # test hook: selftest must not write engagement logs
 
 # ── Load meta credentials ───────────────────────────────────────────────────
 META_CFG_PATH = ROOT / "meta_api_config.json"
@@ -337,56 +354,96 @@ def validate_slides(slides: list[Path]) -> None:
             print(f"[WARN] contact sheet skipped: {_e}")
 
 
-def host_slides_for_ig(slides: list[Path]) -> list[str]:
-    """Copy slides to docs/posts/{week-key}/, push to git, return public URLs.
+def _guard():
+    """tools/ig_media_guard.py, imported lazily so a broken import fails only
+    the Instagram leg (reported PARTIAL), never the Facebook post. Always go
+    through here so every caller shares one VERIFIED registry."""
+    try:
+        from tools import ig_media_guard as g
+    except Exception:
+        import ig_media_guard as g  # when run from tools/
+    return g
 
-    The docs/ folder is served via GitHub Pages at config.SITE_URL.
-    Public URLs allow the Instagram Graph API to fetch the images.
-    """
+
+def _git(*args: str) -> subprocess.CompletedProcess:
+    return subprocess.run(["git", *args], cwd=str(ROOT), capture_output=True, text=True)
+
+
+def _raw_base(sha: str) -> str:
+    """raw.githubusercontent.com folder for this week's hosted files, pinned to
+    the pushed commit: immutable, and live as soon as the push lands."""
+    remote = (_git("remote", "get-url", "origin").stdout or "").strip()
+    m = re.search(r"github\.com[:/]([^/]+)/([^/]+?)(?:\.git)?/?$", remote)
+    if not (m and sha):
+        return ""
+    return f"https://raw.githubusercontent.com/{m.group(1)}/{m.group(2)}/{sha}/docs/posts/{WEEK_KEY}"
+
+
+def stage_ig_assets(slides: list[Path]) -> dict:
+    """Copy the slides to docs/posts/{week-key}/, write a validated
+    Instagram-safe JPEG of each next to them, then commit + push that folder.
+
+    Raises ig_media_guard.IGAssetError, naming every bad asset, before anything
+    is pushed. Dry-run writes the local files but never commits or pushes (the
+    old dry-run pushed the week's slides to the public site)."""
+    g = _guard()
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
     for slide in slides:
         dest = DOCS_DIR / slide.name
         if not dest.exists() or dest.stat().st_mtime < slide.stat().st_mtime:
             shutil.copy2(slide, dest)
+    assets, bad = g.prepare_assets(slides, DOCS_DIR)
+    if bad:
+        raise g.IGAssetError(bad)
+    for a in assets:
+        how = f"converted {a.converted_from} to JPEG" if a.converted_from else "JPEG as-is"
+        extra = f" ({'; '.join(a.notes)})" if a.notes else ""
+        print(f"[IG-ASSET] {a.source.name} -> {a.name}: {a.width}x{a.height}, {a.size // 1024}KB, {how}{extra}")
+    print(f"[OK] {len(assets)} slides + Instagram JPEGs in docs/posts/{WEEK_KEY}/")
+    if DRY_RUN:
+        print("[DRY RUN] not committing or pushing docs/posts; public URLs not checked")
+        return {"assets": assets, "sha": "", "pushed": False}
 
-    print(f"[OK] Slides copied to docs/posts/{WEEK_KEY}/")
-
-    # Git add + commit + push so GitHub Pages serves them
+    # Commit ONLY this week's folder, never whatever else is staged in the repo.
     rel_path = f"docs/posts/{WEEK_KEY}"
-    cmds = [
-        ["git", "add", rel_path],
-        ["git", "commit", "-m", f"slides: publish {WEEK_KEY} carousel images"],
-        ["git", "push", "origin", "main"],
-    ]
-    for cmd in cmds:
-        result = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True)
-        if cmd[1] == "push" and result.returncode != 0:
-            print(f"WARN: git push failed: {result.stderr.strip()}")
-            print("Continuing — URLs may already be live from a previous push.")
-        elif cmd[1] == "commit" and "nothing to commit" in (result.stdout + result.stderr):
-            print("[OK] Slides already committed — skipping commit.")
-        elif result.returncode != 0 and cmd[1] != "commit":
-            print(f"WARN: git {cmd[1]} failed: {result.stderr.strip()}")
-
-    print("[OK] Slides pushed to GitHub. Waiting 50s for Pages to deploy...")
-    if not DRY_RUN:
-        time.sleep(50)
-
-    public_urls = [f"{SITE_BASE}/{s.name}" for s in slides]
-
-    # Spot-check first URL
-    try:
-        resp = requests.head(public_urls[0], timeout=15, allow_redirects=True)
-        if resp.status_code == 200:
-            print(f"[OK] GitHub Pages live: {public_urls[0]}")
+    _git("add", rel_path)
+    c = _git("commit", "-m", f"slides: publish {WEEK_KEY} carousel images", "--", rel_path)
+    if c.returncode != 0:
+        out = (c.stdout + c.stderr).strip()
+        if "nothing" in out or "no changes" in out:
+            print("[OK] Slides already committed, skipping commit.")
         else:
-            print(f"WARN: {public_urls[0]} returned {resp.status_code} — Pages may still be building.")
-            if not DRY_RUN:
-                time.sleep(30)
-    except Exception as e:
-        print(f"WARN: Could not verify URL ({e}) — proceeding anyway.")
+            print(f"WARN: git commit failed: {out[:300]}")
+    p = _git("push", "origin", "main")
+    pushed = p.returncode == 0
+    sha = (_git("rev-parse", "HEAD").stdout or "").strip()
+    if pushed:
+        print(f"[OK] docs/posts/{WEEK_KEY} pushed at {sha[:7]}")
+    else:
+        print(f"WARN: git push failed: {p.stderr.strip()[:300]}")
+        print("      The URL check decides whether Instagram can be sent anything.")
+    return {"assets": assets, "sha": sha, "pushed": pushed}
 
-    return public_urls
+
+def resolve_ig_urls(staged: dict) -> list[str]:
+    """Return one verified public URL per Instagram JPEG, or raise IGAssetError
+    naming each asset that never became fetchable.
+
+    Replaces a fixed 50s sleep plus a HEAD on slide 1 that carried on after a
+    404. That is the W39/W41 failure: Instagram was handed www.tulsagays.com
+    URLs while the GitHub Pages deploy was still running (8 and 73 minutes), so
+    it downloaded the Pages 404 page and answered "Only photo or video can be
+    accepted as media type"."""
+    g = _guard()
+    if DRY_RUN:
+        return [f"{SITE_BASE}/{a.name}" for a in staged["assets"]]
+    return g.resolve_public_urls(staged["assets"], SITE_BASE, _raw_base(staged.get("sha", "")),
+                                 fetch=_GUARD_FETCH, budget_s=IG_URL_WAIT_S)
+
+
+def host_slides_for_ig(slides: list[Path]) -> list[str]:
+    """Stage + resolve in one call. tools/post_weekend.py uses this."""
+    return resolve_ig_urls(stage_ig_assets(slides))
 
 
 # ── Facebook ─────────────────────────────────────────────────────────────────
@@ -490,27 +547,60 @@ def post_fb_carousel(slides: list[Path], caption: str) -> dict:
 
 # ── Instagram ────────────────────────────────────────────────────────────────
 
+def _ig_fetch_error(err: dict) -> bool:
+    """Instagram could not download/accept the image_url bytes (code 9004,
+    subcode 2207052 "media could not be fetched", 2207003 download timeout)."""
+    msg = (err.get("message") or "").lower()
+    return (err.get("code") == 9004 or err.get("error_subcode") in (2207052, 2207003)
+            or "media type" in msg or "download" in msg or "fetch" in msg)
+
+
 def post_ig_carousel(public_urls: list[str], caption: str) -> str:
-    """Post Instagram carousel using public image URLs. Returns IG post ID."""
+    """Post Instagram carousel using public image URLs. Returns IG post ID.
+
+    Every URL must have been proven by ig_media_guard in this process, or pass
+    a fresh check right here; an unproven URL is refused BEFORE the container
+    call. A child container that Instagram could not fetch is retried (twice,
+    30s apart) only while the URL still serves a valid image. Child and
+    carousel containers are unpublished drafts, so a retry cannot double-post."""
     urls = public_urls[:10]  # IG max 10 images
     print(f"\n[IG] Creating {len(urls)} carousel item containers...")
 
     if DRY_RUN:
-        print("     (dry run — skipping IG post)")
+        print("     (dry run, skipping IG post)")
         return "dry_run_ig_id"
 
+    g = _guard()
     child_ids = []
     for i, url in enumerate(urls, 1):
+        if not g.is_verified(url):
+            ok, why = g.check_url_for_ig(url, fetch=_GUARD_FETCH)
+            if not ok:
+                raise RuntimeError(f"IG item {i} refused before the container call ({url}): {why}")
         print(f"     Item {i}/{len(urls)}", end=" ... ", flush=True)
-        resp = requests.post(
-            f"{API_BASE}/{IG_ID}/media",
-            data={"image_url": url, "is_carousel_item": "true", "access_token": PAGE_TOKEN},
-            timeout=120,
-        )
-        # Note: location_id is set on the carousel container, not individual items
-        data = resp.json()
-        if "error" in data:
-            raise RuntimeError(f"IG container {i} failed: {data['error'].get('message')}")
+        data = {}
+        for attempt in range(3):
+            resp = requests.post(
+                f"{API_BASE}/{IG_ID}/media",
+                data={"image_url": url, "is_carousel_item": "true", "access_token": PAGE_TOKEN},
+                timeout=120,
+            )
+            # Note: location_id is set on the carousel container, not individual items
+            data = resp.json()
+            err = data.get("error")
+            if not err:
+                break
+            if attempt < 2 and _ig_fetch_error(err):
+                ok, why = g.check_url_for_ig(url, fetch=_GUARD_FETCH)
+                if not ok:
+                    raise RuntimeError(f"IG container {i} failed: {err.get('message')} "
+                                       f"(the URL now fails too: {why})")
+                print(f"(IG could not fetch it: {err.get('message')}; the URL serves a valid "
+                      f"image, retrying in 30s)", end=" ... ", flush=True)
+                time.sleep(30)
+                continue
+            raise RuntimeError(f"IG container {i} failed: {err.get('message')} "
+                               f"(code {err.get('code')}, subcode {err.get('error_subcode')}, url {url})")
         cid = data.get("id")
         if not cid:
             raise RuntimeError(f"IG container {i} returned no ID: {data}")
@@ -562,27 +652,50 @@ def post_ig_carousel(public_urls: list[str], caption: str) -> str:
 
 # ── Save results ─────────────────────────────────────────────────────────────
 
-def save_results(fb_result: dict, ig_post_id: str) -> None:
+def channel_outcome(channels: dict) -> str:
+    """OK only when EVERY attempted channel delivered. One live and one failed
+    is PARTIAL, never 'verified' (W39 and W41 were logged 'posted + verified'
+    with Instagram dead)."""
+    if not channels:
+        return "FAILED"
+    good = [k for k, v in channels.items() if v.get("status") in ("ok", "dry_run")]
+    if len(good) == len(channels):
+        return "OK"
+    return "PARTIAL" if good else "FAILED"
+
+
+def outcome_exit_code(outcome: str) -> int:
+    return {"OK": 0, "PARTIAL": 3}.get(outcome, 1)
+
+
+def save_results(fb_result: dict, ig_post_id: str, channels: dict | None = None,
+                 outcome: str | None = None) -> None:
     today = datetime.now().strftime("%Y-%m-%d")
 
-    meta_cfg["last_post"] = {
-        "date": today,
-        "week_key": WEEK_KEY,
-        "fb_post_id": fb_result["post_id"],
-        "ig_post_id": ig_post_id,
-        "photo_ids": fb_result["photo_ids"],
-        "note": f"Weekly carousel {WEEK_KEY}. 9 slides.",
-    }
-    with open(META_CFG_PATH, "w", encoding="utf-8") as f:
-        json.dump(meta_cfg, f, indent=2)
+    if not DRY_RUN:
+        # A dry run used to overwrite last_post and the week's REAL
+        # post_results.json with dry_run ids. It now writes its own file.
+        meta_cfg["last_post"] = {
+            "date": today,
+            "week_key": WEEK_KEY,
+            "fb_post_id": fb_result["post_id"],
+            "ig_post_id": ig_post_id,
+            "photo_ids": fb_result["photo_ids"],
+            "outcome": outcome,
+            "note": f"Weekly carousel {WEEK_KEY}. 9 slides.",
+        }
+        with open(META_CFG_PATH, "w", encoding="utf-8") as f:
+            json.dump(meta_cfg, f, indent=2)
 
-    results_path = SLIDES_DIR / "post_results.json"
+    results_path = SLIDES_DIR / ("post_results_dryrun.json" if DRY_RUN else "post_results.json")
     results = {
         "week": WEEK_KEY,
         "posted_at": datetime.now().isoformat(),
         "fb_post_id": fb_result["post_id"],
         "ig_post_id": ig_post_id,
         "photo_ids": fb_result["photo_ids"],
+        "outcome": outcome,
+        "channels": channels or {},
         "dry_run": DRY_RUN,
     }
     with open(results_path, "w", encoding="utf-8") as f:
@@ -594,7 +707,7 @@ def save_results(fb_result: dict, ig_post_id: str) -> None:
     # requires a valid Meta token — it will silently skip if the token is
     # expired. Re-run engagement_tracker.fetch_engagement(ig_post_id) after
     # refreshing the page token to backfill this week's numbers.
-    if not DRY_RUN and not ig_post_id.startswith("FAILED"):
+    if _TRACK_ENGAGEMENT and not DRY_RUN and not ig_post_id.startswith("FAILED"):
         try:
             sys.path.insert(0, str(ROOT))
             from self_improve.engagement_tracker import log_post, fetch_engagement
@@ -698,22 +811,60 @@ def main():
     # moment it succeeds, and a rerun for a week that already has a live post is
     # refused. After a deliberate retraction, pass --repost.
     ledger_path = SLIDES_DIR / "post_ledger.json"
-    if not DRY_RUN and "--repost" not in sys.argv:
-        prior = []
-        for p in (ledger_path, SLIDES_DIR / "post_results.json"):
-            try:
-                d = json.loads(p.read_text(encoding="utf-8"))
-            except Exception:
-                continue
-            for k in ("fb_post_id", "ig_post_id"):
-                v = str(d.get(k) or "")
-                if v and not v.startswith(("FAILED", "dry_run")) and not d.get("dry_run"):
-                    prior.append(f"{p.name}:{k}={v}")
+    live = _live_ids(ledger_path, SLIDES_DIR / "post_results.json")
+    existing_fb = None
+    if IG_ONLY and not DRY_RUN:
+        # RECOVERY: the Page post is live and only Instagram failed. Publishes the
+        # same deck + caption to Instagram and never touches Facebook. Whether a
+        # late Instagram post is worth it is a human call; this is the tool for it.
+        if live.get("ig_post_id"):
+            print(f"\n[STOP] {WEEK_KEY} Instagram is already live ({live['ig_post_id']}). Nothing to recover.")
+            sys.exit(1)
+        if not live.get("fb_post_id"):
+            print(f"\n[STOP] --ig-only recovers a week whose Facebook post is live; {WEEK_KEY} has none.\n"
+                  f"       Run without --ig-only to post both channels.")
+            sys.exit(1)
+        existing_fb = {"post_id": live["fb_post_id"], "photo_ids": live.get("photo_ids") or []}
+    elif not DRY_RUN and "--repost" not in sys.argv:
+        prior = [f"{k}={v}" for k, v in live.items() if k.endswith("_post_id")]
         if prior:
             print(f"\n[STOP] {WEEK_KEY} already has live post(s): {', '.join(prior)}\n"
                   f"       Posting again would duplicate the carousel. If those posts were\n"
-                  f"       retracted on purpose, rename the ledgers and re-run with --repost.")
+                  f"       retracted on purpose, rename the ledgers and re-run with --repost.\n"
+                  f"       If only Instagram failed, use --ig-only.")
             sys.exit(1)
+
+    result = publish(slides, caption, ledger_path, existing_fb=existing_fb)
+    sys.exit(outcome_exit_code(result["outcome"]))
+
+
+def _live_ids(*paths: Path) -> dict:
+    """Post ids that are really live, from the ledger and post_results.json.
+    A 'FAILED: ...' or dry-run value is not live."""
+    live: dict = {}
+    for p in paths:
+        try:
+            d = json.loads(p.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if d.get("dry_run"):
+            continue
+        for k in ("fb_post_id", "ig_post_id"):
+            v = str(d.get(k) or "")
+            if v and v != "None" and not v.startswith(("FAILED", "dry_run")):
+                live.setdefault(k, v)
+        if d.get("photo_ids") and "photo_ids" not in live:
+            live["photo_ids"] = d["photo_ids"]
+    return live
+
+
+def publish(slides: list[Path], caption: str, ledger_path: Path,
+            existing_fb: dict | None = None) -> dict:
+    """Stage IG assets, post Facebook (unless existing_fb), post Instagram,
+    record every channel, and return {"outcome", "channels", ...}.
+
+    outcome is OK only when every attempted channel delivered; a Facebook post
+    with a dead Instagram leg is PARTIAL with the failing channel named."""
 
     def _record(key: str, value) -> None:
         if DRY_RUN:
@@ -726,35 +877,85 @@ def main():
         cur[f"{key}_at"] = datetime.now().isoformat()
         ledger_path.write_text(json.dumps(cur, indent=2), encoding="utf-8")
 
-    # Step 3: Host slides on tulsagays.com for IG public URLs
-    print("\n[HOSTING] Publishing slides to tulsagays.com...")
-    public_urls = host_slides_for_ig(slides)
+    channels: dict = {}
 
-    # Step 4: Post to Facebook (binary upload, no external hosting needed)
-    fb_result = post_fb_carousel(slides, caption)
-    _record("fb_post_id", fb_result.get("post_id"))
-    _record("photo_ids", fb_result.get("photo_ids"))
-
-    # Step 5: Post to Instagram (needs public URLs)
+    # Step 3: build + validate the Instagram JPEGs and push them FIRST, so the
+    # GitHub Pages deploy runs while Facebook uploads. A bad asset fails only
+    # the Instagram leg, and fails it before any Instagram call.
+    staged, ig_error = None, ""
+    print("\n[HOSTING] Validating Instagram assets and publishing them to tulsagays.com...")
     try:
-        ig_post_id = post_ig_carousel(public_urls, caption)
+        staged = stage_ig_assets(slides)
     except Exception as e:
-        print(f"\n[WARN] Instagram post failed: {e}")
-        print("       Facebook post is live. Report IG failure to William.")
-        ig_post_id = f"FAILED: {e}"
+        ig_error = f"assets refused before any Instagram call: {e}"
+        print(f"\n[FAIL] {ig_error}")
+
+    # Step 4: Facebook (binary upload, no external hosting needed). A Facebook
+    # failure raises: nothing is live, and the caller reports a failed run.
+    if existing_fb:
+        fb_result = existing_fb
+        print(f"\n[FB] skipped (--ig-only); the live Page post is {fb_result['post_id']}")
+        channels["facebook"] = {"status": "ok", "id": fb_result["post_id"],
+                                "note": "already live, not re-posted (--ig-only)"}
+    else:
+        fb_result = post_fb_carousel(slides, caption)
+        _record("fb_post_id", fb_result.get("post_id"))
+        _record("photo_ids", fb_result.get("photo_ids"))
+        channels["facebook"] = {"status": "dry_run" if DRY_RUN else "ok", "id": fb_result.get("post_id")}
+
+    # Step 5: Instagram, only with URLs ig_media_guard proved serve the bytes.
+    if ig_error:
+        ig_post_id = f"FAILED: {ig_error}"
+    else:
+        try:
+            public_urls = resolve_ig_urls(staged)
+            ig_post_id = post_ig_carousel(public_urls, caption)
+        except Exception as e:
+            print(f"\n[FAIL] Instagram post failed: {e}")
+            ig_post_id = f"FAILED: {e}"
+    if ig_post_id.startswith("FAILED"):
+        channels["instagram"] = {"status": "failed", "error": ig_post_id[len("FAILED: "):]}
+    else:
+        channels["instagram"] = {"status": "dry_run" if DRY_RUN else "ok", "id": ig_post_id}
     _record("ig_post_id", ig_post_id)
 
+    outcome = channel_outcome(channels)
+    _record("channels", channels)
+    _record("outcome", outcome)
+
     # Step 6: Save results
-    save_results(fb_result, ig_post_id)
+    save_results(fb_result, ig_post_id, channels, outcome)
 
     # Summary
     print("\n" + "=" * 60)
-    print("ALL DONE")
+    print("ALL DONE: every attempted channel is live" if outcome == "OK" else
+          f"{outcome}: NOT every channel delivered")
     print(f"  Week:      {WEEK_KEY}")
     print(f"  FB post:   {fb_result['post_id']}")
     print(f"  IG post:   {ig_post_id}")
-    print(f"  Photos:    {len(fb_result['photo_ids'])} uploaded to FB")
+    print(f"  Photos:    {len(fb_result['photo_ids'])} on the FB post"
+          + (" (untouched, --ig-only)" if existing_fb else " uploaded"))
     print("=" * 60)
+    _print_group_steps()
+    print("\n" + _outcome_line(outcome, channels))
+    return {"outcome": outcome, "channels": channels, "fb_result": fb_result, "ig_post_id": ig_post_id}
+
+
+def _outcome_line(outcome: str, channels: dict) -> str:
+    parts = []
+    for k, v in channels.items():
+        if v.get("status") in ("ok", "dry_run"):
+            parts.append(f"{k} live ({v.get('id')})" if v.get("status") == "ok" else f"{k} dry-run")
+        else:
+            parts.append(f"{k} FAILED: {v.get('error', 'unknown')}")
+    line = f"OUTCOME {outcome} {WEEK_KEY}: " + "; ".join(parts)
+    if outcome == "PARTIAL" and channels.get("instagram", {}).get("status") == "failed":
+        line += ("\n  Instagram was NOT retried automatically. To publish this same deck to "
+                 "Instagram only: python tools/post_weekly.py --ig-only")
+    return line
+
+
+def _print_group_steps() -> None:
     print("\nNEXT STEP: Upload all 9 slides directly to each FB group (browser).")
     print("Switch to Tulsa Gays page identity first. Then for each group:")
     print("  - Open group, Create post, attach all 9 images in order, add sassy EOTW caption, post.")
@@ -772,5 +973,181 @@ def main():
     print("  11. Tulsa Events              groups/114530202225051")
 
 
+# ── Selftest (offline: fake Graph API, fake GitHub, temp dirs) ───────────────
+
+def _selftest_channels() -> int:
+    """Replays the W41 failure through publish() with no network: GitHub Pages
+    answers 404 text/html, so Instagram must never be called and the run must
+    read PARTIAL naming instagram. Then proves the healthy path, a bad asset,
+    and --ig-only recovery."""
+    global SLIDES_DIR, DOCS_DIR, META_CFG_PATH, DRY_RUN, IG_URL_WAIT_S, _GUARD_FETCH, _TRACK_ENGAGEMENT
+    import tempfile
+    from PIL import Image
+
+    g = _guard()
+    saved = (SLIDES_DIR, DOCS_DIR, META_CFG_PATH, DRY_RUN, IG_URL_WAIT_S, _GUARD_FETCH,
+             _TRACK_ENGAGEMENT, dict(meta_cfg))
+    real = (subprocess.run, requests.post, requests.get, requests.request, time.sleep)
+    checks, failed = 0, []
+
+    def check(cond, msg):
+        nonlocal checks
+        checks += 1
+        print(("  ok   " if cond else "  FAIL ") + msg)
+        if not cond:
+            failed.append(msg)
+
+    graph: list[tuple[str, dict]] = []
+
+    class _J:
+        def __init__(self, d):
+            self._d = d
+
+        def json(self):
+            return self._d
+
+    def fake_post(url, data=None, files=None, timeout=None, **kw):
+        data = dict(data or {})
+        graph.append((url, data))
+        if url.endswith(f"/{PAGE_ID}/photos"):
+            return _J({"id": f"photo{len(graph)}"})
+        if url.endswith(f"/{PAGE_ID}/feed"):
+            return _J({"id": f"{PAGE_ID}_selftestpost"})
+        if url.endswith(f"/{IG_ID}/media"):
+            if data.get("is_carousel_item"):
+                return _J({"id": f"child{len(graph)}"})
+            return _J({"id": "carousel1"})
+        if url.endswith(f"/{IG_ID}/media_publish"):
+            return _J({"id": "ig_selftest_media"})
+        return _J({"error": {"message": f"unexpected call {url}"}})
+
+    def no_network(*a, **k):
+        raise AssertionError(f"selftest tried the real network: {a[:2]}")
+
+    def fake_git(cmd, cwd=None, capture_output=None, text=None, **kw):
+        out = ""
+        if cmd[:2] == ["git", "rev-parse"]:
+            out = "48a2045" + "0" * 33
+        elif cmd[:3] == ["git", "remote", "get-url"]:
+            out = "https://github.com/DistrictOfRyan/tulsagays.git"
+        return subprocess.CompletedProcess(cmd, 0, stdout=out, stderr="")
+
+    gh404 = g.GITHUB_404
+    tmp = Path(tempfile.mkdtemp(prefix="post_weekly_selftest_"))
+    try:
+        subprocess.run, requests.post, requests.get, requests.request = fake_git, fake_post, no_network, no_network
+        time.sleep = lambda s: None
+        _TRACK_ENGAGEMENT = False
+        DRY_RUN = False
+        IG_URL_WAIT_S = 0
+        META_CFG_PATH = tmp / "meta_api_config.json"
+        src_week = ROOT / "data" / "posts" / "2026-W41"
+
+        def fresh(tag):
+            d = tmp / tag
+            (d / "data").mkdir(parents=True)
+            slides = []
+            for i in (1, 2, 3):
+                real_slide = src_week / f"all__0{i}.png"
+                p = d / "data" / f"all__0{i}.png"
+                if real_slide.exists():
+                    shutil.copy2(real_slide, p)
+                else:
+                    Image.new("RGB", (1080, 1080), (40, 10, 60)).save(p)
+                slides.append(p)
+            return d / "data", d / "docs", slides
+
+        print("[A] W41 replay: Pages serves its 404 page (text/html) and the raw copy is not there either")
+
+        def all_404(method, url):
+            return g._Resp(404, "text/html; charset=utf-8", gh404)
+
+        SLIDES_DIR, DOCS_DIR, slides = fresh("a")
+        _GUARD_FETCH = all_404
+        graph.clear()
+        r = publish(slides, "selftest caption", SLIDES_DIR / "post_ledger.json")
+        ig_calls = [u for u, _ in graph if f"/{IG_ID}/" in u]
+        check(ig_calls == [], f"no Instagram container call was made ({len(ig_calls)} calls)")
+        check(r["outcome"] == "PARTIAL", f"outcome is PARTIAL, not verified (got {r['outcome']})")
+        check(r["channels"]["facebook"]["status"] == "ok", "facebook recorded live")
+        ig_err = r["channels"]["instagram"].get("error", "")
+        check(r["channels"]["instagram"]["status"] == "failed" and "404" in ig_err and "all__01.ig.jpg" in ig_err,
+              f"instagram named as the failing channel with the asset + reason: {ig_err[:110]}")
+        led = json.loads((SLIDES_DIR / "post_ledger.json").read_text(encoding="utf-8"))
+        res = json.loads((SLIDES_DIR / "post_results.json").read_text(encoding="utf-8"))
+        check(led.get("outcome") == "PARTIAL" and res.get("outcome") == "PARTIAL"
+              and res["channels"]["instagram"]["status"] == "failed",
+              "ledger and post_results.json both carry PARTIAL + per-channel status")
+        check(outcome_exit_code(r["outcome"]) == 3, "PARTIAL exits 3, not 0")
+
+        print("[B] healthy week: Pages serves the bytes")
+        SLIDES_DIR, DOCS_DIR, slides = fresh("b")
+
+        def pages_live(method, url):
+            name = url.split("?")[0].rsplit("/", 1)[1]
+            return g._Resp(200, "image/jpeg", (DOCS_DIR / name).read_bytes())
+
+        _GUARD_FETCH = pages_live
+        graph.clear()
+        r = publish(slides, "selftest caption", SLIDES_DIR / "post_ledger.json")
+        child_urls = [d.get("image_url") for u, d in graph if u.endswith(f"/{IG_ID}/media") and d.get("is_carousel_item")]
+        check(r["outcome"] == "OK" and r["ig_post_id"] == "ig_selftest_media", f"outcome OK with the IG id (got {r['outcome']})")
+        check(len(child_urls) == 3 and all(g.is_verified(u) and "?v=" in u for u in child_urls),
+              "every IG child container got a URL the guard verified")
+        check(all(".ig.jpg" in u for u in child_urls), "Instagram gets the JPEGs, Facebook keeps the PNG upload")
+        check(outcome_exit_code(r["outcome"]) == 0, "OK exits 0")
+
+        print("[C] a slide that is not an image: Instagram refused before any call, Facebook unaffected")
+        SLIDES_DIR, DOCS_DIR, slides = fresh("c")
+        slides[1].write_bytes(gh404)
+        graph.clear()
+        r = publish(slides, "selftest caption", SLIDES_DIR / "post_ledger.json")
+        check(not [u for u, _ in graph if f"/{IG_ID}/" in u], "no Instagram call with a bad asset in the deck")
+        check(r["outcome"] == "PARTIAL" and "all__02.png" in r["channels"]["instagram"]["error"]
+              and "HTML" in r["channels"]["instagram"]["error"], "the bad asset and why are named")
+
+        print("[D] --ig-only recovery: Facebook already live, Instagram failed")
+        SLIDES_DIR, DOCS_DIR, slides = fresh("d")
+        ledger = SLIDES_DIR / "post_ledger.json"
+        ledger.write_text(json.dumps({"week": WEEK_KEY, "fb_post_id": f"{PAGE_ID}_existing",
+                                      "photo_ids": ["p1", "p2", "p3"],
+                                      "ig_post_id": "FAILED: IG container 1 failed: Only photo or video can be accepted as media type."}),
+                          encoding="utf-8")
+        live = _live_ids(ledger)
+        check(live.get("fb_post_id") == f"{PAGE_ID}_existing" and "ig_post_id" not in live,
+              "a FAILED Instagram id is not counted as live")
+        _GUARD_FETCH = pages_live
+        graph.clear()
+        r = publish(slides, "selftest caption", ledger,
+                    existing_fb={"post_id": live["fb_post_id"], "photo_ids": live["photo_ids"]})
+        check(not [u for u, _ in graph if f"/{PAGE_ID}/" in u], "no Facebook call in --ig-only")
+        check(r["outcome"] == "OK" and r["channels"]["facebook"]["id"] == f"{PAGE_ID}_existing",
+              "Instagram posted, Facebook id preserved, outcome OK")
+
+        print("[E] post_ig_carousel refuses a URL nobody verified")
+        _GUARD_FETCH = all_404
+        graph.clear()
+        try:
+            post_ig_carousel(["https://www.tulsagays.com/posts/2026-W99/all__01.png"], "x")
+            check(False, "an unverified dead URL must raise")
+        except RuntimeError as e:
+            check("refused before the container call" in str(e) and not graph, f"refused: {str(e)[:100]}")
+    finally:
+        subprocess.run, requests.post, requests.get, requests.request, time.sleep = real
+        (SLIDES_DIR, DOCS_DIR, META_CFG_PATH, DRY_RUN, IG_URL_WAIT_S, _GUARD_FETCH,
+         _TRACK_ENGAGEMENT, mc) = saved
+        meta_cfg.clear()
+        meta_cfg.update(mc)
+        shutil.rmtree(tmp, ignore_errors=True)
+
+    if failed:
+        print(f"SELFTEST FAIL: {len(failed)} of {checks} checks failed")
+        return 1
+    print(f"SELFTEST PASS ({checks} checks)")
+    return 0
+
+
 if __name__ == "__main__":
+    if "--selftest-channels" in sys.argv:
+        sys.exit(_selftest_channels())
     main()

@@ -189,6 +189,13 @@ def collect(lookback_days: int = LOOKBACK_DAYS, state: dict | None = None) -> Li
             if sender in (MAILBOX_USER, INTAKE_ADDR) or "mailer-daemon" in sender or "noreply" in sender:
                 seen.add(mid)
                 continue
+            # Bulk newsletters are not reader tips (2026-10-21: a FeedSpot digest from
+            # nobody@feedspot.com landed as tip028). A person sending a tip never carries
+            # List-Unsubscribe, and automated local parts never belong to a submitter.
+            local = sender.split("@", 1)[0]
+            if msg.get("List-Unsubscribe") or local in ("nobody", "no-reply", "donotreply", "do-not-reply", "newsletter", "news"):
+                seen.add(mid)
+                continue
             subject = _decode(msg.get("Subject", ""))
             body = _plain_body(msg)
             flyers = _save_flyers(msg, mid)

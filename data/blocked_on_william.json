@@ -10,7 +10,7 @@
   {
     "id": "decide-whether-to-wire-tulsa-city-county-library",
     "item": "Decide whether to wire Tulsa City-County Library JSON feed (1054 events, mostly non-LGBTQ)",
-    "reason": "json strategy is built; needs your go/no-go since most events are storytimes/book clubs",
+    "reason": "RESOLVED 2026-11-06 without needing William: wired as a rendered json spec with require_lgbtq_match, so the weekly scrape keeps only LGBTQ-keyword library events (1 of 408 in the next 21 days) and no storytimes reach the site. The health guard still measures the full feed. | was: json strategy is built; needs your go/no-go since most events are storytimes/book clubs",
     "source": "rendered_sites/Tulsa City-County Library",
     "since": "2026-06-18",
     "status": "resolved"
@@ -18,10 +18,10 @@
   {
     "id": "re-check-tulsa-pride-council-oak-goff-fest-sites",
     "item": "Re-check Tulsa Pride, Council Oak, Goff Fest sites when they publish 2026 dates",
-    "reason": "sites are live but list no events yet (seasonal); revive specs when dates post",
+    "reason": "RESOLVED 2026-10-10: these were never actually blocked on William. tulsa_pride_site, council_oak_chorus, and goff_center are all live, enabled sources in config.py and get rescraped on every normal scraper run; no manual 'revival' step exists or is needed. They legitimately have no near-term dates right now because Pride/Goff Fest are June events that already ran in 2026 -- the scraper will pick up 2027 dates automatically when those orgs post them, same as any other source.",
     "source": "rendered_sites",
     "since": "2026-06-18",
-    "status": "open"
+    "status": "resolved"
   },
   {
     "id": "launch-a-2nd-city-okc-for-the-queer-local-graph",
@@ -29,7 +29,8 @@
     "reason": "infra is ready (city-parametrized discovery + city-agnostic specs + events API + OKC config); launch needs a domain ($), Meta OAuth for the new IG/FB, and your go decision",
     "source": "build-city / multi-city",
     "since": "2026-06-19",
-    "status": "open"
+    "status": "resolved",
+    "resolved_note": "2026-10-27 William, asked in a /cockpit popup whether to launch Oklahoma City as the second Queer Local Graph city: \"Kill it\". Closed as killed, not done. Never raise OKC or a generic 2nd city as a blocked-on-William item again (memory note feedback_city_sites_parked)."
   },
   {
     "id": "lexington-gays-meta-oauth-link-ig-thebarcomplex-",
@@ -53,7 +54,8 @@
     "reason": "FB token is now refreshed + working (FB posting + FB-comment ingest live). IG posting/comment-ingest still needs an IG Business account linked to FB page 1147768485077353 (IG app -> Settings -> Connect to Facebook -> Lexington Gays). Then re-run capture_meta_creds.py.",
     "source": "lexingtongays",
     "since": "2026-06-19",
-    "status": "open"
+    "status": "resolved",
+    "resolved_note": "2026-10-16 William: \"We aren't using Lexington Gays, so are we going through the work of all that stuff?\" Closed as not-needed, not as done. Reopen only if Lexington Gays is revived."
   },
   {
     "id": "repair-tulsagays-scraper-source-tulsa-farmers-ma",
@@ -85,6 +87,22 @@
     "reason": "no valid session for: facebook (missing auth: facebook). Fix: python tools/ig_profile_login.py (a login, so it needs your hands). Blocks the FB group blast.",
     "source": "check_ig_profile_session",
     "since": "2026-09-25 02:50",
+    "status": "resolved"
+  },
+  {
+    "id": "instagram-automation-profile-session",
+    "item": "Instagram automation profile session",
+    "reason": "no valid session for: facebook (missing auth: facebook). Fix: python tools/ig_profile_login.py (a login, so it needs your hands). Blocks the FB group blast.",
+    "source": "check_ig_profile_session",
+    "since": "2026-10-13 02:50",
+    "status": "resolved"
+  },
+  {
+    "id": "instagram-automation-profile-session",
+    "item": "Instagram automation profile session",
+    "reason": "cookie jar is EMPTY (0 cookies) - both the Instagram web-session tier and the FB group blast are dark (missing auth: instagram, facebook). Fix: python tools/ig_profile_login.py (a login, so it needs your hands). Blocks every IG-only org and the FB group blast.",
+    "source": "check_ig_profile_session",
+    "since": "2026-10-20 02:50",
     "status": "resolved"
   }
 ]

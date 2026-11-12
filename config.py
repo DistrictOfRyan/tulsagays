@@ -244,7 +244,7 @@ SOURCES = {
     },
     "lambda_bowling": {
         "name": "Lambda Bowling League",
-        "url": "https://okeq.org/okeq-events/lambda-bowling-league/",
+        "url": "",  # 2026-11-02: okeq.org/okeq-events/lambda-bowling-league/ is 404 (2 fetches). Covered by the `okeq` source (okeq.org/event-calendar/ lists Lambda Bowling League). FB page kept.
         "facebook": "https://www.facebook.com/tulsalambdaleague/",
         "priority": 1,
         "type": "sports",
@@ -335,7 +335,7 @@ SOURCES = {
     },
     "prime_timers": {
         "name": "Tulsa Area Prime Timers",
-        "url": "https://okeq.org/okeq-events/tulsa-area-prime-timers/",
+        "url": "",  # 2026-11-02: page 404 (2 fetches). Covered by the `okeq` source (okeq.org/event-calendar/ lists Tulsa Area Prime Timers).
         "priority": 2,
         "type": "community",
         "description": "Monthly social for mature gay/bi men (2nd Tuesday, 7pm)",
@@ -379,7 +379,7 @@ SOURCES = {
     # Disciples of Christ
     "bethany_christian": {"name": "Bethany Christian Church", "url": "https://bethanybelieves.com/", "priority": 3, "type": "church", "description": "Open and Affirming DOC, 6730 S Sheridan Rd"},
     # Quaker
-    "green_country_friends": {"name": "Green Country Friends Meeting", "url": "http://www.scym.org/greencountry/", "priority": 3, "type": "church", "description": "FGC Quakers, LGBTQ affirming"},
+    "green_country_friends": {"name": "Green Country Friends Meeting", "url": "", "priority": 3, "type": "church", "description": "FGC Quakers, LGBTQ affirming"},  # 2026-11-02: url retired (was scym.org/greencountry/, 404 on 2 fetches; no Green Country page is linked from scym.org/directory/meetings)
     # Unity
     "unity_center": {"name": "Unity Center of Tulsa", "url": "https://unitytulsa.org/", "priority": 3, "type": "church", "description": "All welcome, 1830 S Boston Ave"},
     "unity_midtown": {"name": "Unity of Tulsa-Midtown", "url": "https://tulsaunity.org/", "priority": 3, "type": "church", "description": "Inclusive spiritual community, 3355 S Jamestown Ave"},
@@ -504,7 +504,7 @@ SOURCES = {
     },
     "okeq_gender_support": {
         "name": "OkEq Gender Outreach Support Group",
-        "url": "https://okeq.org/transgender-support/",
+        "url": "",  # 2026-11-02: page 404 (2 fetches). Covered by the `okeq` source (okeq.org/event-calendar/ lists Gender Support Group).
         "priority": 2,
         "type": "community",
         "description": "Every Wednesday 7-9pm at Equality Center for trans/intersex 18+",
@@ -520,7 +520,7 @@ SOURCES = {
     # â”€â”€ Youth â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "okeq_youth": {
         "name": "OkEq Youth Programs",
-        "url": "https://okeq.org/youth/",
+        "url": "",  # 2026-11-02: page 404 (2 fetches); youth programming now lives on okeq.org/okeq-program/ (descriptions, not an event feed).
         "priority": 2,
         "type": "community",
         "description": "2SLGBTQIA+ youth resources and programming",
@@ -920,7 +920,7 @@ SOURCES = {
     },
     "greenwood_cultural_center": {
         "name": "Greenwood Cultural Center",
-        "url": "https://www.greenwoodculturalcenter.com/events",
+        "url": "https://www.greenwoodculturalcenter.org/events",  # 2026-11-02: the .com domain is dead (Wix stub); the live site is the .org (200 on 2 fetches).
         "facebook": "https://www.facebook.com/GreenwoodCulturalCenter/",
         "priority": 2,
         "type": "arts",
@@ -1170,7 +1170,7 @@ SOURCES = {
     # â”€â”€ New sources added 2026-04-28 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     "tulsa_isnt_boring": {
         "name": "Tulsa Isn't Boring (TimeTree Public Calendar)",
-        "url": "https://timetreeapp.com/public_calendars/tulsa_isnt_boring",
+        "url": "",  # 2026-11-02: TimeTree public calendar is gone (page = "Not Found - TimeTree", API -403, 2 attempts) and no new link is discoverable. scraper/timetree_scraper.py keeps its own slug constant and retries weekly, so it self-recovers if the owner republishes. Health check no longer flags the dead URL.
         "priority": 1,
         "type": "aggregator",
         "description": "Community-curated public calendar of Tulsa events published via TimeTree. Covers arts, culture, music, food, outdoor, and community events. High-quality curation â€” treat as a primary source.",
@@ -1293,6 +1293,7 @@ LGBTQ_SOURCES = {
     "okeq", "okeq_calendar", "homo_hotel", "twisted_arts",
     "council_oak", "hotmess_sports", "all_souls_special",
     "studio_66",  # @studio.66_ — LGBTQIA+ nonprofit / roving events collective
+    "loud_queer_fest",  # @loudandqueeroklahoma — Loud & Queer Fest (annual-style queer music fest; IG-only, added 2026-11-02)
     "klassic",      # @upflykai — Black queer Tulsa events collective (Melanin Pride Yoga, etc.)
     "goff_center",  # @goff_fest / goff-fest.com — Bruce Goff queer cultural legacy + Pride programming
     "tulsa_eagle_ig",    # @tulsaeagle (verified active, ~1.5k followers) — Eagle events are IG-only (site DNS-dead)

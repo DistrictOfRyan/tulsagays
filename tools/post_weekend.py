@@ -128,40 +128,73 @@ def main() -> int:
     import post_weekly as pw
 
     fb_post_id = None
+    ig_post_id = None
+    ig_error = ""
+
+    def _write(outcome: str, channels: dict) -> None:
+        # Written after EVERY publish, not only at the end (2026-10-07). The
+        # W39 weekend went out on Instagram twice (17926646985185978 at
+        # 14:08:41Z and 17980033644088809 at 14:11:46Z, same caption): a run
+        # that dies between a publish and the final write leaves no record, and
+        # the rerun posts again. The Instagram leg can now wait minutes for
+        # GitHub Pages, which widens that window, so record as we go.
+        results_file.parent.mkdir(parents=True, exist_ok=True)
+        results_file.write_text(json.dumps({
+            "week": week,
+            "posted_at": datetime.now().isoformat(),
+            "friday": sel["friday"], "sunday": sel["sunday"],
+            "fb_post_id": fb_post_id,
+            "ig_post_id": ig_post_id,
+            "ig_error": ig_error or None,
+            "outcome": outcome,
+            "channels": channels,
+            "slides": [p.name for p in slide_paths],
+            "events_shown": shown,
+            "fresh_count": sel["fresh_count"],
+            "thin": sel["thin"],
+        }, indent=2), encoding="utf-8")
+
     if args.ig_only:
         prev = json.loads(results_file.read_text(encoding="utf-8")) \
             if results_file.exists() else {}
         fb_post_id = prev.get("fb_post_id")
+        prev_ig = str(prev.get("ig_post_id") or "")
+        if prev_ig and prev_ig != "None" and not prev_ig.startswith(("FAILED", "dry_run")):
+            print(f"[STOP] Instagram is already live for {week}: {prev_ig}. Not posting again.")
+            return 1
         print(f"[FB] skipped (--ig-only); existing post: {fb_post_id}")
     else:
         fb_result = pw.post_fb_carousel(slide_paths, caption)
         fb_post_id = fb_result.get("post_id")
         print(f"[FB] posted: {fb_post_id}")
+        _write("IN_PROGRESS", {"facebook": {"status": "ok", "id": fb_post_id}})
 
-    ig_post_id = None
     if not args.fb_only:
         try:
+            # host_slides_for_ig validates every slide (ig_media_guard) and only
+            # returns URLs proven to serve the exact JPEG bytes.
             urls = pw.host_slides_for_ig(slide_paths)
             ig_post_id = pw.post_ig_carousel(urls, ig_caption)
             print(f"[IG] posted: {ig_post_id}")
         except Exception as exc:
-            # FB already went out; an IG failure must not fail the whole run.
+            # FB already went out; an IG failure must not stop the results
+            # being written, but it must not read as a clean run either.
+            ig_error = str(exc)
             print(f"[IG] FAILED (FB post is live): {exc}")
 
-    results_file.parent.mkdir(parents=True, exist_ok=True)
-    results_file.write_text(json.dumps({
-        "week": week,
-        "posted_at": datetime.now().isoformat(),
-        "friday": sel["friday"], "sunday": sel["sunday"],
-        "fb_post_id": fb_post_id,
-        "ig_post_id": ig_post_id,
-        "slides": [p.name for p in slide_paths],
-        "events_shown": shown,
-        "fresh_count": sel["fresh_count"],
-        "thin": sel["thin"],
-    }, indent=2), encoding="utf-8")
+    channels = {}
+    if not args.ig_only or fb_post_id:
+        channels["facebook"] = ({"status": "ok", "id": fb_post_id} if fb_post_id
+                                else {"status": "failed", "error": "no post id"})
+    if not args.fb_only:
+        channels["instagram"] = ({"status": "ok", "id": ig_post_id} if ig_post_id
+                                 else {"status": "failed", "error": ig_error or "no post id"})
+    outcome = pw.channel_outcome(channels)
+    _write(outcome, channels)
     print(f"\n[OK] Results written to {results_file}")
-    return 0
+    print(pw._outcome_line(outcome, channels).replace(
+        "python tools/post_weekly.py --ig-only", "python tools/post_weekend.py --ig-only"))
+    return pw.outcome_exit_code(outcome)
 
 
 if __name__ == "__main__":

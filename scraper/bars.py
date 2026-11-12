@@ -8,6 +8,20 @@ Facebook scraping is disabled (blocked). Check bar Facebook pages manually:
 - Tulsa Eagle: https://www.facebook.com/TheTulsaEagle/
 - YBR: https://www.facebook.com/YBRTulsa/
 - Club Majestic: https://www.facebook.com/clubmajestictulsa/
+
+RETIRED 2026-11-06 (the July early return below, now with fresh evidence):
+  tulsaeagle.com resolves (13.248.213.45, 76.223.67.189) but every path, /events,
+  /calendar and /, answers HTTP 200 with the same 114-byte page whose only content
+  is a JS redirect to /lander. /lander is GoDaddy's parking page
+  (window._trfd.push({ap:"parking"}), img1.wsimg.com/parking-lander). A parked
+  domain, not a calendar.
+  Control: the Eagle's own Instagram profile, read through Meta's business_discovery
+  API on 2026-11-06, lists its website as facebook.com/Tulsa-Eagle-207853843286.
+  The bar itself no longer claims a website.
+  Where Eagle events come from instead: instagram_orgs (tulsa_eagle_ig, @tulsaeagle,
+  in LGBTQ_SOURCES), the double-confirmed weekly nights in recurring.py, and
+  facebook_events. If the Eagle relaunches a real site, delete the early return in
+  scrape() and TulsaEagleScraper runs again.
 """
 
 import sys
@@ -21,6 +35,10 @@ from scraper.base import BaseScraper
 from scraper.tz_guard import iso_to_local
 
 logger = logging.getLogger(__name__)
+
+# Read by health tooling: why a 0 from this module is expected, not an outage.
+RETIRED = ("2026-11-06: tulsaeagle.com is a GoDaddy parked domain; Eagle events come "
+           "from instagram_orgs (tulsa_eagle_ig), recurring.py and facebook_events")
 
 SPECIAL_KEYWORDS = [
     "special", "drag", "show", "benefit", "fundraiser", "pride",
@@ -164,8 +182,9 @@ def scrape() -> List[Dict]:
     tulsaeagle / tulsaeagleok). If the Eagle ever relaunches a real website,
     delete this early return to re-enable TulsaEagleScraper below.
     """
-    logger.info("[bars] tulsaeagle.com parked (2026-07); skipping web scrape - "
-                "IG coverage via instagram_orgs. YBR/Majestic/Studio 66/House of Drag DNS-dead.")
+    logger.info("[bars] retired 2026-11-06: tulsaeagle.com is a GoDaddy parked domain "
+                "(re-checked); Eagle coverage via instagram_orgs/recurring/facebook_events. "
+                "YBR/Majestic/Studio 66/House of Drag DNS-dead.")
     return []
 
 

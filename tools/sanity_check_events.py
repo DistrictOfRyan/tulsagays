@@ -160,6 +160,24 @@ def _tz_problem(ev: dict) -> str:
     return ""
 
 
+# ── Rules: closure announcements masquerading as events (2026-10-16) ─────────
+# W42 shipped "Equality Center Closed" as a headline carousel event with
+# come-visit FOMO copy, because its trusted-source/lgbtq_relevant flags made
+# the protected-source guard override the LLM's correct "not an event" verdict.
+# A closure notice is never an event regardless of source trust — hard-drop it
+# here, before the protected-source guard ever sees it.
+_CLOSURE_NAME_RX = re.compile(r"\bclosed\b|\bclosure\b", re.IGNORECASE)
+_CLOSURE_DESC_RX = re.compile(r"closed for|will reopen|temporarily closed", re.IGNORECASE)
+
+
+def _closure_notice_problem(ev: dict) -> str:
+    name = (ev.get("name") or "")
+    desc = (ev.get("description") or "")
+    if _CLOSURE_NAME_RX.search(name) and _CLOSURE_DESC_RX.search(desc):
+        return "closure announcement, not an event"
+    return ""
+
+
 # ── Rules pass ───────────────────────────────────────────────────────────────
 
 def rules_pass(events: list) -> tuple:
@@ -180,6 +198,10 @@ def rules_pass(events: list) -> tuple:
         _tz = _tz_problem(ev)
         if _tz:
             dropped.append((ev, _tz))
+            continue
+        _closure = _closure_notice_problem(ev)
+        if _closure:
+            dropped.append((ev, _closure))
             continue
         # Under-18 programming that isn't explicitly LGBTQ — removed from the guide
         # (e.g. a pet-rock class / storytime at the library). Queer youth events are

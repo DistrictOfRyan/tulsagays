@@ -337,7 +337,7 @@ _STRICT_LGBTQ_KW = {
     # car "drag racing". (William 2026-06-15: feature gay ones.)
     "drag show", "drag queen", "drag king", "drag brunch", "drag night",
     "drag bingo", "drag ball", "drag pageant", "drag revue", "drag performance",
-    "dragnificent", "drags", "two-spirit", "pflag",
+    "dragnificent", "drags", "two-spirit", "two spirit", "pflag",
     "okeq", "oklahomans for equality", "equality center",
     "dennis r. neill", "dennis r neill",
     "council oak", "comc",

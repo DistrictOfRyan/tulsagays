@@ -10,22 +10,23 @@
   "quirk": "me/accounts NOW returns pages (fixed). Still querying by page_id directly as fallback.",
   "last_updated": "2026-05-13",
   "last_post": {
-    "date": "2026-09-21",
-    "week_key": "2026-W39",
-    "fb_post_id": "1086906044497675_122131285496853065",
-    "ig_post_id": "FAILED: IG container 1 failed: Only photo or video can be accepted as media type.",
+    "date": "2026-11-09",
+    "week_key": "2026-W46",
+    "fb_post_id": "1086906044497675_122140584560853065",
+    "ig_post_id": "17909459475597901",
     "photo_ids": [
-      "122131285106853065",
-      "122131285148853065",
-      "122131285190853065",
-      "122131285232853065",
-      "122131285274853065",
-      "122131285316853065",
-      "122131285358853065",
-      "122131285412853065",
-      "122131285460853065"
+      "122140584128853065",
+      "122140584212853065",
+      "122140584254853065",
+      "122140584296853065",
+      "122140584338853065",
+      "122140584380853065",
+      "122140584428853065",
+      "122140584476853065",
+      "122140584524853065"
     ],
-    "note": "Weekly carousel 2026-W39. 9 slides."
+    "outcome": "OK",
+    "note": "Weekly carousel 2026-W46. 9 slides."
   },
   "page_access_token": "MOVED_TO_ENV_TULSAGAYS_PAGE_ACCESS_TOKEN",
   "page_token_expires": "never",

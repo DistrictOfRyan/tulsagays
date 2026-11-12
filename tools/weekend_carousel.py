@@ -444,6 +444,14 @@ def novelty(e: Dict, history: Dict[str, int]) -> Tuple[int, str]:
 # Selection
 # --------------------------------------------------------------------------
 
+def _sanity_flagged_duplicate(e: Dict) -> bool:
+    return any("duplicate" in f.lower() for f in (e.get("sanity_flags") or []))
+
+
+def _sanity_flagged_malformed_venue(e: Dict) -> bool:
+    return any("malformed venue" in f.lower() for f in (e.get("sanity_flags") or []))
+
+
 def select(events: List[Dict],
            today: Optional[datetime] = None) -> Dict:
     """Pick the weekend lineup. Returns a structured selection dict."""
@@ -451,6 +459,20 @@ def select(events: List[Dict],
     history = load_history(config.current_week_key())
 
     pool = [e for e in events if in_window(e, friday, saturday, sunday)]
+
+    # Respect the Monday sanity pass. preflight_post.py already surfaces
+    # sanity_flags for the Monday post; the weekend carousel never read them,
+    # which is how a record flagged "duplicate of #220; malformed venue field
+    # (reads as time description)" shipped a Saturday slide reading "Jeffrey
+    # Keller at Bricktown Comedy Club - Tulsa ... THIS SATURDAY AT 7 PM" as
+    # the venue (2026-W45). A flagged duplicate is dropped outright (the
+    # better record survives elsewhere in the pool); a flagged malformed
+    # venue has its venue field cleared rather than shipping the time-leak
+    # text as if it were an address.
+    pool = [e for e in pool if not _sanity_flagged_duplicate(e)]
+    for e in pool:
+        if _sanity_flagged_malformed_venue(e):
+            e["venue"] = ""
 
     # Dedupe: same event scraped from two sources, or listed twice with a
     # renamed title. Keep the richest record (most non-empty fields).
@@ -916,6 +938,33 @@ def _selftest() -> int:
     # Junk venue scrub (the 'in 5 days' leakage seen in W31 data)
     check(_clean_venue("in 5 days") == "", "relative-date venue junk scrubbed")
     check(_clean_venue("Club Majestic") == "Club Majestic", "real venue preserved")
+
+    # Sanity-flagged records (the real W45 Jeffrey Keller / Corey Holcomb bug):
+    # a flagged duplicate is dropped, a flagged malformed venue is cleared.
+    check(_sanity_flagged_duplicate(
+        {"sanity_flags": ["LLM: duplicate of #220; malformed venue field"]}),
+        "duplicate flag detected")
+    check(_sanity_flagged_malformed_venue(
+        {"sanity_flags": ["LLM: malformed venue field (reads as time description 'THIS SUNDAY AT 7 PM')"]}),
+        "malformed venue flag detected")
+    check(not _sanity_flagged_duplicate({"sanity_flags": []}), "no flags, no duplicate")
+    sanity_fake = [
+        {"name": "Corey Holcomb at Bricktown Comedy Club - Tulsa", "venue": "THIS SUNDAY AT 7 PM",
+         "date": u, "time": "9:45 PM", "lgbtq_relevant": True,
+         "sanity_flags": ["LLM: malformed venue field (reads as time description 'THIS SUNDAY AT 7 PM')"]},
+        {"name": "Jeffrey Keller at Bricktown Comedy Club - Tulsa", "venue": "THIS SATURDAY AT 7 PM",
+         "date": s, "time": "9:45 PM", "lgbtq_relevant": True,
+         "sanity_flags": ["LLM: duplicate of #220; malformed venue field (reads as time description)"]},
+        {"name": "Jeffrey Keller", "venue": "Bricktown Comedy Club Tulsa", "date": s, "time": "7:00 PM"},
+    ]
+    sanity_sel = select(sanity_fake, today=datetime(2026, 7, 31))
+    sat_names = [e.get("name") for e in sanity_sel["headlines"].get(s, [])]
+    check("Jeffrey Keller at Bricktown Comedy Club - Tulsa" not in sat_names,
+          "flagged duplicate dropped from Saturday lineup")
+    sun_picks = sanity_sel["headlines"].get(u, [])
+    corey = next((e for e in sun_picks if "Corey Holcomb" in (e.get("name") or "")), None)
+    check(corey is not None and corey.get("venue") == "",
+          "flagged malformed venue cleared, never shipped as an address")
 
     # Queer detection by venue and source, not just by name keyword
     check(_is_queer_draw({"name": "Sunday Showdown Open Talent Night",

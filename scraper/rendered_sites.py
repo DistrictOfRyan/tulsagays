@@ -29,6 +29,9 @@ Spec schema (one object per site in data/rendered_site_specs.json):
     "json_link_prefix": "/event/",       # prepended to json_link_key value
     # strategy "ical":
     "ics_url": "https://.../events.ics", # optional override (else url)
+    # strategy "json_ld" (optional):
+    "metro_only": true,                   # drop events whose schema.org addressLocality
+                                          # is not in config.METRO_CITIES (2026-11-06)
     "note": "..."
   }
 
@@ -382,22 +385,30 @@ class RenderedSitesScraper(BaseScraper):
         return events
 
     def _scrape_spec(self, spec: Dict) -> List[Dict]:
-        """Extract one spec's events. `exclude_title_regex` (optional) drops
-        notices that share a calendar with real events ("Early Park Closure")."""
-        evs = self._scrape_spec_raw(spec)
+        """Extract one spec's raw events, with no exclude/relevance filtering
+        applied. The health guard and auto-repair call this directly, so it
+        measures whether the page still parses, not whether today's calendar
+        happens to be all excluded/irrelevant content (2026-11-09: Expo Square
+        parsed 5 clean events during Color Breed Congress week, but
+        exclude_title_regex used to run in here too, so the health guard saw 0
+        and escalated a working scraper as broken). `_keep_for_production`
+        applies exclude_title_regex and require_lgbtq_match after this."""
+        return self._scrape_spec_raw(spec)
+
+    @staticmethod
+    def _keep_for_production(spec: Dict, evs: List[Dict]) -> List[Dict]:
+        """`exclude_title_regex` (optional) drops notices/irrelevant events that
+        share a calendar with real events ("Early Park Closure", a week-long
+        breed congress at Expo Square). `require_lgbtq_match` (optional) keeps
+        only LGBTQ-keyword events in the weekly scrape. For high-volume general
+        feeds (the library runs ~285 events a fortnight, almost all storytimes
+        and classes) the trusted-venue path would otherwise flood the website.
+        The health guard calls _scrape_spec directly (not this), so it still
+        measures whether the feed parses at all, independent of either filter."""
         rx = spec.get("exclude_title_regex")
         if rx and evs:
             pat = re.compile(rx)
             evs = [e for e in evs if not pat.search(e.get("name", ""))]
-        return evs
-
-    @staticmethod
-    def _keep_for_production(spec: Dict, evs: List[Dict]) -> List[Dict]:
-        """`require_lgbtq_match` (optional) keeps only LGBTQ-keyword events in the
-        weekly scrape. For high-volume general feeds (the library runs ~285 events
-        a fortnight, almost all storytimes and classes) the trusted-venue path
-        would otherwise flood the website. The health guard calls _scrape_spec
-        directly, so it still measures whether the feed parses at all."""
         if not spec.get("require_lgbtq_match"):
             return evs
         from scraper.extended_calendars import _is_lgbtq_relevant
@@ -446,8 +457,47 @@ class RenderedSitesScraper(BaseScraper):
                     v = (ev.get("venue") or "").strip().rstrip(".")
                     if v and v != spec["name"] and parent.lower() not in v.lower():
                         ev["venue"] = f"{v} at {parent}"
+            if spec.get("metro_only"):
+                evs = self._drop_out_of_metro(soup, evs, spec["name"])
             return evs
         return self._extract_dom(html, spec)
+
+    @staticmethod
+    def _drop_out_of_metro(soup, evs: List[Dict], name: str) -> List[Dict]:
+        """`metro_only` (optional, json_ld only): drop events whose schema.org
+        address names a city outside config.METRO_CITIES. Regional aggregators
+        file distant towns under one metro (Songkick's "Tulsa" page carried
+        Fort Smith, AR and Pocola shows on 2026-11-06), and the json_ld venue is
+        the place name only, so the runner's region filter has no city to read.
+        Matched on the event url; an event whose markup names no city is kept."""
+        import config
+        metro = {c.lower() for c in getattr(config, "METRO_CITIES", [])}
+        city_by_url: Dict[str, str] = {}
+        for script in soup.find_all("script", type="application/ld+json"):
+            try:
+                data = json.loads(script.string or script.get_text() or "")
+            except Exception:
+                continue
+            items = data if isinstance(data, list) else (
+                data.get("@graph", [data]) if isinstance(data, dict) else [])
+            for it in items:
+                if not isinstance(it, dict) or not it.get("url"):
+                    continue
+                loc = it.get("location")
+                if isinstance(loc, list):
+                    loc = next((l for l in loc if isinstance(l, dict)), None)
+                addr = loc.get("address") if isinstance(loc, dict) else None
+                city = addr.get("addressLocality") if isinstance(addr, dict) else None
+                if isinstance(city, str) and city.strip():
+                    city_by_url[it["url"]] = city.strip()
+        kept, dropped = [], []
+        for ev in evs:
+            city = city_by_url.get(ev.get("url", ""))
+            (kept if city is None or city.lower() in metro else dropped).append(ev)
+        if dropped:
+            logger.info("[rendered_sites] %s: dropped %d out-of-metro events (%s)", name,
+                        len(dropped), ", ".join(sorted({city_by_url[e["url"]] for e in dropped})))
+        return kept
 
     def scrape(self) -> List[Dict]:
         specs = _load_specs()

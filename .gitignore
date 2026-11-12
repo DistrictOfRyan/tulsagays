@@ -3,6 +3,8 @@ __pycache__/
 .env
 data/*
 !data/manual_events.json
+!data/directory_contacts.json
+# directory_contacts.json: sourced telephone/openingHours merged into docs/directory.html JSON-LD (tools/directory_schema.py); tests/test_pipeline.py reads it, so CI needs it tracked (2026-11-03)
 !data/major_tulsa_events.json
 logo/tulsa_skyline_source.jpg
 data/fb_auto_profile/

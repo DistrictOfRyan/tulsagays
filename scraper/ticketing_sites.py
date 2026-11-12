@@ -1,11 +1,28 @@
-"""Scraper for major ticketing platforms: Ticketmaster, Songkick, AXS, and Do918.
+"""Ticketing platforms. Only the Ticketmaster Discovery API path is left, and it
+runs only when TICKETMASTER_API_KEY is set (it never has been).
 
-Covers major Tulsa venues: BOK Center, Cain's Ballroom, Hard Rock Live, TPAC,
-The Vanguard, River Spirit, and more. Events pass through runner.py filters.
-
-Ticketmaster Discovery API: free tier, 2000 calls/day.
-Get a key at developer.ticketmaster.com — add TICKETMASTER_API_KEY to .env.
-Without a key, Ticketmaster scraping is skipped and other sources run.
+RETIRED 2026-11-06. This module returned 0 on every scrape (W43-W45 logs and a
+sandboxed full scrape on 2026-11-06). Real responses, 2026-11-06:
+  Songkick  www.songkick.com/metro-areas/29100-us-tulsa -> HTTP 406, empty body.
+            Two faults: 29100 is not Tulsa (Tulsa is 1826-us-tulsa), and every
+            Songkick cache MISS answers plain HTTP clients with 406 (control: the
+            London metro page, a CDN HIT, answered 200 with 304 KB). Headless
+            Chromium gets the page, so Songkick now lives in
+            data/rendered_site_specs.json as "Songkick Tulsa" (json_ld, metro_only):
+            44 dated Tulsa-metro concerts on 2026-11-06 after dropping 6 Fort Smith,
+            Pocola and Ramona rows. The nightly guard measures it there.
+  Do918     do918.com -> no A record (8.8.8.8 answers the name with no address;
+            Python: NameResolutionError). Gone.
+  AXS       axs.com/venues/101571/... -> HTTP 403 "AXS Access Info" bot page. It was
+            never called by this module anyway.
+  Ticketmaster  Discovery API without a key -> HTTP 401
+            "Failed to resolve API Key variable request.queryparam.apikey".
+            No key exists in config, .env or ~/.credentials/api_keys.env, and getting
+            one means creating a developer account. Not worth it: the venues it covers
+            are already read directly by rendered specs (BOK Center, Cain's Ballroom,
+            Tulsa Theater, Hard Rock Live, Tulsa PAC via Celebrity Attractions) and by
+            Songkick, which lists Ticketmaster-sold shows too. If a key is ever set,
+            the path below runs again with no code change.
 """
 
 import sys
@@ -24,10 +41,9 @@ logger = logging.getLogger(__name__)
 
 TICKETMASTER_API = "https://app.ticketmaster.com/discovery/v2/events.json"
 
-# Tulsa-area venue search URLs for web-scraping fallback
-SONGKICK_TULSA = "https://www.songkick.com/metro-areas/29100-us-tulsa"
-DO918_EVENTS = "https://do918.com/events"
-AXS_BOK = "https://www.axs.com/venues/101571/bok-center-tulsa-tickets"
+# Read by health tooling: why a 0 from this module is expected, not an outage.
+RETIRED = ("2026-11-06: Songkick moved to rendered spec 'Songkick Tulsa'; Do918 has no DNS; "
+           "Ticketmaster runs only if TICKETMASTER_API_KEY is set (never has been)")
 
 
 def _get_week_range():
@@ -46,24 +62,14 @@ class TicketingScraper(BaseScraper):
     source_name = "ticketing_sites"
 
     def scrape(self) -> List[Dict]:
-        events = []
-        monday, sunday = _get_week_range()
-
-        # Ticketmaster Discovery API (primary — requires API key in .env)
         tm_key = getattr(config, "TICKETMASTER_API_KEY", "") or os.environ.get("TICKETMASTER_API_KEY", "")
-        if tm_key:
-            events.extend(self._scrape_ticketmaster(tm_key, monday, sunday))
-        else:
-            logger.info("[ticketing] No TICKETMASTER_API_KEY — skipping Ticketmaster. "
-                        "Add key to .env to enable.")
-
-        # Songkick web scrape (JSON-LD extraction)
-        events.extend(self._scrape_songkick(monday, sunday))
-
-        # Do918 web scrape
-        events.extend(self._scrape_do918(monday, sunday))
-
-        logger.info(f"[ticketing] Total: {len(events)} events from ticketing sites")
+        if not tm_key:
+            logger.info("[ticketing] retired 2026-11-06: no TICKETMASTER_API_KEY; Songkick is the "
+                        "'Songkick Tulsa' rendered spec, Do918 has no DNS. Returning 0.")
+            return []
+        monday, sunday = _get_week_range()
+        events = self._scrape_ticketmaster(tm_key, monday, sunday)
+        logger.info(f"[ticketing] Ticketmaster: {len(events)} events")
         return events
 
     # ── Ticketmaster Discovery API ────────────────────────────────────────
@@ -110,7 +116,8 @@ class TicketingScraper(BaseScraper):
                 if dates.get("localTime"):
                     try:
                         t = datetime.strptime(dates["localTime"], "%H:%M:%S")
-                        time_str = t.strftime("%-I:%M %p").lstrip("0") or t.strftime("%I:%M %p")
+                        # "%-I" raises ValueError on Windows, which used to leave "19:00:00".
+                        time_str = f"{t.hour % 12 or 12}:{t.minute:02d} {'AM' if t.hour < 12 else 'PM'}"
                     except Exception:
                         time_str = dates["localTime"]
 
@@ -136,144 +143,6 @@ class TicketingScraper(BaseScraper):
                 logger.debug(f"[ticketing] TM parse error: {e}")
 
         return events
-
-    # ── Songkick web scrape ───────────────────────────────────────────────
-
-    def _scrape_songkick(self, monday: datetime, sunday: datetime) -> List[Dict]:
-        """Extract upcoming Tulsa concerts from Songkick's metro page."""
-        soup = self.fetch_page(SONGKICK_TULSA)
-        if not soup:
-            return []
-
-        events = []
-
-        # Songkick embeds event data in JSON-LD and also in <li class="event-listings">
-        json_ld_events = self._extract_json_ld_from_soup(soup, SONGKICK_TULSA, priority=3)
-        if json_ld_events:
-            logger.info(f"[ticketing] Songkick JSON-LD: {len(json_ld_events)} events")
-            for e in json_ld_events:
-                date_str = e.get("date", "")
-                if not date_str:
-                    continue
-                try:
-                    dt = datetime.strptime(date_str, "%Y-%m-%d")
-                    if monday <= dt <= sunday:
-                        events.append(e)
-                except ValueError:
-                    pass
-            return events
-
-        # Fallback: parse event listings from HTML
-        listings = soup.select("li.event-listings-element, li.concert, .events-table-details")
-        for item in listings[:50]:
-            try:
-                name_el = item.select_one(".summary a, .event-details h3, a.event-link")
-                if not name_el:
-                    continue
-                name = name_el.get_text(strip=True)
-                if not name or len(name) < 4:
-                    continue
-
-                date_el = item.select_one("time, .date, [class*='date']")
-                date_str = ""
-                if date_el:
-                    dt_attr = date_el.get("datetime", "")
-                    date_str = self.parse_date_flexible(dt_attr or date_el.get_text(strip=True))
-
-                if date_str:
-                    try:
-                        dt = datetime.strptime(date_str, "%Y-%m-%d")
-                        if not (monday <= dt <= sunday):
-                            continue
-                    except ValueError:
-                        continue
-
-                venue_el = item.select_one(".venue, [class*='venue']")
-                venue = venue_el.get_text(strip=True) if venue_el else "Tulsa, OK"
-
-                link = name_el.get("href", "")
-                url = f"https://www.songkick.com{link}" if link.startswith("/") else link
-
-                events.append(self.make_event(
-                    name=name,
-                    date=date_str,
-                    time="",
-                    venue=venue,
-                    url=url,
-                    priority=3,
-                ))
-            except Exception as e:
-                logger.debug(f"[ticketing] Songkick parse error: {e}")
-
-        logger.info(f"[ticketing] Songkick HTML fallback: {len(events)} events this week")
-        return events
-
-    # ── Do918 web scrape ──────────────────────────────────────────────────
-
-    def _scrape_do918(self, monday: datetime, sunday: datetime) -> List[Dict]:
-        """Scrape Do918 — Tulsa's local event guide."""
-        soup = self.fetch_page(DO918_EVENTS)
-        if not soup:
-            return []
-
-        events = []
-
-        # Try JSON-LD first
-        json_ld_events = self._extract_json_ld_from_soup(soup, DO918_EVENTS, priority=3)
-        if json_ld_events:
-            in_week = [e for e in json_ld_events if self._in_week(e.get("date", ""), monday, sunday)]
-            logger.info(f"[ticketing] Do918 JSON-LD: {len(in_week)} events this week")
-            return in_week
-
-        # HTML fallback
-        items = soup.select("article, .event-card, .event-item, [class*='event']")
-        for item in items[:40]:
-            try:
-                name_el = item.select_one("h1, h2, h3, h4, a")
-                if not name_el:
-                    continue
-                name = name_el.get_text(strip=True)
-                if not name or len(name) < 4:
-                    continue
-
-                date_el = item.select_one("time, .date, [class*='date']")
-                date_str = ""
-                if date_el:
-                    date_str = self.parse_date_flexible(
-                        date_el.get("datetime", "") or date_el.get_text(strip=True)
-                    )
-
-                if date_str and not self._in_week(date_str, monday, sunday):
-                    continue
-
-                link_el = item.find("a", href=True)
-                url = link_el["href"] if link_el else DO918_EVENTS
-                if url.startswith("/"):
-                    url = "https://do918.com" + url
-
-                events.append(self.make_event(
-                    name=name,
-                    date=date_str,
-                    time="",
-                    venue="Tulsa, OK",
-                    url=url,
-                    priority=3,
-                ))
-            except Exception as e:
-                logger.debug(f"[ticketing] Do918 parse error: {e}")
-
-        logger.info(f"[ticketing] Do918 HTML: {len(events)} events")
-        return events
-
-    def _in_week(self, date_str: str, monday: datetime, sunday: datetime) -> bool:
-        if not date_str:
-            return False
-        try:
-            dt = datetime.strptime(date_str, "%Y-%m-%d")
-            return monday <= dt <= sunday
-        except ValueError:
-            return False
-
 
 def scrape() -> List[Dict]:
     """Module-level entry point."""

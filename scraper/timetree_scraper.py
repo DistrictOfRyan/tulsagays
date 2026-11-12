@@ -13,6 +13,23 @@ The .ics feed used by the old version 404s for this calendar (TimeTree never
 served one for it), which is why the scraper silently returned 0 events for weeks.
 
 The flag file path: data/timetree_browser_needed.flag
+
+RETIRED 2026-11-06: the "Tulsa Isn't Boring" calendar no longer exists on TimeTree.
+  Evidence, 2026-11-06, plain requests from this machine:
+    GET  /public_calendars/tulsa_isnt_boring          -> HTTP 404, <title>Not Found - TimeTree</title>
+    GET  /api/v2/public_calendars/tulsa_isnt_boring   -> HTTP 400 {"error":{"code":-403,"message":"failed to api request"}}
+    GET  .../tulsa_isnt_boring/public_events          -> HTTP 400, same -403 body
+  Control, same session, same session-mint + csrf + header flow as _scrape_api():
+    honto_bl (a live public calendar)                 -> page HTTP 200, calendar API 200, public_events 200 with 60 events
+  So the code path works and the calendar itself was deleted or made private by its owner.
+  Slug variants tulsaisntboring and tulsa-isnt-boring also 404. No replacement link turned up
+  (web search for the name and for timetreeapp.com/public_calendars + Tulsa, 2026-11-06).
+  Last yield: the 2026-07-27 run (W31, 20 rows). W32-W45 all 0. config.py marked it gone on 2026-11-02.
+  Most of what it aggregated already has its own source: Magic City Books, Tulsa Zoo, the library,
+  Tulsa Farmers' Market and Guthrie Green are rendered specs, Eventbrite is eventbrite_meetup.
+What scrape() does now: one GET of the public page. HTTP 404 -> return [] with no Playwright run and
+no browser flag (a browser sees the same "Not Found", so the flag only sent the Monday-post session to
+a dead page). Anything else -> the owner may have republished, so the full API path runs as before.
 """
 
 import os
@@ -41,6 +58,10 @@ TIMETREE_URL = f"https://timetreeapp.com/public_calendars/{CAL_SLUG}"
 API_EVENTS   = f"https://timetreeapp.com/api/v2/public_calendars/{CAL_SLUG}/public_events"
 FLAG_FILE    = os.path.join(config.DATA_DIR, "timetree_browser_needed.flag")
 SOURCE_NAME  = "tulsa_isnt_boring"
+
+# Read by health tooling: why a 0 from this module is expected, not an outage.
+RETIRED = ("2026-11-06: TimeTree calendar tulsa_isnt_boring is HTTP 404 / API -403 "
+           "(owner deleted or privatized it); one page probe per run, API path only if it returns")
 
 # Headers the TimeTree web client sends. x-timetreea identifies the web build;
 # without it (and a valid csrf token) the API returns {"error":{"code":-401}}.
@@ -285,10 +306,32 @@ def _write_browser_flag():
 
 # ── Public entry point ────────────────────────────────────────────────────────
 
+def _calendar_page_status() -> Optional[int]:
+    """HTTP status of the public calendar page, or None if the request failed."""
+    import requests
+    try:
+        r = requests.get(TIMETREE_URL, headers={"User-Agent": _UA, "Accept": "text/html"},
+                         timeout=20)
+        return r.status_code
+    except Exception as e:
+        logger.warning(f"[{SOURCE_NAME}] page probe failed: {e}")
+        return None
+
+
 def scrape() -> List[Dict]:
-    """Try JSON API, then Playwright, then write browser flag. Always returns a list."""
+    """Retired 2026-11-06 (see module docstring): one page probe, then the API
+    path only if the calendar is back. Always returns a list."""
     if os.path.exists(FLAG_FILE):
         os.remove(FLAG_FILE)
+
+    status = _calendar_page_status()
+    if status == 404:
+        logger.info(f"[{SOURCE_NAME}] retired 2026-11-06: TimeTree calendar page is HTTP 404 "
+                    f"(deleted or private); skipping API, Playwright and browser flag")
+        return []
+    if status == 200:
+        logger.warning(f"[{SOURCE_NAME}] calendar page answered HTTP 200 again; the owner may "
+                       f"have republished it. Running the API path.")
 
     events = _scrape_api()
     if events:
