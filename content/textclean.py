@@ -24,7 +24,7 @@ from typing import Optional
 
 __all__ = ["clean_time", "clean_venue_junk", "scrub_copy", "scrub_voice",
            "is_junk_venue", "URL_RE", "REL_DATE_PHRASE_RE", "REL_DATE_BARE_RE",
-           "JUNK_VENUE_RE"]
+           "JUNK_VENUE_RE", "ABS_DATE_VENUE_RE"]
 
 # ── Venue ────────────────────────────────────────────────────────────────────
 
@@ -32,6 +32,14 @@ __all__ = ["clean_time", "clean_venue_junk", "scrub_copy", "scrub_voice",
 JUNK_VENUE_RE = re.compile(
     r'^(in\s+(a|an|\d+)\s+(day|days|hour|hours|week|weeks|month|months)'
     r'|today|tonight|tomorrow|yesterday|this\s+\w+|next\s+\w+|tba|tbd)$', re.I)
+
+# Absolute date ranges land in the venue field too (Facebook multi-day event
+# cards): "SAT, NOV 14 - NOV 15" scraped as the venue instead of the address
+# (2026-W46 Mosaic Art Classes). Weekday + month + day at the start of the
+# string, regardless of what follows.
+ABS_DATE_VENUE_RE = re.compile(
+    r'^(mon|tue|tues|wed|weds|thu|thur|thurs|fri|sat|sun)[a-z]*\.?\s*,?\s*'
+    r'(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?\s+\d{1,2}\b', re.I)
 
 # Button text and truncation artifacts that are not venues.
 JUNK_VENUE_EXACT = {
@@ -49,7 +57,8 @@ def is_junk_venue(raw: Optional[str]) -> bool:
     v = (raw or "").strip().rstrip('.!')
     if not v:
         return False
-    return bool(JUNK_VENUE_RE.match(v)) or v.lower() in JUNK_VENUE_EXACT
+    return (bool(JUNK_VENUE_RE.match(v)) or v.lower() in JUNK_VENUE_EXACT
+            or bool(ABS_DATE_VENUE_RE.match(v)))
 
 
 def clean_venue_junk(raw: Optional[str]) -> str:
@@ -197,6 +206,11 @@ def _selftest() -> int:
     chk(not is_junk_venue("Club Majestic")
         and not is_junk_venue("Cain's Ballroom, 423 N Main St"),
         "real venues preserved")
+
+    chk(is_junk_venue("SAT, NOV 14 - NOV 15") and is_junk_venue("Fri, Dec 5"),
+        "absolute date-range venue leak detected")
+    chk(not is_junk_venue("Saturday Night Social Club"),
+        "venue name starting with a weekday word stays a venue")
 
     chk(scrub_copy("Summer Meltdown at in 5 days. Getting out there.")
         == "Summer Meltdown. Getting out there.", "'at in N days' clause removed")

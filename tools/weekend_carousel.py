@@ -146,7 +146,7 @@ def _name_key(e: Dict) -> str:
 
 def _clean_venue(raw: str) -> str:
     v = (raw or "").strip()
-    if not v or _VENUE_JUNK_RE.match(v):
+    if not v or _VENUE_JUNK_RE.match(v) or _tc.is_junk_venue(v):
         return ""
     return v
 
