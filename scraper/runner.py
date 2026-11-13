@@ -1454,6 +1454,20 @@ def main():
     unique_events = deduplicate(filtered_events)
     logger.info(f"After deduplication: {len(unique_events)}")
 
+    # 3a. Per-venue Instagram trail: what the quality filter and dedup did to each
+    # venue's events (data/ig_scrape_health.json). Diagnostic only, never fatal.
+    try:
+        _ig_trail = instagram_orgs.record_pipeline_survival(raw_events, filtered_events,
+                                                            unique_events)
+        for _sn, _v in _ig_trail.items():
+            logger.info("[ig-trail] %s: %s scraped -> %s after filters -> %s own rows%s",
+                        _sn, _v.get("events"), _v.get("after_quality_filter"),
+                        _v.get("after_dedup"),
+                        f" (merged into {', '.join(_v['merged_into'])})"
+                        if _v.get("merged_into") else "")
+    except Exception as exc:
+        logger.error(f"[ig-trail] step failed (non-fatal): {exc}")
+
     # 4. Ensure Homo Hotel is present and at top
     unique_events = ensure_homo_hotel(unique_events)
 

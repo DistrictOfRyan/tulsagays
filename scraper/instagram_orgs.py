@@ -326,6 +326,18 @@ class InstagramOrgScraper(BaseScraper):
         self.priority = int(org.get("priority", 2))
         self.blurb = org.get("blurb", f"Event from @{org['username']}.")
         self.profile_url = f"https://www.instagram.com/{self.username}/"
+        # Per-handle evidence for data/ig_scrape_health.json (2026-11-11). Before
+        # this, a venue's 0 could mean "no posts", "posts but nothing dated", or
+        # "dated but every event dropped by a guard", and the record could not say
+        # which, so W40-W46 zeros were undiagnosable without re-running by hand.
+        self.tier_errors: Dict[str, List[str]] = {}
+        self.answered_by = ("", "")         # (tier, handle) that returned posts
+        self.extractor = ""
+        self.health: Dict = {}
+
+    def _note(self, tier: str, msg: str) -> None:
+        """Record why a fetch tier gave this org nothing (shows in the health file)."""
+        self.tier_errors.setdefault(tier, []).append(str(msg)[:240])
 
     # ── week helpers ──────────────────────────────────────────────────────────
     @staticmethod
@@ -578,7 +590,8 @@ class InstagramOrgScraper(BaseScraper):
         import urllib.parse as _up
         import urllib.request as _ur
 
-        token = _os.environ.get("TULSAGAYS_PAGE_ACCESS_TOKEN", "")
+        token = getattr(config, "TULSAGAYS_PAGE_ACCESS_TOKEN", "") or \
+            _os.environ.get("TULSAGAYS_PAGE_ACCESS_TOKEN", "")
         ig_id = ""
         try:
             cfg_path = Path(__file__).resolve().parent.parent / "meta_api_config.json"
@@ -587,8 +600,10 @@ class InstagramOrgScraper(BaseScraper):
         except Exception:
             ig_id = ""
         if not token or not ig_id:
+            self._note("graph", "no page token" if not token else "no instagram_business_account_id")
             return []
 
+        from scraper.tz_guard import local_date_from_iso
         for user in self.usernames:
             fields = (f"business_discovery.username({user})"
                       f"{{username,media.limit({POSTS_TO_SCAN})"
@@ -600,10 +615,14 @@ class InstagramOrgScraper(BaseScraper):
                 media = ((_json.loads(raw).get("business_discovery") or {})
                          .get("media") or {}).get("data") or []
             except Exception as e:
-                # code 110 = not a business/creator account. Normal for some
-                # venues; try the next handle rather than treating it as an error.
-                logger.debug("[%s] business_discovery @%s unavailable: %s",
-                             self.source_name, user, str(e)[:80])
+                # Read Meta's own error, not urllib's "HTTP Error 400". Code 110
+                # means a personal account (expected for YBR / TCC Pride), and is
+                # only noted; code 190 is a dead token, which used to vanish at
+                # DEBUG level and is exactly what a whole-fleet zero looks like.
+                why = self._graph_error(e)
+                self._note("graph", f"@{user}: {why}")
+                (logger.info if "code 110" in why else logger.warning)(
+                    "[%s] business_discovery @%s: %s", self.source_name, user, why)
                 continue
 
             posts = []
@@ -614,13 +633,29 @@ class InstagramOrgScraper(BaseScraper):
                 posts.append({
                     "caption": caption,
                     "url": m.get("permalink") or self.profile_url,
-                    "posted_on": (m.get("timestamp") or "")[:10],
+                    # Tulsa's day, not the UTC day: `timestamp[:10]` put every post
+                    # made after 6pm CST on the NEXT day, the anchor "tonight" resolves to.
+                    "posted_on": local_date_from_iso(m.get("timestamp") or ""),
                 })
             if posts:
                 logger.info("[%s] business_discovery @%s returned %d captioned posts",
                             self.source_name, user, len(posts))
+                self.answered_by = ("graph", user)
                 return posts
+            self._note("graph", f"@{user}: 0 captioned posts")
         return []
+
+    @staticmethod
+    def _graph_error(e: Exception) -> str:
+        """'code <n>: <message>' from a Graph API error body, else the exception text."""
+        try:
+            body = e.read().decode("utf-8", "replace")  # urllib HTTPError
+            err = (json.loads(body).get("error") or {})
+            if err:
+                return f"code {err.get('code')}: {str(err.get('message') or '')[:120]}"
+        except Exception:
+            pass
+        return f"{type(e).__name__}: {str(e)[:120]}"
 
     def _fetch_public(self) -> List[Dict]:
         """Read recent posts via Instagram's public web-profile JSON.
@@ -635,6 +670,7 @@ class InstagramOrgScraper(BaseScraper):
                 if user != self.username:
                     logger.info("[%s] primary @%s returned nothing — used alt handle @%s",
                                 self.source_name, self.username, user)
+                self.answered_by = ("public", user)
                 return posts
         return []
 
@@ -653,18 +689,22 @@ class InstagramOrgScraper(BaseScraper):
         except Exception as e:
             logger.warning("[%s] @%s public profile request failed: %s %s",
                            self.source_name, user, type(e).__name__, str(e)[:120])
+            self._note("public", f"@{user}: {type(e).__name__}")
             return []
         if r.status_code != 200:
             logger.warning("[%s] @%s public profile HTTP %s (logged-out endpoint may be "
                            "rate-limited) — will try next handle / session fallback",
                            self.source_name, user, r.status_code)
+            self._note("public", f"@{user}: HTTP {r.status_code}")
             return []
+        handle = user
         try:
             user = (r.json().get("data", {}) or {}).get("user") or {}
             edges = (user.get("edge_owner_to_timeline_media") or {}).get("edges", [])
         except Exception as e:
             logger.warning("[%s] public profile JSON parse failed: %s",
                            self.source_name, type(e).__name__)
+            self._note("public", f"@{handle}: non-JSON reply ({type(e).__name__})")
             return []
 
         posts = []
@@ -676,13 +716,8 @@ class InstagramOrgScraper(BaseScraper):
                 continue
             code = node.get("shortcode") or node.get("code")
             post_url = f"https://www.instagram.com/p/{code}/" if code else self.profile_url
-            ts = node.get("taken_at_timestamp")
-            posted_on = ""
-            if ts:
-                try:
-                    posted_on = datetime.fromtimestamp(int(ts)).strftime("%Y-%m-%d")
-                except (ValueError, OverflowError, OSError):
-                    posted_on = ""
+            from scraper.tz_guard import local_date_from_epoch
+            posted_on = local_date_from_epoch(node.get("taken_at_timestamp") or 0)
             posts.append({"caption": caption, "url": post_url, "posted_on": posted_on})
 
         logger.info("[%s] public endpoint returned %d captioned posts",
@@ -701,6 +736,7 @@ class InstagramOrgScraper(BaseScraper):
             except Exception as e:
                 logger.warning("[%s] @%s session fetch failed: %s %s",
                                self.source_name, user, type(e).__name__, str(e)[:160])
+                self._note("instagrapi", f"@{user}: {type(e).__name__} {str(e)[:100]}")
                 continue
             posts = []
             for m in medias:
@@ -710,7 +746,15 @@ class InstagramOrgScraper(BaseScraper):
                 code = getattr(m, "code", None)
                 post_url = f"https://www.instagram.com/p/{code}/" if code else self.profile_url
                 taken = getattr(m, "taken_at", None)
-                posted_on = taken.strftime("%Y-%m-%d") if isinstance(taken, datetime) else ""
+                posted_on = ""
+                if isinstance(taken, datetime):
+                    from scraper.tz_guard import local_date_from_epoch
+                    # instagrapi returns an aware UTC datetime; a naive one is
+                    # read as UTC too (its own documented convention).
+                    if taken.tzinfo is None:
+                        from datetime import timezone as _tz
+                        taken = taken.replace(tzinfo=_tz.utc)
+                    posted_on = local_date_from_epoch(taken.timestamp())
                 posts.append({"caption": caption, "url": post_url, "posted_on": posted_on})
             if posts:
                 if user != self.username:
@@ -718,6 +762,7 @@ class InstagramOrgScraper(BaseScraper):
                                 self.source_name, self.username, user)
                 logger.info("[%s] session fallback returned %d captioned posts",
                             self.source_name, len(posts))
+                self.answered_by = ("instagrapi", user)
                 return posts
         return []
 
@@ -727,12 +772,14 @@ class InstagramOrgScraper(BaseScraper):
                 "[%s] No @tulsagays IG session at %s — run scripts/ig_login_api.py "
                 "once to enable session fallback.", self.source_name, SETTINGS_FILE,
             )
+            self._note("instagrapi", f"no session file {SETTINGS_FILE.name}")
             return None
         try:
             from instagrapi import Client
         except ImportError:
             logger.warning("[%s] instagrapi not installed — cannot use session fallback.",
                            self.source_name)
+            self._note("instagrapi", "instagrapi not installed")
             return None
         cl = Client()
         try:
@@ -744,6 +791,7 @@ class InstagramOrgScraper(BaseScraper):
                 "[%s] @tulsagays IG session expired (%s) — re-auth once with "
                 "scripts/ig_login_api.py.", self.source_name, type(e).__name__,
             )
+            self._note("instagrapi", f"session rejected ({type(e).__name__})")
             return None
 
     def _fetch_via_web(self) -> List[Dict]:
@@ -754,11 +802,23 @@ class InstagramOrgScraper(BaseScraper):
         cookie-less page. One-time human setup: tools/ig_profile_login.py."""
         try:
             from scraper import instagram_web
-            return instagram_web.posts_for(self.source_name, self.usernames)
+            posts = instagram_web.posts_for(self.source_name, self.usernames)
         except Exception as e:
             logger.warning("[%s] web-session tier failed: %s %s",
                            self.source_name, type(e).__name__, str(e)[:120])
+            self._note("web", f"{type(e).__name__}: {str(e)[:120]}")
             return []
+        st = instagram_web.status_for(self.source_name)
+        if posts:
+            self.answered_by = (f"web ({st.get('via') or 'login'})",
+                                st.get("handle") or self.username)
+        else:
+            for a in st.get("attempts") or ["no posts (web pass returned nothing for this org)"]:
+                self._note("web", a)
+            sess = st.get("session") or {}
+            if sess.get("note"):
+                self._note("web", f"session: {sess['note']}")
+        return posts
 
     def scrape(self) -> List[Dict]:
         # WEB-SESSION FIRST (reordered 2026-07-20). The logged-in web session is
@@ -783,6 +843,18 @@ class InstagramOrgScraper(BaseScraper):
         # from a silent fetch failure (posts==0 = rate-limited/blocked/session
         # dead). The latter must never be mistaken for an empty week.
         self.last_posts_count = len(posts or [])
+        tier, handle = self.answered_by if posts else ("", "")
+        dated = sorted(p.get("posted_on") or "" for p in (posts or []) if p.get("posted_on"))
+        self.health = {
+            "tier": tier, "handle": handle, "posts": len(posts or []),
+            "newest_post": dated[-1] if dated else "",
+            "oldest_post": dated[0] if dated else "",
+            "extractor": "", "candidates": 0, "dropped_announce_window": 0,
+            "dropped_unsupported_date": 0, "dropped_out_of_week": 0, "in_week": 0,
+            "dropped_samples": [],
+            # Only the tiers that were tried and gave nothing; empty when the first answered.
+            "tier_errors": {k: v[:4] for k, v in self.tier_errors.items()},
+        }
         if not posts:
             logger.info("[%s] No captioned posts from any path — 0 events.",
                         self.source_name)
@@ -791,6 +863,16 @@ class InstagramOrgScraper(BaseScraper):
         events = self._extract_with_llm(posts)
         if events is None:
             events = self._extract_with_regex(posts)
+            self.extractor = "regex"
+        self.health["extractor"] = self.extractor
+        self.health["candidates"] = len(events)
+
+        def _sample(reason: str, e: Dict) -> None:
+            if len(self.health["dropped_samples"]) < 8:
+                self.health["dropped_samples"].append({
+                    "reason": reason, "date": e.get("date", ""),
+                    "posted_on": e.get("_src_posted_on", ""),
+                    "name": str(e.get("name") or "")[:60], "url": e.get("url", "")})
 
         # Guard 1 — announcement window: an event may not be dated more than
         # MAX_ANNOUNCE_GAP_DAYS after (or before) the post that announced it. Bars
@@ -804,6 +886,8 @@ class InstagramOrgScraper(BaseScraper):
         for e in events:
             if self._within_announce_window(e.get("date", ""), e.get("_src_posted_on", "")):
                 fresh.append(e)
+            else:
+                _sample("announce_window", e)
         dropped = len(events) - len(fresh)
 
         # Guard 2 — caption support: the announcing post must actually claim the
@@ -819,13 +903,22 @@ class InstagramOrgScraper(BaseScraper):
                 logger.info("[%s] dropped unsupported date %s (post %s): %s",
                             self.source_name, e.get("date"), e.get("_src_posted_on"),
                             str(e.get("name"))[:50])
+                _sample("unsupported_date", e)
         unsupported = len(fresh) - len(supported)
+
+        # Guard 3 — keep only events inside the current Mon–Sun week.
+        in_week = []
+        for e in supported:
+            if self._in_week(e.get("date", "")):
+                in_week.append(e)
+            elif (e.get("date") or "") >= self._week_range()[0].strftime("%Y-%m-%d"):
+                _sample("after_this_week", e)      # a real future event; next week's deck
         for e in supported:
             e.pop("_src_posted_on", None)
             e.pop("_src_caption", None)
-
-        # Guard 3 — keep only events inside the current Mon–Sun week.
-        in_week = [e for e in supported if self._in_week(e.get("date", ""))]
+        self.health.update({
+            "dropped_announce_window": dropped, "dropped_unsupported_date": unsupported,
+            "dropped_out_of_week": len(supported) - len(in_week), "in_week": len(in_week)})
         logger.info("[%s] %d candidate events, %d dropped stale-projection, "
                     "%d dropped unsupported-date, %d in current week",
                     self.source_name, len(events), dropped, unsupported, len(in_week))
@@ -993,6 +1086,7 @@ class InstagramOrgScraper(BaseScraper):
                     messages=[{"role": "user", "content": user}],
                 )
                 raw = msg.content[0].text.strip()
+                self.extractor = "llm:anthropic"
             except Exception as e:
                 logger.warning("[%s] Anthropic extraction failed (%s) — trying DeepSeek",
                                self.source_name, type(e).__name__)
@@ -1003,10 +1097,14 @@ class InstagramOrgScraper(BaseScraper):
             # guard quality downstream. (Key dead as of 2026-07-06, gap G35 —
             # kept wired so it self-heals when William renews it.)
             raw = self._deepseek_complete(system, user)
+            if raw is not None:
+                self.extractor = "llm:deepseek"
         if raw is None:
             # claude CLI fallback: runs on the subscription auth the fleet already
             # uses; haiku + hard timeout so a hang can never wedge the scrape.
             raw = self._claude_cli_complete(system, user)
+            if raw is not None:
+                self.extractor = "llm:claude-cli"
         if raw is None:
             logger.warning("[%s] no LLM produced output — using regex fallback",
                            self.source_name)
@@ -1039,6 +1137,7 @@ class InstagramOrgScraper(BaseScraper):
                 return None
             logger.warning("[%s] LLM JSON truncated — salvaged %d complete events",
                            self.source_name, len(salvaged))
+            self.extractor += " (salvaged)"
             data = {"events": salvaged}
 
         events = []
@@ -1274,6 +1373,57 @@ class InstagramOrgScraper(BaseScraper):
         return events
 
 
+HEALTH_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                           "data", "ig_scrape_health.json")
+
+
+def _is_ig_row(e: Dict, sn: str) -> bool:
+    """True for an event THIS module produced for source `sn`. twisted_arts is
+    also the website scraper's source name, so the Instagram URL decides."""
+    return (e.get("source") or "") == sn and "instagram.com" in (e.get("url") or "")
+
+
+def record_pipeline_survival(raw: List[Dict], filtered: List[Dict], unique: List[Dict],
+                             path: str = "") -> Dict:
+    """Add the runner's half of the trail to ig_scrape_health.json, per venue:
+    how many of its events survived apply_quality_filters, how many are still
+    its own rows after deduplicate, and which other sources absorbed the rest.
+
+    WHY (2026-11-11). The weekly JSON counts rows by the WINNING source of each
+    merge, so a venue's event that dedup folded into a Facebook or rendered-site
+    row of the same night counts as zero for the venue even though the night is
+    on the site. Without this the health file said "events: 1" and the week file
+    said 0, and nothing explained the gap. Returns the per-venue dict it wrote."""
+    path = path or HEALTH_PATH
+    try:
+        with open(path, encoding="utf-8") as f:
+            rec = json.load(f)
+    except (OSError, ValueError):
+        return {}
+    out = {}
+    for sn, v in (rec.get("per_venue") or {}).items():
+        mine = [e for e in raw if _is_ig_row(e, sn)]
+        if not mine:
+            continue
+        urls = {e.get("url") for e in mine}
+        kept = sum(1 for e in filtered if _is_ig_row(e, sn))
+        own = sum(1 for e in unique if _is_ig_row(e, sn))
+        absorbed = sorted({(w.get("source") or "?") for w in unique
+                           if not _is_ig_row(w, sn)
+                           and urls & set((w.get("source_urls") or []) + [w.get("url")])})
+        # in_pipeline can exceed "events": the runner re-injects held flagship
+        # events from earlier weeks (manage_upcoming) before filtering.
+        v.update({"in_pipeline": len(mine), "after_quality_filter": kept,
+                  "after_dedup": own, "merged_into": absorbed})
+        out[sn] = v
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(rec, f, ensure_ascii=False, indent=2)
+    except OSError as e:
+        logger.warning("[instagram_orgs] could not update %s: %s", path, e)
+    return out
+
+
 def scrape() -> List[Dict]:
     """Module-level entry point (matches the runner's scraper contract).
 
@@ -1291,7 +1441,11 @@ def scrape() -> List[Dict]:
             sc = InstagramOrgScraper(org)
             events = sc.safe_scrape()
             posts_n = getattr(sc, "last_posts_count", 0)
-            health[sn] = {"posts": posts_n, "events": len(events)}
+            # "posts" and "events" keep their old meaning (the outcome check and
+            # preflight read them); the rest is the per-handle trail.
+            health[sn] = {**(getattr(sc, "health", None) or {}),
+                          "configured": sc.usernames,
+                          "posts": posts_n, "events": len(events)}
             logger.info("[instagram_orgs] %s: %d posts -> %d events", sn, posts_n, len(events))
             all_events.extend(events)
         except Exception as e:
@@ -1315,17 +1469,27 @@ def scrape() -> List[Dict]:
     try:
         import json as _json
         from datetime import datetime as _dt
+        _web_session = {}
+        try:
+            from scraper import instagram_web as _iw
+            _web_session = dict(_iw._SESSION)
+        except Exception:
+            pass
+        _monday, _sunday = InstagramOrgScraper._week_range()
         _rec = {
             "checked_at": _dt.now().strftime("%Y-%m-%d %H:%M"),
+            "week": f"{_monday:%Y-%m-%d}..{_sunday:%Y-%m-%d}",
             "venues_attempted": attempted,
             "venues_with_posts": venues_with_posts,
             "total_events": len(all_events),
             "fetch_failed": fetch_failed,
             "fetch_degraded": fetch_degraded,
+            "web_session": _web_session,
+            "graph_token": bool(getattr(config, "TULSAGAYS_PAGE_ACCESS_TOKEN", "")
+                                or os.environ.get("TULSAGAYS_PAGE_ACCESS_TOKEN")),
             "per_venue": health,
         }
-        _p = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "ig_scrape_health.json")
-        with open(_p, "w", encoding="utf-8") as _f:
+        with open(HEALTH_PATH, "w", encoding="utf-8") as _f:
             _json.dump(_rec, _f, ensure_ascii=False, indent=2)
     except Exception as _e:
         logger.warning("[instagram_orgs] could not write ig_scrape_health.json: %s", _e)
@@ -1335,6 +1499,47 @@ def scrape() -> List[Dict]:
                      "run; do NOT treat as an empty week.",
                      "FAILED" if fetch_failed else "DEGRADED", venues_with_posts, attempted)
     return all_events
+
+
+def print_health(path: str = "") -> None:
+    """One line per handle from ig_scrape_health.json: which tier answered, posts
+    read (newest post), dated candidates, what each guard dropped, in-week events,
+    and why the tiers that answered nothing failed. `--health` prints it alone."""
+    try:
+        with open(path or HEALTH_PATH, encoding="utf-8") as f:
+            rec = json.load(f)
+    except (OSError, ValueError) as e:
+        print(f"(no readable health file: {e})")
+        return
+
+    def a(s):
+        return str(s).encode("ascii", "replace").decode("ascii")
+
+    ws = rec.get("web_session") or {}
+    login = ("not run" if not ws else "yes" if ws.get("logged_in") else
+             f"NO ({ws.get('note') or 'unknown'})")
+    print(f"\nPER-HANDLE (checked {rec.get('checked_at')}, week {rec.get('week', '?')}, "
+          f"{rec.get('venues_with_posts')}/{rec.get('venues_attempted')} with posts, "
+          f"web login {a(login)}, graph token {'yes' if rec.get('graph_token') else 'NO'})")
+    print(f"  {'source':20s} {'tier':22s} {'posts':>5s} {'newest':10s} {'cand':>4s} "
+          f"{'win':>3s} {'unsup':>5s} {'oow':>3s} {'week':>4s}  dedup")
+    for sn, v in (rec.get("per_venue") or {}).items():
+        tier = f"{v.get('tier') or '-'} @{v.get('handle') or '-'}" if v.get("tier") else "NONE"
+        dd = ""
+        if "after_dedup" in v:
+            dd = f"{v.get('after_quality_filter')}->{v.get('after_dedup')}"
+            if v.get("merged_into"):
+                dd += f" (into {','.join(v['merged_into'])})"
+        print(f"  {sn:20s} {a(tier)[:22]:22s} {v.get('posts', 0):5d} "
+              f"{v.get('newest_post') or '-':10s} {v.get('candidates', 0):4d} "
+              f"{v.get('dropped_announce_window', 0):3d} {v.get('dropped_unsupported_date', 0):5d} "
+              f"{v.get('dropped_out_of_week', 0):3d} {v.get('events', 0):4d}  {dd}")
+        if not v.get("posts"):
+            for t, errs in (v.get("tier_errors") or {}).items():
+                print(f"      {t}: {a('; '.join(errs))[:150]}")
+        for s in v.get("dropped_samples") or []:
+            print(f"      dropped {s.get('reason')}: {s.get('date')} (post {s.get('posted_on')}) "
+                  f"{a(s.get('name'))[:40]}")
 
 
 def _selftest() -> int:
@@ -1396,6 +1601,9 @@ def _selftest() -> int:
 if __name__ == "__main__":
     if "--selftest" in sys.argv:
         raise SystemExit(_selftest())
+    if "--health" in sys.argv:
+        print_health()
+        raise SystemExit(0)
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
     monday, sunday = InstagramOrgScraper._week_range()
@@ -1410,6 +1618,7 @@ if __name__ == "__main__":
     for e in results:
         print(f"  {e['date']} {_ascii(e.get('time','')):8s} | "
               f"{_ascii(e['name'])[:50]:50s} | {_ascii(e.get('venue',''))[:30]}")
+    print_health()
     if not results:
         print("\n(0 events — either no configured org has an event dated this week, or the "
               "public endpoint was rate-limited. It needs no login; just re-run.)")
