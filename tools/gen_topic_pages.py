@@ -408,6 +408,25 @@ def render_page(topic, orgs, events):
 {FOOTER}"""
 
 
+def _index_schema(topics):
+    items = [{"@type": "ListItem", "position": i + 1,
+              "item": {"@type": "WebPage", "name": t["h1"], "url": f"{BASE}/guides/{t['slug']}.html"}}
+             for i, t in enumerate(topics)]
+    blocks = [
+        {"@context": "https://schema.org", "@type": "CollectionPage",
+         "name": "Guides to Queer Tulsa",
+         "description": "Deep guides to queer Tulsa: gay bars, drag shows, affirming churches, support groups, community organizations, and wellness.",
+         "url": f"{BASE}/guides/index.html",
+         "isPartOf": {"@type": "WebSite", "name": "Tulsa Gays", "url": BASE},
+         "mainEntity": {"@type": "ItemList", "itemListElement": items}},
+        {"@context": "https://schema.org", "@type": "BreadcrumbList",
+         "itemListElement": [
+             {"@type": "ListItem", "position": 1, "name": "Home", "item": BASE},
+             {"@type": "ListItem", "position": 2, "name": "Guides", "item": f"{BASE}/guides/index.html"}]},
+    ]
+    return "\n".join(f'<script type="application/ld+json">{json.dumps(b)}</script>' for b in blocks)
+
+
 def _render_index(topics):
     cards = "\n".join(
         f'<div class="event-card"><h3><a href="/guides/{t["slug"]}.html">{esc(t["h1"])}</a></h3>'
@@ -423,6 +442,7 @@ def _render_index(topics):
 <meta property="og:url" content="{BASE}/guides/index.html"><meta property="og:site_name" content="Tulsa Gays">
 <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
+{_index_schema(topics)}
 {GA}
 {STYLE}
 </head>
@@ -528,6 +548,14 @@ def _selftest():
     # church topic selects the church
     ct = next(t for t in TOPICS if t["slug"] == "queer-friendly-churches-tulsa")
     assert len(_select_orgs(ct, census)) == 1
+    # the guides hub page (guides/index.html) must carry its own schema too, not just the leaf pages
+    index_page = _render_index(TOPICS)
+    assert "application/ld+json" in index_page
+    index_blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', index_page, re.S)
+    assert len(index_blocks) == 2, len(index_blocks)
+    for b in index_blocks:
+        json.loads(b)
+    assert "CollectionPage" in index_page and "BreadcrumbList" in index_page
     print(f"gen_topic_pages selftest: passed ({len(TOPICS)} topics, 3 valid JSON-LD blocks/page, selection works)")
     return 0
 
