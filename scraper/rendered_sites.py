@@ -48,7 +48,7 @@ import logging
 import os
 import re
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import List, Dict, Optional
 from urllib.parse import urljoin
@@ -136,12 +136,25 @@ class RenderedSitesScraper(BaseScraper):
                     pass
 
     # ── date parsing ──────────────────────────────────────────────────────────
+    _REL_DATE_RE = re.compile(r"\b(today|tomorrow)\b", re.IGNORECASE)
+
     @staticmethod
     def _parse_date(raw: str, fmt: str) -> str:
         """Return YYYY-MM-DD or '' from a raw date string per the spec format."""
         if not raw:
             return ""
         raw = raw.strip()
+        # Eventbrite (2026-11-18) shows "Today" / "Tomorrow" instead of an
+        # absolute date for near-term events, e.g. "Today – 7:00 PM". None of
+        # the patterns below recognize those words, so Magic City Books'
+        # near-term events (the only ones it ever has) all silently dropped as
+        # dateless and the source read DEAD. Resolve relative to local now().
+        rel = RenderedSitesScraper._REL_DATE_RE.search(raw)
+        if rel:
+            base = datetime.now()
+            if rel.group(1).lower() == "tomorrow":
+                base += timedelta(days=1)
+            return base.strftime("%Y-%m-%d")
         if fmt == "iso" or fmt == "":
             # ISO8601 (with or without time) - take the date part.
             m = re.search(r"(\d{4}-\d{2}-\d{2})", raw)
