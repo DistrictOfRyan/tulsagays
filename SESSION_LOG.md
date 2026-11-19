@@ -1,3 +1,20 @@
+## [2026-11-19 11:23] Give TulsaGays posts a classy holiday touch on the holiday itself, not just the holiday month
+
+William: "let's make sure that we add a little flare to the posts for Tulsa Gays as well for the holidays... simple little classy details that kind of make it festive but not over the top." The month themes from a3af152e already dressed whole decks. This adds the holiday's own day:
+1. **Day labels.** A day slide whose date is a holiday prints its name in neon pink after the date ("THURSDAY 11/26 · THANKSGIVING"). There are 17 dated holidays in `data/holiday_themes.json` `days`, including the movable ones: Easter and Mardi Gras by computus, Thanksgiving as the 4th Thursday, Hanukkah from a dated list. If the label would crowd the header, it is dropped.
+2. **Memorial days stay quiet.** On Trans Day of Remembrance (11/20) and World AIDS Day (12/1) the label is gray and the day slide has no corner motifs.
+3. **Fourth of July week.** A `week_of` theme with a drawn firework motif covers only the Mon-Sun week holding 07-04, so the rest of July stays plain.
+4. **Every caption, not just Monday's.** The Monday caption prompt names the week's holiday ("Thanksgiving (Thursday 11/26)") and any memorial, with a respectful-and-brief rule. The Friday weekend preview and Wednesday last-minute captions now go through `season_caption`, which adds the season emoji and "Thanksgiving is Thursday."
+5. **`is_solemn` tightened.** The bare word "memorial" matched "Allie Jensen Memorial Art Gallery" in the real W47 data, which would have stripped a festive cover for nothing. It is now a regex on remembrance, vigil, memorial service/gathering/walk and similar.
+
+**Checked against outside sources:** date.nager.at (US public holidays 2026-2028), hebcal (Hanukkah 2026-2030) and dateutil Easter (2020-2045) all agree with the resolver. Three plain weeks render byte-identical with the layer on and off. Below the header, the Thanksgiving slide is pixel-identical to the plain render. Unlazy gate `tulsagays-holiday-flair`: 9/9 on main.
+
+**Main artifact:** `612bdcc7` (merged from `feat/holiday-day-labels`, pushed `7d9efa09..612bdcc7`): `content/holiday_theme.py`, `content/image_maker.py`, `data/holiday_themes.json`, `tools/weekend_carousel.py`, `tools/run_wednesday_lastminute.py`, `tests/holiday/check_days.py`.
+**Next live use:** the Mon 2026-11-23 prep builds the Thanksgiving week deck (Friendsgiving theme plus the Thursday label). W49 (Nov 30) is a December deck whose caption names Hanukkah (Fri 12/4) and adds a World AIDS Day note.
+**Open items:** none.
+
+---
+
 ## [2026-11-11] Gay events lead every day, and events a gay reader would not be welcome at come off the guide
 
 William, on the W46 deck: "a lot of things that aren't even gay in the events and that the average gay person probably would not be welcome at." The W46 list carried 291 rows. 164 came from the rendered-sites layer, about 110 of them University of Tulsa, TCC and OSU-Tulsa student-life rows (tutoring, residence-hall dinners, HIIT classes), plus campus ministry lunches, Bible studies, a Christian sorority, "Pizza & Patriotism", two straight singles mixers and a private wedding reception booked on the Equality Center calendar. Sunday's shipped TOP PICK was "Homecoming Weekend Brunch for Parents, Families & Alumni" over the Black Queer Tulsa brunch and Club Majestic's talent night.
