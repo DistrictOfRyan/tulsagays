@@ -582,3 +582,14 @@ Tracks new LGBTQ+ owned or friendly businesses added to the directory each week.
 - WebSearch "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (FarmBar, Lambrusco'z To Go, Yokozuna, KEO, Elote Cafe).
 - Reddit r/tulsa (both query variants): no indexed results this scan, same pattern as every prior scan.
 - Net result: 2 new businesses added (Aguilar Brothers Lawn & Landscape, Solid Esthetics).
+
+### Reviewed but NOT added (2026-11-19 scan)
+- OkEq Equality Business Alliance (okeq.org/eba/): full roster re-fetch shows the same 6 named members with full contact details (UniComm Solutions, Yoga Quest LLC, Doc J's Heat and Air, Littleton Legal PLLC, Edgewood Veterinary Hospital, OsteoStrong Tulsa Midtown -- all confirmed present in directory.html) plus the same 17 logo-only names confirmed every scan since 2026-10-31 (Keys For Life, Running Dogs Music, Guiding-Right, Kenya's Way, Marketing Manifold, Apollo Wellness Spa, Hunger Free Oklahoma, Matrix Service Company, Webb Wellness, Hannah Phillips, Cultivate Strength, Breck Aesthetics, Energy-Environments, Chrysalis Salon & Spa, MAT, Courtney Ivy, Taste the World). No net-new members. UniComm's OWNER REQUEST (no street address, 2026-10-21) remains in effect, untouched.
+- OkEq Food & Drink (50 listings): re-fetched and checked line by line against prior scans; all 50 confirmed already carrying a directory card or a documented hold/skip reason (Bama Companies, Ingredion, Hunger Free Oklahoma held as not consumer-facing/not LGBTQ+-specific; Wild Mike's Enterprises out of scope, Choctaw OK). No change to any hold this scan.
+- Tulsa Remote LGBTQ guide: all 8 businesses and 5 resources listed (Tonsorial, il Seme, Cherry & Bark, YBR, The Donut Hole, Fulton Street, Jo & June, Magic City Books, Studio 66, Black Queer Tulsa, Twisted Arts, H.O.P.E Testing, TACO) already in the directory.
+- The Gayly homepage: no Tulsa business coverage this scan (only a Tulsa University Theatre "Falsettos" production story, not a business).
+- WebSearch "new LGBTQ business Tulsa 2026 opened": surfaced only already-reviewed community/event items (Tulsa Pride 2026 vendor registration, Life in The Gay Lane newsletter, the queer photo exhibit, the Yellow Brick Road history piece, the Queer Women's Collective piece, the Queer Life Drawing classes). No net-new business finds.
+- WebSearch "queer-owned business Tulsa 2026": surfaced only already-directory businesses (il Seme, Fulton Street Books & Coffee, Studio 66) plus general Yelp/Wikipedia category pages with no new names.
+- WebSearch "gay friendly Tulsa restaurant 2026": surfaced only already-directory businesses (FarmBar, The People's Bakery, Lambrusco'z To Go, Oren Restaurant, Lefty's on Greenwood, Elote Cafe).
+- Reddit r/tulsa (both query variants): no indexed results this scan, same pattern as every prior scan.
+- Net result: 0 new businesses added. Directory unchanged in content; this entry is the scan record.
