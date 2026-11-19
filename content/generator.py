@@ -454,7 +454,7 @@ mention it.
 Before the hashtags, add a short closing line that mentions tulsagays.com as \
 where to find the full list of events (every caption must reference \
 tulsagays.com somewhere -- this is a hard requirement, not optional).
-""" + _ht.caption_prompt_note(_season)
+""" + _ht.caption_prompt_note(_season, _week_monday)
 
     # Try the API call, fall back to template if it fails. Pass the
     # ALREADY-FILTERED events to the fallback too — without this, fallback

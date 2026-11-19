@@ -42,13 +42,22 @@ eotw = (next((e for d in days for e in by_day[d]
                  if e.get("lgbtq_relevant") and not ht.is_solemn(e)), real_eotw))
 
 DECKS = {"dec": "2026-12-09", "nov": "2026-11-18", "oct": "2026-10-14", "feb": "2027-02-10",
-         "jun": "2027-06-09", "jan": "2027-01-06", "sep": "2026-09-16", "tdor": "2026-11-18"}
+         "jun": "2027-06-09", "jan": "2027-01-06", "sep": "2026-09-16", "tdor": "2026-11-18",
+         # holiday-DAY decks: the holiday's own slide carries its name
+         "thx": "2026-11-25", "xmas": "2026-12-23", "jul": "2027-07-01"}
 for m, d in DECKS.items():
     os.environ["TULSAGAYS_HOLIDAY_DATE"] = d
     out = os.path.join(OUT, m)
     shutil.rmtree(out, ignore_errors=True)
-    lead = real_eotw if m == "tdor" else eotw
-    slides = create_carousel({}, "weekday", "Nov 16 - Nov 22", events_by_day=by_day, featured_event=lead)
+    # "tdor" leads with the week's real memorial event (the Trans Day of Remembrance
+    # listing); W47's eotw flag was cleared by a later refresh, so do not rely on it.
+    tdor_lead = next((e for dd in days for e in by_day[dd] if ht.is_solemn(e)), real_eotw)
+    lead = tdor_lead if m == "tdor" else eotw
+    from datetime import timedelta
+    _mon = datetime.strptime(d, "%Y-%m-%d").date()
+    _mon -= timedelta(days=_mon.weekday())
+    _rng = f"{_mon:%b} {_mon.day} - {(_mon + timedelta(days=6)):%b} {(_mon + timedelta(days=6)).day}"
+    slides = create_carousel({}, "weekday", _rng, events_by_day=by_day, featured_event=lead)
     paths = save_carousel(slides, out)
     shutil.copy(paths[0], os.path.join(out, "cover.png"))
     print(m, d, len(paths), "slides | lead:", (lead or {}).get("name", "")[:50],

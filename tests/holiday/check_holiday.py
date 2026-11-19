@@ -24,7 +24,7 @@ if mode == "solemn":
     n = side_ink(os.path.join(OUT, "tdor", "cover.png")); print("tdor side ink", n); sys.exit(0 if n == 0 else 1)
 if mode == "layout":
     bad = []
-    for m in ("dec", "nov", "oct", "feb", "jun", "jan", "sep", "tdor"):
+    for m in ("dec", "nov", "oct", "feb", "jun", "jan", "sep", "tdor", "thx", "xmas", "jul"):
         p = os.path.join(OUT, m, "layout_report.json")
         if not os.path.exists(p): bad.append(m + ":missing"); continue
         w = json.load(open(p)).get("warnings", [])

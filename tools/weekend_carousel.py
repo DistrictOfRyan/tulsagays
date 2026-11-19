@@ -155,6 +155,7 @@ def _clean_venue(raw: str) -> str:
 # the carousel, the website generator and the slide renderer cannot drift.
 from content import textclean as _tc  # noqa: E402
 from content.textclean import clean_time, scrub_copy  # noqa: E402
+from content import holiday_theme as _ht  # noqa: E402  holiday touch (William 2026-11-18)
 
 # Same date + venue + >=2 shared distinctive name words = one real event under
 # two titles. Reuse the Monday pipeline's proven matcher rather than a second
@@ -694,6 +695,16 @@ def build_caption(sel: Dict, hashtags: Optional[str] = None,
     caption = "\n".join(lines)
     # House rule: no em dashes, ever.
     caption = caption.replace("—", ",").replace("–", "-")
+    # Holiday touch: seasonal emoji on line 1 and "Halloween is Saturday." when a
+    # festive holiday lands on the weekend; a memorial among the picks keeps it plain.
+    try:
+        _fri = datetime.strptime(sel["friday"], "%Y-%m-%d").date()
+        _picks = [e for d in (sel["friday"], sel["saturday"], sel["sunday"])
+                  for e in (sel["headlines"].get(d) or [])]
+        caption = _ht.season_caption(caption, _picks, ref=_ht.week_thursday(_fri),
+                                     note_dates=[sel["friday"], sel["saturday"], sel["sunday"]])
+    except (KeyError, ValueError, TypeError):
+        pass
 
     if max_chars and len(caption) > max_chars:
         # Step 1: drop the per-event pitch lines. Names, days, times and venues

@@ -22,6 +22,7 @@ sys.path.insert(0, str(ROOT))
 
 import config  # noqa: E402
 from content.image_maker import make_engagement_slide  # noqa: E402
+from content import holiday_theme as _ht  # noqa: E402  holiday touch (William 2026-11-18)
 from tools.social_lib import (  # noqa: E402
     load_meta_config,
     log_engagement_event,
@@ -181,6 +182,12 @@ def main() -> int:
         )
     caption_lines += ["", "Full week at tulsagays.com.", "#TulsaGays #QueerTulsa #LGBTQTulsa"]
     caption = "\n".join(caption_lines).strip()
+    # Holiday touch: seasonal emoji on line 1, "Thanksgiving is Thursday." when a
+    # festive holiday is still ahead this week; a memorial among the picks keeps it plain.
+    _today = datetime.now().date()
+    caption = _ht.season_caption(
+        caption, ranked[:3],
+        note_dates=[_today + timedelta(days=i) for i in range(7 - _today.weekday())])
     # Voice rule #1: scraped event names/venues can carry em/en dashes (tour titles) —
     # strip before the caption ships. (The image body is scrubbed by clean_text already.)
     try:

@@ -1100,7 +1100,7 @@ def make_day_slide(day_name: str, events: List[Dict],
 
     # Compute the calendar date for this day
     from datetime import timedelta as _td
-    _today = datetime.now().date()
+    _today = _ht.preview_today() or datetime.now().date()  # preview env only shifts it
     _week_monday = _today - _td(days=_today.weekday())
     _day_offset = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"].index(day_name)
     _day_date = _week_monday + _td(days=_day_offset)
@@ -1111,12 +1111,29 @@ def make_day_slide(day_name: str, events: List[Dict],
     y = 20
     y = _draw_centered(draw, day_name.upper(), y, f_day, accent)
     y += 4
-    y = _draw_centered(draw, day_date_str, y, f_day_date, WHITE)
+    # Holiday touch: the holiday's own date carries its name on the date line
+    # ("11/26  ·  THANKSGIVING"). Same line, same height, so nothing below moves.
+    _hday = _ht.day_label(_day_date)
+    _solemn_day = _ht.is_solemn_day(_day_date)
+    _dbox = draw.textbbox((0, 0), day_date_str, font=f_day_date)
+    _pre = day_date_str + "  ·  "
+    _full_w = draw.textlength(_pre + (_hday or "").upper(), font=f_day_date)
+    if _hday and _full_w <= W - 2 * 140:   # clear of the corner motifs
+        _x0 = (W - _full_w) // 2
+        _top = y - _dbox[1]
+        draw.text((_x0, _top), _pre, font=f_day_date, fill=WHITE)
+        draw.text((_x0 + draw.textlength(_pre, font=f_day_date), _top), _hday.upper(),
+                  font=f_day_date, fill=LIGHT_GRAY if _solemn_day else NEON_PINK)
+        y += _dbox[3] - _dbox[1]
+    else:
+        y = _draw_centered(draw, day_date_str, y, f_day_date, WHITE)
     y += 10
     bar_w = 60
     draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 3], fill=NEON_PINK)
     y += 3 + 18
-    _ht.decorate_corners(img, _ht.theme_unless_solemn(_ht.theme_for(), all_events))
+    # Memorial dates (TDoR, World AIDS Day) and memorial events keep the slide plain.
+    _ht.decorate_corners(img, None if _solemn_day else
+                         _ht.theme_unless_solemn(_ht.theme_for(), all_events))
 
     # ── Footer reserve (three-line block: FOMO tagline + CTA + site) ────────
     footer_big_h  = _text_height(draw, "SEE ALL AT TULSAGAYS.COM", f_footer_big)

@@ -1,6 +1,42 @@
 {
   "_about": "Holiday touch for TulsaGays posts (William 2026-11-18: 'give them a little extra special holiday touch when they land on a holiday month. Elegantly classy and minimalist but give it some extra flair'). content/holiday_theme.py reads this. A week is themed by its Thursday (ISO midweek), so a Nov 30 to Dec 6 deck is a December deck. Colors stay inside the TulsaGays palette (no burnt orange, no gold deco lines, no rainbow bars, which are HHHH's look). Every line here ships verbatim: no em dashes, nothing from preflight_post.BANNED_PHRASES. To add a holiday, add an entry; set TULSAGAYS_HOLIDAY=off to disable, TULSAGAYS_HOLIDAY_DATE=YYYY-MM-DD to preview a month.",
+  "_about_week_of": "A theme with week_of (MM-DD list) applies only to the Mon-Sun deck that contains that date, and is checked before the month themes. Used for holidays in months with no month theme (July 4th).",
+  "_about_days": "days: the holiday's own date gets its name beside the date on that day's slide (e.g. '11/26 · THANKSGIVING') and a nod in the caption prompt. solemn days show their name quietly and drop every festive motif on that slide. Fixed dates use date (MM-DD); rule is easter, easter-47 (Mardi Gras) or nth:MONTH:WEEKDAY:N (WEEKDAY 0=Mon, so nth:11:3:4 is the 4th Thursday of November); dates lists exact days. Hanukkah first-candle dates are from the hebcal.com API (pulled 2026-11-18); Thanksgiving checked against date.nager.at's US holiday list (2026-11-26, 2027-11-25).",
+  "days": [
+    {"label": "New Year's Day", "date": "01-01"},
+    {"label": "Valentine's Day", "date": "02-14"},
+    {"label": "Mardi Gras", "rule": "easter-47"},
+    {"label": "St. Patrick's Day", "date": "03-17"},
+    {"label": "Trans Day of Visibility", "date": "03-31"},
+    {"label": "Easter", "rule": "easter"},
+    {"label": "Juneteenth", "date": "06-19"},
+    {"label": "Fourth of July", "date": "07-04"},
+    {"label": "National Coming Out Day", "date": "10-11"},
+    {"label": "Halloween", "date": "10-31"},
+    {"label": "Trans Day of Remembrance", "date": "11-20", "solemn": true},
+    {"label": "Thanksgiving", "rule": "nth:11:3:4"},
+    {"label": "World AIDS Day", "date": "12-01", "solemn": true},
+    {"label": "Christmas Eve", "date": "12-24"},
+    {"label": "Hanukkah begins", "dates": ["2026-12-04", "2027-12-24", "2028-12-12", "2029-12-01", "2030-12-20"]},
+    {"label": "Christmas", "date": "12-25"},
+    {"label": "New Year's Eve", "date": "12-31"}
+  ],
   "themes": [
+    {
+      "key": "independence_day",
+      "week_of": ["07-04"],
+      "label": "Fourth of July",
+      "motif": "firework",
+      "colors": ["#FFFFFF", "#FF1493", "#80CCFF"],
+      "emoji": "🎆",
+      "taglines": [
+        "Fourth of July week. Red, white and fabulous all over Tulsa.",
+        "Fireworks week in Tulsa. Find your people and a good view."
+      ],
+      "footer_note": "Fireworks, parties and patio nights · see the full list",
+      "closing_line": "Fireworks week all over Tulsa.",
+      "caption_line": "🎆 Happy Fourth, Tulsa. Red, white and fabulous."
+    },
     {
       "key": "new_year",
       "months": [1],

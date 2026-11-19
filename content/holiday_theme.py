@@ -76,7 +76,21 @@ def theme_for(ref=None) -> Optional[Dict]:
         return None
     if ref is None and not os.environ.get("TULSAGAYS_HOLIDAY_DATE") and _ACTIVE_REF is None:
         d = week_thursday(d)
-    for t in _load():
+    themes = _load()
+    # Week-scoped themes first (the Fourth of July week): only the Mon-Sun deck that
+    # contains the date, so the rest of the month stays plain.
+    mon = d - timedelta(days=d.weekday())
+    for t in themes:
+        for mmdd in t.get("week_of", []):
+            try:
+                target = date(d.year, int(mmdd[:2]), int(mmdd[3:5]))
+            except ValueError:
+                continue
+            if mon <= target <= mon + timedelta(days=6):
+                out = dict(t)
+                out["_ref"] = d.isoformat()
+                return out
+    for t in themes:
         if d.month in t.get("months", []):
             until = t.get("until_day")
             if until and d.day > until:
@@ -100,20 +114,142 @@ def pick_line(theme: Optional[Dict], key: str, fallback: Optional[str] = None) -
     return val or fallback
 
 
+# ── The holiday's own day ────────────────────────────────────────────────────
+# "Whenever they come up" (William 2026-11-18): the month touch says the season; the
+# day label says the day. The slide for the holiday's own date carries its name beside
+# the date ("11/26 · THANKSGIVING"), in every month, on the line the date already uses.
+
+def _easter(year: int) -> date:
+    """Western Easter (anonymous Gregorian algorithm). check_days.py proves it
+    against dateutil.easter."""
+    a, b, c = year % 19, year // 100, year % 100
+    d, e = b // 4, b % 4
+    f = (b + 8) // 25
+    g = (b - f + 1) // 3
+    h = (19 * a + b - d - g + 15) % 30
+    i, k = c // 4, c % 4
+    l = (32 + 2 * e + 2 * i - h - k) % 7
+    m = (a + 11 * h + 22 * l) // 451
+    month = (h + l - 7 * m + 114) // 31
+    day = ((h + l - 7 * m + 114) % 31) + 1
+    return date(year, month, day)
+
+
+def _day_dates(entry: Dict, year: int) -> list:
+    out = []
+    try:
+        if entry.get("date"):
+            mm, dd = entry["date"].split("-")
+            out.append(date(year, int(mm), int(dd)))
+        rule = entry.get("rule", "")
+        if rule == "easter":
+            out.append(_easter(year))
+        elif rule == "easter-47":
+            out.append(_easter(year) - timedelta(days=47))
+        elif rule.startswith("nth:"):
+            _, month, wd, n = rule.split(":")
+            first = date(year, int(month), 1)
+            off = (int(wd) - first.weekday()) % 7
+            out.append(first + timedelta(days=off + 7 * (int(n) - 1)))
+        for s in entry.get("dates", []):
+            dd = datetime.strptime(s, "%Y-%m-%d").date()
+            if dd.year == year:
+                out.append(dd)
+    except (ValueError, KeyError):
+        pass
+    return out
+
+
+def _off() -> bool:
+    return os.environ.get("TULSAGAYS_HOLIDAY", "").lower() in ("off", "0", "false", "no")
+
+
+def day_holidays(d) -> list:
+    """Holiday entries that fall exactly on date `d` (empty when the layer is off)."""
+    if _off() or d is None:
+        return []
+    if isinstance(d, datetime):
+        d = d.date()
+    try:
+        with open(_THEMES_PATH, encoding="utf-8") as f:
+            days = json.load(f).get("days", [])
+    except Exception:
+        return []
+    return [e for e in days if d in _day_dates(e, d.year)]
+
+
+def day_label(d) -> Optional[str]:
+    """'Thanksgiving', 'Christmas Eve & Hanukkah begins', or None."""
+    hits = day_holidays(d)
+    return " & ".join(e["label"] for e in hits) if hits else None
+
+
+def is_solemn_day(d) -> bool:
+    """A memorial date (Trans Day of Remembrance, World AIDS Day): no festive motif."""
+    return any(e.get("solemn") for e in day_holidays(d))
+
+
+def week_holidays(any_day) -> list:
+    """[(date, entry)] for every holiday in the Mon-Sun week containing `any_day`."""
+    if any_day is None:
+        return []
+    if isinstance(any_day, datetime):
+        any_day = any_day.date()
+    mon = any_day - timedelta(days=any_day.weekday())
+    out = []
+    for i in range(7):
+        dd = mon + timedelta(days=i)
+        out += [(dd, e) for e in day_holidays(dd)]
+    return out
+
+
+def preview_today() -> Optional[date]:
+    """TULSAGAYS_HOLIDAY_DATE as a date (previews only), else None. Lets a preview
+    render show that week's dates on day slides; never set in production."""
+    forced = os.environ.get("TULSAGAYS_HOLIDAY_DATE", "").strip()
+    try:
+        return datetime.strptime(forced, "%Y-%m-%d").date() if forced else None
+    except ValueError:
+        return None
+
+
+def week_note(dates) -> Optional[str]:
+    """'Halloween is Saturday.' for festive holidays among `dates` (caption line)."""
+    seen, bits = set(), []
+    for s in dates or []:
+        try:
+            dd = s if isinstance(s, date) else datetime.strptime(str(s)[:10], "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        if dd in seen:
+            continue
+        seen.add(dd)
+        for e in day_holidays(dd):
+            if not e.get("solemn"):
+                bits.append(f"{e['label']} is {dd.strftime('%A')}.")
+    return " ".join(bits) or None
+
+
 # ── Restraint: memorial weeks ────────────────────────────────────────────────
 # A holiday flourish next to a vigil reads as tone-deaf. The 2026-W47 deck's Event of
 # the Week was the Trans Day of Remembrance (Fri 11/20), in Friendsgiving month, and
 # Dec 1 is World AIDS Day. Wherever a solemn event leads (cover, a day slide, the
 # caption's top picks), that surface stays plain.
-_SOLEMN = ("remembrance", "vigil", "memorial", "memoriam", "world aids day",
-           "day of mourning", "celebration of life", "funeral", "candlelight")
+# Word-bounded and specific: a bare "memorial" or "candlelight" hit "First Thursday Art
+# Show (Allie Jensen Memorial Art Gallery)" in the real W47 data, and would hit every
+# "Candlelight: A Tribute to ..." concert, swapping a party cover to the memorial line.
+import re as _re
+_SOLEMN = _re.compile(
+    r"\bremembrance\b|\bvigils?\b|\bin memoriam\b|\bworld aids day\b|\bday of mourning\b"
+    r"|\bcelebration of life\b|\bfuneral\b"
+    r"|\bmemorial (service|gathering|ceremony|walk|vigil|for)\b", _re.I)
 
 
 def is_solemn(event: Optional[Dict]) -> bool:
     if not event:
         return False
-    text = " ".join(str(event.get(k) or "") for k in ("name", "cover_name", "description")).lower()
-    return any(w in text for w in _SOLEMN)
+    text = " ".join(str(event.get(k) or "") for k in ("name", "cover_name", "description"))
+    return bool(_SOLEMN.search(text))
 
 
 def theme_unless_solemn(theme: Optional[Dict], events) -> Optional[Dict]:
@@ -185,6 +321,20 @@ def _leaf(d, cx, cy, r, color, lw, angle_deg=35):
            fill=color, width=lw)
 
 
+def _firework(d, cx, cy, r, color, accent, lw):
+    """Thin starburst: 12 spokes from a hollow centre, a dot at each tip."""
+    for k in range(12):
+        a = math.radians(k * 30 + 15)
+        r0 = r * 0.30
+        r1 = r * (1.0 if k % 2 == 0 else 0.78)
+        x0, y0 = cx + r0 * math.cos(a), cy - r0 * math.sin(a)
+        x1, y1 = cx + r1 * math.cos(a), cy - r1 * math.sin(a)
+        d.line([(x0, y0), (x1, y1)], fill=color, width=lw)
+        dot = lw * 1.3
+        tip = accent if k % 2 == 0 else color
+        d.ellipse([x1 - dot, y1 - dot, x1 + dot, y1 + dot], fill=tip)
+
+
 def _cluster(theme: Dict, size: int, mirror: bool = False) -> Image.Image:
     """One motif cluster (main motif + two small sparkles) as an RGBA tile."""
     S = size * _SS
@@ -203,6 +353,8 @@ def _cluster(theme: Dict, size: int, mirror: bool = False) -> Image.Image:
     elif kind == "moon":
         _moon(layer, cx, cy, r * 0.82, main)
         d = ImageDraw.Draw(layer)
+    elif kind == "firework":
+        _firework(d, cx, cy, r, main, accent, lw)
     elif kind == "leaf":
         _leaf(d, cx - r * 0.12, cy + r * 0.10, r * 0.85, main, lw, angle_deg=35)
         _leaf(d, cx + r * 0.40, cy - r * 0.42, r * 0.50, accent, lw, angle_deg=-20)
@@ -248,16 +400,30 @@ def decorate_corners(img: Image.Image, theme: Optional[Dict], y: int = 22, size:
 
 # ── Captions ─────────────────────────────────────────────────────────────────
 
-def caption_prompt_note(theme: Optional[Dict]) -> str:
-    """Extra instruction for the caption LLM in a holiday month (empty otherwise)."""
-    if not theme:
-        return ""
-    return (
-        f"\nSEASON: it is {theme['label']} in Tulsa. Give the hook a light, classy "
-        f"{theme['label']} touch: one seasonal phrase and the {theme['emoji']} emoji, "
-        "no more. Do not turn the post into a holiday ad, do not invent holiday events, "
-        "and only call an event holiday-themed if its listing says so.\n"
-    )
+def caption_prompt_note(theme: Optional[Dict], week_of=None) -> str:
+    """Extra instruction for the caption LLM in a holiday month, plus a one-line nod
+    for any holiday that falls inside the week (`week_of` = any day in the week).
+    Empty when there is neither."""
+    note = ""
+    if theme:
+        note += (
+            f"\nSEASON: it is {theme['label']} in Tulsa. Give the hook a light, classy "
+            f"{theme['label']} touch: one seasonal phrase and the {theme['emoji']} emoji, "
+            "no more. Do not turn the post into a holiday ad, do not invent holiday events, "
+            "and only call an event holiday-themed if its listing says so.\n"
+        )
+    days = week_holidays(week_of)
+    festive = [f"{e['label']} ({dd.strftime('%A')} {dd.month}/{dd.day})"
+               for dd, e in days if not e.get("solemn")]
+    solemn = [f"{e['label']} ({dd.strftime('%A')} {dd.month}/{dd.day})"
+              for dd, e in days if e.get("solemn")]
+    if festive:
+        note += ("\nHOLIDAY THIS WEEK: " + ", ".join(festive) + ". One light, warm nod to it "
+                 "is welcome. Do not claim an event is a holiday party unless its listing says so.\n")
+    if solemn:
+        note += ("\nMEMORIAL THIS WEEK: " + ", ".join(solemn) + ". If you mention it, be "
+                 "respectful and brief: no jokes, no emoji next to it, no holiday flourish near it.\n")
+    return note
 
 
 def apply_caption_flourish(caption: str, theme: Optional[Dict]) -> str:
@@ -269,6 +435,21 @@ def apply_caption_flourish(caption: str, theme: Optional[Dict]) -> str:
     if emoji and emoji not in lines[0]:
         lines[0] = f"{emoji} {lines[0].lstrip()}"
     return "\n".join(lines)
+
+
+def season_caption(caption: str, events=None, ref=None, note_dates=None) -> str:
+    """One call for the mid-week / weekend captions: the seasonal emoji on line 1
+    (skipped when a listed event is a memorial) and, when `note_dates` holds a festive
+    holiday, a short 'Thanksgiving is Thursday.' line under the first line."""
+    if not caption:
+        return caption
+    theme = theme_unless_solemn(theme_for(ref), events)
+    note = week_note(note_dates)
+    if note and note not in caption:
+        lines = caption.split("\n")
+        lines.insert(1, note)
+        caption = "\n".join(lines)
+    return apply_caption_flourish(caption, theme)
 
 
 def fallback_opener(theme: Optional[Dict]) -> Optional[str]:
