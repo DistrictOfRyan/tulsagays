@@ -15,6 +15,10 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
+try:  # holiday touch (William 2026-11-18)
+    from content import holiday_theme as _ht
+except ImportError:
+    import holiday_theme as _ht
 
 from anthropic import Anthropic
 
@@ -360,6 +364,7 @@ def generate_post_caption(
     _today = datetime.now().date()
     _week_monday = _today - _td(days=_today.weekday())
     _week_sunday = _week_monday + _td(days=6)
+    _season = _ht.theme_for(_week_monday + _td(days=3))  # holiday touch, by the week's Thursday
 
     def _in_current_week(e):
         d = e.get("date", "")
@@ -396,6 +401,8 @@ def generate_post_caption(
             for e in events_for_caption
         )
 
+    # Holiday touch steps aside when a memorial/vigil is among the caption's top picks.
+    _season = _ht.theme_unless_solemn(_season, events_for_caption[:5])
     category_events = categorize_events(events_for_caption)
     hashtags = _pick_hashtags()
     hashtag_str = " ".join(hashtags)
@@ -447,7 +454,7 @@ mention it.
 Before the hashtags, add a short closing line that mentions tulsagays.com as \
 where to find the full list of events (every caption must reference \
 tulsagays.com somewhere -- this is a hard requirement, not optional).
-"""
+""" + _ht.caption_prompt_note(_season)
 
     # Try the API call, fall back to template if it fails. Pass the
     # ALREADY-FILTERED events to the fallback too — without this, fallback
@@ -461,9 +468,13 @@ tulsagays.com somewhere -- this is a hard requirement, not optional).
         caption = _fallback_caption(
             events_for_caption, post_type, date_range, hashtag_str
         )
+        _opener = _ht.fallback_opener(_season)
+        if _opener:
+            caption = _opener + "\n\n" + caption
 
     caption = _strip_em_dashes(caption)
     caption = _strip_llm_preamble(caption)
+    caption = _ht.apply_caption_flourish(caption, _season)
 
     return {
         "caption": caption,

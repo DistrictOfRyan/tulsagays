@@ -16,6 +16,10 @@ from PIL import Image, ImageDraw, ImageFont
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
+try:  # holiday touch (William 2026-11-18)
+    from content import holiday_theme as _ht
+except ImportError:  # callers that put content/ itself on sys.path
+    import holiday_theme as _ht
 
 # ── Paths ─────────────────────────────────────────────────────────────────
 FONTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fonts")
@@ -635,8 +639,16 @@ def make_cover_slide(post_type: str, date_range: str,
     draw = ImageDraw.Draw(img)
 
     week_num = datetime.now().isocalendar()[1]
+    # Holiday touch steps aside when the cover leads with a memorial or vigil.
+    _cover_feats = [featured_event] + list(featured_events or [])
+    _theme = _ht.theme_unless_solemn(_ht.theme_for(), _cover_feats)
     if tagline is None:
-        tagline = COVER_TAGLINES[week_num % len(COVER_TAGLINES)]
+        if any(_ht.is_solemn(e) for e in _cover_feats if e):
+            # A memorial leads the cover: no sass, no season (2026-W47 led with TDoR).
+            tagline = "This week we show up for each other."
+        else:
+            tagline = (_ht.pick_line(_theme, "taglines")
+                       or COVER_TAGLINES[week_num % len(COVER_TAGLINES)])
 
     f_week_label    = _font("segoe-semi", 44)
     f_date          = _font("segoe-light", 28)
@@ -671,9 +683,11 @@ def make_cover_slide(post_type: str, date_range: str,
                           max_px=W - PAD * 2, max_lines=1, line_gap=4)
     y += 24
 
+    _wm_top = y
     y = _draw_centered(draw, "TULSA", y, f_tulsa, WHITE)
     y += 4
     y = _draw_centered(draw, "GAYS", y, f_gays, NEON_PINK)
+    _ht.decorate_cover(img, _theme, _wm_top, y)
     y += 16
 
     bar_w = 240
@@ -877,7 +891,8 @@ def make_cover_slide(post_type: str, date_range: str,
     _draw_centered(draw, "TULSAGAYS.COM", H - 88, f_footer, WHITE)
     f_footer_cta = _font("segoe", 17)
     _draw_centered(draw,
-                   footer_note or "Hundreds of fabulous events this week \u00b7 visit to see the full list",
+                   footer_note or _ht.pick_line(_theme, "footer_note")
+                   or "Hundreds of fabulous events this week \u00b7 visit to see the full list",
                    H - 48, f_footer_cta, LIGHT_GRAY)
     _pink_bar(draw, H - 10, height=3)
     _watermark(draw)
@@ -1101,6 +1116,7 @@ def make_day_slide(day_name: str, events: List[Dict],
     bar_w = 60
     draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 3], fill=NEON_PINK)
     y += 3 + 18
+    _ht.decorate_corners(img, _ht.theme_unless_solemn(_ht.theme_for(), all_events))
 
     # ── Footer reserve (three-line block: FOMO tagline + CTA + site) ────────
     footer_big_h  = _text_height(draw, "SEE ALL AT TULSAGAYS.COM", f_footer_big)
@@ -1296,7 +1312,10 @@ def make_closing_slide() -> Image.Image:
     draw.rectangle([(W - bar_w) // 2, y, (W + bar_w) // 2, y + 2], fill=NEON_PINK)
     y += 32
 
-    y = _draw_centered(draw, "Hundreds of fabulous events this week in Tulsa.", y, f_sub, LIGHT_GRAY)
+    _ctheme = _ht.theme_for()
+    _ht.decorate_corners(img, _ctheme, y=40, size=110)
+    y = _draw_centered(draw, _ht.pick_line(_ctheme, "closing_line")
+                       or "Hundreds of fabulous events this week in Tulsa.", y, f_sub, LIGHT_GRAY)
     y += 10
     y = _draw_centered(draw, "Visit tulsagays.com to see the full list.", y, f_sub, LIGHT_GRAY)
     y += 24
@@ -1341,6 +1360,15 @@ def create_carousel(events_by_category: Dict[str, List[Dict]],
     own day. Back-compatible: if omitted, falls back to [featured_event]."""
     slides: List[Image.Image] = []
     _LAYOUT_WARNINGS.clear()   # fresh layout-warning collection per render
+    # Holiday touch: theme the deck by the week it covers (its Thursday), read from
+    # the events themselves so a Monday render of Nov 30 - Dec 6 is a December deck.
+    _wk_dates = sorted(e.get("date", "") for evs in (events_by_day or {}).values()
+                       for e in evs if (e.get("date") or "")[:4].isdigit())
+    try:
+        _ht.set_active_week(datetime.strptime(_wk_dates[0], "%Y-%m-%d").date()
+                            if _wk_dates else None)
+    except ValueError:
+        _ht.set_active_week(None)
     days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday",
                     "Friday", "Saturday", "Sunday"]
 
@@ -1576,10 +1604,13 @@ def make_engagement_slide(
               fill=BG)
     y += 64
 
-    # TULSA / GAYS branding
+    # TULSA / GAYS branding (holiday touch flanks it; steps aside for a memorial)
+    _wm_top = y
     y = _draw_centered(draw, "TULSA", y, f_tulsa, WHITE)
     y += 2
     y = _draw_centered(draw, "GAYS", y, f_gays, NEON_PINK)
+    _ht.decorate_cover(img, _ht.theme_unless_solemn(
+        _ht.theme_for(), [{"name": headline, "description": f"{subhead or ''} {body}"}]), _wm_top, y)
     y += 12
 
     # thin accent bar

@@ -35,6 +35,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 import config
+from content import holiday_theme as _ht  # holiday touch (William 2026-11-18)
 
 DRY_RUN = "--dry-run" in sys.argv
 IG_ONLY = "--ig-only" in sys.argv
@@ -206,7 +207,9 @@ def generate_caption() -> str:
     week_num = datetime.now().isocalendar()[1]
     eotw = _get_eotw()
 
-    lines = [WEEK_OPENERS[week_num % len(WEEK_OPENERS)], ""]
+    _season = _ht.theme_unless_solemn(_ht.theme_for(), [eotw])
+    lines = (([_ht.fallback_opener(_season), ""] if _season else [])
+             + [WEEK_OPENERS[week_num % len(WEEK_OPENERS)], ""])
 
     if eotw:
         name = eotw.get("name", "").strip()

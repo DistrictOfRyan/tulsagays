@@ -1,0 +1,96 @@
+{
+  "_about": "Holiday touch for TulsaGays posts (William 2026-11-18: 'give them a little extra special holiday touch when they land on a holiday month. Elegantly classy and minimalist but give it some extra flair'). content/holiday_theme.py reads this. A week is themed by its Thursday (ISO midweek), so a Nov 30 to Dec 6 deck is a December deck. Colors stay inside the TulsaGays palette (no burnt orange, no gold deco lines, no rainbow bars, which are HHHH's look). Every line here ships verbatim: no em dashes, nothing from preflight_post.BANNED_PHRASES. To add a holiday, add an entry; set TULSAGAYS_HOLIDAY=off to disable, TULSAGAYS_HOLIDAY_DATE=YYYY-MM-DD to preview a month.",
+  "themes": [
+    {
+      "key": "new_year",
+      "months": [1],
+      "until_day": 7,
+      "label": "New Year",
+      "motif": "sparkle",
+      "colors": ["#FFFFFF", "#FF1493", "#80CCFF"],
+      "emoji": "✨",
+      "taglines": [
+        "New year, same fabulous people. Tulsa is already back out.",
+        "Resolution idea: leave the house. Tulsa made it easy this week."
+      ],
+      "footer_note": "Fresh-start nights, brunches and parties · see the full list",
+      "closing_line": "New year, new nights out in Tulsa.",
+      "caption_line": "✨ New year, new nights out in Tulsa."
+    },
+    {
+      "key": "valentines",
+      "months": [2],
+      "label": "Valentine's",
+      "motif": "heart",
+      "colors": ["#FF1493", "#F0A0B0", "#FFFFFF"],
+      "emoji": "💘",
+      "taglines": [
+        "Valentine's or Galentine's, Tulsa saved you a seat.",
+        "Love is loud in Tulsa this month. Bring a date or find one."
+      ],
+      "footer_note": "Date nights, Galentine's and lonely-hearts parties · see the full list",
+      "closing_line": "Love is in the air all over Tulsa.",
+      "caption_line": "💘 Cupid is working overtime in Tulsa this month."
+    },
+    {
+      "key": "pride",
+      "months": [6],
+      "label": "Pride Month",
+      "motif": "pride_sparkle",
+      "colors": ["#FF1493", "#FFD060", "#A8D8A8", "#80CCFF", "#C0AEFF", "#F0A0B0"],
+      "emoji": "🌈",
+      "taglines": [
+        "Pride month in Tulsa. Every week is a reason to show up loud.",
+        "Happy Pride, Tulsa. The whole month is ours."
+      ],
+      "footer_note": "Pride parties, drag and parades all month · see the full list",
+      "closing_line": "Pride is on all over Tulsa this month.",
+      "caption_line": "🌈 Happy Pride, Tulsa."
+    },
+    {
+      "key": "halloween",
+      "months": [10],
+      "label": "Spooky Season",
+      "motif": "moon",
+      "colors": ["#C0AEFF", "#FF1493", "#FFFFFF"],
+      "emoji": "🦇",
+      "taglines": [
+        "Spooky season in Tulsa. The costumes only get gayer from here.",
+        "Haunted, glittered and fully booked. Welcome to queer October."
+      ],
+      "footer_note": "Drag, costume parties and haunted nights · see the full list",
+      "closing_line": "Spooky season is on all over Tulsa.",
+      "caption_line": "🦇 Spooky season, Tulsa. Costumes encouraged."
+    },
+    {
+      "key": "friendsgiving",
+      "months": [11],
+      "label": "Friendsgiving",
+      "motif": "leaf",
+      "colors": ["#F0A0B0", "#FF1493", "#FFFFFF"],
+      "emoji": "🍂",
+      "taglines": [
+        "Friendsgiving season. Your chosen family is out this week.",
+        "Grateful for drag brunch, good friends and a full calendar."
+      ],
+      "footer_note": "Friendsgivings, drag brunches and cozy nights · see the full list",
+      "closing_line": "Chosen-family season is on in Tulsa.",
+      "caption_line": "🍂 Chosen-family season in Tulsa."
+    },
+    {
+      "key": "holidays",
+      "months": [12],
+      "label": "Holiday Season",
+      "motif": "snowflake",
+      "colors": ["#DCEBFF", "#80CCFF", "#FF1493"],
+      "emoji": "✨",
+      "taglines": [
+        "Holiday season in Tulsa. Ugly sweaters optional, glitter required.",
+        "Deck the halls, then get out of the house. Tulsa is sparkling."
+      ],
+      "footer_note": "Holiday parties, drag brunches and NYE plans · see the full list",
+      "closing_line": "Holiday parties all over Tulsa this week.",
+      "caption_line": "✨ Holiday season in Tulsa. Glitter required."
+    }
+  ]
+}
