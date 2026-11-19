@@ -18,6 +18,7 @@ import os
 import sys
 import glob
 import re
+import time
 from datetime import datetime
 from urllib.parse import urlparse, urlunparse
 
@@ -415,8 +416,7 @@ def check_url(url: str) -> dict:
         result["note"] = str(exc)[:120]
 
     # Fall back to GET whenever HEAD did not conclusively succeed (any HTTP
-    # >=400 left status unset). Connection/timeout errors set a terminal status
-    # above and are NOT retried here, to avoid doubling wall-clock on dead hosts.
+    # >=400 left status unset).
     if result["status"] is None:
         try:
             resp = requests.get(
@@ -451,6 +451,37 @@ def check_url(url: str) -> dict:
         except Exception as exc:
             result["status"] = "ERROR"
             result["note"] = str(exc)[:120]
+
+    # 2026-11-13: DEAD/TIMEOUT used to be terminal on the first miss ("avoid
+    # doubling wall-clock on dead hosts"), but a live re-test the same day found
+    # 5 of 6 freshly-flagged DEAD/TIMEOUT sources actually serving 200 OK --
+    # a transient connectivity blip (shared with the Keona GA4 preflight check,
+    # same day, same root cause class), not real outages. One retry after a
+    # short backoff is cheap next to a false DEAD that silently drops a P1
+    # source from the site for a week.
+    if result["status"] in ("DEAD", "TIMEOUT"):
+        time.sleep(5)
+        try:
+            resp = requests.get(url, headers=headers, timeout=TIMEOUT,
+                                 allow_redirects=True, stream=True)
+            _ = resp.raw.read(512)
+            result["code"] = resp.status_code
+            result["final_url"] = resp.url
+            if resp.status_code < 400:
+                result["status"] = "OK"
+                result["note"] = f"recovered on retry (was transient)"
+            elif resp.status_code in (401, 403, 406, 429):
+                result["status"] = "BLOCKED"
+                result["note"] = f"HTTP {resp.status_code} (anti-bot / auth wall) [retry]"
+            else:
+                result["status"] = "ERROR"
+                result["note"] = f"HTTP {resp.status_code} [retry]"
+        except requests.exceptions.ConnectionError:
+            result["note"] += " (confirmed on retry)"
+        except requests.exceptions.Timeout:
+            result["note"] += " (confirmed on retry)"
+        except Exception:
+            pass
 
     return result
 

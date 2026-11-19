@@ -46,6 +46,66 @@
       "name": "Tulsa Pride (OkEq) FB",
       "added": "2026-11-11",
       "via": "william-listing-map"
+    },
+    {
+      "url": "https://www.facebook.com/tulsalitco/events",
+      "name": "Magic City Books FB",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "url": "https://www.facebook.com/BibleBeltQueers/events",
+      "name": "Bible Belt Queers",
+      "added": "2026-11-12",
+      "via": "weekly-search:Tulsa nonbinary community group facebook"
+    },
+    {
+      "url": "https://www.instagram.com/tulsa_burlesque_festival/events",
+      "name": "Tulsa Burlesque Festival IG",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "url": "https://www.facebook.com/bar473/events",
+      "name": "473 Bar & Backyard",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "url": "https://www.facebook.com/coffeeconpantulsa/events",
+      "name": "Coffee Con Pan Tulsa",
+      "added": "2026-11-12",
+      "via": "weekly-search:Tulsa bi+ pan community group"
+    },
+    {
+      "url": "https://www.facebook.com/boundforglorybooks/events",
+      "name": "Bound For Glory Books - Drag Queen Story Hour",
+      "added": "2026-11-12",
+      "via": "weekly-search:tulsa drag queen story hour rainbow story time"
+    },
+    {
+      "url": "https://www.facebook.com/youthservicesoftulsa/events",
+      "name": "Youth Services of Tulsa - LGBTQ programs (GSA network, Weekly Coffee House)",
+      "added": "2026-11-12",
+      "via": "weekly-search:tulsa queer parents family group LGBTQ youth GSA"
+    },
+    {
+      "url": "https://www.facebook.com/studio308tulsa/events",
+      "name": "Studio 308",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "url": "https://www.facebook.com/profile.php?id=1782136978672910/events",
+      "name": "Caz's Pub",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "url": "https://www.facebook.com/metropolitanchurchtulsa/events",
+      "name": "The Met Church (Metropolitan Community Church Tulsa)",
+      "added": "2026-11-12",
+      "via": "weekly-search:Metropolitan Community Church Tulsa events"
     }
   ],
   "fb_groups": [
@@ -109,31 +169,67 @@
       "last_checked": "2026-10-04"
     },
     {
-      "url": "https://okeq.org/okeq-events/relationships-outside-the-box/",
-      "name": "Relationships Outside the Box (OKEQ)",
+      "url": "tulsaburlesquefestival.net",
+      "name": "Tulsa Burlesque Festival",
+      "category": "community",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "url": "bar473.com",
+      "name": "473 Bar & Backyard",
+      "category": "lgbtq",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "url": "https://tulsa.gaycities.com/events",
+      "name": "GayCities Tulsa",
+      "category": "lgbtq",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "url": "https://www.wesleytu.org/banned-book-club",
+      "name": "Banned Book Club (Tulsa Wesley Foundation)",
       "category": "org",
-      "added": "2026-09-27",
-      "via": "weekly-search:Relationships Outside the Box Tulsa OKEQ facebook events",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
+      "added": "2026-11-12",
+      "via": "weekly-search:Tulsa queer book club"
     },
     {
-      "url": "tulsapac.com/prism",
-      "name": "PRISM (Tulsa PAC LGBTQ youth program)",
-      "category": "lgbtq",
-      "added": "2026-10-03",
-      "via": "web-search",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
+      "url": "https://tccl.bibliocommons.com/v2/list/display/598036957/2878541997",
+      "name": "TCCL This Book Group Is Queer",
+      "category": "community",
+      "added": "2026-11-12",
+      "via": "weekly-search:tulsa queer book club 2026"
     },
     {
-      "url": "mixedusetulsa.com",
-      "name": "Mixed-Use Space Tulsa (MUST)",
+      "url": "",
+      "name": "Root Tulsa",
       "category": "lgbtq",
-      "added": "2026-10-03",
-      "via": "web-search",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "url": "https://www.community-yoga.com/new-page",
+      "name": "Community Yoga & Wellness Center - Queer Affinity Meditation",
+      "category": "wellness",
+      "added": "2026-11-12",
+      "via": "weekly-search:tulsa queer wellness group meditation"
+    },
+    {
+      "url": "https://www.eventbrite.com/o/queer-sober-social-67272170773",
+      "name": "Queer Sober Social",
+      "category": "social",
+      "added": "2026-11-12",
+      "via": "weekly-search:Tulsa queer sober social event group"
+    },
+    {
+      "url": "https://aaoklahoma.org/meetings/lambda-unity-3/",
+      "name": "Lambda Unity Group (LGBTQ+ AA)",
+      "category": "recovery",
+      "added": "2026-11-12",
+      "via": "weekly-search:tulsa queer sober social event LGBTQ trivia night"
     }
   ],
   "partner_keywords": [
@@ -216,6 +312,78 @@
       "name": "Riffs At Hard Rock Hotel & Casino Tulsa",
       "added": "2026-10-04",
       "via": "venue-miner"
+    },
+    {
+      "kw": "magic city books",
+      "name": "Magic City Books",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "kw": "cousins",
+      "name": "Cousins",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "kw": "prism project",
+      "name": "Prism Project",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "kw": "473 bar",
+      "name": "473 Bar & Backyard",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "kw": "caz's pub",
+      "name": "Caz's Pub",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "kw": "root tulsa",
+      "name": "Root Tulsa",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "kw": "studio 308",
+      "name": "Studio 308",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "kw": "queer makers market",
+      "name": "Queer Makers Market (Tulsa)",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "kw": "freedom oklahoma",
+      "name": "Freedom Oklahoma",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "kw": "studio 66",
+      "name": "Studio 66",
+      "added": "2026-11-12",
+      "via": "weekly-search:Studio 66 Tulsa queer event production group"
+    },
+    {
+      "kw": "queer choir tulsa",
+      "name": "The Queer Choir (Tulsa)",
+      "added": "2026-11-12",
+      "via": "web-search"
+    },
+    {
+      "kw": "community hope ucc",
+      "name": "Community Hope UCC",
+      "added": "2026-11-12",
+      "via": "weekly-search:Community Hope UCC Tulsa facebook events"
     }
   ],
   "retired": [

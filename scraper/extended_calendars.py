@@ -215,6 +215,10 @@ class ExtendedCalendarsScraper(BaseScraper):
         if not events:
             events = self._extract_tribe(soup, site_name, url)
 
+        # 3b. Try Simple Calendar (simcal) WordPress plugin
+        if not events:
+            events = self._extract_simcal(soup, site_name, url)
+
         # 4. Generic HTML fallback
         if not events:
             events = self._extract_generic(soup, site_name, url)
@@ -315,6 +319,43 @@ class ExtendedCalendarsScraper(BaseScraper):
             events.append(self.make_event(
                 name=name, date=date_str, venue=venue or site_name,
                 description=description, url=url, priority=2
+            ))
+        return events
+
+    def _extract_simcal(self, soup, site_name: str, base_url: str) -> List[Dict]:
+        """Extract events from the Simple Calendar (simcal) WordPress plugin.
+
+        Diagnosed live 2026-11-12 (report-sweeper-fix F-4604): hopeuu.org/calendar/
+        renders a full month grid with real dated events (46 .simcal-event nodes),
+        but uses none of JSON-LD/Localist/tribe markup, so it silently returned 0
+        events and false-flagged as DEAD every week. Each event's hidden tooltip
+        (.simcal-event-details, display:none) carries a machine-readable
+        ISO datetime in the start/end spans' `content` attribute.
+        """
+        events = []
+        for container in soup.select(".simcal-event")[:60]:
+            name_el = container.select_one(".simcal-event-title")
+            if not name_el:
+                continue
+            name = name_el.get_text(strip=True)
+            if not name or len(name) < 3:
+                continue
+            start_el = container.select_one(".simcal-event-start-date")
+            end_el = container.select_one(".simcal-event-end-time")
+            date_str, time_str = "", ""
+            if start_el:
+                raw = start_el.get("content", "")
+                if raw:
+                    date_str = self.parse_date_flexible(raw[:10])
+                start_time = container.select_one(".simcal-event-start-time")
+                st = start_time.get_text(strip=True) if start_time else ""
+                et = end_el.get_text(strip=True) if end_el else ""
+                time_str = f"{st}-{et}" if st and et else st
+            link = container.select_one("a[href]")
+            url = link["href"] if link and link.get("href", "").startswith("http") else ""
+            events.append(self.make_event(
+                name=name, date=date_str, time=time_str, venue=site_name,
+                description="", url=url or base_url, priority=2
             ))
         return events
 
