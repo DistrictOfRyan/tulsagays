@@ -49,9 +49,14 @@ TOPICS = [
         # not indexed", guide unknown) while it ranked the travel guide #6 for "gay bars
         # tulsa". Now: the blog post is THE guide; this page is "this week at the bars"
         # and links to it (deep_dive), and the post links back here.
-        "title": "Tulsa Gay Bars This Week: What's On at Every LGBTQ+ Bar",
+        # 2026-11-20: SEO ledger (tulsagays:ctr_rewrite:06987967, striking_distance:06987967) showed
+        # "lesbian bar tulsa" (31 impr) and "tulsa lesbian bar" (13 impr) are more than a third of
+        # this page's top-5 query impressions, at position 9-11, but the title/H2s never said
+        # "lesbian bar" - only the FAQ <summary> did. Title/desc now lead with it; extra_section
+        # below gives it a real H2 heading (the FAQ entry stays, unchanged).
+        "title": "Tulsa Gay & Lesbian Bars This Week",
         "h1": "Tulsa Gay Bars This Week",
-        "desc": "What's on this week at every LGBTQ+ bar in Tulsa, Oklahoma: drag, happy hours and parties, refreshed every Monday, plus a quick take on each bar.",
+        "desc": "Every LGBTQ+ bar in Tulsa, including the state's lesbian bar, Yellow Brick Road. What's on this week: drag, happy hours, parties. Refreshed every Monday.",
         "deep_dive": ("/blog/gay-bars-tulsa.html",
                       "Want the history and the feel of each bar before you go? Read our complete guide to Tulsa's gay bars."),
         "first_time_lead": "First time at one of these bars? Read what to expect at",
@@ -59,6 +64,11 @@ TOPICS = [
                        ("/blog/first-time-tulsa-eagle.html", "the Tulsa Eagle"),
                        ("/blog/first-time-ybr-tulsa.html", "Yellow Brick Road")],
         "intro": "Tulsa's queer nightlife punches well above the city's size. From a long-running leather and bear bar to the only lesbian bar in the state, here is every LGBTQ+ bar in Tulsa, what each is known for, and what is happening this week.",
+        "extra_section": ("Tulsa's Lesbian Bar",
+                           "Yellow Brick Road (YBR), on Cherry Street at 2630 E 15th St, is Tulsa's "
+                           "lesbian bar and one of the few remaining lesbian bars left in the country. "
+                           "It shares the same \"happening this week\" listings above as the city's "
+                           "other gay bars, so check there for this week's nights at YBR."),
         "types": ["bar"], "event_kw": ["bar", "drag", "club", "happy hour"], "venue_only": True,
         "faqs": [
             ("How many gay bars are in Tulsa?", "Tulsa has several dedicated LGBTQ+ bars including Tulsa Eagle, Yellow Brick Road (the state's lesbian bar), and Club Majestic, plus queer-friendly lounges like DVL."),
@@ -370,6 +380,10 @@ def render_page(topic, orgs, events):
         _links = [f'<a href="{h}">{esc(t)}</a>' for h, t in ft]
         deep_block += ('\n    <p class="topic-deepdive">' + esc(topic["first_time_lead"]) + ' '
                        + ', '.join(_links[:-1]) + ', or ' + _links[-1] + '.</p>')
+    # Optional named section (SEO 2026-11-20): a striking-distance query gets its own H2 so the
+    # literal query term appears in a real heading, not just an FAQ <summary>.
+    extra = topic.get("extra_section")
+    extra_block = (f'<h2>{esc(extra[0])}</h2>\n    <p>{esc(extra[1])}</p>' if extra else "")
     return f"""<!DOCTYPE html>
 <html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -397,6 +411,7 @@ def render_page(topic, orgs, events):
   <div class="about-content">
     <p class="topic-intro">{esc(topic['intro'])}</p>
     {deep_block}
+    {extra_block}
     <h2>The places &amp; groups</h2>
     <div class="topic-grid">{org_cards}</div>
     {events_block}
@@ -434,11 +449,11 @@ def _render_index(topics):
     return f"""<!DOCTYPE html>
 <html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LGBTQ+ Tulsa Guides: Bars, Drag, Churches, Support &amp; More | Tulsa Gays</title>
+<title>Tulsa LGBTQ+ Guides: Bars, Drag &amp; Churches | Tulsa Gays</title>
 <meta name="description" content="Deep guides to queer Tulsa: gay bars, drag shows, affirming churches, support groups, community organizations, and wellness.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="{BASE}/guides/index.html">
-<meta property="og:title" content="LGBTQ+ Tulsa Guides"><meta property="og:type" content="website">
+<meta property="og:title" content="Tulsa LGBTQ+ Guides"><meta property="og:type" content="website">
 <meta property="og:url" content="{BASE}/guides/index.html"><meta property="og:site_name" content="Tulsa Gays">
 <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
