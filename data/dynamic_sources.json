@@ -2,388 +2,363 @@
   "_comment": "Auto-grown by the weekly source-growth engine (tools/promote_sources.py). High-confidence Tulsa queer/queer-welcoming sources are appended here automatically; the scrapers merge these with their hardcoded lists at load time. Safe to hand-edit. Do not delete keys.",
   "fb_pages": [
     {
-      "url": "https://www.facebook.com/p/Oklahoma-Leather-Association-100087972230370/events",
-      "name": "Oklahoma Leather Association FB",
-      "added": "2026-09-05",
-      "via": "web-search",
-      "last_seen_week": "2026-W40",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
-      "url": "https://www.facebook.com/p/Ghoul-Friends-Queer-Cabaret-61564254665053/events",
-      "name": "Ghoul Friends Queer Cabaret",
-      "added": "2026-09-12",
-      "via": "web-search",
-      "last_seen_week": "2026-W40",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
-      "url": "https://www.facebook.com/100091661965106/events",
-      "name": "Tulsa Tassel Coalition (Tulsa Burlesque Festival)",
-      "added": "2026-09-13",
-      "via": "web-search",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
-      "url": "https://www.facebook.com/rainbowruntulsa/events",
-      "name": "Rainbow Run Tulsa",
-      "added": "2026-09-26",
-      "via": "web-search",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
-      "url": "https://www.facebook.com/housechurchtulsa/events",
-      "name": "House Church Tulsa",
-      "added": "2026-10-04",
-      "via": "weekly-search:tulsa affirming church craft club events"
-    },
-    {
       "url": "https://www.facebook.com/OkEqTulsaPride/events",
       "name": "Tulsa Pride (OkEq) FB",
       "added": "2026-11-11",
-      "via": "william-listing-map"
+      "via": "william-listing-map",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.facebook.com/tulsalitco/events",
       "name": "Magic City Books FB",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.facebook.com/BibleBeltQueers/events",
       "name": "Bible Belt Queers",
       "added": "2026-11-12",
-      "via": "weekly-search:Tulsa nonbinary community group facebook"
+      "via": "weekly-search:Tulsa nonbinary community group facebook",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.instagram.com/tulsa_burlesque_festival/events",
       "name": "Tulsa Burlesque Festival IG",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.facebook.com/bar473/events",
       "name": "473 Bar & Backyard",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.facebook.com/coffeeconpantulsa/events",
       "name": "Coffee Con Pan Tulsa",
       "added": "2026-11-12",
-      "via": "weekly-search:Tulsa bi+ pan community group"
+      "via": "weekly-search:Tulsa bi+ pan community group",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.facebook.com/boundforglorybooks/events",
       "name": "Bound For Glory Books - Drag Queen Story Hour",
       "added": "2026-11-12",
-      "via": "weekly-search:tulsa drag queen story hour rainbow story time"
+      "via": "weekly-search:tulsa drag queen story hour rainbow story time",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.facebook.com/youthservicesoftulsa/events",
       "name": "Youth Services of Tulsa - LGBTQ programs (GSA network, Weekly Coffee House)",
       "added": "2026-11-12",
-      "via": "weekly-search:tulsa queer parents family group LGBTQ youth GSA"
+      "via": "weekly-search:tulsa queer parents family group LGBTQ youth GSA",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.facebook.com/studio308tulsa/events",
       "name": "Studio 308",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.facebook.com/profile.php?id=1782136978672910/events",
       "name": "Caz's Pub",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.facebook.com/metropolitanchurchtulsa/events",
       "name": "The Met Church (Metropolitan Community Church Tulsa)",
       "added": "2026-11-12",
-      "via": "weekly-search:Metropolitan Community Church Tulsa events"
+      "via": "weekly-search:Metropolitan Community Church Tulsa events",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     }
   ],
   "fb_groups": [
     {
-      "url": "https://www.facebook.com/groups/tulsa2s/events",
-      "name": "Tulsa Two Spirit Society Group",
-      "added": "2026-09-13",
-      "via": "web-search",
-      "last_seen_week": "2026-W40",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
-      "url": "https://www.facebook.com/groups/649753022551343/events",
-      "name": "Oklahoma Lesbian Friends",
-      "added": "2026-09-20",
-      "via": "web-search",
-      "last_seen_week": "2026-W40",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
       "url": "https://www.facebook.com/groups/queerexchangetulsa/events",
       "name": "Queer Exchange Tulsa",
       "added": "2026-11-11",
-      "via": "william-listing-map"
+      "via": "william-listing-map",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.facebook.com/groups/circleslgbtq/events",
       "name": "Circles LGBTQ+",
       "added": "2026-11-11",
-      "via": "william-listing-map"
+      "via": "william-listing-map",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.facebook.com/groups/920056358043761/events",
       "name": "Intersectional queer social space (listing map)",
       "added": "2026-11-11",
-      "via": "william-listing-map"
+      "via": "william-listing-map",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.facebook.com/groups/648563533672801/events",
       "name": "IndigiQueer (Indigenous LGBTQ)",
       "added": "2026-11-11",
-      "via": "william-listing-map"
+      "via": "william-listing-map",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.facebook.com/groups/112525672769614/events",
       "name": "Tulsa Two Spirit",
       "added": "2026-11-11",
-      "via": "william-listing-map"
+      "via": "william-listing-map",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     }
   ],
   "calendars": [
     {
-      "url": "https://www.hopeuu.org/calendar/",
-      "name": "Hope Unitarian Church",
-      "category": "church",
-      "added": "2026-09-06",
-      "via": "weekly-search:tulsa open and affirming congregation events",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
-      "url": "tulsaburlesquefestival.net",
+      "url": "https://tulsaburlesquefestival.net",
       "name": "Tulsa Burlesque Festival",
       "category": "community",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
-      "url": "bar473.com",
+      "url": "https://bar473.com",
       "name": "473 Bar & Backyard",
       "category": "lgbtq",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://tulsa.gaycities.com/events",
       "name": "GayCities Tulsa",
       "category": "lgbtq",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.wesleytu.org/banned-book-club",
       "name": "Banned Book Club (Tulsa Wesley Foundation)",
       "category": "org",
       "added": "2026-11-12",
-      "via": "weekly-search:Tulsa queer book club"
+      "via": "weekly-search:Tulsa queer book club",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://tccl.bibliocommons.com/v2/list/display/598036957/2878541997",
       "name": "TCCL This Book Group Is Queer",
       "category": "community",
       "added": "2026-11-12",
-      "via": "weekly-search:tulsa queer book club 2026"
+      "via": "weekly-search:tulsa queer book club 2026",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "",
       "name": "Root Tulsa",
       "category": "lgbtq",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.community-yoga.com/new-page",
       "name": "Community Yoga & Wellness Center - Queer Affinity Meditation",
       "category": "wellness",
       "added": "2026-11-12",
-      "via": "weekly-search:tulsa queer wellness group meditation"
+      "via": "weekly-search:tulsa queer wellness group meditation",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://www.eventbrite.com/o/queer-sober-social-67272170773",
       "name": "Queer Sober Social",
       "category": "social",
       "added": "2026-11-12",
-      "via": "weekly-search:Tulsa queer sober social event group"
+      "via": "weekly-search:Tulsa queer sober social event group",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "url": "https://aaoklahoma.org/meetings/lambda-unity-3/",
       "name": "Lambda Unity Group (LGBTQ+ AA)",
       "category": "recovery",
       "added": "2026-11-12",
-      "via": "weekly-search:tulsa queer sober social event LGBTQ trivia night"
+      "via": "weekly-search:tulsa queer sober social event LGBTQ trivia night",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
+    },
+    {
+      "url": "https://jkpctulsa.org",
+      "name": "JKPC Tulsa site",
+      "category": "lgbtq",
+      "added": "2026-11-19",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
+    },
+    {
+      "url": "https://jkpctulsa.org/series/queer-lgbtq-affinity-book-club/",
+      "name": "JKPC Queer (LGBTQIA+) Affinity Book Club",
+      "category": "church",
+      "added": "2026-11-22",
+      "via": "weekly-search:tulsa queer book club"
+    },
+    {
+      "url": "https://tleavesbooks.com/book-club",
+      "name": "Talking Queer Books Club (Talking Leaves Books)",
+      "category": "arts",
+      "added": "2026-11-22",
+      "via": "weekly-search:tulsa queer book club"
     }
   ],
   "partner_keywords": [
     {
-      "kw": "tulsa leather community",
-      "name": "Tulsa Leather Community (TLC)",
-      "added": "2026-09-05",
-      "via": "web-search",
-      "last_seen_week": "2026-W32",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
-      "kw": "oklahoma leather association",
-      "name": "Oklahoma Leather Association",
-      "added": "2026-09-05",
-      "via": "web-search",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
-      "kw": "queer crafters club",
-      "name": "Queer Crafters Club",
-      "added": "2026-09-06",
-      "via": "weekly-search:tulsa queer makers market vendor event 2026",
-      "last_seen_week": "2026-W40",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
-      "kw": "duet jazz restaurant",
-      "name": "Duet Jazz Restaurant",
-      "added": "2026-09-06",
-      "via": "venue-miner",
-      "last_seen_week": "2026-W34",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
-      "kw": "tulsa tassel coalition",
-      "name": "Tulsa Tassel Coalition",
-      "added": "2026-09-13",
-      "via": "web-search",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
-      "kw": "north hall",
-      "name": "North Hall",
-      "added": "2026-09-20",
-      "via": "venue-miner",
-      "last_seen_week": "2026-W40",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
-      "kw": "gay kickball tulsa",
-      "name": "GayKickball Tulsa",
-      "added": "2026-09-26",
-      "via": "web-search",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
-      "kw": "mixed-use space tulsa",
-      "name": "Mixed-Use Space Tulsa (MUST)",
-      "added": "2026-10-03",
-      "via": "web-search",
-      "seen_count": 0,
-      "last_checked": "2026-10-04"
-    },
-    {
-      "kw": "track 5 at hard rock hotel & casino tulsa",
-      "name": "Track 5 At Hard Rock Hotel & Casino Tulsa",
-      "added": "2026-10-04",
-      "via": "venue-miner"
-    },
-    {
-      "kw": "riffs at hard rock hotel & casino tulsa",
-      "name": "Riffs At Hard Rock Hotel & Casino Tulsa",
-      "added": "2026-10-04",
-      "via": "venue-miner"
-    },
-    {
       "kw": "magic city books",
       "name": "Magic City Books",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "kw": "cousins",
       "name": "Cousins",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "last_seen_week": "2026-W40",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "kw": "prism project",
       "name": "Prism Project",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "kw": "473 bar",
       "name": "473 Bar & Backyard",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "last_seen_week": "2026-W40",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "kw": "caz's pub",
       "name": "Caz's Pub",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "kw": "root tulsa",
       "name": "Root Tulsa",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "kw": "studio 308",
       "name": "Studio 308",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "last_seen_week": "2026-W42",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "kw": "queer makers market",
       "name": "Queer Makers Market (Tulsa)",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "kw": "freedom oklahoma",
       "name": "Freedom Oklahoma",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "kw": "studio 66",
       "name": "Studio 66",
       "added": "2026-11-12",
-      "via": "weekly-search:Studio 66 Tulsa queer event production group"
+      "via": "weekly-search:Studio 66 Tulsa queer event production group",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "kw": "queer choir tulsa",
       "name": "The Queer Choir (Tulsa)",
       "added": "2026-11-12",
-      "via": "web-search"
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
     },
     {
       "kw": "community hope ucc",
       "name": "Community Hope UCC",
       "added": "2026-11-12",
-      "via": "weekly-search:Community Hope UCC Tulsa facebook events"
+      "via": "weekly-search:Community Hope UCC Tulsa facebook events",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
+    },
+    {
+      "kw": "john knox presbyterian",
+      "name": "John Knox Presbyterian Church (JKPC Tulsa)",
+      "added": "2026-11-19",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22"
+    },
+    {
+      "kw": "the vanguard - tulsa",
+      "name": "The Vanguard - Tulsa",
+      "added": "2026-11-22",
+      "via": "venue-miner"
     }
   ],
   "retired": [
@@ -1288,6 +1263,215 @@
       "last_checked": "2026-10-04",
       "retired_reason": "never produced an event",
       "retired_at": "2026-10-04",
+      "from": "partner_keywords"
+    },
+    {
+      "url": "https://www.facebook.com/p/Oklahoma-Leather-Association-100087972230370/events",
+      "name": "Oklahoma Leather Association FB",
+      "added": "2026-09-05",
+      "via": "web-search",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "fb_pages"
+    },
+    {
+      "url": "https://www.facebook.com/p/Ghoul-Friends-Queer-Cabaret-61564254665053/events",
+      "name": "Ghoul Friends Queer Cabaret",
+      "added": "2026-09-12",
+      "via": "web-search",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "fb_pages"
+    },
+    {
+      "url": "https://www.facebook.com/100091661965106/events",
+      "name": "Tulsa Tassel Coalition (Tulsa Burlesque Festival)",
+      "added": "2026-09-13",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "fb_pages"
+    },
+    {
+      "url": "https://www.facebook.com/rainbowruntulsa/events",
+      "name": "Rainbow Run Tulsa",
+      "added": "2026-09-26",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "fb_pages"
+    },
+    {
+      "url": "https://www.facebook.com/housechurchtulsa/events",
+      "name": "House Church Tulsa",
+      "added": "2026-10-04",
+      "via": "weekly-search:tulsa affirming church craft club events",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "fb_pages"
+    },
+    {
+      "url": "https://www.facebook.com/groups/tulsa2s/events",
+      "name": "Tulsa Two Spirit Society Group",
+      "added": "2026-09-13",
+      "via": "web-search",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "fb_groups"
+    },
+    {
+      "url": "https://www.facebook.com/groups/649753022551343/events",
+      "name": "Oklahoma Lesbian Friends",
+      "added": "2026-09-20",
+      "via": "web-search",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "fb_groups"
+    },
+    {
+      "url": "https://www.hopeuu.org/calendar/",
+      "name": "Hope Unitarian Church",
+      "category": "church",
+      "added": "2026-09-06",
+      "via": "weekly-search:tulsa open and affirming congregation events",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "calendars"
+    },
+    {
+      "kw": "tulsa leather community",
+      "name": "Tulsa Leather Community (TLC)",
+      "added": "2026-09-05",
+      "via": "web-search",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "partner_keywords"
+    },
+    {
+      "kw": "oklahoma leather association",
+      "name": "Oklahoma Leather Association",
+      "added": "2026-09-05",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "partner_keywords"
+    },
+    {
+      "kw": "queer crafters club",
+      "name": "Queer Crafters Club",
+      "added": "2026-09-06",
+      "via": "weekly-search:tulsa queer makers market vendor event 2026",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "partner_keywords"
+    },
+    {
+      "kw": "duet jazz restaurant",
+      "name": "Duet Jazz Restaurant",
+      "added": "2026-09-06",
+      "via": "venue-miner",
+      "last_seen_week": "2026-W34",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "partner_keywords"
+    },
+    {
+      "kw": "tulsa tassel coalition",
+      "name": "Tulsa Tassel Coalition",
+      "added": "2026-09-13",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "partner_keywords"
+    },
+    {
+      "kw": "north hall",
+      "name": "North Hall",
+      "added": "2026-09-20",
+      "via": "venue-miner",
+      "last_seen_week": "2026-W45",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "partner_keywords"
+    },
+    {
+      "kw": "gay kickball tulsa",
+      "name": "GayKickball Tulsa",
+      "added": "2026-09-26",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "partner_keywords"
+    },
+    {
+      "kw": "mixed-use space tulsa",
+      "name": "Mixed-Use Space Tulsa (MUST)",
+      "added": "2026-10-03",
+      "via": "web-search",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "partner_keywords"
+    },
+    {
+      "kw": "track 5 at hard rock hotel & casino tulsa",
+      "name": "Track 5 At Hard Rock Hotel & Casino Tulsa",
+      "added": "2026-10-04",
+      "via": "venue-miner",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
+      "from": "partner_keywords"
+    },
+    {
+      "kw": "riffs at hard rock hotel & casino tulsa",
+      "name": "Riffs At Hard Rock Hotel & Casino Tulsa",
+      "added": "2026-10-04",
+      "via": "venue-miner",
+      "last_seen_week": "2026-W47",
+      "seen_count": 0,
+      "last_checked": "2026-11-22",
+      "retired_reason": "never produced an event",
+      "retired_at": "2026-11-22",
       "from": "partner_keywords"
     }
   ]

@@ -308,6 +308,19 @@ ORGS: List[Dict] = [
         "blurb": "Council Oak Men's Chorale is Tulsa's gay men's chorus. Details on "
                  "Instagram @counciloakmenschorale.",
     },
+    {
+        # Loud & Queer Fest: added to config.LGBTQ_SOURCES 2026-11-02 but never
+        # wired into this scraper, leaving it a dangling source_name that pulled
+        # zero events (coverage_report.py's last standing gap, 2026-11-22).
+        # Verified live same day: InstagramOrgScraper._fetch_via_graph() on
+        # @loudandqueeroklahoma returns 12 real posts.
+        "username": "loudandqueeroklahoma",
+        "source_name": "loud_queer_fest",
+        "default_venue": "Tulsa (see @loudandqueeroklahoma for venue)",
+        "priority": 2,
+        "blurb": "Loud & Queer Fest is a community celebration of queer and trans "
+                 "music and art in Tulsa. Details on Instagram @loudandqueeroklahoma.",
+    },
 ]
 
 
