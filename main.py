@@ -192,7 +192,21 @@ def cmd_verify(week=None):
 # only by history. The bug it now guards against (a field-by-field "best of"
 # merge that took the title from one record and the venue from another) shipped
 # a wrong address on a live carousel precisely because nothing tested this.
-def _dedup_day(ev_list):
+#
+# `confirmed` (added 2026-11-23): an optional callable, row -> bool, that says
+# whether a row is source-confirmed (cmd_generate passes TruthStatus.featurable).
+# When a duplicate is confirmed and the record we were keeping is not, the
+# confirmed record becomes the one we keep and the other is folded into it with
+# the same enrich-never-relocate rules. The kept row is then the exact record
+# the truth check read, so nothing is copied onto a row that was never checked.
+#
+# Live failure: W48's Elote show was in data/events twice, "Céline Dion Dinner &
+# Drag" (manual, an Instagram flyer, unverifiable) and "Dinner & Drag: Nov. 27th -
+# CÉLINE Dion!" (Elote's own page, CONFIRMED in truth_report.json). The manual row
+# came first, so it won the merge, the deck carried a row truth_status could not
+# confirm by (name, date), and the confirmed-first Event of the Week picker fell
+# back to a weaker pick while the website (separate dedup) headlined the show.
+def _dedup_day(ev_list, confirmed=None):
     def _norm(s):
         return re.sub(r'\W+', ' ', (s or '').lower()).strip()
 
@@ -293,15 +307,49 @@ def _dedup_day(ev_list):
             seen[key] = len(result)
             result.append(dict(ev))
         else:
+            # Keep the SOURCE-CONFIRMED record (2026-11-23, see the note above
+            # the def). Arrival order must not decide which of two duplicates
+            # the deck shows when only one of them was checked against its source.
+            _conf_kept = _conf_new = False
+            if confirmed is not None:
+                try:
+                    _conf_kept = bool(confirmed(result[idx]))
+                    _conf_new = bool(confirmed(ev))
+                except Exception:
+                    _conf_kept = _conf_new = False
+            if _conf_new and not _conf_kept:
+                _donor = result[idx]
+                _winner = dict(ev)
+                # Facts the old record held that must survive the swap: a venue
+                # conflict it already recorded (preflight blocks on it), a time
+                # the confirmed record lacks, and the LGBTQ flag.
+                for _vc in (_donor.get('venue_conflict') or []):
+                    _wc = _winner.setdefault('venue_conflict', [])
+                    if _vc not in _wc:
+                        _wc.append(_vc)
+                if _donor.get('time') and not _winner.get('time'):
+                    _winner['time'] = _donor['time']
+                if _donor.get('lgbtq_relevant'):
+                    _winner['lgbtq_relevant'] = True
+                print(f"  [dedup] kept source-confirmed '{_winner.get('name', '?')}' over "
+                      f"unconfirmed '{_donor.get('name', '?')}' ({date})")
+                result[idx] = _winner
+                # The old record is now the duplicate folded in below.
+                ev = _donor
+                _conf_kept, _conf_new = True, False
             existing = result[idx]
             # Prefer the more informative title (one that names a venue via
             # " at ") -- but ONLY when that title's venue agrees with the record
             # we're keeping. Adopting "... at Courtyard Downtown" onto a record
             # whose venue line says "Dennis R. Neill Equality Center" is how W32
             # shipped a slide that contradicted itself (2026-08-04).
+            # Never rename a confirmed record to an unconfirmed duplicate's
+            # title: the confirmation is keyed on (name, date), so the rename
+            # would throw it away (2026-11-23).
             _en = existing.get('name', '') or ''
             _nn = ev.get('name', '') or ''
-            if ' at ' in _nn.lower() and ' at ' not in _en.lower():
+            if (' at ' in _nn.lower() and ' at ' not in _en.lower()
+                    and not (_conf_kept and not _conf_new)):
                 try:
                     from scraper.runner import _same_venue_place as _svp_n
                 except Exception:
@@ -311,7 +359,9 @@ def _dedup_day(ev_list):
                 if not _cur_venue or _svp_n(_claimed, _cur_venue):
                     existing['name'] = _nn
             # Keep the canonical "Pride Kickoff" name for the combined event.
-            if 'pride kickoff' in name_norm and 'pride kickoff' not in _norm(existing.get('name', '')):
+            # (Read from ev, not name_norm: after a confirmed-record swap above,
+            # ev is the folded-in duplicate, and its name is the one to test.)
+            if 'pride kickoff' in _norm(ev.get('name', '')) and 'pride kickoff' not in _norm(existing.get('name', '')):
                 existing['name'] = ev.get('name', existing.get('name'))
             new_venue = ev.get('venue') or ''
             old_venue = existing.get('venue') or ''
@@ -379,8 +429,15 @@ def _dedup_day(ev_list):
                     print(f"  [dedup] VENUE CONFLICT on '{existing.get('name','?')}' "
                           f"({date}): kept '{old_venue}', refused '{new_venue}' "
                           f"(no confirmed override -- preflight will block)")
-            # Take longest/best description (keep sassy copy)
-            if len(ev.get('description') or '') > len(existing.get('description') or ''):
+            # Take longest/best description (keep sassy copy) -- unless we are
+            # keeping the source-confirmed record and the duplicate is not
+            # confirmed: then the confirmed record's own text stays (2026-11-23).
+            # W48: the manual row's longer blurb ("...the rare plan that costs no
+            # energy...") replaced Elote's own "drag performances" description,
+            # and with it went the only drag keyword the hero tiers could see.
+            _keep_own_text = _conf_kept and not _conf_new and (existing.get('description') or '').strip()
+            if (len(ev.get('description') or '') > len(existing.get('description') or '')
+                    and not _keep_own_text):
                 existing['description'] = ev['description']
             # Take URL if missing
             if ev.get('url') and not existing.get('url'):
@@ -1152,7 +1209,11 @@ def cmd_generate(post_type="weekday"):
     # 3 distinct events, not the same event twice.
     for day in days_of_week:
         before = len(events_by_day[day])
-        events_by_day[day] = _dedup_day(events_by_day[day])
+        # Prefer the source-confirmed record when two duplicates merge, so the
+        # row the featured/EOTW pickers see keeps its confirmation (2026-11-23).
+        events_by_day[day] = _dedup_day(
+            events_by_day[day],
+            confirmed=(_truth.featurable if _truth is not None else None))
         after = len(events_by_day[day])
         if before != after:
             print(f"  [dedup] {day}: {before} -> {after} events (collapsed {before - after} duplicates)")

@@ -1090,6 +1090,95 @@ def test_w32_venue_relocation():
           not has_override_for("Homo Hotel Happy Hour", "2026-12-04"))
 
 
+def test_w48_confirmed_row_wins_dedup():
+    """W48 (2026-11-23): Elote's Céline Dion dinner-and-drag show was in the week's
+    events twice. 'Céline Dion Dinner & Drag' (manual, an Instagram flyer no machine
+    can read) came first; 'Dinner & Drag: Nov. 27th - CÉLINE Dion!' (Elote's own
+    page) was CONFIRMED by verify_week_truth. main._dedup_day kept the first one, so
+    the deck row could not be confirmed by (name, date) and the confirmed-first
+    Event of the Week picker fell back to 'Friendsgiving with NASA'. The merge also
+    replaced Elote's 'drag performances' text with the manual row's longer blurb,
+    which took away the only drag keyword the hero tiers could see.
+
+    The rows below are the real W48 records, trimmed (data/ is not in git)."""
+    print("W48 confirmed-row dedup locks:")
+    import unittest.mock as _mock
+    from datetime import date as _date
+    try:
+        from main import _dedup_day as _dd
+        from tools.truth_status import TruthStatus
+    except Exception as e:
+        check("W48: main._dedup_day + TruthStatus importable", False, str(e))
+        return
+
+    manual = {"name": "Céline Dion Dinner & Drag", "date": "2026-11-27", "time": "6:30 PM",
+              "venue": "Elote Cafe, 514 S Boston Ave", "priority": 2, "source": "manual",
+              "url": "https://www.instagram.com/p/Df2mzKrpQwt/", "lgbtq_relevant": True,
+              "description": "Céline Dion Dinner & Drag is the rare plan that costs no energy: "
+                             "come as you are, stay an hour, and leave whenever you want. "
+                             "That's the whole deal. Catch it at Elote Cafe on 2026-11-27, 6:30 PM."}
+    elote = {"name": "Dinner & Drag: Nov. 27th - CÉLINE Dion!", "date": "2026-11-27",
+             "time": "6:30 PM", "venue": "Elote Cafe & Catering", "priority": 2,
+             "source": "community_groups", "lgbtq_relevant": True,
+             "url": "https://www.elotetulsa.com/events/drag-sing-a-long-gaga-vs-madonna-8hy4r-g52j2-x4mhs-weygn",
+             "description": "Enjoy dinner, Celine Dion sing-alongs, drag performances, "
+                            "cocktails, sequins, and dramatic air-drumming"}
+    nasa = {"name": "Friendsgiving with NASA", "date": "2026-11-23", "time": "5:30 PM - 7:30 PM",
+            "venue": "Metro Fireplace Lounge", "priority": 2, "source": "tcc_pride",
+            "lgbtq_relevant": True, "url": "https://www.instagram.com/p/Df2cHxcAFWb/",
+            "description": "TCC Pride is the LGBTQ+ student organization at Tulsa Community College.",
+            "human_verified": {"evidence_url": "https://www.instagram.com/p/Df2cHxcAFWb/",
+                               "action": "verified"}}
+    # truth_report.json "confirmed" for W48 held Elote's row, not the manual one.
+    ts = TruthStatus("2026-W48", confirmed_keys={(elote["name"], elote["date"])},
+                     rows_by_key={}, report_present=True, report_has_confirmed=True, ledger=None)
+
+    got = _dd([dict(manual), dict(elote)], confirmed=ts.featurable)
+    row = got[0] if got else {}
+    check("W48: the two Céline rows still collapse to one", len(got) == 1, f"got {len(got)}")
+    check("W48: kept row is Elote's source-confirmed record",
+          row.get("name") == elote["name"] and row.get("url") == elote["url"]
+          and row.get("source") == "community_groups", f"kept {row.get('name')!r}")
+    check("W48: kept row is featurable by (name, date)", ts.featurable(row))
+    check("W48: confirmed row keeps its own description (drag keyword survives)",
+          "drag performances" in (row.get("description") or ""), (row.get("description") or "")[:80])
+    check("W48: same-place street address still enriches the confirmed row",
+          "514 S Boston" in (row.get("venue") or ""), f"venue={row.get('venue')!r}")
+    rev = _dd([dict(elote), dict(manual)], confirmed=ts.featurable)
+    check("W48: arrival order no longer decides (confirmed-first gives the same row)",
+          len(rev) == 1 and rev[0].get("name") == elote["name"]
+          and rev[0].get("description") == row.get("description"))
+    # The " at <venue>" title rule would rename the kept row (and so drop its
+    # (name, date) confirmation); it still fires when nothing is confirmed.
+    at_dup = dict(manual, name="Dinner & Drag Nov. 27th - Céline Dion at Elote Cafe")
+    ren = _dd([dict(elote), dict(at_dup)], confirmed=ts.featurable)
+    ren_plain = _dd([dict(elote), dict(at_dup)])
+    check("W48: a confirmed row is never renamed to an unconfirmed ' at ' title",
+          len(ren) == 1 and ren[0].get("name") == elote["name"]
+          and len(ren_plain) == 1 and ren_plain[0].get("name") == at_dup["name"],
+          f"confirmed={[r.get('name') for r in ren]} plain={[r.get('name') for r in ren_plain]}")
+    old = _dd([dict(manual), dict(elote)])
+    check("W48: without a truth callable the merge is unchanged",
+          len(old) == 1 and old[0].get("name") == manual["name"])
+
+    # The pick itself, hermetic: no manual pins (week_key=None), no partners,
+    # no on-disk history (fresh=False), and a fixed 'today' inside W48.
+    _saved_today = es._TODAY_OVERRIDE
+    es._TODAY_OVERRIDE = _date(2026, 11, 23)
+    try:
+        with _mock.patch.object(es, "_load_partner_matchers", lambda: []):
+            before = es.select_eotw_list([dict(r) for r in old] + [dict(nasa)], week_key=None,
+                                         confirmed=ts.featurable, fresh=False)
+            after = es.select_eotw_list([dict(r) for r in got] + [dict(nasa)], week_key=None,
+                                        confirmed=ts.featurable, fresh=False)
+    finally:
+        es._TODAY_OVERRIDE = _saved_today
+    check("W48: old merge reproduces the Friendsgiving fallback",
+          [p.get("name") for p in before] == [nasa["name"]], str([p.get("name") for p in before]))
+    check("W48: Event of the Week on the deduped rows is the Céline show",
+          [p.get("name") for p in after] == [elote["name"]], str([p.get("name") for p in after]))
+
+
 def test_event_schema_end_dates():
     """Regression lock, 2026-11-03 (ledger slug tulsagays-schema-gaps).
 
@@ -1291,6 +1380,7 @@ def main():
     test_w40_top_pick_quality()
     test_w46_gay_first_and_welcoming()
     test_w32_venue_relocation()
+    test_w48_confirmed_row_wins_dedup()
     test_ig_date_anchor_contract()
     test_tulsa_eagle_ig_extraction()
     test_anonymity_allowlist()
