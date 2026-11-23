@@ -201,6 +201,18 @@ _DRAG_KW = {
     "dragnificent", "inner circle drag",
     "drag extravaganza", "drag pageant", "drag ball",
     "drag revue",
+    # Title-only shows (2026-11-23). Elote's monthly shows are listed as
+    # "Dinner & Drag: Nov. 27th - CÉLINE Dion!" and "DRAG sing along - ..." /
+    # "Drag Sing-a-Long: ...", so a row with no drag phrase in its description
+    # scored no tier at all and lost the W48 hero to "Friendsgiving with NASA".
+    # Taken from the real misses in data/events/*_all.json plus Elote's own
+    # events page. Bare "drag" stays out: "Fun Friday Drags", "Legendary
+    # Midnight Drags", "drag looks" on a dog pageant, "drags you into" in a film
+    # blurb. Multi-word phrases only, and _is_drag_racing still runs first.
+    "dinner & drag", "dinner and drag", "drag dinner", "drag & dinner",
+    "drag sing-along", "drag sing along", "drag singalong", "drag sing-a-long",
+    "drag lunch", "drag roulette", "drag artist", "house of drag",
+    "drag me to the movies", "once upon a drag",
 }
 
 # Queer performances that aren't "drag shows" per se but are high-value
@@ -1410,6 +1422,28 @@ def _selftest() -> int:
         fails.append("'transgender' must still count as LGBTQ")
     if _has_venue({"venue": "Shared by Stacy Gorley"}):
         fails.append("'Shared by <name>' is Facebook chrome, not a venue")
+
+    # drag shows named only in the title (W48: Elote's "Dinner & Drag" scored no
+    # tier and the hero fell to "Friendsgiving with NASA"), and the uses of
+    # "drag" that must stay out
+    for _title in ("Dinner & Drag: Nov. 27th - CÉLINE Dion!",
+                   "DRAG sing along - March 27th GONE COUNTRY",
+                   "Drag Sing-a-Long: May 22nd - Gaga vs. Madonna",
+                   "Pride Drag Lunch", "Drag Roulette",
+                   "Drag Me to the Movies: The Craft"):
+        _row = {"name": _title, "venue": "Elote Cafe, 514 S Boston Ave", "source": "community_groups"}
+        if not _is_drag(_row) or _eotw_tier(_row) != 2:
+            fails.append(f"title-only drag show not scored as drag: {_title}")
+    for _row in ({"name": "Fun Friday Drags Night", "venue": "Tulsa Raceway Park", "source": "eventbrite"},
+                 {"name": "Cars, Coffee & Drags", "venue": "Tulsa", "source": "eventbrite"},
+                 {"name": "Weekend Karaoke: Friday and Saturday Nights at Elote Cafe", "venue": "Elote Cafe",
+                  "source": "elote"},
+                 {"name": "2026 Gayest Dog in Tulsa Pageant", "venue": "Park", "source": "manual",
+                  "description": "rescue pups strut full drag looks at high noon"},
+                 {"name": "WTO/99", "venue": "Circle Cinema", "source": "circle_cinema",
+                  "description": "wto/99 drags you straight into the chaos of seattle"}):
+        if _is_drag(_row):
+            fails.append(f"non-drag use of 'drag' scored as a drag show: {_row['name']}")
     global _TODAY_OVERRIDE
     _saved = _TODAY_OVERRIDE
     try:
