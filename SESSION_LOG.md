@@ -1,3 +1,23 @@
+## [2026-11-23 17:05] Make the Event of the Week rotate instead of repeating the Equality Center and weekly drag nights
+
+William: "the event of the week, unless it's Homo Hotel Happy Hour, should rarely be like [DRAGNIFICENT], which is every [week] ... no one's going to look at the site if you're just saying the same things over and over." The shipped manifests showed why. The Equality Center held the hero slot in 15 of 17 weeks (W31-W47), via the OKEQ partner auto-highlight matching the venue. DRAGNIFICENT won 6x, the Elote Drag Brunch 4x and Drag Bingo 3x.
+
+What changed in `eotw_selector.py`:
+1. Freshness now ranks ahead of tier. From worst to best: standing weekly programming (in 2+ of the last 4 weeks' listings, or a weekly name), then a series that was the hero in the last 12 weeks, then last week's hero building. A building used 2-3 weeks ago is only a tie-breaker.
+2. HHHH, Council Oak and annual landmarks (Pride, TDoR, World AIDS Day) stay exempt and on top.
+3. Partner auto-lead fires only for one-offs.
+4. Tier 5 sees gay-venue events, with word-bounded keywords.
+5. A hero needs a date and a real venue, and a mid-week refresh never keeps one that already happened.
+
+New `tools/eotw_replay.py` replays real weeks through the picker. The selftest runs in `verify_all.py`. A side session then fixed the dedup merge so a merged event keeps its duplicate's confirmation.
+
+**Checked:** replay W33-W48 had 0 violations, with the Equality Center at 12 of 16 weeks shipped vs 7 of 16 replayed (3 auto). The real `gen_website_html.py`, run in a temp worktree, bannered "Dinner & Drag: Nov. 27th - CÉLINE Dion!" both today and simulating Wednesday. Elote's own page JSON-LD confirms startDate 2026-11-27T18:30-06:00. A mutation test with freshness disabled fails 5 selftest checks. Unlazy gate `tulsagays-eotw-freshness` passed 6/6. The W48 carousel (already posted) was not touched.
+
+**Main artifact:** `c44458c8` (pushed `29f0ea87..c44458c8`): `eotw_selector.py`, `tools/eotw_replay.py`, `verify_all.py`. Plus `30991eec` (`main.py`, `tests/test_pipeline.py`, dedup keeps the confirmed row; on local main, not yet pushed).
+**Open items:** The live site banner shows Broadway Clubhouse until Wednesday's refresh rebuilds it with the new picker. `30991eec` goes out with that refresh's push. `tests/test_pipeline.py` "featured gay ratio >=40%" (5/21 on the W48 manifest) fails on main, identically before this change, so `verify_all.py` and CI are red. FB/manual one-offs can't be machine-confirmed, so they can't headline without a recorded human check.
+
+---
+
 ## [2026-11-19 11:23] Give TulsaGays posts a classy holiday touch on the holiday itself, not just the holiday month
 
 William: "let's make sure that we add a little flare to the posts for Tulsa Gays as well for the holidays... simple little classy details that kind of make it festive but not over the top." The month themes from a3af152e already dressed whole decks. This adds the holiday's own day:
