@@ -312,7 +312,18 @@ def _is_drag(e: Dict) -> bool:
 
 def _is_queer_perf(e: Dict) -> bool:
     t = _text(e)
-    return any(kw in t for kw in _QUEER_PERF_KW)
+    if any(kw in t for kw in _QUEER_PERF_KW):
+        return True
+    # A revue or burlesque at a gay venue / from a queer org is a queer
+    # performance even when the title carries no queer keyword. W48's "RED
+    # RIBBON REVUE UNDERWEAR AUCTION W/PORSCHE LYNN" at the Eagle matched no
+    # tier at all, so the week's best one-off was never a candidate. The bare
+    # word stays out of _QUEER_PERF_KW because "Holiday Revue" at a church is
+    # not a queer night.
+    name = (e.get("name") or "").lower()
+    if re.search(r"\b(revue|burlesque)\b", name) and _is_lgbtq_strict(e):
+        return True
+    return False
 
 
 def _is_lgbtq(e: Dict) -> bool:
@@ -503,6 +514,438 @@ def _sort_key(e: Dict) -> tuple:
 
 
 # ---------------------------------------------------------------------------
+# Freshness (William 2026-11-23)
+# ---------------------------------------------------------------------------
+# William: "the event of the week, unless it's Homo Hotel Happy Hour, should
+# rarely be like [DRAGNIFICENT], which is every [week] ... no one's going to look
+# at the site if you're just saying the same things over and over. You're
+# supposed to be introducing new things."
+#
+# What shipped before this: 15 of 17 weeks (W31-W47) put an Equality Center
+# event in the hero slot (the OKEQ partner auto-highlight matched the venue, so
+# any OKEQ programme led), Rainbow Harvest won 3 times, Queer Crafters Club
+# twice, and the second slot went to DRAGNIFICENT 6 times, the Elote Drag Brunch
+# 4 times and Drag Bingo 3 times. The tier ladder never asked "have we said this
+# before?", and its only recurring guard was source == "recurring", which weekly
+# shows from community_groups / qlist / rendered_sites never carry.
+#
+# So every candidate below Homo Hotel Happy Hour and Council Oak gets a
+# freshness BUCKET, and the bucket ranks BEFORE the tier:
+#   0  brand new: its series is in none of the last 4 weeks' listings
+#   1  fresh: seen before, but not weekly and not a recent hero
+#   2  its VENUE held the hero slot in the last 3 weeks
+#   3  its SERIES held the hero slot in the last 12 weeks
+#   4  STANDING: weekly programming (in 2+ of the last 4 weeks' listings, a
+#      recurring.py row, or a weekly name like "Friday Drag Shows")
+# Buckets 0 and 1 rank together (tier decides between them, brand-new breaks
+# ties), so a fresh drag show still beats a fresh keyword match. A venue used
+# 2-3 weeks ago is only a tie-breaker; LAST week's venue demotes (_fresh_rank
+# has the exact order). Annual landmarks (Pride festivals, Trans Day of
+# Remembrance, World AIDS Day) are exempt and rank first. Nothing is ever
+# removed: when the week has nothing fresh, the stalest candidate still wins, so
+# the cover is never empty where it was not before. Manual pins
+# (data/manual_eotw.json) still always win. HHHH and Council Oak are exempt.
+#
+# Replay proof: python tools/eotw_replay.py --check --from 2026-W33 --to 2026-W48
+
+SERIES_COOLDOWN_WEEKS = 12
+VENUE_COOLDOWN_WEEKS = 3
+STANDING_LOOKBACK_WEEKS = 4
+STANDING_MIN_WEEKS = 2
+# A partner event auto-leads only when it is a true one-off: its series is in
+# none of the last 8 weeks' listings. Monthly programming (Rainbow Harvest,
+# Queer Crafters Club, the TLC and Prime Timers meetings) is not a "special".
+PARTNER_ONEOFF_LOOKBACK_WEEKS = 8
+
+_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+
+_MONTH_WORDS = {
+    "jan", "january", "feb", "february", "mar", "march", "apr", "april", "may",
+    "jun", "june", "jul", "july", "aug", "august", "sep", "sept", "september",
+    "oct", "october", "nov", "november", "dec", "december",
+}
+_WEEKDAY_WORDS = {
+    "mon", "monday", "mondays", "tue", "tues", "tuesday", "tuesdays", "wed",
+    "wednesday", "wednesdays", "thu", "thur", "thurs", "thursday", "thursdays",
+    "fri", "friday", "fridays", "sat", "saturday", "saturdays", "sun", "sunday",
+    "sundays",
+}
+# Words that never identify WHICH event something is. A name made only of these
+# ("Drag Brunch", "Karaoke Night") is keyed on its venue instead.
+_SERIES_GENERIC = {
+    "the", "a", "an", "and", "or", "of", "for", "in", "on", "to", "by", "at",
+    "with", "w", "ft", "feat", "featuring", "presents", "presented", "present",
+    "hosted", "host", "hosts", "tulsa", "ok", "okla", "oklahoma", "show", "shows",
+    "night", "nights", "party", "parties", "event", "events", "live", "music",
+    "free", "annual", "edition", "special", "specials", "tour", "drag", "brunch",
+    "bingo", "karaoke", "happy", "hour", "hours", "dinner", "club", "bar", "pub",
+    "lounge", "queer", "gay", "lgbtq", "lgbtqia", "lgbt", "pride", "vol", "part",
+    "dj", "open", "mic", "celebration", "community", "meeting", "monthly",
+    "weekly", "series", "new", "our", "your", "you", "all", "its", "it",
+}
+_SERIES_SPLIT_RE = re.compile(
+    r"\s+[:|@–—-]\s+|:\s|\(|\s+at\s+|\s+w/|\s+with\s+"
+    r"|\s+ft\.?\s+|\s+feat\.?\s+|\s+featuring\s+|\s+presented\s+by\s+|\s+hosted\s+by\s+",
+    re.I,
+)
+_ORDINAL_RE = re.compile(r"^\d+(st|nd|rd|th)?$")
+
+# Weekly programming that names itself as such.
+_STANDING_NAME_RE = re.compile(
+    r"\b(every|weekly|nightly|each\s+week)\b"
+    r"|\b(mondays|tuesdays|wednesdays|thursdays|fridays|saturdays|sundays)\b"
+    r"|\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\s+nights\b"
+    r"|\b(taco\s+tuesday|thirsty\s+thursday|wine\s+wednesday)\b"
+    r"|\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\s+"
+    r"(night\s+)?(karaoke|movie\s+night|drag\s+shows?|trivia|bingo|open\s+mic"
+    r"|bar\s+specials?|specials?|happy\s+hour|showcase|tea\s+party|lunch|brunch)\b",
+    re.I,
+)
+
+# Same building under its different spellings. Anything not listed keys on the
+# first comma part of the venue line.
+_VENUE_ALIASES = (
+    ("equality-center", ("equality center", "dennis r. neill", "dennis r neill",
+                         "621 e 4th", "621 e. 4th", "lynn riggs theatre")),
+    ("tulsa-eagle", ("tulsa eagle", "1338 e 3rd", "1338 e. 3rd")),
+    ("club-majestic", ("club majestic", "majestic tulsa", "124 n boston", "124 n. boston")),
+    ("ybr", ("yellow brick", "2630 e 15th")),
+    ("elote", ("elote", "514 s boston", "514 s. boston")),
+    ("dvl", ("dvl", "302 s frankfort", "302 south frankfort", "302 s. frankfort")),
+)
+_YBR_RE = re.compile(r"(?<![a-z0-9])ybr(?![a-z0-9])")
+# Words of the known buildings' names. They say WHERE, never WHICH event, so
+# they never make a series distinctive: "Elote Drag Brunch" and "Drag Brunch :
+# oct. 10th - scream queens" at Elote are one series.
+_ALIAS_TOKENS = {t for _k, _al in _VENUE_ALIASES for a in _al if not a[:1].isdigit()
+                 for t in re.findall(r"[a-z]+", a) if len(t) > 2} | {"ybr"}
+
+# Annual landmarks: once-a-year community moments that must headline their
+# week no matter what held the slot before. The replay caught it: with a plain
+# venue cooldown, W42's "Tulsa Pride 2026" (at the Equality Center, three weeks
+# after Broadway Clubhouse there) lost the hero slot to a drag bingo. Deliberately
+# narrow; runner._FLAGSHIP_KEYWORDS ("drag brunch", "festival", "ball") is a
+# scrape-retention list and far too broad to exempt anything here.
+_LANDMARK_RE = re.compile(
+    r"\bpride\s*(\d{4}|fest\w*|parade|picnic|march|rally|weekend|kickoff)\b"
+    r"|\b\w+\s+pride\s*$|^\s*pride\b"
+    r"|\btrans\s+day\s+of\s+(remembrance|visibility)\b|\btdor\b"
+    r"|\bworld\s+aids\s+day\b|\baids\s+walk\b|\bcoming\s+out\s+day\b",
+    re.I,
+)
+
+
+def _is_landmark(e: Dict) -> bool:
+    name = strip_non_lgbtq_pride(_ascii_lower(e.get("name") or ""))
+    base = re.split(r"\s+at\s+|:\s|\s+[-|]\s+", name, maxsplit=1)[0]
+    return bool(_LANDMARK_RE.search(name) or _LANDMARK_RE.search(base))
+
+
+def _ascii_lower(s: str) -> str:
+    import unicodedata
+    return unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode().lower()
+
+
+def _venue_alias(text: str) -> Optional[str]:
+    """The known building named anywhere in `text`, or None."""
+    v = _ascii_lower(text)
+    for key, aliases in _VENUE_ALIASES:
+        if any(a in v for a in aliases):
+            return key
+    if _YBR_RE.search(v):
+        return "ybr"
+    return None
+
+
+def _venue_key(venue: str) -> Optional[str]:
+    """Canonical building key for a venue line, or None when it says nothing."""
+    v = _ascii_lower(venue)
+    if not v.strip():
+        return None
+    alias = _venue_alias(v)
+    if alias:
+        return alias
+    first = v.split(",")[0]
+    toks = [t for t in re.findall(r"[a-z0-9]+", first) if t not in {"the", "tulsa", "ok"}]
+    if not toks or _VENUE_NOT_A_PLACE_RE.match(first.strip()):
+        return None
+    return " ".join(toks)
+
+
+def _series_key(e: Dict) -> tuple:
+    """(distinctive tokens, base words, venue key) for an event's SERIES.
+
+    "Drag Brunch : nov. 11th - gone cuntry" and "Drag Brunch : jul. 11th -
+    stars, stripes & sequins" at Elote are one series; "Hocus Pocus Drag Brunch"
+    is another; "DRAGNIFICENT! Drag Show" and "DRAGNIFICENT! at Club Majestic"
+    are one."""
+    name = _ascii_lower(e.get("name") or "")
+    base = _SERIES_SPLIT_RE.split(name, maxsplit=1)[0]
+    words = [t for t in re.findall(r"[a-z0-9]+", base)
+             if not _ORDINAL_RE.match(t) and t not in _MONTH_WORDS
+             and t not in _WEEKDAY_WORDS]
+    words = [t for t in words if t not in _ALIAS_TOKENS]
+    if words and words[0] == "the":
+        words = words[1:]
+    distinct = frozenset(t for t in words if t not in _SERIES_GENERIC and len(t) > 1)
+    # A known building named in the title counts as the venue: "Drag Brunch
+    # Presented by Elote" arrived with venue "Bryson Day Travieso" (the Facebook
+    # host's name) and escaped the Elote Drag Brunch series in the replay.
+    venue = (_venue_alias(e.get("venue") or "") or _venue_alias(name)
+             or _venue_key(e.get("venue") or ""))
+    return (distinct, " ".join(words), venue)
+
+
+def _same_series(ka: tuple, kb: tuple) -> bool:
+    ta, ba, va = ka
+    tb, bb, vb = kb
+    if ta and tb:
+        inter = ta & tb
+        if not inter:
+            return False
+        if len(inter) / len(ta | tb) >= 0.5:
+            return True
+        small, big = (ta, tb) if len(ta) <= len(tb) else (tb, ta)
+        return small <= big and len(big) <= 3
+    if not ta and not tb:
+        # Generic-only names ("Drag Brunch") are one series per building.
+        return bool(ba) and ba == bb and va is not None and va == vb
+    return False
+
+
+def _week_monday(week_key: str):
+    from datetime import date as _d
+    y, w = week_key.split("-W")
+    return _d.fromisocalendar(int(y), int(w), 1)
+
+
+def _week_key_of(d) -> str:
+    y, w, _ = d.isocalendar()
+    return f"{y}-W{w:02d}"
+
+
+def _shift_week(week_key: str, weeks: int) -> str:
+    from datetime import timedelta as _td
+    return _week_key_of(_week_monday(week_key) + _td(weeks=weeks))
+
+
+def _infer_week_key(events: List[Dict]) -> Optional[str]:
+    """The ISO week most of these events fall in (callers like post_weekly.py
+    and auto_fix_deck.py hand select_eotw a week of events but no week key)."""
+    from collections import Counter
+    c = Counter()
+    for e in events or []:
+        try:
+            c[_week_key_of(datetime.strptime(e.get("date") or "", "%Y-%m-%d").date())] += 1
+        except Exception:
+            continue
+    return c.most_common(1)[0][0] if c else None
+
+
+def _has_date(e: Dict) -> bool:
+    try:
+        datetime.strptime(e.get("date") or "", "%Y-%m-%d")
+        return True
+    except Exception:
+        return False
+
+
+def _load_json(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
+def _in_week(e: Dict, week_key: str) -> bool:
+    try:
+        d = datetime.strptime(e.get("date") or "", "%Y-%m-%d").date()
+    except Exception:
+        return False
+    return _week_key_of(d) == week_key
+
+
+class Freshness:
+    """How new each candidate is relative to what the site already said.
+
+    eotw_history: [(weeks_ago, event)], what held the hero slot before.
+    prior_events: [(weeks_ago, event)], the listings of the previous weeks."""
+
+    def __init__(self, week_key: Optional[str] = None, eotw_history=None, prior_events=None):
+        self.week_key = week_key
+        hist = [(int(wa), e) for wa, e in (eotw_history or []) if isinstance(e, dict)]
+        # Third field: does NOT count toward the venue cooldown. HHHH rotates
+        # hotels and a landmark (Tulsa Pride) is about the day, not the building.
+        self._hist = [(wa, _series_key(e), _is_hh(e) or _is_landmark(e)) for wa, e in hist]
+        self._prior = [(int(wa), _series_key(e)) for wa, e in (prior_events or [])
+                       if isinstance(e, dict)]
+
+    @classmethod
+    def for_week(cls, week_key: Optional[str], data_dir: str = _DATA_DIR,
+                 history_override: Optional[Dict[str, List[Dict]]] = None) -> "Freshness":
+        """Load the last SERIES_COOLDOWN_WEEKS heroes (data/posts/<wk>/
+        slide_manifest.json "eotw") and the last STANDING_LOOKBACK_WEEKS weeks
+        of listings (data/events/<wk>_all.json, rows dated inside that week).
+        history_override {week_key: [events]} replaces a week's shipped heroes
+        (tools/eotw_replay.py chains its own picks through it). Fails soft."""
+        if not week_key:
+            return cls(None)
+        try:
+            _week_monday(week_key)
+        except Exception:
+            return cls(None)
+        history, prior = [], []
+        for k in range(1, SERIES_COOLDOWN_WEEKS + 1):
+            wk = _shift_week(week_key, -k)
+            if history_override is not None and wk in history_override:
+                heroes = history_override[wk] or []
+            else:
+                m = _load_json(os.path.join(data_dir, "posts", wk, "slide_manifest.json")) or {}
+                heroes = m.get("eotw") or []
+            history += [(k, e) for e in heroes if isinstance(e, dict)]
+        for k in range(1, max(STANDING_LOOKBACK_WEEKS, PARTNER_ONEOFF_LOOKBACK_WEEKS) + 1):
+            wk = _shift_week(week_key, -k)
+            rows = _load_json(os.path.join(data_dir, "events", f"{wk}_all.json"))
+            if isinstance(rows, dict):
+                rows = rows.get("events") or []
+            prior += [(k, e) for e in (rows or []) if isinstance(e, dict) and _in_week(e, wk)]
+        return cls(week_key, history, prior)
+
+    def info(self, e: Dict) -> Dict:
+        key = _series_key(e)
+        landmark = _is_landmark(e)
+        exempt = _is_hh(e) or _is_council(e) or landmark
+        weeks_seen_long = {wa for wa, k in self._prior if _same_series(key, k)}
+        weeks_seen = {wa for wa in weeks_seen_long if wa <= STANDING_LOOKBACK_WEEKS}
+        named_weekly = bool(_STANDING_NAME_RE.search(e.get("name") or ""))
+        standing = ((e.get("source") or "").lower() == "recurring" or named_weekly
+                    or len(weeks_seen) >= STANDING_MIN_WEEKS)
+        series_hits = [wa for wa, k, hh in self._hist
+                       if wa <= SERIES_COOLDOWN_WEEKS and _same_series(key, k)]
+        vk = key[2]
+        venue_hits = [wa for wa, k, hh in self._hist
+                      if not hh and wa <= VENUE_COOLDOWN_WEEKS and vk and k[2] == vk]
+        if exempt:
+            bucket = 0
+            why = "annual landmark" if landmark else "exempt (HHHH / Council Oak)"
+        elif standing:
+            bucket = 4
+            why = ("weekly by name" if named_weekly else
+                   "recurring.py row" if (e.get("source") or "").lower() == "recurring" else
+                   f"listed in {len(weeks_seen)} of the last {STANDING_LOOKBACK_WEEKS} weeks")
+        elif series_hits:
+            bucket, why = 3, f"same series was the hero {min(series_hits)} week(s) ago"
+        elif venue_hits:
+            bucket, why = 2, f"{vk} held the hero slot {min(venue_hits)} week(s) ago"
+        elif weeks_seen:
+            bucket, why = 1, "fresh (listed before, not weekly, not a recent hero)"
+        else:
+            bucket, why = 0, f"fresh (not listed in the last {STANDING_LOOKBACK_WEEKS} weeks)"
+        # stale: 0 fresh, 1 the building was LAST week's hero, 2 the series was
+        # a hero in the last 12 weeks, 3 standing weekly programming. A building
+        # used 2-3 weeks ago stays "fresh" and is only a tie-breaker inside a
+        # band (see _fresh_rank): the Equality Center loses to a fresh event of
+        # the same kind elsewhere, but a themed drag night at a venue used two
+        # weeks ago still beats a Monday student mixer. Back-to-back weeks at one
+        # building is the repetition readers notice first, so that one demotes.
+        last_week = bucket == 2 and min(venue_hits) == 1
+        stale = {0: 0, 1: 0, 2: 1 if last_week else 0, 3: 2, 4: 3}[bucket]
+        return {"bucket": bucket, "group": {0: 0, 1: 0, 2: 1, 3: 2, 4: 3}[bucket],
+                "stale": stale,
+                "venue_cool": bucket == 2, "landmark": landmark,
+                "oneoff": not weeks_seen_long,
+                "seen_before": bool(weeks_seen), "reason": why}
+
+
+# Word-bounded LGBTQ test for the hero picker's tier 5 (2026-11-23). The broad
+# _is_lgbtq() above substring-matches _LGBTQ_KW, so "igra" fires inside
+# "immIGRAtion": the freshness replay put "THE ALABAMA SOLUTION: SCREENING &
+# COMMUNITY CONVERSATION" (a prison documentary) in W45's hero slot for exactly
+# that reason. _is_lgbtq() keeps its behaviour for its other callers
+# (content/generator.py, tools/final_deck_review.py); only EOTW uses this one.
+_LGBTQ_WORD_RE = re.compile(
+    r"(?<![a-z0-9])(lgbt\w*|queer\w*|gays?|lesbians?|trans(gender\w*|sexual\w*|fem\w*|masc\w*)?"
+    r"|bisexual\w*|nonbinary|non-binary|pride|rainbow|homo|sapphic|two[- ]spirit"
+    r"|drag\s+(queens?|kings?)|great\s+plains\s+rodeo|gay\s+rodeo|igra|gender\s+outreach|pflag)"
+    r"(?![a-z0-9])"
+)
+
+
+def _is_lgbtq_word(e: Dict) -> bool:
+    if (e.get("source") or "").lower() in _TRUSTED_LGBTQ_SRCS:
+        return True
+    if _is_drag_racing(e):
+        return False
+    return bool(_LGBTQ_WORD_RE.search(strip_non_lgbtq_pride(_text(e))))
+
+
+def _eotw_tier(e: Dict) -> Optional[int]:
+    """The tier ladder in one place (docstring at the top of this file)."""
+    if _is_hh(e):
+        return 0
+    if _is_council(e):
+        return 1
+    if _is_drag(e):
+        return 2
+    if _is_queer_perf(e):
+        return 3
+    src = (e.get("source") or "").lower()
+    if src in _TRUSTED_LGBTQ_SRCS:
+        return 4 if e.get("url") else None
+    # Tier 5 also counts events at the city's gay venues (2026-11-23): W48's
+    # one-offs at the Eagle ("LEFTOVERS & LEGENDS RETRO PARTY") carried no
+    # keyword, so the hero picker could not see them while the day slides did.
+    if _is_lgbtq_word(e) or _is_lgbtq_strict(e):
+        return 5
+    return None
+
+
+def _fresh_rank(e: Dict, tier: int, fresh) -> tuple:
+    """Rank for tiers 2-5 (lower wins):
+      stale    0 fresh, 1 building was last week's hero, 2 series was a hero
+               in the last 12 weeks, 3 weekly
+      band     -1 annual landmark, 0 a performance (drag / queer perf, tiers
+               2-3), 1 everything else (trusted-source ticketed, keyword, venue)
+      venue    1 when the building held the hero slot in the last 3 weeks
+      tier     the old ladder
+      seen     0 when not listed in the last 4 weeks (newest first)
+      _sort_key the old within-tier order (one-off, weekend, URL, description)
+    With fresh=False this is exactly the old tier ladder."""
+    if not fresh:
+        return (0, 0, 0, tier, 0, _sort_key(e))
+    i = fresh.info(e)
+    band = -1 if i["landmark"] else (0 if tier in (2, 3) else 1)
+    return (i["stale"], band, 1 if i["venue_cool"] else 0, tier,
+            1 if i["seen_before"] else 0, _sort_key(e))
+
+
+_TODAY_OVERRIDE = None   # tests set a date here
+
+
+def _already_over(e: Dict) -> int:
+    """1 when the event is earlier in THIS week than today. The website banner
+    is regenerated mid-week (the Wednesday last-minute refresh) with this same
+    picker, and a hero that already happened is a dead banner. Only applies
+    inside the current week, so Monday's deck and the replay of past weeks are
+    unaffected."""
+    today = _TODAY_OVERRIDE or datetime.now().date()
+    try:
+        d = datetime.strptime(e.get("date") or "", "%Y-%m-%d").date()
+    except Exception:
+        return 0
+    return 1 if (d < today and _week_key_of(d) == _week_key_of(today)) else 0
+
+
+def explain(e: Dict, fresh: Optional["Freshness"]) -> Dict:
+    """Tier + freshness verdict for one event (tools/eotw_replay.py prints it)."""
+    out = {"tier": _eotw_tier(e)}
+    if fresh:
+        out.update(fresh.info(e))
+    return out
+
+
+# ---------------------------------------------------------------------------
 # Main selector
 # ---------------------------------------------------------------------------
 
@@ -531,19 +974,30 @@ def _has_venue(e: dict) -> bool:
 _VENUE_NOT_A_PLACE_RE = re.compile(
     r'^(in\s+(a|an|\d+)\s+(day|days|hour|hours|week|weeks|month|months)'
     r'|today|tonight|tomorrow|yesterday|tba|tbd|online|virtual'
-    r'|this\s+\w+|next\s+\w+)$', re.I)
+    r'|this\s+\w+|next\s+\w+'
+    # Facebook card chrome that lands in the venue field (2026-11-23): the
+    # freshness replay surfaced "Kowboy Hugs and Drag Queen Kisses Benefit Show
+    # @ Shared by Stacy Gorley" and "Halloween Monster Ball @ Shared by JOMO
+    # Pride Inc" as heroes. Fresh one-offs now win more often, and many come
+    # from facebook_events, so a hero must still name a building.
+    r'|shared\s+by\b.*|happening\s+now)$', re.I)
 
 
 def select_eotw(events_this_week: List[Dict],
-                _venue_pass: bool = False) -> Optional[Dict]:
+                _venue_pass: bool = False, fresh=None) -> Optional[Dict]:
     """
     Return the single best Event of the Week from events already filtered
     to the current Mon-Sun window.  Returns None when no suitable LGBTQ
     event is found (the caller should handle that gracefully, not fall back
     to a random community event).
+
+    `fresh` is a Freshness for this week. None loads it from disk for the week
+    the events fall in; False turns the freshness ranking off (pure tiers).
     """
     if not events_this_week:
         return None
+    if fresh is None:
+        fresh = Freshness.for_week(_infer_week_key(events_this_week))
 
     # EOTW must be a VERIFIABLE one-off. Recurring auto-events (recurring.py)
     # are date-stamped onto a weekday without checking they actually happen, so
@@ -552,9 +1006,13 @@ def select_eotw(events_this_week: List[Dict],
     # post for an event that wasn't happening). They still appear on day slides
     # and the website. A pinned manual EOTW (data/manual_eotw.json) always wins
     # and bypasses this — that path is human-verified.
+    # A hero needs a real date (2026-11-23): qlist rows like "First Thursday Art
+    # Show" arrive dateless, and the freshness ranking would otherwise let a
+    # brand-new dateless row outrank a dated show.
     eligible = [
         e for e in events_this_week
         if not _is_skip(e) and (e.get("source") or "").lower() != "recurring"
+        and _has_date(e)
     ]
 
     # Venue guard (2026-09-08) — see _has_venue. Run the whole tier ladder first
@@ -565,12 +1023,11 @@ def select_eotw(events_this_week: List[Dict],
     if not _venue_pass:
         _with_venue = [e for e in events_this_week if _has_venue(e)]
         if len(_with_venue) != len(events_this_week):
-            _best = select_eotw(_with_venue, _venue_pass=True)
+            _best = select_eotw(_with_venue, _venue_pass=True, fresh=fresh)
             if _best is not None:
                 return _best
 
-
-    # Tier 0 — Homo Hotel Happy Hour
+    # Tier 0 — Homo Hotel Happy Hour (William's own night: always wins, may repeat)
     pool = sorted([e for e in eligible if _is_hh(e)], key=_sort_key)
     if pool:
         return pool[0]
@@ -580,46 +1037,15 @@ def select_eotw(events_this_week: List[Dict],
     if pool:
         return pool[0]
 
-    # Tier 2 — Drag shows (most explicitly queer, highest attendance draw)
-    pool = sorted([e for e in eligible if _is_drag(e)], key=_sort_key)
-    if pool:
-        return pool[0]
-
-    # Tier 3 — Queer performances, pride events, queer nights
-    pool = sorted(
-        [e for e in eligible if _is_queer_perf(e) and not _is_drag(e)],
-        key=_sort_key,
-    )
-    if pool:
-        return pool[0]
-
-    # Tier 4 — Ticketed events from trusted primary LGBTQ sources
-    pool = sorted(
-        [
-            e for e in eligible
-            if (e.get("source") or "").lower() in _TRUSTED_LGBTQ_SRCS
-            and e.get("url")
-            and not _is_drag(e)
-            and not _is_queer_perf(e)
-        ],
-        key=_sort_key,
-    )
-    if pool:
-        return pool[0]
-
-    # Tier 5 — Non-recurring LGBTQ-relevant events with explicit keywords
-    pool = sorted(
-        [
-            e for e in eligible
-            if _is_lgbtq(e)
-            and not _is_drag(e)
-            and not _is_queer_perf(e)
-            and (e.get("source") or "").lower() not in _TRUSTED_LGBTQ_SRCS
-        ],
-        key=_sort_key,
-    )
-    if pool:
-        return pool[0]
+    # Tiers 2-5 (drag, queer performance, trusted-source ticketed, LGBTQ
+    # keyword or gay venue), ranked FRESHNESS FIRST, then tier, then brand-new
+    # before seen-before, then the old within-tier sort. See the Freshness
+    # block above for why. A stale candidate still wins a week with nothing
+    # fresh, so this never empties a cover the tier ladder would have filled.
+    cands = [(e, t) for e in eligible if (t := _eotw_tier(e)) in (2, 3, 4, 5)]
+    if cands:
+        return min(cands, key=lambda et: (_already_over(et[0]),)
+                   + _fresh_rank(et[0], et[1], fresh))[0]
 
     # Nothing qualifies — return None so the cover can show a graceful fallback.
     # DO NOT fall back to a random community event.
@@ -731,7 +1157,8 @@ def _is_partner_special(e: Dict, partners: Optional[List[Dict]] = None) -> bool:
 
 def select_eotw_list(events_this_week: List[Dict],
                      week_key: Optional[str] = None,
-                     confirmed=None, strict: bool = False) -> List[Dict]:
+                     confirmed=None, strict: bool = False,
+                     fresh=None) -> List[Dict]:
     """Return an ordered list of Events of the Week (usually 1, sometimes 2).
 
     Order of precedence:
@@ -749,7 +1176,15 @@ def select_eotw_list(events_this_week: List[Dict],
     marquee pick runs over confirmed rows (plus Homo Hotel Happy Hour, William's
     own night) before it may fall back to the whole week. `strict` is the prep
     degrade ladder's confirmed-only rebuild: unconfirmed partner specials are
-    dropped and the HHHH exemption goes too. Manual pins are never filtered."""
+    dropped and the HHHH exemption goes too. Manual pins are never filtered.
+
+    `fresh` (2026-11-23) is a Freshness; None loads it for week_key (or the
+    week the events fall in), False disables it. A partner special leads only
+    while it is FRESH (bucket 0/1): not weekly, its series not a hero in the
+    last 12 weeks, and its building not a hero in the last 3. Before this the
+    OKEQ partner match on "equality center" put that one building in the hero
+    slot 15 of 17 weeks. A stale partner event can still win the marquee slot
+    on merit when nothing fresher exists."""
     # 1. Human-pinned override always wins (a person verified it).
     manual = load_manual_eotw(week_key)
     if manual:
@@ -773,6 +1208,9 @@ def select_eotw_list(events_this_week: List[Dict],
         if resolved:
             return resolved
 
+    if fresh is None:
+        fresh = Freshness.for_week(week_key or _infer_week_key(events_this_week))
+
     # 2. Auto path — lead with partner special events (one per partner).
     partners = _load_partner_matchers()
     heroes: List[Dict] = []
@@ -785,6 +1223,12 @@ def select_eotw_list(events_this_week: List[Dict],
         for e in events_this_week:
             if not _is_partner_special(e, partners):
                 continue
+            if not _has_date(e):
+                continue
+            if fresh:
+                _i = fresh.info(e)
+                if _i["group"] != 0 or not (_i["oneoff"] or _i["landmark"]):
+                    continue
             if strict and confirmed is not None and not confirmed(e):
                 continue
             pname = _partner_of(e, partners)
@@ -798,12 +1242,17 @@ def select_eotw_list(events_this_week: List[Dict],
 
     # Fill any remaining hero slot (up to 2) with the marquee auto-pick.
     if len(heroes) < 2:
-        rest = [e for e in events_this_week if id(e) not in seen_ids]
+        # Never two heroes of one series (two Homo Hotel Happy Hour rows from
+        # different feeds, or a partner pick and its own duplicate).
+        hero_keys = [_series_key(h) for h in heroes]
+        rest = [e for e in events_this_week if id(e) not in seen_ids
+                and not any(_same_series(_series_key(e), hk) for hk in hero_keys)]
         marquee = None
         if confirmed is not None:
-            marquee = select_eotw([e for e in rest if confirmed(e) or (_is_hh(e) and not strict)])
+            marquee = select_eotw([e for e in rest if confirmed(e) or (_is_hh(e) and not strict)],
+                                  fresh=fresh)
         if marquee is None:
-            marquee = select_eotw(rest)
+            marquee = select_eotw(rest, fresh=fresh)
         if marquee is not None and id(marquee) not in seen_ids:
             heroes.append(marquee)  # rounds out slot 2, or is the sole hero
             seen_ids.add(id(marquee))
@@ -867,13 +1316,119 @@ def _selftest() -> int:
     if len(solo) != 1 or solo[0]["name"] != "Big Drag Show":
         fails.append(f"no-partner week should fall back to single marquee: {[h['name'] for h in solo]}")
 
+    # ── Freshness (William 2026-11-23: stop repeating the same heroes) ────────
+    wk = "2026-W48"
+    mon, thu, fri, sat = "2026-11-23", "2026-11-26", "2026-11-27", "2026-11-28"
+    eqc = "Dennis R. Neill Equality Center, 621 E 4th St"
+    dragn = {"name": "DRAGNIFICENT! Drag Show", "source": "community_groups", "date": thu,
+             "venue": "Club Majestic, 124 N Boston Ave", "url": "u", "description": "drag show"}
+    revue = {"name": "RED RIBBON REVUE UNDERWEAR AUCTION W/PORSCHE LYNN", "source": "facebook_events",
+             "date": sat, "venue": "1338 E 3rd St, Tulsa, OK", "url": "u", "description": "fundraiser"}
+    harvest = {"name": "Rainbow Harvest: Free Farmer's Market", "source": "okeq", "date": sat,
+               "venue": eqc, "url": "u", "description": "groceries"}
+    prior = [(1, {"name": "DRAGNIFICENT! at Club Majestic", "venue": "Club Majestic"}),
+             (2, {"name": "DRAGNIFICENT! Drag Show", "venue": "124 N Boston Ave"}),
+             (6, {"name": "Queer Crafters Club", "venue": eqc})]
+    hist = [(1, {"name": "Queer Crafters Club", "venue": eqc}),
+            (5, {"name": "Rainbow Harvest", "venue": eqc}),
+            (1, {"name": "Homo Hotel Happy Hour", "venue": "Mayo Hotel"})]
+    fr = Freshness(wk, eotw_history=hist, prior_events=prior)
+
+    if fr.info(dragn)["bucket"] != 4:
+        fails.append(f"weekly DRAGNIFICENT should be STANDING: {fr.info(dragn)}")
+    if fr.info(harvest)["bucket"] != 3:
+        fails.append(f"Rainbow Harvest (hero 5 wk ago) should be series-cooled: {fr.info(harvest)}")
+    pick = select_eotw([dragn, revue, harvest], fresh=fr)
+    if not pick or pick["name"] != revue["name"]:
+        fails.append(f"fresh one-off revue at the Eagle must beat weekly drag + repeat: {pick and pick['name']}")
+    if (select_eotw([dragn, revue, harvest], fresh=False) or {}).get("name") != dragn["name"]:
+        fails.append("fresh=False must reproduce the old pure tier ladder (drag tier first)")
+    if (select_eotw([dragn], fresh=fr) or {}).get("name") != dragn["name"]:
+        fails.append("a week with only stale candidates must still get a hero (never empty)")
+    friday_shows = {"name": "Friday Drag Shows at Tulsa Eagle", "date": fri, "source": "qlist",
+                    "venue": "Tulsa Eagle, 1338 E 3rd St", "url": "u"}
+    if fr.info(friday_shows)["bucket"] != 4:
+        fails.append("'Friday Drag Shows' is weekly by name")
+
+    # venue cooldown: Equality Center was the hero last week
+    eqc_new = {"name": "No Hate Photoshoot", "source": "okeq", "date": sat, "venue": eqc, "url": "u"}
+    ybr_new = {"name": "Queer Women's Collective Tulsa", "source": "manual", "date": fri,
+               "venue": "Yellow Brick Road Pub, 2630 E 15th St", "description": "queer women social"}
+    if fr.info(eqc_new)["bucket"] != 2:
+        fails.append(f"Equality Center hero last week -> venue cooldown: {fr.info(eqc_new)}")
+    if (select_eotw([eqc_new, ybr_new], fresh=fr) or {}).get("name") != ybr_new["name"]:
+        fails.append("a fresh event elsewhere must beat a fresh one at last week's hero venue")
+    with _mock.patch.object(sys.modules[__name__], "_load_partner_matchers", lambda: partners):
+        heroes = select_eotw_list([eqc_new, ybr_new], week_key=wk, fresh=fr)
+    if any(h["name"] == eqc_new["name"] for h in heroes):
+        fails.append("partner auto-lead must not fire for a venue in cooldown")
+    fr_clear = Freshness(wk, eotw_history=[(5, {"name": "Rainbow Harvest", "venue": eqc})], prior_events=prior)
+    crafters = {"name": "Queer Crafters Club", "source": "okeq", "date": thu, "venue": eqc, "url": "u"}
+    with _mock.patch.object(sys.modules[__name__], "_load_partner_matchers", lambda: partners):
+        h1 = select_eotw_list([eqc_new, ybr_new], week_key=wk, fresh=fr_clear)
+        h2 = select_eotw_list([crafters, revue], week_key=wk, fresh=fr_clear)
+    if not h1 or h1[0]["name"] != eqc_new["name"]:
+        fails.append(f"a never-listed partner one-off should auto-lead: {[h['name'] for h in h1]}")
+    # Auto-leading would put Crafters first with the revue second; without it
+    # the marquee alone picks the revue (a performance outranks a craft club).
+    if [h["name"] for h in h2] != [revue["name"]]:
+        fails.append(f"monthly partner programming (listed 6 wk ago) must not auto-lead: {[h['name'] for h in h2]}")
+    if fr_clear.info(crafters)["oneoff"]:
+        fails.append("Queer Crafters Club listed 6 weeks ago is not a one-off")
+
+    # exemptions: HHHH may repeat; landmarks ignore the venue cooldown
+    hhhh = {"name": "Homo Hotel Happy Hour", "source": "homo_hotel", "date": fri,
+            "venue": "Courtyard Downtown", "url": "u"}
+    if (select_eotw([hhhh, revue], fresh=fr) or {}).get("name") != hhhh["name"]:
+        fails.append("HHHH must still win even though it was the hero last week")
+    pride = {"name": "Tulsa Pride 2026", "source": "okeq", "date": sat, "venue": eqc, "url": "u"}
+    drag_new = {"name": "Hocus Pocus Drag Brunch", "source": "rendered_sites", "date": sat,
+                "venue": "Bricktown Comedy Club Tulsa", "url": "u", "description": "drag brunch"}
+    if (select_eotw([pride, drag_new], fresh=fr) or {}).get("name") != pride["name"]:
+        fails.append("Tulsa Pride (annual landmark) must headline despite the venue cooldown")
+    if _is_landmark({"name": "Tulsa Pagan Pride Day"}):
+        fails.append("Pagan Pride Day is not an LGBTQ landmark")
+
+    # series keys
+    a = _series_key({"name": "Drag Brunch : jul. 11th - stars, stripes & sequins", "venue": "Elote Cafe & Catering"})
+    b = _series_key({"name": "Elote Drag Brunch", "venue": "Elote Cafe, 514 S Boston Ave"})
+    c = _series_key({"name": "Drag Brunch Presented by Elote", "venue": "Bryson Day Travieso"})
+    d = _series_key({"name": "Hocus Pocus Drag Brunch", "venue": "Bricktown Comedy Club Tulsa"})
+    if not (_same_series(a, b) and _same_series(a, c)):
+        fails.append(f"Elote drag brunch spellings must be one series: {a} {b} {c}")
+    if _same_series(a, d):
+        fails.append("Hocus Pocus Drag Brunch is its own series")
+
+    # guards
+    if select_eotw([{"name": "First Thursday Art Show", "source": "qlist", "url": "u",
+                     "venue": "Allie Jensen Gallery"}], fresh=fr) is not None:
+        fails.append("a dateless row must never be the hero")
+    if _eotw_tier({"name": "THE ALABAMA SOLUTION: SCREENING", "source": "tulsa_artist_fellowship",
+                   "venue": "Flagship", "description": "incarceration, immigration detention"}) is not None:
+        fails.append("'igra' inside 'immigration' must not make an event LGBTQ")
+    if _eotw_tier({"name": "Transgender Day of Visibility Picnic", "source": "x", "venue": "Park"}) != 5:
+        fails.append("'transgender' must still count as LGBTQ")
+    if _has_venue({"venue": "Shared by Stacy Gorley"}):
+        fails.append("'Shared by <name>' is Facebook chrome, not a venue")
+    global _TODAY_OVERRIDE
+    _saved = _TODAY_OVERRIDE
+    try:
+        from datetime import date as _d
+        _TODAY_OVERRIDE = _d(2026, 11, 25)
+        monday_new = dict(ybr_new, date=mon)
+        if (select_eotw([monday_new, dragn], fresh=fr) or {}).get("name") != dragn["name"]:
+            fails.append("mid-week refresh must not keep a hero that already happened")
+    finally:
+        _TODAY_OVERRIDE = _saved
+
     if fails:
         print("SELFTEST FAILED:")
         for f in fails:
             print("  -", f)
         return 1
     print("SELFTEST PASSED — partner auto-highlight, service exclusion, "
-          "support-meeting policy, and marquee fallback all verified.")
+          "support-meeting policy, marquee fallback, and freshness (standing, "
+          "series + venue cooldown, landmarks, HHHH exemption) all verified.")
     return 0
 
 

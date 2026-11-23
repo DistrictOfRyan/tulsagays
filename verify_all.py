@@ -21,7 +21,7 @@ CORE = [
     "content/generator.py", "content/image_maker.py",
     "tools/preflight_post.py", "tools/gen_website_html.py", "tools/postrun_verify.py",
     "tools/clean_event_data.py", "tools/send_newsletter.py", "posting/group_blast.py",
-    "tests/test_pipeline.py",
+    "tests/test_pipeline.py", "tools/eotw_replay.py",
     "scraper/tz_guard.py", "tools/verify_week_truth.py", "posting/group_retract.py",
     "scraper/eventbrite_meetup.py", "scraper/okeq_calendar.py",
     "tools/schema_fields.py", "tools/directory_schema.py",
@@ -34,6 +34,9 @@ CORE = [
 SELFTESTS = [
     ("tz_guard selftest", ["scraper/tz_guard.py"]),
     ("verify_week_truth selftest", ["tools/verify_week_truth.py", "--selftest"]),
+    # Event of the Week freshness (2026-11-23): weekly shows, repeat series and
+    # the same building must not keep taking the hero slot.
+    ("eotw_selector selftest", ["eotw_selector.py", "--selftest"]),
 ]
 
 
