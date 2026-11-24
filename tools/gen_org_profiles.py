@@ -84,11 +84,29 @@ def _aggregate_events(org, weeks=16):
     return out
 
 
+# Verified facts for specific orgs, sourced from our OWN already-published, cited
+# reporting (never guessed). Added 2026-11-24 (tulsa-gays-ai-schema audit): the OKEQ
+# profile -- the single most citable community-resource entity on the site -- carried
+# only name/url/areaServed/description while /blog/history-oklahomans-for-equality-tulsa.html
+# already had the founding year and street address, researched and verified against
+# okeq.org and TulsaPeople. Extend this dict only when a fact is backed by our own
+# published, sourced content -- never invent an address or date to fill it in.
+ORG_FACTS = {
+    "okeq": {
+        "address": {"@type": "PostalAddress", "streetAddress": "621 E 4th St",
+                     "addressLocality": "Tulsa", "addressRegion": "OK", "addressCountry": "US"},
+        "foundingDate": "1980",
+        "alternateName": "Dennis R. Neill Equality Center",
+    },
+}
+
+
 def _schema(org, events, url):
     org_type = "LocalBusiness" if org.get("type") in ("bar", "wellness", "church") else "Organization"
     block = {"@context": "https://schema.org", "@type": org_type, "name": org["name"],
              "url": url, "areaServed": "Tulsa, Oklahoma",
              "description": org.get("note", "")}
+    block.update(ORG_FACTS.get(org["id"], {}))
     crumb = {"@context": "https://schema.org", "@type": "BreadcrumbList",
              "itemListElement": [
                  {"@type": "ListItem", "position": 1, "name": "Home", "item": BASE},
