@@ -2,13 +2,40 @@
   "api_version": "1",
   "city": "Tulsa, OK",
   "publisher": "Tulsa Gays",
-  "generated_at": "2026-11-23T18:15:36Z",
+  "generated_at": "2026-11-26T00:18:47Z",
   "license": "CC BY 4.0 — attribute Tulsa Gays (tulsagays.com)",
   "count": 8,
   "events": [
     {
+      "name": "Friendsgiving at The Royale",
+      "date": "2026-11-25",
+      "time": "",
+      "venue": "Thu, Nov 19",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "“A Dozen Loops: The Radical Voice of Woody Guthrie” + “Tom Paxton: A Car Full of Songs,” + “The Melody of Riot: Jay Farrar, Son Volt, and the Legacy of Woody Guthrie,” at Woody Guthrie Center",
+      "date": "2026-11-25",
+      "time": "10:00 AM",
+      "venue": "Woody Guthrie Center",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
+      "name": "Permanent Exhibits and “Thin Wild Mercury: Dylan 1966” + “Face Value” at Bob Dylan Center",
+      "date": "2026-11-25",
+      "time": "10:00 AM",
+      "venue": "Bob Dylan Center",
+      "url": "",
+      "lgbtq_relevant": true,
+      "city": "Tulsa, OK"
+    },
+    {
       "name": "Lunch Specials at Elgin Park",
-      "date": "2026-11-23",
+      "date": "2026-11-25",
       "time": "11:00 AM",
       "venue": "Elgin Park Brewery",
       "url": "",
@@ -16,26 +43,26 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "You Can See Everything",
-      "date": "2026-11-23",
-      "time": "12:10 PM",
-      "venue": "Circle Cinema, 10 S Lewis Ave, Tulsa",
+      "name": "Happy Hour: $1 off glass of wine & local beers – $4.50 mules AND 1/2 price apps with any bar purchase! at The Chowhouse",
+      "date": "2026-11-25",
+      "time": "2:00 PM",
+      "venue": "The Chowhouse",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
-      "name": "Happy Hour with Free Pool at Caz’s Pub",
-      "date": "2026-11-23",
-      "time": "2:00 PM",
-      "venue": "Caz’s Pub",
+      "name": "Happy Hour at Cabin Boys Brewpub",
+      "date": "2026-11-25",
+      "time": "3:00 PM",
+      "venue": "Cabin Boys Brewpub",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
     },
     {
       "name": "Happy Hour at in the raw vū",
-      "date": "2026-11-23",
+      "date": "2026-11-25",
       "time": "3:00 PM",
       "venue": "in the raw vū",
       "url": "",
@@ -43,37 +70,10 @@
       "city": "Tulsa, OK"
     },
     {
-      "name": "EDM@ Ed’s/ Open Decks",
-      "date": "2026-11-23",
+      "name": "Happy Hour at En Fuego",
+      "date": "2026-11-25",
       "time": "3:00 PM",
-      "venue": "Shared by Zack Sparrow",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Sunday & Monday Bar Special at PRHYME",
-      "date": "2026-11-23",
-      "time": "4:00 PM",
-      "venue": "PRHYME: Downtown Steakhouse",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Happy Hour at Saturn Room",
-      "date": "2026-11-23",
-      "time": "4:00 PM",
-      "venue": "Saturn Room",
-      "url": "",
-      "lgbtq_relevant": true,
-      "city": "Tulsa, OK"
-    },
-    {
-      "name": "Friendsgiving with NASA",
-      "date": "2026-11-23",
-      "time": "5:30 PM - 7:30 PM",
-      "venue": "Metro Fireplace Lounge",
+      "venue": "En Fuego",
       "url": "",
       "lgbtq_relevant": true,
       "city": "Tulsa, OK"
